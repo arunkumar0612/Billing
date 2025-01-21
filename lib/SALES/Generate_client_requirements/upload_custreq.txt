@@ -1,0 +1,103 @@
+Future<String> upload_custreq_reference_file() async {
+    if (MOR == null) {
+      // Show error if no file is selected
+      await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: const Text('No file selected. Please choose a file to upload.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return '';
+    }
+
+    try {
+      var uri = Uri.parse(API.Upload_custreq_API);
+
+      var request = http.MultipartRequest('POST', uri);
+      request.files.add(await http.MultipartFile.fromPath(
+        'file',
+        MOR!.path,
+      ));
+      request.headers['Content-Type'] = 'multipart/form-data';
+
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        var responseData = await response.stream.bytesToString();
+        var decodedData = jsonDecode(responseData);
+
+        final message = decodedData['message'];
+        final code = decodedData['code'];
+
+        if (code == false) {
+          // Show failure dialog
+          await showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Failed to Upload'),
+                content: Text(message),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+          return '';
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('suceess to Upload'),
+                content: Text(message),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+          // Return file path on success
+          return decodedData['path'];
+        }
+      } else {
+        if (kDebugMode) {
+          print('API Request Failed with Status Code: ${response.statusCode}');
+        }
+        return '';
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred: $e');
+      }
+
+      // Show error dialog
+      await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: Text('An error occurred: $e'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return '';
+    }
+  }

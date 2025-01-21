@@ -6,13 +6,7 @@ import 'package:ssipl_billing/common_modules/encrypt_decrypt.dart';
 
 import 'package:ssipl_billing/common_modules/style.dart';
 import 'package:ssipl_billing/home.dart';
-// import 'package:showroom_entrance_count/Add_camera.dart';
-// import 'package:showroom_entrance_count/capture_image.dart';
-// import 'package:showroom_entrance_count/capture_image.dart';
-// import 'package:showroom_entrance_count/Add_camera.dart';
-// import 'package:showroom_entrance_count/capture_image.dart';
-// import 'package:showroom_entrance_count/report_page.dart';
-// import 'package:showroom_entrance_count/report_page.dart';
+
 import 'package:ssipl_billing/homepage/home_page.dart';
 
 import 'package:http/http.dart' as http;
@@ -68,7 +62,10 @@ class _LoginpageState extends State<Loginpage> {
       final configData = await loadConfigFile('assets/key.config');
       final apiKey = configData['APIkey'];
       final secret = configData['Secret'];
-      final formData = {"username": _userController.text, "password": _passwordController.text};
+      final formData = {
+        "username": _userController.text,
+        "password": _passwordController.text
+      };
 
       final dataToEncrypt = jsonEncode(formData);
       final encryptedData = obj.encryptWithAES(secret, dataToEncrypt);
@@ -81,7 +78,9 @@ class _LoginpageState extends State<Loginpage> {
 
       final response = await http.post(
         Uri.parse(API.Login_API),
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: jsonEncode(requestData),
       );
       if (response.statusCode == 200) {
@@ -217,7 +216,14 @@ class _LoginpageState extends State<Loginpage> {
     return AnimatedGradientBorder(
       animationTime: 2,
       glowSize: indicator ? 5 : 5,
-      gradientColors: indicator ? [Color.fromARGB(255, 157, 98, 253), Colors.black] : [Primary_colors.Light],
+      gradientColors: indicator
+          ? [
+              Color.fromARGB(255, 157, 98, 253),
+              Colors.black
+            ]
+          : [
+              Primary_colors.Light
+            ],
       borderRadius: const BorderRadius.all(
         Radius.circular(10),
       ),

@@ -6,7 +6,13 @@ import 'package:ssipl_billing/common_modules/encrypt_decrypt.dart';
 
 import 'package:ssipl_billing/common_modules/style.dart';
 import 'package:ssipl_billing/home.dart';
-
+// import 'package:showroom_entrance_count/Add_camera.dart';
+// import 'package:showroom_entrance_count/capture_image.dart';
+// import 'package:showroom_entrance_count/capture_image.dart';
+// import 'package:showroom_entrance_count/Add_camera.dart';
+// import 'package:showroom_entrance_count/capture_image.dart';
+// import 'package:showroom_entrance_count/report_page.dart';
+// import 'package:showroom_entrance_count/report_page.dart';
 import 'package:ssipl_billing/homepage/home_page.dart';
 
 import 'package:http/http.dart' as http;
@@ -55,133 +61,6 @@ class _LoginpageState extends State<Loginpage> {
   Future<Map<String, dynamic>> loadConfigFile(String path) async {
     final configString = await rootBundle.loadString(path);
     return jsonDecode(configString);
-  }
-
-  void aaaaaaaaaaaaaaaaaaaaaaaaaa() async {
-    try {
-      final configData = await loadConfigFile('assets/key.config');
-      final apiKey = configData['APIkey'];
-      final secret = configData['Secret'];
-      final formData = {
-        "username": _userController.text,
-        "password": _passwordController.text
-      };
-
-      final dataToEncrypt = jsonEncode(formData);
-      final encryptedData = obj.encryptWithAES(secret, dataToEncrypt);
-
-      final requestData = {
-        "APIkey": apiKey,
-        "Secret": secret,
-        "querystring": encryptedData,
-      };
-
-      final response = await http.post(
-        Uri.parse(API.Login_API),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: jsonEncode(requestData),
-      );
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-        String encryptedResponse = responseData['encryptedResponse'];
-        // print(encryptedResponse);
-        final decryptedResponse = obj.decryptWithAES(secret.substring(0, 16), encryptedResponse);
-
-        final decodedResponse = jsonDecode(decryptedResponse);
-        final Code = decodedResponse['code'];
-        final Message = decodedResponse['message'];
-        final userid = decodedResponse['userid'];
-        final SToken = decodedResponse['SESSIONTOKEN'];
-
-        if (!Code) {
-          setState(() {
-            indicator = false;
-          });
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Login Failed'),
-                content: Text(Message),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
-        } else {
-          setState(() {
-            EncryptWithAES.SESSIONTOKEN = SToken;
-          });
-          setState(() {
-            indicator = false;
-            Loginpage.userid = userid.toString();
-          });
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MyHomePage()),
-          );
-        }
-      } else {
-        setState(() {
-          indicator = false;
-        });
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Primary_colors.Light,
-              title: Text('Login  Failed', style: TextStyle(color: Colors.white)),
-              content: Text((response.statusCode).toString(), style: const TextStyle(color: Color.fromARGB(255, 169, 162, 162))),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-
-                    // _isLoading = false;
-                  },
-                  child: const Text(
-                    'OK',
-                    style: TextStyle(color: Colors.white, fontSize: 15),
-                  ),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            title: const Text('Server Down!', style: TextStyle(color: Colors.white)),
-            content: Text('$e', style: TextStyle(color: const Color.fromARGB(255, 175, 174, 174))),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-
-                  // _isLoading = false;
-                },
-                child: const Text(
-                  'OK',
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-                ),
-              ),
-            ],
-          );
-        },
-      );
-    }
   }
 
   void Login() async {

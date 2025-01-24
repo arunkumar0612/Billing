@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/button.dart';
-import 'package:ssipl_billing/common_modules/style.dart';
-import 'package:ssipl_billing/textfield.dart';
+import 'package:ssipl_billing/views/screens/button.dart';
+import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/views/screens/textfield.dart';
 
 class addrequirement_page extends StatefulWidget {
   final String customer_type;
@@ -68,7 +68,10 @@ class _addrequirement_pageState extends State<addrequirement_page> with SingleTi
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: [Add_details(), addrequirements()],
+              children: [
+                Add_details(),
+                addrequirements()
+              ],
             ),
           ),
         ],

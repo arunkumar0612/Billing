@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
-import 'package:ssipl_billing/cards.dart';
-import 'package:ssipl_billing/common_modules/style.dart';
+import 'package:ssipl_billing/views/screens/cards.dart';
+import 'package:ssipl_billing/themes/style.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -21,26 +21,86 @@ class Vendor extends StatefulWidget {
 
 class _VendorState extends State<Vendor> {
   final List<Map<String, String>> products = [
-    {"label": "Item 1", "image": "assets/images/car.jpg"},
-    {"label": "Item 2", "image": "assets/images/car.jpg"},
-    {"label": "Item 3", "image": "assets/images/car.jpg"},
-    {"label": "Item 4", "image": "assets/images/car.jpg"},
-    {"label": "Item 5", "image": "assets/images/car.jpg"},
-    {"label": "Item 6", "image": "assets/images/car.jpg"},
-    {"label": "Item 7", "image": "assets/images/car.jpg"},
-    {"label": "Item 8", "image": "assets/images/car.jpg"},
-    {"label": "Item 9", "image": "assets/images/car.jpg"},
-    {"label": "Item 10", "image": "assets/images/car.jpg"},
-    {"label": "Item 11", "image": "assets/images/car.jpg"},
-    {"label": "Item 12", "image": "assets/images/car.jpg"},
-    {"label": "Item 13", "image": "assets/images/car.jpg"},
-    {"label": "Item 14", "image": "assets/images/car.jpg"},
-    {"label": "Item 15", "image": "assets/images/car.jpg"},
-    {"label": "Item 16", "image": "assets/images/car.jpg"},
-    {"label": "Item 17", "image": "assets/images/car.jpg"},
-    {"label": "Item 18", "image": "assets/images/car.jpg"},
-    {"label": "Item 19", "image": "assets/images/car.jpg"},
-    {"label": "Item 20", "image": "assets/images/car.jpg"},
+    {
+      "label": "Item 1",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 2",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 3",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 4",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 5",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 6",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 7",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 8",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 9",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 10",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 11",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 12",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 13",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 14",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 15",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 16",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 17",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 18",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 19",
+      "image": "assets/images/car.jpg"
+    },
+    {
+      "label": "Item 20",
+      "image": "assets/images/car.jpg"
+    },
   ];
   final List<Map<String, dynamic>> items = [
     {
@@ -50,25 +110,43 @@ class _VendorState extends State<Vendor> {
           'id': 'VST/SSIPL - 1001',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1006',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1008',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4', 'Invoice 5'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4',
+            'Invoice 5'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
       ]
     },
@@ -79,25 +157,43 @@ class _VendorState extends State<Vendor> {
           'id': 'VST/SSIPL - 1001',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1006',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1008',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4', 'Invoice 5'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4',
+            'Invoice 5'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
       ]
     },
@@ -108,61 +204,97 @@ class _VendorState extends State<Vendor> {
           'id': 'VST/SSIPL - 1001',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1006',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1008',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4', 'Invoice 5'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4',
+            'Invoice 5'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
       ]
     },
@@ -173,7 +305,10 @@ class _VendorState extends State<Vendor> {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
       ]
     },
@@ -184,25 +319,43 @@ class _VendorState extends State<Vendor> {
           'id': 'VST/SSIPL - 1001',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1006',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1008',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4', 'Invoice 5'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4',
+            'Invoice 5'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
       ]
     },
@@ -213,7 +366,10 @@ class _VendorState extends State<Vendor> {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
       ]
     },
@@ -224,25 +380,43 @@ class _VendorState extends State<Vendor> {
           'id': 'VST/SSIPL - 1001',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1006',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1008',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4', 'Invoice 5'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4',
+            'Invoice 5'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
       ]
     },
@@ -253,61 +427,97 @@ class _VendorState extends State<Vendor> {
           'id': 'VST/SSIPL - 1001',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1006',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1008',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4', 'Invoice 5'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4',
+            'Invoice 5'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
       ]
     },
@@ -318,13 +528,22 @@ class _VendorState extends State<Vendor> {
           'id': 'VST/SSIPL - 1001',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1006',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4'
+          ],
         },
       ]
     },
@@ -335,13 +554,22 @@ class _VendorState extends State<Vendor> {
           'id': 'VST/SSIPL - 1001',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1006',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4'
+          ],
         },
       ]
     },
@@ -352,13 +580,22 @@ class _VendorState extends State<Vendor> {
           'id': 'VST/SSIPL - 1001',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1006',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4'
+          ],
         },
       ]
     },
@@ -369,61 +606,97 @@ class _VendorState extends State<Vendor> {
           'id': 'VST/SSIPL - 1001',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1006',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1008',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4', 'Invoice 5'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4',
+            'Invoice 5'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
       ]
     },
@@ -434,61 +707,97 @@ class _VendorState extends State<Vendor> {
           'id': 'VST/SSIPL - 1001',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1006',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1008',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4', 'Invoice 5'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4',
+            'Invoice 5'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
       ]
     },
@@ -499,151 +808,232 @@ class _VendorState extends State<Vendor> {
           'id': 'VST/SSIPL - 1001',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1006',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1008',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2', 'Invoice 3', 'Invoice 4', 'Invoice 5'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2',
+            'Invoice 3',
+            'Invoice 4',
+            'Invoice 5'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
         {
           'id': 'VST/SSIPL - 1010',
           'date': '16/03/2023',
           'daycounts': '21 days',
-          'child': ['Invoice 1', 'Invoice 2'],
+          'child': [
+            'Invoice 1',
+            'Invoice 2'
+          ],
         },
       ]
     },
@@ -651,7 +1041,12 @@ class _VendorState extends State<Vendor> {
   // Adding a controller and isAdding flag for each item
   late List<bool> isAddingList;
   late List<TextEditingController> controllers;
-  List<String> list = <String>['One', 'Two', 'Three', 'Four'];
+  List<String> list = <String>[
+    'One',
+    'Two',
+    'Three',
+    'Four'
+  ];
   String VendorSearchQuery = '';
   @override
   void initState() {
@@ -1424,7 +1819,9 @@ class generateinvoice_popupState extends State<generateinvoice_popup> with Singl
   Future<void> _pickPdf() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf'],
+      allowedExtensions: [
+        'pdf'
+      ],
     );
 
     if (result != null) {

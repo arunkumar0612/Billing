@@ -5,7 +5,7 @@ import 'package:ssipl_billing/Sales.dart';
 import 'package:ssipl_billing/Subscription.dart';
 import 'package:ssipl_billing/dashboard.dart';
 import 'package:ssipl_billing/inventory.dart';
-import 'package:ssipl_billing/common_modules/style.dart';
+import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/vendors.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -92,10 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // ),
               title: Container(
                 decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
                   color: Primary_colors.Color3,
                 ),
                 child: Column(

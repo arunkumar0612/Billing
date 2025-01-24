@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ssipl_billing/Graph.dart';
 // import 'package:ssipl_billing/cards.dart';
 import 'package:ssipl_billing/dashboardcards.dart';
-import 'package:ssipl_billing/common_modules/style.dart';
+import 'package:ssipl_billing/themes/style.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -243,7 +243,10 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       ShaderMask(
                         shaderCallback: (bounds) => const LinearGradient(
-                          colors: [Primary_colors.Color3, Primary_colors.Color4], // Example gradient
+                          colors: [
+                            Primary_colors.Color3,
+                            Primary_colors.Color4
+                          ], // Example gradient
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ).createShader(bounds),
@@ -624,7 +627,10 @@ class _DashboardState extends State<Dashboard> {
                                               children: [
                                                 ShaderMask(
                                                   shaderCallback: (bounds) => const LinearGradient(
-                                                    colors: [Primary_colors.Color3, Primary_colors.Color4],
+                                                    colors: [
+                                                      Primary_colors.Color3,
+                                                      Primary_colors.Color4
+                                                    ],
                                                     begin: Alignment.topLeft,
                                                     end: Alignment.bottomRight,
                                                   ).createShader(bounds),
@@ -876,7 +882,10 @@ class _DashboardState extends State<Dashboard> {
                                                   // Forward Arrow Icon
                                                   ShaderMask(
                                                     shaderCallback: (bounds) => const LinearGradient(
-                                                      colors: [Primary_colors.Color3, Primary_colors.Color3],
+                                                      colors: [
+                                                        Primary_colors.Color3,
+                                                        Primary_colors.Color3
+                                                      ],
                                                       begin: Alignment.topLeft,
                                                       end: Alignment.bottomRight,
                                                     ).createShader(bounds),

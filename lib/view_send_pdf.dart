@@ -9,10 +9,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
-import 'package:ssipl_billing/common_modules/api.dart';
-import 'package:ssipl_billing/common_modules/encrypt_decrypt.dart';
-import 'package:ssipl_billing/common_modules/style.dart';
-import 'package:ssipl_billing/textfield.dart';
+import 'package:ssipl_billing/models/api.dart';
+import 'package:ssipl_billing/views/components/encrypt_decrypt.dart';
+import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/views/screens/textfield.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:path/path.dart' as path;
 import 'package:http/http.dart' as http;
@@ -44,7 +44,9 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
   Future<void> _pickPdf() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf'],
+      allowedExtensions: [
+        'pdf'
+      ],
     );
 
     if (result != null) {
@@ -121,9 +123,8 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
     );
   }
 
-  EncryptWithAES obj = const EncryptWithAES();
   void _addclientRequest() async {
-    String? valueToToken = await obj.get_stored_token();
+    String? valueToToken = await EncryptWithAES.get_stored_token();
 
     final formData = {
       "phoneno": "8248650039",
@@ -134,7 +135,7 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
     };
 
     final dataToEncrypt = jsonEncode(formData);
-    final encryptedData = obj.encryptWithAES(valueToToken.toString().substring(0, 16), dataToEncrypt);
+    final encryptedData = EncryptWithAES.encryptWithAES(valueToToken.toString().substring(0, 16), dataToEncrypt);
 
     final requestData = {
       "STOKEN": valueToToken,
@@ -143,13 +144,15 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
 
     final response = await http.post(
       Uri.parse(API.sales_add_client_requirement_API),
-      headers: {"Content-Type": "application/json"},
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: jsonEncode(requestData),
     );
     if (response.statusCode == 200) {
       final responseData = jsonDecode(response.body);
       final encryptedResponse = responseData['encryptedResponse'];
-      final decryptedResponse = obj.decryptWithAES(valueToToken.toString().substring(0, 16), encryptedResponse);
+      final decryptedResponse = EncryptWithAES.decryptWithAES(valueToToken.toString().substring(0, 16), encryptedResponse);
       final decodedResponse = jsonDecode(decryptedResponse);
       final Code = decodedResponse['code'];
       final Message = decodedResponse['message'];

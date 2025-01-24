@@ -1,13 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/Ledger/ViewLedger.dart';
+import 'package:ssipl_billing/services/Ledger/ViewLedger.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 import 'package:ssipl_billing/filter.dart';
 
 import 'package:ssipl_billing/piechart.dart';
-import 'package:ssipl_billing/common_modules/style.dart';
+import 'package:ssipl_billing/themes/style.dart';
 
 // import 'package:dropdown_search/dropdown_search.dart';
 PageRouteBuilder _createCustomPageRoute(Widget Function() navigation) {
@@ -661,7 +661,12 @@ class _BillingState extends State<Billing> {
   late List<bool> isAddingList;
   // late List<TextEditingController> controllers;
   int showcustomerprocess = 0;
-  List<String> list = <String>['One', 'Two', 'Three', 'Four'];
+  List<String> list = <String>[
+    'One',
+    'Two',
+    'Three',
+    'Four'
+  ];
   String BillingSearchQuery = '';
   @override
   void initState() {
@@ -1138,7 +1143,10 @@ class _BillingState extends State<Billing> {
                                   height: 40,
                                   decoration: BoxDecoration(
                                     gradient: const LinearGradient(
-                                      colors: [Primary_colors.Color3, Primary_colors.Color3], // Example gradient colors
+                                      colors: [
+                                        Primary_colors.Color3,
+                                        Primary_colors.Color3
+                                      ], // Example gradient colors
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
                                     ),
@@ -1211,7 +1219,11 @@ class _BillingState extends State<Billing> {
                                 const SizedBox(height: 5),
                                 Expanded(
                                   child: TabBarView(
-                                    children: [Allinvoices(), paid(), unpaid()],
+                                    children: [
+                                      Allinvoices(),
+                                      paid(),
+                                      unpaid()
+                                    ],
                                   ),
                                 ),
                               ],
@@ -1241,7 +1253,10 @@ class _BillingState extends State<Billing> {
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [color, color],
+                colors: [
+                  color,
+                  color
+                ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -1365,10 +1380,7 @@ class _BillingState extends State<Billing> {
                               child: Center(
                                 child: Text(
                                   invoice_list[index]['Status'],
-                                  style: TextStyle(
-                                      color: invoice_list[index]['Status'] == 'Paid' ? const Color.fromARGB(255, 0, 122, 4) : Colors.red,
-                                      fontSize: Primary_font_size.Text5,
-                                      fontWeight: FontWeight.bold),
+                                  style: TextStyle(color: invoice_list[index]['Status'] == 'Paid' ? const Color.fromARGB(255, 0, 122, 4) : Colors.red, fontSize: Primary_font_size.Text5, fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),

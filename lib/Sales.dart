@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:ssipl_billing/SALES/Generate_DC/DC_template.dart';
-import 'package:ssipl_billing/SALES/Generate_DC/generateDC.dart';
-import 'package:ssipl_billing/SALES/Generate_Invoice/generateInvoice.dart';
-import 'package:ssipl_billing/SALES/Generate_Invoice/invoice_template.dart';
-import 'package:ssipl_billing/SALES/Generate_Quotation/generateQuotaion.dart';
-import 'package:ssipl_billing/SALES/Generate_Quotation/quotation_template.dart';
-import 'package:ssipl_billing/SALES/Generate_RFQ/RFQ_template.dart';
-import 'package:ssipl_billing/SALES/Generate_RFQ/generateRFQ.dart';
-import 'package:ssipl_billing/SALES/Generate_client_requirements/clientreq_details.dart';
-import 'package:ssipl_billing/SALES/Generate_client_requirements/clientreq_note.dart';
-import 'package:ssipl_billing/SALES/Generate_client_requirements/clientreq_products.dart';
+import 'package:ssipl_billing/services/SALES/Generate_DC/DC_template.dart';
+import 'package:ssipl_billing/services/SALES/Generate_DC/generateDC.dart';
+import 'package:ssipl_billing/services/SALES/Generate_Invoice/generateInvoice.dart';
+import 'package:ssipl_billing/services/SALES/Generate_Invoice/invoice_template.dart';
+import 'package:ssipl_billing/services/SALES/Generate_Quotation/generateQuotaion.dart';
+import 'package:ssipl_billing/services/SALES/Generate_Quotation/quotation_template.dart';
+import 'package:ssipl_billing/services/SALES/Generate_RFQ/RFQ_template.dart';
+import 'package:ssipl_billing/services/SALES/Generate_RFQ/generateRFQ.dart';
+import 'package:ssipl_billing/services/SALES/Generate_client_requirements/clientreq_details.dart';
+import 'package:ssipl_billing/services/SALES/Generate_client_requirements/clientreq_note.dart';
+import 'package:ssipl_billing/services/SALES/Generate_client_requirements/clientreq_products.dart';
 // import 'package:ssipl_billing/SALES/Generate_client_requirements/clientreq_template.dart';
-import 'package:ssipl_billing/SALES/Generate_client_requirements/generate_clientreq.dart';
-import 'package:ssipl_billing/SALES/Generate_creditnote/creditnote_template.dart';
-import 'package:ssipl_billing/SALES/Generate_creditnote/generate_creditnote.dart';
-import 'package:ssipl_billing/SALES/Generate_debitnote/debitnote_template.dart';
-import 'package:ssipl_billing/SALES/Generate_debitnote/generate_debitnote.dart';
+import 'package:ssipl_billing/services/SALES/Generate_client_requirements/generate_clientreq.dart';
+import 'package:ssipl_billing/services/SALES/Generate_creditnote/creditnote_template.dart';
+import 'package:ssipl_billing/services/SALES/Generate_creditnote/generate_creditnote.dart';
+import 'package:ssipl_billing/services/SALES/Generate_debitnote/debitnote_template.dart';
+import 'package:ssipl_billing/services/SALES/Generate_debitnote/generate_debitnote.dart';
 
-import 'package:ssipl_billing/cards.dart';
-import 'package:ssipl_billing/common_modules/style.dart';
+import 'package:ssipl_billing/views/screens/cards.dart';
+import 'package:ssipl_billing/themes/style.dart';
 
 import 'package:ssipl_billing/view_send_pdf.dart';
 
@@ -426,18 +426,35 @@ class _Sales_ClientState extends State<Sales_Client> {
   late List<bool> isAddingList;
   late List<TextEditingController> controllers;
   int showcustomerprocess = 1;
-  List<String> list = <String>['One', 'Two', 'Three', 'Four'];
+  List<String> list = <String>[
+    'One',
+    'Two',
+    'Three',
+    'Four'
+  ];
   String Sales_ClientSearchQuery = '';
   @override
   void initState() {
     super.initState();
-    Sales_Client.quote_Callback = () async => {await generate_quotation()};
-    Sales_Client.invoice_Callback = () async => {await generate_invoice()};
-    Sales_Client.RFQ_Callback = () async => {await generate_RFQ()};
-    Sales_Client.Delivery_challan_Callback = () async => {await generate_Delivery_challan()};
+    Sales_Client.quote_Callback = () async => {
+          await generate_quotation()
+        };
+    Sales_Client.invoice_Callback = () async => {
+          await generate_invoice()
+        };
+    Sales_Client.RFQ_Callback = () async => {
+          await generate_RFQ()
+        };
+    Sales_Client.Delivery_challan_Callback = () async => {
+          await generate_Delivery_challan()
+        };
 
-    Sales_Client.creditnote_Callback = () async => {await generate_creditnote()};
-    Sales_Client.debitnote_Callback = () async => {await generate_debitnote()};
+    Sales_Client.creditnote_Callback = () async => {
+          await generate_creditnote()
+        };
+    Sales_Client.debitnote_Callback = () async => {
+          await generate_debitnote()
+        };
     // Sales_Client.clientreq_Callback = () async => {await generate_client_requirement()};
     // Initialize isAddingList and controllers based on the number of items
     isAddingList = List<bool>.filled(items.length, false);
@@ -475,17 +492,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                   ),
                   onPressed: () async {
                     // Check if the data has any value
-                    if ((quote_products.isNotEmpty) ||
-                        (quote_gstTotals.isNotEmpty) ||
-                        (quote_noteList.isNotEmpty) ||
-                        (quote_recommendationList.isNotEmpty) ||
-                        (quote_productDetails.isNotEmpty) ||
-                        quote_client_addr_name.isNotEmpty ||
-                        quote_client_addr.isNotEmpty ||
-                        quote_bill_addr_name.isNotEmpty ||
-                        quote_bill_addr.isNotEmpty ||
-                        quote_title.isNotEmpty ||
-                        quote_table_heading.isNotEmpty) {
+                    if ((quote_products.isNotEmpty) || (quote_gstTotals.isNotEmpty) || (quote_noteList.isNotEmpty) || (quote_recommendationList.isNotEmpty) || (quote_productDetails.isNotEmpty) || quote_client_addr_name.isNotEmpty || quote_client_addr.isNotEmpty || quote_bill_addr_name.isNotEmpty || quote_bill_addr.isNotEmpty || quote_title.isNotEmpty || quote_table_heading.isNotEmpty) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -599,18 +606,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                   ),
                   onPressed: () async {
                     // Check if the data has any value
-                    if ((invoice_products.isNotEmpty) ||
-                        (invoice_gstTotals.isNotEmpty) ||
-                        (invoice_noteList.isNotEmpty) ||
-                        (invoice_recommendationList.isNotEmpty) ||
-                        (invoice_productDetails.isNotEmpty) ||
-                        (invoice_client_addr_name != "") ||
-                        (invoice_client_addr != "") ||
-                        (invoice_bill_addr_name != "") ||
-                        (invoice_bill_addr != "") ||
-                        (Invoice_no != "") ||
-                        (invoice_title != "") ||
-                        (invoice_table_heading != "")) {
+                    if ((invoice_products.isNotEmpty) || (invoice_gstTotals.isNotEmpty) || (invoice_noteList.isNotEmpty) || (invoice_recommendationList.isNotEmpty) || (invoice_productDetails.isNotEmpty) || (invoice_client_addr_name != "") || (invoice_client_addr != "") || (invoice_bill_addr_name != "") || (invoice_bill_addr != "") || (Invoice_no != "") || (invoice_title != "") || (invoice_table_heading != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -833,17 +829,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                   ),
                   onPressed: () async {
                     // Check if the data has any value
-                    if ((Delivery_challan_products.isNotEmpty) ||
-                        (Delivery_challan_noteList.isNotEmpty) ||
-                        (Delivery_challan_recommendationList.isNotEmpty) ||
-                        (Delivery_challan_productDetails.isNotEmpty) ||
-                        Delivery_challan_client_addr_name != "" ||
-                        Delivery_challan_client_addr != "" ||
-                        Delivery_challan_bill_addr_name != "" ||
-                        Delivery_challan_bill_addr != "" ||
-                        Delivery_challan_no != "" ||
-                        Delivery_challan_title != "" ||
-                        Delivery_challan_table_heading != "") {
+                    if ((Delivery_challan_products.isNotEmpty) || (Delivery_challan_noteList.isNotEmpty) || (Delivery_challan_recommendationList.isNotEmpty) || (Delivery_challan_productDetails.isNotEmpty) || Delivery_challan_client_addr_name != "" || Delivery_challan_client_addr != "" || Delivery_challan_bill_addr_name != "" || Delivery_challan_bill_addr != "" || Delivery_challan_no != "" || Delivery_challan_title != "" || Delivery_challan_table_heading != "") {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -956,17 +942,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                   ),
                   onPressed: () async {
                     // Check if any data exists in creditnote variables
-                    if ((creditnote_products.isNotEmpty) ||
-                        (creditnote_gstTotals.isNotEmpty) ||
-                        (creditnote_noteList.isNotEmpty) ||
-                        (creditnote_recommendationList.isNotEmpty) ||
-                        (creditnote_productDetails.isNotEmpty) ||
-                        creditnote_client_addr_name != "" ||
-                        creditnote_client_addr != "" ||
-                        creditnote_bill_addr_name != "" ||
-                        creditnote_bill_addr != "" ||
-                        creditnote_no != "" ||
-                        creditnote_table_heading != "") {
+                    if ((creditnote_products.isNotEmpty) || (creditnote_gstTotals.isNotEmpty) || (creditnote_noteList.isNotEmpty) || (creditnote_recommendationList.isNotEmpty) || (creditnote_productDetails.isNotEmpty) || creditnote_client_addr_name != "" || creditnote_client_addr != "" || creditnote_bill_addr_name != "" || creditnote_bill_addr != "" || creditnote_no != "" || creditnote_table_heading != "") {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -1080,17 +1056,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                   ),
                   onPressed: () async {
                     // Check if any data exists in debitnote variables
-                    if ((debitnote_products.isNotEmpty) ||
-                        (debitnote_gstTotals.isNotEmpty) ||
-                        (debitnote_noteList.isNotEmpty) ||
-                        (debitnote_recommendationList.isNotEmpty) ||
-                        (debitnote_productDetails.isNotEmpty) ||
-                        debitnote_client_addr_name != "" ||
-                        debitnote_client_addr != "" ||
-                        debitnote_bill_addr_name != "" ||
-                        debitnote_bill_addr != "" ||
-                        debitnote_no != "" ||
-                        debitnote_table_heading != "") {
+                    if ((debitnote_products.isNotEmpty) || (debitnote_gstTotals.isNotEmpty) || (debitnote_noteList.isNotEmpty) || (debitnote_recommendationList.isNotEmpty) || (debitnote_productDetails.isNotEmpty) || debitnote_client_addr_name != "" || debitnote_client_addr != "" || debitnote_bill_addr_name != "" || debitnote_bill_addr != "" || debitnote_no != "" || debitnote_table_heading != "") {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -1206,20 +1172,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                   ),
                   onPressed: () async {
                     // Check if any data exists in clientreq variables
-                    if ((clientreqProducts.clientreq_productDetails.isNotEmpty) ||
-                        (clientreqNote.clientreq_noteList.isNotEmpty) ||
-                        (clientreqNote.clientreq_recommendationList.isNotEmpty) ||
-                        (clientreqProducts.clientreq_productDetails.isNotEmpty) ||
-                        clientreqDetails.clientnameController.text != "" ||
-                        clientreqDetails.clientaddressController.text != "" ||
-                        clientreqDetails.billingaddressnameController.text != "" ||
-                        clientreqDetails.billingaddressController.text != "" ||
-                        clientreqDetails.clientreq_no != "" ||
-                        clientreqDetails.clientreq_table_heading != "" ||
-                        clientreqDetails.MOR_Controller.text != "" ||
-                        clientreqDetails.gst_Controller.text != "" ||
-                        clientreqDetails.Email_Controller.text != "" ||
-                        clientreqDetails.phone_Controller.text != "") {
+                    if ((clientreqProducts.clientreq_productDetails.isNotEmpty) || (clientreqNote.clientreq_noteList.isNotEmpty) || (clientreqNote.clientreq_recommendationList.isNotEmpty) || (clientreqProducts.clientreq_productDetails.isNotEmpty) || clientreqDetails.clientnameController.text != "" || clientreqDetails.clientaddressController.text != "" || clientreqDetails.billingaddressnameController.text != "" || clientreqDetails.billingaddressController.text != "" || clientreqDetails.clientreq_no != "" || clientreqDetails.clientreq_table_heading != "" || clientreqDetails.MOR_Controller.text != "" || clientreqDetails.gst_Controller.text != "" || clientreqDetails.Email_Controller.text != "" || clientreqDetails.phone_Controller.text != "") {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -1338,7 +1291,10 @@ class _Sales_ClientState extends State<Sales_Client> {
                               height: 40,
                               decoration: BoxDecoration(
                                 gradient: const LinearGradient(
-                                  colors: [Primary_colors.Color3, Primary_colors.Color3], // Example gradient colors
+                                  colors: [
+                                    Primary_colors.Color3,
+                                    Primary_colors.Color3
+                                  ], // Example gradient colors
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 ),
@@ -1759,7 +1715,10 @@ class _Sales_ClientState extends State<Sales_Client> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: showcustomerprocess == index
-                ? [Primary_colors.Color3, Primary_colors.Color3]
+                ? [
+                    Primary_colors.Color3,
+                    Primary_colors.Color3
+                  ]
                 : [
                     Primary_colors.Light,
                     Primary_colors.Light,

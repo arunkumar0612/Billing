@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/views/screens/button.dart';
+import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
-import 'package:ssipl_billing/views/screens/textfield.dart';
+import 'package:ssipl_billing/views/components/textfield.dart';
 
 class addservice_page extends StatefulWidget {
   const addservice_page({super.key});

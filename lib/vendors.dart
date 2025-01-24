@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
-import 'package:ssipl_billing/views/screens/cards.dart';
+import 'package:ssipl_billing/views/components/cards.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';

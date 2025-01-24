@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ssipl_billing/services/SUBSCRIPTION/Generate_Invoice/sub_generateInvoice.dart';
-import 'package:ssipl_billing/services/SUBSCRIPTION/Generate_Invoice/sub_invoice_template.dart';
-import 'package:ssipl_billing/services/SUBSCRIPTION/Generate_Quotation/sub_generateQuotaion.dart';
-import 'package:ssipl_billing/services/SUBSCRIPTION/Generate_Quotation/sub_quotation_template.dart';
-import 'package:ssipl_billing/services/SUBSCRIPTION/Generate_client_req/sub_clientreq_details.dart';
-import 'package:ssipl_billing/services/SUBSCRIPTION/Generate_client_req/sub_clientreq_template.dart';
-import 'package:ssipl_billing/services/SUBSCRIPTION/Generate_client_req/sub_generate_clientreq.dart';
-import 'package:ssipl_billing/views/screens/cards.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_Invoice/sub_generateInvoice.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_Invoice/sub_invoice_template.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_Quotation/sub_generateQuotaion.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_Quotation/sub_quotation_template.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/sub_clientreq_details.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/sub_clientreq_template.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/sub_generate_clientreq.dart';
+import 'package:ssipl_billing/views/components/cards.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/view_send_pdf.dart';
 

@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:ssipl_billing/services/SALES/Generate_DC/DC_template.dart';
-import 'package:ssipl_billing/services/SALES/Generate_DC/generateDC.dart';
-import 'package:ssipl_billing/services/SALES/Generate_Invoice/generateInvoice.dart';
-import 'package:ssipl_billing/services/SALES/Generate_Invoice/invoice_template.dart';
-import 'package:ssipl_billing/services/SALES/Generate_Quotation/generateQuotaion.dart';
-import 'package:ssipl_billing/services/SALES/Generate_Quotation/quotation_template.dart';
-import 'package:ssipl_billing/services/SALES/Generate_RFQ/RFQ_template.dart';
-import 'package:ssipl_billing/services/SALES/Generate_RFQ/generateRFQ.dart';
-import 'package:ssipl_billing/services/SALES/Generate_client_requirements/clientreq_details.dart';
-import 'package:ssipl_billing/services/SALES/Generate_client_requirements/clientreq_note.dart';
-import 'package:ssipl_billing/services/SALES/Generate_client_requirements/clientreq_products.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_template.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_DC/generateDC.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/generateInvoice.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/invoice_template.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_Quotation/generateQuotaion.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_Quotation/quotation_template.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/RFQ_template.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/generateRFQ.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/clientreq_details.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/clientreq_note.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/clientreq_products.dart';
 // import 'package:ssipl_billing/SALES/Generate_client_requirements/clientreq_template.dart';
-import 'package:ssipl_billing/services/SALES/Generate_client_requirements/generate_clientreq.dart';
-import 'package:ssipl_billing/services/SALES/Generate_creditnote/creditnote_template.dart';
-import 'package:ssipl_billing/services/SALES/Generate_creditnote/generate_creditnote.dart';
-import 'package:ssipl_billing/services/SALES/Generate_debitnote/debitnote_template.dart';
-import 'package:ssipl_billing/services/SALES/Generate_debitnote/generate_debitnote.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/generate_clientreq.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_creditnote/creditnote_template.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_creditnote/generate_creditnote.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_debitnote/debitnote_template.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_debitnote/generate_debitnote.dart';
 
-import 'package:ssipl_billing/views/screens/cards.dart';
+import 'package:ssipl_billing/views/components/cards.dart';
 import 'package:ssipl_billing/themes/style.dart';
 
 import 'package:ssipl_billing/view_send_pdf.dart';

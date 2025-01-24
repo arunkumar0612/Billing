@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/clientreq_details.dart';
 import 'package:ssipl_billing/models/constants/api.dart';
 import 'package:ssipl_billing/utils/helpers/encrypt_decrypt.dart';
 import 'package:ssipl_billing/themes/style.dart';
@@ -18,16 +19,15 @@ import 'package:path/path.dart' as path;
 import 'package:http/http.dart' as http;
 
 // ignore: must_be_immutable
-class Generate_popup extends StatefulWidget {
+class view_clientreq_send_popup extends StatefulWidget {
   String type;
-  Generate_popup({super.key, required this.type});
-  static late dynamic Function() callback;
+  view_clientreq_send_popup({super.key, required this.type});
 
   @override
-  State<Generate_popup> createState() => Generate_popupState();
+  State<view_clientreq_send_popup> createState() => view_clientreq_send_popupState();
 }
 
-class Generate_popupState extends State<Generate_popup> with SingleTickerProviderStateMixin {
+class view_clientreq_send_popupState extends State<view_clientreq_send_popup> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 // 'E://quotation.pdf'
@@ -37,8 +37,8 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
   bool whatsapp = false;
   bool gmail = false;
   // Function to pick PDF
-  final TextEditingController phonenumberController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phonenumberController = clientreqDetails.phone_Controller;
+  final TextEditingController emailController = clientreqDetails.Email_Controller;
   final TextEditingController feedbackController = TextEditingController();
   TextEditingController file_path_Controller = TextEditingController();
   Future<void> _pickPdf() async {
@@ -100,7 +100,7 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
     _selectedPdf = File(widget.type);
     file_path_Controller = TextEditingController(text: _selectedPdf!.path.toString());
     isloading = false;
-    Generate_popup.callback = update;
+    update();
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
@@ -116,11 +116,13 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
   }
 
   void update() async {
-    setState(
-      () {
-        isloading = true;
-      },
-    );
+    Future.delayed(const Duration(seconds: 4), () {
+      setState(
+        () {
+          isloading = true;
+        },
+      );
+    });
   }
 
   void _addclientRequest() async {
@@ -346,7 +348,7 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Text(
-                          'Phone Number   :',
+                          'WhatsApp            :',
                           style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 213, 211, 211), fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(
@@ -357,7 +359,7 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
                             child: Textfield_1(
                               readonly: false,
                               controller: phonenumberController,
-                              text: 'Enter Phone Number',
+                              text: 'Enter WahtsApp Number',
                               icon: Icons.phone,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {

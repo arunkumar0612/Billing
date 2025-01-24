@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/services/APIservices/ApiService.dart';
 import 'package:ssipl_billing/utils/helpers/returns.dart';
-import 'package:ssipl_billing/views/components/encrypt_decrypt.dart';
+import 'package:ssipl_billing/utils/helpers/encrypt_decrypt.dart';
 
 class MyController extends GetxController {
   final ApiService apiService = ApiService();

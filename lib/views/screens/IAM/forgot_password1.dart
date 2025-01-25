@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ssipl_billing/models/constants/api.dart';
 import 'package:ssipl_billing/utils/helpers/encrypt_decrypt.dart';
-import 'package:ssipl_billing/views/screens/homepage/IAM.dart';
+import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -46,9 +46,7 @@ class _Forgot_password1State extends State<Forgot_password1> {
 
       final response = await http.post(
         Uri.parse(API.forgotpassword1_API),
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: {"Content-Type": "application/json"},
         body: jsonEncode(requestData),
       );
       if (response.statusCode == 200) {
@@ -153,14 +151,7 @@ class _Forgot_password1State extends State<Forgot_password1> {
     return AnimatedGradientBorder(
       animationTime: 2,
       glowSize: indicator ? 5 : 5,
-      gradientColors: indicator
-          ? [
-              Color.fromARGB(255, 157, 98, 253),
-              Colors.black
-            ]
-          : [
-              Primary_colors.Light
-            ],
+      gradientColors: indicator ? [Color.fromARGB(255, 157, 98, 253), Colors.black] : [Primary_colors.Light],
       borderRadius: const BorderRadius.all(
         Radius.circular(10),
       ),

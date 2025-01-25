@@ -4,12 +4,12 @@ import '../models/constants/IAM_constants.dart';
 class LoginController extends GetxController {
   var loginModel = LoginModel();
 
-  void updateUsername(String value) {
-    loginModel.username.value = value;
+  void updateUsernameController(String value) {
+    loginModel.userController.value.text = value;
   }
 
-  void updatePassword(String value) {
-    loginModel.password.value = value;
+  void updatePasswordController(String value) {
+    loginModel.passwordController.value.text = value;
   }
 
   void toggleRememberMe(bool value) {

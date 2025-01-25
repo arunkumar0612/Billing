@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/themes/style.dart';
-import 'package:ssipl_billing/views/screens/homepage/IAM.dart';
+import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:glowy_borders/glowy_borders.dart';
 import '../../../services/IAM_services/login_services.dart';
@@ -17,11 +17,6 @@ class Loginpage extends StatefulWidget with LoginServices {
 
 class _LoginpageState extends State<Loginpage> {
   final LoginController loginController = Get.put(LoginController());
-
-  // bool check = false;
-  // bool isCheckedRememberMe = false;
-  // bool password_view = true;
-  // bool indicator = false;
 
   @override
   void initState() {
@@ -38,14 +33,7 @@ class _LoginpageState extends State<Loginpage> {
       return AnimatedGradientBorder(
         animationTime: 2,
         glowSize: loginController.loginModel.indicator.value ? 5 : 5,
-        gradientColors: loginController.loginModel.indicator.value
-            ? [
-                Color.fromARGB(255, 157, 98, 253),
-                Colors.black
-              ]
-            : [
-                Primary_colors.Light
-              ],
+        gradientColors: loginController.loginModel.indicator.value ? [Color.fromARGB(255, 157, 98, 253), Colors.black] : [Primary_colors.Light],
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),
@@ -77,7 +65,6 @@ class _LoginpageState extends State<Loginpage> {
                     const SizedBox(height: 20),
                     SizedBox(
                       width: 400,
-                      // height: screenWidth > 1000 ? 55 : 50,
                       child: TextFormField(
                         style: const TextStyle(fontSize: 13, color: Colors.white),
                         decoration: InputDecoration(
@@ -210,28 +197,12 @@ class _LoginpageState extends State<Loginpage> {
                         ),
                         child: TextButton(
                           onPressed: () async {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => MyHomePage()),
-                            // );
                             if (formKey1.currentState?.validate() ?? false) {
                               SharedPreferences prefs = await SharedPreferences.getInstance();
                               widget.Login(context);
 
-                              // setState(() {
-                              //   indicator = false;
-                              //   // Loginpage.userid = decodedResponse['userid'].toString();
-                              // });
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(builder: (context) => Dashboard()),
-                              // );
                               widget.actionRememberMe(prefs.getBool('remember_me')!);
                               loginController.toggleIndicator(true);
-
-                              // setState(() {
-                              //   indicator = true;
-                              // });
                             }
                           },
                           child: Text(

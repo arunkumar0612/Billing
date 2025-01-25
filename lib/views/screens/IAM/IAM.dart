@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ssipl_billing/themes/style.dart';
-import 'package:ssipl_billing/views/screens/homepage/forgot_password1.dart';
-import 'package:ssipl_billing/views/screens/homepage/forgot_password2.dart';
-import 'package:ssipl_billing/views/screens/homepage/forgot_password3.dart';
-import 'package:ssipl_billing/views/screens/homepage/login_page.dart';
-import 'package:ssipl_billing/views/screens/homepage/register_page.dart';
+import 'package:ssipl_billing/views/screens/IAM/forgot_password1.dart';
+import 'package:ssipl_billing/views/screens/IAM/forgot_password2.dart';
+import 'package:ssipl_billing/views/screens/IAM/forgot_password3.dart';
+import 'package:ssipl_billing/views/screens/IAM/login_page.dart';
+import 'package:ssipl_billing/views/screens/IAM/register_page.dart';
 // import 'package:showroom_entrance_count/homepage/login_page.dart';
 // import 'package:showroom_entrance_count/homepage/register_page.dart';
 
@@ -57,42 +57,12 @@ class _IAMState extends State<IAM> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // const SizedBox(height: 50),
-                      // screenWidth > 1000
-                      //     ? Center(
-                      //         child: Padding(
-                      //           padding: EdgeInsets.all(10),
-                      //           child: Row(
-                      //             mainAxisAlignment: MainAxisAlignment.center,
-                      //             children: [
-                      //               Image.asset(
-                      //                 'assets/images/whitefull.png',
-                      //                 width: screenWidth / 7,
-                      //               ),
-                      //               Column(
-                      //                 mainAxisAlignment: MainAxisAlignment.center,
-                      //                 crossAxisAlignment: CrossAxisAlignment.start,
-                      //                 children: [
-                      //                   Text(
-                      //                     'Smart Facial Recognition System',
-                      //                     style: TextStyle(fontSize: baseFontSize * (screenWidth / 1900), color: Color.fromARGB(255, 33, 195, 114)),
-                      //                   ),
-                      //                 ],
-                      //               ),
-                      //             ],
-                      //           ),
-                      //         ),
-                      //       ),
                       Center(
                         child: Padding(
                           padding: EdgeInsets.all(10),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // Image.asset(
-                              //   'assets/images/whitefull.png',
-                              //   width: screenWidth / 3,
-                              // ),
                               SvgPicture.asset(
                                 'assets/images/logo.svg',
                                 // ignore: deprecated_member_use
@@ -162,7 +132,7 @@ class _IAMState extends State<IAM> {
                                             ? Forgot_password3(
                                                 email: email,
                                               )
-                                            : Container(),
+                                            : SizedBox.shrink(),
                       ),
                     ],
                   ),

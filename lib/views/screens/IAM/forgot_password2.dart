@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ssipl_billing/models/constants/api.dart';
 import 'package:ssipl_billing/utils/helpers/encrypt_decrypt.dart';
 import 'package:ssipl_billing/themes/style.dart';
-import 'package:ssipl_billing/views/screens/homepage/IAM.dart';
+import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:glowy_borders/glowy_borders.dart';
@@ -77,9 +77,7 @@ class _Forgot_password2State extends State<Forgot_password2> {
 
       final response = await http.post(
         Uri.parse(API.forgotpassword2_API),
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: {"Content-Type": "application/json"},
         body: jsonEncode(requestData),
       );
       if (response.statusCode == 200) {
@@ -182,14 +180,7 @@ class _Forgot_password2State extends State<Forgot_password2> {
     return AnimatedGradientBorder(
       animationTime: 2,
       glowSize: indicator ? 5 : 5,
-      gradientColors: indicator
-          ? [
-              const Color.fromARGB(255, 157, 98, 253),
-              Colors.black
-            ]
-          : [
-              Primary_colors.Light
-            ],
+      gradientColors: indicator ? [const Color.fromARGB(255, 157, 98, 253), Colors.black] : [Primary_colors.Light],
       borderRadius: const BorderRadius.all(
         Radius.circular(10),
       ),
@@ -257,9 +248,7 @@ class _Forgot_password2State extends State<Forgot_password2> {
                                 }
                               },
                               keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(6)
-                              ],
+                              inputFormatters: [LengthLimitingTextInputFormatter(6)],
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.all(0),
                                 enabledBorder: OutlineInputBorder(

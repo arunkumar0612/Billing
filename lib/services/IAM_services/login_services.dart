@@ -62,10 +62,8 @@ mixin LoginServices {
     bool? rememberMe = prefs.getBool('remember_me');
 
     if (username != null && password != null && rememberMe != null) {
-      loginController.loginModel.userController.value.text = username;
-      loginController.loginModel.passwordController.value.text = password;
-      loginController.updatePassword(password);
-      loginController.updateUsername(username);
+      loginController.updatePasswordController(password);
+      loginController.updateUsernameController(username);
       loginController.toggleRememberMe(rememberMe);
     }
   }

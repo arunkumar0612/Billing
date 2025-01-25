@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:ssipl_billing/views/screens/homepage/IAM.dart';
+import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
 import '../home.dart';
 import 'route_names.dart';
 

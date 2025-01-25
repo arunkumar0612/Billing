@@ -1,17 +1,11 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, avoid_unnecessary_containers, sized_box_for_whitespace, non_constant_identifier_names
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/models/constants/api.dart';
-import 'package:ssipl_billing/services/APIservices/MyController.dart';
-import 'package:ssipl_billing/utils/helpers/encrypt_decrypt.dart';
 import 'package:ssipl_billing/themes/style.dart';
-import 'package:ssipl_billing/home.dart';
-import 'package:ssipl_billing/views/screens/homepage/home_page.dart';
+import 'package:ssipl_billing/views/screens/homepage/IAM.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:glowy_borders/glowy_borders.dart';
-import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
 import '../../../services/IAM_services/login_services.dart';
 
 class Loginpage extends StatefulWidget with LoginServices {
@@ -22,7 +16,6 @@ class Loginpage extends StatefulWidget with LoginServices {
 }
 
 class _LoginpageState extends State<Loginpage> {
-  final MyController apiController = Get.put(MyController());
   final LoginController loginController = Get.put(LoginController());
 
   // bool check = false;
@@ -36,63 +29,6 @@ class _LoginpageState extends State<Loginpage> {
     widget.load_login_details();
   }
 
-  void Login() async {
-    try {
-      Map<String, dynamic>? response = await apiController.login({
-        "username": widget.userController.text,
-        "password": widget.passwordController.text,
-      }, API.Login_API);
-      final Code = response?['code'];
-      final Message = response?['message'];
-      final userid = response?['userid'];
-      final SToken = response?['SESSIONTOKEN'];
-
-      if (!Code && response?['statusCode'] != 200) {
-        loginController.toggleIndicator(false);
-        // setState(() {
-        //   indicator = false;
-        // });
-        await Basic_dialog(context: context, title: 'Login Failed', content: Message, onOk: () {});
-      } else {
-        EncryptWithAES.SESSIONTOKEN = SToken;
-        loginController.toggleIndicator(false);
-
-        // setState(() {
-        //   indicator = false;
-        //   // Loginpage.userid = userid.toString();
-        // });
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MyHomePage()),
-        );
-      }
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            title: const Text('Server Down!', style: TextStyle(color: Colors.white)),
-            content: Text('$e', style: TextStyle(color: const Color.fromARGB(255, 175, 174, 174))),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-
-                  // _isLoading = false;
-                },
-                child: const Text(
-                  'OK',
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-                ),
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
-
   final formKey1 = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -101,8 +37,8 @@ class _LoginpageState extends State<Loginpage> {
     return Obx(() {
       return AnimatedGradientBorder(
         animationTime: 2,
-        glowSize: loginController.indicatorStatus ? 5 : 5,
-        gradientColors: loginController.indicatorStatus
+        glowSize: loginController.loginModel.indicator.value ? 5 : 5,
+        gradientColors: loginController.loginModel.indicator.value
             ? [
                 Color.fromARGB(255, 157, 98, 253),
                 Colors.black
@@ -119,7 +55,7 @@ class _LoginpageState extends State<Loginpage> {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: loginController.indicatorStatus ? Colors.transparent : const Color.fromARGB(255, 121, 121, 135).withOpacity(0.5),
+                  color: loginController.loginModel.indicator.value ? Colors.transparent : const Color.fromARGB(255, 121, 121, 135).withOpacity(0.5),
                   spreadRadius: 2,
                   blurRadius: 4,
                   offset: const Offset(0, 1), // Shadow offset
@@ -162,7 +98,7 @@ class _LoginpageState extends State<Loginpage> {
                             labelText: 'User Name',
                             border: const OutlineInputBorder(),
                             prefixIcon: Icon(Icons.person, color: Colors.white)),
-                        controller: widget.userController,
+                        controller: loginController.loginModel.userController.value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter user name';
@@ -197,18 +133,18 @@ class _LoginpageState extends State<Loginpage> {
                             prefixIcon: GestureDetector(
                               onTap: () {
                                 // setState(() {
-                                loginController.togglePasswordVisibility(loginController.passwordVisibleStatus ? false : true);
+                                loginController.togglePasswordVisibility(loginController.loginModel.passwordVisibility.value ? false : true);
 
                                 // password_view = password_view == true ? false : true;
                                 // });
                               },
                               child: Icon(
-                                loginController.passwordVisibleStatus == true ? Icons.remove_red_eye : Icons.visibility_off,
+                                loginController.loginModel.passwordVisibility.value == true ? Icons.remove_red_eye : Icons.visibility_off,
                                 color: Colors.white,
                               ),
                             )),
-                        controller: widget.passwordController,
-                        obscureText: loginController.passwordVisibleStatus,
+                        controller: loginController.loginModel.passwordController.value,
+                        obscureText: loginController.loginModel.passwordVisibility.value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter the password';
@@ -230,7 +166,7 @@ class _LoginpageState extends State<Loginpage> {
                                 activeColor: Color.fromARGB(255, 118, 219, 222),
                                 checkColor: Colors.white,
                                 focusColor: Color.fromARGB(255, 19, 151, 135),
-                                value: loginController.rememberMeStatus,
+                                value: loginController.loginModel.isCheckedRememberMe.value,
                                 onChanged: (value) {
                                   widget.actionRememberMe(value!);
                                   // setState(
@@ -250,8 +186,8 @@ class _LoginpageState extends State<Loginpage> {
                             onPressed: () {
                               setState(
                                 () {
-                                  home_page.Page_name = 'Forgotpassword';
-                                  home_page.update();
+                                  IAM.Page_name = 'Forgotpassword';
+                                  IAM.update();
                                 },
                               );
                             },
@@ -280,7 +216,7 @@ class _LoginpageState extends State<Loginpage> {
                             // );
                             if (formKey1.currentState?.validate() ?? false) {
                               SharedPreferences prefs = await SharedPreferences.getInstance();
-                              Login();
+                              widget.Login(context);
 
                               // setState(() {
                               //   indicator = false;
@@ -318,8 +254,8 @@ class _LoginpageState extends State<Loginpage> {
                           TextButton(
                             onPressed: () {
                               setState(() {
-                                home_page.Page_name = 'Register';
-                                home_page.update();
+                                IAM.Page_name = 'Register';
+                                IAM.update();
                               });
                             },
                             child: Text(

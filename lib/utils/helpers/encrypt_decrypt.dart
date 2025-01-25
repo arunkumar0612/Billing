@@ -3,7 +3,7 @@
 import 'package:encrypt/encrypt.dart' as encrypt;
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class EncryptWithAES {
+class AES {
   static String SESSIONTOKEN = "15b97917-b296-11ed-997a-b42e9923";
   static String encryptWithAES(String key, String plainText) {
     final cipherKey = encrypt.Key.fromUtf8(key);
@@ -23,6 +23,10 @@ class EncryptWithAES {
     return encrypter.decrypt(encrypted, iv: iv);
   }
 
+  static Future<String?> get_stored_token() async {
+    return SESSIONTOKEN;
+  }
+}
 //   Future<void> Token_write_Function(
 //       Map<String, dynamic> decodedResponse) async {
 //     final valueToToken = decodedResponse["Value"].toString();
@@ -44,10 +48,6 @@ class EncryptWithAES {
 //       }
 //     }
 //   }
-
-  static Future<String?> get_stored_token() async {
-    return SESSIONTOKEN;
-  }
 
 //   Future<void> data_write_function(Map<String, dynamic> decodedResponse) async {
 //     final valueToStore = decodedResponse['Value'].toString();
@@ -99,4 +99,3 @@ class EncryptWithAES {
 //         await const FlutterSecureStorage().read(key: 'ErrorCode');
 //     return errortype;
 //   }
-}

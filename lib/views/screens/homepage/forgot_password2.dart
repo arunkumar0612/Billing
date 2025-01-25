@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ssipl_billing/models/constants/api.dart';
 import 'package:ssipl_billing/utils/helpers/encrypt_decrypt.dart';
 import 'package:ssipl_billing/themes/style.dart';
-import 'package:ssipl_billing/views/screens/homepage/home_page.dart';
+import 'package:ssipl_billing/views/screens/homepage/IAM.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:glowy_borders/glowy_borders.dart';
@@ -67,7 +67,7 @@ class _Forgot_password2State extends State<Forgot_password2> {
       };
 
       final dataToEncrypt = jsonEncode(formData);
-      final encryptedData = EncryptWithAES.encryptWithAES(secret, dataToEncrypt);
+      final encryptedData = AES.encryptWithAES(secret, dataToEncrypt);
 
       final requestData = {
         "APIkey": apiKey,
@@ -86,7 +86,7 @@ class _Forgot_password2State extends State<Forgot_password2> {
         final responseData = jsonDecode(response.body);
         String encryptedResponse = responseData['encryptedResponse'];
         // print(encryptedResponse);
-        final decryptedResponse = EncryptWithAES.decryptWithAES(secret.substring(0, 16), encryptedResponse);
+        final decryptedResponse = AES.decryptWithAES(secret.substring(0, 16), encryptedResponse);
 
         final decodedResponse = jsonDecode(decryptedResponse);
         final Code = decodedResponse['code'];
@@ -115,8 +115,8 @@ class _Forgot_password2State extends State<Forgot_password2> {
           );
         } else {
           setState(() {
-            home_page.Page_name = 'Setnewpassword';
-            home_page.update();
+            IAM.Page_name = 'Setnewpassword';
+            IAM.update();
           });
         }
       } else {
@@ -335,8 +335,8 @@ class _Forgot_password2State extends State<Forgot_password2> {
                       TextButton(
                         onPressed: () {
                           setState(() {
-                            home_page.Page_name = 'Forgotpassword';
-                            home_page.update();
+                            IAM.Page_name = 'Forgotpassword';
+                            IAM.update();
                           });
                         },
                         child: Text(

@@ -198,7 +198,7 @@ class clientreqDetailsState extends State<clientreqDetails> {
   //   };
 
   //   final dataToEncrypt = jsonEncode(formData);
-  //   final encryptedData =  EncryptWithAES.encryptWithAES(valueToToken.toString().substring(0, 16), dataToEncrypt);
+  //   final encryptedData =  AES.encryptWithAES(valueToToken.toString().substring(0, 16), dataToEncrypt);
 
   //   final requestData = {
   //     "STOKEN": valueToToken,
@@ -213,7 +213,7 @@ class clientreqDetailsState extends State<clientreqDetails> {
   //   if (response.statusCode == 200) {
   //     final responseData = jsonDecode(response.body);
   //     final encryptedResponse = responseData['encryptedResponse'];
-  //     final decryptedResponse =  EncryptWithAES.decryptWithAES(valueToToken.toString().substring(0, 16), encryptedResponse);
+  //     final decryptedResponse =  AES.decryptWithAES(valueToToken.toString().substring(0, 16), encryptedResponse);
   //     final decodedResponse = jsonDecode(decryptedResponse);
   //     final Code = decodedResponse['code'];
   //     final Message = decodedResponse['message'];

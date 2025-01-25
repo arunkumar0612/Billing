@@ -124,7 +124,7 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
   }
 
   void _addclientRequest() async {
-    String? valueToToken = await EncryptWithAES.get_stored_token();
+    String? valueToToken = await AES.get_stored_token();
 
     final formData = {
       "phoneno": "8248650039",
@@ -135,7 +135,7 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
     };
 
     final dataToEncrypt = jsonEncode(formData);
-    final encryptedData = EncryptWithAES.encryptWithAES(valueToToken.toString().substring(0, 16), dataToEncrypt);
+    final encryptedData = AES.encryptWithAES(valueToToken.toString().substring(0, 16), dataToEncrypt);
 
     final requestData = {
       "STOKEN": valueToToken,
@@ -152,7 +152,7 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
     if (response.statusCode == 200) {
       final responseData = jsonDecode(response.body);
       final encryptedResponse = responseData['encryptedResponse'];
-      final decryptedResponse = EncryptWithAES.decryptWithAES(valueToToken.toString().substring(0, 16), encryptedResponse);
+      final decryptedResponse = AES.decryptWithAES(valueToToken.toString().substring(0, 16), encryptedResponse);
       final decodedResponse = jsonDecode(decryptedResponse);
       final Code = decodedResponse['code'];
       final Message = decodedResponse['message'];

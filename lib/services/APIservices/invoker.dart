@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/services/APIservices/ApiService.dart';
+import 'package:ssipl_billing/services/APIservices/api_service.dart';
 import 'package:ssipl_billing/utils/helpers/returns.dart';
 import 'package:ssipl_billing/utils/helpers/encrypt_decrypt.dart';
 
-class MyController extends GetxController {
+class Invoker extends GetxController {
   final ApiService apiService = ApiService();
-
-  // Observable for loading state
   var isLoading = false.obs;
 
   Future<Map<String, dynamic>?> login(Map<String, dynamic> body, String API) async {
@@ -17,7 +15,7 @@ class MyController extends GetxController {
     final secret = configData['Secret'];
 
     final dataToEncrypt = jsonEncode(body);
-    final encryptedData = EncryptWithAES.encryptWithAES(secret, dataToEncrypt);
+    final encryptedData = AES.encryptWithAES(secret, dataToEncrypt);
     final requestData = {
       "APIkey": apiKey,
       "Secret": secret,
@@ -30,7 +28,7 @@ class MyController extends GetxController {
     if (response.statusCode == 200) {
       final responseData = response.body;
       String encryptedResponse = responseData['encryptedResponse'];
-      final decryptedResponse = EncryptWithAES.decryptWithAES(secret.substring(0, 16), encryptedResponse);
+      final decryptedResponse = AES.decryptWithAES(secret.substring(0, 16), encryptedResponse);
       Map<String, dynamic> decodedResponse = jsonDecode(decryptedResponse);
       final result = <String, int>{
         "statusCode": response.statusCode!

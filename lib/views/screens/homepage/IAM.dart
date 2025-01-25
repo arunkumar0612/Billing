@@ -10,28 +10,28 @@ import 'package:ssipl_billing/views/screens/homepage/register_page.dart';
 // import 'package:showroom_entrance_count/homepage/login_page.dart';
 // import 'package:showroom_entrance_count/homepage/register_page.dart';
 
-class home_page extends StatefulWidget {
-  const home_page({super.key});
+class IAM extends StatefulWidget {
+  const IAM({super.key});
   static late Function() update;
   static String Page_name = '';
   static String email = '';
   @override
-  State<home_page> createState() => _home_pageState();
+  State<IAM> createState() => _IAMState();
 }
 
-class _home_pageState extends State<home_page> {
+class _IAMState extends State<IAM> {
   String Page_name = 'Login';
   String email = 'no';
   @override
   void initState() {
     super.initState();
-    home_page.update = updateData;
+    IAM.update = updateData;
   }
 
   void updateData() {
     setState(() {
-      Page_name = home_page.Page_name;
-      email = home_page.email;
+      Page_name = IAM.Page_name;
+      email = IAM.email;
     });
   }
 

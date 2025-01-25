@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-// import 'package:ssipl_billing/home.dart';
-import 'package:ssipl_billing/views/screens/homepage/home_page.dart';
+import 'package:get/get.dart';
 import 'package:window_manager/window_manager.dart';
+
+import 'routes/app_routes.dart';
 
 Future<void> main() async {
   // Initialize Flutter bindings
@@ -32,9 +33,11 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'B I L L I N G',
-      home: const home_page(),
+    return GetMaterialApp(
+      title: 'ERP',
+      // home: const IAM(),
+      initialRoute: '/login', // Set the initial route
+      getPages: AppRoutes.routes,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         iconTheme: const IconThemeData(color: Colors.white),

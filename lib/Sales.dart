@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_template.dart';
+import 'package:ssipl_billing/controllers/DC_actions.dart';
+// import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_template.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_DC/generateDC.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/generateInvoice.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/invoice_template.dart';
@@ -12,21 +13,14 @@ import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/generateRFQ.dart'
 import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/clientreq_details.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/clientreq_note.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/clientreq_products.dart';
-// import 'package:ssipl_billing/SALES/Generate_client_requirements/clientreq_template.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/generate_clientreq.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_creditnote/creditnote_template.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_creditnote/generate_creditnote.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_debitnote/debitnote_template.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_debitnote/generate_debitnote.dart';
-
 import 'package:ssipl_billing/views/components/cards.dart';
 import 'package:ssipl_billing/themes/style.dart';
-
 import 'package:ssipl_billing/view_send_pdf.dart';
-
-// ignore: depend_on_referenced_packages
-
-// import 'package:dropdown_search/dropdown_search.dart';
 
 class Sales_Client extends StatefulWidget {
   const Sales_Client({super.key});
@@ -43,6 +37,8 @@ class Sales_Client extends StatefulWidget {
 }
 
 class _Sales_ClientState extends State<Sales_Client> {
+  final DCController dcController = Get.put(DCController());
+
   final List<Map<String, dynamic>> items = [
     {
       "name": "Khivraj Groups",
@@ -829,7 +825,8 @@ class _Sales_ClientState extends State<Sales_Client> {
                   ),
                   onPressed: () async {
                     // Check if the data has any value
-                    if ((Delivery_challan_products.isNotEmpty) || (Delivery_challan_noteList.isNotEmpty) || (Delivery_challan_recommendationList.isNotEmpty) || (Delivery_challan_productDetails.isNotEmpty) || Delivery_challan_client_addr_name != "" || Delivery_challan_client_addr != "" || Delivery_challan_bill_addr_name != "" || Delivery_challan_bill_addr != "" || Delivery_challan_no != "" || Delivery_challan_title != "" || Delivery_challan_table_heading != "") {
+
+                    if ((dcController.dcModel.Delivery_challan_products.isNotEmpty) || (dcController.dcModel.Delivery_challan_noteList.isNotEmpty) || (dcController.dcModel.Delivery_challan_recommendationList.isNotEmpty) || (dcController.dcModel.Delivery_challan_productDetails.isNotEmpty) || dcController.dcModel.Delivery_challan_client_addr_name.value != "" || dcController.dcModel.Delivery_challan_client_addr.value != "" || dcController.dcModel.Delivery_challan_bill_addr_name.value != "" || dcController.dcModel.Delivery_challan_bill_addr.value != "" || dcController.dcModel.Delivery_challan_no.value != "" || dcController.dcModel.Delivery_challan_title.value != "" || dcController.dcModel.Delivery_challan_table_heading.value != "") {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -848,6 +845,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                               ),
                               TextButton(
                                 onPressed: () {
+                                  dcController.clearAll();
                                   Navigator.of(context).pop(true); // Yes action
                                 },
                                 child: const Text("Yes"),
@@ -861,17 +859,17 @@ class _Sales_ClientState extends State<Sales_Client> {
                       if (proceed == true) {
                         Navigator.of(context).pop(); // Close the dialog
                         // Clear all the data when dialog is closed
-                        Delivery_challan_products.clear();
-                        Delivery_challan_noteList.clear();
-                        Delivery_challan_recommendationList.clear();
-                        Delivery_challan_productDetails.clear();
-                        Delivery_challan_client_addr_name = "";
-                        Delivery_challan_client_addr = "";
-                        Delivery_challan_bill_addr_name = "";
-                        Delivery_challan_bill_addr = "";
-                        Delivery_challan_no = "";
-                        Delivery_challan_title = "";
-                        Delivery_challan_table_heading = "";
+                        dcController.dcModel.Delivery_challan_products.clear();
+                        dcController.dcModel.Delivery_challan_noteList.clear();
+                        dcController.dcModel.Delivery_challan_recommendationList.clear();
+                        dcController.dcModel.Delivery_challan_productDetails.clear();
+                        dcController.dcModel.Delivery_challan_client_addr_name.value = "";
+                        dcController.dcModel.Delivery_challan_client_addr.value = "";
+                        dcController.dcModel.Delivery_challan_bill_addr_name.value = "";
+                        dcController.dcModel.Delivery_challan_bill_addr.value = "";
+                        dcController.dcModel.Delivery_challan_no.value = "";
+                        dcController.dcModel.Delivery_challan_title.value = "";
+                        dcController.dcModel.Delivery_challan_table_heading.value = "";
                       }
                     } else {
                       // If no data, just close the dialog

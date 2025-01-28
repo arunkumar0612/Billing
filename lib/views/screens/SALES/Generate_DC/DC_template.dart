@@ -1,23 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
-
-List<Product> Delivery_challan_products = [];
-//main
-String Delivery_challan_client_addr_name = "";
-String Delivery_challan_client_addr = "";
-String Delivery_challan_bill_addr_name = "";
-String Delivery_challan_bill_addr = "";
-String Delivery_challan_no = "";
-String Delivery_challan_title = "";
-String Delivery_challan_table_heading = "";
-List<Map<String, dynamic>> Delivery_challan_noteList = [];
-List<Map<String, dynamic>> Delivery_challan_recommendationList = [];
-List<Map<String, dynamic>> Delivery_challan_productDetails = [];
-
-//
+import '../../../../controllers/DC_actions.dart';
+import '../../../../models/entities/product_entities.dart';
 
 Future<Uint8List> generate_Delivery_challan(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, Delivery_challan_num, title) async {
   final Delivery_challan = Delivery_challan_generate(
@@ -50,6 +38,9 @@ class Delivery_challan_generate {
     required this.type,
     // required this.items,
   });
+
+  final DCController dcController = Get.put(DCController());
+
   String client_addr_name = "";
   String client_addr = "";
   String bill_addr_name = "";
@@ -415,7 +406,7 @@ class Delivery_challan_generate {
                 child: bold("Note", 12),
                 padding: const pw.EdgeInsets.only(left: 0, bottom: 10),
               ),
-              ...List.generate(Delivery_challan_noteList.length, (index) {
+              ...List.generate(dcController.dcModel.Delivery_challan_noteList.length, (index) {
                 return pw.Padding(
                   padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
                   child: pw.Row(
@@ -425,7 +416,7 @@ class Delivery_challan_generate {
                       pw.SizedBox(width: 5),
                       pw.Expanded(
                         child: pw.Text(
-                          Delivery_challan_noteList[index]["notecontent"],
+                          dcController.dcModel.Delivery_challan_noteList[index]["notecontent"],
                           textAlign: pw.TextAlign.start,
                           style: pw.TextStyle(
                             font: Helvetica,
@@ -500,8 +491,8 @@ class Delivery_challan_generate {
                       child: pw.Column(
                         crossAxisAlignment: pw.CrossAxisAlignment.start,
                         children: [
-                          bold(Delivery_challan_table_heading, 10),
-                          ...Delivery_challan_recommendationList.map((recommendation) {
+                          bold(dcController.dcModel.Delivery_challan_table_heading.value, 10),
+                          ...dcController.dcModel.Delivery_challan_recommendationList.map((recommendation) {
                             return pw.Padding(
                               padding: const pw.EdgeInsets.only(left: 5, top: 5),
                               child: pw.Row(
@@ -609,34 +600,5 @@ class Delivery_challan_generate {
         )
       ],
     );
-  }
-}
-
-class Product {
-  const Product(
-    this.sno,
-    this.productName,
-    this.hsn,
-    this.quantity,
-  );
-
-  final String sno;
-  final String productName;
-  final String hsn;
-
-  final int quantity;
-
-  String getIndex(int index) {
-    switch (index) {
-      case 0:
-        return sno;
-      case 1:
-        return productName;
-      case 2:
-        return hsn;
-      case 3:
-        return quantity.toString();
-    }
-    return '';
   }
 }

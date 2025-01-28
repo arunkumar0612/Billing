@@ -1,23 +1,17 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:ssipl_billing/views/screens/Ledger/ViewLedger.dart';
-// import 'package:google_fonts/google_fonts.dart';
-
 import 'package:ssipl_billing/filter.dart';
-
 import 'package:ssipl_billing/piechart.dart';
 import 'package:ssipl_billing/themes/style.dart';
 
-// import 'package:dropdown_search/dropdown_search.dart';
 PageRouteBuilder _createCustomPageRoute(Widget Function() navigation) {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => navigation(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      // Define custom animation (slide from the right)
-      var begin = const Offset(1.0, 0.0); // Start from the right
-      var end = Offset.zero; // End at the center
-      var curve = Curves.easeInOut; // Animation curve
+      var begin = const Offset(1.0, 0.0);
+      var end = Offset.zero;
+      var curve = Curves.easeInOut;
 
       var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
       var offsetAnimation = animation.drive(tween);

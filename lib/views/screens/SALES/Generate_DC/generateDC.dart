@@ -1,27 +1,15 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_details.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_note.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_products.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import '../../../../controllers/DC_actions.dart';
 
 class GenerateDelivery_challan extends StatefulWidget {
   const GenerateDelivery_challan({super.key});
-  static late TabController _tabController;
-
-  static void nextTab() {
-    if (_tabController.index < _tabController.length - 1) {
-      _tabController.animateTo(_tabController.index + 1);
-    }
-  }
-
-  static void backTab() {
-    if (_tabController.index > 0) {
-      _tabController.animateTo(_tabController.index - 1);
-    }
-  }
 
   @override
   _GenerateDelivery_challanState createState() => _GenerateDelivery_challanState();
@@ -29,15 +17,19 @@ class GenerateDelivery_challan extends StatefulWidget {
 
 class _GenerateDelivery_challanState extends State<GenerateDelivery_challan> with SingleTickerProviderStateMixin {
   final File _selectedPdf = File('E://Delivery_challan.pdf');
+  final DCController dcController = Get.find<DCController>();
+
   @override
   void initState() {
     super.initState();
-    GenerateDelivery_challan._tabController = TabController(length: 3, vsync: this);
+    // GenerateDelivery_challan._tabController = ;
+    dcController.initializeTabController(TabController(length: 3, vsync: this));
   }
 
   @override
   void dispose() {
-    GenerateDelivery_challan._tabController.dispose();
+    // GenerateDelivery_challan._tabController.dispose();
+    dcController.dcModel.tabController.value?.dispose();
     super.dispose();
   }
 
@@ -118,7 +110,7 @@ class _GenerateDelivery_challanState extends State<GenerateDelivery_challan> wit
                             fontSize: Primary_font_size.Text10,
                             fontWeight: FontWeight.bold,
                           ),
-                          controller: GenerateDelivery_challan._tabController,
+                          controller: dcController.dcModel.tabController.value,
                           indicator: const BoxDecoration(),
                           tabs: const [
                             Tab(text: "Details"),
@@ -131,14 +123,14 @@ class _GenerateDelivery_challanState extends State<GenerateDelivery_challan> wit
                   ),
                   Expanded(
                     child: TabBarView(
-                      controller: GenerateDelivery_challan._tabController,
+                      controller: dcController.dcModel.tabController.value,
                       children: [
-                        const Delivery_challanDetails(),
+                        Delivery_challanDetails(),
                         Container(
                           color: Primary_colors.Light,
-                          child: const Delivery_challanProducts(),
+                          child: Delivery_challanProducts(),
                         ),
-                        const Delivery_challanNote(),
+                        Delivery_challanNote(),
                       ],
                     ),
                   ),

@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, avoid_unnecessary_containers, sized_box_for_whitespace, non_constant_identifier_names, camel_case_types
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ssipl_billing/themes/style.dart';
@@ -7,8 +6,6 @@ import 'package:ssipl_billing/views/screens/IAM/forgot_password2.dart';
 import 'package:ssipl_billing/views/screens/IAM/forgot_password3.dart';
 import 'package:ssipl_billing/views/screens/IAM/login_page.dart';
 import 'package:ssipl_billing/views/screens/IAM/register_page.dart';
-// import 'package:showroom_entrance_count/homepage/login_page.dart';
-// import 'package:showroom_entrance_count/homepage/register_page.dart';
 
 class IAM extends StatefulWidget {
   const IAM({super.key});
@@ -59,7 +56,7 @@ class _IAMState extends State<IAM> {
                     children: [
                       Center(
                         child: Padding(
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -70,7 +67,7 @@ class _IAMState extends State<IAM> {
                                 width: screenWidth > 1000 ? screenWidth / 7 : screenWidth / 3,
                                 fit: BoxFit.contain,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Stack(
@@ -117,13 +114,13 @@ class _IAMState extends State<IAM> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(20),
                         child: Page_name == 'Login'
                             ? Loginpage()
                             : Page_name == 'Register'
-                                ? RegisterPage()
+                                ? const RegisterPage()
                                 : Page_name == 'Forgotpassword'
-                                    ? Forgot_password1()
+                                    ? const Forgot_password1()
                                     : Page_name == 'OTPverification'
                                         ? Forgot_password2(
                                             email: email,
@@ -132,7 +129,7 @@ class _IAMState extends State<IAM> {
                                             ? Forgot_password3(
                                                 email: email,
                                               )
-                                            : SizedBox.shrink(),
+                                            : const SizedBox.shrink(),
                       ),
                     ],
                   ),

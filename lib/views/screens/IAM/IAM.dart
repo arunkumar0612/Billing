@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ssipl_billing/themes/style.dart';
-import 'package:ssipl_billing/views/screens/IAM/forgot_password1.dart';
-import 'package:ssipl_billing/views/screens/IAM/forgot_password2.dart';
-import 'package:ssipl_billing/views/screens/IAM/forgot_password3.dart';
+import 'package:ssipl_billing/views/screens/IAM/forgot_password.dart';
+import 'package:ssipl_billing/views/screens/IAM/verifyOTP.dart';
+import 'package:ssipl_billing/views/screens/IAM/newpassword.dart';
 import 'package:ssipl_billing/views/screens/IAM/login_page.dart';
 import 'package:ssipl_billing/views/screens/IAM/register_page.dart';
 
@@ -118,17 +118,13 @@ class _IAMState extends State<IAM> {
                         child: Page_name == 'Login'
                             ? Loginpage()
                             : Page_name == 'Register'
-                                ? const RegisterPage()
+                                ? RegisterPage()
                                 : Page_name == 'Forgotpassword'
-                                    ? const Forgot_password1()
+                                    ? Forgot_password()
                                     : Page_name == 'OTPverification'
-                                        ? Forgot_password2(
-                                            email: email,
-                                          )
+                                        ? Verify_OTP()
                                         : Page_name == 'Setnewpassword'
-                                            ? Forgot_password3(
-                                                email: email,
-                                              )
+                                            ? Newpassword()
                                             : const SizedBox.shrink(),
                       ),
                     ],

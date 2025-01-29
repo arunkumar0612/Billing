@@ -14,7 +14,7 @@ mixin LoginServices {
   final Invoker apiController = Get.put(Invoker());
   void Login(context) async {
     try {
-      Map<String, dynamic>? response = await apiController.login({
+      Map<String, dynamic>? response = await apiController.IAM({
         "username": loginController.loginModel.userController.value.text,
         "password": loginController.loginModel.passwordController.value.text,
       }, API.Login_API);

@@ -29,3 +29,99 @@ class Login_Response {
     };
   }
 }
+
+class Register_Response {
+  final bool code;
+  final String? message;
+
+  Register_Response({
+    required this.code,
+    this.message,
+  });
+
+  factory Register_Response.fromJson(Map<String, dynamic> json) {
+    return Register_Response(
+      code: json['code'] as bool,
+      message: json['message'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'code': code,
+      'message': message,
+    };
+  }
+}
+
+class Forgotpassword_Response {
+  final bool code;
+  final String? message;
+
+  Forgotpassword_Response({
+    required this.code,
+    this.message,
+  });
+
+  factory Forgotpassword_Response.fromJson(Map<String, dynamic> json) {
+    return Forgotpassword_Response(
+      code: json['code'] as bool,
+      message: json['message'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'code': code,
+      'message': message,
+    };
+  }
+}
+
+class VerifyOTP_Response {
+  final bool code;
+  final String? message;
+
+  VerifyOTP_Response({
+    required this.code,
+    this.message,
+  });
+
+  factory VerifyOTP_Response.fromJson(Map<String, dynamic> json) {
+    return VerifyOTP_Response(
+      code: json['code'] as bool,
+      message: json['message'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'code': code,
+      'message': message,
+    };
+  }
+}
+
+class Newpassword_Response {
+  final bool code;
+  final String? message;
+
+  Newpassword_Response({
+    required this.code,
+    this.message,
+  });
+
+  factory Newpassword_Response.fromJson(Map<String, dynamic> json) {
+    return Newpassword_Response(
+      code: json['code'] as bool,
+      message: json['message'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'code': code,
+      'message': message,
+    };
+  }
+}

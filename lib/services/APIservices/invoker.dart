@@ -8,7 +8,7 @@ class Invoker extends GetxController {
   final ApiService apiService = ApiService();
   var isLoading = false.obs;
 
-  Future<Map<String, dynamic>?> login(Map<String, dynamic> body, String API) async {
+  Future<Map<String, dynamic>?> IAM(Map<String, dynamic> body, String API) async {
     isLoading.value = true;
     final configData = await loadConfigFile('assets/key.config');
     final apiKey = configData['APIkey'];
@@ -30,17 +30,12 @@ class Invoker extends GetxController {
       String encryptedResponse = responseData['encryptedResponse'];
       final decryptedResponse = AES.decryptWithAES(secret.substring(0, 16), encryptedResponse);
       Map<String, dynamic> decodedResponse = jsonDecode(decryptedResponse);
-      final result = <String, int>{
-        "statusCode": response.statusCode!
-      };
+      final result = <String, int>{"statusCode": response.statusCode!};
       decodedResponse.addEntries(result.entries.map((e) => MapEntry(e.key, e.value)));
 
       return decodedResponse;
     } else {
-      Map<String, dynamic> reply = {
-        "statusCode": response.statusCode,
-        "message": "Server Error"
-      };
+      Map<String, dynamic> reply = {"statusCode": response.statusCode, "message": "Server Error"};
       return reply;
     }
   }

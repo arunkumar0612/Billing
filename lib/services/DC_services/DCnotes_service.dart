@@ -7,7 +7,7 @@ mixin DcnotesService {
 
   void addtable_row(context) {
     dcController.updateTableValueControllerText(dcController.dcModel.tableHeadingController.value.text);
-    bool exists = dcController.dcModel.Delivery_challan_recommendationList.any((note) => note['key'] == dcController.dcModel.tableKeyController.value.text);
+    bool exists = dcController.dcModel.Delivery_challan_recommendationList.any((note) => note.key == dcController.dcModel.tableKeyController.value.text);
     if (exists) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -19,13 +19,12 @@ mixin DcnotesService {
     }
     dcController.addRecommendation(key: dcController.dcModel.tableKeyController.value.text, value: dcController.dcModel.tableValueController.value.text);
     dcController.updateNoteLength(dcController.dcModel.Delivery_challan_recommendationList.length);
+    cleartable_Fields();
   }
 
   void updatenote() {
     if (dcController.dcModel.noteformKey.value.currentState?.validate() ?? false) {
-      dcController.dcModel.Delivery_challan_noteList[dcController.dcModel.noteeditIndex.value!] = {
-        'notecontent': dcController.dcModel.notecontentController.value.text,
-      };
+      dcController.updateNoteList(dcController.dcModel.notecontentController.value.text, dcController.dcModel.noteeditIndex.value!);
       clearnoteFields();
       dcController.updateNoteEditindex(null);
       dcController.updateNoteLength(dcController.dcModel.Delivery_challan_noteList.length);
@@ -46,9 +45,9 @@ mixin DcnotesService {
   }
 
   void editnotetable(int index) {
-    Map<String, dynamic> note = dcController.dcModel.Delivery_challan_recommendationList[index];
-    dcController.updateTableKeyControllerText(note['key'].toString());
-    dcController.updateTableValueControllerText(note['value'].toString());
+    final note = dcController.dcModel.Delivery_challan_recommendationList[index];
+    dcController.updateTableKeyControllerText(note.key.toString());
+    dcController.updateTableValueControllerText(note.value.toString());
     dcController.updateNoteTableEditindex(index);
   }
 

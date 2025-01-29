@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/constants/DC_constants.dart';
+import '../models/entities/DC_entities.dart';
 import '../models/entities/product_entities.dart';
 
 class DCController extends GetxController {
@@ -74,18 +75,10 @@ class DCController extends GetxController {
   }
 
   // Update note list
-  void updateNoteList(List<Map<String, dynamic>> notes) {
-    dcModel.Delivery_challan_noteList.value = notes;
-  }
-
-  // Update recommendation list
-  void updateRecommendationList(List<Map<String, dynamic>> recommendations) {
-    dcModel.Delivery_challan_recommendationList.value = recommendations;
-  }
-
-  // Update product details list
-  void updateProductDetails(List<Map<String, dynamic>> productDetails) {
-    dcModel.Delivery_challan_productDetails.value = productDetails;
+  void updateNoteList(String value, int index) {
+    dcModel.Delivery_challan_noteList[dcModel.noteeditIndex.value!] = {
+      'notecontent': dcModel.notecontentController.value.text,
+    };
   }
 
   // Update products list
@@ -183,10 +176,7 @@ class DCController extends GetxController {
 
   void addRecommendation({required String key, required String value}) {
     if (key.isNotEmpty && value.isNotEmpty) {
-      dcModel.Delivery_challan_recommendationList.add({
-        'key': key,
-        'value': value,
-      });
+      dcModel.Delivery_challan_recommendationList.add(Recommendation(key: key, value: value));
     } else {
       // Handle error if key or value is empty (optional)
       print('Key and value must not be empty');
@@ -202,10 +192,7 @@ class DCController extends GetxController {
     if (index >= 0 && index < dcModel.Delivery_challan_recommendationList.length) {
       if (key.isNotEmpty && value.isNotEmpty) {
         // Update the recommendation at the specified index
-        dcModel.Delivery_challan_recommendationList[index] = {
-          'key': key,
-          'value': value,
-        };
+        dcModel.Delivery_challan_recommendationList[index] = Recommendation(key: key, value: value);
       } else {
         // Handle error if key or value is empty
         print('Key and value must not be empty');

@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/product_entities.dart';
 
+import '../entities/DC_entities.dart';
+
 class DCModel {
   final Rxn<TabController> tabController = Rxn<TabController>();
   var Delivery_challan_client_addr_name = "".obs;
@@ -13,7 +15,7 @@ class DCModel {
   var Delivery_challan_title = "".obs;
   var Delivery_challan_table_heading = "".obs;
   var Delivery_challan_noteList = <Map<String, dynamic>>[].obs;
-  var Delivery_challan_recommendationList = <Map<String, dynamic>>[].obs;
+  var Delivery_challan_recommendationList = <Recommendation>[].obs;
   var Delivery_challan_productDetails = <Map<String, dynamic>>[].obs;
   var Delivery_challan_products = <Product>[].obs;
 //######################################################################################################################################

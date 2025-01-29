@@ -499,11 +499,11 @@ class Delivery_challan_generate {
                                 children: [
                                   pw.Container(
                                     width: 120,
-                                    child: regular(recommendation["key"].toString(), 10),
+                                    child: regular(recommendation.key.toString(), 10),
                                   ),
                                   regular(":", 10),
                                   pw.SizedBox(width: 5),
-                                  regular(recommendation["value"].toString(), 10),
+                                  regular(recommendation.value.toString(), 10),
                                 ],
                               ),
                             );

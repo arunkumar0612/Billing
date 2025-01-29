@@ -112,7 +112,7 @@ class _Delivery_challanNoteState extends State<Delivery_challanNote> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${dcController.dcModel.Delivery_challan_recommendationList[index]['key']}', // Display camera type from map
+                                dcController.dcModel.Delivery_challan_recommendationList[index].key, // Display camera type from map
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
                               ),
                             ],

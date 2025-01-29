@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:ssipl_billing/common_modules/style.dart'; // Assuming style.dart defines Primary_colors and Primary_font_size
+import 'package:ssipl_billing/themes/style.dart'; // Assuming style.dart defines Primary_colors and Primary_font_size
 
 class FilterScreen extends StatefulWidget {
   const FilterScreen({super.key});
@@ -35,7 +35,12 @@ class _FilterScreenState extends State<FilterScreen> {
     'Anamalais',
     'Honda',
   ];
-  final List<bool> selectedClientOptions = [false, false, false, false];
+  final List<bool> selectedClientOptions = [
+    false,
+    false,
+    false,
+    false
+  ];
 
   // Function to handle start date time selection
   Future<void> _selectStartDateTime(BuildContext context) async {

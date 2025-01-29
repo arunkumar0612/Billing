@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/common_modules/style.dart';
+import 'package:ssipl_billing/themes/style.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class Bar_line extends StatefulWidget {
@@ -14,7 +14,12 @@ class Bar_lineState extends State<Bar_line> {
 
   @override
   void initState() {
-    data = [_ChartData('KIV', 15), _ChartData('MAH', 80), _ChartData('ATHE', 60.4), _ChartData('HON', 105)];
+    data = [
+      _ChartData('KIV', 15),
+      _ChartData('MAH', 80),
+      _ChartData('ATHE', 60.4),
+      _ChartData('HON', 105)
+    ];
     super.initState();
   }
 

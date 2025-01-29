@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/button.dart';
-import 'package:ssipl_billing/common_modules/style.dart';
-import 'package:ssipl_billing/textfield.dart';
+import 'package:ssipl_billing/views/components/button.dart';
+import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/views/components/textfield.dart';
 
 class AddnotePage extends StatefulWidget {
   const AddnotePage({super.key});

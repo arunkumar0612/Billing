@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:ssipl_billing/addservice.dart';
-import 'package:ssipl_billing/common_modules/style.dart';
+import 'package:ssipl_billing/themes/style.dart';
 import 'package:google_fonts/google_fonts.dart'; // For custom fonts
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart'; // For advanced grid layouts
 
@@ -435,9 +435,7 @@ class _InventoryState extends State<Inventory> with SingleTickerProviderStateMix
                                     crossAxisAlignment: CrossAxisAlignment.stretch,
                                     children: [
                                       ClipRRect(
-                                        borderRadius: const BorderRadius.vertical(
-                                          top: Radius.circular(20),
-                                        ),
+                                        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
                                         child: Image.asset(
                                           product.image,
                                           height: 150,
@@ -520,8 +518,6 @@ class ProductDetails {
 
   ProductDetails(this.image, this.productName);
 }
-
-
 
 // Primary Colors and Styling
 // class PrimaryColors {

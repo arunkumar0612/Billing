@@ -1,27 +1,15 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/invoice_details.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/invoice_note.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/invoice_products.dart';
+import 'package:get/get.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import '../../../../controllers/Invoice_actions.dart';
+import 'invoice_details.dart';
+import 'invoice_note.dart';
+import 'invoice_products.dart';
 
 class GenerateInvoice extends StatefulWidget {
   const GenerateInvoice({super.key});
-  static late TabController _tabController;
-
-  static void nextTab() {
-    if (_tabController.index < _tabController.length - 1) {
-      _tabController.animateTo(_tabController.index + 1);
-    }
-  }
-
-  static void backTab() {
-    if (_tabController.index > 0) {
-      _tabController.animateTo(_tabController.index - 1);
-    }
-  }
 
   @override
   _GenerateInvoiceState createState() => _GenerateInvoiceState();
@@ -29,15 +17,19 @@ class GenerateInvoice extends StatefulWidget {
 
 class _GenerateInvoiceState extends State<GenerateInvoice> with SingleTickerProviderStateMixin {
   final File _selectedPdf = File('E://Invoice.pdf');
+  final InvoiceController invoiceController = Get.find<InvoiceController>();
+
   @override
   void initState() {
     super.initState();
-    GenerateInvoice._tabController = TabController(length: 3, vsync: this);
+    // GenerateInvoice._tabController = ;
+    invoiceController.initializeTabController(TabController(length: 3, vsync: this));
   }
 
   @override
   void dispose() {
-    GenerateInvoice._tabController.dispose();
+    // GenerateInvoice._tabController.dispose();
+    invoiceController.invoiceModel.tabController.value?.dispose();
     super.dispose();
   }
 
@@ -118,7 +110,7 @@ class _GenerateInvoiceState extends State<GenerateInvoice> with SingleTickerProv
                             fontSize: Primary_font_size.Text10,
                             fontWeight: FontWeight.bold,
                           ),
-                          controller: GenerateInvoice._tabController,
+                          controller: invoiceController.invoiceModel.tabController.value,
                           indicator: const BoxDecoration(),
                           tabs: const [
                             Tab(text: "Details"),
@@ -131,14 +123,14 @@ class _GenerateInvoiceState extends State<GenerateInvoice> with SingleTickerProv
                   ),
                   Expanded(
                     child: TabBarView(
-                      controller: GenerateInvoice._tabController,
+                      controller: invoiceController.invoiceModel.tabController.value,
                       children: [
-                        const InvoiceDetails(),
+                        InvoiceDetails(),
                         Container(
                           color: Primary_colors.Light,
-                          child: const InvoiceProducts(),
+                          child: InvoiceProducts(),
                         ),
-                        const InvoiceNote(),
+                        InvoiceNote(),
                       ],
                     ),
                   ),

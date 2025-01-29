@@ -49,7 +49,7 @@ class Delivery_challan_generate {
   String title_text = "";
   String type = "";
 
-  final List<Product> products;
+  final List<DCProduct> products;
 
   final PdfColor baseColor;
   final PdfColor accentColor;
@@ -416,7 +416,7 @@ class Delivery_challan_generate {
                       pw.SizedBox(width: 5),
                       pw.Expanded(
                         child: pw.Text(
-                          dcController.dcModel.Delivery_challan_noteList[index]["notecontent"],
+                          dcController.dcModel.Delivery_challan_noteList[index].notename,
                           textAlign: pw.TextAlign.start,
                           style: pw.TextStyle(
                             font: Helvetica,

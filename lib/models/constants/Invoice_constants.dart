@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/product_entities.dart';
-import '../entities/DC_entities.dart';
+import '../entities/Invoice_entities.dart';
 
-class DCModel {
+class InvoiceModel {
   final Rxn<TabController> tabController = Rxn<TabController>();
-  var Delivery_challan_client_addr_name = "".obs;
-  var Delivery_challan_client_addr = "".obs;
-  var Delivery_challan_bill_addr_name = "".obs;
-  var Delivery_challan_bill_addr = "".obs;
-  var Delivery_challan_no = "".obs;
-  var Delivery_challan_title = "".obs;
-  var Delivery_challan_table_heading = "".obs;
-  var Delivery_challan_noteList = <Note>[].obs;
-  var Delivery_challan_recommendationList = <Recommendation>[].obs;
-  var Delivery_challan_products = <DCProduct>[].obs;
+  var Invoice_client_addr_name = "".obs;
+  var Invoice_client_addr = "".obs;
+  var Invoice_bill_addr_name = "".obs;
+  var Invoice_bill_addr = "".obs;
+  var Invoice_no = "".obs;
+  var Invoice_title = "".obs;
+  var Invoice_table_heading = "".obs;
+  var Invoice_noteList = <Note>[].obs;
+  var Invoice_recommendationList = <Recommendation>[].obs;
+  var Invoice_products = <InvoiceProduct>[].obs;
 //######################################################################################################################################
 //DETAILS
   final TitleController = TextEditingController().obs;

@@ -13,9 +13,11 @@ mixin ForgotpasswordService {
   final Invoker apiController = Get.put(Invoker());
   void Forgotpassword(context) async {
     try {
-      Map<String, dynamic>? response = await apiController.IAM({
-        "username": forgotpasswordController.forgotpasswordModel.emailController.value.text,
-      }, API.forgotpassword_API);
+      Forgotpassword_Request requestData = Forgotpassword_Request(
+        username: forgotpasswordController.forgotpasswordModel.emailController.value.text,
+      );
+
+      Map<String, dynamic>? response = await apiController.IAM(requestData.toJson(), API.forgotpassword_API);
 
       if (response?['statusCode'] == 200) {
         Forgotpassword_Response data = Forgotpassword_Response.fromJson(response!);
@@ -24,7 +26,12 @@ mixin ForgotpasswordService {
           Get.toNamed(RouteNames.home);
         } else {
           forgotpasswordController.toggleIndicator(false);
-          await Basic_dialog(context: context, title: 'Forgotpassword Failed', content: data.message ?? "", onOk: () {});
+          await Basic_dialog(
+            context: context,
+            title: 'Forgot Password Failed',
+            content: data.message ?? "",
+            onOk: () {},
+          );
         }
       } else {
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");

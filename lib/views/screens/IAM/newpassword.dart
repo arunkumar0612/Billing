@@ -5,14 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 
-import 'package:ssipl_billing/services/IAM_services/newpassword_services.dart';
-
 import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/utils/validators/newpassword_validator.dart';
 import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
 
 import 'package:glowy_borders/glowy_borders.dart';
 
-class Newpassword extends StatefulWidget with NewpasswordServices {
+class Newpassword extends StatefulWidget with NewpasswordValidator {
   Newpassword({super.key});
 
   @override

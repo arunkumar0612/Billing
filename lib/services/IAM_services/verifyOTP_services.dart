@@ -16,10 +16,12 @@ mixin VerifyotpServices {
 
   void Verify_OTP(context) async {
     try {
-      Map<String, dynamic>? response = await apiController.IAM({
-        "username": forgotpasswordController.forgotpasswordModel.emailController.value.text,
-        "OTP": VerifyOTPController.verifyOTPModel.otpControllers.map((controller) => controller.text).join(),
-      }, API.verifyOTP_API);
+      VerifyOTP_Request requestData = VerifyOTP_Request(
+        username: forgotpasswordController.forgotpasswordModel.emailController.value.text,
+        otp: VerifyOTPController.verifyOTPModel.otpControllers.map((controller) => controller.text).join(),
+      );
+
+      Map<String, dynamic>? response = await apiController.IAM(requestData.toJson(), API.verifyOTP_API);
 
       if (response?['statusCode'] == 200) {
         VerifyOTP_Response data = VerifyOTP_Response.fromJson(response!);
@@ -29,7 +31,12 @@ mixin VerifyotpServices {
           IAM.update();
         } else {
           VerifyOTPController.toggleIndicator(false);
-          await Basic_dialog(context: context, title: 'VerifyOTP Failed', content: data.message ?? "", onOk: () {});
+          await Basic_dialog(
+            context: context,
+            title: 'Verify OTP Failed',
+            content: data.message ?? "",
+            onOk: () {},
+          );
         }
       } else {
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");

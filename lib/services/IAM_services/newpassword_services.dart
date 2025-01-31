@@ -1,0 +1,47 @@
+import 'package:get/get.dart';
+
+import 'package:ssipl_billing/models/entities/IAM_entities.dart';
+import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
+import '../../controllers/IAM_actions.dart';
+import '../../models/constants/api.dart';
+import '../../views/components/Basic_DialogBox.dart';
+import '../APIservices/invoker.dart';
+
+class NewpasswordServices {
+  final NewpasswordController newwordController = Get.put(NewpasswordController());
+  final ForgotpasswordController forgotpasswordController = Get.put(ForgotpasswordController());
+  final Invoker apiController = Get.put(Invoker());
+  void Newpassword(context) async {
+    try {
+      NewPassword_Request requestData = NewPassword_Request(
+        username: forgotpasswordController.forgotpasswordModel.emailController.value.text,
+        password: newwordController.newpasswordModel.confirmController.value.text,
+      );
+
+      Map<String, dynamic>? response = await apiController.IAM(requestData.toJson(), API.newpassword_API);
+
+      if (response?['statusCode'] == 200) {
+        Newpassword_Response data = Newpassword_Response.fromJson(response!);
+        if (data.code) {
+          forgotpasswordController.toggleIndicator(false);
+          IAM.Page_name = 'Login';
+          IAM.update();
+        } else {
+          forgotpasswordController.toggleIndicator(false);
+          await Basic_dialog(
+            context: context,
+            title: 'New Password Failed',
+            content: data.message ?? "",
+            onOk: () {},
+          );
+        }
+      } else {
+        forgotpasswordController.toggleIndicator(false);
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      forgotpasswordController.toggleIndicator(false);
+      Basic_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+}

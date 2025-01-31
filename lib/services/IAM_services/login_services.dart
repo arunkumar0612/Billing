@@ -14,10 +14,12 @@ mixin LoginServices {
   final Invoker apiController = Get.put(Invoker());
   void Login(context) async {
     try {
-      Map<String, dynamic>? response = await apiController.IAM({
-        "username": loginController.loginModel.userController.value.text,
-        "password": loginController.loginModel.passwordController.value.text,
-      }, API.Login_API);
+      final requestBody = Login_Request(
+        username: loginController.loginModel.userController.value.text,
+        password: loginController.loginModel.passwordController.value.text,
+      );
+
+      Map<String, dynamic>? response = await apiController.IAM(requestBody.toJson(), API.Login_API);
 
       if (response?['statusCode'] == 200) {
         Login_Response data = Login_Response.fromJson(response!);

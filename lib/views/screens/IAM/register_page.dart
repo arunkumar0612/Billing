@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 
-import 'package:ssipl_billing/services/IAM_services/register_services.dart';
+import 'package:ssipl_billing/utils/validators/register_validator.dart';
 
 import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
 
@@ -9,7 +9,7 @@ import 'package:glowy_borders/glowy_borders.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:get/get.dart';
 
-class RegisterPage extends StatefulWidget with RegisterServices {
+class RegisterPage extends StatefulWidget with RegisterValidator {
   RegisterPage({super.key});
 
   @override

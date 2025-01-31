@@ -1,49 +1,38 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/clientreq_details.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/clientreq_note.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/clientreq_products.dart';
+import 'package:get/get.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import '../../../../controllers/Quote_actions.dart';
+import 'quote_details.dart';
+import 'quote_note.dart';
+import 'quote_products.dart';
 
-class Generate_clientreq extends StatefulWidget {
-  final String? value;
-
-  const Generate_clientreq({super.key, required this.value});
-  static late TabController _tabController;
-
-  static void nextTab() {
-    if (_tabController.index < _tabController.length - 1) {
-      _tabController.animateTo(_tabController.index + 1);
-    }
-  }
-
-  static void backTab() {
-    if (_tabController.index > 0) {
-      _tabController.animateTo(_tabController.index - 1);
-    }
-  }
+class GenerateQuote extends StatefulWidget {
+  const GenerateQuote({super.key});
 
   @override
-  _GenerateclientreqState createState() => _GenerateclientreqState();
+  _GenerateQuoteState createState() => _GenerateQuoteState();
 }
 
-class _GenerateclientreqState extends State<Generate_clientreq> with SingleTickerProviderStateMixin {
-  final File _selectedPdf = File('E://Client_requirement.pdf');
+class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProviderStateMixin {
+  final File _selectedPdf = File('E://Quote.pdf');
+  final QuoteController quoteController = Get.find<QuoteController>();
+
   @override
   void initState() {
     super.initState();
-    Generate_clientreq._tabController = TabController(length: 3, vsync: this);
+    // GenerateQuote._tabController = ;
+    quoteController.initializeTabController(TabController(length: 3, vsync: this));
   }
 
   @override
   void dispose() {
-    Generate_clientreq._tabController.dispose();
+    // GenerateQuote._tabController.dispose();
+    quoteController.quoteModel.tabController.value?.dispose();
     super.dispose();
   }
 
-  // ignore: unused_element
   void _showReadablePdf() {
     showDialog(
       context: context,
@@ -64,6 +53,43 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
         backgroundColor: Primary_colors.Dark,
         body: Row(
           children: [
+            Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Text(
+                    "Client Requirement",
+                    style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                  ),
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 420,
+                    child: GestureDetector(
+                      child: Stack(
+                        children: [
+                          SfPdfViewer.file(_selectedPdf),
+                          Align(
+                            alignment: AlignmentDirectional.bottomEnd,
+                            child: Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      onDoubleTap: () {
+                        _showReadablePdf();
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
             Expanded(
                 child: Container(
               color: Primary_colors.Light,
@@ -84,7 +110,7 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
                             fontSize: Primary_font_size.Text10,
                             fontWeight: FontWeight.bold,
                           ),
-                          controller: Generate_clientreq._tabController,
+                          controller: quoteController.quoteModel.tabController.value,
                           indicator: const BoxDecoration(),
                           tabs: const [
                             Tab(text: "Details"),
@@ -97,16 +123,14 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
                   ),
                   Expanded(
                     child: TabBarView(
-                      controller: Generate_clientreq._tabController,
+                      controller: quoteController.quoteModel.tabController.value,
                       children: [
-                        clientreqDetails(
-                          customer_type: widget.value!,
-                        ),
+                        QuoteDetails(),
                         Container(
                           color: Primary_colors.Light,
-                          child: const clientreqProducts(),
+                          child: QuoteProducts(),
                         ),
-                        const clientreqNote(),
+                        QuoteNote(),
                       ],
                     ),
                   ),
@@ -114,11 +138,11 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
                   //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   //   children: [
                   //     ElevatedButton(
-                  //       onPressed: Generateclientreq.backTab,
+                  //       onPressed: GenerateQuote.backTab,
                   //       child: Text("Back"),
                   //     ),
                   //     ElevatedButton(
-                  //       onPressed: Generateclientreq.nextTab,
+                  //       onPressed: GenerateQuote.nextTab,
                   //       child: Text("Next"),
                   //     ),
                   //   ],

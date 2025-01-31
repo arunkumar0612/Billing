@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/clientreq_details.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/clientreq_products.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/generate_clientreq.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/clientreq_template.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/view_clientreq_send.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_details.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_products.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/generate_clientreq.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_template.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/view_clientreq_send.dart';
 // import 'package:ssipl_billing/Sales.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 // import 'package:ssipl_billing/Sales/client.dart';

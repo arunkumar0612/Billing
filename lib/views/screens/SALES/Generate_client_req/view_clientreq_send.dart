@@ -9,7 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/clientreq_details.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_details.dart';
 import 'package:ssipl_billing/models/constants/api.dart';
 import 'package:ssipl_billing/utils/helpers/encrypt_decrypt.dart';
 import 'package:ssipl_billing/themes/style.dart';

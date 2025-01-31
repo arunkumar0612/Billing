@@ -54,9 +54,9 @@ mixin InvoiceproductService {
 
     invoiceController.updateProductName(product.productName);
     invoiceController.updateHSN(product.hsn);
-    // invoiceController.updatePrice(product.price);
+    invoiceController.updatePrice(product.price);
     invoiceController.updateQuantity(product.quantity);
-    // invoiceController.updateGST(product.gst);
+    invoiceController.updateGST(product.gst);
     invoiceController.addProductEditindex(index);
   }
 

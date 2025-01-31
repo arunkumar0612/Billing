@@ -1,129 +1,129 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../models/constants/Invoice_constants.dart';
-import '../models/entities/Invoice_entities.dart';
+import '../models/constants/Credit_constants.dart';
+import '../models/entities/Credit_entities.dart';
 import '../models/entities/product_entities.dart';
 
-class InvoiceController extends GetxController {
-  var invoiceModel = InvoiceModel();
+class CreditController extends GetxController {
+  var creditModel = CreditModel();
 
   void initializeTabController(TabController tabController) {
-    invoiceModel.tabController.value = tabController;
+    creditModel.tabController.value = tabController;
   }
 
   void nextTab() {
-    if (invoiceModel.tabController.value!.index < invoiceModel.tabController.value!.length - 1) {
-      invoiceModel.tabController.value!.animateTo(invoiceModel.tabController.value!.index + 1);
+    if (creditModel.tabController.value!.index < creditModel.tabController.value!.length - 1) {
+      creditModel.tabController.value!.animateTo(creditModel.tabController.value!.index + 1);
     }
   }
 
   void backTab() {
-    if (invoiceModel.tabController.value!.index > 0) {
-      invoiceModel.tabController.value!.animateTo(invoiceModel.tabController.value!.index - 1);
+    if (creditModel.tabController.value!.index > 0) {
+      creditModel.tabController.value!.animateTo(creditModel.tabController.value!.index - 1);
     }
   }
 
   void updateProductName(String productName) {
-    invoiceModel.productNameController.value.text = productName;
+    creditModel.productNameController.value.text = productName;
   }
 
   void updateHSN(String hsn) {
-    invoiceModel.hsnController.value.text = hsn;
+    creditModel.hsnController.value.text = hsn;
   }
 
   void updatePrice(double price) {
-    invoiceModel.priceController.value.text = price.toString();
+    creditModel.priceController.value.text = price.toString();
   }
 
   void updateQuantity(int quantity) {
-    invoiceModel.quantityController.value.text = quantity.toString();
+    creditModel.quantityController.value.text = quantity.toString();
   }
 
   void updateGST(double gst) {
-    invoiceModel.gstController.value.text = gst.toString();
+    creditModel.gstController.value.text = gst.toString();
   }
 
   void updateClientAddress(String addrName, String addr) {
-    invoiceModel.Invoice_client_addr_name.value = addrName;
-    invoiceModel.Invoice_client_addr.value = addr;
+    creditModel.Credit_client_addr_name.value = addrName;
+    creditModel.Credit_client_addr.value = addr;
   }
 
   void updateBillingAddress(String addrName, String addr) {
-    invoiceModel.Invoice_bill_addr_name.value = addrName;
-    invoiceModel.Invoice_bill_addr.value = addr;
+    creditModel.Credit_bill_addr_name.value = addrName;
+    creditModel.Credit_bill_addr.value = addr;
   }
 
   void updateChallanTitle(String title) {
-    invoiceModel.Invoice_title.value = title;
+    creditModel.Credit_title.value = title;
   }
 
   void updateNoteEditindex(int? index) {
-    invoiceModel.note_editIndex.value = index;
+    creditModel.note_editIndex.value = index;
   }
 
   void updateChallanTableHeading(String tableHeading) {
-    invoiceModel.Invoice_table_heading.value = tableHeading;
+    creditModel.Credit_table_heading.value = tableHeading;
   }
 
   void updateNoteList(String value, int index) {
-    invoiceModel.Invoice_noteList[invoiceModel.note_editIndex.value!] = Note(notename: invoiceModel.notecontentController.value.text);
+    creditModel.Credit_noteList[creditModel.note_editIndex.value!] = Note(notename: creditModel.notecontentController.value.text);
   }
 
   void updateTabController(TabController tabController) {
-    invoiceModel.tabController.value = tabController;
+    creditModel.tabController.value = tabController;
   }
 
   void updateTitleControllerText(String text) {
-    invoiceModel.TitleController.value.text = text;
+    creditModel.TitleController.value.text = text;
   }
 
   void updateClientAddressNameControllerText(String text) {
-    invoiceModel.clientAddressNameController.value.text = text;
+    creditModel.clientAddressNameController.value.text = text;
   }
 
   void updateClientAddressControllerText(String text) {
-    invoiceModel.clientAddressController.value.text = text;
+    creditModel.clientAddressController.value.text = text;
   }
 
   void updateBillingAddressNameControllerText(String text) {
-    invoiceModel.billingAddressNameController.value.text = text;
+    creditModel.billingAddressNameController.value.text = text;
   }
 
   void updateBillingAddressControllerText(String text) {
-    invoiceModel.billingAddressController.value.text = text;
+    creditModel.billingAddressController.value.text = text;
   }
 
   void updateRecommendationEditindex(int? index) {
-    invoiceModel.recommendation_editIndex.value = index;
+    creditModel.recommendation_editIndex.value = index;
   }
 
   void updateNoteContentControllerText(String text) {
-    invoiceModel.notecontentController.value.text = text;
+    creditModel.notecontentController.value.text = text;
   }
 
   void updateTableHeadingControllerText(String text) {
-    invoiceModel.recommendationHeadingController.value.text = text;
+    creditModel.recommendationHeadingController.value.text = text;
   }
 
   void updateTableKeyControllerText(String text) {
-    invoiceModel.recommendationKeyController.value.text = text;
+    creditModel.recommendationKeyController.value.text = text;
   }
 
   void updateTableValueControllerText(String text) {
-    invoiceModel.recommendationValueController.value.text = text;
+    creditModel.recommendationValueController.value.text = text;
   }
 
   void addNoteToList(String note) {
-    invoiceModel.notecontent.add(note);
+    creditModel.notecontent.add(note);
   }
 
   void addProductEditindex(int? index) {
-    invoiceModel.product_editIndex.value = index;
+    creditModel.product_editIndex.value = index;
   }
 
   void addRecommendation({required String key, required String value}) {
     if (key.isNotEmpty && value.isNotEmpty) {
-      invoiceModel.Invoice_recommendationList.add(Recommendation(key: key, value: value));
+      creditModel.Credit_recommendationList.add(Recommendation(key: key, value: value));
     } else {
       print('Key and value must not be empty');
     }
@@ -134,9 +134,9 @@ class InvoiceController extends GetxController {
     required String key,
     required String value,
   }) {
-    if (index >= 0 && index < invoiceModel.Invoice_recommendationList.length) {
+    if (index >= 0 && index < creditModel.Credit_recommendationList.length) {
       if (key.isNotEmpty && value.isNotEmpty) {
-        invoiceModel.Invoice_recommendationList[index] = Recommendation(key: key, value: value);
+        creditModel.Credit_recommendationList[index] = Recommendation(key: key, value: value);
       } else {
         print('Key and value must not be empty');
       }
@@ -147,7 +147,7 @@ class InvoiceController extends GetxController {
 
   void addNote(String noteContent) {
     if (noteContent.isNotEmpty) {
-      invoiceModel.Invoice_noteList.add(Note(notename: noteContent));
+      creditModel.Credit_noteList.add(Note(notename: noteContent));
     } else {
       print('Note content must not be empty'); // Handle empty input (optional)
     }
@@ -172,8 +172,8 @@ class InvoiceController extends GetxController {
         return;
       }
 
-      invoiceModel.Invoice_products.add(InvoiceProduct(
-        (invoiceModel.Invoice_products.length + 1).toString(),
+      creditModel.Credit_products.add(CreditProduct(
+        (creditModel.Credit_products.length + 1).toString(),
         productName,
         hsn,
         gst,
@@ -219,7 +219,7 @@ class InvoiceController extends GetxController {
       }
 
       // Check if the editIndex is valid
-      if (editIndex < 0 || editIndex >= invoiceModel.Invoice_products.length) {
+      if (editIndex < 0 || editIndex >= creditModel.Credit_products.length) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
@@ -230,7 +230,7 @@ class InvoiceController extends GetxController {
       }
 
       // Update the product details at the specified index
-      invoiceModel.Invoice_products[editIndex] = InvoiceProduct((editIndex + 1).toString(), productName, hsn, gst, price, quantity);
+      creditModel.Credit_products[editIndex] = CreditProduct((editIndex + 1).toString(), productName, hsn, gst, price, quantity);
 
       // ProductDetail(
       //   productName: productName.trim(),
@@ -249,7 +249,7 @@ class InvoiceController extends GetxController {
       );
 
       // Optional: Update UI or state if needed
-      // .updateProductDetails(invoiceController.invoiceModel.Invoice_productDetails);
+      // .updateProductDetails(creditController.creditModel.Credit_productDetails);
     } catch (e) {
       // Handle unexpected errors
       ScaffoldMessenger.of(context).showSnackBar(
@@ -262,73 +262,73 @@ class InvoiceController extends GetxController {
   }
 
   // Update products list
-  void updateProducts(List<InvoiceProduct> products) {
-    invoiceModel.Invoice_products.value = products;
+  void updateProducts(List<CreditProduct> products) {
+    creditModel.Credit_products.value = products;
   }
 
   void removeFromNoteList(int index) {
-    invoiceModel.Invoice_noteList.removeAt(index);
+    creditModel.Credit_noteList.removeAt(index);
   }
 
   void removeFromRecommendationList(int index) {
-    invoiceModel.Invoice_recommendationList.removeAt(index);
+    creditModel.Credit_recommendationList.removeAt(index);
   }
 
   void removeFromProductList(index) {
-    invoiceModel.Invoice_products.removeAt(index);
+    creditModel.Credit_products.removeAt(index);
   }
 
   void clearAll() {
     // Reset all observable strings to empty
-    invoiceModel.Invoice_client_addr_name.value = '';
-    invoiceModel.Invoice_client_addr.value = '';
-    invoiceModel.Invoice_bill_addr_name.value = '';
-    invoiceModel.Invoice_bill_addr.value = '';
-    invoiceModel.Invoice_no.value = '';
-    invoiceModel.Invoice_title.value = '';
-    invoiceModel.Invoice_table_heading.value = '';
+    creditModel.Credit_client_addr_name.value = '';
+    creditModel.Credit_client_addr.value = '';
+    creditModel.Credit_bill_addr_name.value = '';
+    creditModel.Credit_bill_addr.value = '';
+    creditModel.Credit_no.value = '';
+    creditModel.Credit_title.value = '';
+    creditModel.Credit_table_heading.value = '';
 
     // Clear note list and recommendation list
-    invoiceModel.Invoice_noteList.clear();
-    invoiceModel.Invoice_recommendationList.clear();
-    // invoiceModel.Invoice_productDetails.clear();
+    creditModel.Credit_noteList.clear();
+    creditModel.Credit_recommendationList.clear();
+    // creditModel.Credit_productDetails.clear();
 
     // Clear products list
-    invoiceModel.Invoice_products.clear();
+    creditModel.Credit_products.clear();
 
     // Reset text controllers
-    invoiceModel.TitleController.value.clear();
-    invoiceModel.clientAddressNameController.value.clear();
-    invoiceModel.clientAddressController.value.clear();
-    invoiceModel.billingAddressNameController.value.clear();
-    invoiceModel.billingAddressController.value.clear();
-    invoiceModel.productNameController.value.clear();
-    invoiceModel.hsnController.value.clear();
-    invoiceModel.priceController.value.clear();
-    invoiceModel.quantityController.value.clear();
-    invoiceModel.gstController.value.clear();
-    invoiceModel.notecontentController.value.clear();
-    invoiceModel.recommendationHeadingController.value.clear();
-    invoiceModel.recommendationKeyController.value.clear();
-    invoiceModel.recommendationValueController.value.clear();
+    creditModel.TitleController.value.clear();
+    creditModel.clientAddressNameController.value.clear();
+    creditModel.clientAddressController.value.clear();
+    creditModel.billingAddressNameController.value.clear();
+    creditModel.billingAddressController.value.clear();
+    creditModel.productNameController.value.clear();
+    creditModel.hsnController.value.clear();
+    creditModel.priceController.value.clear();
+    creditModel.quantityController.value.clear();
+    creditModel.gstController.value.clear();
+    creditModel.notecontentController.value.clear();
+    creditModel.recommendationHeadingController.value.clear();
+    creditModel.recommendationKeyController.value.clear();
+    creditModel.recommendationValueController.value.clear();
 
     // Reset form keys
-    invoiceModel.detailsKey.value = GlobalKey<FormState>();
-    invoiceModel.productKey.value = GlobalKey<FormState>();
-    invoiceModel.noteformKey.value = GlobalKey<FormState>();
+    creditModel.detailsKey.value = GlobalKey<FormState>();
+    creditModel.productKey.value = GlobalKey<FormState>();
+    creditModel.noteformKey.value = GlobalKey<FormState>();
 
     // Reset edit indices
-    invoiceModel.product_editIndex.value = null;
-    invoiceModel.note_editIndex.value = null;
-    invoiceModel.recommendation_editIndex.value = null;
+    creditModel.product_editIndex.value = null;
+    creditModel.note_editIndex.value = null;
+    creditModel.recommendation_editIndex.value = null;
 
     // Reset heading type and note arrays
-    // invoiceModel.selectedheadingType.value = null;
-    // invoiceModel.notelength.value = 0;
-    // invoiceModel.notetablelength.value = 0;
-    invoiceModel.notecontent.clear();
-    // invoiceModel.noteType.clear();
-    // invoiceModel.noteType.addAll([
+    // creditModel.selectedheadingType.value = null;
+    // creditModel.notelength.value = 0;
+    // creditModel.notetablelength.value = 0;
+    creditModel.notecontent.clear();
+    // creditModel.noteType.clear();
+    // creditModel.noteType.addAll([
     //   'With Heading',
     //   'Without Heading'
     // ]);

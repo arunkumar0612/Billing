@@ -1,129 +1,129 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../models/constants/Invoice_constants.dart';
-import '../models/entities/Invoice_entities.dart';
+import '../models/constants/RFQ_constants.dart';
+import '../models/entities/RFQ_entities.dart';
 import '../models/entities/product_entities.dart';
 
-class InvoiceController extends GetxController {
-  var invoiceModel = InvoiceModel();
+class RFQController extends GetxController {
+  var rfqModel = RFQModel();
 
   void initializeTabController(TabController tabController) {
-    invoiceModel.tabController.value = tabController;
+    rfqModel.tabController.value = tabController;
   }
 
   void nextTab() {
-    if (invoiceModel.tabController.value!.index < invoiceModel.tabController.value!.length - 1) {
-      invoiceModel.tabController.value!.animateTo(invoiceModel.tabController.value!.index + 1);
+    if (rfqModel.tabController.value!.index < rfqModel.tabController.value!.length - 1) {
+      rfqModel.tabController.value!.animateTo(rfqModel.tabController.value!.index + 1);
     }
   }
 
   void backTab() {
-    if (invoiceModel.tabController.value!.index > 0) {
-      invoiceModel.tabController.value!.animateTo(invoiceModel.tabController.value!.index - 1);
+    if (rfqModel.tabController.value!.index > 0) {
+      rfqModel.tabController.value!.animateTo(rfqModel.tabController.value!.index - 1);
     }
   }
 
   void updateProductName(String productName) {
-    invoiceModel.productNameController.value.text = productName;
+    rfqModel.productNameController.value.text = productName;
   }
 
   void updateHSN(String hsn) {
-    invoiceModel.hsnController.value.text = hsn;
+    rfqModel.hsnController.value.text = hsn;
   }
 
   void updatePrice(double price) {
-    invoiceModel.priceController.value.text = price.toString();
+    rfqModel.priceController.value.text = price.toString();
   }
 
   void updateQuantity(int quantity) {
-    invoiceModel.quantityController.value.text = quantity.toString();
+    rfqModel.quantityController.value.text = quantity.toString();
   }
 
   void updateGST(double gst) {
-    invoiceModel.gstController.value.text = gst.toString();
+    rfqModel.gstController.value.text = gst.toString();
   }
 
   void updateClientAddress(String addrName, String addr) {
-    invoiceModel.Invoice_client_addr_name.value = addrName;
-    invoiceModel.Invoice_client_addr.value = addr;
+    rfqModel.RFQ_client_addr_name.value = addrName;
+    rfqModel.RFQ_client_addr.value = addr;
   }
 
   void updateBillingAddress(String addrName, String addr) {
-    invoiceModel.Invoice_bill_addr_name.value = addrName;
-    invoiceModel.Invoice_bill_addr.value = addr;
+    rfqModel.RFQ_bill_addr_name.value = addrName;
+    rfqModel.RFQ_bill_addr.value = addr;
   }
 
   void updateChallanTitle(String title) {
-    invoiceModel.Invoice_title.value = title;
+    rfqModel.RFQ_title.value = title;
   }
 
   void updateNoteEditindex(int? index) {
-    invoiceModel.note_editIndex.value = index;
+    rfqModel.note_editIndex.value = index;
   }
 
   void updateChallanTableHeading(String tableHeading) {
-    invoiceModel.Invoice_table_heading.value = tableHeading;
+    rfqModel.RFQ_table_heading.value = tableHeading;
   }
 
   void updateNoteList(String value, int index) {
-    invoiceModel.Invoice_noteList[invoiceModel.note_editIndex.value!] = Note(notename: invoiceModel.notecontentController.value.text);
+    rfqModel.RFQ_noteList[rfqModel.note_editIndex.value!] = Note(notename: rfqModel.notecontentController.value.text);
   }
 
   void updateTabController(TabController tabController) {
-    invoiceModel.tabController.value = tabController;
+    rfqModel.tabController.value = tabController;
   }
 
   void updateTitleControllerText(String text) {
-    invoiceModel.TitleController.value.text = text;
+    rfqModel.TitleController.value.text = text;
   }
 
   void updateClientAddressNameControllerText(String text) {
-    invoiceModel.clientAddressNameController.value.text = text;
+    rfqModel.clientAddressNameController.value.text = text;
   }
 
   void updateClientAddressControllerText(String text) {
-    invoiceModel.clientAddressController.value.text = text;
+    rfqModel.clientAddressController.value.text = text;
   }
 
   void updateBillingAddressNameControllerText(String text) {
-    invoiceModel.billingAddressNameController.value.text = text;
+    rfqModel.billingAddressNameController.value.text = text;
   }
 
   void updateBillingAddressControllerText(String text) {
-    invoiceModel.billingAddressController.value.text = text;
+    rfqModel.billingAddressController.value.text = text;
   }
 
   void updateRecommendationEditindex(int? index) {
-    invoiceModel.recommendation_editIndex.value = index;
+    rfqModel.recommendation_editIndex.value = index;
   }
 
   void updateNoteContentControllerText(String text) {
-    invoiceModel.notecontentController.value.text = text;
+    rfqModel.notecontentController.value.text = text;
   }
 
   void updateTableHeadingControllerText(String text) {
-    invoiceModel.recommendationHeadingController.value.text = text;
+    rfqModel.recommendationHeadingController.value.text = text;
   }
 
   void updateTableKeyControllerText(String text) {
-    invoiceModel.recommendationKeyController.value.text = text;
+    rfqModel.recommendationKeyController.value.text = text;
   }
 
   void updateTableValueControllerText(String text) {
-    invoiceModel.recommendationValueController.value.text = text;
+    rfqModel.recommendationValueController.value.text = text;
   }
 
   void addNoteToList(String note) {
-    invoiceModel.notecontent.add(note);
+    rfqModel.notecontent.add(note);
   }
 
   void addProductEditindex(int? index) {
-    invoiceModel.product_editIndex.value = index;
+    rfqModel.product_editIndex.value = index;
   }
 
   void addRecommendation({required String key, required String value}) {
     if (key.isNotEmpty && value.isNotEmpty) {
-      invoiceModel.Invoice_recommendationList.add(Recommendation(key: key, value: value));
+      rfqModel.RFQ_recommendationList.add(Recommendation(key: key, value: value));
     } else {
       print('Key and value must not be empty');
     }
@@ -134,9 +134,9 @@ class InvoiceController extends GetxController {
     required String key,
     required String value,
   }) {
-    if (index >= 0 && index < invoiceModel.Invoice_recommendationList.length) {
+    if (index >= 0 && index < rfqModel.RFQ_recommendationList.length) {
       if (key.isNotEmpty && value.isNotEmpty) {
-        invoiceModel.Invoice_recommendationList[index] = Recommendation(key: key, value: value);
+        rfqModel.RFQ_recommendationList[index] = Recommendation(key: key, value: value);
       } else {
         print('Key and value must not be empty');
       }
@@ -147,7 +147,7 @@ class InvoiceController extends GetxController {
 
   void addNote(String noteContent) {
     if (noteContent.isNotEmpty) {
-      invoiceModel.Invoice_noteList.add(Note(notename: noteContent));
+      rfqModel.RFQ_noteList.add(Note(notename: noteContent));
     } else {
       print('Note content must not be empty'); // Handle empty input (optional)
     }
@@ -172,8 +172,8 @@ class InvoiceController extends GetxController {
         return;
       }
 
-      invoiceModel.Invoice_products.add(InvoiceProduct(
-        (invoiceModel.Invoice_products.length + 1).toString(),
+      rfqModel.RFQ_products.add(RFQProduct(
+        (rfqModel.RFQ_products.length + 1).toString(),
         productName,
         hsn,
         gst,
@@ -219,7 +219,7 @@ class InvoiceController extends GetxController {
       }
 
       // Check if the editIndex is valid
-      if (editIndex < 0 || editIndex >= invoiceModel.Invoice_products.length) {
+      if (editIndex < 0 || editIndex >= rfqModel.RFQ_products.length) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
@@ -230,7 +230,7 @@ class InvoiceController extends GetxController {
       }
 
       // Update the product details at the specified index
-      invoiceModel.Invoice_products[editIndex] = InvoiceProduct((editIndex + 1).toString(), productName, hsn, gst, price, quantity);
+      rfqModel.RFQ_products[editIndex] = RFQProduct((editIndex + 1).toString(), productName, hsn, gst, price, quantity);
 
       // ProductDetail(
       //   productName: productName.trim(),
@@ -249,7 +249,7 @@ class InvoiceController extends GetxController {
       );
 
       // Optional: Update UI or state if needed
-      // .updateProductDetails(invoiceController.invoiceModel.Invoice_productDetails);
+      // .updateProductDetails(rfqController.rfqModel.RFQ_productDetails);
     } catch (e) {
       // Handle unexpected errors
       ScaffoldMessenger.of(context).showSnackBar(
@@ -262,73 +262,73 @@ class InvoiceController extends GetxController {
   }
 
   // Update products list
-  void updateProducts(List<InvoiceProduct> products) {
-    invoiceModel.Invoice_products.value = products;
+  void updateProducts(List<RFQProduct> products) {
+    rfqModel.RFQ_products.value = products;
   }
 
   void removeFromNoteList(int index) {
-    invoiceModel.Invoice_noteList.removeAt(index);
+    rfqModel.RFQ_noteList.removeAt(index);
   }
 
   void removeFromRecommendationList(int index) {
-    invoiceModel.Invoice_recommendationList.removeAt(index);
+    rfqModel.RFQ_recommendationList.removeAt(index);
   }
 
   void removeFromProductList(index) {
-    invoiceModel.Invoice_products.removeAt(index);
+    rfqModel.RFQ_products.removeAt(index);
   }
 
   void clearAll() {
     // Reset all observable strings to empty
-    invoiceModel.Invoice_client_addr_name.value = '';
-    invoiceModel.Invoice_client_addr.value = '';
-    invoiceModel.Invoice_bill_addr_name.value = '';
-    invoiceModel.Invoice_bill_addr.value = '';
-    invoiceModel.Invoice_no.value = '';
-    invoiceModel.Invoice_title.value = '';
-    invoiceModel.Invoice_table_heading.value = '';
+    rfqModel.RFQ_client_addr_name.value = '';
+    rfqModel.RFQ_client_addr.value = '';
+    rfqModel.RFQ_bill_addr_name.value = '';
+    rfqModel.RFQ_bill_addr.value = '';
+    rfqModel.RFQ_no.value = '';
+    rfqModel.RFQ_title.value = '';
+    rfqModel.RFQ_table_heading.value = '';
 
     // Clear note list and recommendation list
-    invoiceModel.Invoice_noteList.clear();
-    invoiceModel.Invoice_recommendationList.clear();
-    // invoiceModel.Invoice_productDetails.clear();
+    rfqModel.RFQ_noteList.clear();
+    rfqModel.RFQ_recommendationList.clear();
+    // rfqModel.RFQ_productDetails.clear();
 
     // Clear products list
-    invoiceModel.Invoice_products.clear();
+    rfqModel.RFQ_products.clear();
 
     // Reset text controllers
-    invoiceModel.TitleController.value.clear();
-    invoiceModel.clientAddressNameController.value.clear();
-    invoiceModel.clientAddressController.value.clear();
-    invoiceModel.billingAddressNameController.value.clear();
-    invoiceModel.billingAddressController.value.clear();
-    invoiceModel.productNameController.value.clear();
-    invoiceModel.hsnController.value.clear();
-    invoiceModel.priceController.value.clear();
-    invoiceModel.quantityController.value.clear();
-    invoiceModel.gstController.value.clear();
-    invoiceModel.notecontentController.value.clear();
-    invoiceModel.recommendationHeadingController.value.clear();
-    invoiceModel.recommendationKeyController.value.clear();
-    invoiceModel.recommendationValueController.value.clear();
+    rfqModel.TitleController.value.clear();
+    rfqModel.clientAddressNameController.value.clear();
+    rfqModel.clientAddressController.value.clear();
+    rfqModel.billingAddressNameController.value.clear();
+    rfqModel.billingAddressController.value.clear();
+    rfqModel.productNameController.value.clear();
+    rfqModel.hsnController.value.clear();
+    rfqModel.priceController.value.clear();
+    rfqModel.quantityController.value.clear();
+    rfqModel.gstController.value.clear();
+    rfqModel.notecontentController.value.clear();
+    rfqModel.recommendationHeadingController.value.clear();
+    rfqModel.recommendationKeyController.value.clear();
+    rfqModel.recommendationValueController.value.clear();
 
     // Reset form keys
-    invoiceModel.detailsKey.value = GlobalKey<FormState>();
-    invoiceModel.productKey.value = GlobalKey<FormState>();
-    invoiceModel.noteformKey.value = GlobalKey<FormState>();
+    rfqModel.detailsKey.value = GlobalKey<FormState>();
+    rfqModel.productKey.value = GlobalKey<FormState>();
+    rfqModel.noteformKey.value = GlobalKey<FormState>();
 
     // Reset edit indices
-    invoiceModel.product_editIndex.value = null;
-    invoiceModel.note_editIndex.value = null;
-    invoiceModel.recommendation_editIndex.value = null;
+    rfqModel.product_editIndex.value = null;
+    rfqModel.note_editIndex.value = null;
+    rfqModel.recommendation_editIndex.value = null;
 
     // Reset heading type and note arrays
-    // invoiceModel.selectedheadingType.value = null;
-    // invoiceModel.notelength.value = 0;
-    // invoiceModel.notetablelength.value = 0;
-    invoiceModel.notecontent.clear();
-    // invoiceModel.noteType.clear();
-    // invoiceModel.noteType.addAll([
+    // rfqModel.selectedheadingType.value = null;
+    // rfqModel.notelength.value = 0;
+    // rfqModel.notetablelength.value = 0;
+    rfqModel.notecontent.clear();
+    // rfqModel.noteType.clear();
+    // rfqModel.noteType.addAll([
     //   'With Heading',
     //   'Without Heading'
     // ]);

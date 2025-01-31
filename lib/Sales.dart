@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ssipl_billing/controllers/DC_actions.dart';
+import 'package:ssipl_billing/controllers/Debit_actions.dart';
 import 'package:ssipl_billing/controllers/Invoice_actions.dart';
+import 'package:ssipl_billing/controllers/Quote_actions.dart';
+import 'package:ssipl_billing/controllers/RFQ_actions.dart';
+import 'package:ssipl_billing/controllers/credit_actions.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_template.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_DC/generateDC.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/generateInvoice.dart';
@@ -21,14 +25,19 @@ import 'package:ssipl_billing/controllers/Invoice_actions.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_debitnote/generate_debitnote.dart';
 import 'package:ssipl_billing/views/components/cards.dart';
 import 'package:ssipl_billing/themes/style.dart';
-import 'package:ssipl_billing/view_send_pdf.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/generateRFQ.dart';
+// import 'package:ssipl_billing/view_send_pdf.dart';
 
+import 'view_send_pdf.dart';
 import 'views/screens/SALES/Generate_DC/generateDC.dart';
+import 'views/screens/SALES/Generate_DebitNote/generateDebit.dart';
 import 'views/screens/SALES/Generate_Invoice/generateInvoice.dart';
+import 'views/screens/SALES/Generate_Quote/generateQuote.dart';
+import 'views/screens/SALES/Generate_creditNote/generateCredit.dart';
 
 class Sales_Client extends StatefulWidget {
   const Sales_Client({super.key});
-  static late dynamic Function() quote_Callback;
+  static late dynamic Function() rfq_Callback;
   static late dynamic Function() invoice_Callback;
   static late dynamic Function() RFQ_Callback;
   // static late dynamic Function() Delivery_challan_Callback;
@@ -43,6 +52,10 @@ class Sales_Client extends StatefulWidget {
 class _Sales_ClientState extends State<Sales_Client> {
   final DCController dcController = Get.put(DCController());
   final InvoiceController invoiceController = Get.put(InvoiceController());
+  final QuoteController quoteController = Get.put(QuoteController());
+  final RFQController rfqController = Get.put(RFQController());
+  final CreditController creditController = Get.put(CreditController());
+  final DebitController debitController = Get.put(DebitController());
 
   final List<Map<String, dynamic>> items = [
     {
@@ -501,7 +514,7 @@ class _Sales_ClientState extends State<Sales_Client> {
 //                           return AlertDialog(
 //                             title: const Text("Warning"),
 //                             content: const Text(
-//                               "The data may be lost. Do you want to proceed?",
+//                               "IAMy be lost. Do you want to proceed?",
 //                             ),
 //                             actions: [
 //                               TextButton(
@@ -627,6 +640,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                               ),
                               TextButton(
                                 onPressed: () {
+                                  invoiceController.clearAll();
                                   Navigator.of(context).pop(true); // Yes action
                                 },
                                 child: const Text("Yes"),
@@ -689,6 +703,233 @@ class _Sales_ClientState extends State<Sales_Client> {
     // }
   }
 
+  dynamic GenerateQuote_dialougebox() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents closing the dialog by clicking outside
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Primary_colors.Dark,
+          content: Stack(
+            children: [
+              const SizedBox(
+                height: 650,
+                width: 1300,
+                child: GenerateQuote(),
+              ),
+              Positioned(
+                top: 3,
+                right: 0,
+                child: IconButton(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: const Color.fromARGB(255, 219, 216, 216),
+                    ),
+                    height: 30,
+                    width: 30,
+                    child: const Icon(Icons.close, color: Colors.red),
+                  ),
+                  onPressed: () async {
+                    // Check if the data has any value
+                    // || ( quoteController.quoteModel.Quote_gstTotals.isNotEmpty)
+                    if ((quoteController.quoteModel.Quote_products.isNotEmpty) || (quoteController.quoteModel.Quote_noteList.isNotEmpty) || (quoteController.quoteModel.Quote_recommendationList.isNotEmpty) || (quoteController.quoteModel.Quote_client_addr_name.value != "") || (quoteController.quoteModel.Quote_client_addr.value != "") || (quoteController.quoteModel.Quote_bill_addr_name.value != "") || (quoteController.quoteModel.Quote_bill_addr.value != "") || (quoteController.quoteModel.Quote_no.value != "") || (quoteController.quoteModel.Quote_title.value != "") || (quoteController.quoteModel.Quote_table_heading.value != "")) {
+                      // Show confirmation dialog
+                      bool? proceed = await showDialog<bool>(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text("Warning"),
+                            content: const Text(
+                              "The data may be lost. Do you want to proceed?",
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(false); // No action
+                                },
+                                child: const Text("No"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  quoteController.clearAll();
+                                  Navigator.of(context).pop(true); // Yes action
+                                },
+                                child: const Text("Yes"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+                      // If user confirms (Yes), clear data and close the dialog
+                      if (proceed == true) {
+                        Navigator.of(context).pop(); // Close the dialog
+                        // Clear all the data when dialog is closed
+                        quoteController.quoteModel.Quote_products.clear();
+                        //  quoteController.quoteModel.Quote_gstTotals.clear();
+                        quoteController.quoteModel.Quote_noteList.clear();
+                        quoteController.quoteModel.Quote_recommendationList.clear();
+                        //  quoteController.quoteModel.iQuote_productDetails.clear();
+                        quoteController.quoteModel.Quote_client_addr_name.value = "";
+                        quoteController.quoteModel.Quote_client_addr.value = "";
+                        quoteController.quoteModel.Quote_bill_addr_name.value = "";
+                        quoteController.quoteModel.Quote_bill_addr.value = "";
+                        quoteController.quoteModel.Quote_no.value = "";
+                        quoteController.quoteModel.Quote_title.value = "";
+                        quoteController.quoteModel.Quote_table_heading.value = "";
+                      }
+                    } else {
+                      // If no data, just close the dialog
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  dynamic generate_quote() async {
+    // bool confirmed = await GenerateQuote_dialougebox();
+
+    // if (confirmed) {
+    // Proceed only if the dialog was confirmed
+    Future.delayed(const Duration(seconds: 4), () {
+      Generate_popup.callback();
+    });
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+            backgroundColor: Primary_colors.Light,
+            content: Generate_popup(
+              type: 'E://Quote.pdf',
+            ));
+      },
+    );
+    // }
+  }
+
+  dynamic GenerateRFQ_dialougebox() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents closing the dialog by clicking outside
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Primary_colors.Dark,
+          content: Stack(
+            children: [
+              const SizedBox(
+                height: 650,
+                width: 1300,
+                child: GenerateRFQ(),
+              ),
+              Positioned(
+                top: 3,
+                right: 0,
+                child: IconButton(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: const Color.fromARGB(255, 219, 216, 216),
+                    ),
+                    height: 30,
+                    width: 30,
+                    child: const Icon(Icons.close, color: Colors.red),
+                  ),
+                  onPressed: () async {
+                    // Check if the data has any value
+                    // || ( rfqController.rfqModel.RFQ_gstTotals.isNotEmpty)
+                    if ((rfqController.rfqModel.RFQ_products.isNotEmpty) || (rfqController.rfqModel.RFQ_noteList.isNotEmpty) || (rfqController.rfqModel.RFQ_recommendationList.isNotEmpty) || (rfqController.rfqModel.RFQ_client_addr_name.value != "") || (rfqController.rfqModel.RFQ_client_addr.value != "") || (rfqController.rfqModel.RFQ_bill_addr_name.value != "") || (rfqController.rfqModel.RFQ_bill_addr.value != "") || (rfqController.rfqModel.RFQ_no.value != "") || (rfqController.rfqModel.RFQ_title.value != "") || (rfqController.rfqModel.RFQ_table_heading.value != "")) {
+                      // Show confirmation dialog
+                      bool? proceed = await showDialog<bool>(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text("Warning"),
+                            content: const Text(
+                              "The data may be lost. Do you want to proceed?",
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(false); // No action
+                                },
+                                child: const Text("No"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  rfqController.clearAll();
+                                  Navigator.of(context).pop(true); // Yes action
+                                },
+                                child: const Text("Yes"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+                      // If user confirms (Yes), clear data and close the dialog
+                      if (proceed == true) {
+                        Navigator.of(context).pop(); // Close the dialog
+                        // Clear all the data when dialog is closed
+                        rfqController.rfqModel.RFQ_products.clear();
+                        //  rfqController.rfqModel.RFQ_gstTotals.clear();
+                        rfqController.rfqModel.RFQ_noteList.clear();
+                        rfqController.rfqModel.RFQ_recommendationList.clear();
+                        //  rfqController.rfqModel.iRFQ_productDetails.clear();
+                        rfqController.rfqModel.RFQ_client_addr_name.value = "";
+                        rfqController.rfqModel.RFQ_client_addr.value = "";
+                        rfqController.rfqModel.RFQ_bill_addr_name.value = "";
+                        rfqController.rfqModel.RFQ_bill_addr.value = "";
+                        rfqController.rfqModel.RFQ_no.value = "";
+                        rfqController.rfqModel.RFQ_title.value = "";
+                        rfqController.rfqModel.RFQ_table_heading.value = "";
+                      }
+                    } else {
+                      // If no data, just close the dialog
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  dynamic generate_rfq() async {
+    // bool confirmed = await GenerateRFQ_dialougebox();
+
+    // if (confirmed) {
+    // Proceed only if the dialog was confirmed
+    Future.delayed(const Duration(seconds: 4), () {
+      Generate_popup.callback();
+    });
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+            backgroundColor: Primary_colors.Light,
+            content: Generate_popup(
+              type: 'E://RFQ.pdf',
+            ));
+      },
+    );
+    // }
+  }
 // // ##################################################################################################################################################################################################################################################################################################################################################################
 
 //   dynamic GenerateRFQ_dialougebox() async {
@@ -1260,6 +1501,233 @@ class _Sales_ClientState extends State<Sales_Client> {
   //   );
   //   // }
   // }
+  dynamic GenerateDebit_dialougebox() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents closing the dialog by clicking outside
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Primary_colors.Dark,
+          content: Stack(
+            children: [
+              const SizedBox(
+                height: 650,
+                width: 1300,
+                child: GenerateDebit(),
+              ),
+              Positioned(
+                top: 3,
+                right: 0,
+                child: IconButton(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: const Color.fromARGB(255, 219, 216, 216),
+                    ),
+                    height: 30,
+                    width: 30,
+                    child: const Icon(Icons.close, color: Colors.red),
+                  ),
+                  onPressed: () async {
+                    // Check if the data has any value
+                    // || ( debitController.debitModel.Debit_gstTotals.isNotEmpty)
+                    if ((debitController.debitModel.Debit_products.isNotEmpty) || (debitController.debitModel.Debit_noteList.isNotEmpty) || (debitController.debitModel.Debit_recommendationList.isNotEmpty) || (debitController.debitModel.Debit_client_addr_name.value != "") || (debitController.debitModel.Debit_client_addr.value != "") || (debitController.debitModel.Debit_bill_addr_name.value != "") || (debitController.debitModel.Debit_bill_addr.value != "") || (debitController.debitModel.Debit_no.value != "") || (debitController.debitModel.Debit_title.value != "") || (debitController.debitModel.Debit_table_heading.value != "")) {
+                      // Show confirmation dialog
+                      bool? proceed = await showDialog<bool>(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text("Warning"),
+                            content: const Text(
+                              "The data may be lost. Do you want to proceed?",
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(false); // No action
+                                },
+                                child: const Text("No"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  debitController.clearAll();
+                                  Navigator.of(context).pop(true); // Yes action
+                                },
+                                child: const Text("Yes"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+                      // If user confirms (Yes), clear data and close the dialog
+                      if (proceed == true) {
+                        Navigator.of(context).pop(); // Close the dialog
+                        // Clear all the data when dialog is closed
+                        debitController.debitModel.Debit_products.clear();
+                        //  debitController.debitModel.Debit_gstTotals.clear();
+                        debitController.debitModel.Debit_noteList.clear();
+                        debitController.debitModel.Debit_recommendationList.clear();
+                        //  debitController.debitModel.iDebit_productDetails.clear();
+                        debitController.debitModel.Debit_client_addr_name.value = "";
+                        debitController.debitModel.Debit_client_addr.value = "";
+                        debitController.debitModel.Debit_bill_addr_name.value = "";
+                        debitController.debitModel.Debit_bill_addr.value = "";
+                        debitController.debitModel.Debit_no.value = "";
+                        debitController.debitModel.Debit_title.value = "";
+                        debitController.debitModel.Debit_table_heading.value = "";
+                      }
+                    } else {
+                      // If no data, just close the dialog
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  dynamic generate_debit() async {
+    // bool confirmed = await GenerateDebit_dialougebox();
+
+    // if (confirmed) {
+    // Proceed only if the dialog was confirmed
+    Future.delayed(const Duration(seconds: 4), () {
+      Generate_popup.callback();
+    });
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+            backgroundColor: Primary_colors.Light,
+            content: Generate_popup(
+              type: 'E://Debit.pdf',
+            ));
+      },
+    );
+    // }
+  }
+
+  dynamic GenerateCredit_dialougebox() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents closing the dialog by clicking outside
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Primary_colors.Dark,
+          content: Stack(
+            children: [
+              const SizedBox(
+                height: 650,
+                width: 1300,
+                child: GenerateCredit(),
+              ),
+              Positioned(
+                top: 3,
+                right: 0,
+                child: IconButton(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: const Color.fromARGB(255, 219, 216, 216),
+                    ),
+                    height: 30,
+                    width: 30,
+                    child: const Icon(Icons.close, color: Colors.red),
+                  ),
+                  onPressed: () async {
+                    // Check if the data has any value
+                    // || ( creditController.creditModel.Credit_gstTotals.isNotEmpty)
+                    if ((creditController.creditModel.Credit_products.isNotEmpty) || (creditController.creditModel.Credit_noteList.isNotEmpty) || (creditController.creditModel.Credit_recommendationList.isNotEmpty) || (creditController.creditModel.Credit_client_addr_name.value != "") || (creditController.creditModel.Credit_client_addr.value != "") || (creditController.creditModel.Credit_bill_addr_name.value != "") || (creditController.creditModel.Credit_bill_addr.value != "") || (creditController.creditModel.Credit_no.value != "") || (creditController.creditModel.Credit_title.value != "") || (creditController.creditModel.Credit_table_heading.value != "")) {
+                      // Show confirmation dialog
+                      bool? proceed = await showDialog<bool>(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text("Warning"),
+                            content: const Text(
+                              "The data may be lost. Do you want to proceed?",
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(false); // No action
+                                },
+                                child: const Text("No"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  creditController.clearAll();
+                                  Navigator.of(context).pop(true); // Yes action
+                                },
+                                child: const Text("Yes"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+                      // If user confirms (Yes), clear data and close the dialog
+                      if (proceed == true) {
+                        Navigator.of(context).pop(); // Close the dialog
+                        // Clear all the data when dialog is closed
+                        creditController.creditModel.Credit_products.clear();
+                        //  creditController.creditModel.Credit_gstTotals.clear();
+                        creditController.creditModel.Credit_noteList.clear();
+                        creditController.creditModel.Credit_recommendationList.clear();
+                        //  creditController.creditModel.iCredit_productDetails.clear();
+                        creditController.creditModel.Credit_client_addr_name.value = "";
+                        creditController.creditModel.Credit_client_addr.value = "";
+                        creditController.creditModel.Credit_bill_addr_name.value = "";
+                        creditController.creditModel.Credit_bill_addr.value = "";
+                        creditController.creditModel.Credit_no.value = "";
+                        creditController.creditModel.Credit_title.value = "";
+                        creditController.creditModel.Credit_table_heading.value = "";
+                      }
+                    } else {
+                      // If no data, just close the dialog
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  dynamic generate_credit() async {
+    // bool confirmed = await GenerateCredit_dialougebox();
+
+    // if (confirmed) {
+    // Proceed only if the dialog was confirmed
+    Future.delayed(const Duration(seconds: 4), () {
+      Generate_popup.callback();
+    });
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+            backgroundColor: Primary_colors.Light,
+            content: Generate_popup(
+              type: 'E://Credit.pdf',
+            ));
+      },
+    );
+    // }
+  }
 
   @override
   void dispose() {
@@ -1457,7 +1925,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                       if (items[showcustomerprocess]['process'][index]['child'][childIndex]["generate_Quote"] == true)
                                                                         TextButton(
                                                                           onPressed: () {
-                                                                            // GenerateQuotation_dialougebox();
+                                                                            GenerateQuote_dialougebox();
                                                                           },
                                                                           child: const Text(
                                                                             "Quotation",
@@ -1477,7 +1945,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                       if (items[showcustomerprocess]['process'][index]['child'][childIndex]["generate_RFQ"] == true)
                                                                         TextButton(
                                                                           onPressed: () {
-                                                                            // GenerateRFQ_dialougebox();
+                                                                            GenerateRFQ_dialougebox();
                                                                           },
                                                                           child: const Text(
                                                                             "Generate RFQ",
@@ -1512,7 +1980,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                       if (items[showcustomerprocess]['process'][index]['child'][childIndex]["credit_note"] == true)
                                                                         TextButton(
                                                                           onPressed: () {
-                                                                            // Generate_creditnote_dialougebox();
+                                                                            GenerateCredit_dialougebox();
                                                                             // (items[showcustomerprocess]['process'][index]['child'] as List).add({
                                                                             //   "name": "Requirement4",
                                                                             //   "generate_po": true,
@@ -1527,7 +1995,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                       if (items[showcustomerprocess]['process'][index]['child'][childIndex]["debit_note"] == true)
                                                                         TextButton(
                                                                           onPressed: () {
-                                                                            // Generate_debitnote_dialougebox();
+                                                                            GenerateDebit_dialougebox();
                                                                             // (items[showcustomerprocess]['process'][index]['child'] as List).add({
                                                                             //   "name": "Requirement4",
                                                                             //   "generate_po": true,

@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/services/SALES/DC_services/DCproduct_services.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
+import '../../../../controllers/Debit_actions.dart';
+import '../../../../services/SALES/Debit_services/DebitProduct_services.dart';
 
-import '../../../../controllers/DC_actions.dart';
-
-class Delivery_challanProducts extends StatefulWidget with DcproductService {
-  Delivery_challanProducts({super.key});
+class DebitProducts extends StatefulWidget with DebitproductService {
+  DebitProducts({super.key});
 
   @override
-  State<Delivery_challanProducts> createState() => _Delivery_challanProductsState();
+  State<DebitProducts> createState() => _DebitProductsState();
 }
 
-class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
-  final DCController dcController = Get.find<DCController>();
+class _DebitProductsState extends State<DebitProducts> {
+  final DebitController debitController = Get.find<DebitController>();
 
-  Widget Delivery_challan_productDetailss() {
+  Widget Debit_productDetailss() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        for (int i = 0; i < dcController.dcModel.Delivery_challan_products.length; i++)
+        for (int i = 0; i < debitController.debitModel.Debit_products.length; i++)
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +45,7 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                             padding: const EdgeInsets.only(left: 10),
                             child: Text(
                               overflow: TextOverflow.ellipsis,
-                              '${i + 1}. ${dcController.dcModel.Delivery_challan_products[i].productName}', // Display camera type from map
+                              '${i + 1}. ${debitController.debitModel.Debit_products[i].productName}', // Display camera type from map
                               style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                             ),
                           ),
@@ -55,7 +54,7 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                           children: [
                             IconButton(
                               onPressed: () {
-                                dcController.removeFromProductList(i);
+                                debitController.removeFromProductList(i);
                               },
                               icon: const Icon(
                                 Icons.close,
@@ -83,7 +82,7 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Form(
-            key: dcController.dcModel.productKey.value,
+            key: debitController.debitModel.productKey.value,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +95,7 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                         return Textfield_1(
                           readonly: false,
                           text: 'Product Name',
-                          controller: dcController.dcModel.productNameController.value,
+                          controller: debitController.debitModel.productNameController.value,
                           icon: Icons.production_quantity_limits,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -113,7 +112,7 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                         return Textfield_1(
                           readonly: false,
                           text: 'HSN',
-                          controller: dcController.dcModel.hsnController.value,
+                          controller: debitController.debitModel.hsnController.value,
                           icon: Icons.numbers,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -154,7 +153,7 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                                 color: Colors.white,
                               ),
                             ),
-                            controller: dcController.dcModel.gstController.value,
+                            controller: debitController.debitModel.gstController.value,
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly
@@ -199,7 +198,7 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                                 color: Colors.white,
                               ),
                             ),
-                            controller: dcController.dcModel.priceController.value,
+                            controller: debitController.debitModel.priceController.value,
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly
@@ -247,7 +246,7 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly
                             ],
-                            controller: dcController.dcModel.quantityController.value,
+                            controller: debitController.debitModel.quantityController.value,
                             keyboardType: TextInputType.number,
                             // inputFormatters: [
                             //   FilteringTextInputFormatter.digitsOnly
@@ -271,17 +270,17 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                           children: [
                             Button1(
                               colors: Colors.red,
-                              text: dcController.dcModel.product_editIndex.value == null ? 'Back' : 'Cancel',
+                              text: debitController.debitModel.product_editIndex.value == null ? 'Back' : 'Cancel',
                               onPressed: () {
-                                dcController.dcModel.product_editIndex.value == null ? dcController.backTab() : widget.resetEditingState(); // Reset editing state when going back
+                                debitController.debitModel.product_editIndex.value == null ? debitController.backTab() : widget.resetEditingState(); // Reset editing state when going back
                               },
                             ),
                             const SizedBox(width: 30),
                             Button1(
-                              colors: dcController.dcModel.product_editIndex.value == null ? Colors.blue : Colors.orange,
-                              text: dcController.dcModel.product_editIndex.value == null ? 'Add product' : 'Update',
+                              colors: debitController.debitModel.product_editIndex.value == null ? Colors.blue : Colors.orange,
+                              text: debitController.debitModel.product_editIndex.value == null ? 'Add product' : 'Update',
                               onPressed: () {
-                                dcController.dcModel.product_editIndex.value == null ? widget.addproduct(context) : widget.updateproduct(context);
+                                debitController.debitModel.product_editIndex.value == null ? widget.addproduct(context) : widget.updateproduct(context);
                               },
                             ),
                           ],
@@ -293,7 +292,7 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                 // if (length != 0) const SizedBox(width: 60),
                 Obx(
                   () {
-                    return (dcController.dcModel.Delivery_challan_products.isNotEmpty)
+                    return (debitController.debitModel.Debit_products.isNotEmpty)
                         ? Column(
                             children: [
                               const SizedBox(height: 25),
@@ -318,7 +317,7 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                                           child: SingleChildScrollView(
                                             child: Padding(
                                               padding: const EdgeInsets.all(10),
-                                              child: Delivery_challan_productDetailss(),
+                                              child: Debit_productDetailss(),
                                             ),
                                           ),
                                         ),
@@ -328,12 +327,12 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                                 ),
                               ),
                               const SizedBox(height: 25),
-                              if (dcController.dcModel.Delivery_challan_products.isNotEmpty)
+                              if (debitController.debitModel.Debit_products.isNotEmpty)
                                 Button1(
                                   colors: Colors.green,
                                   text: 'Submit',
                                   onPressed: () {
-                                    dcController.nextTab();
+                                    debitController.nextTab();
                                   },
                                 ),
                             ],

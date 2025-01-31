@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_client_requirements/generate_clientreq.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/generate_clientreq.dart';
 // import 'package:ssipl_billing/SALES/Generate_client_requirements/clientreq_template.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';

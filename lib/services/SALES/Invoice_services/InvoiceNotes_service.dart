@@ -8,7 +8,7 @@ import 'package:ssipl_billing/models/entities/Invoice_entities.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/Invoice_template.dart';
 
 import '../../../themes/style.dart';
-import '../../../view_send_pdf.dart';
+import '../../../views/components/view_send_pdf.dart';
 import '../../../views/screens/SALES/Generate_Invoice/invoice_template.dart';
 // import '../../../views/screens/SALES/Generate_Invoice/invoice_template.dart';
 
@@ -94,16 +94,7 @@ mixin InvoicenotesService {
   }
 
   void Generate_Invoice(context) async {
-    final pdfData = await generate_Invoice(
-      PdfPageFormat.a4,
-      invoiceController.invoiceModel.Invoice_products,
-      invoiceController.invoiceModel.Invoice_client_addr_name.value,
-      invoiceController.invoiceModel.Invoice_client_addr.value,
-      invoiceController.invoiceModel.Invoice_bill_addr_name.value,
-      invoiceController.invoiceModel.Invoice_bill_addr.value,
-      invoiceController.invoiceModel.Invoice_no.value,
-      invoiceController.invoiceModel.Invoice_title.value,
-    );
+    final pdfData = await generate_Invoice(PdfPageFormat.a4, invoiceController.invoiceModel.Invoice_products, invoiceController.invoiceModel.clientAddressNameController.value.text, invoiceController.invoiceModel.clientAddressController.value.text, invoiceController.invoiceModel.billingAddressNameController.value.text, invoiceController.invoiceModel.billingAddressController.value.text, invoiceController.invoiceModel.Invoice_no.value, invoiceController.invoiceModel.TitleController.value.text, 9, invoiceController.invoiceModel.Invoice_gstTotals);
 
     const filePath = 'E://Invoice.pdf';
     final file = File(filePath);

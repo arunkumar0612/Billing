@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/product_entities.dart';
 
-import '../../../controllers/credit_actions.dart';
+import '../../../controllers/Credit_actions.dart';
 
 mixin CreditproductService {
   final CreditController creditController = Get.find<CreditController>();
@@ -12,6 +12,7 @@ mixin CreditproductService {
     creditController.creditModel.priceController.value.clear();
     creditController.creditModel.quantityController.value.clear();
     creditController.creditModel.gstController.value.clear();
+    creditController.creditModel.remarksController.value.clear();
   }
 
   void addproduct(context) {
@@ -27,23 +28,37 @@ mixin CreditproductService {
         );
         return;
       }
-      creditController.addProduct(context: context, productName: creditController.creditModel.productNameController.value.text, hsn: creditController.creditModel.hsnController.value.text, price: double.parse(creditController.creditModel.priceController.value.text), quantity: int.parse(creditController.creditModel.quantityController.value.text), gst: double.parse(creditController.creditModel.gstController.value.text));
+      creditController.addProduct(context: context, productName: creditController.creditModel.productNameController.value.text, hsn: creditController.creditModel.hsnController.value.text, price: double.parse(creditController.creditModel.priceController.value.text), quantity: int.parse(creditController.creditModel.quantityController.value.text), gst: double.parse(creditController.creditModel.gstController.value.text), remarks: creditController.creditModel.remarksController.value.text);
 
       clearFields();
     }
   }
 
+  void onSubmit() {
+    creditController.creditModel.Credit_gstTotals.assignAll(creditController.creditModel.Credit_products
+        .fold<Map<double, double>>({}, (Map<double, double> accumulator, CreditProduct product) {
+          accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
+          return accumulator;
+        })
+        .entries
+        .map((entry) => {
+              'gst': entry.key,
+              'total': entry.value,
+            })
+        .toList());
+  }
+
   void updateproduct(context) {
     if (creditController.creditModel.productKey.value.currentState?.validate() ?? false) {
       creditController.updateProduct(
-        context: context,
-        editIndex: creditController.creditModel.product_editIndex.value!, // The index of the product to be updated
-        productName: creditController.creditModel.productNameController.value.text,
-        hsn: creditController.creditModel.hsnController.value.text,
-        price: double.parse(creditController.creditModel.priceController.value.text),
-        quantity: int.parse(creditController.creditModel.quantityController.value.text),
-        gst: double.parse(creditController.creditModel.gstController.value.text),
-      );
+          context: context,
+          editIndex: creditController.creditModel.product_editIndex.value!, // The index of the product to be updated
+          productName: creditController.creditModel.productNameController.value.text,
+          hsn: creditController.creditModel.hsnController.value.text,
+          price: double.parse(creditController.creditModel.priceController.value.text),
+          quantity: int.parse(creditController.creditModel.quantityController.value.text),
+          gst: double.parse(creditController.creditModel.gstController.value.text),
+          remarks: creditController.creditModel.remarksController.value.text);
 
       clearFields();
       creditController.addProductEditindex(null);
@@ -59,6 +74,7 @@ mixin CreditproductService {
     creditController.updateQuantity(product.quantity);
     creditController.updateGST(product.gst);
     creditController.addProductEditindex(index);
+    creditController.updateRemark(product.remarks);
   }
 
   void resetEditingState() {

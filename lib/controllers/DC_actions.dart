@@ -31,30 +31,8 @@ class DCController extends GetxController {
     dcModel.hsnController.value.text = hsn;
   }
 
-  void updatePrice(double price) {
-    dcModel.priceController.value.text = price.toString();
-  }
-
   void updateQuantity(int quantity) {
     dcModel.quantityController.value.text = quantity.toString();
-  }
-
-  void updateGST(double gst) {
-    dcModel.gstController.value.text = gst.toString();
-  }
-
-  void updateClientAddress(String addrName, String addr) {
-    dcModel.Delivery_challan_client_addr_name.value = addrName;
-    dcModel.Delivery_challan_client_addr.value = addr;
-  }
-
-  void updateBillingAddress(String addrName, String addr) {
-    dcModel.Delivery_challan_bill_addr_name.value = addrName;
-    dcModel.Delivery_challan_bill_addr.value = addr;
-  }
-
-  void updateChallanTitle(String title) {
-    dcModel.Delivery_challan_title.value = title;
   }
 
   void updateNoteEditindex(int? index) {
@@ -157,12 +135,10 @@ class DCController extends GetxController {
     required BuildContext context,
     required String productName,
     required String hsn,
-    required double price,
     required int quantity,
-    required double gst,
   }) {
     try {
-      if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
+      if (productName.trim().isEmpty || hsn.trim().isEmpty || quantity <= 0) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
@@ -200,13 +176,11 @@ class DCController extends GetxController {
     required int editIndex,
     required String productName,
     required String hsn,
-    required double price,
     required int quantity,
-    required double gst,
   }) {
     try {
       // Validate input fields
-      if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
+      if (productName.trim().isEmpty || hsn.trim().isEmpty || quantity <= 0) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
@@ -277,13 +251,6 @@ class DCController extends GetxController {
   }
 
   void clearAll() {
-    // Reset all observable strings to empty
-    dcModel.Delivery_challan_client_addr_name.value = '';
-    dcModel.Delivery_challan_client_addr.value = '';
-    dcModel.Delivery_challan_bill_addr_name.value = '';
-    dcModel.Delivery_challan_bill_addr.value = '';
-    dcModel.Delivery_challan_no.value = '';
-    dcModel.Delivery_challan_title.value = '';
     dcModel.Delivery_challan_table_heading.value = '';
 
     // Clear note list and recommendation list
@@ -302,9 +269,7 @@ class DCController extends GetxController {
     dcModel.billingAddressController.value.clear();
     dcModel.productNameController.value.clear();
     dcModel.hsnController.value.clear();
-    dcModel.priceController.value.clear();
     dcModel.quantityController.value.clear();
-    dcModel.gstController.value.clear();
     dcModel.notecontentController.value.clear();
     dcModel.recommendationHeadingController.value.clear();
     dcModel.recommendationKeyController.value.clear();

@@ -5,33 +5,23 @@ import '../entities/RFQ_entities.dart';
 
 class RFQModel {
   final Rxn<TabController> tabController = Rxn<TabController>();
-  var RFQ_client_addr_name = "".obs;
-  var RFQ_client_addr = "".obs;
-  var RFQ_bill_addr_name = "".obs;
-  var RFQ_bill_addr = "".obs;
+
   var RFQ_no = "".obs;
-  var RFQ_title = "".obs;
-  var RFQ_table_heading = "".obs;
-  var RFQ_noteList = <Note>[].obs;
-  var RFQ_recommendationList = <Recommendation>[].obs;
-  var RFQ_products = <RFQProduct>[].obs;
+
 //######################################################################################################################################
 //DETAILS
-  final TitleController = TextEditingController().obs;
-  final clientAddressNameController = TextEditingController().obs;
-  final clientAddressController = TextEditingController().obs;
-  final billingAddressNameController = TextEditingController().obs;
-  final billingAddressController = TextEditingController().obs;
+  final vendor_address_controller = TextEditingController().obs;
+  final vendor_phone_controller = TextEditingController().obs;
+  final vendor_email_controller = TextEditingController().obs;
+  var vendor_name_controller = TextEditingController().obs;
   final detailsKey = GlobalKey<FormState>().obs;
 //######################################################################################################################################
 //PRODUCTS
   final productKey = GlobalKey<FormState>().obs;
   final product_editIndex = Rxn<int>();
   final productNameController = TextEditingController().obs;
-  final hsnController = TextEditingController().obs;
-  final priceController = TextEditingController().obs;
   final quantityController = TextEditingController().obs;
-  final gstController = TextEditingController().obs;
+  var RFQ_products = <RFQProduct>[].obs;
 //######################################################################################################################################
 //NOTES
   final noteformKey = GlobalKey<FormState>().obs;
@@ -43,6 +33,9 @@ class RFQModel {
   final recommendationHeadingController = TextEditingController().obs;
   final recommendationKeyController = TextEditingController().obs;
   final recommendationValueController = TextEditingController().obs;
+  var RFQ_table_heading = "".obs;
+  var RFQ_noteList = <Note>[].obs;
+  var RFQ_recommendationList = <Recommendation>[].obs;
   // var selectedheadingType = Rxn<String>();
   final notecontent = <String>[
     'Delivery within 30 working days from the date of issuing the PO.',

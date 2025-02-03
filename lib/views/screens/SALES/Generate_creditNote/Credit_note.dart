@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-import '../../../../controllers/credit_actions.dart';
+import '../../../../controllers/Credit_actions.dart';
 import '../../../../services/SALES/Credit_services/CreditNotes_service.dart';
 
 class CreditNote extends StatefulWidget with CreditnotesService {
@@ -436,7 +436,7 @@ class _CreditNoteState extends State<CreditNote> {
                             colors: Colors.green,
                             text: 'Submit',
                             onPressed: () async {
-                              if (creditController.creditModel.Credit_products.isNotEmpty && creditController.creditModel.Credit_client_addr_name.value.isNotEmpty && creditController.creditModel.Credit_client_addr.value.isNotEmpty && creditController.creditModel.Credit_bill_addr_name.value.isNotEmpty && creditController.creditModel.Credit_bill_addr.value.isNotEmpty && creditController.creditModel.Credit_title.value.isNotEmpty) {
+                              if (creditController.creditModel.Credit_products.isNotEmpty && creditController.creditModel.clientAddressNameController.value.text.isNotEmpty && creditController.creditModel.clientAddressController.value.text.isNotEmpty && creditController.creditModel.billingAddressNameController.value.text.isNotEmpty && creditController.creditModel.billingAddressController.value.text.isNotEmpty) {
                                 widget.Generate_Credit(context);
                                 // Navigator.of(context).pop();
                               } else {

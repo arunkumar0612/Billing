@@ -32,6 +32,20 @@ mixin QuoteproductService {
     }
   }
 
+  void onSubmit() {
+    quoteController.quoteModel.Quote_gstTotals.assignAll(quoteController.quoteModel.Quote_products
+        .fold<Map<double, double>>({}, (Map<double, double> accumulator, QuoteProduct product) {
+          accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
+          return accumulator;
+        })
+        .entries
+        .map((entry) => {
+              'gst': entry.key,
+              'total': entry.value,
+            })
+        .toList());
+  }
+
   void updateproduct(context) {
     if (quoteController.quoteModel.productKey.value.currentState?.validate() ?? false) {
       quoteController.updateProduct(

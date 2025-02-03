@@ -32,6 +32,20 @@ mixin InvoiceproductService {
     }
   }
 
+  void onSubmit() {
+    invoiceController.invoiceModel.Invoice_gstTotals.assignAll(invoiceController.invoiceModel.Invoice_products
+        .fold<Map<double, double>>({}, (Map<double, double> accumulator, InvoiceProduct product) {
+          accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
+          return accumulator;
+        })
+        .entries
+        .map((entry) => {
+              'gst': entry.key,
+              'total': entry.value,
+            })
+        .toList());
+  }
+
   void updateproduct(context) {
     if (invoiceController.invoiceModel.productKey.value.currentState?.validate() ?? false) {
       invoiceController.updateProduct(

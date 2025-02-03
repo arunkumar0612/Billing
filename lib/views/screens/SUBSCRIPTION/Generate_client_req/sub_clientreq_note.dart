@@ -3,7 +3,7 @@ import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/sub_clientreq_details.dart';
 import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/sub_clientreq_template.dart';
 import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/sub_generate_clientreq.dart';
-import 'package:ssipl_billing/Subscription.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Subscription.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 // import 'package:ssipl_billing/Subscription/client.dart';
 import 'package:ssipl_billing/themes/style.dart';

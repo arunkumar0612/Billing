@@ -436,7 +436,7 @@ class _RFQNoteState extends State<RFQNote> {
                             colors: Colors.green,
                             text: 'Submit',
                             onPressed: () async {
-                              if (rfqController.rfqModel.RFQ_products.isNotEmpty && rfqController.rfqModel.RFQ_client_addr_name.value.isNotEmpty && rfqController.rfqModel.RFQ_client_addr.value.isNotEmpty && rfqController.rfqModel.RFQ_bill_addr_name.value.isNotEmpty && rfqController.rfqModel.RFQ_bill_addr.value.isNotEmpty && rfqController.rfqModel.RFQ_title.value.isNotEmpty) {
+                              if (rfqController.rfqModel.RFQ_products.isNotEmpty && rfqController.rfqModel.vendor_address_controller.value.text.isNotEmpty && rfqController.rfqModel.vendor_email_controller.value.text.isNotEmpty && rfqController.rfqModel.vendor_phone_controller.value.text.isNotEmpty) {
                                 widget.Generate_RFQ(context);
                                 // Navigator.of(context).pop();
                               } else {

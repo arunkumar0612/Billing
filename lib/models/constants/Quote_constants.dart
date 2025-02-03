@@ -5,16 +5,10 @@ import '../entities/Quote_entities.dart';
 
 class QuoteModel {
   final Rxn<TabController> tabController = Rxn<TabController>();
-  var Quote_client_addr_name = "".obs;
-  var Quote_client_addr = "".obs;
-  var Quote_bill_addr_name = "".obs;
-  var Quote_bill_addr = "".obs;
+
   var Quote_no = "".obs;
-  var Quote_title = "".obs;
   var Quote_table_heading = "".obs;
-  var Quote_noteList = <Note>[].obs;
-  var Quote_recommendationList = <Recommendation>[].obs;
-  var Quote_products = <QuoteProduct>[].obs;
+
 //######################################################################################################################################
 //DETAILS
   final TitleController = TextEditingController().obs;
@@ -32,6 +26,8 @@ class QuoteModel {
   final priceController = TextEditingController().obs;
   final quantityController = TextEditingController().obs;
   final gstController = TextEditingController().obs;
+  var Quote_gstTotals = <Map<String, double>>[].obs;
+  var Quote_products = <QuoteProduct>[].obs;
 //######################################################################################################################################
 //NOTES
   final noteformKey = GlobalKey<FormState>().obs;
@@ -44,13 +40,14 @@ class QuoteModel {
   final recommendationKeyController = TextEditingController().obs;
   final recommendationValueController = TextEditingController().obs;
   // var selectedheadingType = Rxn<String>();
+  var Quote_noteList = <Note>[].obs;
+  var Quote_recommendationList = <Recommendation>[].obs;
   final notecontent = <String>[
     'Delivery within 30 working days from the date of issuing the PO.',
     'Payment terms : 100% along with PO.',
     'Client needs to provide Ethernet cable and UPS power supply to the point where the device is proposed to install.',
   ].obs;
 
-  get quote_gstTotals => null;
   // final noteType = [
   //   'With Heading',
   //   'Without Heading',

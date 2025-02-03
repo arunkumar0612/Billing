@@ -17,7 +17,7 @@ class RegisterPage extends StatefulWidget with RegisterValidator {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final RegisterController registerController = Get.put(RegisterController());
+  final RegisterController registerController = Get.find<RegisterController>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,14 @@ class _RegisterPageState extends State<RegisterPage> {
       return AnimatedGradientBorder(
         animationTime: 2,
         glowSize: registerController.registerModel.indicator.value ? 5 : 5,
-        gradientColors: registerController.registerModel.indicator.value ? [const Color.fromARGB(255, 157, 98, 253), Colors.black] : [Primary_colors.Light],
+        gradientColors: registerController.registerModel.indicator.value
+            ? [
+                const Color.fromARGB(255, 157, 98, 253),
+                Colors.black
+              ]
+            : [
+                Primary_colors.Light
+              ],
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),

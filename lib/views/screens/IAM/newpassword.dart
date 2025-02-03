@@ -19,7 +19,7 @@ class Newpassword extends StatefulWidget with NewpasswordValidator {
 }
 
 class _NewpasswordState extends State<Newpassword> {
-  final NewpasswordController forgotpasswordController = Get.put(NewpasswordController());
+  final NewpasswordController forgotpasswordController = Get.find<NewpasswordController>();
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -28,7 +28,14 @@ class _NewpasswordState extends State<Newpassword> {
       return AnimatedGradientBorder(
         animationTime: 2,
         glowSize: forgotpasswordController.newpasswordModel.indicator.value ? 5 : 5,
-        gradientColors: forgotpasswordController.newpasswordModel.indicator.value ? [Color.fromARGB(255, 157, 98, 253), Colors.black] : [Primary_colors.Light],
+        gradientColors: forgotpasswordController.newpasswordModel.indicator.value
+            ? [
+                Color.fromARGB(255, 157, 98, 253),
+                Colors.black
+              ]
+            : [
+                Primary_colors.Light
+              ],
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),

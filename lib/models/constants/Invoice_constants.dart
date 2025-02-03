@@ -5,16 +5,10 @@ import '../entities/Invoice_entities.dart';
 
 class InvoiceModel {
   final Rxn<TabController> tabController = Rxn<TabController>();
-  var Invoice_client_addr_name = "".obs;
-  var Invoice_client_addr = "".obs;
-  var Invoice_bill_addr_name = "".obs;
-  var Invoice_bill_addr = "".obs;
+
   var Invoice_no = "".obs;
-  var Invoice_title = "".obs;
   var Invoice_table_heading = "".obs;
-  var Invoice_noteList = <Note>[].obs;
-  var Invoice_recommendationList = <Recommendation>[].obs;
-  var Invoice_products = <InvoiceProduct>[].obs;
+
 //######################################################################################################################################
 //DETAILS
   final TitleController = TextEditingController().obs;
@@ -32,6 +26,8 @@ class InvoiceModel {
   final priceController = TextEditingController().obs;
   final quantityController = TextEditingController().obs;
   final gstController = TextEditingController().obs;
+  var Invoice_gstTotals = <Map<String, double>>[].obs;
+  var Invoice_products = <InvoiceProduct>[].obs;
 //######################################################################################################################################
 //NOTES
   final noteformKey = GlobalKey<FormState>().obs;
@@ -44,6 +40,8 @@ class InvoiceModel {
   final recommendationKeyController = TextEditingController().obs;
   final recommendationValueController = TextEditingController().obs;
   // var selectedheadingType = Rxn<String>();
+  var Invoice_noteList = <Note>[].obs;
+  var Invoice_recommendationList = <Recommendation>[].obs;
   final notecontent = <String>[
     'Delivery within 30 working days from the date of issuing the PO.',
     'Payment terms : 100% along with PO.',

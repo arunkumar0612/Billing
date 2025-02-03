@@ -8,7 +8,7 @@ import 'package:ssipl_billing/models/entities/DC_entities.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_template.dart';
 
 import '../../../themes/style.dart';
-import '../../../view_send_pdf.dart';
+import '../../../views/components/view_send_pdf.dart';
 
 mixin DcnotesService {
   final DCController dcController = Get.find<DCController>();
@@ -95,12 +95,12 @@ mixin DcnotesService {
     final pdfData = await generate_Delivery_challan(
       PdfPageFormat.a4,
       dcController.dcModel.Delivery_challan_products,
-      dcController.dcModel.Delivery_challan_client_addr_name.value,
-      dcController.dcModel.Delivery_challan_client_addr.value,
-      dcController.dcModel.Delivery_challan_bill_addr_name.value,
-      dcController.dcModel.Delivery_challan_bill_addr.value,
+      dcController.dcModel.clientAddressNameController.value.text,
+      dcController.dcModel.clientAddressController.value.text,
+      dcController.dcModel.billingAddressNameController.value.text,
+      dcController.dcModel.billingAddressController.value.text,
       dcController.dcModel.Delivery_challan_no.value,
-      dcController.dcModel.Delivery_challan_title.value,
+      dcController.dcModel.TitleController.value.text,
     );
 
     const filePath = 'E://Delivery_challan.pdf';

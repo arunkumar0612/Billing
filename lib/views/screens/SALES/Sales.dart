@@ -6,7 +6,7 @@ import 'package:ssipl_billing/controllers/Debit_actions.dart';
 import 'package:ssipl_billing/controllers/Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/controllers/RFQ_actions.dart';
-import 'package:ssipl_billing/controllers/credit_actions.dart';
+import 'package:ssipl_billing/controllers/Credit_actions.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_template.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_DC/generateDC.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/generateInvoice.dart';
@@ -28,12 +28,12 @@ import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/generateRFQ.dart';
 // import 'package:ssipl_billing/view_send_pdf.dart';
 
-import 'view_send_pdf.dart';
-import 'views/screens/SALES/Generate_DC/generateDC.dart';
-import 'views/screens/SALES/Generate_DebitNote/generateDebit.dart';
-import 'views/screens/SALES/Generate_Invoice/generateInvoice.dart';
-import 'views/screens/SALES/Generate_Quote/generateQuote.dart';
-import 'views/screens/SALES/Generate_creditNote/generateCredit.dart';
+import '../../components/view_send_pdf.dart';
+import 'Generate_DC/generateDC.dart';
+import 'Generate_DebitNote/generateDebit.dart';
+import 'Generate_Invoice/generateInvoice.dart';
+import 'Generate_Quote/generateQuote.dart';
+import 'Generate_creditNote/generateCredit.dart';
 
 class Sales_Client extends StatefulWidget {
   const Sales_Client({super.key});
@@ -50,12 +50,12 @@ class Sales_Client extends StatefulWidget {
 }
 
 class _Sales_ClientState extends State<Sales_Client> {
-  final DCController dcController = Get.put(DCController());
-  final InvoiceController invoiceController = Get.put(InvoiceController());
-  final QuoteController quoteController = Get.put(QuoteController());
-  final RFQController rfqController = Get.put(RFQController());
-  final CreditController creditController = Get.put(CreditController());
-  final DebitController debitController = Get.put(DebitController());
+  final DCController dcController = Get.find<DCController>();
+  final InvoiceController invoiceController = Get.find<InvoiceController>();
+  final QuoteController quoteController = Get.find<QuoteController>();
+  final RFQController rfqController = Get.find<RFQController>();
+  final CreditController creditController = Get.find<CreditController>();
+  final DebitController debitController = Get.find<DebitController>();
 
   final List<Map<String, dynamic>> items = [
     {
@@ -450,6 +450,7 @@ class _Sales_ClientState extends State<Sales_Client> {
   @override
   void initState() {
     super.initState();
+
     // Sales_Client.quote_Callback = () async => {
     //       await generate_quotation()
     //     };
@@ -621,7 +622,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( invoiceController.invoiceModel.Invoice_gstTotals.isNotEmpty)
-                    if ((invoiceController.invoiceModel.Invoice_products.isNotEmpty) || (invoiceController.invoiceModel.Invoice_noteList.isNotEmpty) || (invoiceController.invoiceModel.Invoice_recommendationList.isNotEmpty) || (invoiceController.invoiceModel.Invoice_client_addr_name.value != "") || (invoiceController.invoiceModel.Invoice_client_addr.value != "") || (invoiceController.invoiceModel.Invoice_bill_addr_name.value != "") || (invoiceController.invoiceModel.Invoice_bill_addr.value != "") || (invoiceController.invoiceModel.Invoice_no.value != "") || (invoiceController.invoiceModel.Invoice_title.value != "") || (invoiceController.invoiceModel.Invoice_table_heading.value != "")) {
+                    if ((invoiceController.invoiceModel.Invoice_products.isNotEmpty) || (invoiceController.invoiceModel.Invoice_noteList.isNotEmpty) || (invoiceController.invoiceModel.Invoice_recommendationList.isNotEmpty) || (invoiceController.invoiceModel.clientAddressNameController.value.text != "") || (invoiceController.invoiceModel.clientAddressController.value.text != "") || (invoiceController.invoiceModel.billingAddressNameController.value.text != "") || (invoiceController.invoiceModel.billingAddressController.value.text != "") || (invoiceController.invoiceModel.Invoice_no.value != "") || (invoiceController.invoiceModel.TitleController.value.text != "") || (invoiceController.invoiceModel.Invoice_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -659,12 +660,12 @@ class _Sales_ClientState extends State<Sales_Client> {
                         invoiceController.invoiceModel.Invoice_noteList.clear();
                         invoiceController.invoiceModel.Invoice_recommendationList.clear();
                         //  invoiceController.invoiceModel.iInvoice_productDetails.clear();
-                        invoiceController.invoiceModel.Invoice_client_addr_name.value = "";
-                        invoiceController.invoiceModel.Invoice_client_addr.value = "";
-                        invoiceController.invoiceModel.Invoice_bill_addr_name.value = "";
-                        invoiceController.invoiceModel.Invoice_bill_addr.value = "";
+                        invoiceController.invoiceModel.clientAddressNameController.value.clear();
+                        invoiceController.invoiceModel.clientAddressController.value.clear();
+                        invoiceController.invoiceModel.billingAddressNameController.value.clear();
+                        invoiceController.invoiceModel.billingAddressController.value.clear();
                         invoiceController.invoiceModel.Invoice_no.value = "";
-                        invoiceController.invoiceModel.Invoice_title.value = "";
+                        invoiceController.invoiceModel.TitleController.value.clear();
                         invoiceController.invoiceModel.Invoice_table_heading.value = "";
                       }
                     } else {
@@ -735,7 +736,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( quoteController.quoteModel.Quote_gstTotals.isNotEmpty)
-                    if ((quoteController.quoteModel.Quote_products.isNotEmpty) || (quoteController.quoteModel.Quote_noteList.isNotEmpty) || (quoteController.quoteModel.Quote_recommendationList.isNotEmpty) || (quoteController.quoteModel.Quote_client_addr_name.value != "") || (quoteController.quoteModel.Quote_client_addr.value != "") || (quoteController.quoteModel.Quote_bill_addr_name.value != "") || (quoteController.quoteModel.Quote_bill_addr.value != "") || (quoteController.quoteModel.Quote_no.value != "") || (quoteController.quoteModel.Quote_title.value != "") || (quoteController.quoteModel.Quote_table_heading.value != "")) {
+                    if ((quoteController.quoteModel.Quote_products.isNotEmpty) || (quoteController.quoteModel.Quote_noteList.isNotEmpty) || (quoteController.quoteModel.Quote_recommendationList.isNotEmpty) || (quoteController.quoteModel.clientAddressNameController.value.text != "") || (quoteController.quoteModel.clientAddressController.value.text != "") || (quoteController.quoteModel.billingAddressNameController.value.text != "") || (quoteController.quoteModel.billingAddressController.value.text != "") || (quoteController.quoteModel.Quote_no.value != "") || (quoteController.quoteModel.TitleController.value.text != "") || (quoteController.quoteModel.Quote_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -773,12 +774,12 @@ class _Sales_ClientState extends State<Sales_Client> {
                         quoteController.quoteModel.Quote_noteList.clear();
                         quoteController.quoteModel.Quote_recommendationList.clear();
                         //  quoteController.quoteModel.iQuote_productDetails.clear();
-                        quoteController.quoteModel.Quote_client_addr_name.value = "";
-                        quoteController.quoteModel.Quote_client_addr.value = "";
-                        quoteController.quoteModel.Quote_bill_addr_name.value = "";
-                        quoteController.quoteModel.Quote_bill_addr.value = "";
+                        quoteController.quoteModel.clientAddressNameController.value.clear();
+                        quoteController.quoteModel.clientAddressController.value.clear();
+                        quoteController.quoteModel.billingAddressNameController.value.clear();
+                        quoteController.quoteModel.billingAddressController.value.clear();
                         quoteController.quoteModel.Quote_no.value = "";
-                        quoteController.quoteModel.Quote_title.value = "";
+                        quoteController.quoteModel.TitleController.value.clear();
                         quoteController.quoteModel.Quote_table_heading.value = "";
                       }
                     } else {
@@ -849,7 +850,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( rfqController.rfqModel.RFQ_gstTotals.isNotEmpty)
-                    if ((rfqController.rfqModel.RFQ_products.isNotEmpty) || (rfqController.rfqModel.RFQ_noteList.isNotEmpty) || (rfqController.rfqModel.RFQ_recommendationList.isNotEmpty) || (rfqController.rfqModel.RFQ_client_addr_name.value != "") || (rfqController.rfqModel.RFQ_client_addr.value != "") || (rfqController.rfqModel.RFQ_bill_addr_name.value != "") || (rfqController.rfqModel.RFQ_bill_addr.value != "") || (rfqController.rfqModel.RFQ_no.value != "") || (rfqController.rfqModel.RFQ_title.value != "") || (rfqController.rfqModel.RFQ_table_heading.value != "")) {
+                    if ((rfqController.rfqModel.RFQ_products.isNotEmpty) || (rfqController.rfqModel.RFQ_noteList.isNotEmpty) || (rfqController.rfqModel.RFQ_recommendationList.isNotEmpty) || (rfqController.rfqModel.vendor_address_controller.value.text != "") || (rfqController.rfqModel.vendor_email_controller.value.text != "") || (rfqController.rfqModel.vendor_name_controller.value.text != "") || (rfqController.rfqModel.vendor_phone_controller.value.text != "") || (rfqController.rfqModel.RFQ_no.value != "") || (rfqController.rfqModel.RFQ_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -887,12 +888,12 @@ class _Sales_ClientState extends State<Sales_Client> {
                         rfqController.rfqModel.RFQ_noteList.clear();
                         rfqController.rfqModel.RFQ_recommendationList.clear();
                         //  rfqController.rfqModel.iRFQ_productDetails.clear();
-                        rfqController.rfqModel.RFQ_client_addr_name.value = "";
-                        rfqController.rfqModel.RFQ_client_addr.value = "";
-                        rfqController.rfqModel.RFQ_bill_addr_name.value = "";
-                        rfqController.rfqModel.RFQ_bill_addr.value = "";
+                        rfqController.rfqModel.vendor_address_controller.value.clear();
+                        rfqController.rfqModel.vendor_email_controller.value.clear();
+                        rfqController.rfqModel.vendor_name_controller.value.clear();
+                        rfqController.rfqModel.vendor_phone_controller.value.clear();
                         rfqController.rfqModel.RFQ_no.value = "";
-                        rfqController.rfqModel.RFQ_title.value = "";
+
                         rfqController.rfqModel.RFQ_table_heading.value = "";
                       }
                     } else {
@@ -1073,7 +1074,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                   onPressed: () async {
                     // Check if the data has any value
 
-                    if ((dcController.dcModel.Delivery_challan_products.isNotEmpty) || (dcController.dcModel.Delivery_challan_noteList.isNotEmpty) || (dcController.dcModel.Delivery_challan_recommendationList.isNotEmpty) || dcController.dcModel.Delivery_challan_client_addr_name.value != "" || dcController.dcModel.Delivery_challan_client_addr.value != "" || dcController.dcModel.Delivery_challan_bill_addr_name.value != "" || dcController.dcModel.Delivery_challan_bill_addr.value != "" || dcController.dcModel.Delivery_challan_no.value != "" || dcController.dcModel.Delivery_challan_title.value != "" || dcController.dcModel.Delivery_challan_table_heading.value != "") {
+                    if ((dcController.dcModel.Delivery_challan_products.isNotEmpty) || (dcController.dcModel.Delivery_challan_noteList.isNotEmpty) || (dcController.dcModel.Delivery_challan_recommendationList.isNotEmpty) || dcController.dcModel.clientAddressNameController.value.text != "" || dcController.dcModel.clientAddressController.value.text != "" || dcController.dcModel.billingAddressNameController.value.text != "" || dcController.dcModel.billingAddressController.value.text != "" || dcController.dcModel.Delivery_challan_no.value != "" || dcController.dcModel.TitleController.value.text != "" || dcController.dcModel.Delivery_challan_table_heading.value != "") {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -1110,12 +1111,12 @@ class _Sales_ClientState extends State<Sales_Client> {
                         dcController.dcModel.Delivery_challan_noteList.clear();
                         dcController.dcModel.Delivery_challan_recommendationList.clear();
                         // dcController.dcModel.Delivery_challan_productDetails.clear();
-                        dcController.dcModel.Delivery_challan_client_addr_name.value = "";
-                        dcController.dcModel.Delivery_challan_client_addr.value = "";
-                        dcController.dcModel.Delivery_challan_bill_addr_name.value = "";
-                        dcController.dcModel.Delivery_challan_bill_addr.value = "";
+                        dcController.dcModel.clientAddressNameController.value.clear();
+                        dcController.dcModel.clientAddressController.value.clear();
+                        dcController.dcModel.billingAddressNameController.value.clear();
+                        dcController.dcModel.billingAddressController.value.clear();
                         dcController.dcModel.Delivery_challan_no.value = "";
-                        dcController.dcModel.Delivery_challan_title.value = "";
+                        dcController.dcModel.TitleController.value.clear();
                         dcController.dcModel.Delivery_challan_table_heading.value = "";
                       }
                     } else {
@@ -1187,7 +1188,7 @@ class _Sales_ClientState extends State<Sales_Client> {
 //                   ),
 //                   onPressed: () async {
 //                     // Check if any data exists in creditnote variables
-//                     if ((creditnote_products.isNotEmpty) || (creditnote_gstTotals.isNotEmpty) || (creditnote_noteList.isNotEmpty) || (creditnote_recommendationList.isNotEmpty) || (creditnote_productDetails.isNotEmpty) || creditnote_client_addr_name != "" || creditnote_client_addr != "" || creditnote_bill_addr_name != "" || creditnote_bill_addr != "" || creditnote_no != "" || creditnote_table_heading != "") {
+//                     if ((creditnote_products.isNotEmpty) || (Credit_gstTotals.isNotEmpty) || (creditnote_noteList.isNotEmpty) || (creditnote_recommendationList.isNotEmpty) || (creditnote_productDetails.isNotEmpty) || creditnote_client_addr_name != "" || creditnote_client_addr != "" || creditnote_bill_addr_name != "" || creditnote_bill_addr != "" || creditnote_no != "" || creditnote_table_heading != "") {
 //                       // Show confirmation dialog
 //                       bool? proceed = await showDialog<bool>(
 //                         context: context,
@@ -1220,7 +1221,7 @@ class _Sales_ClientState extends State<Sales_Client> {
 //                         Navigator.of(context).pop(); // Close the dialog
 //                         // Clear all the data when dialog is closed
 //                         creditnote_products.clear();
-//                         creditnote_gstTotals.clear();
+//                         Credit_gstTotals.clear();
 //                         creditnote_noteList.clear();
 //                         creditnote_recommendationList.clear();
 //                         creditnote_productDetails.clear();
@@ -1533,7 +1534,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( debitController.debitModel.Debit_gstTotals.isNotEmpty)
-                    if ((debitController.debitModel.Debit_products.isNotEmpty) || (debitController.debitModel.Debit_noteList.isNotEmpty) || (debitController.debitModel.Debit_recommendationList.isNotEmpty) || (debitController.debitModel.Debit_client_addr_name.value != "") || (debitController.debitModel.Debit_client_addr.value != "") || (debitController.debitModel.Debit_bill_addr_name.value != "") || (debitController.debitModel.Debit_bill_addr.value != "") || (debitController.debitModel.Debit_no.value != "") || (debitController.debitModel.Debit_title.value != "") || (debitController.debitModel.Debit_table_heading.value != "")) {
+                    if ((debitController.debitModel.Debit_products.isNotEmpty) || (debitController.debitModel.Debit_noteList.isNotEmpty) || (debitController.debitModel.Debit_recommendationList.isNotEmpty) || (debitController.debitModel.clientAddressNameController.value.text != "") || (debitController.debitModel.clientAddressController.value.text != "") || (debitController.debitModel.billingAddressNameController.value.text != "") || (debitController.debitModel.billingAddressController.value.text != "") || (debitController.debitModel.Debit_no.value != "") || (debitController.debitModel.Debit_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -1562,21 +1563,12 @@ class _Sales_ClientState extends State<Sales_Client> {
                         },
                       );
 
-                      // If user confirms (Yes), clear data and close the dialog
                       if (proceed == true) {
                         Navigator.of(context).pop(); // Close the dialog
-                        // Clear all the data when dialog is closed
                         debitController.debitModel.Debit_products.clear();
-                        //  debitController.debitModel.Debit_gstTotals.clear();
                         debitController.debitModel.Debit_noteList.clear();
                         debitController.debitModel.Debit_recommendationList.clear();
-                        //  debitController.debitModel.iDebit_productDetails.clear();
-                        debitController.debitModel.Debit_client_addr_name.value = "";
-                        debitController.debitModel.Debit_client_addr.value = "";
-                        debitController.debitModel.Debit_bill_addr_name.value = "";
-                        debitController.debitModel.Debit_bill_addr.value = "";
                         debitController.debitModel.Debit_no.value = "";
-                        debitController.debitModel.Debit_title.value = "";
                         debitController.debitModel.Debit_table_heading.value = "";
                       }
                     } else {
@@ -1647,7 +1639,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( creditController.creditModel.Credit_gstTotals.isNotEmpty)
-                    if ((creditController.creditModel.Credit_products.isNotEmpty) || (creditController.creditModel.Credit_noteList.isNotEmpty) || (creditController.creditModel.Credit_recommendationList.isNotEmpty) || (creditController.creditModel.Credit_client_addr_name.value != "") || (creditController.creditModel.Credit_client_addr.value != "") || (creditController.creditModel.Credit_bill_addr_name.value != "") || (creditController.creditModel.Credit_bill_addr.value != "") || (creditController.creditModel.Credit_no.value != "") || (creditController.creditModel.Credit_title.value != "") || (creditController.creditModel.Credit_table_heading.value != "")) {
+                    if ((creditController.creditModel.Credit_products.isNotEmpty) || (creditController.creditModel.Credit_noteList.isNotEmpty) || (creditController.creditModel.Credit_recommendationList.isNotEmpty) || (creditController.creditModel.clientAddressNameController.value.text != "") || (creditController.creditModel.clientAddressController.value.text != "") || (creditController.creditModel.billingAddressNameController.value.text != "") || (creditController.creditModel.billingAddressController.value.text != "") || (creditController.creditModel.Credit_no.value != "") || (creditController.creditModel.Credit_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -1685,12 +1677,11 @@ class _Sales_ClientState extends State<Sales_Client> {
                         creditController.creditModel.Credit_noteList.clear();
                         creditController.creditModel.Credit_recommendationList.clear();
                         //  creditController.creditModel.iCredit_productDetails.clear();
-                        creditController.creditModel.Credit_client_addr_name.value = "";
-                        creditController.creditModel.Credit_client_addr.value = "";
-                        creditController.creditModel.Credit_bill_addr_name.value = "";
-                        creditController.creditModel.Credit_bill_addr.value = "";
+                        creditController.creditModel.clientAddressNameController.value.clear();
+                        creditController.creditModel.clientAddressController.value.clear();
+                        creditController.creditModel.billingAddressNameController.value.clear();
+                        creditController.creditModel.billingAddressController.value.clear();
                         creditController.creditModel.Credit_no.value = "";
-                        creditController.creditModel.Credit_title.value = "";
                         creditController.creditModel.Credit_table_heading.value = "";
                       }
                     } else {

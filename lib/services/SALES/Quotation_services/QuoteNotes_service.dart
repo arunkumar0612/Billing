@@ -8,7 +8,7 @@ import 'package:ssipl_billing/models/entities/Quote_entities.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_Quote/Quote_template.dart';
 
 import '../../../themes/style.dart';
-import '../../../view_send_pdf.dart';
+import '../../../views/components/view_send_pdf.dart';
 import '../../../views/screens/SALES/Generate_Quote/quote_template.dart';
 // import '../../../views/screens/SALES/Generate_Quote/quote_template.dart';
 
@@ -97,12 +97,14 @@ mixin QuotenotesService {
     final pdfData = await generate_Quote(
       PdfPageFormat.a4,
       quoteController.quoteModel.Quote_products,
-      quoteController.quoteModel.Quote_client_addr_name.value,
-      quoteController.quoteModel.Quote_client_addr.value,
-      quoteController.quoteModel.Quote_bill_addr_name.value,
-      quoteController.quoteModel.Quote_bill_addr.value,
+      quoteController.quoteModel.clientAddressNameController.value.text,
+      quoteController.quoteModel.clientAddressController.value.text,
+      quoteController.quoteModel.billingAddressNameController.value.text,
+      quoteController.quoteModel.billingAddressController.value.text,
       quoteController.quoteModel.Quote_no.value,
-      quoteController.quoteModel.Quote_title.value,
+      quoteController.quoteModel.TitleController.value.text,
+      9,
+      quoteController.quoteModel.Quote_gstTotals,
     );
 
     const filePath = 'E://Quote.pdf';

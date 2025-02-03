@@ -10,9 +10,9 @@ import '../../views/components/Basic_DialogBox.dart';
 import '../APIservices/invoker.dart';
 
 mixin VerifyotpServices {
-  final ForgotpasswordController forgotpasswordController = Get.put(ForgotpasswordController());
-  final VerifyOTPControllers VerifyOTPController = Get.put(VerifyOTPControllers());
-  final Invoker apiController = Get.put(Invoker());
+  final ForgotpasswordController forgotpasswordController = Get.find<ForgotpasswordController>();
+  final VerifyOTPControllers VerifyOTPController = Get.find<VerifyOTPControllers>();
+  final Invoker apiController = Get.find<Invoker>();
 
   void Verify_OTP(context) async {
     try {

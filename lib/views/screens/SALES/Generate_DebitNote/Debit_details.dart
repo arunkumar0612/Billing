@@ -28,24 +28,11 @@ class _DebitDetailsState extends State<DebitDetails> {
                   key: debitController.debitModel.detailsKey.value,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 25),
-                          Textfield_1(
-                            readonly: false,
-                            text: 'Title',
-                            controller: debitController.debitModel.TitleController.value,
-                            icon: Icons.title,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Title number';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 25),
                           Textfield_1(
                             readonly: false,
                             text: 'Client Address name',
@@ -76,7 +63,6 @@ class _DebitDetailsState extends State<DebitDetails> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 10),
                           Textfield_1(
                             readonly: false,
                             text: 'Billing Address name',

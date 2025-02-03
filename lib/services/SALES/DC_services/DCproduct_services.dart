@@ -8,9 +8,7 @@ mixin DcproductService {
   void clearFields() {
     dcController.dcModel.productNameController.value.clear();
     dcController.dcModel.hsnController.value.clear();
-    dcController.dcModel.priceController.value.clear();
     dcController.dcModel.quantityController.value.clear();
-    dcController.dcModel.gstController.value.clear();
   }
 
   void addproduct(context) {
@@ -26,7 +24,7 @@ mixin DcproductService {
         );
         return;
       }
-      dcController.addProduct(context: context, productName: dcController.dcModel.productNameController.value.text, hsn: dcController.dcModel.hsnController.value.text, price: double.parse(dcController.dcModel.priceController.value.text), quantity: int.parse(dcController.dcModel.quantityController.value.text), gst: double.parse(dcController.dcModel.gstController.value.text));
+      dcController.addProduct(context: context, productName: dcController.dcModel.productNameController.value.text, hsn: dcController.dcModel.hsnController.value.text, quantity: int.parse(dcController.dcModel.quantityController.value.text));
 
       clearFields();
     }
@@ -39,9 +37,7 @@ mixin DcproductService {
         editIndex: dcController.dcModel.product_editIndex.value!, // The index of the product to be updated
         productName: dcController.dcModel.productNameController.value.text,
         hsn: dcController.dcModel.hsnController.value.text,
-        price: double.parse(dcController.dcModel.priceController.value.text),
         quantity: int.parse(dcController.dcModel.quantityController.value.text),
-        gst: double.parse(dcController.dcModel.gstController.value.text),
       );
 
       clearFields();

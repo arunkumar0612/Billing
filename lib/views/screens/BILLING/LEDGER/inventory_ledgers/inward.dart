@@ -1,295 +1,323 @@
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/views/screens/Ledger/ViewLedger.dart';
+import 'package:ssipl_billing/views/screens/BILLING/LEDGER/ViewLedger.dart';
 import 'package:ssipl_billing/themes/style.dart';
 
-class pettyCase extends StatefulWidget {
-  const pettyCase({super.key});
+class Inward extends StatefulWidget {
+  const Inward({super.key});
 
   @override
-  State<pettyCase> createState() => _pettyCaseState();
+  State<Inward> createState() => _InwardState();
 }
 
-class _pettyCaseState extends State<pettyCase> {
-  final List<Map<String, dynamic>> pettyCase_list = [
+class _InwardState extends State<Inward> {
+  final List<Map<String, dynamic>> Inward_list = [
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'For EB bill',
-      'debit': '500',
-      'credit': '0',
+      'particulars': 'Maharaja',
+      'quantity': '500',
+      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'For Milk',
-      'debit': '0',
-      'credit': '300',
+      'particulars': 'Maruti',
+      'quantity': '0',
+      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'For Snacks',
-      'debit': '200',
-      'credit': '0',
+      'particulars': 'Anamalais',
+      'quantity': '200',
+      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'For Eb bill',
-      'debit': '0',
-      'credit': '450',
+      'particulars': 'Maharaja',
+      'quantity': '0',
+      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'For EB bill',
-      'debit': '500',
-      'credit': '0',
+      'particulars': 'Maharaja',
+      'quantity': '500',
+      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'For Milk',
-      'debit': '0',
-      'credit': '300',
+      'particulars': 'Maruti',
+      'quantity': '0',
+      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'For Snacks',
-      'debit': '200',
-      'credit': '0',
+      'particulars': 'Anamalais',
+      'quantity': '200',
+      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'For Eb bill',
-      'debit': '0',
-      'credit': '450',
+      'particulars': 'Maharaja',
+      'quantity': '0',
+      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'For EB bill',
-      'debit': '500',
-      'credit': '0',
+      'particulars': 'Maharaja',
+      'quantity': '500',
+      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'For Milk',
-      'debit': '0',
-      'credit': '300',
+      'particulars': 'Maruti',
+      'quantity': '0',
+      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'For Snacks',
-      'debit': '200',
-      'credit': '0',
+      'particulars': 'Anamalais',
+      'quantity': '200',
+      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'For Eb bill',
-      'debit': '0',
-      'credit': '450',
+      'particulars': 'Maharaja',
+      'quantity': '0',
+      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'For EB bill',
-      'debit': '500',
-      'credit': '0',
+      'particulars': 'Maharaja',
+      'quantity': '500',
+      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'For Milk',
-      'debit': '0',
-      'credit': '300',
+      'particulars': 'Maruti',
+      'quantity': '0',
+      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'For Snacks',
-      'debit': '200',
-      'credit': '0',
+      'particulars': 'Anamalais',
+      'quantity': '200',
+      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'For Eb bill',
-      'debit': '0',
-      'credit': '450',
+      'particulars': 'Maharaja',
+      'quantity': '0',
+      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'For EB bill',
-      'debit': '500',
-      'credit': '0',
+      'particulars': 'Maharaja',
+      'quantity': '500',
+      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'For Milk',
-      'debit': '0',
-      'credit': '300',
+      'particulars': 'Maruti',
+      'quantity': '0',
+      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'For Snacks',
-      'debit': '200',
-      'credit': '0',
+      'particulars': 'Anamalais',
+      'quantity': '200',
+      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'For Eb bill',
-      'debit': '0',
-      'credit': '450',
+      'particulars': 'Maharaja',
+      'quantity': '0',
+      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'For EB bill',
-      'debit': '500',
-      'credit': '0',
+      'particulars': 'Maharaja',
+      'quantity': '500',
+      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'For Milk',
-      'debit': '0',
-      'credit': '300',
+      'particulars': 'Maruti',
+      'quantity': '0',
+      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'For Snacks',
-      'debit': '200',
-      'credit': '0',
+      'particulars': 'Anamalais',
+      'quantity': '200',
+      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'For Eb bill',
-      'debit': '0',
-      'credit': '450',
+      'particulars': 'Maharaja',
+      'quantity': '0',
+      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'For EB bill',
-      'debit': '500',
-      'credit': '0',
+      'particulars': 'Maharaja',
+      'quantity': '500',
+      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'For Milk',
-      'debit': '0',
-      'credit': '300',
+      'particulars': 'Maruti',
+      'quantity': '0',
+      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'For Snacks',
-      'debit': '200',
-      'credit': '0',
+      'particulars': 'Anamalais',
+      'quantity': '200',
+      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'For Eb bill',
-      'debit': '0',
-      'credit': '450',
+      'particulars': 'Maharaja',
+      'quantity': '0',
+      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'For EB bill',
-      'debit': '500',
-      'credit': '0',
+      'particulars': 'Maharaja',
+      'quantity': '500',
+      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'For Milk',
-      'debit': '0',
-      'credit': '300',
+      'particulars': 'Maruti',
+      'quantity': '0',
+      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'For Snacks',
-      'debit': '200',
-      'credit': '0',
+      'particulars': 'Anamalais',
+      'quantity': '200',
+      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'For Eb bill',
-      'debit': '0',
-      'credit': '450',
+      'particulars': 'Maharaja',
+      'quantity': '0',
+      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'For EB bill',
-      'debit': '500',
-      'credit': '0',
+      'particulars': 'Maharaja',
+      'quantity': '500',
+      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'For Milk',
-      'debit': '0',
-      'credit': '300',
+      'particulars': 'Maruti',
+      'quantity': '0',
+      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'For Snacks',
-      'debit': '200',
-      'credit': '0',
+      'particulars': 'Anamalais',
+      'quantity': '200',
+      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'For Eb bill',
-      'debit': '0',
-      'credit': '450',
+      'particulars': 'Maharaja',
+      'quantity': '0',
+      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'For EB bill',
-      'debit': '500',
-      'credit': '0',
+      'particulars': 'Maharaja',
+      'quantity': '500',
+      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'For Milk',
-      'debit': '0',
-      'credit': '300',
+      'particulars': 'Maruti',
+      'quantity': '0',
+      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'For Snacks',
-      'debit': '200',
-      'credit': '0',
+      'particulars': 'Anamalais',
+      'quantity': '200',
+      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'For Eb bill',
-      'debit': '0',
-      'credit': '450',
+      'particulars': 'Maharaja',
+      'quantity': '0',
+      'notes': 'Received via bank transfer',
+    },
+    {
+      'date': '2024-12-01',
+      'reference_no': '12345',
+      'particulars': 'Maharaja',
+      'quantity': '500',
+      'notes': 'Paid via card',
+    },
+    {
+      'date': '2024-12-02',
+      'reference_no': '12346',
+      'particulars': 'Maruti',
+      'quantity': '0',
+      'notes': 'Paid via cash',
+    },
+    {
+      'date': '2024-12-03',
+      'reference_no': '12347',
+      'particulars': 'Anamalais',
+      'quantity': '200',
+      'notes': 'Paid via cheque',
+    },
+    {
+      'date': '2024-12-04',
+      'reference_no': '12348',
+      'particulars': 'Maharaja',
+      'quantity': '0',
+      'notes': 'Received via bank transfer',
     },
   ];
   @override
@@ -348,7 +376,17 @@ class _pettyCaseState extends State<pettyCase> {
                   child: Padding(
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      'Particulars',
+                      'particulars',
+                      style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      'Notes',
                       style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                     ),
                   ),
@@ -358,17 +396,7 @@ class _pettyCaseState extends State<pettyCase> {
                   child: Padding(
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      'Debit',
-                      style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      'Credit',
+                      'quantity',
                       style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                     ),
                   ),
@@ -384,7 +412,7 @@ class _pettyCaseState extends State<pettyCase> {
               height: 1,
               color: const Color.fromARGB(94, 125, 125, 125),
             ),
-            itemCount: pettyCase_list.length,
+            itemCount: Inward_list.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(top: 0),
@@ -421,7 +449,7 @@ class _pettyCaseState extends State<pettyCase> {
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                pettyCase_list[index]['date'],
+                                Inward_list[index]['date'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -433,7 +461,7 @@ class _pettyCaseState extends State<pettyCase> {
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                pettyCase_list[index]['reference_no'],
+                                Inward_list[index]['reference_no'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -448,7 +476,7 @@ class _pettyCaseState extends State<pettyCase> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    pettyCase_list[index]['particulars'],
+                                    Inward_list[index]['particulars'],
                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                   ),
                                 ],
@@ -456,30 +484,30 @@ class _pettyCaseState extends State<pettyCase> {
                             ),
                           ),
                           // Vertical line after 'particulars' column
-
+                          Expanded(
+                            flex: 3,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Text(
+                                Inward_list[index]['notes'],
+                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                              ),
+                            ),
+                          ),
                           Expanded(
                             flex: 2,
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                pettyCase_list[index]['debit'],
+                                Inward_list[index]['quantity'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
                           ),
-                          // Vertical line after 'Debit' column
-                          Expanded(
-                            flex: 2,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Text(
-                                pettyCase_list[index]['credit'],
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                              ),
-                            ),
-                          ),
+                          // Vertical line after 'quantity' column
 
                           // Vertical line after 'Credit' column
+
                           // Vertical line after 'Notes' column
                         ],
                       ),
@@ -494,11 +522,11 @@ class _pettyCaseState extends State<pettyCase> {
         Row(
           children: [
             Expanded(
-              flex: 11,
+              flex: 37,
               child: Container(),
             ),
             Expanded(
-              flex: 5,
+              flex: 6,
               child: SizedBox(
                 height: 5,
                 child: CustomPaint(
@@ -513,7 +541,7 @@ class _pettyCaseState extends State<pettyCase> {
           child: Row(
             children: [
               Expanded(
-                flex: 11,
+                flex: 37,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -591,7 +619,7 @@ class _pettyCaseState extends State<pettyCase> {
                 ),
               ),
               Expanded(
-                flex: 5,
+                flex: 6,
                 child: SizedBox(
                   child: Row(
                     children: [
@@ -602,7 +630,7 @@ class _pettyCaseState extends State<pettyCase> {
                           children: [
                             // Bottom shadow for the recessed effect
                             Text(
-                              'Rs. 2389',
+                              '389',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -619,49 +647,7 @@ class _pettyCaseState extends State<pettyCase> {
                             ),
                             // Top layer to give the 3D embossed effect
                             Text(
-                              'Rs. 2389',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 2,
-                                foreground: Paint()
-                                  ..shader = LinearGradient(
-                                    colors: [
-                                      Colors.black.withOpacity(0.8),
-                                      const Color.fromARGB(255, 255, 223, 0),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Stack(
-                          children: [
-                            // Bottom shadow for the recessed effect
-                            Text(
-                              'Rs. 2389',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 2,
-                                color: Colors.white.withOpacity(0.2),
-                                shadows: const [
-                                  Shadow(
-                                    offset: Offset(2, 2),
-                                    blurRadius: 2,
-                                    color: Colors.black,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // Top layer to give the 3D embossed effect
-                            Text(
-                              'Rs. 2389',
+                              '389',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -691,11 +677,11 @@ class _pettyCaseState extends State<pettyCase> {
         Row(
           children: [
             Expanded(
-              flex: 11,
+              flex: 37,
               child: Container(),
             ),
             Expanded(
-              flex: 5,
+              flex: 6,
               child: SizedBox(
                 height: 5,
                 child: CustomPaint(

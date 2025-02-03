@@ -261,6 +261,54 @@ class _DebitProductsState extends State<DebitProducts> {
                         );
                       },
                     ),
+                    const SizedBox(height: 25),
+                    Obx(
+                      () {
+                        return SizedBox(
+                          width: 400,
+                          child: TextFormField(
+                            readOnly: false,
+                            style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
+                            decoration: const InputDecoration(
+                              filled: true,
+                              fillColor: Primary_colors.Dark,
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+
+                              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                              // labelText: text,
+                              hintText: 'Product Remarks',
+                              hintStyle: TextStyle(
+                                fontSize: Primary_font_size.Text7,
+                                color: Color.fromARGB(255, 167, 165, 165),
+                              ),
+                              border: OutlineInputBorder(),
+                              prefixIcon: Icon(
+                                Icons.production_quantity_limits,
+                                color: Colors.white,
+                              ),
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            controller: debitController.debitModel.remarksController.value,
+                            keyboardType: TextInputType.number,
+                            // inputFormatters: [
+                            //   FilteringTextInputFormatter.digitsOnly
+                            // ],
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter Product Remarks';
+                              }
+                              return null;
+                            },
+                          ),
+                        );
+                      },
+                    ),
                     const SizedBox(height: 30),
                     Obx(
                       () {
@@ -332,6 +380,7 @@ class _DebitProductsState extends State<DebitProducts> {
                                   colors: Colors.green,
                                   text: 'Submit',
                                   onPressed: () {
+                                    widget.onSubmit();
                                     debitController.nextTab();
                                   },
                                 ),

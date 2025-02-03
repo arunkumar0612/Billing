@@ -39,7 +39,7 @@ class Delivery_challan_generate {
     // required this.items,
   });
 
-  final DCController dcController = Get.put(DCController());
+  final DCController dcController = Get.find<DCController>();
 
   String client_addr_name = "";
   String client_addr = "";

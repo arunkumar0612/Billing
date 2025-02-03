@@ -28,45 +28,79 @@ class _RFQDetailsState extends State<RFQDetails> {
                   key: rfqController.rfqModel.detailsKey.value,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           const SizedBox(height: 25),
-                          Textfield_1(
-                            readonly: false,
-                            text: 'Title',
-                            controller: rfqController.rfqModel.TitleController.value,
-                            icon: Icons.title,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Title number';
-                              }
-                              return null;
-                            },
+                          ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              maxWidth: 400,
+                            ),
+                            child: DropdownButtonFormField<String>(
+                              dropdownColor: Primary_colors.Dark,
+                              decoration: const InputDecoration(
+                                  label: Text(
+                                    'Select Vendor',
+                                    style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176)),
+                                  ),
+
+                                  // hintText: 'Customer Type',hintStyle: TextStyle(),
+                                  contentPadding: EdgeInsets.all(13),
+                                  labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
+                                  filled: true,
+                                  fillColor: Primary_colors.Dark,
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(),
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.people,
+                                    color: Colors.white,
+                                  )),
+                              value: rfqController.rfqModel.vendor_name_controller.value.text.isEmpty ? null : rfqController.rfqModel.vendor_name_controller.value.text,
+                              items: <String>[
+                                'Option 1',
+                                'Option 2',
+                              ].map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(
+                                  () {
+                                    rfqController.rfqModel.vendor_name_controller.value.text = newValue!;
+                                  },
+                                );
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please Select the vendor';
+                                }
+                                return null;
+                              },
+                            ),
                           ),
                           const SizedBox(height: 25),
                           Textfield_1(
                             readonly: false,
-                            text: 'Client Address name',
-                            controller: rfqController.rfqModel.clientAddressNameController.value,
-                            icon: Icons.people,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Client Address name';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 25),
-                          Textfield_1(
-                            readonly: false,
-                            text: 'Client Address ',
-                            controller: rfqController.rfqModel.clientAddressController.value,
+                            text: 'Vendor Address ',
+                            controller: rfqController.rfqModel.vendor_address_controller.value,
                             icon: Icons.location_history_outlined,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter Client Address';
+                                return 'Please enter Vendor Address';
                               }
                               return null;
                             },
@@ -74,17 +108,17 @@ class _RFQDetailsState extends State<RFQDetails> {
                         ],
                       ),
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 25),
                           Textfield_1(
                             readonly: false,
-                            text: 'Billing Address name',
-                            controller: rfqController.rfqModel.billingAddressNameController.value,
+                            text: 'Vendor Phone number',
+                            controller: rfqController.rfqModel.vendor_phone_controller.value,
                             icon: Icons.price_change,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter Billing Address name';
+                                return 'Please enter phone number';
                               }
                               return null;
                             },
@@ -92,12 +126,12 @@ class _RFQDetailsState extends State<RFQDetails> {
                           const SizedBox(height: 25),
                           Textfield_1(
                             readonly: false,
-                            text: 'Billing Address',
-                            controller: rfqController.rfqModel.billingAddressController.value,
+                            text: 'Vendor Email address',
+                            controller: rfqController.rfqModel.vendor_email_controller.value,
                             icon: Icons.price_change,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter Billing Address';
+                                return 'Please enter Email Address';
                               }
                               return null;
                             },
@@ -111,7 +145,12 @@ class _RFQDetailsState extends State<RFQDetails> {
                                 colors: Colors.green,
                                 text: 'Add Details',
                                 onPressed: () {
-                                  widget.add_details();
+                                  if (rfqController.rfqModel.detailsKey.value.currentState?.validate() ?? false) {
+                                    widget.add_details();
+                                  }
+                                  // if (_formKey.currentState?.validate() == true) {
+
+                                  // }
                                 },
                               ),
                             ],
@@ -125,7 +164,7 @@ class _RFQDetailsState extends State<RFQDetails> {
                 width: 660,
                 child: Text(
                   textAlign: TextAlign.center,
-                  'The approved Quotation shown beside can be used as a reference for generating the RFQ. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
+                  'The Client requirement shown beside can be used as a reference for generating the RFQ. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
                   style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                 ),
               )

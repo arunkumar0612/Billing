@@ -22,8 +22,9 @@ class Verify_OTP extends StatefulWidget with VerifyotpServices {
 class _Verify_OTPState extends State<Verify_OTP> {
   // Create controllers for each TextField
 
-  final VerifyOTPControllers VerifyOTPController = Get.put(VerifyOTPControllers());
+  final VerifyOTPControllers VerifyOTPController = Get.find<VerifyOTPControllers>();
 
+  @override
   void dispose() {
     // Dispose controllers when the widget is disposed
     for (var controller in VerifyOTPController.verifyOTPModel.otpControllers) {
@@ -40,7 +41,14 @@ class _Verify_OTPState extends State<Verify_OTP> {
       return AnimatedGradientBorder(
         animationTime: 2,
         glowSize: VerifyOTPController.verifyOTPModel.indicator.value ? 5 : 5,
-        gradientColors: VerifyOTPController.verifyOTPModel.indicator.value ? [const Color.fromARGB(255, 157, 98, 253), Colors.black] : [Primary_colors.Light],
+        gradientColors: VerifyOTPController.verifyOTPModel.indicator.value
+            ? [
+                const Color.fromARGB(255, 157, 98, 253),
+                Colors.black
+              ]
+            : [
+                Primary_colors.Light
+              ],
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),
@@ -108,7 +116,9 @@ class _Verify_OTPState extends State<Verify_OTP> {
                                   }
                                 },
                                 keyboardType: TextInputType.number,
-                                inputFormatters: [LengthLimitingTextInputFormatter(6)],
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(6)
+                                ],
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.all(0),
                                   enabledBorder: OutlineInputBorder(

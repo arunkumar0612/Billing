@@ -436,7 +436,7 @@ class _InvoiceNoteState extends State<InvoiceNote> {
                             colors: Colors.green,
                             text: 'Submit',
                             onPressed: () async {
-                              if (invoiceController.invoiceModel.Invoice_products.isNotEmpty && invoiceController.invoiceModel.Invoice_client_addr_name.value.isNotEmpty && invoiceController.invoiceModel.Invoice_client_addr.value.isNotEmpty && invoiceController.invoiceModel.Invoice_bill_addr_name.value.isNotEmpty && invoiceController.invoiceModel.Invoice_bill_addr.value.isNotEmpty && invoiceController.invoiceModel.Invoice_title.value.isNotEmpty) {
+                              if (invoiceController.invoiceModel.Invoice_products.isNotEmpty && invoiceController.invoiceModel.clientAddressNameController.value.text.isNotEmpty && invoiceController.invoiceModel.clientAddressController.value.text.isNotEmpty && invoiceController.invoiceModel.billingAddressNameController.value.text.isNotEmpty && invoiceController.invoiceModel.billingAddressController.value.text.isNotEmpty && invoiceController.invoiceModel.TitleController.value.text.isNotEmpty) {
                                 widget.Generate_Invoice(context);
                                 // Navigator.of(context).pop();
                               } else {

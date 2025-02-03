@@ -5,19 +5,11 @@ import '../entities/Debit_entities.dart';
 
 class DebitModel {
   final Rxn<TabController> tabController = Rxn<TabController>();
-  var Debit_client_addr_name = "".obs;
-  var Debit_client_addr = "".obs;
-  var Debit_bill_addr_name = "".obs;
-  var Debit_bill_addr = "".obs;
   var Debit_no = "".obs;
-  var Debit_title = "".obs;
   var Debit_table_heading = "".obs;
-  var Debit_noteList = <Note>[].obs;
-  var Debit_recommendationList = <Recommendation>[].obs;
-  var Debit_products = <DebitProduct>[].obs;
+
 //######################################################################################################################################
 //DETAILS
-  final TitleController = TextEditingController().obs;
   final clientAddressNameController = TextEditingController().obs;
   final clientAddressController = TextEditingController().obs;
   final billingAddressNameController = TextEditingController().obs;
@@ -31,7 +23,11 @@ class DebitModel {
   final hsnController = TextEditingController().obs;
   final priceController = TextEditingController().obs;
   final quantityController = TextEditingController().obs;
+  final remarksController = TextEditingController().obs;
   final gstController = TextEditingController().obs;
+  var Debit_products = <DebitProduct>[].obs;
+  var Debit_gstTotals = <Map<String, double>>[].obs;
+
 //######################################################################################################################################
 //NOTES
   final noteformKey = GlobalKey<FormState>().obs;
@@ -44,6 +40,8 @@ class DebitModel {
   final recommendationKeyController = TextEditingController().obs;
   final recommendationValueController = TextEditingController().obs;
   // var selectedheadingType = Rxn<String>();
+  var Debit_noteList = <Note>[].obs;
+  var Debit_recommendationList = <Recommendation>[].obs;
   final notecontent = <String>[
     'Delivery within 30 working days from the date of issuing the PO.',
     'Payment terms : 100% along with PO.',

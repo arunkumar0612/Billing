@@ -1,15 +1,17 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'dart:typed_data';
+
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/utils/helpers/support_functions.dart';
-import '../../../../controllers/credit_actions.dart';
+import '../../../../controllers/Credit_actions.dart';
 import '../../../../models/entities/product_entities.dart';
+import '../../../../utils/helpers/support_functions.dart';
 
-Future<Uint8List> generate_Credit(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, Credit_num, title) async {
+Future<Uint8List> generate_Credit(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, Credit_num, gst, Credit_gstTotals) async {
   final Credit = Credit_generate(
     products: products,
+    GST: gst.toDouble(),
     baseColor: PdfColors.green500,
     accentColor: PdfColors.blueGrey900,
     client_addr_name: client_addr_name,
@@ -17,7 +19,8 @@ Future<Uint8List> generate_Credit(PdfPageFormat pageFormat, products, client_add
     bill_addr_name: bill_addr_name,
     bill_addr: bill_addr,
     Credit: Credit_num ?? "",
-    title_text: title,
+    Credit_gstTotals: Credit_gstTotals,
+    // title_text: title,
     type: '',
   );
 
@@ -27,6 +30,7 @@ Future<Uint8List> generate_Credit(PdfPageFormat pageFormat, products, client_add
 class Credit_generate {
   Credit_generate({
     required this.products,
+    required this.GST,
     required this.baseColor,
     required this.accentColor,
     required this.client_addr_name,
@@ -34,26 +38,30 @@ class Credit_generate {
     required this.bill_addr_name,
     required this.bill_addr,
     required this.Credit,
-    required this.title_text,
+    required this.Credit_gstTotals,
+    // required this.title_text,
     required this.type,
     // required this.items,
   });
-
-  final CreditController creditController = Get.put(CreditController());
-
+  final CreditController creditController = Get.find<CreditController>();
   String client_addr_name = "";
   String client_addr = "";
   String bill_addr_name = "";
   String bill_addr = "";
   String Credit = "";
-  String title_text = "";
+  // String title_text = "";
   String type = "";
+  List<Map<String, dynamic>> Credit_gstTotals = [];
 
   final List<CreditProduct> products;
-
+  final double GST;
   final PdfColor baseColor;
   final PdfColor accentColor;
   static const _darkColor = PdfColors.blueGrey800;
+  double get CGST_total => Credit_gstTotals.map((item) => (item['gst'] as double) / 2 * (item['total'] as double) / 100).reduce((a, b) => a + b);
+  double get SGST_total => Credit_gstTotals.map((item) => (item['gst'] as double) / 2 * (item['total'] as double) / 100).reduce((a, b) => a + b);
+  double get _total => products.map<double>((p) => p.total).reduce((a, b) => a + b);
+  double get _grandTotal => _total + CGST_total + SGST_total;
   dynamic profileImage;
 
   Future<Uint8List> buildPdf(PdfPageFormat pageFormat) async {
@@ -81,8 +89,8 @@ class Credit_generate {
           title(context),
           pw.SizedBox(height: 10),
           _contentTable(context),
-          pw.SizedBox(height: 10),
-          notes(context),
+          pw.SizedBox(height: 20),
+          tax_table(context),
         ],
       ),
     );
@@ -104,7 +112,7 @@ class Credit_generate {
                 child: pw.Image(profileImage),
               ),
               pw.Text(
-                'DELIVERY CHALLAN',
+                'CREDIT NOTE',
                 style: pw.TextStyle(
                   font: Helvetica_bold,
                   fontSize: 15,
@@ -121,7 +129,7 @@ class Credit_generate {
                       children: [
                         regular('Date', 10),
                         pw.SizedBox(height: 5),
-                        regular('Credit ref', 10),
+                        regular('Invoice ref', 10),
                         pw.SizedBox(height: 5),
                         regular('Credit no', 10),
                       ],
@@ -151,14 +159,14 @@ class Credit_generate {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("AA/INST/241101", 10),
+                            child: regular('AA/123C/F4', 10),
                           ),
                         ),
                         pw.SizedBox(height: 5),
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("CreditAA/INST/241101", 10),
+                            child: regular('DEBAA/123C/F4', 10),
                           ),
                         ),
                       ],
@@ -328,7 +336,7 @@ class Credit_generate {
   }
 
   pw.Widget title(pw.Context context) {
-    return pw.Center(child: bold(title_text, 12));
+    return pw.Center(child: bold("DETAILS OF ADJUSTMENT", 12));
   }
 
   pw.Widget _contentTable(pw.Context context) {
@@ -336,192 +344,464 @@ class Credit_generate {
       'S.No',
       'Item Description',
       'HSN',
+      'GST',
+      'Price',
       'Quantity',
+      'Total',
+      'Remarks'
     ];
 
-    return pw.TableHelper.fromTextArray(
-      border: null,
-      cellAlignment: pw.Alignment.centerLeft,
-      headerDecoration: pw.BoxDecoration(
-        borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)),
-        color: baseColor,
+    return pw.Table(
+      border: pw.TableBorder.all(color: accentColor, width: 0.5),
+      children: [
+        // Header Row
+        pw.TableRow(
+          children: tableHeaders.map((header) {
+            return pw.Container(
+              padding: const pw.EdgeInsets.all(8),
+              color: baseColor,
+              child: pw.Text(
+                header,
+                style: pw.TextStyle(
+                  font: Helvetica_bold,
+                  color: PdfColors.white,
+                  fontSize: 10,
+                ),
+                textAlign: pw.TextAlign.center,
+              ),
+            );
+          }).toList(),
+        ),
+        // Data Rows
+        ...products.map((product) {
+          return pw.TableRow(
+            children: [
+              _buildCell(product.sno),
+              _buildCell(
+                product.productName,
+                isDescription: true, // Handle wrapping for description
+              ),
+              _buildCell(product.hsn),
+              _buildCell(product.gst.toString()),
+              _buildCell(product.price.toString()),
+              _buildCell(product.quantity.toString()),
+              _buildCell(product.total.toString()),
+              _buildCell(product.remarks),
+            ],
+          );
+        }),
+      ],
+    );
+  }
+
+// Helper function to build table cells
+  pw.Widget _buildCell(String text, {bool isDescription = false}) {
+    return pw.Container(
+      padding: const pw.EdgeInsets.all(8),
+      constraints: isDescription
+          ? const pw.BoxConstraints(maxWidth: 150) // Adjust width for wrapping
+          : null,
+      child: pw.Text(
+        text,
+        style: pw.TextStyle(
+          font: Helvetica,
+          fontSize: 10,
+          color: _darkColor,
+        ),
+        textAlign: isDescription ? pw.TextAlign.left : pw.TextAlign.center,
+        softWrap: true, // Allow text wrapping
       ),
-      headerHeight: 22,
-      cellHeight: 30,
-      cellAlignments: {
-        0: pw.Alignment.centerLeft,
-        1: pw.Alignment.centerLeft,
-        2: pw.Alignment.centerLeft,
-        3: pw.Alignment.center,
-      },
-      headerStyle: pw.TextStyle(
-        font: Helvetica_bold,
-        color: PdfColors.white,
-        fontSize: 10,
-        fontWeight: pw.FontWeight.bold,
-      ),
-      cellStyle: pw.TextStyle(
-        font: Helvetica,
-        color: _darkColor,
-        fontSize: 10,
-      ),
-      cellDecoration: (int rowIndex, dynamic cellData, int colIndex) {
-        // Apply different colors for even and odd columns
-        return pw.BoxDecoration(
-          color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
-        );
-      },
-      rowDecoration: pw.BoxDecoration(
-        border: pw.Border(
-          bottom: pw.BorderSide(
-            color: accentColor,
-            width: .5,
+    );
+  }
+
+  pw.Widget tax_table(pw.Context context) {
+    return pw.Column(
+      children: [
+        pw.Row(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+          children: [
+            pw.Container(
+              decoration: pw.BoxDecoration(border: pw.Border.all(color: PdfColors.grey700)),
+              // height: 200,
+              // width: 300, // Ensure the container has a defined width
+              child: pw.Column(
+                // border: pw.TableBorder.all(color: PdfColors.grey700, width: 1),
+                children: [
+                  pw.Row(
+                    children: [
+                      pw.Container(
+                        decoration: const pw.BoxDecoration(
+                          border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700)),
+                        ),
+                        height: 38,
+                        width: 80,
+                        child: pw.Center(
+                          child: pw.Text(
+                            "Taxable\nvalue",
+                            style: pw.TextStyle(
+                              font: Helvetica,
+
+                              fontSize: 10,
+                              color: PdfColors.grey700,
+                              // fontWeight: pw.FontWeight.bold,
+                            ),
+                            textAlign: pw.TextAlign.center, // Justifying the text
+                          ),
+                        ),
+                      ),
+                      pw.Container(
+                        height: 38,
+                        child: pw.Column(
+                          children: [
+                            pw.Container(
+                              width: 110,
+                              decoration: const pw.BoxDecoration(
+                                border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700)),
+                              ),
+                              height: 19, // Replace Expanded with defined height
+                              child: pw.Center(child: regular('CGST', 10)),
+                            ),
+                            pw.Container(
+                              height: 19, // Define height instead of Expanded
+                              child: pw.Row(
+                                children: [
+                                  pw.Container(
+                                    width: 40, // Define width instead of Expanded
+                                    decoration: const pw.BoxDecoration(
+                                      border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700), bottom: pw.BorderSide(color: PdfColors.grey700)),
+                                    ),
+                                    child: pw.Center(child: regular('%', 10)),
+                                  ),
+                                  pw.Container(
+                                    width: 70, // Define width instead of Expanded
+                                    decoration: const pw.BoxDecoration(
+                                      border: pw.Border(
+                                        right: pw.BorderSide(color: PdfColors.grey700),
+                                        top: pw.BorderSide(color: PdfColors.grey700),
+                                        left: pw.BorderSide(color: PdfColors.grey700),
+                                      ),
+                                    ),
+                                    child: pw.Center(child: regular('amount', 10)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      pw.Container(
+                        height: 38,
+                        child: pw.Column(
+                          children: [
+                            pw.Container(
+                              height: 19, // Replace Expanded with defined height
+                              child: pw.Center(child: regular('SGST', 10)),
+                            ),
+                            pw.Container(
+                              height: 19, // Define height instead of Expanded
+                              child: pw.Row(
+                                children: [
+                                  pw.Container(
+                                    width: 40, // Define width instead of Expanded
+                                    decoration: const pw.BoxDecoration(
+                                      border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700)),
+                                    ),
+                                    child: pw.Center(child: regular('%', 10)),
+                                  ),
+                                  pw.Container(
+                                    width: 70, // Define width instead of Expanded
+                                    decoration: const pw.BoxDecoration(
+                                      border: pw.Border(
+                                        right: pw.BorderSide(color: PdfColors.grey700),
+                                        top: pw.BorderSide(color: PdfColors.grey700),
+                                        left: pw.BorderSide(color: PdfColors.grey700),
+                                      ),
+                                    ),
+                                    child: pw.Center(child: regular('amount', 10)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  pw.ListView.builder(
+                    itemCount: Credit_gstTotals.length, // Number of items in the list
+                    itemBuilder: (context, index) {
+                      return pw.Row(
+                        children: [
+                          pw.Container(
+                            decoration: const pw.BoxDecoration(
+                              border: pw.Border(
+                                right: pw.BorderSide(color: PdfColors.grey700),
+                                top: pw.BorderSide(color: PdfColors.grey700),
+                              ),
+                            ),
+                            width: 80,
+                            height: 38,
+                            child: pw.Center(child: regular(formatzero(Credit_gstTotals[index]['total']), 10)),
+                          ),
+                          pw.Container(
+                            height: 38,
+                            child: pw.Row(
+                              children: [
+                                pw.Container(
+                                  decoration: const pw.BoxDecoration(
+                                    border: pw.Border(
+                                      top: pw.BorderSide(color: PdfColors.grey700),
+                                    ),
+                                  ),
+                                  width: 40, // Define width instead of Expanded
+                                  child: pw.Center(
+                                    child: regular((Credit_gstTotals[index]['gst'] / 2).toString(), 10),
+                                  ),
+                                ),
+                                pw.Container(
+                                  width: 70, // Define width instead of Expanded
+                                  decoration: const pw.BoxDecoration(
+                                    border: pw.Border(
+                                      right: pw.BorderSide(color: PdfColors.grey700),
+                                      top: pw.BorderSide(color: PdfColors.grey700),
+                                      left: pw.BorderSide(color: PdfColors.grey700),
+                                    ),
+                                  ),
+                                  child: pw.Center(
+                                    child: regular(
+                                        formatzero(
+                                          ((Credit_gstTotals[index]['total'].toInt() / 100) * (Credit_gstTotals[index]['gst'] / 2)),
+                                        ),
+                                        10),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          pw.Container(
+                            height: 38,
+                            child: pw.Row(
+                              children: [
+                                pw.Container(
+                                  decoration: const pw.BoxDecoration(
+                                    border: pw.Border(
+                                      top: pw.BorderSide(color: PdfColors.grey700),
+                                    ),
+                                  ),
+                                  width: 40, // Define width instead of Expanded
+                                  child: pw.Center(child: regular((Credit_gstTotals[index]['gst'] / 2).toString(), 10)),
+                                ),
+                                pw.Container(
+                                  width: 70, // Define width instead of Expanded
+                                  decoration: const pw.BoxDecoration(
+                                    border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700)),
+                                  ),
+                                  child: pw.Center(child: regular(formatzero(((Credit_gstTotals[index]['total'].toInt() / 100) * (Credit_gstTotals[index]['gst'] / 2))), 10)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  )
+                ],
+              ),
+            ),
+            final_amount(context),
+          ],
+        ),
+        pw.Row(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
+            // pw.Expanded(child: pw.Container(), flex: 1),
+
+            notes(context),
+
+            // 995461
+            pw.SizedBox(width: 100),
+            authorized_signatory(context),
+          ],
+        ),
+      ],
+    );
+  }
+
+  pw.Widget final_amount(pw.Context context) {
+    return pw.Container(
+      width: 185, // Define width to ensure bounded constraints
+      child: pw.Column(
+        children: [
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              regular('Sub total   :', 10),
+              regular(formatzero(_total), 10),
+            ],
           ),
-        ),
-      ),
-      headers: List<String>.generate(
-        tableHeaders.length,
-        (col) => tableHeaders[col],
-      ),
-      data: List<List<String>>.generate(
-        products.length,
-        (row) => List<String>.generate(
-          tableHeaders.length,
-          (col) => products[row].getIndex(col),
-        ),
+          pw.SizedBox(height: 8),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              regular('CGST       :', 10),
+              regular(formatzero(CGST_total), 10),
+            ],
+          ),
+          pw.SizedBox(height: 8),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              regular('SGST       :', 10),
+              regular(formatzero(CGST_total), 10),
+            ],
+          ),
+          pw.SizedBox(height: 8),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              regular(
+                'Round off : ${((double.parse(formatCurrencyRoundedPaisa(_grandTotal).replaceAll(',', '')) - _grandTotal) >= 0 ? '+' : '')}${(double.parse(formatCurrencyRoundedPaisa(_grandTotal).replaceAll(',', '')) - _grandTotal).toStringAsFixed(2)}',
+                10,
+              ),
+              regular(formatCurrencyRoundedPaisa(_grandTotal), 10),
+            ],
+          ),
+          pw.Divider(color: accentColor),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              bold('Total', 12),
+              bold("Rs.${formatCurrencyRoundedPaisa(_grandTotal)}", 12),
+            ],
+          ),
+        ],
       ),
     );
   }
 
   pw.Widget notes(pw.Context context) {
-    return pw.Row(
-      children: [
-        pw.Container(
-          width: 280,
-          child: pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.SizedBox(height: 30),
-              pw.Padding(
-                child: bold("Note", 12),
-                padding: const pw.EdgeInsets.only(left: 0, bottom: 10),
+    return pw.Container(
+      width: 280,
+      child: pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.SizedBox(height: 30),
+          pw.Padding(
+            child: bold("Note", 12),
+            padding: const pw.EdgeInsets.only(left: 0, bottom: 10),
+          ),
+          ...List.generate(creditController.creditModel.Credit_noteList.length, (index) {
+            return pw.Padding(
+              padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
+              child: pw.Row(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  regular("${index + 1}.", 10),
+                  pw.SizedBox(width: 5),
+                  pw.Expanded(
+                    child: pw.Text(
+                      creditController.creditModel.Credit_noteList[index].notename,
+                      textAlign: pw.TextAlign.start,
+                      style: pw.TextStyle(
+                        font: Helvetica,
+                        fontSize: 10,
+                        lineSpacing: 2,
+                        color: PdfColors.blueGrey800,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              ...List.generate(creditController.creditModel.Credit_noteList.length, (index) {
-                return pw.Padding(
-                  padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
-                  child: pw.Row(
+            );
+          }),
+          pw.Padding(
+            padding: const pw.EdgeInsets.only(left: 0, top: 5),
+            child: pw.Row(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                regular("${creditController.creditModel.Credit_noteList.length + 1}.", 10),
+                pw.SizedBox(width: 5),
+                pw.Expanded(
+                  child: pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                      regular("${index + 1}.", 10),
-                      pw.SizedBox(width: 5),
-                      pw.Expanded(
-                        child: pw.Text(
-                          creditController.creditModel.Credit_noteList[index].notename,
-                          textAlign: pw.TextAlign.start,
-                          style: pw.TextStyle(
-                            font: Helvetica,
-                            fontSize: 10,
-                            lineSpacing: 2,
-                            color: PdfColors.blueGrey800,
-                          ),
-                        ),
+                      bold("Bank Account Details:", 10),
+                      pw.SizedBox(height: 5), // Adds a small space between the lines
+                      pw.Row(
+                        children: [
+                          regular("Current a/c:", 10),
+                          pw.SizedBox(width: 5),
+                          regular("257399850001", 10),
+                        ],
+                      ),
+                      pw.SizedBox(height: 5),
+                      pw.Row(
+                        children: [
+                          regular("IFSC code:", 10),
+                          pw.SizedBox(width: 5),
+                          regular("INDB0000521", 10),
+                        ],
+                      ),
+                      pw.SizedBox(height: 5),
+                      pw.Row(
+                        children: [
+                          regular("Bank name:", 10),
+                          pw.SizedBox(width: 5),
+                          regular(": IndusInd Bank Limited", 10),
+                        ],
+                      ),
+                      pw.SizedBox(height: 5),
+                      pw.Row(
+                        children: [
+                          regular("Branch name:", 10),
+                          pw.SizedBox(width: 5),
+                          regular("R.S. Puram, Coimbatore.", 10),
+                        ],
                       ),
                     ],
                   ),
-                );
-              }),
-              pw.Padding(
-                padding: const pw.EdgeInsets.only(left: 0, top: 5),
-                child: pw.Row(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    // regular("${Credit_noteList.length + 1}.", 10),
-                    // pw.SizedBox(width: 5),
-                    // pw.Expanded(
-                    //   child: pw.Column(
-                    //     crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    //     children: [
-                    //       bold("Bank Account Details:", 10),
-                    //       pw.SizedBox(height: 5), // Adds a small space between the lines
-                    //       pw.Row(
-                    //         children: [
-                    //           regular("Current a/c:", 10),
-                    //           pw.SizedBox(width: 5),
-                    //           regular("257399850001", 10),
-                    //         ],
-                    //       ),
-                    //       pw.SizedBox(height: 5),
-                    //       pw.Row(
-                    //         children: [
-                    //           regular("IFSC code:", 10),
-                    //           pw.SizedBox(width: 5),
-                    //           regular("INDB0000521", 10),
-                    //         ],
-                    //       ),
-                    //       pw.SizedBox(height: 5),
-                    //       pw.Row(
-                    //         children: [
-                    //           regular("Bank name:", 10),
-                    //           pw.SizedBox(width: 5),
-                    //           regular(": IndusInd Bank Limited", 10),
-                    //         ],
-                    //       ),
-                    //       pw.SizedBox(height: 5),
-                    //       pw.Row(
-                    //         children: [
-                    //           regular("Branch name:", 10),
-                    //           pw.SizedBox(width: 5),
-                    //           regular("R.S. Puram, Coimbatore.", 10),
-                    //         ],
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                  ],
                 ),
-              ),
-              pw.Padding(
-                padding: const pw.EdgeInsets.only(left: 0, top: 5),
-                child: pw.Row(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    // regular("${Credit_noteList.length + 2}.", 10),
-                    pw.SizedBox(width: 5),
-                    pw.Expanded(
-                      child: pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: [
-                          bold(creditController.creditModel.Credit_table_heading.value, 10),
-                          ...creditController.creditModel.Credit_recommendationList.map((recommendation) {
-                            return pw.Padding(
-                              padding: const pw.EdgeInsets.only(left: 5, top: 5),
-                              child: pw.Row(
-                                children: [
-                                  pw.Container(
-                                    width: 120,
-                                    child: regular(recommendation.key.toString(), 10),
-                                  ),
-                                  regular(":", 10),
-                                  pw.SizedBox(width: 5),
-                                  regular(recommendation.value.toString(), 10),
-                                ],
-                              ),
-                            );
-                          }),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        pw.SizedBox(
-          width: 110,
-        ),
-        authorized_signatory(context)
-      ],
+          if (creditController.creditModel.Credit_recommendationList.isNotEmpty)
+            pw.Padding(
+              padding: const pw.EdgeInsets.only(left: 0, top: 5),
+              child: pw.Row(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  regular("${creditController.creditModel.Credit_noteList.length + 2}.", 10),
+                  pw.SizedBox(width: 5),
+                  pw.Expanded(
+                    child: pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        bold(creditController.creditModel.Credit_table_heading.value, 10),
+                        ...creditController.creditModel.Credit_recommendationList.map((recommendation) {
+                          return pw.Padding(
+                            padding: const pw.EdgeInsets.only(left: 5, top: 5),
+                            child: pw.Row(
+                              children: [
+                                pw.Container(
+                                  width: 120,
+                                  child: regular(recommendation.key.toString(), 10),
+                                ),
+                                regular(":", 10),
+                                pw.SizedBox(width: 5),
+                                regular(recommendation.value.toString(), 10),
+                              ],
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
     );
   }
 

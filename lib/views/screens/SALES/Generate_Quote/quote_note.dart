@@ -436,7 +436,7 @@ class _QuoteNoteState extends State<QuoteNote> {
                             colors: Colors.green,
                             text: 'Submit',
                             onPressed: () async {
-                              if (quoteController.quoteModel.Quote_products.isNotEmpty && quoteController.quoteModel.Quote_client_addr_name.value.isNotEmpty && quoteController.quoteModel.Quote_client_addr.value.isNotEmpty && quoteController.quoteModel.Quote_bill_addr_name.value.isNotEmpty && quoteController.quoteModel.Quote_bill_addr.value.isNotEmpty && quoteController.quoteModel.Quote_title.value.isNotEmpty) {
+                              if (quoteController.quoteModel.Quote_products.isNotEmpty && quoteController.quoteModel.clientAddressNameController.value.text.isNotEmpty && quoteController.quoteModel.clientAddressController.value.text.isNotEmpty && quoteController.quoteModel.billingAddressNameController.value.text.isNotEmpty && quoteController.quoteModel.billingAddressController.value.text.isNotEmpty && quoteController.quoteModel.TitleController.value.text.isNotEmpty) {
                                 widget.Generate_Quote(context);
                                 // Navigator.of(context).pop();
                               } else {

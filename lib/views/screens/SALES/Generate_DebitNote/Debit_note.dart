@@ -436,7 +436,7 @@ class _DebitNoteState extends State<DebitNote> {
                             colors: Colors.green,
                             text: 'Submit',
                             onPressed: () async {
-                              if (debitController.debitModel.Debit_products.isNotEmpty && debitController.debitModel.Debit_client_addr_name.value.isNotEmpty && debitController.debitModel.Debit_client_addr.value.isNotEmpty && debitController.debitModel.Debit_bill_addr_name.value.isNotEmpty && debitController.debitModel.Debit_bill_addr.value.isNotEmpty && debitController.debitModel.Debit_title.value.isNotEmpty) {
+                              if (debitController.debitModel.Debit_products.isNotEmpty && debitController.debitModel.clientAddressNameController.value.text.isNotEmpty && debitController.debitModel.clientAddressController.value.text.isNotEmpty && debitController.debitModel.billingAddressNameController.value.text.isNotEmpty && debitController.debitModel.billingAddressController.value.text.isNotEmpty) {
                                 widget.Generate_Debit(context);
                                 // Navigator.of(context).pop();
                               } else {

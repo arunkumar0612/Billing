@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-import '../../../../controllers/credit_actions.dart';
+import '../../../../controllers/Credit_actions.dart';
 import '../../../../services/SALES/Credit_services/CreditDetails_service.dart';
 
 class CreditDetails extends StatefulWidget with CreditdetailsService {
@@ -28,24 +28,11 @@ class _CreditDetailsState extends State<CreditDetails> {
                   key: creditController.creditModel.detailsKey.value,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 25),
-                          Textfield_1(
-                            readonly: false,
-                            text: 'Title',
-                            controller: creditController.creditModel.TitleController.value,
-                            icon: Icons.title,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Title number';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 25),
                           Textfield_1(
                             readonly: false,
                             text: 'Client Address name',
@@ -74,9 +61,9 @@ class _CreditDetailsState extends State<CreditDetails> {
                         ],
                       ),
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 10),
+                          // const SizedBox(height: 55),
                           Textfield_1(
                             readonly: false,
                             text: 'Billing Address name',

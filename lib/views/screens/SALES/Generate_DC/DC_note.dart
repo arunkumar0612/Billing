@@ -436,7 +436,7 @@ class _Delivery_challanNoteState extends State<Delivery_challanNote> {
                             colors: Colors.green,
                             text: 'Submit',
                             onPressed: () async {
-                              if (dcController.dcModel.Delivery_challan_products.isNotEmpty && dcController.dcModel.Delivery_challan_client_addr_name.value.isNotEmpty && dcController.dcModel.Delivery_challan_client_addr.value.isNotEmpty && dcController.dcModel.Delivery_challan_bill_addr_name.value.isNotEmpty && dcController.dcModel.Delivery_challan_bill_addr.value.isNotEmpty && dcController.dcModel.Delivery_challan_title.value.isNotEmpty) {
+                              if (dcController.dcModel.Delivery_challan_products.isNotEmpty && dcController.dcModel.clientAddressNameController.value.text.isNotEmpty && dcController.dcModel.clientAddressController.value.text.isNotEmpty && dcController.dcModel.billingAddressNameController.value.text.isNotEmpty && dcController.dcModel.billingAddressController.value.text.isNotEmpty && dcController.dcModel.TitleController.value.text.isNotEmpty) {
                                 widget.generate_DC(context);
                                 // Navigator.of(context).pop();
                               } else {

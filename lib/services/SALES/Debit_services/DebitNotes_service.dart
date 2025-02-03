@@ -8,7 +8,7 @@ import 'package:ssipl_billing/models/entities/Debit_entities.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_Debit/Debit_template.dart';
 
 import '../../../themes/style.dart';
-import '../../../view_send_pdf.dart';
+import '../../../views/components/view_send_pdf.dart';
 import '../../../views/screens/SALES/Generate_DebitNote/Debit_template.dart';
 // import '../../../views/screens/SALES/Generate_Debit/debit_template.dart';
 
@@ -94,16 +94,7 @@ mixin DebitnotesService {
   }
 
   void Generate_Debit(context) async {
-    final pdfData = await generate_Debit(
-      PdfPageFormat.a4,
-      debitController.debitModel.Debit_products,
-      debitController.debitModel.Debit_client_addr_name.value,
-      debitController.debitModel.Debit_client_addr.value,
-      debitController.debitModel.Debit_bill_addr_name.value,
-      debitController.debitModel.Debit_bill_addr.value,
-      debitController.debitModel.Debit_no.value,
-      debitController.debitModel.Debit_title.value,
-    );
+    final pdfData = await generate_Debit(PdfPageFormat.a4, debitController.debitModel.Debit_products, debitController.debitModel.clientAddressNameController.value.text, debitController.debitModel.clientAddressController.value.text, debitController.debitModel.billingAddressNameController.value.text, debitController.debitModel.billingAddressController.value.text, debitController.debitModel.Debit_no.value, 9, debitController.debitModel.Debit_gstTotals);
 
     const filePath = 'E://Debit.pdf';
     final file = File(filePath);

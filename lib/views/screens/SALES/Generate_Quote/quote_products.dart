@@ -332,6 +332,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                                   colors: Colors.green,
                                   text: 'Submit',
                                   onPressed: () {
+                                    widget.onSubmit();
                                     quoteController.nextTab();
                                   },
                                 ),

@@ -332,6 +332,7 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
                                   colors: Colors.green,
                                   text: 'Submit',
                                   onPressed: () {
+                                    widget.onSubmit();
                                     invoiceController.nextTab();
                                   },
                                 ),

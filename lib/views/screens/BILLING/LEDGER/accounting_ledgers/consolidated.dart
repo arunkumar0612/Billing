@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/views/screens/Ledger/ViewLedger.dart';
+import 'package:ssipl_billing/views/screens/BILLING/LEDGER/ViewLedger.dart';
 import 'package:ssipl_billing/themes/style.dart';
 
 class consolidated extends StatefulWidget {

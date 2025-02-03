@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-import '../../../../controllers/credit_actions.dart';
+import '../../../../controllers/Credit_actions.dart';
 import '../../../../services/SALES/Credit_services/CreditProduct_services.dart';
 
 class CreditProducts extends StatefulWidget with CreditproductService {
@@ -261,6 +261,54 @@ class _CreditProductsState extends State<CreditProducts> {
                         );
                       },
                     ),
+                    const SizedBox(height: 25),
+                    Obx(
+                      () {
+                        return SizedBox(
+                          width: 400,
+                          child: TextFormField(
+                            readOnly: false,
+                            style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
+                            decoration: const InputDecoration(
+                              filled: true,
+                              fillColor: Primary_colors.Dark,
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+
+                              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                              // labelText: text,
+                              hintText: 'Remarks',
+                              hintStyle: TextStyle(
+                                fontSize: Primary_font_size.Text7,
+                                color: Color.fromARGB(255, 167, 165, 165),
+                              ),
+                              border: OutlineInputBorder(),
+                              prefixIcon: Icon(
+                                Icons.production_quantity_limits,
+                                color: Colors.white,
+                              ),
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            controller: creditController.creditModel.remarksController.value,
+                            keyboardType: TextInputType.number,
+                            // inputFormatters: [
+                            //   FilteringTextInputFormatter.digitsOnly
+                            // ],
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter Product Quantity';
+                              }
+                              return null;
+                            },
+                          ),
+                        );
+                      },
+                    ),
                     const SizedBox(height: 30),
                     Obx(
                       () {
@@ -332,6 +380,7 @@ class _CreditProductsState extends State<CreditProducts> {
                                   colors: Colors.green,
                                   text: 'Submit',
                                   onPressed: () {
+                                    widget.onSubmit();
                                     creditController.nextTab();
                                   },
                                 ),

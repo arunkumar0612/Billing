@@ -1,16 +1,12 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/models/entities/Credit_entities.dart';
-// import 'package:ssipl_billing/views/screens/SALES/Generate_Credit/Credit_template.dart';
-
-import '../../../controllers/credit_actions.dart';
+import '../../../controllers/Credit_actions.dart';
 import '../../../themes/style.dart';
-import '../../../view_send_pdf.dart';
+import '../../../views/components/view_send_pdf.dart';
 import '../../../views/screens/SALES/Generate_creditNote/Credit_template.dart';
-// import '../../../views/screens/SALES/Generate_Credit/credit_template.dart';
 
 mixin CreditnotesService {
   final CreditController creditController = Get.find<CreditController>();
@@ -94,16 +90,7 @@ mixin CreditnotesService {
   }
 
   void Generate_Credit(context) async {
-    final pdfData = await generate_Credit(
-      PdfPageFormat.a4,
-      creditController.creditModel.Credit_products,
-      creditController.creditModel.Credit_client_addr_name.value,
-      creditController.creditModel.Credit_client_addr.value,
-      creditController.creditModel.Credit_bill_addr_name.value,
-      creditController.creditModel.Credit_bill_addr.value,
-      creditController.creditModel.Credit_no.value,
-      creditController.creditModel.Credit_title.value,
-    );
+    final pdfData = await generate_Credit(PdfPageFormat.a4, creditController.creditModel.Credit_products, creditController.creditModel.clientAddressNameController.value.text, creditController.creditModel.clientAddressController.value.text, creditController.creditModel.billingAddressNameController.value.text, creditController.creditModel.billingAddressController.value.text, creditController.creditModel.Credit_no.value, 9, creditController.creditModel.Credit_gstTotals);
 
     const filePath = 'E://Credit.pdf';
     final file = File(filePath);

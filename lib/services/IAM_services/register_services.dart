@@ -8,8 +8,8 @@ import '../../views/components/Basic_DialogBox.dart';
 import '../APIservices/invoker.dart';
 
 class RegisterServices {
-  final RegisterController registerController = Get.put(RegisterController());
-  final Invoker apiController = Get.put(Invoker());
+  final RegisterController registerController = Get.find<RegisterController>();
+  final Invoker apiController = Get.find<Invoker>();
 
   void Register(context) async {
     try {

@@ -43,20 +43,6 @@ class QuoteController extends GetxController {
     quoteModel.gstController.value.text = gst.toString();
   }
 
-  void updateClientAddress(String addrName, String addr) {
-    quoteModel.Quote_client_addr_name.value = addrName;
-    quoteModel.Quote_client_addr.value = addr;
-  }
-
-  void updateBillingAddress(String addrName, String addr) {
-    quoteModel.Quote_bill_addr_name.value = addrName;
-    quoteModel.Quote_bill_addr.value = addr;
-  }
-
-  void updateChallanTitle(String title) {
-    quoteModel.Quote_title.value = title;
-  }
-
   void updateNoteEditindex(int? index) {
     quoteModel.note_editIndex.value = index;
   }
@@ -280,12 +266,8 @@ class QuoteController extends GetxController {
 
   void clearAll() {
     // Reset all observable strings to empty
-    quoteModel.Quote_client_addr_name.value = '';
-    quoteModel.Quote_client_addr.value = '';
-    quoteModel.Quote_bill_addr_name.value = '';
-    quoteModel.Quote_bill_addr.value = '';
+
     quoteModel.Quote_no.value = '';
-    quoteModel.Quote_title.value = '';
     quoteModel.Quote_table_heading.value = '';
 
     // Clear note list and recommendation list

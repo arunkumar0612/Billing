@@ -43,18 +43,8 @@ class DebitController extends GetxController {
     debitModel.gstController.value.text = gst.toString();
   }
 
-  void updateClientAddress(String addrName, String addr) {
-    debitModel.Debit_client_addr_name.value = addrName;
-    debitModel.Debit_client_addr.value = addr;
-  }
-
-  void updateBillingAddress(String addrName, String addr) {
-    debitModel.Debit_bill_addr_name.value = addrName;
-    debitModel.Debit_bill_addr.value = addr;
-  }
-
-  void updateChallanTitle(String title) {
-    debitModel.Debit_title.value = title;
+  void updateremarks(String remarks) {
+    debitModel.remarksController.value.text = remarks.toString();
   }
 
   void updateNoteEditindex(int? index) {
@@ -71,10 +61,6 @@ class DebitController extends GetxController {
 
   void updateTabController(TabController tabController) {
     debitModel.tabController.value = tabController;
-  }
-
-  void updateTitleControllerText(String text) {
-    debitModel.TitleController.value.text = text;
   }
 
   void updateClientAddressNameControllerText(String text) {
@@ -153,14 +139,7 @@ class DebitController extends GetxController {
     }
   }
 
-  void addProduct({
-    required BuildContext context,
-    required String productName,
-    required String hsn,
-    required double price,
-    required int quantity,
-    required double gst,
-  }) {
+  void addProduct({required BuildContext context, required String productName, required String hsn, required double price, required int quantity, required double gst, required String remarks}) {
     try {
       if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -172,14 +151,7 @@ class DebitController extends GetxController {
         return;
       }
 
-      debitModel.Debit_products.add(DebitProduct(
-        (debitModel.Debit_products.length + 1).toString(),
-        productName,
-        hsn,
-        gst,
-        price,
-        quantity,
-      ));
+      debitModel.Debit_products.add(DebitProduct((debitModel.Debit_products.length + 1).toString(), productName, hsn, gst, price, quantity, remarks));
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -197,15 +169,7 @@ class DebitController extends GetxController {
     }
   }
 
-  void updateProduct({
-    required BuildContext context,
-    required int editIndex,
-    required String productName,
-    required String hsn,
-    required double price,
-    required int quantity,
-    required double gst,
-  }) {
+  void updateProduct({required BuildContext context, required int editIndex, required String productName, required String hsn, required double price, required int quantity, required double gst, required String remarks}) {
     try {
       // Validate input fields
       if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
@@ -230,7 +194,7 @@ class DebitController extends GetxController {
       }
 
       // Update the product details at the specified index
-      debitModel.Debit_products[editIndex] = DebitProduct((editIndex + 1).toString(), productName, hsn, gst, price, quantity);
+      debitModel.Debit_products[editIndex] = DebitProduct((editIndex + 1).toString(), productName, hsn, gst, price, quantity, remarks);
 
       // ProductDetail(
       //   productName: productName.trim(),
@@ -280,24 +244,14 @@ class DebitController extends GetxController {
 
   void clearAll() {
     // Reset all observable strings to empty
-    debitModel.Debit_client_addr_name.value = '';
-    debitModel.Debit_client_addr.value = '';
-    debitModel.Debit_bill_addr_name.value = '';
-    debitModel.Debit_bill_addr.value = '';
+
     debitModel.Debit_no.value = '';
-    debitModel.Debit_title.value = '';
     debitModel.Debit_table_heading.value = '';
 
-    // Clear note list and recommendation list
     debitModel.Debit_noteList.clear();
     debitModel.Debit_recommendationList.clear();
-    // debitModel.Debit_productDetails.clear();
 
-    // Clear products list
     debitModel.Debit_products.clear();
-
-    // Reset text controllers
-    debitModel.TitleController.value.clear();
     debitModel.clientAddressNameController.value.clear();
     debitModel.clientAddressController.value.clear();
     debitModel.billingAddressNameController.value.clear();

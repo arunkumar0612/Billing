@@ -8,9 +8,9 @@ import '../../views/components/Basic_DialogBox.dart';
 import '../APIservices/invoker.dart';
 
 class NewpasswordServices {
-  final NewpasswordController newwordController = Get.put(NewpasswordController());
-  final ForgotpasswordController forgotpasswordController = Get.put(ForgotpasswordController());
-  final Invoker apiController = Get.put(Invoker());
+  final NewpasswordController newwordController = Get.find<NewpasswordController>();
+  final ForgotpasswordController forgotpasswordController = Get.find<ForgotpasswordController>();
+  final Invoker apiController = Get.find<Invoker>();
   void Newpassword(context) async {
     try {
       NewPassword_Request requestData = NewPassword_Request(

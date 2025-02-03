@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, avoid_unnecessary_containers, sized_box_for_whitespace, non_constant_identifier_names, camel_case_types
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/services/IAM_services/forgotpassword_service.dart';
@@ -17,7 +16,7 @@ class Forgot_password extends StatefulWidget with ForgotpasswordService {
 }
 
 class _Forgot_passwordState extends State<Forgot_password> {
-  final ForgotpasswordController forgotpasswordController = Get.put(ForgotpasswordController());
+  final ForgotpasswordController forgotpasswordController = Get.find<ForgotpasswordController>();
   final formKey1 = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,14 @@ class _Forgot_passwordState extends State<Forgot_password> {
       return AnimatedGradientBorder(
         animationTime: 2,
         glowSize: forgotpasswordController.forgotpasswordModel.indicator.value ? 5 : 5,
-        gradientColors: forgotpasswordController.forgotpasswordModel.indicator.value ? [Color.fromARGB(255, 157, 98, 253), Colors.black] : [Primary_colors.Light],
+        gradientColors: forgotpasswordController.forgotpasswordModel.indicator.value
+            ? [
+                Color.fromARGB(255, 157, 98, 253),
+                Colors.black
+              ]
+            : [
+                Primary_colors.Light
+              ],
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),

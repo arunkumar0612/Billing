@@ -23,38 +23,16 @@ class RFQController extends GetxController {
     }
   }
 
+  void updateVendorname(String vendor) {
+    rfqModel.vendor_name_controller.value.text = vendor;
+  }
+
   void updateProductName(String productName) {
     rfqModel.productNameController.value.text = productName;
   }
 
-  void updateHSN(String hsn) {
-    rfqModel.hsnController.value.text = hsn;
-  }
-
-  void updatePrice(double price) {
-    rfqModel.priceController.value.text = price.toString();
-  }
-
   void updateQuantity(int quantity) {
     rfqModel.quantityController.value.text = quantity.toString();
-  }
-
-  void updateGST(double gst) {
-    rfqModel.gstController.value.text = gst.toString();
-  }
-
-  void updateClientAddress(String addrName, String addr) {
-    rfqModel.RFQ_client_addr_name.value = addrName;
-    rfqModel.RFQ_client_addr.value = addr;
-  }
-
-  void updateBillingAddress(String addrName, String addr) {
-    rfqModel.RFQ_bill_addr_name.value = addrName;
-    rfqModel.RFQ_bill_addr.value = addr;
-  }
-
-  void updateChallanTitle(String title) {
-    rfqModel.RFQ_title.value = title;
   }
 
   void updateNoteEditindex(int? index) {
@@ -73,25 +51,7 @@ class RFQController extends GetxController {
     rfqModel.tabController.value = tabController;
   }
 
-  void updateTitleControllerText(String text) {
-    rfqModel.TitleController.value.text = text;
-  }
-
-  void updateClientAddressNameControllerText(String text) {
-    rfqModel.clientAddressNameController.value.text = text;
-  }
-
-  void updateClientAddressControllerText(String text) {
-    rfqModel.clientAddressController.value.text = text;
-  }
-
-  void updateBillingAddressNameControllerText(String text) {
-    rfqModel.billingAddressNameController.value.text = text;
-  }
-
-  void updateBillingAddressControllerText(String text) {
-    rfqModel.billingAddressController.value.text = text;
-  }
+  void updateVendorCredentials(String address, String phone, String email) {}
 
   void updateRecommendationEditindex(int? index) {
     rfqModel.recommendation_editIndex.value = index;
@@ -156,13 +116,10 @@ class RFQController extends GetxController {
   void addProduct({
     required BuildContext context,
     required String productName,
-    required String hsn,
-    required double price,
     required int quantity,
-    required double gst,
   }) {
     try {
-      if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
+      if (productName.trim().isEmpty || quantity <= 0) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
@@ -175,9 +132,6 @@ class RFQController extends GetxController {
       rfqModel.RFQ_products.add(RFQProduct(
         (rfqModel.RFQ_products.length + 1).toString(),
         productName,
-        hsn,
-        gst,
-        price,
         quantity,
       ));
 
@@ -201,14 +155,11 @@ class RFQController extends GetxController {
     required BuildContext context,
     required int editIndex,
     required String productName,
-    required String hsn,
-    required double price,
     required int quantity,
-    required double gst,
   }) {
     try {
       // Validate input fields
-      if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
+      if (productName.trim().isEmpty || quantity <= 0) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
@@ -230,7 +181,7 @@ class RFQController extends GetxController {
       }
 
       // Update the product details at the specified index
-      rfqModel.RFQ_products[editIndex] = RFQProduct((editIndex + 1).toString(), productName, hsn, gst, price, quantity);
+      rfqModel.RFQ_products[editIndex] = RFQProduct((editIndex + 1).toString(), productName, quantity);
 
       // ProductDetail(
       //   productName: productName.trim(),
@@ -280,12 +231,11 @@ class RFQController extends GetxController {
 
   void clearAll() {
     // Reset all observable strings to empty
-    rfqModel.RFQ_client_addr_name.value = '';
-    rfqModel.RFQ_client_addr.value = '';
-    rfqModel.RFQ_bill_addr_name.value = '';
-    rfqModel.RFQ_bill_addr.value = '';
+    rfqModel.vendor_address_controller.value.clear();
+    rfqModel.vendor_email_controller.value.clear();
+    rfqModel.vendor_name_controller.value.clear();
+    rfqModel.vendor_phone_controller.value.clear();
     rfqModel.RFQ_no.value = '';
-    rfqModel.RFQ_title.value = '';
     rfqModel.RFQ_table_heading.value = '';
 
     // Clear note list and recommendation list
@@ -297,16 +247,10 @@ class RFQController extends GetxController {
     rfqModel.RFQ_products.clear();
 
     // Reset text controllers
-    rfqModel.TitleController.value.clear();
-    rfqModel.clientAddressNameController.value.clear();
-    rfqModel.clientAddressController.value.clear();
-    rfqModel.billingAddressNameController.value.clear();
-    rfqModel.billingAddressController.value.clear();
+
     rfqModel.productNameController.value.clear();
-    rfqModel.hsnController.value.clear();
-    rfqModel.priceController.value.clear();
     rfqModel.quantityController.value.clear();
-    rfqModel.gstController.value.clear();
+
     rfqModel.notecontentController.value.clear();
     rfqModel.recommendationHeadingController.value.clear();
     rfqModel.recommendationKeyController.value.clear();

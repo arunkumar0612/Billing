@@ -43,26 +43,12 @@ class CreditController extends GetxController {
     creditModel.gstController.value.text = gst.toString();
   }
 
-  void updateClientAddress(String addrName, String addr) {
-    creditModel.Credit_client_addr_name.value = addrName;
-    creditModel.Credit_client_addr.value = addr;
-  }
-
-  void updateBillingAddress(String addrName, String addr) {
-    creditModel.Credit_bill_addr_name.value = addrName;
-    creditModel.Credit_bill_addr.value = addr;
-  }
-
-  void updateChallanTitle(String title) {
-    creditModel.Credit_title.value = title;
+  void updateRemark(String remark) {
+    creditModel.remarksController.value.text = remark.toString();
   }
 
   void updateNoteEditindex(int? index) {
     creditModel.note_editIndex.value = index;
-  }
-
-  void updateChallanTableHeading(String tableHeading) {
-    creditModel.Credit_table_heading.value = tableHeading;
   }
 
   void updateNoteList(String value, int index) {
@@ -71,10 +57,6 @@ class CreditController extends GetxController {
 
   void updateTabController(TabController tabController) {
     creditModel.tabController.value = tabController;
-  }
-
-  void updateTitleControllerText(String text) {
-    creditModel.TitleController.value.text = text;
   }
 
   void updateClientAddressNameControllerText(String text) {
@@ -153,14 +135,7 @@ class CreditController extends GetxController {
     }
   }
 
-  void addProduct({
-    required BuildContext context,
-    required String productName,
-    required String hsn,
-    required double price,
-    required int quantity,
-    required double gst,
-  }) {
+  void addProduct({required BuildContext context, required String productName, required String hsn, required double price, required int quantity, required double gst, required String remarks}) {
     try {
       if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -172,14 +147,7 @@ class CreditController extends GetxController {
         return;
       }
 
-      creditModel.Credit_products.add(CreditProduct(
-        (creditModel.Credit_products.length + 1).toString(),
-        productName,
-        hsn,
-        gst,
-        price,
-        quantity,
-      ));
+      creditModel.Credit_products.add(CreditProduct((creditModel.Credit_products.length + 1).toString(), productName, hsn, gst, price, quantity, remarks));
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -197,15 +165,7 @@ class CreditController extends GetxController {
     }
   }
 
-  void updateProduct({
-    required BuildContext context,
-    required int editIndex,
-    required String productName,
-    required String hsn,
-    required double price,
-    required int quantity,
-    required double gst,
-  }) {
+  void updateProduct({required BuildContext context, required int editIndex, required String productName, required String hsn, required double price, required int quantity, required double gst, required String remarks}) {
     try {
       // Validate input fields
       if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
@@ -230,7 +190,7 @@ class CreditController extends GetxController {
       }
 
       // Update the product details at the specified index
-      creditModel.Credit_products[editIndex] = CreditProduct((editIndex + 1).toString(), productName, hsn, gst, price, quantity);
+      creditModel.Credit_products[editIndex] = CreditProduct((editIndex + 1).toString(), productName, hsn, gst, price, quantity, remarks);
 
       // ProductDetail(
       //   productName: productName.trim(),
@@ -279,15 +239,6 @@ class CreditController extends GetxController {
   }
 
   void clearAll() {
-    // Reset all observable strings to empty
-    creditModel.Credit_client_addr_name.value = '';
-    creditModel.Credit_client_addr.value = '';
-    creditModel.Credit_bill_addr_name.value = '';
-    creditModel.Credit_bill_addr.value = '';
-    creditModel.Credit_no.value = '';
-    creditModel.Credit_title.value = '';
-    creditModel.Credit_table_heading.value = '';
-
     // Clear note list and recommendation list
     creditModel.Credit_noteList.clear();
     creditModel.Credit_recommendationList.clear();
@@ -295,9 +246,7 @@ class CreditController extends GetxController {
 
     // Clear products list
     creditModel.Credit_products.clear();
-
     // Reset text controllers
-    creditModel.TitleController.value.clear();
     creditModel.clientAddressNameController.value.clear();
     creditModel.clientAddressController.value.clear();
     creditModel.billingAddressNameController.value.clear();

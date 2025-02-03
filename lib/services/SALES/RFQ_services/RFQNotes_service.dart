@@ -8,7 +8,7 @@ import 'package:ssipl_billing/models/entities/RFQ_entities.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/RFQ_template.dart';
 
 import '../../../themes/style.dart';
-import '../../../view_send_pdf.dart';
+import '../../../views/components/view_send_pdf.dart';
 import '../../../views/screens/SALES/Generate_RFQ/RFQ_template.dart';
 // import '../../../views/screens/SALES/Generate_RFQ/rfq_template.dart';
 
@@ -97,12 +97,11 @@ mixin RFQnotesService {
     final pdfData = await generate_RFQ(
       PdfPageFormat.a4,
       rfqController.rfqModel.RFQ_products,
-      rfqController.rfqModel.RFQ_client_addr_name.value,
-      rfqController.rfqModel.RFQ_client_addr.value,
-      rfqController.rfqModel.RFQ_bill_addr_name.value,
-      rfqController.rfqModel.RFQ_bill_addr.value,
+      rfqController.rfqModel.vendor_name_controller.value.text,
+      rfqController.rfqModel.vendor_email_controller.value.text,
+      rfqController.rfqModel.vendor_phone_controller.value.text,
+      rfqController.rfqModel.vendor_address_controller.value.text,
       rfqController.rfqModel.RFQ_no.value,
-      rfqController.rfqModel.RFQ_title.value,
     );
 
     const filePath = 'E://RFQ.pdf';

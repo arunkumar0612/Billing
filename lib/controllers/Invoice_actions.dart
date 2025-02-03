@@ -43,20 +43,6 @@ class InvoiceController extends GetxController {
     invoiceModel.gstController.value.text = gst.toString();
   }
 
-  void updateClientAddress(String addrName, String addr) {
-    invoiceModel.Invoice_client_addr_name.value = addrName;
-    invoiceModel.Invoice_client_addr.value = addr;
-  }
-
-  void updateBillingAddress(String addrName, String addr) {
-    invoiceModel.Invoice_bill_addr_name.value = addrName;
-    invoiceModel.Invoice_bill_addr.value = addr;
-  }
-
-  void updateChallanTitle(String title) {
-    invoiceModel.Invoice_title.value = title;
-  }
-
   void updateNoteEditindex(int? index) {
     invoiceModel.note_editIndex.value = index;
   }
@@ -279,13 +265,8 @@ class InvoiceController extends GetxController {
   }
 
   void clearAll() {
-    // Reset all observable strings to empty
-    invoiceModel.Invoice_client_addr_name.value = '';
-    invoiceModel.Invoice_client_addr.value = '';
-    invoiceModel.Invoice_bill_addr_name.value = '';
-    invoiceModel.Invoice_bill_addr.value = '';
     invoiceModel.Invoice_no.value = '';
-    invoiceModel.Invoice_title.value = '';
+
     invoiceModel.Invoice_table_heading.value = '';
 
     // Clear note list and recommendation list

@@ -5,15 +5,6 @@ import '../entities/DC_entities.dart';
 
 class DCModel {
   final Rxn<TabController> tabController = Rxn<TabController>();
-  var Delivery_challan_client_addr_name = "".obs;
-  var Delivery_challan_client_addr = "".obs;
-  var Delivery_challan_bill_addr_name = "".obs;
-  var Delivery_challan_bill_addr = "".obs;
-  var Delivery_challan_no = "".obs;
-  var Delivery_challan_title = "".obs;
-  var Delivery_challan_table_heading = "".obs;
-  var Delivery_challan_noteList = <Note>[].obs;
-  var Delivery_challan_recommendationList = <Recommendation>[].obs;
   var Delivery_challan_products = <DCProduct>[].obs;
 //######################################################################################################################################
 //DETAILS
@@ -29,14 +20,14 @@ class DCModel {
   final product_editIndex = Rxn<int>();
   final productNameController = TextEditingController().obs;
   final hsnController = TextEditingController().obs;
-  final priceController = TextEditingController().obs;
   final quantityController = TextEditingController().obs;
-  final gstController = TextEditingController().obs;
 //######################################################################################################################################
 //NOTES
   final noteformKey = GlobalKey<FormState>().obs;
-  // var notelength = 0.obs;
-  // var notetablelength = 0.obs;
+  var Delivery_challan_no = "".obs;
+  var Delivery_challan_table_heading = "".obs;
+  var Delivery_challan_noteList = <Note>[].obs;
+  var Delivery_challan_recommendationList = <Recommendation>[].obs;
   var note_editIndex = Rxn<int>();
   final notecontentController = TextEditingController().obs;
   var recommendation_editIndex = Rxn<int>();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/constants/DC_constants.dart';
+import '../models/entities/DC_entities.dart';
 import '../models/entities/product_entities.dart';
 
 class DCController extends GetxController {
@@ -22,173 +23,86 @@ class DCController extends GetxController {
     }
   }
 
-  // Update product name
   void updateProductName(String productName) {
     dcModel.productNameController.value.text = productName;
   }
 
-// Update HSN
   void updateHSN(String hsn) {
     dcModel.hsnController.value.text = hsn;
   }
 
-// Update price
-  void updatePrice(double price) {
-    dcModel.priceController.value.text = price.toString();
-  }
-
-// Update quantity
   void updateQuantity(int quantity) {
     dcModel.quantityController.value.text = quantity.toString();
   }
 
-// Update GST
-  void updateGST(double gst) {
-    dcModel.gstController.value.text = gst.toString();
-  }
-
-  // Update client address
-  void updateClientAddress(String addrName, String addr) {
-    dcModel.Delivery_challan_client_addr_name.value = addrName;
-    dcModel.Delivery_challan_client_addr.value = addr;
-  }
-
-  // Update billing address
-  void updateBillingAddress(String addrName, String addr) {
-    dcModel.Delivery_challan_bill_addr_name.value = addrName;
-    dcModel.Delivery_challan_bill_addr.value = addr;
-  }
-
-  // Update Delivery Challan title
-  void updateChallanTitle(String title) {
-    dcModel.Delivery_challan_title.value = title;
-  }
-
   void updateNoteEditindex(int? index) {
-    dcModel.noteeditIndex.value = index;
+    dcModel.note_editIndex.value = index;
   }
 
-  // Update Delivery Challan table heading
   void updateChallanTableHeading(String tableHeading) {
     dcModel.Delivery_challan_table_heading.value = tableHeading;
   }
 
-  // Update note list
-  void updateNoteList(List<Map<String, dynamic>> notes) {
-    dcModel.Delivery_challan_noteList.value = notes;
+  void updateNoteList(String value, int index) {
+    dcModel.Delivery_challan_noteList[dcModel.note_editIndex.value!] = Note(notename: dcModel.notecontentController.value.text);
   }
 
-  // Update recommendation list
-  void updateRecommendationList(List<Map<String, dynamic>> recommendations) {
-    dcModel.Delivery_challan_recommendationList.value = recommendations;
-  }
-
-  // Update product details list
-  void updateProductDetails(List<Map<String, dynamic>> productDetails) {
-    dcModel.Delivery_challan_productDetails.value = productDetails;
-  }
-
-  // Update products list
-  void updateProducts(List<Product> products) {
-    dcModel.Delivery_challan_products.value = products;
-  }
-
-  // Update Tab Controller
   void updateTabController(TabController tabController) {
     dcModel.tabController.value = tabController;
   }
 
-  // Update Title Controller Text
   void updateTitleControllerText(String text) {
     dcModel.TitleController.value.text = text;
   }
 
-  // Update client address name controller text
   void updateClientAddressNameControllerText(String text) {
     dcModel.clientAddressNameController.value.text = text;
   }
 
-  // Update client address controller text
   void updateClientAddressControllerText(String text) {
     dcModel.clientAddressController.value.text = text;
   }
 
-  // Update billing address name controller text
   void updateBillingAddressNameControllerText(String text) {
     dcModel.billingAddressNameController.value.text = text;
   }
 
-  // Update billing address controller text
   void updateBillingAddressControllerText(String text) {
     dcModel.billingAddressController.value.text = text;
   }
 
-  // Update formKey1
-  void updateFormKey1(GlobalKey<FormState> formKey) {
-    dcModel.formKey1.value = formKey;
+  void updateRecommendationEditindex(int? index) {
+    dcModel.recommendation_editIndex.value = index;
   }
 
-  // Update note length
-  void updateNoteLength(int length) {
-    dcModel.notelength.value = length;
-  }
-
-  // Update table length
-  void updateNoteTableLength(int length) {
-    dcModel.notetablelength.value = length;
-  }
-
-  void updateNoteTableEditindex(int? index) {
-    dcModel.notetable_editIndex.value = index;
-  }
-
-  // Update note content controller text
   void updateNoteContentControllerText(String text) {
     dcModel.notecontentController.value.text = text;
   }
 
-  // Update table heading controller text
   void updateTableHeadingControllerText(String text) {
-    dcModel.tableHeadingController.value.text = text;
+    dcModel.recommendationHeadingController.value.text = text;
   }
 
-  // Update table key controller text
   void updateTableKeyControllerText(String text) {
-    dcModel.tableKeyController.value.text = text;
+    dcModel.recommendationKeyController.value.text = text;
   }
 
-  // Update table value controller text
   void updateTableValueControllerText(String text) {
-    dcModel.tableValueController.value.text = text;
+    dcModel.recommendationValueController.value.text = text;
   }
 
-  // Update selected heading type
-  void updateSelectedHeadingType(String type) {
-    dcModel.selectedheadingType.value = type;
-  }
-
-  // Add note to note content list
   void addNoteToList(String note) {
     dcModel.notecontent.add(note);
   }
 
-  // Add note type
-  void addNoteType(String type) {
-    dcModel.noteType.add(type);
-  }
-
   void addProductEditindex(int? index) {
-    dcModel.editIndex1.value = index;
+    dcModel.product_editIndex.value = index;
   }
 
   void addRecommendation({required String key, required String value}) {
     if (key.isNotEmpty && value.isNotEmpty) {
-      dcModel.Delivery_challan_recommendationList.add({
-        'key': key,
-        'value': value,
-      });
+      dcModel.Delivery_challan_recommendationList.add(Recommendation(key: key, value: value));
     } else {
-      // Handle error if key or value is empty (optional)
       print('Key and value must not be empty');
     }
   }
@@ -198,30 +112,20 @@ class DCController extends GetxController {
     required String key,
     required String value,
   }) {
-    // Check if the index is within bounds
     if (index >= 0 && index < dcModel.Delivery_challan_recommendationList.length) {
       if (key.isNotEmpty && value.isNotEmpty) {
-        // Update the recommendation at the specified index
-        dcModel.Delivery_challan_recommendationList[index] = {
-          'key': key,
-          'value': value,
-        };
+        dcModel.Delivery_challan_recommendationList[index] = Recommendation(key: key, value: value);
       } else {
-        // Handle error if key or value is empty
         print('Key and value must not be empty');
       }
     } else {
-      // Handle invalid index error
       print('Invalid index provided');
     }
   }
 
   void addNote(String noteContent) {
     if (noteContent.isNotEmpty) {
-      dcModel.Delivery_challan_noteList.add({
-        'notecontent': noteContent,
-      });
-      dcModel.notelength.value = dcModel.Delivery_challan_noteList.length;
+      dcModel.Delivery_challan_noteList.add(Note(notename: noteContent));
     } else {
       print('Note content must not be empty'); // Handle empty input (optional)
     }
@@ -231,13 +135,10 @@ class DCController extends GetxController {
     required BuildContext context,
     required String productName,
     required String hsn,
-    required double price,
     required int quantity,
-    required double gst,
   }) {
     try {
-      // Validate input fields
-      if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
+      if (productName.trim().isEmpty || hsn.trim().isEmpty || quantity <= 0) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
@@ -247,27 +148,20 @@ class DCController extends GetxController {
         return;
       }
 
-      // Add product details to the list
-      dcModel.Delivery_challan_productDetails.add({
-        'productName': productName.trim(),
-        'hsn': hsn.trim(),
-        'price': price,
-        'quantity': quantity,
-        'gst': gst,
-      });
+      dcModel.Delivery_challan_products.add(DCProduct(
+        (dcModel.Delivery_challan_products.length + 1).toString(),
+        productName,
+        hsn,
+        quantity,
+      ));
 
-      // Notify success
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: Colors.green,
           content: Text('Product added successfully.'),
         ),
       );
-
-      // Optional: Update the product list length or UI if needed
-      // updateProductDetailsLength(dcController.dcModel.Delivery_challan_productDetails.length);
     } catch (e) {
-      // Handle unexpected errors
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: Colors.red,
@@ -282,13 +176,11 @@ class DCController extends GetxController {
     required int editIndex,
     required String productName,
     required String hsn,
-    required double price,
     required int quantity,
-    required double gst,
   }) {
     try {
       // Validate input fields
-      if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
+      if (productName.trim().isEmpty || hsn.trim().isEmpty || quantity <= 0) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
@@ -299,7 +191,7 @@ class DCController extends GetxController {
       }
 
       // Check if the editIndex is valid
-      if (editIndex < 0 || editIndex >= dcModel.Delivery_challan_productDetails.length) {
+      if (editIndex < 0 || editIndex >= dcModel.Delivery_challan_products.length) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
@@ -310,13 +202,15 @@ class DCController extends GetxController {
       }
 
       // Update the product details at the specified index
-      dcModel.Delivery_challan_productDetails[editIndex] = {
-        'productName': productName.trim(),
-        'hsn': hsn.trim(),
-        'price': price,
-        'quantity': quantity,
-        'gst': gst,
-      };
+      dcModel.Delivery_challan_products[editIndex] = DCProduct((editIndex + 1).toString(), productName, hsn, quantity);
+
+      // ProductDetail(
+      //   productName: productName.trim(),
+      //   hsn: hsn.trim(),
+      //   price: price,
+      //   quantity: quantity,
+      //   gst: gst,
+      // );
 
       // Notify success
       ScaffoldMessenger.of(context).showSnackBar(
@@ -339,20 +233,30 @@ class DCController extends GetxController {
     }
   }
 
+  // Update products list
+  void updateProducts(List<DCProduct> products) {
+    dcModel.Delivery_challan_products.value = products;
+  }
+
+  void removeFromNoteList(int index) {
+    dcModel.Delivery_challan_noteList.removeAt(index);
+  }
+
+  void removeFromRecommendationList(int index) {
+    dcModel.Delivery_challan_recommendationList.removeAt(index);
+  }
+
+  void removeFromProductList(index) {
+    dcModel.Delivery_challan_products.removeAt(index);
+  }
+
   void clearAll() {
-    // Reset all observable strings to empty
-    dcModel.Delivery_challan_client_addr_name.value = '';
-    dcModel.Delivery_challan_client_addr.value = '';
-    dcModel.Delivery_challan_bill_addr_name.value = '';
-    dcModel.Delivery_challan_bill_addr.value = '';
-    dcModel.Delivery_challan_no.value = '';
-    dcModel.Delivery_challan_title.value = '';
     dcModel.Delivery_challan_table_heading.value = '';
 
     // Clear note list and recommendation list
     dcModel.Delivery_challan_noteList.clear();
     dcModel.Delivery_challan_recommendationList.clear();
-    dcModel.Delivery_challan_productDetails.clear();
+    // dcModel.Delivery_challan_productDetails.clear();
 
     // Clear products list
     dcModel.Delivery_challan_products.clear();
@@ -365,33 +269,31 @@ class DCController extends GetxController {
     dcModel.billingAddressController.value.clear();
     dcModel.productNameController.value.clear();
     dcModel.hsnController.value.clear();
-    dcModel.priceController.value.clear();
     dcModel.quantityController.value.clear();
-    dcModel.gstController.value.clear();
     dcModel.notecontentController.value.clear();
-    dcModel.tableHeadingController.value.clear();
-    dcModel.tableKeyController.value.clear();
-    dcModel.tableValueController.value.clear();
+    dcModel.recommendationHeadingController.value.clear();
+    dcModel.recommendationKeyController.value.clear();
+    dcModel.recommendationValueController.value.clear();
 
     // Reset form keys
-    dcModel.formKey1.value = GlobalKey<FormState>();
+    dcModel.detailsKey.value = GlobalKey<FormState>();
     dcModel.productKey.value = GlobalKey<FormState>();
     dcModel.noteformKey.value = GlobalKey<FormState>();
 
     // Reset edit indices
-    dcModel.editIndex1.value = null;
-    dcModel.noteeditIndex.value = null;
-    dcModel.notetable_editIndex.value = null;
+    dcModel.product_editIndex.value = null;
+    dcModel.note_editIndex.value = null;
+    dcModel.recommendation_editIndex.value = null;
 
     // Reset heading type and note arrays
-    dcModel.selectedheadingType.value = null;
-    dcModel.notelength.value = 0;
-    dcModel.notetablelength.value = 0;
+    // dcModel.selectedheadingType.value = null;
+    // dcModel.notelength.value = 0;
+    // dcModel.notetablelength.value = 0;
     dcModel.notecontent.clear();
-    dcModel.noteType.clear();
-    dcModel.noteType.addAll([
-      'With Heading',
-      'Without Heading'
-    ]);
+    // dcModel.noteType.clear();
+    // dcModel.noteType.addAll([
+    //   'With Heading',
+    //   'Without Heading'
+    // ]);
   }
 }

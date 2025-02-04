@@ -9,8 +9,8 @@ import '../../views/components/Basic_DialogBox.dart';
 import '../APIservices/invoker.dart';
 
 mixin ForgotpasswordService {
-  final ForgotpasswordController forgotpasswordController = Get.put(ForgotpasswordController());
-  final Invoker apiController = Get.put(Invoker());
+  final ForgotpasswordController forgotpasswordController = Get.find<ForgotpasswordController>();
+  final Invoker apiController = Get.find<Invoker>();
   void Forgotpassword(context) async {
     try {
       Forgotpassword_Request requestData = Forgotpassword_Request(

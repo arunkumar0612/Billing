@@ -3,8 +3,8 @@ import 'package:ssipl_billing/services/IAM_services/newpassword_services.dart';
 import '../../controllers/IAM_actions.dart';
 
 mixin NewpasswordValidator {
-  final NewpasswordController newwordController = Get.put(NewpasswordController());
-  final ForgotpasswordController forgotpasswordController = Get.put(ForgotpasswordController());
+  final NewpasswordController newwordController = Get.find<NewpasswordController>();
+  final ForgotpasswordController forgotpasswordController = Get.find<ForgotpasswordController>();
 
   void validateForm(context) {
     newwordController.newpasswordModel.errors.clear();

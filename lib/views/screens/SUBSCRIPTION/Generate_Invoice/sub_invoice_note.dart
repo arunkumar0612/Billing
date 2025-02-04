@@ -3,7 +3,7 @@ import 'package:pdf/pdf.dart';
 // import 'package:ssipl_billing/SUBSCRIPTION';
 import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_Invoice/sub_generateInvoice.dart';
 import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_Invoice/sub_invoice_template.dart';
-import 'package:ssipl_billing/Subscription.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Subscription.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 // import 'package:ssipl_billing/client.dart';
 import 'package:ssipl_billing/themes/style.dart';

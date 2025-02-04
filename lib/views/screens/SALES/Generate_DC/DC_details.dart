@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/services/DC_services/DCdetails_service.dart';
+import 'package:ssipl_billing/services/SALES/DC_services/DCdetails_service.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
@@ -25,7 +25,7 @@ class _Delivery_challanDetailsState extends State<Delivery_challanDetails> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Form(
-                  key: dcController.dcModel.formKey1.value,
+                  key: dcController.dcModel.detailsKey.value,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -112,10 +112,6 @@ class _Delivery_challanDetailsState extends State<Delivery_challanDetails> {
                                 text: 'Add Details',
                                 onPressed: () {
                                   widget.add_details();
-                                  //
-                                  // if (_formKey.currentState?.validate() == true) {
-
-                                  // }
                                 },
                               ),
                             ],

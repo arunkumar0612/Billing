@@ -1,202 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/generateRFQ.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/RFQ_template.dart';
-import 'package:ssipl_billing/Sales.dart';
+import 'package:get/get.dart';
 import 'package:ssipl_billing/views/components/button.dart';
-// import 'package:ssipl_billing/client.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-import 'dart:io';
+import '../../../../controllers/RFQ_actions.dart';
+import '../../../../services/SALES/RFQ_services/RFQNotes_service.dart';
 
-class RFQNote extends StatefulWidget {
-  const RFQNote({super.key});
+class RFQNote extends StatefulWidget with RFQnotesService {
+  RFQNote({super.key});
 
   @override
   State<RFQNote> createState() => _RFQNoteState();
 }
 
 class _RFQNoteState extends State<RFQNote> {
-  final _noteformKey = GlobalKey<FormState>();
-  // final _notetable_formKey = GlobalKey<FormState>();
-  int notelength = 0;
-  int notetablelength = 0;
-
-  int? noteeditIndex;
-  int? notetable_editIndex;
-  // final TextEditingController NoteHeadingController = TextEditingController();
-  final TextEditingController notecontentController = TextEditingController();
-  final TextEditingController TableHeadingController = TextEditingController();
-  final TextEditingController tablekey_Controller = TextEditingController();
-  final TextEditingController tablevalue_Controller = TextEditingController();
-  String? selectedheadingType;
-  // List<String> noteType = [
-  //   'With Heading',
-  //   'Without Heading',
-  // ];
-  List<String> notecontent = <String>[
-    'Delivery within 30 working days from the date of issuing the PO.',
-    'Payment terms : 100% along with PO.',
-    'Client needs to provide Ethernet cable and UPS power supply to the point where the device is proposed to install.',
-  ];
-
-  void _addtable_row() {
-    RFQ_table_heading = TableHeadingController.text;
-    // if (_notetable_formKey.currentState?.validate() ?? false) {
-    // Check if note Name already exists
-    bool exists = RFQ_recommendationList.any((note) => note['key'] == tablekey_Controller.text);
-    if (exists) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.blue,
-          content: Text('This note Name already exists.'),
-        ),
-      );
-      return; // Exit the method without adding the note
-    }
-    setState(
-      () {
-        RFQ_recommendationList.add({
-          // 'notetype': selectedheadingType ?? '',
-          // 'noteheading': selectedheadingType == 'With Heading' ? NoteHeadingController.text : '',
-          'key': tablekey_Controller.text,
-          'value': tablevalue_Controller.text,
-        });
-        notetablelength = RFQ_recommendationList.length;
-        _cleartable_Fields();
-      },
-    );
-    // }
-  }
-
-  void _updatenote() {
-    if (_noteformKey.currentState?.validate() ?? false) {
-      setState(
-        () {
-          RFQ_noteList[noteeditIndex!] = {
-            // 'notetype': selectedheadingType ?? '',
-            // 'noteheading': selectedheadingType == 'With Heading' ? NoteHeadingController.text : '',
-            'notecontent': notecontentController.text,
-          };
-          _clearnoteFields();
-          noteeditIndex = null;
-          notelength = RFQ_noteList.length;
-        },
-      );
-    }
-  }
-
-  void _updatetable() {
-    // if (_notetable_formKey.currentState?.validate() ?? false) {
-    RFQ_recommendationList[notetable_editIndex!] = {
-      // 'notetype': selectedheadingType ?? '',
-      // 'noteheading': selectedheadingType == 'With Heading' ? NoteHeadingController.text : '',
-      'key': tablekey_Controller.text.toString(),
-      'value': tablevalue_Controller.text.toString(),
-    };
-    _cleartable_Fields();
-    notetable_editIndex = null;
-    notetablelength = RFQ_recommendationList.length;
-    setState(
-      () {},
-    );
-    // }
-  }
-
-  void _editnote(int index) {
-    Map<String, dynamic> note = RFQ_noteList[index];
-    setState(
-      () {
-        // NoteHeadingController.text = note['noteheading'] ?? '';
-        notecontentController.text = note['notecontent'] ?? '';
-
-        // selectedheadingType = note['notetype'];
-        noteeditIndex = index; // Set the index of the item being edited
-      },
-    );
-  }
-
-  void _editnotetable(int index) {
-    Map<String, dynamic> note = RFQ_recommendationList[index];
-    setState(
-      () {
-        // NoteHeadingController.text = note['noteheading'] ?? '';
-        tablekey_Controller.text = note['key'].toString();
-        tablevalue_Controller.text = note['value'].toString();
-
-        // selectedheadingType = note['notetype'];
-        notetable_editIndex = index; // Set the index of the item being edited
-      },
-    );
-  }
-
-  void _resetEditingStateNote() {
-    setState(
-      () {
-        _clearnoteFields();
-        _cleartable_Fields();
-        noteeditIndex = null;
-        notetable_editIndex = null;
-      },
-    );
-  }
-
-  // List<Map<String, dynamic>> RFQ_noteList = [];
-  void _clearnoteFields() {
-    setState(
-      () {
-        // NoteHeadingController.clear();
-        notecontentController.clear();
-        // selectedheadingType = null;
-      },
-    );
-  }
-
-  void _cleartable_Fields() {
-    setState(
-      () {
-        // NoteHeadingController.clear();
-        tablekey_Controller.clear();
-        tablevalue_Controller.clear();
-        // selectedheadingType = null;
-      },
-    );
-  }
-
-  void _addNotes() {
-    if (_noteformKey.currentState?.validate() ?? false) {
-      // Check if note Name already exists
-      bool exists = RFQ_noteList.any((note) => note['notename'] == notecontentController.text);
-      if (exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.blue,
-            content: Text('This note Name already exists.'),
-          ),
-        );
-        return; // Exit the method without adding the note
-      }
-      setState(
-        () {
-          RFQ_noteList.add({
-            // 'notetype': selectedheadingType ?? '',
-            // 'noteheading': selectedheadingType == 'With Heading' ? NoteHeadingController.text : '',
-            'notecontent': notecontentController.text,
-          });
-          notelength = RFQ_noteList.length;
-          _clearnoteFields();
-        },
-      );
-    }
-  }
+  final RFQController rfqController = Get.find<RFQController>();
 
   Widget RFQ_noteLists() {
     return ListView.builder(
-        itemCount: RFQ_noteList.length,
+        itemCount: rfqController.rfqModel.RFQ_noteList.length,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              _editnote(index);
+              widget.editnote(index);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -223,7 +49,7 @@ class _RFQNoteState extends State<RFQNote> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${RFQ_noteList[index]['notecontent']}', // Display camera type from map
+                                rfqController.rfqModel.RFQ_noteList[index].notename, // Display camera type from map
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
                               ),
                             ],
@@ -231,10 +57,7 @@ class _RFQNoteState extends State<RFQNote> {
                     ),
                     IconButton(
                       onPressed: () {
-                        setState(() {
-                          RFQ_noteList.removeAt(index);
-                          notelength = RFQ_noteList.length;
-                        });
+                        rfqController.removeFromNoteList(index);
                       },
                       icon: const Icon(
                         Icons.close,
@@ -251,11 +74,11 @@ class _RFQNoteState extends State<RFQNote> {
 
   Widget noteTable() {
     return ListView.builder(
-        itemCount: RFQ_recommendationList.length,
+        itemCount: rfqController.rfqModel.RFQ_recommendationList.length,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              _editnotetable(index);
+              widget.editnotetable(index);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -282,7 +105,7 @@ class _RFQNoteState extends State<RFQNote> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${RFQ_recommendationList[index]['key']}', // Display camera type from map
+                                rfqController.rfqModel.RFQ_recommendationList[index].key,
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
                               ),
                             ],
@@ -290,10 +113,7 @@ class _RFQNoteState extends State<RFQNote> {
                     ),
                     IconButton(
                       onPressed: () {
-                        setState(() {
-                          RFQ_recommendationList.removeAt(index);
-                          notetablelength = RFQ_recommendationList.length;
-                        });
+                        rfqController.removeFromRecommendationList(index);
                       },
                       icon: const Icon(
                         Icons.close,
@@ -310,7 +130,7 @@ class _RFQNoteState extends State<RFQNote> {
 
   @override
   Widget build(BuildContext context) {
-    RFQ_recommendationList.isEmpty ? TableHeadingController.clear() : null;
+    rfqController.rfqModel.RFQ_recommendationList.isEmpty ? rfqController.rfqModel.recommendationHeadingController.value.clear() : null;
 
     return Center(
       child: Padding(
@@ -322,69 +142,79 @@ class _RFQNoteState extends State<RFQNote> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Form(
-                  key: _noteformKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Note',
-                        style: TextStyle(color: Primary_colors.Color1),
-                      ),
-                      const SizedBox(height: 10),
-                      DropdownMenu<String>(
-                        trailingIcon: const Icon(
-                          Icons.arrow_drop_down,
-                          color: Color.fromARGB(255, 122, 121, 121),
-                        ),
-                        label: const Text(
-                          "Note",
-                          style: TextStyle(color: Color.fromARGB(255, 167, 165, 165), fontSize: Primary_font_size.Text7),
-                        ),
-                        textStyle: const TextStyle(color: Primary_colors.Color1),
-                        width: 400,
-                        inputDecorationTheme: const InputDecorationTheme(
-                          contentPadding: EdgeInsets.only(left: 10, right: 5),
-                          filled: true,
-                          fillColor: Primary_colors.Dark,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
-                            borderSide: BorderSide(
-                              color: Colors.black,
+                Obx(
+                  () {
+                    return Form(
+                      key: rfqController.rfqModel.noteformKey.value,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Note',
+                            style: TextStyle(color: Primary_colors.Color1),
+                          ),
+                          const SizedBox(height: 10),
+                          DropdownMenu<String>(
+                            trailingIcon: const Icon(
+                              Icons.arrow_drop_down,
+                              color: Color.fromARGB(255, 122, 121, 121),
+                            ),
+                            label: const Text(
+                              "Note",
+                              style: TextStyle(color: Color.fromARGB(255, 167, 165, 165), fontSize: Primary_font_size.Text7),
+                            ),
+                            textStyle: const TextStyle(color: Primary_colors.Color1),
+                            width: 400,
+                            inputDecorationTheme: const InputDecorationTheme(
+                              contentPadding: EdgeInsets.only(left: 10, right: 5),
+                              filled: true,
+                              fillColor: Primary_colors.Dark,
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)), borderSide: BorderSide(color: Colors.black)),
+                              border: OutlineInputBorder(),
+                              hintStyle: TextStyle(
+                                fontSize: 13,
+                                color: Color.fromARGB(255, 167, 165, 165),
+                              ),
+                            ),
+                            controller: rfqController.rfqModel.notecontentController.value,
+                            dropdownMenuEntries: rfqController.rfqModel.notecontent.map<DropdownMenuEntry<String>>(
+                              (String value) {
+                                return DropdownMenuEntry<String>(value: value, label: value);
+                              },
+                            ).toList(),
+                          ),
+                          const SizedBox(height: 30),
+                          SizedBox(
+                            width: 400,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Obx(
+                                  () {
+                                    return Button1(
+                                      colors: rfqController.rfqModel.note_editIndex.value == null ? Colors.blue : Colors.orange,
+                                      text: rfqController.rfqModel.note_editIndex.value == null ? 'Add note' : 'Update',
+                                      onPressed: () {
+                                        rfqController.rfqModel.note_editIndex.value == null ? widget.addNotes(context) : widget.updatenote();
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
                           ),
-                          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)), borderSide: BorderSide(color: Colors.black)),
-                          border: OutlineInputBorder(),
-                          hintStyle: TextStyle(
-                            fontSize: 13,
-                            color: Color.fromARGB(255, 167, 165, 165),
-                          ),
-                        ),
-                        controller: notecontentController,
-                        dropdownMenuEntries: notecontent.map<DropdownMenuEntry<String>>(
-                          (String value) {
-                            return DropdownMenuEntry<String>(value: value, label: value);
-                          },
-                        ).toList(),
+                          const SizedBox(height: 75),
+                        ],
                       ),
-                      const SizedBox(height: 30),
-                      SizedBox(
-                        width: 400,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Button1(
-                              colors: noteeditIndex == null ? Colors.blue : Colors.orange,
-                              text: noteeditIndex == null ? 'Add note' : 'Update',
-                              onPressed: noteeditIndex == null ? _addNotes : _updatenote,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 75),
-                    ],
-                  ),
+                    );
+                  },
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -394,16 +224,20 @@ class _RFQNoteState extends State<RFQNote> {
                       style: TextStyle(color: Primary_colors.Color1),
                     ),
                     const SizedBox(height: 10),
-                    Textfield_1(
-                      readonly: TableHeadingController.text.isEmpty ? false : true,
-                      text: 'Table Heading',
-                      controller: TableHeadingController,
-                      icon: Icons.title,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter Table heading';
-                        }
-                        return null;
+                    Obx(
+                      () {
+                        return Textfield_1(
+                          readonly: rfqController.rfqModel.recommendationHeadingController.value.text.isEmpty ? false : true,
+                          text: 'Table Heading',
+                          controller: rfqController.rfqModel.recommendationHeadingController.value,
+                          icon: Icons.title,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Table heading';
+                            }
+                            return null;
+                          },
+                        );
                       },
                     ),
                     const SizedBox(height: 25),
@@ -413,33 +247,33 @@ class _RFQNoteState extends State<RFQNote> {
                           width: 190,
                           child: Column(
                             children: [
-                              TextFormField(
-                                style: const TextStyle(fontSize: 13, color: Colors.white),
-                                controller: tablekey_Controller,
-                                decoration: const InputDecoration(
-                                  filled: true,
-                                  fillColor: Primary_colors.Dark,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
+                              Obx(
+                                () {
+                                  return TextFormField(
+                                    style: const TextStyle(fontSize: 13, color: Colors.white),
+                                    controller: rfqController.rfqModel.recommendationKeyController.value,
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Primary_colors.Dark,
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                                      hintText: "Product name",
+                                      hintStyle: TextStyle(
+                                        fontSize: 13,
+                                        color: Color.fromARGB(255, 167, 165, 165),
+                                      ),
+                                      border: OutlineInputBorder(),
+                                      prefixIcon: Icon(
+                                        Icons.production_quantity_limits,
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  ),
-
-                                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                                  // labelText: text,
-                                  hintText: "Product name",
-                                  hintStyle: TextStyle(
-                                    fontSize: 13,
-                                    color: Color.fromARGB(255, 167, 165, 165),
-                                  ),
-
-                                  border: OutlineInputBorder(),
-                                  prefixIcon: Icon(
-                                    Icons.production_quantity_limits,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                // validator: validator,
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -449,32 +283,35 @@ class _RFQNoteState extends State<RFQNote> {
                           width: 190,
                           child: Column(
                             children: [
-                              TextFormField(
-                                style: const TextStyle(fontSize: 13, color: Colors.white),
-                                controller: tablevalue_Controller,
-                                decoration: const InputDecoration(
-                                  filled: true,
-                                  fillColor: Primary_colors.Dark,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                    ),
-                                  ),
+                              Obx(
+                                () {
+                                  return TextFormField(
+                                    style: const TextStyle(fontSize: 13, color: Colors.white),
+                                    controller: rfqController.rfqModel.recommendationValueController.value,
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Primary_colors.Dark,
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.black,
+                                        ),
+                                      ),
 
-                                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                                  // labelText: text,
-                                  hintText: "Product Quantity",
-                                  hintStyle: TextStyle(
-                                    fontSize: 13,
-                                    color: Color.fromARGB(255, 167, 165, 165),
-                                  ),
-                                  border: OutlineInputBorder(),
-                                  prefixIcon: Icon(
-                                    Icons.production_quantity_limits,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                // validator: validator,
+                                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                                      // labelText: text,
+                                      hintText: "Product Quantity",
+                                      hintStyle: TextStyle(
+                                        fontSize: 13,
+                                        color: Color.fromARGB(255, 167, 165, 165),
+                                      ),
+                                      border: OutlineInputBorder(),
+                                      prefixIcon: Icon(
+                                        Icons.production_quantity_limits,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -488,10 +325,15 @@ class _RFQNoteState extends State<RFQNote> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Button1(
-                            colors: notetable_editIndex == null ? Colors.blue : Colors.orange,
-                            text: notetable_editIndex == null ? 'Add' : 'Update',
-                            onPressed: notetable_editIndex == null ? _addtable_row : _updatetable,
+                          Obx(
+                            () {
+                              return Button1(
+                                  colors: rfqController.rfqModel.recommendation_editIndex.value == null ? Colors.blue : Colors.orange,
+                                  text: rfqController.rfqModel.recommendation_editIndex.value == null ? 'Add' : 'Update',
+                                  onPressed: () {
+                                    rfqController.rfqModel.recommendation_editIndex.value == null ? widget.addtable_row(context) : widget.updatetable();
+                                  });
+                            },
                           ),
                         ],
                       ),
@@ -500,60 +342,77 @@ class _RFQNoteState extends State<RFQNote> {
                 ),
               ],
             ),
-            // const SizedBox(height: 10),
-            if (RFQ_noteList.isNotEmpty)
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 5),
-                      child: Text(
-                        'Note List',
-                        style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 119, 199, 253), fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Primary_colors.Dark),
-                        // width: 420,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: RFQ_noteLists(),
-                        ),
+            Obx(() {
+              return rfqController.rfqModel.RFQ_noteList.isNotEmpty
+                  ? Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(left: 5),
+                            child: Text(
+                              'Note List',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Color.fromARGB(255, 119, 199, 253),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Primary_colors.Dark,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: RFQ_noteLists(),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     )
-                  ],
-                ),
-              ),
+                  : const SizedBox.shrink();
+            }),
             const SizedBox(height: 10),
-            if (RFQ_recommendationList.isNotEmpty)
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 5),
-                      child: Text(
-                        RFQ_table_heading,
-                        style: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 119, 199, 253), fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Primary_colors.Dark),
-                        // width: 420,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: noteTable(),
-                        ),
+            Obx(() {
+              return rfqController.rfqModel.RFQ_recommendationList.isNotEmpty
+                  ? Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5),
+                            child: Text(
+                              rfqController.rfqModel.RFQ_table_heading.value,
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: Color.fromARGB(255, 119, 199, 253),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Primary_colors.Dark,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: noteTable(),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     )
-                  ],
-                ),
-              ),
+                  : const SizedBox.shrink();
+            }),
             const SizedBox(height: 15),
             SizedBox(
               width: 400,
@@ -563,36 +422,37 @@ class _RFQNoteState extends State<RFQNote> {
                 children: [
                   Button1(
                     colors: Colors.red,
-                    text: noteeditIndex == null ? 'Back' : 'Cancel',
+                    text: rfqController.rfqModel.note_editIndex.value == null ? 'Back' : 'Cancel',
                     onPressed: () {
-                      noteeditIndex == null ? GenerateRFQ.backTab() : _resetEditingStateNote(); // Reset editing state when going back
+                      rfqController.rfqModel.note_editIndex.value == null ? rfqController.backTab() : widget.resetEditingStateNote();
                     },
                   ),
-                  if (RFQ_noteList.isNotEmpty) const SizedBox(width: 10),
-                  if (RFQ_noteList.isNotEmpty || RFQ_recommendationList.isNotEmpty)
-                    Button1(
-                      colors: Colors.green,
-                      text: 'Submit',
-                      onPressed: () async {
-                        if (RFQ_products.isNotEmpty && RFQ_productDetails.isNotEmpty) {
-                          final pdfData = await generate_RFQ(PdfPageFormat.a4, RFQ_products, vendor_name, vendor_email, vendor_phoneno, vendor_address, "AA/24D2/FS");
-                          const filePath = 'E://RFQ.pdf';
-                          final file = File(filePath);
-                          await file.writeAsBytes(pdfData);
-
-                          Sales_Client.RFQ_Callback();
-                          // Navigator.of(context).pop();
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              backgroundColor: Colors.blue,
-                              content: Text('Please fill all the required fields'),
-                            ),
-                          );
-                          return;
-                        }
-                      },
-                    ),
+                  Obx(() {
+                    return Row(
+                      children: [
+                        if (rfqController.rfqModel.RFQ_noteList.isNotEmpty) const SizedBox(width: 10),
+                        if (rfqController.rfqModel.RFQ_noteList.isNotEmpty || rfqController.rfqModel.RFQ_recommendationList.isNotEmpty)
+                          Button1(
+                            colors: Colors.green,
+                            text: 'Submit',
+                            onPressed: () async {
+                              if (rfqController.rfqModel.RFQ_products.isNotEmpty && rfqController.rfqModel.vendor_address_controller.value.text.isNotEmpty && rfqController.rfqModel.vendor_email_controller.value.text.isNotEmpty && rfqController.rfqModel.vendor_phone_controller.value.text.isNotEmpty) {
+                                widget.Generate_RFQ(context);
+                                // Navigator.of(context).pop();
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    backgroundColor: Colors.blue,
+                                    content: Text('Please fill all the required fields'),
+                                  ),
+                                );
+                                return;
+                              }
+                            },
+                          ),
+                      ],
+                    );
+                  })
                 ],
               ),
             )

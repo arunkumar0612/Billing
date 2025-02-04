@@ -16,7 +16,7 @@ class Loginpage extends StatefulWidget with LoginServices {
 }
 
 class _LoginpageState extends State<Loginpage> {
-  final LoginController loginController = Get.put(LoginController());
+  final LoginController loginController = Get.find<LoginController>();
 
   @override
   void initState() {
@@ -33,7 +33,14 @@ class _LoginpageState extends State<Loginpage> {
       return AnimatedGradientBorder(
         animationTime: 2,
         glowSize: loginController.loginModel.indicator.value ? 5 : 5,
-        gradientColors: loginController.loginModel.indicator.value ? [Color.fromARGB(255, 157, 98, 253), Colors.black] : [Primary_colors.Light],
+        gradientColors: loginController.loginModel.indicator.value
+            ? [
+                Color.fromARGB(255, 157, 98, 253),
+                Colors.black
+              ]
+            : [
+                Primary_colors.Light
+              ],
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),

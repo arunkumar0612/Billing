@@ -2,13 +2,35 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:window_manager/window_manager.dart';
-
+import 'controllers/Credit_actions.dart';
+import 'controllers/DC_actions.dart';
+import 'controllers/Debit_actions.dart';
+import 'controllers/IAM_actions.dart';
+import 'controllers/Invoice_actions.dart';
+import 'controllers/Quote_actions.dart';
+import 'controllers/RFQ_actions.dart';
 import 'routes/app_routes.dart';
+import 'services/APIservices/invoker.dart';
 
 Future<void> main() async {
   // Initialize Flutter bindings
   WidgetsFlutterBinding.ensureInitialized();
-  // Initialize window_manager only on supported platforms
+
+////////////////////////////----IAM----////////////////////////////////////
+  Get.lazyPut<LoginController>(() => LoginController());
+  Get.lazyPut<RegisterController>(() => RegisterController());
+  Get.lazyPut<ForgotpasswordController>(() => ForgotpasswordController());
+  Get.lazyPut<NewpasswordController>(() => NewpasswordController());
+  Get.lazyPut<Invoker>(() => Invoker());
+  Get.lazyPut<VerifyOTPControllers>(() => VerifyOTPControllers());
+
+////////////////////////////----SALES----////////////////////////////////////
+  Get.lazyPut<InvoiceController>(() => InvoiceController());
+  Get.lazyPut<QuoteController>(() => QuoteController());
+  Get.lazyPut<RFQController>(() => RFQController());
+  Get.lazyPut<CreditController>(() => CreditController());
+  Get.lazyPut<DebitController>(() => DebitController());
+  Get.lazyPut<DCController>(() => DCController());
   if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux)) {
     await windowManager.ensureInitialized();
     WindowOptions windowOptions = const WindowOptions(

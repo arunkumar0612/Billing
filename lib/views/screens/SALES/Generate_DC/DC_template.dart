@@ -39,7 +39,7 @@ class Delivery_challan_generate {
     // required this.items,
   });
 
-  final DCController dcController = Get.put(DCController());
+  final DCController dcController = Get.find<DCController>();
 
   String client_addr_name = "";
   String client_addr = "";
@@ -49,7 +49,7 @@ class Delivery_challan_generate {
   String title_text = "";
   String type = "";
 
-  final List<Product> products;
+  final List<DCProduct> products;
 
   final PdfColor baseColor;
   final PdfColor accentColor;
@@ -416,7 +416,7 @@ class Delivery_challan_generate {
                       pw.SizedBox(width: 5),
                       pw.Expanded(
                         child: pw.Text(
-                          dcController.dcModel.Delivery_challan_noteList[index]["notecontent"],
+                          dcController.dcModel.Delivery_challan_noteList[index].notename,
                           textAlign: pw.TextAlign.start,
                           style: pw.TextStyle(
                             font: Helvetica,
@@ -499,11 +499,11 @@ class Delivery_challan_generate {
                                 children: [
                                   pw.Container(
                                     width: 120,
-                                    child: regular(recommendation["key"].toString(), 10),
+                                    child: regular(recommendation.key.toString(), 10),
                                   ),
                                   regular(":", 10),
                                   pw.SizedBox(width: 5),
-                                  regular(recommendation["value"].toString(), 10),
+                                  regular(recommendation.value.toString(), 10),
                                 ],
                               ),
                             );

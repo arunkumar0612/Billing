@@ -10,8 +10,9 @@ import '../../views/components/Basic_DialogBox.dart';
 import '../APIservices/invoker.dart';
 
 mixin LoginServices {
-  final LoginController loginController = Get.put(LoginController());
-  final Invoker apiController = Get.put(Invoker());
+  final LoginController loginController = Get.find<LoginController>();
+  final Invoker apiController = Get.find<Invoker>();
+
   void Login(context) async {
     try {
       final requestBody = Login_Request(

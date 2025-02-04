@@ -1,23 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 
-List<Product> RFQ_products = [];
-//main
-
-// String? RFQ_no;
-String? vendor_name;
-String vendor_email = '';
-String vendor_phoneno = '';
-String vendor_address = '';
-String RFQ_table_heading = "";
-List<Map<String, dynamic>> RFQ_noteList = [];
-List<Map<String, dynamic>> RFQ_recommendationList = [];
-List<Map<String, dynamic>> RFQ_productDetails = [];
-
-//
+import '../../../../controllers/RFQ_actions.dart';
+import '../../../../models/entities/product_entities.dart';
+import '../../../../utils/helpers/support_functions.dart';
 
 Future<Uint8List> generate_RFQ(
   PdfPageFormat pageFormat,
@@ -50,6 +39,8 @@ class Request_for_quote {
   Request_for_quote({required this.RFQ_no, required this.baseColor, required this.accentColor, required this.company_addr_name, required this.company_email, required this.company_phone, required this.company_addr, required this.to_addr_name, required this.to_email, required this.to_phone, required this.to_addr, required this.products
       // required this.items,
       });
+  final RFQController rfqController = Get.find<RFQController>();
+
   String company_addr_name = "";
   String company_email = "";
   String company_phone = "";
@@ -58,7 +49,7 @@ class Request_for_quote {
   String to_email = "";
   String to_phone = "";
   String to_addr = "";
-  final List<Product> products;
+  final List<RFQProduct> products;
   final String RFQ_no;
   final PdfColor baseColor;
   final PdfColor accentColor;
@@ -529,7 +520,7 @@ class Request_for_quote {
             padding: const pw.EdgeInsets.only(left: 0, bottom: 10),
           ),
           // First note item
-          ...List.generate(RFQ_noteList.length, (index) {
+          ...List.generate(rfqController.rfqModel.RFQ_noteList.length, (index) {
             return pw.Padding(
               padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
               child: pw.Row(
@@ -539,7 +530,7 @@ class Request_for_quote {
                   pw.SizedBox(width: 5),
                   pw.Expanded(
                     child: pw.Text(
-                      RFQ_noteList[index]["notecontent"],
+                      rfqController.rfqModel.RFQ_noteList[index].notename,
                       textAlign: pw.TextAlign.start,
                       style: pw.TextStyle(
                         font: Helvetica,
@@ -558,25 +549,25 @@ class Request_for_quote {
             child: pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                regular("${RFQ_noteList.length + 1}.", 10),
+                regular("${rfqController.rfqModel.RFQ_noteList.length + 1}.", 10),
                 pw.SizedBox(width: 5),
                 pw.Expanded(
                   child: pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                      bold(RFQ_table_heading, 10),
-                      ...RFQ_recommendationList.map((recommendation) {
+                      bold(rfqController.rfqModel.RFQ_table_heading.value, 10),
+                      ...rfqController.rfqModel.RFQ_recommendationList.map((recommendation) {
                         return pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 5, top: 5),
                           child: pw.Row(
                             children: [
                               pw.Container(
                                 width: 120,
-                                child: regular(recommendation["key"].toString(), 10),
+                                child: regular(recommendation.key.toString(), 10),
                               ),
                               regular(":", 10),
                               pw.SizedBox(width: 5),
-                              regular(recommendation["value"].toString(), 10),
+                              regular(recommendation.value.toString(), 10),
                             ],
                           ),
                         );
@@ -592,7 +583,7 @@ class Request_for_quote {
             child: pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                regular("${RFQ_noteList.length + (RFQ_recommendationList.isEmpty ? 1 : 2)}.", 10),
+                regular("${rfqController.rfqModel.RFQ_noteList.length + (rfqController.rfqModel.RFQ_recommendationList.isEmpty ? 1 : 2)}.", 10),
                 pw.SizedBox(width: 5),
                 pw.Expanded(
                   child: pw.Column(
@@ -644,30 +635,5 @@ class Request_for_quote {
         ],
       ),
     );
-  }
-}
-
-class Product {
-  const Product(
-    this.sno,
-    this.productName,
-    this.quantity,
-  );
-
-  final String sno;
-  final String productName;
-
-  final int quantity;
-
-  String getIndex(int index) {
-    switch (index) {
-      case 0:
-        return sno;
-      case 1:
-        return productName;
-      case 2:
-        return quantity.toString();
-    }
-    return '';
   }
 }

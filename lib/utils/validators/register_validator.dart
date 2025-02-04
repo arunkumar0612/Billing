@@ -3,7 +3,7 @@ import 'package:ssipl_billing/services/IAM_services/register_services.dart';
 import '../../controllers/IAM_actions.dart';
 
 mixin RegisterValidator {
-  final RegisterController registerController = Get.put(RegisterController());
+  final RegisterController registerController = Get.find<RegisterController>();
 
   void validateForm(context) {
     registerController.registerModel.errors.clear();

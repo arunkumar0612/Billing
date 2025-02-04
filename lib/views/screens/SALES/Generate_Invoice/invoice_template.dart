@@ -1,58 +1,25 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/utils/helpers/support_functions.dart';
+import 'package:ssipl_billing/controllers/Invoice_actions.dart';
 
-List<Product> invoice_products = [];
-List<Map<String, dynamic>> invoice_gstTotals = [];
-//main
-String invoice_client_addr_name = "";
-String invoice_client_addr = "";
-String invoice_bill_addr_name = "";
-String invoice_bill_addr = "";
-String Invoice_no = "";
-String invoice_title = "";
-String invoice_table_heading = "";
-List<Map<String, dynamic>> invoice_noteList = [];
-List<Map<String, dynamic>> invoice_recommendationList = [];
-List<Map<String, dynamic>> invoice_productDetails = [];
+import '../../../../models/entities/product_entities.dart';
+import '../../../../utils/helpers/support_functions.dart';
 
-//
-
-Future<Uint8List> generate_Invoice(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, invoice_num, title, gst) async {
-  final invoice = Invoice(
-    products: products,
-    GST: gst.toDouble(),
-    baseColor: PdfColors.green500,
-    accentColor: PdfColors.blueGrey900,
-    client_addr_name: client_addr_name,
-    client_addr: client_addr,
-    bill_addr_name: bill_addr_name,
-    bill_addr: bill_addr,
-    invoice: "",
-    title_text: title,
-    type: '',
-  );
+Future<Uint8List> generate_Invoice(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, invoice_num, title, gst, invoice_gstTotals) async {
+  final invoice = Invoice_generate(products: products, GST: gst.toDouble(), baseColor: PdfColors.green500, accentColor: PdfColors.blueGrey900, client_addr_name: client_addr_name, client_addr: client_addr, bill_addr_name: bill_addr_name, bill_addr: bill_addr, invoice: "", title_text: title, type: '', invoice_gstTotals: invoice_gstTotals);
 
   return await invoice.buildPdf(pageFormat);
 }
 
-class Invoice {
-  Invoice({
-    required this.products,
-    required this.GST,
-    required this.baseColor,
-    required this.accentColor,
-    required this.client_addr_name,
-    required this.client_addr,
-    required this.bill_addr_name,
-    required this.bill_addr,
-    required this.invoice,
-    required this.title_text,
-    required this.type,
-    // required this.items,
-  });
+class Invoice_generate {
+  Invoice_generate({required this.products, required this.GST, required this.baseColor, required this.accentColor, required this.client_addr_name, required this.client_addr, required this.bill_addr_name, required this.bill_addr, required this.invoice, required this.title_text, required this.type, required this.invoice_gstTotals
+      // required this.items,
+      });
+  final InvoiceController invoiceController = Get.find<InvoiceController>();
+  List<Map<String, dynamic>> invoice_gstTotals = [];
   String client_addr_name = "";
   String client_addr = "";
   String bill_addr_name = "";
@@ -61,7 +28,7 @@ class Invoice {
   String title_text = "";
   String type = "";
 
-  final List<Product> products;
+  final List<InvoiceProduct> products;
   final double GST;
   final PdfColor baseColor;
   final PdfColor accentColor;
@@ -120,7 +87,7 @@ class Invoice {
                 child: pw.Image(profileImage),
               ),
               pw.Text(
-                'INSTALLATION INVOICE',
+                'INVOICE',
                 style: pw.TextStyle(
                   font: Helvetica_bold,
                   fontSize: 15,
@@ -156,14 +123,15 @@ class Invoice {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular(formatDate(DateTime.now()), 10),
+                            child: regular("Nov 30, 2024", 10),
+                            // formatDate(DateTime.now()), 10
                           ),
                         ),
                         pw.SizedBox(height: 5),
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("AA/INST/241102", 10),
+                            child: regular("AA/INST/241104", 10),
                           ),
                         ),
                       ],
@@ -681,7 +649,7 @@ class Invoice {
             child: bold("Note", 12),
             padding: const pw.EdgeInsets.only(left: 0, bottom: 10),
           ),
-          ...List.generate(invoice_noteList.length, (index) {
+          ...List.generate(invoiceController.invoiceModel.Invoice_noteList.length, (index) {
             return pw.Padding(
               padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
               child: pw.Row(
@@ -691,7 +659,7 @@ class Invoice {
                   pw.SizedBox(width: 5),
                   pw.Expanded(
                     child: pw.Text(
-                      invoice_noteList[index]["notecontent"],
+                      invoiceController.invoiceModel.Invoice_noteList[index].notename,
                       textAlign: pw.TextAlign.start,
                       style: pw.TextStyle(
                         font: Helvetica,
@@ -710,48 +678,48 @@ class Invoice {
             child: pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                // regular("${invoice_noteList.length + 1}.", 10),
-                // pw.SizedBox(width: 5),
-                // pw.Expanded(
-                //   child: pw.Column(
-                //     crossAxisAlignment: pw.CrossAxisAlignment.start,
-                //     children: [
-                //       bold("Bank Account Details:", 10),
-                //       pw.SizedBox(height: 5), // Adds a small space between the lines
-                //       pw.Row(
-                //         children: [
-                //           regular("Current a/c:", 10),
-                //           pw.SizedBox(width: 5),
-                //           regular("257399850001", 10),
-                //         ],
-                //       ),
-                //       pw.SizedBox(height: 5),
-                //       pw.Row(
-                //         children: [
-                //           regular("IFSC code:", 10),
-                //           pw.SizedBox(width: 5),
-                //           regular("INDB0000521", 10),
-                //         ],
-                //       ),
-                //       pw.SizedBox(height: 5),
-                //       pw.Row(
-                //         children: [
-                //           regular("Bank name:", 10),
-                //           pw.SizedBox(width: 5),
-                //           regular(": IndusInd Bank Limited", 10),
-                //         ],
-                //       ),
-                //       pw.SizedBox(height: 5),
-                //       pw.Row(
-                //         children: [
-                //           regular("Branch name:", 10),
-                //           pw.SizedBox(width: 5),
-                //           regular("R.S. Puram, Coimbatore.", 10),
-                //         ],
-                //       ),
-                //     ],
-                //   ),
-                // ),
+                regular("${invoiceController.invoiceModel.Invoice_noteList.length + 1}.", 10),
+                pw.SizedBox(width: 5),
+                pw.Expanded(
+                  child: pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      bold("Bank Account Details:", 10),
+                      pw.SizedBox(height: 5), // Adds a small space between the lines
+                      pw.Row(
+                        children: [
+                          regular("Current a/c:", 10),
+                          pw.SizedBox(width: 5),
+                          regular("257399850001", 10),
+                        ],
+                      ),
+                      pw.SizedBox(height: 5),
+                      pw.Row(
+                        children: [
+                          regular("IFSC code:", 10),
+                          pw.SizedBox(width: 5),
+                          regular("INDB0000521", 10),
+                        ],
+                      ),
+                      pw.SizedBox(height: 5),
+                      pw.Row(
+                        children: [
+                          regular("Bank name:", 10),
+                          pw.SizedBox(width: 5),
+                          regular(": IndusInd Bank Limited", 10),
+                        ],
+                      ),
+                      pw.SizedBox(height: 5),
+                      pw.Row(
+                        children: [
+                          regular("Branch name:", 10),
+                          pw.SizedBox(width: 5),
+                          regular("R.S. Puram, Coimbatore.", 10),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -766,19 +734,19 @@ class Invoice {
                   child: pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                      bold(invoice_table_heading, 10),
-                      ...invoice_recommendationList.map((recommendation) {
+                      bold(invoiceController.invoiceModel.Invoice_table_heading.value, 10),
+                      ...invoiceController.invoiceModel.Invoice_recommendationList.map((recommendation) {
                         return pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 5, top: 5),
                           child: pw.Row(
                             children: [
                               pw.Container(
                                 width: 120,
-                                child: regular(recommendation["key"].toString(), 10),
+                                child: regular(recommendation.key.toString(), 10),
                               ),
                               regular(":", 10),
                               pw.SizedBox(width: 5),
-                              regular(recommendation["value"].toString(), 10),
+                              regular(recommendation.value.toString(), 10),
                             ],
                           ),
                         );
@@ -869,44 +837,5 @@ class Invoice {
         )
       ],
     );
-  }
-}
-
-class Product {
-  const Product(
-    this.sno,
-    this.productName,
-    this.hsn,
-    this.gst,
-    this.price,
-    this.quantity,
-  );
-
-  final String sno;
-  final String productName;
-  final String hsn;
-  final double gst;
-  final double price;
-  final int quantity;
-  double get total => price * quantity;
-
-  String getIndex(int index) {
-    switch (index) {
-      case 0:
-        return sno;
-      case 1:
-        return productName;
-      case 2:
-        return hsn;
-      case 3:
-        return gst.toString();
-      case 4:
-        return formatCurrency(price);
-      case 5:
-        return quantity.toString();
-      case 6:
-        return formatCurrency(total);
-    }
-    return '';
   }
 }

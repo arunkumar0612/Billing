@@ -1,27 +1,15 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/RFQ_details.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/RFQ_note.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/RFQ_products.dart';
+import 'package:get/get.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import '../../../../controllers/RFQ_actions.dart';
+import 'RFQ_details.dart';
+import 'RFQ_note.dart';
+import 'RFQ_products.dart';
 
 class GenerateRFQ extends StatefulWidget {
   const GenerateRFQ({super.key});
-  static late TabController _tabController;
-
-  static void nextTab() {
-    if (_tabController.index < _tabController.length - 1) {
-      _tabController.animateTo(_tabController.index + 1);
-    }
-  }
-
-  static void backTab() {
-    if (_tabController.index > 0) {
-      _tabController.animateTo(_tabController.index - 1);
-    }
-  }
 
   @override
   _GenerateRFQState createState() => _GenerateRFQState();
@@ -29,15 +17,19 @@ class GenerateRFQ extends StatefulWidget {
 
 class _GenerateRFQState extends State<GenerateRFQ> with SingleTickerProviderStateMixin {
   final File _selectedPdf = File('E://RFQ.pdf');
+  final RFQController rfqController = Get.find<RFQController>();
+
   @override
   void initState() {
     super.initState();
-    GenerateRFQ._tabController = TabController(length: 3, vsync: this);
+    // GenerateRFQ._tabController = ;
+    rfqController.initializeTabController(TabController(length: 3, vsync: this));
   }
 
   @override
   void dispose() {
-    GenerateRFQ._tabController.dispose();
+    // GenerateRFQ._tabController.dispose();
+    rfqController.rfqModel.tabController.value?.dispose();
     super.dispose();
   }
 
@@ -118,7 +110,7 @@ class _GenerateRFQState extends State<GenerateRFQ> with SingleTickerProviderStat
                             fontSize: Primary_font_size.Text10,
                             fontWeight: FontWeight.bold,
                           ),
-                          controller: GenerateRFQ._tabController,
+                          controller: rfqController.rfqModel.tabController.value,
                           indicator: const BoxDecoration(),
                           tabs: const [
                             Tab(text: "Details"),
@@ -131,14 +123,14 @@ class _GenerateRFQState extends State<GenerateRFQ> with SingleTickerProviderStat
                   ),
                   Expanded(
                     child: TabBarView(
-                      controller: GenerateRFQ._tabController,
+                      controller: rfqController.rfqModel.tabController.value,
                       children: [
-                        const RFQDetails(),
+                        RFQDetails(),
                         Container(
                           color: Primary_colors.Light,
-                          child: const RFQProducts(),
+                          child: RFQProducts(),
                         ),
-                        const RFQNote(),
+                        RFQNote(),
                       ],
                     ),
                   ),

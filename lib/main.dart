@@ -1,13 +1,38 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-// import 'package:ssipl_billing/home.dart';
-import 'package:ssipl_billing/homepage/home_page.dart';
+import 'package:get/get.dart';
 import 'package:window_manager/window_manager.dart';
+import 'controllers/ClientReq_actions.dart';
+import 'controllers/Credit_actions.dart';
+import 'controllers/DC_actions.dart';
+import 'controllers/Debit_actions.dart';
+import 'controllers/IAM_actions.dart';
+import 'controllers/Invoice_actions.dart';
+import 'controllers/Quote_actions.dart';
+import 'controllers/RFQ_actions.dart';
+import 'routes/app_routes.dart';
+import 'services/APIservices/invoker.dart';
 
 Future<void> main() async {
   // Initialize Flutter bindings
   WidgetsFlutterBinding.ensureInitialized();
-  // Initialize window_manager only on supported platforms
+
+////////////////////////////----IAM----////////////////////////////////////
+  Get.lazyPut<LoginController>(() => LoginController());
+  Get.lazyPut<RegisterController>(() => RegisterController());
+  Get.lazyPut<ForgotpasswordController>(() => ForgotpasswordController());
+  Get.lazyPut<NewpasswordController>(() => NewpasswordController());
+  Get.lazyPut<Invoker>(() => Invoker());
+  Get.lazyPut<VerifyOTPControllers>(() => VerifyOTPControllers());
+
+////////////////////////////----SALES----////////////////////////////////////
+  Get.lazyPut<ClientreqController>(() => ClientreqController());
+  Get.lazyPut<InvoiceController>(() => InvoiceController());
+  Get.lazyPut<QuoteController>(() => QuoteController());
+  Get.lazyPut<RFQController>(() => RFQController());
+  Get.lazyPut<CreditController>(() => CreditController());
+  Get.lazyPut<DebitController>(() => DebitController());
+  Get.lazyPut<DCController>(() => DCController());
   if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux)) {
     await windowManager.ensureInitialized();
     WindowOptions windowOptions = const WindowOptions(
@@ -32,9 +57,11 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'B I L L I N G',
-      home: const home_page(),
+    return GetMaterialApp(
+      title: 'ERP',
+      // home: const IAM(),
+      initialRoute: '/login', // Set the initial route
+      getPages: AppRoutes.routes,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         iconTheme: const IconThemeData(color: Colors.white),

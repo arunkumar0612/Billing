@@ -36,7 +36,10 @@ mixin CreditnotesService {
   }
 
   void updatetable() {
-    creditController.updateRecommendation(index: creditController.creditModel.recommendation_editIndex.value!, key: creditController.creditModel.recommendationKeyController.value.text.toString(), value: creditController.creditModel.recommendationValueController.value.text.toString());
+    creditController.updateRecommendation(
+        index: creditController.creditModel.recommendation_editIndex.value!,
+        key: creditController.creditModel.recommendationKeyController.value.text.toString(),
+        value: creditController.creditModel.recommendationValueController.value.text.toString());
     cleartable_Fields();
     creditController.updateRecommendationEditindex(null);
   }
@@ -90,15 +93,24 @@ mixin CreditnotesService {
   }
 
   void Generate_Credit(context) async {
-    final pdfData = await generate_Credit(PdfPageFormat.a4, creditController.creditModel.Credit_products, creditController.creditModel.clientAddressNameController.value.text, creditController.creditModel.clientAddressController.value.text, creditController.creditModel.billingAddressNameController.value.text, creditController.creditModel.billingAddressController.value.text, creditController.creditModel.Credit_no.value, 9, creditController.creditModel.Credit_gstTotals);
+    final pdfData = await generate_Credit(
+        PdfPageFormat.a4,
+        creditController.creditModel.Credit_products,
+        creditController.creditModel.clientAddressNameController.value.text,
+        creditController.creditModel.clientAddressController.value.text,
+        creditController.creditModel.billingAddressNameController.value.text,
+        creditController.creditModel.billingAddressController.value.text,
+        creditController.creditModel.Credit_no.value,
+        9,
+        creditController.creditModel.Credit_gstTotals);
 
     const filePath = 'E://Credit.pdf';
     final file = File(filePath);
     await file.writeAsBytes(pdfData);
 
-    Future.delayed(const Duration(seconds: 4), () {
-      Generate_popup.callback();
-    });
+    // Future.delayed(const Duration(seconds: 4), () {
+    //   Generate_popup.callback();
+    // });
 
     showDialog(
       context: context,

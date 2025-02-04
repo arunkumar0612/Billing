@@ -40,7 +40,10 @@ mixin DebitnotesService {
   }
 
   void updatetable() {
-    debitController.updateRecommendation(index: debitController.debitModel.recommendation_editIndex.value!, key: debitController.debitModel.recommendationKeyController.value.text.toString(), value: debitController.debitModel.recommendationValueController.value.text.toString());
+    debitController.updateRecommendation(
+        index: debitController.debitModel.recommendation_editIndex.value!,
+        key: debitController.debitModel.recommendationKeyController.value.text.toString(),
+        value: debitController.debitModel.recommendationValueController.value.text.toString());
     cleartable_Fields();
     debitController.updateRecommendationEditindex(null);
   }
@@ -94,15 +97,24 @@ mixin DebitnotesService {
   }
 
   void Generate_Debit(context) async {
-    final pdfData = await generate_Debit(PdfPageFormat.a4, debitController.debitModel.Debit_products, debitController.debitModel.clientAddressNameController.value.text, debitController.debitModel.clientAddressController.value.text, debitController.debitModel.billingAddressNameController.value.text, debitController.debitModel.billingAddressController.value.text, debitController.debitModel.Debit_no.value, 9, debitController.debitModel.Debit_gstTotals);
+    final pdfData = await generate_Debit(
+        PdfPageFormat.a4,
+        debitController.debitModel.Debit_products,
+        debitController.debitModel.clientAddressNameController.value.text,
+        debitController.debitModel.clientAddressController.value.text,
+        debitController.debitModel.billingAddressNameController.value.text,
+        debitController.debitModel.billingAddressController.value.text,
+        debitController.debitModel.Debit_no.value,
+        9,
+        debitController.debitModel.Debit_gstTotals);
 
     const filePath = 'E://Debit.pdf';
     final file = File(filePath);
     await file.writeAsBytes(pdfData);
 
-    Future.delayed(const Duration(seconds: 4), () {
-      Generate_popup.callback();
-    });
+    // Future.delayed(const Duration(seconds: 4), () {
+    //   Generate_popup.callback();
+    // });
 
     showDialog(
       context: context,

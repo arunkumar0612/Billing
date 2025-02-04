@@ -4,10 +4,12 @@ import 'package:ssipl_billing/services/APIservices/api_service.dart';
 import 'package:ssipl_billing/utils/helpers/returns.dart';
 import 'package:ssipl_billing/utils/helpers/encrypt_decrypt.dart';
 
+import '../../controllers/IAM_actions.dart';
+
 class Invoker extends GetxController {
   final ApiService apiService = ApiService();
   var isLoading = false.obs;
-
+  final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   Future<Map<String, dynamic>?> IAM(Map<String, dynamic> body, String API) async {
     isLoading.value = true;
     final configData = await loadConfigFile('assets/key.config');
@@ -29,6 +31,29 @@ class Invoker extends GetxController {
       final responseData = response.body;
       String encryptedResponse = responseData['encryptedResponse'];
       final decryptedResponse = AES.decryptWithAES(secret.substring(0, 16), encryptedResponse);
+      Map<String, dynamic> decodedResponse = jsonDecode(decryptedResponse);
+      final result = <String, int>{"statusCode": response.statusCode!};
+      decodedResponse.addEntries(result.entries.map((e) => MapEntry(e.key, e.value)));
+
+      return decodedResponse;
+    } else {
+      Map<String, dynamic> reply = {"statusCode": response.statusCode, "message": "Server Error"};
+      return reply;
+    }
+  }
+
+  Future<Map<String, dynamic>?> GetbyToken(String API) async {
+    isLoading.value = true;
+
+    final requestData = {"STOKEN": sessiontokenController.sessiontokenModel.sessiontokenController.value};
+    final response = await apiService.postData(API, requestData);
+
+    isLoading.value = false;
+
+    if (response.statusCode == 200) {
+      final responseData = response.body;
+      String encryptedResponse = responseData['encryptedResponse'];
+      final decryptedResponse = AES.decryptWithAES(sessiontokenController.sessiontokenModel.sessiontokenController.value.substring(0, 16), encryptedResponse);
       Map<String, dynamic> decodedResponse = jsonDecode(decryptedResponse);
       final result = <String, int>{"statusCode": response.statusCode!};
       decodedResponse.addEntries(result.entries.map((e) => MapEntry(e.key, e.value)));

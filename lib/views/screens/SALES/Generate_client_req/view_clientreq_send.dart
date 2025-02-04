@@ -7,6 +7,7 @@ import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_details.dart';
@@ -18,6 +19,8 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:path/path.dart' as path;
 import 'package:http/http.dart' as http;
 
+import '../../../../controllers/IAM_actions.dart';
+
 // ignore: must_be_immutable
 class view_clientreq_send_popup extends StatefulWidget {
   String type;
@@ -28,6 +31,7 @@ class view_clientreq_send_popup extends StatefulWidget {
 }
 
 class view_clientreq_send_popupState extends State<view_clientreq_send_popup> with SingleTickerProviderStateMixin {
+  final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   late AnimationController _controller;
   late Animation<double> _animation;
 // 'E://quotation.pdf'
@@ -44,9 +48,7 @@ class view_clientreq_send_popupState extends State<view_clientreq_send_popup> wi
   Future<void> _pickPdf() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: [
-        'pdf'
-      ],
+      allowedExtensions: ['pdf'],
     );
 
     if (result != null) {
@@ -126,7 +128,7 @@ class view_clientreq_send_popupState extends State<view_clientreq_send_popup> wi
   }
 
   void _addclientRequest() async {
-    String? valueToToken = await AES.get_stored_token();
+    String? valueToToken = sessiontokenController.sessiontokenModel.sessiontokenController.value;
 
     final formData = {
       "phoneno": "8248650039",
@@ -146,9 +148,7 @@ class view_clientreq_send_popupState extends State<view_clientreq_send_popup> wi
 
     final response = await http.post(
       Uri.parse(API.sales_add_client_requirement_API),
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: {"Content-Type": "application/json"},
       body: jsonEncode(requestData),
     );
     if (response.statusCode == 200) {

@@ -38,7 +38,10 @@ mixin DcnotesService {
   }
 
   void updatetable() {
-    dcController.updateRecommendation(index: dcController.dcModel.recommendation_editIndex.value!, key: dcController.dcModel.recommendationKeyController.value.text.toString(), value: dcController.dcModel.recommendationValueController.value.text.toString());
+    dcController.updateRecommendation(
+        index: dcController.dcModel.recommendation_editIndex.value!,
+        key: dcController.dcModel.recommendationKeyController.value.text.toString(),
+        value: dcController.dcModel.recommendationValueController.value.text.toString());
     cleartable_Fields();
     dcController.updateRecommendationEditindex(null);
   }
@@ -107,9 +110,9 @@ mixin DcnotesService {
     final file = File(filePath);
     await file.writeAsBytes(pdfData);
 
-    Future.delayed(const Duration(seconds: 4), () {
-      Generate_popup.callback();
-    });
+    // Future.delayed(const Duration(seconds: 4), () {
+    //   Generate_popup.callback();
+    // });
 
     showDialog(
       context: context,

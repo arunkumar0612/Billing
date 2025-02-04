@@ -7,6 +7,7 @@ import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:ssipl_billing/models/constants/api.dart';
@@ -17,17 +18,19 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:path/path.dart' as path;
 import 'package:http/http.dart' as http;
 
+import '../../controllers/IAM_actions.dart';
+
 // ignore: must_be_immutable
 class Generate_popup extends StatefulWidget {
   String type;
   Generate_popup({super.key, required this.type});
-  static late dynamic Function() callback;
 
   @override
   State<Generate_popup> createState() => Generate_popupState();
 }
 
 class Generate_popupState extends State<Generate_popup> with SingleTickerProviderStateMixin {
+  final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   late AnimationController _controller;
   late Animation<double> _animation;
 // 'E://quotation.pdf'
@@ -44,9 +47,7 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
   Future<void> _pickPdf() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: [
-        'pdf'
-      ],
+      allowedExtensions: ['pdf'],
     );
 
     if (result != null) {
@@ -100,7 +101,7 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
     _selectedPdf = File(widget.type);
     file_path_Controller = TextEditingController(text: _selectedPdf!.path.toString());
     isloading = false;
-    Generate_popup.callback = update;
+
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
@@ -115,16 +116,8 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
     // update();
   }
 
-  void update() async {
-    setState(
-      () {
-        isloading = true;
-      },
-    );
-  }
-
   void _addclientRequest() async {
-    String? valueToToken = await AES.get_stored_token();
+    String? valueToToken = sessiontokenController.sessiontokenModel.sessiontokenController.value;
 
     final formData = {
       "phoneno": "8248650039",
@@ -144,9 +137,7 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
 
     final response = await http.post(
       Uri.parse(API.sales_add_client_requirement_API),
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: {"Content-Type": "application/json"},
       body: jsonEncode(requestData),
     );
     if (response.statusCode == 200) {

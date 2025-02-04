@@ -40,7 +40,10 @@ mixin QuotenotesService {
   }
 
   void updatetable() {
-    quoteController.updateRecommendation(index: quoteController.quoteModel.recommendation_editIndex.value!, key: quoteController.quoteModel.recommendationKeyController.value.text.toString(), value: quoteController.quoteModel.recommendationValueController.value.text.toString());
+    quoteController.updateRecommendation(
+        index: quoteController.quoteModel.recommendation_editIndex.value!,
+        key: quoteController.quoteModel.recommendationKeyController.value.text.toString(),
+        value: quoteController.quoteModel.recommendationValueController.value.text.toString());
     cleartable_Fields();
     quoteController.updateRecommendationEditindex(null);
   }
@@ -111,9 +114,9 @@ mixin QuotenotesService {
     final file = File(filePath);
     await file.writeAsBytes(pdfData);
 
-    Future.delayed(const Duration(seconds: 4), () {
-      Generate_popup.callback();
-    });
+    // Future.delayed(const Duration(seconds: 4), () {
+    //   Generate_popup.callback();
+    // });
 
     showDialog(
       context: context,

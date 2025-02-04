@@ -52,8 +52,8 @@ mixin InvoiceproductService {
           })
           .entries
           .map((entry) => InvoiceGSTtotals(
-                key: entry.key.toString(), // Convert key to String
-                value: entry.value.toString(), // Convert value to String
+                gst: entry.key, // Convert key to String
+                total: entry.value, // Convert value to String
               ))
           .toList(),
     );

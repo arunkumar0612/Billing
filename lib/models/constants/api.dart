@@ -7,4 +7,5 @@ class API {
   static String Upload_MOR_API = "http://192.168.0.200:8081/sales/uploadmor";
   static String sales_add_details_API = "http://192.168.0.200:8081/sales/add";
   static String sales_add_client_requirement_API = "http://192.168.0.200:8081/admin/sendmailwhatsapp";
+  static String sales_getcustomerlist_API = "http://192.168.0.200:8081/sales/getcustomerlist";
 }

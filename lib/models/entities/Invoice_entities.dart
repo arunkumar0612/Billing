@@ -41,25 +41,25 @@ class Note {
 }
 
 class InvoiceGSTtotals {
-  final String key;
-  final String value;
+  final double gst;
+  final double total;
 
   InvoiceGSTtotals({
-    required this.key,
-    required this.value,
+    required this.gst,
+    required this.total,
   });
 
   factory InvoiceGSTtotals.fromJson(Map<String, dynamic> json) {
     return InvoiceGSTtotals(
-      key: json['GST'] as String,
-      value: json['total'] as String,
+      gst: json['GST'],
+      total: json['total'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'GST': key,
-      'total': value,
+      'GST': gst,
+      'total': total,
     };
   }
 }

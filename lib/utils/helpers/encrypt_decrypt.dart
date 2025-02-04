@@ -1,10 +1,14 @@
 // ignore_for_file: no_logic_in_create_state, non_constant_identifier_names
 
 import 'package:encrypt/encrypt.dart' as encrypt;
+// import 'package:get/get.dart';
+
+// import '../../controllers/IAM_actions.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AES {
-  static String SESSIONTOKEN = "15b97917-b296-11ed-997a-b42e9923";
+  // final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
+  // static String SESSIONTOKEN = "15b97917-b296-11ed-997a-b42e9923";
   static String encryptWithAES(String key, String plainText) {
     final cipherKey = encrypt.Key.fromUtf8(key);
     final encrypter = encrypt.Encrypter(encrypt.AES(cipherKey, mode: encrypt.AESMode.cbc));
@@ -23,10 +27,11 @@ class AES {
     return encrypter.decrypt(encrypted, iv: iv);
   }
 
-  static Future<String?> get_stored_token() async {
-    return SESSIONTOKEN;
-  }
+  // Future<String?> get_stored_token() async {
+  //   return sessiontokenController.sessiontokenModel.sessiontokenController.value;
+  // }
 }
+// .sessionModel.sessiontokenController.value;
 //   Future<void> Token_write_Function(
 //       Map<String, dynamic> decodedResponse) async {
 //     final valueToToken = decodedResponse["Value"].toString();

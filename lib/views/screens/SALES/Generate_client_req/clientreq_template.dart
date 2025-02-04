@@ -1,29 +1,13 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_details.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_note.dart';
-// import 'package:ssipl_billing/SALES/Generate_client_requirements/clientreq_products.dart';
+import 'package:ssipl_billing/models/entities/product_entities.dart';
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:image/image.dart' as img;
-
-//main
-// String clientreq_client_addr_name = "";
-// String clientreq_client_addr = "";
-// String clientreq_bill_addr_name = "";
-// String clientreq_bill_addr = "";
-// String clientreq_no = "";
-// String clientreq_table_heading = "";
-// List<Map<String, dynamic>> clientreq_noteList = [];
-// List<Map<String, dynamic>> clientreq_recommendationList = [];
-// List<Map<String, dynamic>> clientreq_productDetails = [];
-// String clientreq_MOR = "";
-// String clientreq_GST = "";
-// String clientreq_email = "";
-// String clientreq_contact_number = "";
-//
+import '../../../../controllers/ClientReq_actions.dart';
 
 Future<Uint8List> generate_clientreq(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, clientreq_num, chosen_filepath) async {
   final clientreq = Request_for_quote(products: products, baseColor: PdfColors.green500, accentColor: PdfColors.blueGrey900, client_addr_name: client_addr_name, client_addr: client_addr, bill_addr_name: bill_addr_name, bill_addr: bill_addr, clientreq: clientreq_num ?? "", type: '', imagePath: chosen_filepath);
@@ -31,9 +15,9 @@ Future<Uint8List> generate_clientreq(PdfPageFormat pageFormat, products, client_
 }
 
 class Request_for_quote {
-  Request_for_quote({required this.products, required this.baseColor, required this.accentColor, required this.client_addr_name, required this.client_addr, required this.bill_addr_name, required this.bill_addr, required this.clientreq, required this.type, required this.imagePath
-      // required this.items,
-      });
+  Request_for_quote({required this.products, required this.baseColor, required this.accentColor, required this.client_addr_name, required this.client_addr, required this.bill_addr_name, required this.bill_addr, required this.clientreq, required this.type, required this.imagePath});
+  final ClientreqController clientreqController = Get.find<ClientreqController>();
+
   String client_addr_name = "";
   String client_addr = "";
   String bill_addr_name = "";
@@ -42,7 +26,7 @@ class Request_for_quote {
 
   String type = "";
 
-  final List<Map<String, dynamic>> products;
+  final List<ClientreqProduct> products;
   final PdfColor baseColor;
   final PdfColor accentColor;
   static const _darkColor = PdfColors.blueGrey800;
@@ -130,7 +114,7 @@ class Request_for_quote {
           //   height: 90,
           //   child: pw.Image(profileImage),
           // ),
-          pw.Padding(padding: const pw.EdgeInsets.only(top: 20, bottom: 6), child: bold(clientreqDetails.clientnameController.text, 12)),
+          pw.Padding(padding: const pw.EdgeInsets.only(top: 20, bottom: 6), child: bold(clientreqController.clientReqModel.clientNameController.value.text, 12)),
           // bold("SPORADA SECURE PVT LTD", 13),
           pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -157,7 +141,7 @@ class Request_for_quote {
                   ),
                   regular(":", 10),
                   pw.SizedBox(width: 5),
-                  regular(clientreqDetails.phone_Controller.text, 10),
+                  regular(clientreqController.clientReqModel.phoneController.value.text, 10),
                 ],
               ),
               pw.SizedBox(height: 5),
@@ -169,7 +153,7 @@ class Request_for_quote {
                   ),
                   regular(":", 10),
                   pw.SizedBox(width: 5),
-                  regular(clientreqDetails.Email_Controller.text, 10),
+                  regular(clientreqController.clientReqModel.emailController.value.text, 10),
                 ],
               ),
               pw.SizedBox(height: 5),
@@ -181,7 +165,7 @@ class Request_for_quote {
                   ),
                   regular(":", 10),
                   pw.SizedBox(width: 5),
-                  pw.Container(width: 400, child: regular(clientreqDetails.clientaddressController.text, 10)),
+                  pw.Container(width: 400, child: regular(clientreqController.clientReqModel.clientAddressController.value.text, 10)),
                 ],
               ),
               pw.SizedBox(height: 5),
@@ -194,7 +178,7 @@ class Request_for_quote {
                   ),
                   regular(":", 10),
                   pw.SizedBox(width: 5),
-                  pw.Container(width: 400, child: regular(clientreqDetails.gst_Controller.text, 10)),
+                  pw.Container(width: 400, child: regular(clientreqController.clientReqModel.gstController.value.text, 10)),
                 ],
               ),
               pw.SizedBox(height: 5),
@@ -207,9 +191,9 @@ class Request_for_quote {
                   ),
                   regular(":", 10),
                   pw.SizedBox(width: 5),
-                  pw.Container(width: 400, child: regular(clientreqDetails.MOR_Controller.text, 10)),
+                  pw.Container(width: 400, child: regular(clientreqController.clientReqModel.morController.value.text, 10)),
                 ],
-              ),
+              )
             ],
           ),
         ],
@@ -271,8 +255,8 @@ class Request_for_quote {
         products.length,
         (row) => [
           (row + 1).toString(), // Generate row number (S.No)
-          products[row]['productName']?.toString() ?? '', // Item Description
-          products[row]['quantity']?.toString() ?? '', // Quantity
+          products[row].productName.toString(), // Item Description
+          products[row].quantity.toString(), // Quantity
         ],
       ),
     );
@@ -292,7 +276,7 @@ class Request_for_quote {
               child: bold("Note", 12),
               padding: const pw.EdgeInsets.only(left: 0, bottom: 10),
             ),
-            ...List.generate(clientreqNote.clientreq_noteList.length, (index) {
+            ...List.generate(clientreqController.clientReqModel.clientReqNoteList.length, (index) {
               return pw.Padding(
                 padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
                 child: pw.Row(
@@ -302,7 +286,7 @@ class Request_for_quote {
                     pw.SizedBox(width: 5),
                     pw.Expanded(
                       child: pw.Text(
-                        clientreqNote.clientreq_noteList[index]["notecontent"],
+                        clientreqController.clientReqModel.clientReqNoteList[index].notename,
                         textAlign: pw.TextAlign.start,
                         style: pw.TextStyle(
                           font: Helvetica,
@@ -375,30 +359,5 @@ class Request_for_quote {
         ),
       ],
     );
-  }
-}
-
-class Product {
-  const Product(
-    this.sno,
-    this.productName,
-    this.quantity,
-  );
-
-  final String sno;
-  final String productName;
-
-  final int quantity;
-
-  String getIndex(int index) {
-    switch (index) {
-      case 0:
-        return sno;
-      case 1:
-        return productName;
-      case 2:
-        return quantity.toString();
-    }
-    return '';
   }
 }

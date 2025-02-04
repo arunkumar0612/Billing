@@ -32,8 +32,8 @@ class CreditModel {
   var note_editIndex = Rxn<int>();
   final notecontentController = TextEditingController().obs;
   var recommendation_editIndex = Rxn<int>();
-  final recommendationHeadingController = TextEditingController().obs;
-  final recommendationKeyController = TextEditingController().obs;
+  var recommendationHeadingController = TextEditingController().obs;
+  var recommendationKeyController = TextEditingController().obs;
   final recommendationValueController = TextEditingController().obs;
   var Credit_noteList = <Note>[].obs;
   var Credit_recommendationList = <Recommendation>[].obs;

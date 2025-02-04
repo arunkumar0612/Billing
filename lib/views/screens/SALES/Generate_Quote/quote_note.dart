@@ -130,8 +130,6 @@ class _QuoteNoteState extends State<QuoteNote> {
 
   @override
   Widget build(BuildContext context) {
-    quoteController.quoteModel.Quote_recommendationList.isEmpty ? quoteController.quoteModel.recommendationHeadingController.value.clear() : null;
-
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -227,7 +225,7 @@ class _QuoteNoteState extends State<QuoteNote> {
                     Obx(
                       () {
                         return Textfield_1(
-                          readonly: quoteController.quoteModel.recommendationHeadingController.value.text.isEmpty ? false : true,
+                          readonly: false,
                           text: 'Table Heading',
                           controller: quoteController.quoteModel.recommendationHeadingController.value,
                           icon: Icons.title,

@@ -216,3 +216,27 @@ class InvoiceProduct {
     return '';
   }
 }
+
+class ClientreqProduct {
+  const ClientreqProduct(
+    this.sno,
+    this.productName,
+    this.quantity,
+  );
+
+  final String sno;
+  final String productName;
+  final int quantity;
+
+  String getIndex(int index) {
+    switch (index) {
+      case 0:
+        return sno;
+      case 1:
+        return productName;
+      case 2:
+        return quantity.toString();
+    }
+    return '';
+  }
+}

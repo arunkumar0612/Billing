@@ -130,8 +130,6 @@ class _CreditNoteState extends State<CreditNote> {
 
   @override
   Widget build(BuildContext context) {
-    creditController.creditModel.Credit_recommendationList.isEmpty ? creditController.creditModel.recommendationHeadingController.value.clear() : null;
-
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -227,7 +225,7 @@ class _CreditNoteState extends State<CreditNote> {
                     Obx(
                       () {
                         return Textfield_1(
-                          readonly: creditController.creditModel.recommendationHeadingController.value.text.isEmpty ? false : true,
+                          readonly: false,
                           text: 'Table Heading',
                           controller: creditController.creditModel.recommendationHeadingController.value,
                           icon: Icons.title,

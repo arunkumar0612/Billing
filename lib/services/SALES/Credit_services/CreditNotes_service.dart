@@ -12,7 +12,7 @@ mixin CreditnotesService {
   final CreditController creditController = Get.find<CreditController>();
 
   void addtable_row(context) {
-    creditController.updateTableValueControllerText(creditController.creditModel.recommendationHeadingController.value.text);
+    creditController.updateTableHeadingControllerText(creditController.creditModel.recommendationHeadingController.value.text);
     bool exists = creditController.creditModel.Credit_recommendationList.any((note) => note.key == creditController.creditModel.recommendationKeyController.value.text);
     if (exists) {
       ScaffoldMessenger.of(context).showSnackBar(

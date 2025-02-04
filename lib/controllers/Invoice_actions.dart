@@ -258,6 +258,7 @@ class InvoiceController extends GetxController {
 
   void removeFromRecommendationList(int index) {
     invoiceModel.Invoice_recommendationList.removeAt(index);
+    invoiceModel.Invoice_recommendationList.isEmpty ? invoiceModel.recommendationHeadingController.value.clear() : null;
   }
 
   void removeFromProductList(index) {

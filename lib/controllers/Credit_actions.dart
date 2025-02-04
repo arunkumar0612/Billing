@@ -221,17 +221,13 @@ class CreditController extends GetxController {
     }
   }
 
-  // Update products list
-  void updateProducts(List<CreditProduct> products) {
-    creditModel.Credit_products.value = products;
-  }
-
   void removeFromNoteList(int index) {
     creditModel.Credit_noteList.removeAt(index);
   }
 
   void removeFromRecommendationList(int index) {
     creditModel.Credit_recommendationList.removeAt(index);
+    creditModel.Credit_recommendationList.isEmpty ? creditModel.recommendationHeadingController.value.clear() : null;
   }
 
   void removeFromProductList(index) {

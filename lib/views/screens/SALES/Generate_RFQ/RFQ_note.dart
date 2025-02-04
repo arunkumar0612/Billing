@@ -130,8 +130,6 @@ class _RFQNoteState extends State<RFQNote> {
 
   @override
   Widget build(BuildContext context) {
-    rfqController.rfqModel.RFQ_recommendationList.isEmpty ? rfqController.rfqModel.recommendationHeadingController.value.clear() : null;
-
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16.0),

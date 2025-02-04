@@ -223,6 +223,7 @@ class RFQController extends GetxController {
 
   void removeFromRecommendationList(int index) {
     rfqModel.RFQ_recommendationList.removeAt(index);
+    rfqModel.RFQ_recommendationList.isEmpty ? rfqModel.recommendationHeadingController.value.clear() : null;
   }
 
   void removeFromProductList(index) {

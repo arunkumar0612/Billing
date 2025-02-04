@@ -258,6 +258,7 @@ class QuoteController extends GetxController {
 
   void removeFromRecommendationList(int index) {
     quoteModel.Quote_recommendationList.removeAt(index);
+    quoteModel.Quote_recommendationList.isEmpty ? quoteModel.recommendationHeadingController.value.clear() : null;
   }
 
   void removeFromProductList(index) {

@@ -244,6 +244,7 @@ class DCController extends GetxController {
 
   void removeFromRecommendationList(int index) {
     dcModel.Delivery_challan_recommendationList.removeAt(index);
+    dcModel.Delivery_challan_recommendationList.isEmpty ? dcModel.recommendationHeadingController.value.clear() : null;
   }
 
   void removeFromProductList(index) {

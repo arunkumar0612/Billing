@@ -130,8 +130,6 @@ class _InvoiceNoteState extends State<InvoiceNote> {
 
   @override
   Widget build(BuildContext context) {
-    invoiceController.invoiceModel.Invoice_recommendationList.isEmpty ? invoiceController.invoiceModel.recommendationHeadingController.value.clear() : null;
-
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -227,7 +225,7 @@ class _InvoiceNoteState extends State<InvoiceNote> {
                     Obx(
                       () {
                         return Textfield_1(
-                          readonly: invoiceController.invoiceModel.recommendationHeadingController.value.text.isEmpty ? false : true,
+                          readonly: false,
                           text: 'Table Heading',
                           controller: invoiceController.invoiceModel.recommendationHeadingController.value,
                           icon: Icons.title,

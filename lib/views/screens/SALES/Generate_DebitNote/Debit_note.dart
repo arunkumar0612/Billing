@@ -130,8 +130,6 @@ class _DebitNoteState extends State<DebitNote> {
 
   @override
   Widget build(BuildContext context) {
-    debitController.debitModel.Debit_recommendationList.isEmpty ? debitController.debitModel.recommendationHeadingController.value.clear() : null;
-
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -227,7 +225,7 @@ class _DebitNoteState extends State<DebitNote> {
                     Obx(
                       () {
                         return Textfield_1(
-                          readonly: debitController.debitModel.recommendationHeadingController.value.text.isEmpty ? false : true,
+                          readonly: false,
                           text: 'Table Heading',
                           controller: debitController.debitModel.recommendationHeadingController.value,
                           icon: Icons.title,

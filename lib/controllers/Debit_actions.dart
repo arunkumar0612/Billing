@@ -236,6 +236,7 @@ class DebitController extends GetxController {
 
   void removeFromRecommendationList(int index) {
     debitModel.Debit_recommendationList.removeAt(index);
+    debitModel.Debit_recommendationList.isEmpty ? debitModel.recommendationHeadingController.value.clear() : null;
   }
 
   void removeFromProductList(index) {

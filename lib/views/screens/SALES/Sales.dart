@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ssipl_billing/controllers/ClientReq_actions.dart';
 import 'package:ssipl_billing/controllers/DC_actions.dart';
 import 'package:ssipl_billing/controllers/Debit_actions.dart';
 import 'package:ssipl_billing/controllers/Invoice_actions.dart';
@@ -33,6 +34,7 @@ import 'Generate_DC/generateDC.dart';
 import 'Generate_DebitNote/generateDebit.dart';
 import 'Generate_Invoice/generateInvoice.dart';
 import 'Generate_Quote/generateQuote.dart';
+import 'Generate_client_req/generate_clientreq.dart';
 import 'Generate_creditNote/generateCredit.dart';
 
 class Sales_Client extends StatefulWidget {
@@ -56,6 +58,7 @@ class _Sales_ClientState extends State<Sales_Client> {
   final RFQController rfqController = Get.find<RFQController>();
   final CreditController creditController = Get.find<CreditController>();
   final DebitController debitController = Get.find<DebitController>();
+  final ClientreqController clientreqController = Get.find<ClientreqController>();
 
   final List<Map<String, dynamic>> items = [
     {
@@ -1385,123 +1388,122 @@ class _Sales_ClientState extends State<Sales_Client> {
 
 // // ##################################################################################################################################################################################################################################################################################################################################################################
 
-//   dynamic Generate_client_reqirement_dialougebox(String value) async {
-//     await showDialog(
-//       context: context,
-//       barrierDismissible: false, // Prevents closing the dialog by clicking outside
-//       builder: (context) {
-//         return AlertDialog(
-//           contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-//           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-//           backgroundColor: Primary_colors.Dark,
-//           content: Stack(
-//             children: [
-//               SizedBox(
-//                 height: 650,
-//                 width: 900,
-//                 child: Generate_clientreq(
-//                   value: value,
-//                 ),
-//               ),
-//               Positioned(
-//                 top: 3,
-//                 right: 0,
-//                 child: IconButton(
-//                   icon: Container(
-//                     decoration: BoxDecoration(
-//                       borderRadius: BorderRadius.circular(5),
-//                       color: const Color.fromARGB(255, 219, 216, 216),
-//                     ),
-//                     height: 30,
-//                     width: 30,
-//                     child: const Icon(Icons.close, color: Colors.red),
-//                   ),
-//                   onPressed: () async {
-//                     // Check if any data exists in clientreq variables
-//                     if ((clientreqProducts.clientreq_productDetails.isNotEmpty) || (clientreqNote.clientreq_noteList.isNotEmpty) || (clientreqNote.clientreq_recommendationList.isNotEmpty) || (clientreqProducts.clientreq_productDetails.isNotEmpty) || clientreqDetails.clientnameController.text != "" || clientreqDetails.clientaddressController.text != "" || clientreqDetails.billingaddressnameController.text != "" || clientreqDetails.billingaddressController.text != "" || clientreqDetails.clientreq_no != "" || clientreqDetails.clientreq_table_heading != "" || clientreqDetails.MOR_Controller.text != "" || clientreqDetails.gst_Controller.text != "" || clientreqDetails.Email_Controller.text != "" || clientreqDetails.phone_Controller.text != "") {
-//                       // Show confirmation dialog
-//                       bool? proceed = await showDialog<bool>(
-//                         context: context,
-//                         builder: (context) {
-//                           return AlertDialog(
-//                             title: const Text("Warning"),
-//                             content: const Text(
-//                               "The data may be lost. Do you want to proceed?",
-//                             ),
-//                             actions: [
-//                               TextButton(
-//                                 onPressed: () {
-//                                   Navigator.of(context).pop(false); // No action
-//                                 },
-//                                 child: const Text("No"),
-//                               ),
-//                               TextButton(
-//                                 onPressed: () {
-//                                   Navigator.of(context).pop(true); // Yes action
-//                                 },
-//                                 child: const Text("Yes"),
-//                               ),
-//                             ],
-//                           );
-//                         },
-//                       );
+  dynamic Generate_client_reqirement_dialougebox(String value) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents closing the dialog by clicking outside
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Primary_colors.Dark,
+          content: Stack(
+            children: [
+              SizedBox(
+                height: 650,
+                width: 900,
+                child: Generate_clientreq(
+                  value: value,
+                ),
+              ),
+              Positioned(
+                top: 3,
+                right: 0,
+                child: IconButton(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: const Color.fromARGB(255, 219, 216, 216),
+                    ),
+                    height: 30,
+                    width: 30,
+                    child: const Icon(Icons.close, color: Colors.red),
+                  ),
+                  onPressed: () async {
+                    // Check if any data exists in clientreq variables
+                    if ((clientreqController.clientReqModel.clientReqProductDetails.isNotEmpty) || (clientreqController.clientReqModel.clientReqNoteList.isNotEmpty) || (clientreqController.clientReqModel.clientReqRecommendationList.isNotEmpty) || (clientreqController.clientReqModel.clientNameController.value.text.isNotEmpty) || (clientreqController.clientReqModel.clientAddressController.value.text.isNotEmpty) || (clientreqController.clientReqModel.billingAddressNameController.value.text.isNotEmpty) || (clientreqController.clientReqModel.billingAddressController.value.text.isNotEmpty) || (clientreqController.clientReqModel.clientReqNo.value.isNotEmpty) || (clientreqController.clientReqModel.clientReqTableHeading.value.isNotEmpty) || (clientreqController.clientReqModel.morController.value.text.isNotEmpty) || (clientreqController.clientReqModel.gstController.value.text.isNotEmpty) || (clientreqController.clientReqModel.emailController.value.text.isNotEmpty) || (clientreqController.clientReqModel.phoneController.value.text.isNotEmpty)) {
+                      // Show confirmation dialog
+                      bool? proceed = await showDialog<bool>(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text("Warning"),
+                            content: const Text(
+                              "The data may be lost. Do you want to proceed?",
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(false); // No action
+                                },
+                                child: const Text("No"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(true); // Yes action
+                                },
+                                child: const Text("Yes"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
 
-//                       // If user confirms (Yes), clear data and close the dialog
-//                       if (proceed == true) {
-//                         Navigator.of(context).pop(); // Close the dialog
-//                         // Clear all the data when dialog is closed
-//                         clientreqProducts.clientreq_productDetails.clear();
+                      // If user confirms (Yes), clear data and close the dialog
+                      if (proceed == true) {
+                        Navigator.of(context).pop(); // Close the dialog
+                        // Clear all the data when dialog is closed
+                        clientreqController.clientReqModel.clientReqProductDetails.clear();
+                        clientreqController.clientReqModel.clientReqNoteList.clear();
+                        clientreqController.clientReqModel.clientReqRecommendationList.clear();
+                        clientreqController.clientReqModel.clientNameController.value.clear();
+                        clientreqController.clientReqModel.clientAddressController.value.clear();
+                        clientreqController.clientReqModel.billingAddressNameController.value.clear();
+                        clientreqController.clientReqModel.billingAddressController.value.clear();
+                        clientreqController.clientReqModel.morController.value.clear();
+                        clientreqController.clientReqModel.gstController.value.clear();
+                        clientreqController.clientReqModel.emailController.value.clear();
+                        clientreqController.clientReqModel.phoneController.value.clear();
+                        clientreqController.clientReqModel.clientReqNo.value = '';
+                        clientreqController.clientReqModel.clientReqTableHeading.value = '';
+                        clientreqController.clientReqModel.pickedFile.value = null;
+                      }
+                    } else {
+                      // If no data, just close the dialog
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
-//                         clientreqNote.clientreq_noteList.clear();
-//                         clientreqNote.clientreq_recommendationList.clear();
-//                         clientreqProducts.clientreq_productDetails.clear();
-//                         clientreqDetails.clientnameController.text = "";
-//                         clientreqDetails.clientaddressController.text = "";
-//                         clientreqDetails.billingaddressnameController.text = "";
-//                         clientreqDetails.billingaddressController.text = "";
-//                         clientreqDetails.clientreq_no = "";
-//                         clientreqDetails.MOR_Controller.text = "";
-//                         clientreqDetails.gst_Controller.text = "";
-//                         clientreqDetails.Email_Controller.text = "";
-//                         clientreqDetails.phone_Controller.text = "";
-//                         clientreqDetails.clientreq_table_heading = "";
-//                         clientreqDetailsState.pickedFile = null;
-//                       }
-//                     } else {
-//                       // If no data, just close the dialog
-//                       Navigator.of(context).pop();
-//                     }
-//                   },
-//                 ),
-//               ),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
+  dynamic generate_client_requirement() async {
+    // bool confirmed = await GenerateInvoice_dialougebox();
 
-  // dynamic generate_client_requirement() async {
-  //   // bool confirmed = await GenerateInvoice_dialougebox();
+    // if (confirmed) {
+    // Proceed only if the dialog was confirmed
+    Future.delayed(const Duration(seconds: 4), () {
+      Generate_popup.callback();
+    });
 
-  //   // if (confirmed) {
-  //   // Proceed only if the dialog was confirmed
-  //   Future.delayed(const Duration(seconds: 4), () {
-  //     Generate_popup.callback();
-  //   });
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+            backgroundColor: Primary_colors.Light,
+            content: Generate_popup(
+              type: 'E://Client_requirement.pdf',
+            ));
+      },
+    );
+    // }
+  }
 
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //           backgroundColor: Primary_colors.Light,
-  //           content: Generate_popup(
-  //             type: 'E://Client_requirement.pdf',
-  //           ));
-  //     },
-  //   );
-  //   // }
-  // }
   dynamic GenerateDebit_dialougebox() async {
     await showDialog(
       context: context,
@@ -2102,24 +2104,28 @@ class _Sales_ClientState extends State<Sales_Client> {
                               PopupMenuButton<String>(
                                 color: const Color.fromARGB(255, 86, 86, 114),
                                 onSelected: (String value) {
-                                  // Generate_client_reqirement_dialougebox(value);
+                                  Generate_client_reqirement_dialougebox(value);
 
-                                  // items.add(
-                                  //   {
-                                  //     "name": "Pandi Groups",
-                                  //     "type": "Customer",
-                                  //     "process": [
-                                  //       {
-                                  //         "id": "EST/SSIPL - 101",
-                                  //         "date": "16/03/2023",
-                                  //         "daycounts": "21 days",
-                                  //         "child": [
-                                  //           {"name": "Requirement", "generate_po": true, "generate_RFQ": false},
-                                  //         ]
-                                  //       },
-                                  //     ]
-                                  //   },
-                                  // );
+                                  items.add(
+                                    {
+                                      "name": "Pandi Groups",
+                                      "type": "Customer",
+                                      "process": [
+                                        {
+                                          "id": "EST/SSIPL - 101",
+                                          "date": "16/03/2023",
+                                          "daycounts": "21 days",
+                                          "child": [
+                                            {
+                                              "name": "Requirement",
+                                              "generate_po": true,
+                                              "generate_RFQ": false
+                                            },
+                                          ]
+                                        },
+                                      ]
+                                    },
+                                  );
                                 },
                                 itemBuilder: (BuildContext context) {
                                   return <PopupMenuEntry<String>>[

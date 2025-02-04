@@ -7,7 +7,6 @@ mixin RegisterValidator {
 
   void validateForm(context) {
     registerController.registerModel.errors.clear();
-
     bool hasUppercase = registerController.registerModel.passwordController.value.text.contains(RegExp(r'[A-Z]'));
     bool hasLowercase = registerController.registerModel.passwordController.value.text.contains(RegExp(r'[a-z]'));
     bool hasDigits = registerController.registerModel.passwordController.value.text.contains(RegExp(r'[0-9]'));

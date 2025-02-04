@@ -26,8 +26,8 @@ class DebitModel {
   final remarksController = TextEditingController().obs;
   final gstController = TextEditingController().obs;
   var Debit_products = <DebitProduct>[].obs;
-  var Debit_gstTotals = <Map<String, double>>[].obs;
 
+  var Debit_gstTotals = <DebitGSTtotals>[].obs;
 //######################################################################################################################################
 //NOTES
   final noteformKey = GlobalKey<FormState>().obs;

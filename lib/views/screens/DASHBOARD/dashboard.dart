@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-// import 'package:ssipl_billing/Graph.dart';
 // import 'package:ssipl_billing/cards.dart';
-// import 'package:ssipl_billing/dashboardcards.dart';
+
 import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/views/screens/DASHBOARD/Graph.dart';
+import 'package:ssipl_billing/views/screens/DASHBOARD/dashboardcards.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -355,7 +356,9 @@ class _DashboardState extends State<Dashboard> {
                     Expanded(
                       child: Column(
                         children: [
-                          const Expanded(child: Dashboard_cards()),
+                          const Expanded(
+                            child: Dashboard_cards(),
+                          ),
                           const SizedBox(height: 10),
                           Expanded(
                             child: Row(
@@ -406,10 +409,11 @@ class _DashboardState extends State<Dashboard> {
                                         ),
                                         // const SizedBox(height: 10),
                                         Expanded(
-                                            child: Padding(
-                                          padding: EdgeInsets.all(15),
-                                          child: Sales_Graph(),
-                                        )),
+                                          child: Padding(
+                                            padding: EdgeInsets.all(15),
+                                            child: Sales_Graph(),
+                                          ),
+                                        ),
                                         // const SizedBox(height: 10),
                                       ],
                                     ),

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/product_entities.dart';
 
 import '../../../controllers/Credit_actions.dart';
+import '../../../models/entities/Credit_entities.dart';
 
 mixin CreditproductService {
   final CreditController creditController = Get.find<CreditController>();
@@ -17,7 +18,10 @@ mixin CreditproductService {
 
   void addproduct(context) {
     if (creditController.creditModel.productKey.value.currentState?.validate() ?? false) {
-      bool exists = creditController.creditModel.Credit_products.any((product) => product.productName == creditController.creditModel.productNameController.value.text && product.hsn == creditController.creditModel.hsnController.value.text && product.quantity == int.parse(creditController.creditModel.quantityController.value.text));
+      bool exists = creditController.creditModel.Credit_products.any((product) =>
+          product.productName == creditController.creditModel.productNameController.value.text &&
+          product.hsn == creditController.creditModel.hsnController.value.text &&
+          product.quantity == int.parse(creditController.creditModel.quantityController.value.text));
 
       if (exists) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -28,24 +32,33 @@ mixin CreditproductService {
         );
         return;
       }
-      creditController.addProduct(context: context, productName: creditController.creditModel.productNameController.value.text, hsn: creditController.creditModel.hsnController.value.text, price: double.parse(creditController.creditModel.priceController.value.text), quantity: int.parse(creditController.creditModel.quantityController.value.text), gst: double.parse(creditController.creditModel.gstController.value.text), remarks: creditController.creditModel.remarksController.value.text);
+      creditController.addProduct(
+          context: context,
+          productName: creditController.creditModel.productNameController.value.text,
+          hsn: creditController.creditModel.hsnController.value.text,
+          price: double.parse(creditController.creditModel.priceController.value.text),
+          quantity: int.parse(creditController.creditModel.quantityController.value.text),
+          gst: double.parse(creditController.creditModel.gstController.value.text),
+          remarks: creditController.creditModel.remarksController.value.text);
 
       clearFields();
     }
   }
 
   void onSubmit() {
-    creditController.creditModel.Credit_gstTotals.assignAll(creditController.creditModel.Credit_products
-        .fold<Map<double, double>>({}, (Map<double, double> accumulator, CreditProduct product) {
-          accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
-          return accumulator;
-        })
-        .entries
-        .map((entry) => {
-              'gst': entry.key,
-              'total': entry.value,
-            })
-        .toList());
+    creditController.creditModel.Credit_gstTotals.assignAll(
+      creditController.creditModel.Credit_products
+          .fold<Map<double, double>>({}, (Map<double, double> accumulator, CreditProduct product) {
+            accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
+            return accumulator;
+          })
+          .entries
+          .map((entry) => CreditGSTtotals(
+                key: entry.key.toString(), // Convert key to String
+                value: entry.value.toString(), // Convert value to String
+              ))
+          .toList(),
+    );
   }
 
   void updateproduct(context) {

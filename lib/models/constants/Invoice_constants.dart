@@ -26,8 +26,9 @@ class InvoiceModel {
   final priceController = TextEditingController().obs;
   final quantityController = TextEditingController().obs;
   final gstController = TextEditingController().obs;
-  var Invoice_gstTotals = <Map<String, double>>[].obs;
   var Invoice_products = <InvoiceProduct>[].obs;
+
+  var Invoice_gstTotals = <InvoiceGSTtotals>[].obs;
 //######################################################################################################################################
 //NOTES
   final noteformKey = GlobalKey<FormState>().obs;

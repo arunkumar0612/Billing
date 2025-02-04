@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:ssipl_billing/Graph.dart';
+import 'package:ssipl_billing/views/screens/DASHBOARD/Graph.dart';
 // import 'package:ssipl_billing/cards.dart';
-import 'package:ssipl_billing/dashboardcards.dart';
+import 'package:ssipl_billing/views/screens/DASHBOARD/dashboardcards.dart';
 import 'package:ssipl_billing/themes/style.dart';
 
 class Dashboard extends StatefulWidget {

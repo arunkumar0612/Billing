@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/models/entities/product_entities.dart';
 
+import '../../../models/entities/Quote_entities.dart';
+
 mixin QuoteproductService {
   final QuoteController quoteController = Get.find<QuoteController>();
   void clearFields() {
@@ -15,7 +17,10 @@ mixin QuoteproductService {
 
   void addproduct(context) {
     if (quoteController.quoteModel.productKey.value.currentState?.validate() ?? false) {
-      bool exists = quoteController.quoteModel.Quote_products.any((product) => product.productName == quoteController.quoteModel.productNameController.value.text && product.hsn == quoteController.quoteModel.hsnController.value.text && product.quantity == int.parse(quoteController.quoteModel.quantityController.value.text));
+      bool exists = quoteController.quoteModel.Quote_products.any((product) =>
+          product.productName == quoteController.quoteModel.productNameController.value.text &&
+          product.hsn == quoteController.quoteModel.hsnController.value.text &&
+          product.quantity == int.parse(quoteController.quoteModel.quantityController.value.text));
 
       if (exists) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -26,24 +31,32 @@ mixin QuoteproductService {
         );
         return;
       }
-      quoteController.addProduct(context: context, productName: quoteController.quoteModel.productNameController.value.text, hsn: quoteController.quoteModel.hsnController.value.text, price: double.parse(quoteController.quoteModel.priceController.value.text), quantity: int.parse(quoteController.quoteModel.quantityController.value.text), gst: double.parse(quoteController.quoteModel.gstController.value.text));
+      quoteController.addProduct(
+          context: context,
+          productName: quoteController.quoteModel.productNameController.value.text,
+          hsn: quoteController.quoteModel.hsnController.value.text,
+          price: double.parse(quoteController.quoteModel.priceController.value.text),
+          quantity: int.parse(quoteController.quoteModel.quantityController.value.text),
+          gst: double.parse(quoteController.quoteModel.gstController.value.text));
 
       clearFields();
     }
   }
 
   void onSubmit() {
-    quoteController.quoteModel.Quote_gstTotals.assignAll(quoteController.quoteModel.Quote_products
-        .fold<Map<double, double>>({}, (Map<double, double> accumulator, QuoteProduct product) {
-          accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
-          return accumulator;
-        })
-        .entries
-        .map((entry) => {
-              'gst': entry.key,
-              'total': entry.value,
-            })
-        .toList());
+    quoteController.quoteModel.Quote_gstTotals.assignAll(
+      quoteController.quoteModel.Quote_products
+          .fold<Map<double, double>>({}, (Map<double, double> accumulator, QuoteProduct product) {
+            accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
+            return accumulator;
+          })
+          .entries
+          .map((entry) => QuoteGSTtotals(
+                gst: entry.key, // Convert key to String
+                total: entry.value, // Convert value to String
+              ))
+          .toList(),
+    );
   }
 
   void updateproduct(context) {

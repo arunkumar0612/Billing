@@ -39,3 +39,27 @@ class Note {
     };
   }
 }
+
+class CreditGSTtotals {
+  final double gst;
+  final double total;
+
+  CreditGSTtotals({
+    required this.gst,
+    required this.total,
+  });
+
+  factory CreditGSTtotals.fromJson(Map<String, dynamic> json) {
+    return CreditGSTtotals(
+      gst: json['GST'],
+      total: json['total'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'GST': gst,
+      'total': total,
+    };
+  }
+}

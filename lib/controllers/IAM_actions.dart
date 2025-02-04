@@ -109,3 +109,11 @@ class NewpasswordController extends GetxController {
     newpasswordModel.errors.value = value;
   }
 }
+
+class SessiontokenController extends GetxController {
+  var sessiontokenModel = SessiontokenModel();
+
+  void updateSessiontoken(String value) {
+    sessiontokenModel.sessiontokenController.value = value;
+  }
+}

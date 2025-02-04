@@ -5,11 +5,12 @@ import 'package:ssipl_billing/models/entities/IAM_entities.dart';
 import '../../controllers/IAM_actions.dart';
 import '../../models/constants/api.dart';
 import '../../routes/route_names.dart';
-import '../../utils/helpers/encrypt_decrypt.dart';
+// import '../../utils/helpers/encrypt_decrypt.dart';
 import '../../views/components/Basic_DialogBox.dart';
 import '../APIservices/invoker.dart';
 
 mixin LoginServices {
+  final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final LoginController loginController = Get.find<LoginController>();
   final Invoker apiController = Get.find<Invoker>();
 
@@ -25,7 +26,8 @@ mixin LoginServices {
       if (response?['statusCode'] == 200) {
         Login_Response data = Login_Response.fromJson(response!);
         if (data.code) {
-          AES.SESSIONTOKEN = data.sessionToken ?? "null";
+          sessiontokenController.updateSessiontoken(data.sessionToken!);
+
           loginController.toggleIndicator(false);
           Get.toNamed(RouteNames.home);
         } else {

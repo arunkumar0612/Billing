@@ -38,3 +38,7 @@ class NewpasswordModel {
   final passwordVisibility = true.obs;
   final errors = <String, String>{}.obs;
 }
+
+class SessiontokenModel {
+  final sessiontokenController = "15b97917-b296-11ed-997a-b42e9923".obs;
+}

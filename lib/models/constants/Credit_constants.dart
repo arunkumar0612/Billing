@@ -25,7 +25,7 @@ class CreditModel {
   final remarksController = TextEditingController().obs;
   final gstController = TextEditingController().obs;
   var Credit_products = <CreditProduct>[].obs;
-  var Credit_gstTotals = <Map<String, double>>[].obs;
+  var Credit_gstTotals = <CreditGSTtotals>[].obs;
 //######################################################################################################################################
 //NOTES
   final noteformKey = GlobalKey<FormState>().obs;

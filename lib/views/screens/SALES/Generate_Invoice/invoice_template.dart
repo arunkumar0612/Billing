@@ -4,22 +4,47 @@ import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:ssipl_billing/controllers/Invoice_actions.dart';
+import 'package:ssipl_billing/models/entities/Invoice_entities.dart';
 
 import '../../../../models/entities/product_entities.dart';
 import '../../../../utils/helpers/support_functions.dart';
 
 Future<Uint8List> generate_Invoice(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, invoice_num, title, gst, invoice_gstTotals) async {
-  final invoice = Invoice_generate(products: products, GST: gst.toDouble(), baseColor: PdfColors.green500, accentColor: PdfColors.blueGrey900, client_addr_name: client_addr_name, client_addr: client_addr, bill_addr_name: bill_addr_name, bill_addr: bill_addr, invoice: "", title_text: title, type: '', invoice_gstTotals: invoice_gstTotals);
+  final invoice = Invoice_generate(
+      products: products,
+      GST: gst.toDouble(),
+      baseColor: PdfColors.green500,
+      accentColor: PdfColors.blueGrey900,
+      client_addr_name: client_addr_name,
+      client_addr: client_addr,
+      bill_addr_name: bill_addr_name,
+      bill_addr: bill_addr,
+      invoice: "",
+      title_text: title,
+      type: '',
+      invoice_gstTotals: invoice_gstTotals);
 
   return await invoice.buildPdf(pageFormat);
 }
 
 class Invoice_generate {
-  Invoice_generate({required this.products, required this.GST, required this.baseColor, required this.accentColor, required this.client_addr_name, required this.client_addr, required this.bill_addr_name, required this.bill_addr, required this.invoice, required this.title_text, required this.type, required this.invoice_gstTotals
+  Invoice_generate(
+      {required this.products,
+      required this.GST,
+      required this.baseColor,
+      required this.accentColor,
+      required this.client_addr_name,
+      required this.client_addr,
+      required this.bill_addr_name,
+      required this.bill_addr,
+      required this.invoice,
+      required this.title_text,
+      required this.type,
+      required this.invoice_gstTotals
       // required this.items,
       });
   final InvoiceController invoiceController = Get.find<InvoiceController>();
-  List<Map<String, dynamic>> invoice_gstTotals = [];
+  List<InvoiceGSTtotals> invoice_gstTotals = [];
   String client_addr_name = "";
   String client_addr = "";
   String bill_addr_name = "";
@@ -33,8 +58,8 @@ class Invoice_generate {
   final PdfColor baseColor;
   final PdfColor accentColor;
   static const _darkColor = PdfColors.blueGrey800;
-  double get CGST_total => invoice_gstTotals.map((item) => (item['gst'] as double) / 2 * (item['total'] as double) / 100).reduce((a, b) => a + b);
-  double get SGST_total => invoice_gstTotals.map((item) => (item['gst'] as double) / 2 * (item['total'] as double) / 100).reduce((a, b) => a + b);
+  double get CGST_total => invoice_gstTotals.map((item) => (item.gst as double) / 2 * (item.total as double) / 100).reduce((a, b) => a + b);
+  double get SGST_total => invoice_gstTotals.map((item) => (item.gst as double) / 2 * (item.total as double) / 100).reduce((a, b) => a + b);
   double get _total => products.map<double>((p) => p.total).reduce((a, b) => a + b);
   double get _grandTotal => _total + CGST_total + SGST_total;
   dynamic profileImage;
@@ -305,15 +330,7 @@ class Invoice_generate {
   }
 
   pw.Widget _contentTable(pw.Context context) {
-    const tableHeaders = [
-      'S.No',
-      'Item Description',
-      'HSN',
-      ' GST',
-      'Price   ',
-      'Quantity',
-      'Total   '
-    ];
+    const tableHeaders = ['S.No', 'Item Description', 'HSN', ' GST', 'Price   ', 'Quantity', 'Total   '];
 
     return pw.TableHelper.fromTextArray(
       border: null,
@@ -500,7 +517,7 @@ class Invoice_generate {
                             ),
                             width: 80,
                             height: 38,
-                            child: pw.Center(child: regular(formatzero(invoice_gstTotals[index]['total']), 10)),
+                            child: pw.Center(child: regular(formatzero(invoice_gstTotals[index].total), 10)),
                           ),
                           pw.Container(
                             height: 38,
@@ -514,7 +531,7 @@ class Invoice_generate {
                                   ),
                                   width: 40, // Define width instead of Expanded
                                   child: pw.Center(
-                                    child: regular((invoice_gstTotals[index]['gst'] / 2).toString(), 10),
+                                    child: regular((invoice_gstTotals[index].gst / 2).toString(), 10),
                                   ),
                                 ),
                                 pw.Container(
@@ -529,7 +546,7 @@ class Invoice_generate {
                                   child: pw.Center(
                                     child: regular(
                                         formatzero(
-                                          ((invoice_gstTotals[index]['total'].toInt() / 100) * (invoice_gstTotals[index]['gst'] / 2)),
+                                          ((invoice_gstTotals[index].total.toInt() / 100) * (invoice_gstTotals[index].gst / 2)),
                                         ),
                                         10),
                                   ),
@@ -548,14 +565,14 @@ class Invoice_generate {
                                     ),
                                   ),
                                   width: 40, // Define width instead of Expanded
-                                  child: pw.Center(child: regular((invoice_gstTotals[index]['gst'] / 2).toString(), 10)),
+                                  child: pw.Center(child: regular((invoice_gstTotals[index].gst / 2).toString(), 10)),
                                 ),
                                 pw.Container(
                                   width: 70, // Define width instead of Expanded
                                   decoration: const pw.BoxDecoration(
                                     border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700)),
                                   ),
-                                  child: pw.Center(child: regular(formatzero(((invoice_gstTotals[index]['total'].toInt() / 100) * (invoice_gstTotals[index]['gst'] / 2))), 10)),
+                                  child: pw.Center(child: regular(formatzero(((invoice_gstTotals[index].total.toInt() / 100) * (invoice_gstTotals[index].gst / 2))), 10)),
                                 ),
                               ],
                             ),

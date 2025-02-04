@@ -40,7 +40,10 @@ mixin RFQnotesService {
   }
 
   void updatetable() {
-    rfqController.updateRecommendation(index: rfqController.rfqModel.recommendation_editIndex.value!, key: rfqController.rfqModel.recommendationKeyController.value.text.toString(), value: rfqController.rfqModel.recommendationValueController.value.text.toString());
+    rfqController.updateRecommendation(
+        index: rfqController.rfqModel.recommendation_editIndex.value!,
+        key: rfqController.rfqModel.recommendationKeyController.value.text.toString(),
+        value: rfqController.rfqModel.recommendationValueController.value.text.toString());
     cleartable_Fields();
     rfqController.updateRecommendationEditindex(null);
   }
@@ -108,9 +111,9 @@ mixin RFQnotesService {
     final file = File(filePath);
     await file.writeAsBytes(pdfData);
 
-    Future.delayed(const Duration(seconds: 4), () {
-      Generate_popup.callback();
-    });
+    // Future.delayed(const Duration(seconds: 4), () {
+    //   Generate_popup.callback();
+    // });
 
     showDialog(
       context: context,

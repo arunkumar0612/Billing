@@ -18,6 +18,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
 ////////////////////////////----IAM----////////////////////////////////////
+  Get.lazyPut<SessiontokenController>(() => SessiontokenController());
   Get.lazyPut<LoginController>(() => LoginController());
   Get.lazyPut<RegisterController>(() => RegisterController());
   Get.lazyPut<ForgotpasswordController>(() => ForgotpasswordController());

@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/Debit_actions.dart';
 import 'package:ssipl_billing/models/entities/product_entities.dart';
 
+import '../../../models/entities/Debit_entities.dart';
+
 mixin DebitproductService {
   final DebitController debitController = Get.find<DebitController>();
   void clearFields() {
@@ -16,7 +18,10 @@ mixin DebitproductService {
 
   void addproduct(context) {
     if (debitController.debitModel.productKey.value.currentState?.validate() ?? false) {
-      bool exists = debitController.debitModel.Debit_products.any((product) => product.productName == debitController.debitModel.productNameController.value.text && product.hsn == debitController.debitModel.hsnController.value.text && product.quantity == int.parse(debitController.debitModel.quantityController.value.text));
+      bool exists = debitController.debitModel.Debit_products.any((product) =>
+          product.productName == debitController.debitModel.productNameController.value.text &&
+          product.hsn == debitController.debitModel.hsnController.value.text &&
+          product.quantity == int.parse(debitController.debitModel.quantityController.value.text));
 
       if (exists) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -27,24 +32,33 @@ mixin DebitproductService {
         );
         return;
       }
-      debitController.addProduct(context: context, productName: debitController.debitModel.productNameController.value.text, hsn: debitController.debitModel.hsnController.value.text, price: double.parse(debitController.debitModel.priceController.value.text), quantity: int.parse(debitController.debitModel.quantityController.value.text), gst: double.parse(debitController.debitModel.gstController.value.text), remarks: debitController.debitModel.remarksController.value.text);
+      debitController.addProduct(
+          context: context,
+          productName: debitController.debitModel.productNameController.value.text,
+          hsn: debitController.debitModel.hsnController.value.text,
+          price: double.parse(debitController.debitModel.priceController.value.text),
+          quantity: int.parse(debitController.debitModel.quantityController.value.text),
+          gst: double.parse(debitController.debitModel.gstController.value.text),
+          remarks: debitController.debitModel.remarksController.value.text);
 
       clearFields();
     }
   }
 
   void onSubmit() {
-    debitController.debitModel.Debit_gstTotals.assignAll(debitController.debitModel.Debit_products
-        .fold<Map<double, double>>({}, (Map<double, double> accumulator, DebitProduct product) {
-          accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
-          return accumulator;
-        })
-        .entries
-        .map((entry) => {
-              'gst': entry.key,
-              'total': entry.value,
-            })
-        .toList());
+    debitController.debitModel.Debit_gstTotals.assignAll(
+      debitController.debitModel.Debit_products
+          .fold<Map<double, double>>({}, (Map<double, double> accumulator, DebitProduct product) {
+            accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
+            return accumulator;
+          })
+          .entries
+          .map((entry) => DebitGSTtotals(
+                gst: entry.key, // Convert key to String
+                total: entry.value, // Convert value to String
+              ))
+          .toList(),
+    );
   }
 
   void updateproduct(context) {

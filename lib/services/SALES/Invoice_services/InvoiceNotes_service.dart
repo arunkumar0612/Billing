@@ -40,7 +40,10 @@ mixin InvoicenotesService {
   }
 
   void updatetable() {
-    invoiceController.updateRecommendation(index: invoiceController.invoiceModel.recommendation_editIndex.value!, key: invoiceController.invoiceModel.recommendationKeyController.value.text.toString(), value: invoiceController.invoiceModel.recommendationValueController.value.text.toString());
+    invoiceController.updateRecommendation(
+        index: invoiceController.invoiceModel.recommendation_editIndex.value!,
+        key: invoiceController.invoiceModel.recommendationKeyController.value.text.toString(),
+        value: invoiceController.invoiceModel.recommendationValueController.value.text.toString());
     cleartable_Fields();
     invoiceController.updateRecommendationEditindex(null);
   }
@@ -94,15 +97,25 @@ mixin InvoicenotesService {
   }
 
   void Generate_Invoice(context) async {
-    final pdfData = await generate_Invoice(PdfPageFormat.a4, invoiceController.invoiceModel.Invoice_products, invoiceController.invoiceModel.clientAddressNameController.value.text, invoiceController.invoiceModel.clientAddressController.value.text, invoiceController.invoiceModel.billingAddressNameController.value.text, invoiceController.invoiceModel.billingAddressController.value.text, invoiceController.invoiceModel.Invoice_no.value, invoiceController.invoiceModel.TitleController.value.text, 9, invoiceController.invoiceModel.Invoice_gstTotals);
+    final pdfData = await generate_Invoice(
+        PdfPageFormat.a4,
+        invoiceController.invoiceModel.Invoice_products,
+        invoiceController.invoiceModel.clientAddressNameController.value.text,
+        invoiceController.invoiceModel.clientAddressController.value.text,
+        invoiceController.invoiceModel.billingAddressNameController.value.text,
+        invoiceController.invoiceModel.billingAddressController.value.text,
+        invoiceController.invoiceModel.Invoice_no.value,
+        invoiceController.invoiceModel.TitleController.value.text,
+        9,
+        invoiceController.invoiceModel.Invoice_gstTotals);
 
     const filePath = 'E://Invoice.pdf';
     final file = File(filePath);
     await file.writeAsBytes(pdfData);
 
-    Future.delayed(const Duration(seconds: 4), () {
-      Generate_popup.callback();
-    });
+    // Future.delayed(const Duration(seconds: 4), () {
+    //   Generate_popup.callback();
+    // });
 
     showDialog(
       context: context,

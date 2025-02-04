@@ -26,8 +26,8 @@ class QuoteModel {
   final priceController = TextEditingController().obs;
   final quantityController = TextEditingController().obs;
   final gstController = TextEditingController().obs;
-  var Quote_gstTotals = <Map<String, double>>[].obs;
   var Quote_products = <QuoteProduct>[].obs;
+  var Quote_gstTotals = <QuoteGSTtotals>[].obs;
 //######################################################################################################################################
 //NOTES
   final noteformKey = GlobalKey<FormState>().obs;

@@ -96,10 +96,6 @@ mixin ClientreqNoteService {
     final file = File(filePath);
     await file.writeAsBytes(pdfData);
 
-    Future.delayed(const Duration(seconds: 4), () {
-      Generate_popup.callback();
-    });
-
     showDialog(
       context: context,
       builder: (context) {

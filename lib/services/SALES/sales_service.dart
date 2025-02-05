@@ -9,9 +9,9 @@ import 'package:ssipl_billing/controllers/RFQ_actions.dart';
 import 'package:ssipl_billing/controllers/Credit_actions.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/generateRFQ.dart';
+import '../../controllers/Sales_actions.dart';
 import '../../models/constants/api.dart';
-import '../../models/entities/IAM_entities.dart';
-import '../../models/entities/Sales_entities.dart';
+import '../../models/entities/Response_entities.dart';
 import '../../views/components/Basic_DialogBox.dart';
 import '../../views/components/view_send_pdf.dart';
 import '../../views/screens/SALES/Generate_DC/generateDC.dart';
@@ -31,10 +31,31 @@ mixin SalesServices {
   final CreditController creditController = Get.find<CreditController>();
   final DebitController debitController = Get.find<DebitController>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
+  final SalesController salesController = Get.find<SalesController>();
+
   void GetCustomerList(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getcustomerlist_API);
+      if (response?['statusCode'] == 200) {
+        BasicResponse value = BasicResponse.fromJson(response ?? {});
+        // List<Customer> data = [];
 
+        if (value.code) {
+          salesController.addToCustomerList(value);
+          // for (int i = 0; i < value.data.length; i++) {
+          //   customerList.add(Customer.fromJson(value, i));
+          //   // Customer data = Customer.fromJson(value);
+          // }
+
+          // List<Customer> customerList = data.data.map((e) => Customer.fromJson(e)).toList();
+          await Basic_dialog(context: context, title: 'Customer List', content: "Customer List fetched successfully", onOk: () {});
+          print("*****************${salesController.salesModel.customerList[1].customerId}");
+        } else {
+          await Basic_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
       print(response);
     } catch (e) {
       Basic_dialog(context: context, title: "ERROR", content: "$e");

@@ -1,44 +1,24 @@
-class GetCustomerListResponse {
-  final bool code;
-  final String? message;
-  final List<Customer> customers;
-
-  GetCustomerListResponse({
-    required this.code,
-    this.message,
-    required this.customers,
-  });
-
-  factory GetCustomerListResponse.fromJson(Map<String, dynamic> json) {
-    var list = json['Value'] as List<dynamic>? ?? [];
-    List<Customer> customers = list.map((e) => Customer.fromJson(e)).toList();
-
-    return GetCustomerListResponse(
-      code: json['code'] as bool,
-      message: json['message'] as String?,
-      customers: customers,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'code': code,
-      'message': message,
-      'Value': customers.map((e) => e.toJson()).toList(),
-    };
-  }
-}
+import 'package:ssipl_billing/models/entities/Response_entities.dart';
 
 class Customer {
   final int customerId;
   final String customerName;
+  final String? ccode;
+  final String subRequirementId;
 
-  Customer({required this.customerId, required this.customerName});
+  Customer({
+    required this.customerId,
+    required this.customerName,
+    this.ccode,
+    required this.subRequirementId,
+  });
 
-  factory Customer.fromJson(Map<String, dynamic> json) {
+  factory Customer.fromJson(BasicResponse json, int i) {
     return Customer(
-      customerId: json['Customer_id'] as int,
-      customerName: json['customer_name'] as String,
+      customerId: json.data[i]['Customer_id'] as int,
+      customerName: json.data[i]['customer_name'] as String,
+      ccode: json.data[i]['ccode'] as String?,
+      subRequirementId: json.data[i]['Sub_requirement_id'] as String,
     );
   }
 
@@ -46,6 +26,8 @@ class Customer {
     return {
       'Customer_id': customerId,
       'customer_name': customerName,
+      'ccode': ccode,
+      'Sub_requirement_id': subRequirementId,
     };
   }
 }

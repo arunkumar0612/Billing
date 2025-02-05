@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/constants/Credit_constants.dart';
@@ -107,7 +108,9 @@ class CreditController extends GetxController {
     if (key.isNotEmpty && value.isNotEmpty) {
       creditModel.Credit_recommendationList.add(Recommendation(key: key, value: value));
     } else {
-      print('Key and value must not be empty');
+      if (kDebugMode) {
+        print('Key and value must not be empty');
+      }
     }
   }
 
@@ -165,7 +168,15 @@ class CreditController extends GetxController {
     }
   }
 
-  void updateProduct({required BuildContext context, required int editIndex, required String productName, required String hsn, required double price, required int quantity, required double gst, required String remarks}) {
+  void updateProduct(
+      {required BuildContext context,
+      required int editIndex,
+      required String productName,
+      required String hsn,
+      required double price,
+      required int quantity,
+      required double gst,
+      required String remarks}) {
     try {
       // Validate input fields
       if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {

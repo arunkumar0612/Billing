@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/controllers/Sales_actions.dart';
 import 'package:window_manager/window_manager.dart';
 import 'controllers/Credit_actions.dart';
 import 'controllers/DC_actions.dart';
@@ -24,6 +25,8 @@ Future<void> main() async {
   Get.lazyPut<NewpasswordController>(() => NewpasswordController());
   Get.lazyPut<Invoker>(() => Invoker());
   Get.lazyPut<VerifyOTPControllers>(() => VerifyOTPControllers());
+  Get.lazyPut<SalesController>(() => SalesController());
+  // final SalesController salesController =Get.f
 
 ////////////////////////////----SALES----////////////////////////////////////
   Get.lazyPut<InvoiceController>(() => InvoiceController());

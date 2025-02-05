@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/SALES/ClientReq_entities.dart';
 
-import '../entities/SALES/product_entities.dart';
+import '../../entities/SALES/product_entities.dart';
 
 class ClientReqModel {
   var clientReqTableHeading = "".obs;

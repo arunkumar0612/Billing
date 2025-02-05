@@ -4,7 +4,7 @@ import 'package:ssipl_billing/services/SALES/DC_services/DCnotes_service.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-import '../../../../controllers/DC_actions.dart';
+import '../../../../controllers/SALEScontrollers/DC_actions.dart';
 
 class Delivery_challanNote extends StatefulWidget with DcnotesService {
   Delivery_challanNote({super.key});

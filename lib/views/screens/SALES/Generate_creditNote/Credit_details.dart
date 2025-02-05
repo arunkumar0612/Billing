@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-import '../../../../controllers/Credit_actions.dart';
+import '../../../../controllers/SALEScontrollers/Credit_actions.dart';
 import '../../../../services/SALES/Credit_services/CreditDetails_service.dart';
 
 class CreditDetails extends StatefulWidget with CreditdetailsService {

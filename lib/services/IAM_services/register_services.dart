@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/IAM_entities.dart';
 import '../../controllers/IAM_actions.dart';
 import '../../models/constants/api.dart';
+import '../../models/entities/Response_entities.dart';
 import '../../routes/route_names.dart';
 import '../../views/components/Basic_DialogBox.dart';
 import '../APIservices/invoker.dart';
@@ -23,7 +24,7 @@ class RegisterServices {
       Map<String, dynamic>? response = await apiController.IAM(requestData.toJson(), API.Register_API);
 
       if (response?['statusCode'] == 200) {
-        Register_Response data = Register_Response.fromJson(response!);
+        CMResponse data = CMResponse.fromJson(response!);
         if (data.code) {
           registerController.toggleIndicator(false);
           await Basic_dialog(

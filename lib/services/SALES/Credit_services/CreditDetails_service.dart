@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../controllers/Credit_actions.dart';
+import '../../../controllers/SALEScontrollers/Credit_actions.dart';
 
 mixin CreditdetailsService {
   final CreditController creditController = Get.find<CreditController>();

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-import '../../../../controllers/Invoice_actions.dart';
+import '../../../../controllers/SALEScontrollers/Invoice_actions.dart';
 import '../../../../services/SALES/Invoice_services/InvoiceNotes_service.dart';
 
 class InvoiceNote extends StatefulWidget with InvoicenotesService {

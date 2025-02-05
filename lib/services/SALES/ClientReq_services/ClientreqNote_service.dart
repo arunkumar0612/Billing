@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_template.dart';
-import '../../../controllers/ClientReq_actions.dart';
+import '../../../controllers/SALEScontrollers/ClientReq_actions.dart';
+import '../../../controllers/viewSend_actions.dart';
 import '../../../models/entities/SALES/ClientReq_entities.dart';
 import '../../../themes/style.dart';
 import '../../../views/components/view_send_pdf.dart';
 
 mixin ClientreqNoteService {
   final ClientreqController clientreqController = Get.find<ClientreqController>();
+  final ViewsendController viewsendController = Get.find<ViewsendController>();
 
   void addtable_row(context) {
     clientreqController.updateTableValueControllerText(clientreqController.clientReqModel.tableHeadingController.value.text);
@@ -89,23 +91,46 @@ mixin ClientreqNoteService {
     }
   }
 
-  void Generate_clientReq(context) async {
-    final pdfData = await generate_clientreq(PdfPageFormat.a4, clientreqController.clientReqModel.clientReqProductDetails, clientreqController.clientReqModel.billingAddressNameController.value.text, clientreqController.clientReqModel.clientAddressController.value.text, clientreqController.clientReqModel.billingAddressNameController.value.text, clientreqController.clientReqModel.billingAddressController.value.text, clientreqController.clientReqModel.clientReqNo.value, clientreqController.clientReqModel.pickedFile.value?.files.single.path);
+  void Generate_clientReq(BuildContext context) async {
+    // Start generating PDF data as a Future
+    viewsendController.setLoading(false);
+    final pdfGenerationFuture = generate_clientreq(
+      PdfPageFormat.a4,
+      clientreqController.clientReqModel.clientReqProductDetails,
+      clientreqController.clientReqModel.billingAddressNameController.value.text,
+      clientreqController.clientReqModel.clientAddressController.value.text,
+      clientreqController.clientReqModel.billingAddressNameController.value.text,
+      clientreqController.clientReqModel.billingAddressController.value.text,
+      clientreqController.clientReqModel.clientReqNo.value,
+      clientreqController.clientReqModel.pickedFile.value?.files.single.path,
+    );
 
-    const filePath = 'E://clientReq.pdf';
-    final file = File(filePath);
-    await file.writeAsBytes(pdfData);
-
+    // Show the dialog immediately (not awaited)
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            content: Generate_popup(
-              type: 'E://clientReq.pdf',
-            ));
+          backgroundColor: Primary_colors.Light,
+          content: Generate_popup(
+            type: 'E://clientReq.pdf', // Pass the expected file path
+          ),
+        );
       },
     );
-    // Sales_Client.clientReq_Callback();
+
+    // Wait for PDF data generation to complete
+    final pdfData = await pdfGenerationFuture;
+
+    const filePath = 'E://clientReq.pdf';
+    final file = File(filePath);
+
+    // Perform file writing and any other future tasks in parallel
+    await Future.wait([
+      file.writeAsBytes(pdfData), // Write PDF to file asynchronously
+      // Future.delayed(const Duration(seconds: )), // Simulate any other async task if needed
+    ]);
+
+    // Continue execution while the dialog is still open
+    viewsendController.setLoading(true);
   }
 }

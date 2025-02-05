@@ -13,7 +13,7 @@ class Customer {
     required this.subRequirementId,
   });
 
-  factory Customer.fromJson(BasicResponse json, int i) {
+  factory Customer.fromJson(CMDlResponse json, int i) {
     return Customer(
       customerId: json.data[i]['Customer_id'] as int,
       customerName: json.data[i]['customer_name'] as String,

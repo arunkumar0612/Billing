@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/controllers/DC_actions.dart';
-import 'package:ssipl_billing/controllers/Debit_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/controllers/Invoice_actions.dart';
-import 'package:ssipl_billing/controllers/Quote_actions.dart';
-import 'package:ssipl_billing/controllers/RFQ_actions.dart';
-import 'package:ssipl_billing/controllers/Credit_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/generateRFQ.dart';
-import '../../controllers/Sales_actions.dart';
+import '../../controllers/SALEScontrollers/Sales_actions.dart';
 import '../../models/constants/api.dart';
 import '../../models/entities/Response_entities.dart';
 import '../../views/components/Basic_DialogBox.dart';
@@ -18,6 +19,7 @@ import '../../views/screens/SALES/Generate_DC/generateDC.dart';
 import '../../views/screens/SALES/Generate_DebitNote/generateDebit.dart';
 import '../../views/screens/SALES/Generate_Invoice/generateInvoice.dart';
 import '../../views/screens/SALES/Generate_Quote/generateQuote.dart';
+import '../../views/screens/SALES/Generate_client_req/generate_clientreq.dart';
 import '../../views/screens/SALES/Generate_creditNote/generateCredit.dart';
 import '../APIservices/invoker.dart';
 // import 'package:ssipl_billing/view_send_pdf.dart';
@@ -32,14 +34,16 @@ mixin SalesServices {
   final DebitController debitController = Get.find<DebitController>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final SalesController salesController = Get.find<SalesController>();
+  final ClientreqController clientreqController = Get.find<ClientreqController>();
 
   void GetCustomerList(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getcustomerlist_API);
       if (response?['statusCode'] == 200) {
-        BasicResponse value = BasicResponse.fromJson(response ?? {});
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           await Basic_dialog(context: context, title: 'Customer List', content: "Customer List fetched successfully", onOk: () {});
+          salesController.addToCustomerList(value);
           print("*****************${salesController.salesModel.customerList[1].customerId}");
         } else {
           await Basic_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
@@ -51,6 +55,114 @@ mixin SalesServices {
     } catch (e) {
       Basic_dialog(context: context, title: "ERROR", content: "$e");
     }
+  }
+
+  dynamic Generate_client_reqirement_dialougebox(String value, context) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents closing the dialog by clicking outside
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Primary_colors.Dark,
+          content: Stack(
+            children: [
+              SizedBox(
+                height: 650,
+                width: 900,
+                child: Generate_clientreq(
+                  value: value,
+                ),
+              ),
+              Positioned(
+                top: 3,
+                right: 0,
+                child: IconButton(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: const Color.fromARGB(255, 219, 216, 216),
+                    ),
+                    height: 30,
+                    width: 30,
+                    child: const Icon(Icons.close, color: Colors.red),
+                  ),
+                  onPressed: () async {
+                    // Check if any data exists in clientreq variables
+                    if ((clientreqController.clientReqModel.clientReqProductDetails.isNotEmpty) || (clientreqController.clientReqModel.clientReqNoteList.isNotEmpty) || (clientreqController.clientReqModel.clientReqRecommendationList.isNotEmpty) || (clientreqController.clientReqModel.clientNameController.value.text.isNotEmpty) || (clientreqController.clientReqModel.clientAddressController.value.text.isNotEmpty) || (clientreqController.clientReqModel.billingAddressNameController.value.text.isNotEmpty) || (clientreqController.clientReqModel.billingAddressController.value.text.isNotEmpty) || (clientreqController.clientReqModel.clientReqNo.value.isNotEmpty) || (clientreqController.clientReqModel.clientReqTableHeading.value.isNotEmpty) || (clientreqController.clientReqModel.morController.value.text.isNotEmpty) || (clientreqController.clientReqModel.gstController.value.text.isNotEmpty) || (clientreqController.clientReqModel.emailController.value.text.isNotEmpty) || (clientreqController.clientReqModel.phoneController.value.text.isNotEmpty)) {
+                      // Show confirmation dialog
+                      bool? proceed = await showDialog<bool>(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text("Warning"),
+                            content: const Text(
+                              "The data may be lost. Do you want to proceed?",
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(false); // No action
+                                },
+                                child: const Text("No"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(true); // Yes action
+                                },
+                                child: const Text("Yes"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+                      // If user confirms (Yes), clear data and close the dialog
+                      if (proceed == true) {
+                        Navigator.of(context).pop(); // Close the dialog
+                        // Clear all the data when dialog is closed
+                        clientreqController.clientReqModel.clientReqProductDetails.clear();
+                        clientreqController.clientReqModel.clientReqNoteList.clear();
+                        clientreqController.clientReqModel.clientReqRecommendationList.clear();
+                        clientreqController.clientReqModel.clientNameController.value.clear();
+                        clientreqController.clientReqModel.clientAddressController.value.clear();
+                        clientreqController.clientReqModel.billingAddressNameController.value.clear();
+                        clientreqController.clientReqModel.billingAddressController.value.clear();
+                        clientreqController.clientReqModel.morController.value.clear();
+                        clientreqController.clientReqModel.gstController.value.clear();
+                        clientreqController.clientReqModel.emailController.value.clear();
+                        clientreqController.clientReqModel.phoneController.value.clear();
+                        clientreqController.clientReqModel.clientReqNo.value = '';
+                        clientreqController.clientReqModel.clientReqTableHeading.value = '';
+                        clientreqController.clientReqModel.pickedFile.value = null;
+                      }
+                    } else {
+                      // If no data, just close the dialog
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  dynamic generate_client_requirement(context) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+            backgroundColor: Primary_colors.Light,
+            content: Generate_popup(
+              type: 'E://Client_requirement.pdf',
+            ));
+      },
+    );
+    // }
   }
 
   dynamic GenerateInvoice_dialougebox(context) async {

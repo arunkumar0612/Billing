@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-import '../../../../controllers/Debit_actions.dart';
+import '../../../../controllers/SALEScontrollers/Debit_actions.dart';
 import '../../../../models/entities/SALES/product_entities.dart';
 import '../../../../utils/helpers/support_functions.dart';
 

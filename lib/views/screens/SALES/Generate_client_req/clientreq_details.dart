@@ -4,7 +4,7 @@ import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
 
-import '../../../../controllers/ClientReq_actions.dart';
+import '../../../../controllers/SALEScontrollers/ClientReq_actions.dart';
 import '../../../../services/SALES/ClientReq_services/Clientreqdetails_service.dart';
 import '../../../../utils/validators/minimal_validators.dart';
 

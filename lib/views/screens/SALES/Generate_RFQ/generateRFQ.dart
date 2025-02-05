@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import '../../../../controllers/RFQ_actions.dart';
+import '../../../../controllers/SALEScontrollers/RFQ_actions.dart';
 import 'RFQ_details.dart';
 import 'RFQ_note.dart';
 import 'RFQ_products.dart';

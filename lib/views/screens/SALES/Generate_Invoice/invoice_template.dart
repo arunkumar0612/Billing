@@ -3,9 +3,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/controllers/Invoice_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
-
 import '../../../../models/entities/SALES/product_entities.dart';
 import '../../../../utils/helpers/support_functions.dart';
 
@@ -124,7 +123,7 @@ class Invoice_generate {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("Nov 30, 2024", 10),
+                            child: regular("Feb 05, 2025", 10),
                             // formatDate(DateTime.now()), 10
                           ),
                         ),
@@ -132,7 +131,7 @@ class Invoice_generate {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("AA/INST/241104", 10),
+                            child: regular("AA/INST/250201", 10),
                           ),
                         ),
                       ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/controllers/Debit_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 
 import '../../../models/entities/SALES/Debit_entities.dart';

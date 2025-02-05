@@ -5,7 +5,7 @@ import 'package:ssipl_billing/services/SALES/ClientReq_services/ClientreqProduct
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-import '../../../../controllers/ClientReq_actions.dart';
+import '../../../../controllers/SALEScontrollers/ClientReq_actions.dart';
 
 class clientreqProducts extends StatefulWidget with ClientreqProductService {
   clientreqProducts({super.key});

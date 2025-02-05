@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
-import '../../../../controllers/DC_actions.dart';
+import '../../../../controllers/SALEScontrollers/DC_actions.dart';
 import '../../../../models/entities/SALES/product_entities.dart';
 
 Future<Uint8List> generate_Delivery_challan(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, Delivery_challan_num, title) async {

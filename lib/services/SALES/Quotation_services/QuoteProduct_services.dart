@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/controllers/Quote_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 
 import '../../../models/entities/SALES/Quote_entities.dart';

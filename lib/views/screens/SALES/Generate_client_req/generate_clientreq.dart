@@ -5,7 +5,7 @@ import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_
 import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_products.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import '../../../../controllers/ClientReq_actions.dart';
+import '../../../../controllers/SALEScontrollers/ClientReq_actions.dart';
 
 class Generate_clientreq extends StatefulWidget {
   final String? value;

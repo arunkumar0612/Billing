@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 
-import '../../../controllers/ClientReq_actions.dart';
+import '../../../controllers/SALEScontrollers/ClientReq_actions.dart';
 
 mixin ClientreqProductService {
   final ClientreqController clientreqController = Get.find<ClientreqController>();

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
-import '../entities/SALES/Invoice_entities.dart';
+import '../../entities/SALES/Debit_entities.dart';
 
-class InvoiceModel {
+class DebitModel {
   final Rxn<TabController> tabController = Rxn<TabController>();
-
-  var Invoice_no = "".obs;
-  var Invoice_table_heading = "".obs;
+  var Debit_no = "".obs;
+  var Debit_table_heading = "".obs;
 
 //######################################################################################################################################
 //DETAILS
-  final TitleController = TextEditingController().obs;
   final clientAddressNameController = TextEditingController().obs;
   final clientAddressController = TextEditingController().obs;
   final billingAddressNameController = TextEditingController().obs;
@@ -25,10 +23,11 @@ class InvoiceModel {
   final hsnController = TextEditingController().obs;
   final priceController = TextEditingController().obs;
   final quantityController = TextEditingController().obs;
+  final remarksController = TextEditingController().obs;
   final gstController = TextEditingController().obs;
-  var Invoice_products = <InvoiceProduct>[].obs;
+  var Debit_products = <DebitProduct>[].obs;
 
-  var Invoice_gstTotals = <InvoiceGSTtotals>[].obs;
+  var Debit_gstTotals = <DebitGSTtotals>[].obs;
 //######################################################################################################################################
 //NOTES
   final noteformKey = GlobalKey<FormState>().obs;
@@ -41,8 +40,8 @@ class InvoiceModel {
   final recommendationKeyController = TextEditingController().obs;
   final recommendationValueController = TextEditingController().obs;
   // var selectedheadingType = Rxn<String>();
-  var Invoice_noteList = <Note>[].obs;
-  var Invoice_recommendationList = <Recommendation>[].obs;
+  var Debit_noteList = <Note>[].obs;
+  var Debit_recommendationList = <Recommendation>[].obs;
   final notecontent = <String>[
     'Delivery within 30 working days from the date of issuing the PO.',
     'Payment terms : 100% along with PO.',

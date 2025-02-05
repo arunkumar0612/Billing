@@ -6,6 +6,7 @@ import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
 
 import '../../models/constants/api.dart';
 
+import '../../models/entities/Response_entities.dart';
 import '../../views/components/Basic_DialogBox.dart';
 import '../APIservices/invoker.dart';
 
@@ -24,7 +25,7 @@ mixin VerifyotpServices {
       Map<String, dynamic>? response = await apiController.IAM(requestData.toJson(), API.verifyOTP_API);
 
       if (response?['statusCode'] == 200) {
-        VerifyOTP_Response data = VerifyOTP_Response.fromJson(response!);
+        CMResponse data = CMResponse.fromJson(response!);
         if (data.code) {
           VerifyOTPController.toggleIndicator(false);
           IAM.Page_name = 'Setnewpassword';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/controllers/RFQ_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 
 mixin RFQproductService {

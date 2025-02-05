@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ssipl_billing/controllers/ClientReq_actions.dart';
-import 'package:ssipl_billing/controllers/DC_actions.dart';
-import 'package:ssipl_billing/controllers/Debit_actions.dart';
-import 'package:ssipl_billing/controllers/Invoice_actions.dart';
-import 'package:ssipl_billing/controllers/Quote_actions.dart';
-import 'package:ssipl_billing/controllers/RFQ_actions.dart';
-import 'package:ssipl_billing/controllers/Credit_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
 import 'package:ssipl_billing/services/SALES/sales_service.dart';
 import 'package:ssipl_billing/views/components/cards.dart';
 import 'package:ssipl_billing/themes/style.dart';
@@ -407,23 +407,12 @@ class _Sales_ClientState extends State<Sales_Client> {
     }
   ];
 
-  // Adding a controller and isAdding flag for each item
-  late List<bool> isAddingList;
-  late List<TextEditingController> controllers;
   int showcustomerprocess = 1;
-  List<String> list = <String>[
-    'One',
-    'Two',
-    'Three',
-    'Four'
-  ];
-  String Sales_ClientSearchQuery = '';
+
   @override
   void initState() {
     super.initState();
     widget.GetCustomerList(context);
-    isAddingList = List<bool>.filled(items.length, false);
-    controllers = List<TextEditingController>.generate(items.length, (index) => TextEditingController());
   }
 
 // // ##################################################################################################################################################################################################################################################################################################################################################################
@@ -801,28 +790,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                               PopupMenuButton<String>(
                                 color: const Color.fromARGB(255, 86, 86, 114),
                                 onSelected: (String value) {
-                                  // Generate_client_reqirement_dialougebox(value);
-
-                                  // items.add(
-                                  //   {
-                                  //     "name": "Pandi Groups",
-                                  //     "type": "Customer",
-                                  //     "process": [
-                                  //       {
-                                  //         "id": "EST/SSIPL - 101",
-                                  //         "date": "16/03/2023",
-                                  //         "daycounts": "21 days",
-                                  //         "child": [
-                                  //           {
-                                  //             "name": "Requirement",
-                                  //             "generate_po": true,
-                                  //             "generate_RFQ": false
-                                  //           },
-                                  //         ]
-                                  //       },
-                                  //     ]
-                                  //   },
-                                  // );
+                                  widget.Generate_client_reqirement_dialougebox(value, context);
                                 },
                                 itemBuilder: (BuildContext context) {
                                   return <PopupMenuEntry<String>>[

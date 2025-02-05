@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import '../../../controllers/ClientReq_actions.dart';
+import '../../../controllers/SALEScontrollers/ClientReq_actions.dart';
 import '../../../views/components/Basic_DialogBox.dart';
 
 mixin ClientreqdetailsService {

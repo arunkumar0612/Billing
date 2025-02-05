@@ -3,10 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
-import 'package:ssipl_billing/controllers/RFQ_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/RFQ_entities.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/RFQ_template.dart';
 
+import '../../../controllers/viewSend_actions.dart';
 import '../../../themes/style.dart';
 import '../../../views/components/view_send_pdf.dart';
 import '../../../views/screens/SALES/Generate_RFQ/RFQ_template.dart';
@@ -14,6 +15,7 @@ import '../../../views/screens/SALES/Generate_RFQ/RFQ_template.dart';
 
 mixin RFQnotesService {
   final RFQController rfqController = Get.find<RFQController>();
+  final ViewsendController viewsendController = Get.find<ViewsendController>();
 
   void addtable_row(context) {
     rfqController.updateTableValueControllerText(rfqController.rfqModel.recommendationHeadingController.value.text);
@@ -93,8 +95,10 @@ mixin RFQnotesService {
     }
   }
 
-  void Generate_RFQ(context) async {
-    final pdfData = await generate_RFQ(
+  void Generate_RFQ(BuildContext context) async {
+    // Start generating PDF data as a Future
+    viewsendController.setLoading(false);
+    final pdfGenerationFuture = generate_RFQ(
       PdfPageFormat.a4,
       rfqController.rfqModel.RFQ_products,
       rfqController.rfqModel.vendor_name_controller.value.text,
@@ -104,24 +108,31 @@ mixin RFQnotesService {
       rfqController.rfqModel.RFQ_no.value,
     );
 
-    const filePath = 'E://RFQ.pdf';
-    final file = File(filePath);
-    await file.writeAsBytes(pdfData);
-
-    // Future.delayed(const Duration(seconds: 4), () {
-    //   Generate_popup.callback();
-    // });
-
+    // Show the dialog immediately (not awaited)
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            content: Generate_popup(
-              type: 'E://RFQ.pdf',
-            ));
+          backgroundColor: Primary_colors.Light,
+          content: Generate_popup(
+            type: 'E://RFQ.pdf', // Pass the expected file path
+          ),
+        );
       },
     );
-    // Sales_Client.RFQ_Callback();
+
+    // Wait for PDF data generation to complete
+    final pdfData = await pdfGenerationFuture;
+    const filePath = 'E://RFQ.pdf';
+    final file = File(filePath);
+
+    // Perform file writing and any other future tasks in parallel
+    await Future.wait([
+      file.writeAsBytes(pdfData), // Write PDF to file asynchronously
+      Future.delayed(const Duration(seconds: 2)), // Simulate any other async task if needed
+    ]);
+
+    // Continue execution while the dialog is still open
+    viewsendController.setLoading(true);
   }
 }

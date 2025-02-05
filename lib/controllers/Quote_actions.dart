@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/constants/Quote_constants.dart';
-import '../models/entities/Quote_entities.dart';
-import '../models/entities/product_entities.dart';
+import '../models/entities/SALES/Quote_entities.dart';
+import '../models/entities/SALES/product_entities.dart';
 
 class QuoteController extends GetxController {
   var quoteModel = QuoteModel();

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_template.dart';
 import '../../../controllers/ClientReq_actions.dart';
-import '../../../models/entities/ClientReq_entities.dart';
+import '../../../models/entities/SALES/ClientReq_entities.dart';
 import '../../../themes/style.dart';
 import '../../../views/components/view_send_pdf.dart';
 

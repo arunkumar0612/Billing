@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/models/entities/product_entities.dart';
-import '../entities/Debit_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
+import '../entities/SALES/Debit_entities.dart';
 
 class DebitModel {
   final Rxn<TabController> tabController = Rxn<TabController>();

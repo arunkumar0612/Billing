@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/Invoice_actions.dart';
-import 'package:ssipl_billing/models/entities/product_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 
-import '../../../models/entities/Invoice_entities.dart';
+import '../../../models/entities/SALES/Invoice_entities.dart';
 
 mixin InvoiceproductService {
   final InvoiceController invoiceController = Get.find<InvoiceController>();
@@ -17,10 +17,7 @@ mixin InvoiceproductService {
 
   void addproduct(context) {
     if (invoiceController.invoiceModel.productKey.value.currentState?.validate() ?? false) {
-      bool exists = invoiceController.invoiceModel.Invoice_products.any((product) =>
-          product.productName == invoiceController.invoiceModel.productNameController.value.text &&
-          product.hsn == invoiceController.invoiceModel.hsnController.value.text &&
-          product.quantity == int.parse(invoiceController.invoiceModel.quantityController.value.text));
+      bool exists = invoiceController.invoiceModel.Invoice_products.any((product) => product.productName == invoiceController.invoiceModel.productNameController.value.text && product.hsn == invoiceController.invoiceModel.hsnController.value.text && product.quantity == int.parse(invoiceController.invoiceModel.quantityController.value.text));
 
       if (exists) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -31,13 +28,7 @@ mixin InvoiceproductService {
         );
         return;
       }
-      invoiceController.addProduct(
-          context: context,
-          productName: invoiceController.invoiceModel.productNameController.value.text,
-          hsn: invoiceController.invoiceModel.hsnController.value.text,
-          price: double.parse(invoiceController.invoiceModel.priceController.value.text),
-          quantity: int.parse(invoiceController.invoiceModel.quantityController.value.text),
-          gst: double.parse(invoiceController.invoiceModel.gstController.value.text));
+      invoiceController.addProduct(context: context, productName: invoiceController.invoiceModel.productNameController.value.text, hsn: invoiceController.invoiceModel.hsnController.value.text, price: double.parse(invoiceController.invoiceModel.priceController.value.text), quantity: int.parse(invoiceController.invoiceModel.quantityController.value.text), gst: double.parse(invoiceController.invoiceModel.gstController.value.text));
 
       clearFields();
     }

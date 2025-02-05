@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/models/entities/product_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 
 import '../../../controllers/Credit_actions.dart';
-import '../../../models/entities/Credit_entities.dart';
+import '../../../models/entities/SALES/Credit_entities.dart';
 
 mixin CreditproductService {
   final CreditController creditController = Get.find<CreditController>();
@@ -18,10 +18,7 @@ mixin CreditproductService {
 
   void addproduct(context) {
     if (creditController.creditModel.productKey.value.currentState?.validate() ?? false) {
-      bool exists = creditController.creditModel.Credit_products.any((product) =>
-          product.productName == creditController.creditModel.productNameController.value.text &&
-          product.hsn == creditController.creditModel.hsnController.value.text &&
-          product.quantity == int.parse(creditController.creditModel.quantityController.value.text));
+      bool exists = creditController.creditModel.Credit_products.any((product) => product.productName == creditController.creditModel.productNameController.value.text && product.hsn == creditController.creditModel.hsnController.value.text && product.quantity == int.parse(creditController.creditModel.quantityController.value.text));
 
       if (exists) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -32,14 +29,7 @@ mixin CreditproductService {
         );
         return;
       }
-      creditController.addProduct(
-          context: context,
-          productName: creditController.creditModel.productNameController.value.text,
-          hsn: creditController.creditModel.hsnController.value.text,
-          price: double.parse(creditController.creditModel.priceController.value.text),
-          quantity: int.parse(creditController.creditModel.quantityController.value.text),
-          gst: double.parse(creditController.creditModel.gstController.value.text),
-          remarks: creditController.creditModel.remarksController.value.text);
+      creditController.addProduct(context: context, productName: creditController.creditModel.productNameController.value.text, hsn: creditController.creditModel.hsnController.value.text, price: double.parse(creditController.creditModel.priceController.value.text), quantity: int.parse(creditController.creditModel.quantityController.value.text), gst: double.parse(creditController.creditModel.gstController.value.text), remarks: creditController.creditModel.remarksController.value.text);
 
       clearFields();
     }

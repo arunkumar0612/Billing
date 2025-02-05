@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/controllers/Debit_actions.dart';
-import 'package:ssipl_billing/models/entities/Debit_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/Debit_entities.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_Debit/Debit_template.dart';
 
 import '../../../themes/style.dart';
@@ -40,10 +40,7 @@ mixin DebitnotesService {
   }
 
   void updatetable() {
-    debitController.updateRecommendation(
-        index: debitController.debitModel.recommendation_editIndex.value!,
-        key: debitController.debitModel.recommendationKeyController.value.text.toString(),
-        value: debitController.debitModel.recommendationValueController.value.text.toString());
+    debitController.updateRecommendation(index: debitController.debitModel.recommendation_editIndex.value!, key: debitController.debitModel.recommendationKeyController.value.text.toString(), value: debitController.debitModel.recommendationValueController.value.text.toString());
     cleartable_Fields();
     debitController.updateRecommendationEditindex(null);
   }
@@ -97,16 +94,7 @@ mixin DebitnotesService {
   }
 
   void Generate_Debit(context) async {
-    final pdfData = await generate_Debit(
-        PdfPageFormat.a4,
-        debitController.debitModel.Debit_products,
-        debitController.debitModel.clientAddressNameController.value.text,
-        debitController.debitModel.clientAddressController.value.text,
-        debitController.debitModel.billingAddressNameController.value.text,
-        debitController.debitModel.billingAddressController.value.text,
-        debitController.debitModel.Debit_no.value,
-        9,
-        debitController.debitModel.Debit_gstTotals);
+    final pdfData = await generate_Debit(PdfPageFormat.a4, debitController.debitModel.Debit_products, debitController.debitModel.clientAddressNameController.value.text, debitController.debitModel.clientAddressController.value.text, debitController.debitModel.billingAddressNameController.value.text, debitController.debitModel.billingAddressController.value.text, debitController.debitModel.Debit_no.value, 9, debitController.debitModel.Debit_gstTotals);
 
     const filePath = 'E://Debit.pdf';
     final file = File(filePath);

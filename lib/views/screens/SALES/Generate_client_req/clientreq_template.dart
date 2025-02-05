@@ -4,7 +4,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/models/entities/product_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:image/image.dart' as img;
 import '../../../../controllers/ClientReq_actions.dart';

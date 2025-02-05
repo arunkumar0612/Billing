@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/constants/ClientReq_constants.dart';
 
-import '../models/entities/ClientReq_entities.dart';
-import '../models/entities/product_entities.dart';
+import '../models/entities/SALES/ClientReq_entities.dart';
+import '../models/entities/SALES/product_entities.dart';
 
 class ClientreqController extends GetxController {
   var clientReqModel = ClientReqModel();

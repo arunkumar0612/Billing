@@ -5,7 +5,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 import '../../../../controllers/RFQ_actions.dart';
-import '../../../../models/entities/product_entities.dart';
+import '../../../../models/entities/SALES/product_entities.dart';
 import '../../../../utils/helpers/support_functions.dart';
 
 Future<Uint8List> generate_RFQ(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/models/entities/product_entities.dart';
-import '../entities/RFQ_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
+import '../entities/SALES/RFQ_entities.dart';
 
 class RFQModel {
   final Rxn<TabController> tabController = Rxn<TabController>();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/models/entities/product_entities.dart';
-import '../entities/Credit_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
+import '../entities/SALES/Credit_entities.dart';
 
 class CreditModel {
   final Rxn<TabController> tabController = Rxn<TabController>();

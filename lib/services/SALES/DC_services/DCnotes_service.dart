@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/controllers/DC_actions.dart';
-import 'package:ssipl_billing/models/entities/DC_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/DC_entities.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_template.dart';
 
 import '../../../themes/style.dart';
@@ -38,10 +38,7 @@ mixin DcnotesService {
   }
 
   void updatetable() {
-    dcController.updateRecommendation(
-        index: dcController.dcModel.recommendation_editIndex.value!,
-        key: dcController.dcModel.recommendationKeyController.value.text.toString(),
-        value: dcController.dcModel.recommendationValueController.value.text.toString());
+    dcController.updateRecommendation(index: dcController.dcModel.recommendation_editIndex.value!, key: dcController.dcModel.recommendationKeyController.value.text.toString(), value: dcController.dcModel.recommendationValueController.value.text.toString());
     cleartable_Fields();
     dcController.updateRecommendationEditindex(null);
   }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/controllers/Invoice_actions.dart';
-import 'package:ssipl_billing/models/entities/Invoice_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/Invoice_template.dart';
 
 import '../../../themes/style.dart';
@@ -40,10 +40,7 @@ mixin InvoicenotesService {
   }
 
   void updatetable() {
-    invoiceController.updateRecommendation(
-        index: invoiceController.invoiceModel.recommendation_editIndex.value!,
-        key: invoiceController.invoiceModel.recommendationKeyController.value.text.toString(),
-        value: invoiceController.invoiceModel.recommendationValueController.value.text.toString());
+    invoiceController.updateRecommendation(index: invoiceController.invoiceModel.recommendation_editIndex.value!, key: invoiceController.invoiceModel.recommendationKeyController.value.text.toString(), value: invoiceController.invoiceModel.recommendationValueController.value.text.toString());
     cleartable_Fields();
     invoiceController.updateRecommendationEditindex(null);
   }
@@ -97,17 +94,7 @@ mixin InvoicenotesService {
   }
 
   void Generate_Invoice(context) async {
-    final pdfData = await generate_Invoice(
-        PdfPageFormat.a4,
-        invoiceController.invoiceModel.Invoice_products,
-        invoiceController.invoiceModel.clientAddressNameController.value.text,
-        invoiceController.invoiceModel.clientAddressController.value.text,
-        invoiceController.invoiceModel.billingAddressNameController.value.text,
-        invoiceController.invoiceModel.billingAddressController.value.text,
-        invoiceController.invoiceModel.Invoice_no.value,
-        invoiceController.invoiceModel.TitleController.value.text,
-        9,
-        invoiceController.invoiceModel.Invoice_gstTotals);
+    final pdfData = await generate_Invoice(PdfPageFormat.a4, invoiceController.invoiceModel.Invoice_products, invoiceController.invoiceModel.clientAddressNameController.value.text, invoiceController.invoiceModel.clientAddressController.value.text, invoiceController.invoiceModel.billingAddressNameController.value.text, invoiceController.invoiceModel.billingAddressController.value.text, invoiceController.invoiceModel.Invoice_no.value, invoiceController.invoiceModel.TitleController.value.text, 9, invoiceController.invoiceModel.Invoice_gstTotals);
 
     const filePath = 'E://Invoice.pdf';
     final file = File(filePath);

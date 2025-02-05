@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/constants/RFQ_constants.dart';
-import '../models/entities/RFQ_entities.dart';
-import '../models/entities/product_entities.dart';
+import '../models/entities/SALES/RFQ_entities.dart';
+import '../models/entities/SALES/product_entities.dart';
 
 class RFQController extends GetxController {
   var rfqModel = RFQModel();

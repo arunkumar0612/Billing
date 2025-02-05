@@ -8,7 +8,6 @@ import 'package:ssipl_billing/services/IAM_services/verifyOTP_services.dart';
 
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
-import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
 
 import 'package:glowy_borders/glowy_borders.dart';
 
@@ -21,7 +20,7 @@ class Verify_OTP extends StatefulWidget with VerifyotpServices {
 
 class _Verify_OTPState extends State<Verify_OTP> {
   // Create controllers for each TextField
-
+  final IAMController IamController = Get.find<IAMController>();
   final VerifyOTPControllers VerifyOTPController = Get.find<VerifyOTPControllers>();
 
   @override
@@ -41,14 +40,7 @@ class _Verify_OTPState extends State<Verify_OTP> {
       return AnimatedGradientBorder(
         animationTime: 2,
         glowSize: VerifyOTPController.verifyOTPModel.indicator.value ? 5 : 5,
-        gradientColors: VerifyOTPController.verifyOTPModel.indicator.value
-            ? [
-                const Color.fromARGB(255, 157, 98, 253),
-                Colors.black
-              ]
-            : [
-                Primary_colors.Light
-              ],
+        gradientColors: VerifyOTPController.verifyOTPModel.indicator.value ? [const Color.fromARGB(255, 157, 98, 253), Colors.black] : [Primary_colors.Light],
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),
@@ -116,9 +108,7 @@ class _Verify_OTPState extends State<Verify_OTP> {
                                   }
                                 },
                                 keyboardType: TextInputType.number,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(6)
-                                ],
+                                inputFormatters: [LengthLimitingTextInputFormatter(6)],
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.all(0),
                                   enabledBorder: OutlineInputBorder(
@@ -194,8 +184,7 @@ class _Verify_OTPState extends State<Verify_OTP> {
                         TextButton(
                           onPressed: () {
                             setState(() {
-                              IAM.Page_name = 'Forgotpassword';
-                              IAM.update();
+                              IamController.IAMModel.pagename.value = 'Forgotpassword';
                             });
                           },
                           child: Text(

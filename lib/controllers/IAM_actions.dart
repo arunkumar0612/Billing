@@ -4,6 +4,14 @@ import '../models/constants/IAM_constants.dart';
 import '../models/entities/IAM_entities.dart';
 import '../models/entities/Response_entities.dart';
 
+class IAMController extends GetxController {
+  var IAMModel = IAMmodel();
+
+  void updateUsernameController(String value) {
+    IAMModel.pagename.value = value;
+  }
+}
+
 class LoginController extends GetxController {
   var loginModel = LoginModel();
 

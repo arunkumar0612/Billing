@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/services/IAM_services/forgotpassword_service.dart';
-import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:glowy_borders/glowy_borders.dart';
 
@@ -16,6 +15,7 @@ class Forgot_password extends StatefulWidget with ForgotpasswordService {
 }
 
 class _Forgot_passwordState extends State<Forgot_password> {
+  final IAMController IamController = Get.find<IAMController>();
   final ForgotpasswordController forgotpasswordController = Get.find<ForgotpasswordController>();
   final formKey1 = GlobalKey<FormState>();
   @override
@@ -26,14 +26,7 @@ class _Forgot_passwordState extends State<Forgot_password> {
       return AnimatedGradientBorder(
         animationTime: 2,
         glowSize: forgotpasswordController.forgotpasswordModel.indicator.value ? 5 : 5,
-        gradientColors: forgotpasswordController.forgotpasswordModel.indicator.value
-            ? [
-                Color.fromARGB(255, 157, 98, 253),
-                Colors.black
-              ]
-            : [
-                Primary_colors.Light
-              ],
+        gradientColors: forgotpasswordController.forgotpasswordModel.indicator.value ? [Color.fromARGB(255, 157, 98, 253), Colors.black] : [Primary_colors.Light],
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),
@@ -157,10 +150,7 @@ class _Forgot_passwordState extends State<Forgot_password> {
                             ),
                             TextButton(
                               onPressed: () {
-                                setState(() {
-                                  IAM.Page_name = 'Login';
-                                  IAM.update();
-                                });
+                                IamController.IAMModel.pagename.value = 'Login';
                               },
                               child: Text(
                                 'Back',

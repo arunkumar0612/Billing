@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/models/entities/IAM_entities.dart';
-import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
 
 import '../../models/constants/api.dart';
 
@@ -11,6 +10,7 @@ import '../../views/components/Basic_DialogBox.dart';
 import '../APIservices/invoker.dart';
 
 mixin VerifyotpServices {
+  final IAMController IamController = Get.find<IAMController>();
   final ForgotpasswordController forgotpasswordController = Get.find<ForgotpasswordController>();
   final VerifyOTPControllers VerifyOTPController = Get.find<VerifyOTPControllers>();
   final Invoker apiController = Get.find<Invoker>();
@@ -28,8 +28,7 @@ mixin VerifyotpServices {
         CMResponse data = CMResponse.fromJson(response!);
         if (data.code) {
           VerifyOTPController.toggleIndicator(false);
-          IAM.Page_name = 'Setnewpassword';
-          IAM.update();
+          IamController.IAMModel.pagename.value = 'Setnewpassword';
         } else {
           VerifyOTPController.toggleIndicator(false);
           await Basic_dialog(

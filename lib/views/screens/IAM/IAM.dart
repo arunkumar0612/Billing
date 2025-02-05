@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/screens/IAM/forgot_password.dart';
 import 'package:ssipl_billing/views/screens/IAM/verifyOTP.dart';
@@ -9,28 +11,29 @@ import 'package:ssipl_billing/views/screens/IAM/register_page.dart';
 
 class IAM extends StatefulWidget {
   const IAM({super.key});
-  static late Function() update;
-  static String Page_name = '';
-  static String email = '';
+  // static late Function() update;
+  // static String Page_name = '';
+  // static String email = '';
   @override
   State<IAM> createState() => _IAMState();
 }
 
 class _IAMState extends State<IAM> {
-  String Page_name = 'Login';
-  String email = 'no';
+  final IAMController IamController = Get.find<IAMController>();
+  // String Page_name = 'Login';
+  // String email = 'no';
   @override
   void initState() {
     super.initState();
-    IAM.update = updateData;
+    // IAM.update = updateData;
   }
 
-  void updateData() {
-    setState(() {
-      Page_name = IAM.Page_name;
-      email = IAM.email;
-    });
-  }
+  // void updateData() {
+  //   setState(() {
+  //     Page_name = IAM.Page_name;
+  //     email = IAM.email;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +41,9 @@ class _IAMState extends State<IAM> {
     double screenWidth = MediaQuery.of(context).size.width;
     double baseFontSize = 50;
 
-    return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
+    return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
+      return Obx(
+        () {
           return SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(
@@ -115,15 +118,15 @@ class _IAMState extends State<IAM> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(20),
-                        child: Page_name == 'Login'
+                        child: IamController.IAMModel.pagename.value == 'Login'
                             ? Loginpage()
-                            : Page_name == 'Register'
+                            : IamController.IAMModel.pagename.value == 'Register'
                                 ? RegisterPage()
-                                : Page_name == 'Forgotpassword'
+                                : IamController.IAMModel.pagename.value == 'Forgotpassword'
                                     ? Forgot_password()
-                                    : Page_name == 'OTPverification'
+                                    : IamController.IAMModel.pagename.value == 'OTPverification'
                                         ? Verify_OTP()
-                                        : Page_name == 'Setnewpassword'
+                                        : IamController.IAMModel.pagename.value == 'Setnewpassword'
                                             ? Newpassword()
                                             : const SizedBox.shrink(),
                       ),
@@ -134,7 +137,7 @@ class _IAMState extends State<IAM> {
             ),
           );
         },
-      ),
-    );
+      );
+    }));
   }
 }

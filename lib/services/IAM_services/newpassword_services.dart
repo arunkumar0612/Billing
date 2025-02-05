@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 import 'package:ssipl_billing/models/entities/IAM_entities.dart';
-import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
+
 import '../../controllers/IAM_actions.dart';
 import '../../models/constants/api.dart';
 import '../../models/entities/Response_entities.dart';
@@ -11,6 +11,7 @@ import '../APIservices/invoker.dart';
 class NewpasswordServices {
   final NewpasswordController newwordController = Get.find<NewpasswordController>();
   final ForgotpasswordController forgotpasswordController = Get.find<ForgotpasswordController>();
+  final IAMController IamController = Get.find<IAMController>();
   final Invoker apiController = Get.find<Invoker>();
   void Newpassword(context) async {
     try {
@@ -25,8 +26,7 @@ class NewpasswordServices {
         CMResponse data = CMResponse.fromJson(response!);
         if (data.code) {
           forgotpasswordController.toggleIndicator(false);
-          IAM.Page_name = 'Login';
-          IAM.update();
+          IamController.IAMModel.pagename.value = 'Login';
         } else {
           forgotpasswordController.toggleIndicator(false);
           await Basic_dialog(

@@ -123,7 +123,7 @@ class Invoice_generate {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("Nov 30, 2024", 10),
+                            child: regular("Feb 04, 2025", 10),
                             // formatDate(DateTime.now()), 10
                           ),
                         ),
@@ -131,7 +131,7 @@ class Invoice_generate {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("AA/INST/241104", 10),
+                            child: regular("AA/INST/250201", 10),
                           ),
                         ),
                       ],

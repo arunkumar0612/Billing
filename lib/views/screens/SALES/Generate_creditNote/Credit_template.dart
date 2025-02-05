@@ -5,7 +5,7 @@ import 'package:pdf/pdf.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/widgets.dart' as pw;
 import '../../../../controllers/Credit_actions.dart';
-import '../../../../models/entities/product_entities.dart';
+import '../../../../models/entities/SALES/product_entities.dart';
 import '../../../../utils/helpers/support_functions.dart';
 
 Future<Uint8List> generate_Credit(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, Credit_num, gst, Credit_gstTotals) async {

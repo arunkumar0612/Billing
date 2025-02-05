@@ -37,18 +37,10 @@ mixin SalesServices {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getcustomerlist_API);
       if (response?['statusCode'] == 200) {
-        BasicResponse value = BasicResponse.fromJson(response ?? {});
-        // List<Customer> data = [];
-
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          salesController.addToCustomerList(value);
-          // for (int i = 0; i < value.data.length; i++) {
-          //   customerList.add(Customer.fromJson(value, i));
-          //   // Customer data = Customer.fromJson(value);
-          // }
-
-          // List<Customer> customerList = data.data.map((e) => Customer.fromJson(e)).toList();
           await Basic_dialog(context: context, title: 'Customer List', content: "Customer List fetched successfully", onOk: () {});
+          salesController.addToCustomerList(value);
           print("*****************${salesController.salesModel.customerList[1].customerId}");
         } else {
           await Basic_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ssipl_billing/controllers/ClientReq_actions.dart';
 import 'package:ssipl_billing/controllers/DC_actions.dart';
 import 'package:ssipl_billing/controllers/Debit_actions.dart';
 import 'package:ssipl_billing/controllers/Invoice_actions.dart';
@@ -8,7 +9,6 @@ import 'package:ssipl_billing/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/controllers/RFQ_actions.dart';
 import 'package:ssipl_billing/controllers/Credit_actions.dart';
 import 'package:ssipl_billing/services/SALES/sales_service.dart';
-
 import 'package:ssipl_billing/views/components/cards.dart';
 import 'package:ssipl_billing/themes/style.dart';
 
@@ -26,6 +26,7 @@ class _Sales_ClientState extends State<Sales_Client> {
   final RFQController rfqController = Get.find<RFQController>();
   final CreditController creditController = Get.find<CreditController>();
   final DebitController debitController = Get.find<DebitController>();
+  final ClientreqController clientreqController = Get.find<ClientreqController>();
 
   final List<Map<String, dynamic>> items = [
     {
@@ -410,7 +411,12 @@ class _Sales_ClientState extends State<Sales_Client> {
   late List<bool> isAddingList;
   late List<TextEditingController> controllers;
   int showcustomerprocess = 1;
-  List<String> list = <String>['One', 'Two', 'Three', 'Four'];
+  List<String> list = <String>[
+    'One',
+    'Two',
+    'Three',
+    'Four'
+  ];
   String Sales_ClientSearchQuery = '';
   @override
   void initState() {
@@ -447,7 +453,10 @@ class _Sales_ClientState extends State<Sales_Client> {
                               height: 40,
                               decoration: BoxDecoration(
                                 gradient: const LinearGradient(
-                                  colors: [Primary_colors.Color3, Primary_colors.Color3], // Example gradient colors
+                                  colors: [
+                                    Primary_colors.Color3,
+                                    Primary_colors.Color3
+                                  ], // Example gradient colors
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 ),
@@ -804,7 +813,11 @@ class _Sales_ClientState extends State<Sales_Client> {
                                   //         "date": "16/03/2023",
                                   //         "daycounts": "21 days",
                                   //         "child": [
-                                  //           {"name": "Requirement", "generate_po": true, "generate_RFQ": false},
+                                  //           {
+                                  //             "name": "Requirement",
+                                  //             "generate_po": true,
+                                  //             "generate_RFQ": false
+                                  //           },
                                   //         ]
                                   //       },
                                   //     ]
@@ -868,7 +881,10 @@ class _Sales_ClientState extends State<Sales_Client> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: showcustomerprocess == index
-                ? [Primary_colors.Color3, Primary_colors.Color3]
+                ? [
+                    Primary_colors.Color3,
+                    Primary_colors.Color3
+                  ]
                 : [
                     Primary_colors.Light,
                     Primary_colors.Light,

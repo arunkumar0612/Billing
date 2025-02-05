@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/Sales_actions.dart';
 import 'package:window_manager/window_manager.dart';
+import 'controllers/ClientReq_actions.dart';
 import 'controllers/Credit_actions.dart';
 import 'controllers/DC_actions.dart';
 import 'controllers/Debit_actions.dart';
@@ -29,6 +30,7 @@ Future<void> main() async {
   // final SalesController salesController =Get.f
 
 ////////////////////////////----SALES----////////////////////////////////////
+  Get.lazyPut<ClientreqController>(() => ClientreqController());
   Get.lazyPut<InvoiceController>(() => InvoiceController());
   Get.lazyPut<QuoteController>(() => QuoteController());
   Get.lazyPut<RFQController>(() => RFQController());

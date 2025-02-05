@@ -4,6 +4,7 @@ import 'package:ssipl_billing/models/entities/IAM_entities.dart';
 import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
 import '../../controllers/IAM_actions.dart';
 import '../../models/constants/api.dart';
+import '../../models/entities/Response_entities.dart';
 import '../../views/components/Basic_DialogBox.dart';
 import '../APIservices/invoker.dart';
 
@@ -21,7 +22,7 @@ class NewpasswordServices {
       Map<String, dynamic>? response = await apiController.IAM(requestData.toJson(), API.newpassword_API);
 
       if (response?['statusCode'] == 200) {
-        Newpassword_Response data = Newpassword_Response.fromJson(response!);
+        CMResponse data = CMResponse.fromJson(response!);
         if (data.code) {
           forgotpasswordController.toggleIndicator(false);
           IAM.Page_name = 'Login';

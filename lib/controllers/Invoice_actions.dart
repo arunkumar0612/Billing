@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/constants/Invoice_constants.dart';
-import '../models/entities/Invoice_entities.dart';
-import '../models/entities/product_entities.dart';
+import '../models/entities/SALES/Invoice_entities.dart';
+import '../models/entities/SALES/product_entities.dart';
 
 class InvoiceController extends GetxController {
   var invoiceModel = InvoiceModel();
@@ -258,6 +258,7 @@ class InvoiceController extends GetxController {
 
   void removeFromRecommendationList(int index) {
     invoiceModel.Invoice_recommendationList.removeAt(index);
+    invoiceModel.Invoice_recommendationList.isEmpty ? invoiceModel.recommendationHeadingController.value.clear() : null;
   }
 
   void removeFromProductList(index) {

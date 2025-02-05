@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/controllers/Quote_actions.dart';
-import 'package:ssipl_billing/models/entities/Quote_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/Quote_entities.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_Quote/Quote_template.dart';
 
 import '../../../themes/style.dart';
@@ -40,10 +40,7 @@ mixin QuotenotesService {
   }
 
   void updatetable() {
-    quoteController.updateRecommendation(
-        index: quoteController.quoteModel.recommendation_editIndex.value!,
-        key: quoteController.quoteModel.recommendationKeyController.value.text.toString(),
-        value: quoteController.quoteModel.recommendationValueController.value.text.toString());
+    quoteController.updateRecommendation(index: quoteController.quoteModel.recommendation_editIndex.value!, key: quoteController.quoteModel.recommendationKeyController.value.text.toString(), value: quoteController.quoteModel.recommendationValueController.value.text.toString());
     cleartable_Fields();
     quoteController.updateRecommendationEditindex(null);
   }

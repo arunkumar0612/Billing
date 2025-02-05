@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/constants/DC_constants.dart';
-import '../models/entities/DC_entities.dart';
-import '../models/entities/product_entities.dart';
+import '../models/entities/SALES/DC_entities.dart';
+import '../models/entities/SALES/product_entities.dart';
 
 class DCController extends GetxController {
   var dcModel = DCModel();
@@ -244,6 +244,7 @@ class DCController extends GetxController {
 
   void removeFromRecommendationList(int index) {
     dcModel.Delivery_challan_recommendationList.removeAt(index);
+    dcModel.Delivery_challan_recommendationList.isEmpty ? dcModel.recommendationHeadingController.value.clear() : null;
   }
 
   void removeFromProductList(index) {

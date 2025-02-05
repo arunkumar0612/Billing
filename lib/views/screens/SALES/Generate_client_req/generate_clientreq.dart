@@ -1,45 +1,34 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_details.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_note.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_products.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import '../../../../controllers/ClientReq_actions.dart';
 
 class Generate_clientreq extends StatefulWidget {
   final String? value;
 
   const Generate_clientreq({super.key, required this.value});
-  static late TabController _tabController;
-
-  static void nextTab() {
-    if (_tabController.index < _tabController.length - 1) {
-      _tabController.animateTo(_tabController.index + 1);
-    }
-  }
-
-  static void backTab() {
-    if (_tabController.index > 0) {
-      _tabController.animateTo(_tabController.index - 1);
-    }
-  }
 
   @override
   _GenerateclientreqState createState() => _GenerateclientreqState();
 }
 
 class _GenerateclientreqState extends State<Generate_clientreq> with SingleTickerProviderStateMixin {
-  final File _selectedPdf = File('E://Client_requirement.pdf');
+  // final File _selectedPdf = File('E://Client_requirement.pdf');
+  final ClientreqController clientreqController = Get.find<ClientreqController>();
+
   @override
   void initState() {
     super.initState();
-    Generate_clientreq._tabController = TabController(length: 3, vsync: this);
+    clientreqController.initializeTabController(TabController(length: 3, vsync: this));
   }
 
   @override
   void dispose() {
-    Generate_clientreq._tabController.dispose();
+    clientreqController.clientReqModel.tabController.value?.dispose();
     super.dispose();
   }
 
@@ -52,7 +41,7 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
           height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
-          child: SfPdfViewer.file(_selectedPdf),
+          child: SfPdfViewer.file(clientreqController.clientReqModel.selectedPdf.value),
         ),
       ),
     );
@@ -84,7 +73,7 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
                             fontSize: Primary_font_size.Text10,
                             fontWeight: FontWeight.bold,
                           ),
-                          controller: Generate_clientreq._tabController,
+                          controller: clientreqController.clientReqModel.tabController.value,
                           indicator: const BoxDecoration(),
                           tabs: const [
                             Tab(text: "Details"),
@@ -97,32 +86,19 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
                   ),
                   Expanded(
                     child: TabBarView(
-                      controller: Generate_clientreq._tabController,
+                      controller: clientreqController.clientReqModel.tabController.value,
                       children: [
                         clientreqDetails(
                           customer_type: widget.value!,
                         ),
                         Container(
                           color: Primary_colors.Light,
-                          child: const clientreqProducts(),
+                          child: clientreqProducts(),
                         ),
-                        const clientreqNote(),
+                        ClientreqNote(),
                       ],
                     ),
                   ),
-                  // const Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: [
-                  //     ElevatedButton(
-                  //       onPressed: Generateclientreq.backTab,
-                  //       child: Text("Back"),
-                  //     ),
-                  //     ElevatedButton(
-                  //       onPressed: Generateclientreq.nextTab,
-                  //       child: Text("Next"),
-                  //     ),
-                  //   ],
-                  // ),
                 ],
               ),
             ))

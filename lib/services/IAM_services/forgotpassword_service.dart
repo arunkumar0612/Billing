@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/IAM_entities.dart';
 import '../../controllers/IAM_actions.dart';
 import '../../models/constants/api.dart';
+import '../../models/entities/Response_entities.dart';
 import '../../routes/route_names.dart';
 
 import '../../views/components/Basic_DialogBox.dart';
@@ -20,7 +21,7 @@ mixin ForgotpasswordService {
       Map<String, dynamic>? response = await apiController.IAM(requestData.toJson(), API.forgotpassword_API);
 
       if (response?['statusCode'] == 200) {
-        Forgotpassword_Response data = Forgotpassword_Response.fromJson(response!);
+        CMResponse data = CMResponse.fromJson(response!);
         if (data.code) {
           forgotpasswordController.toggleIndicator(false);
           Get.toNamed(RouteNames.home);

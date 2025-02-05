@@ -130,8 +130,6 @@ class _Delivery_challanNoteState extends State<Delivery_challanNote> {
 
   @override
   Widget build(BuildContext context) {
-    dcController.dcModel.Delivery_challan_recommendationList.isEmpty ? dcController.dcModel.recommendationHeadingController.value.clear() : null;
-
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -227,7 +225,7 @@ class _Delivery_challanNoteState extends State<Delivery_challanNote> {
                     Obx(
                       () {
                         return Textfield_1(
-                          readonly: dcController.dcModel.recommendationHeadingController.value.text.isEmpty ? false : true,
+                          readonly: false,
                           text: 'Table Heading',
                           controller: dcController.dcModel.recommendationHeadingController.value,
                           icon: Icons.title,

@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/constants/Credit_constants.dart';
-import '../models/entities/Credit_entities.dart';
-import '../models/entities/product_entities.dart';
+import '../models/entities/SALES/Credit_entities.dart';
+import '../models/entities/SALES/product_entities.dart';
 
 class CreditController extends GetxController {
   var creditModel = CreditModel();
@@ -168,15 +168,7 @@ class CreditController extends GetxController {
     }
   }
 
-  void updateProduct(
-      {required BuildContext context,
-      required int editIndex,
-      required String productName,
-      required String hsn,
-      required double price,
-      required int quantity,
-      required double gst,
-      required String remarks}) {
+  void updateProduct({required BuildContext context, required int editIndex, required String productName, required String hsn, required double price, required int quantity, required double gst, required String remarks}) {
     try {
       // Validate input fields
       if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
@@ -232,17 +224,13 @@ class CreditController extends GetxController {
     }
   }
 
-  // Update products list
-  void updateProducts(List<CreditProduct> products) {
-    creditModel.Credit_products.value = products;
-  }
-
   void removeFromNoteList(int index) {
     creditModel.Credit_noteList.removeAt(index);
   }
 
   void removeFromRecommendationList(int index) {
     creditModel.Credit_recommendationList.removeAt(index);
+    creditModel.Credit_recommendationList.isEmpty ? creditModel.recommendationHeadingController.value.clear() : null;
   }
 
   void removeFromProductList(index) {

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
-import 'package:ssipl_billing/models/entities/Credit_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/Credit_entities.dart';
 import '../../../controllers/Credit_actions.dart';
 import '../../../themes/style.dart';
 import '../../../views/components/view_send_pdf.dart';
@@ -12,7 +12,7 @@ mixin CreditnotesService {
   final CreditController creditController = Get.find<CreditController>();
 
   void addtable_row(context) {
-    creditController.updateTableValueControllerText(creditController.creditModel.recommendationHeadingController.value.text);
+    creditController.updateTableHeadingControllerText(creditController.creditModel.recommendationHeadingController.value.text);
     bool exists = creditController.creditModel.Credit_recommendationList.any((note) => note.key == creditController.creditModel.recommendationKeyController.value.text);
     if (exists) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -36,10 +36,7 @@ mixin CreditnotesService {
   }
 
   void updatetable() {
-    creditController.updateRecommendation(
-        index: creditController.creditModel.recommendation_editIndex.value!,
-        key: creditController.creditModel.recommendationKeyController.value.text.toString(),
-        value: creditController.creditModel.recommendationValueController.value.text.toString());
+    creditController.updateRecommendation(index: creditController.creditModel.recommendation_editIndex.value!, key: creditController.creditModel.recommendationKeyController.value.text.toString(), value: creditController.creditModel.recommendationValueController.value.text.toString());
     cleartable_Fields();
     creditController.updateRecommendationEditindex(null);
   }
@@ -93,16 +90,7 @@ mixin CreditnotesService {
   }
 
   void Generate_Credit(context) async {
-    final pdfData = await generate_Credit(
-        PdfPageFormat.a4,
-        creditController.creditModel.Credit_products,
-        creditController.creditModel.clientAddressNameController.value.text,
-        creditController.creditModel.clientAddressController.value.text,
-        creditController.creditModel.billingAddressNameController.value.text,
-        creditController.creditModel.billingAddressController.value.text,
-        creditController.creditModel.Credit_no.value,
-        9,
-        creditController.creditModel.Credit_gstTotals);
+    final pdfData = await generate_Credit(PdfPageFormat.a4, creditController.creditModel.Credit_products, creditController.creditModel.clientAddressNameController.value.text, creditController.creditModel.clientAddressController.value.text, creditController.creditModel.billingAddressNameController.value.text, creditController.creditModel.billingAddressController.value.text, creditController.creditModel.Credit_no.value, 9, creditController.creditModel.Credit_gstTotals);
 
     const filePath = 'E://Credit.pdf';
     final file = File(filePath);

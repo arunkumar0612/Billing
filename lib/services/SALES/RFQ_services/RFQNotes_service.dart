@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/controllers/RFQ_actions.dart';
-import 'package:ssipl_billing/models/entities/RFQ_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/RFQ_entities.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/RFQ_template.dart';
 
 import '../../../themes/style.dart';
@@ -40,10 +40,7 @@ mixin RFQnotesService {
   }
 
   void updatetable() {
-    rfqController.updateRecommendation(
-        index: rfqController.rfqModel.recommendation_editIndex.value!,
-        key: rfqController.rfqModel.recommendationKeyController.value.text.toString(),
-        value: rfqController.rfqModel.recommendationValueController.value.text.toString());
+    rfqController.updateRecommendation(index: rfqController.rfqModel.recommendation_editIndex.value!, key: rfqController.rfqModel.recommendationKeyController.value.text.toString(), value: rfqController.rfqModel.recommendationValueController.value.text.toString());
     cleartable_Fields();
     rfqController.updateRecommendationEditindex(null);
   }

@@ -18,7 +18,6 @@ class RegisterModel {
   final confirmController = TextEditingController().obs;
   final indicator = false.obs;
   final passwordVisibility = true.obs;
-
   final errors = <String, String>{}.obs;
 }
 

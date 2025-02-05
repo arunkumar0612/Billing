@@ -114,15 +114,11 @@ mixin SalesServices {
                         },
                       );
 
-                      // If user confirms (Yes), clear data and close the dialog
                       if (proceed == true) {
-                        Navigator.of(context).pop(); // Close the dialog
-                        // Clear all the data when dialog is closed
+                        Navigator.of(context).pop();
                         invoiceController.invoiceModel.Invoice_products.clear();
-                        //  invoiceController.invoiceModel.Invoice_gstTotals.clear();
                         invoiceController.invoiceModel.Invoice_noteList.clear();
                         invoiceController.invoiceModel.Invoice_recommendationList.clear();
-                        //  invoiceController.invoiceModel.iInvoice_productDetails.clear();
                         invoiceController.invoiceModel.clientAddressNameController.value.clear();
                         invoiceController.invoiceModel.clientAddressController.value.clear();
                         invoiceController.invoiceModel.billingAddressNameController.value.clear();
@@ -132,7 +128,6 @@ mixin SalesServices {
                         invoiceController.invoiceModel.Invoice_table_heading.value = "";
                       }
                     } else {
-                      // If no data, just close the dialog
                       Navigator.of(context).pop();
                     }
                   },

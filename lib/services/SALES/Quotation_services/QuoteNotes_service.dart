@@ -1,17 +1,13 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/Quote_entities.dart';
-// import 'package:ssipl_billing/views/screens/SALES/Generate_Quote/Quote_template.dart';
-
 import '../../../controllers/viewSend_actions.dart';
 import '../../../themes/style.dart';
 import '../../../views/components/view_send_pdf.dart';
 import '../../../views/screens/SALES/Generate_Quote/quote_template.dart';
-// import '../../../views/screens/SALES/Generate_Quote/quote_template.dart';
 
 mixin QuotenotesService {
   final QuoteController quoteController = Get.find<QuoteController>();

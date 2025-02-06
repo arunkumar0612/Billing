@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../models/constants/Invoice_constants.dart';
-import '../models/entities/Invoice_entities.dart';
-import '../models/entities/product_entities.dart';
+import '../../models/constants/SALES_constants/Invoice_constants.dart';
+import '../../models/entities/SALES/Invoice_entities.dart';
+import '../../models/entities/SALES/product_entities.dart';
 
 class InvoiceController extends GetxController {
   var invoiceModel = InvoiceModel();

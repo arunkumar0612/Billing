@@ -3,10 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
-import 'package:ssipl_billing/controllers/Invoice_actions.dart';
-import 'package:ssipl_billing/models/entities/Invoice_entities.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
+import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/Invoice_template.dart';
 
+import '../../../controllers/viewSend_actions.dart';
 import '../../../themes/style.dart';
 import '../../../views/components/view_send_pdf.dart';
 import '../../../views/screens/SALES/Generate_Invoice/invoice_template.dart';
@@ -14,6 +15,7 @@ import '../../../views/screens/SALES/Generate_Invoice/invoice_template.dart';
 
 mixin InvoicenotesService {
   final InvoiceController invoiceController = Get.find<InvoiceController>();
+  final ViewsendController viewsendController = Get.find<ViewsendController>();
 
   void addtable_row(context) {
     invoiceController.updateTableValueControllerText(invoiceController.invoiceModel.recommendationHeadingController.value.text);
@@ -93,28 +95,35 @@ mixin InvoicenotesService {
     }
   }
 
-  void Generate_Invoice(context) async {
-    // invoiceController.u
-    final pdfData = await generate_Invoice(PdfPageFormat.a4, invoiceController.invoiceModel.Invoice_products, invoiceController.invoiceModel.clientAddressNameController.value.text, invoiceController.invoiceModel.clientAddressController.value.text, invoiceController.invoiceModel.billingAddressNameController.value.text, invoiceController.invoiceModel.billingAddressController.value.text, invoiceController.invoiceModel.Invoice_no.value, invoiceController.invoiceModel.TitleController.value.text, 9, invoiceController.invoiceModel.Invoice_gstTotals);
-
-    const filePath = 'E://Invoice.pdf';
-    final file = File(filePath);
-    await file.writeAsBytes(pdfData);
-
-    Future.delayed(const Duration(seconds: 4), () {
-      Generate_popup.callback();
-    });
-
+  void Generate_Invoice(BuildContext context) async {
+    // Start generating PDF data as a Future
+    viewsendController.setLoading(false);
+    final pdfGenerationFuture = generate_Invoice(PdfPageFormat.a4, invoiceController.invoiceModel.Invoice_products, invoiceController.invoiceModel.clientAddressNameController.value.text, invoiceController.invoiceModel.clientAddressController.value.text, invoiceController.invoiceModel.billingAddressNameController.value.text, invoiceController.invoiceModel.billingAddressController.value.text, invoiceController.invoiceModel.Invoice_no.value, invoiceController.invoiceModel.TitleController.value.text, 9, invoiceController.invoiceModel.Invoice_gstTotals);
+    // Show the dialog immediately (not awaited)
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            content: Generate_popup(
-              type: 'E://Invoice.pdf',
-            ));
+          backgroundColor: Primary_colors.Light,
+          content: Generate_popup(
+            type: 'E://Invoice.pdf', // Pass the expected file path
+          ),
+        );
       },
     );
-    // Sales_Client.Invoice_Callback();
+
+    // Wait for PDF data generation to complete
+    final pdfData = await pdfGenerationFuture;
+    const filePath = 'E://Invoice.pdf';
+    final file = File(filePath);
+
+    // Perform file writing and any other future tasks in parallel
+    await Future.wait([
+      file.writeAsBytes(pdfData), // Write PDF to file asynchronously
+      // Future.delayed(const Duration(seconds: )), // Simulate any other async task if needed
+    ]);
+
+    // Continue execution while the dialog is still open
+    viewsendController.setLoading(true);
   }
 }

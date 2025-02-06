@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../models/constants/Debit_constants.dart';
-import '../models/entities/Debit_entities.dart';
-import '../models/entities/product_entities.dart';
+import '../../models/constants/SALES_constants/Debit_constants.dart';
+import '../../models/entities/SALES/Debit_entities.dart';
+import '../../models/entities/SALES/product_entities.dart';
 
 class DebitController extends GetxController {
   var debitModel = DebitModel();

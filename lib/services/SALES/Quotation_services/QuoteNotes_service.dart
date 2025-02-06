@@ -1,19 +1,17 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
-import 'package:ssipl_billing/controllers/Quote_actions.dart';
-import 'package:ssipl_billing/models/entities/Quote_entities.dart';
-// import 'package:ssipl_billing/views/screens/SALES/Generate_Quote/Quote_template.dart';
-
+import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
+import 'package:ssipl_billing/models/entities/SALES/Quote_entities.dart';
+import '../../../controllers/viewSend_actions.dart';
 import '../../../themes/style.dart';
 import '../../../views/components/view_send_pdf.dart';
 import '../../../views/screens/SALES/Generate_Quote/quote_template.dart';
-// import '../../../views/screens/SALES/Generate_Quote/quote_template.dart';
 
 mixin QuotenotesService {
   final QuoteController quoteController = Get.find<QuoteController>();
+  final ViewsendController viewsendController = Get.find<ViewsendController>();
 
   void addtable_row(context) {
     quoteController.updateTableValueControllerText(quoteController.quoteModel.recommendationHeadingController.value.text);
@@ -93,8 +91,10 @@ mixin QuotenotesService {
     }
   }
 
-  void Generate_Quote(context) async {
-    final pdfData = await generate_Quote(
+  void Generate_Quote(BuildContext context) async {
+    // Start generating PDF data as a Future
+    viewsendController.setLoading(false);
+    final pdfGenerationFuture = generate_Quote(
       PdfPageFormat.a4,
       quoteController.quoteModel.Quote_products,
       quoteController.quoteModel.clientAddressNameController.value.text,
@@ -107,24 +107,32 @@ mixin QuotenotesService {
       quoteController.quoteModel.Quote_gstTotals,
     );
 
-    const filePath = 'E://Quote.pdf';
-    final file = File(filePath);
-    await file.writeAsBytes(pdfData);
-
-    Future.delayed(const Duration(seconds: 4), () {
-      Generate_popup.callback();
-    });
-
+    // Show the dialog immediately (not awaited)
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            content: Generate_popup(
-              type: 'E://Quote.pdf',
-            ));
+          backgroundColor: Primary_colors.Light,
+          content: Generate_popup(
+            type: 'E://Quote.pdf', // Pass the expected file path
+          ),
+        );
       },
     );
-    // Sales_Client.Quote_Callback();
+
+    // Wait for PDF data generation to complete
+    final pdfData = await pdfGenerationFuture;
+
+    const filePath = 'E://Quote.pdf';
+    final file = File(filePath);
+
+    // Perform file writing and any other future tasks in parallel
+    await Future.wait([
+      file.writeAsBytes(pdfData), // Write PDF to file asynchronously
+      // Future.delayed(const Duration(seconds: )), // Simulate any other async task if needed
+    ]);
+
+    // Continue execution while the dialog is still open
+    viewsendController.setLoading(true);
   }
 }

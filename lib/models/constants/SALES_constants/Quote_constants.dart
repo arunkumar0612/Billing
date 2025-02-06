@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/models/entities/product_entities.dart';
-import '../entities/Debit_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
+import '../../entities/SALES/Quote_entities.dart';
 
-class DebitModel {
+class QuoteModel {
   final Rxn<TabController> tabController = Rxn<TabController>();
-  var Debit_no = "".obs;
-  var Debit_table_heading = "".obs;
+
+  var Quote_no = "".obs;
+  var Quote_table_heading = "".obs;
 
 //######################################################################################################################################
 //DETAILS
+  final TitleController = TextEditingController().obs;
   final clientAddressNameController = TextEditingController().obs;
   final clientAddressController = TextEditingController().obs;
   final billingAddressNameController = TextEditingController().obs;
@@ -23,11 +25,9 @@ class DebitModel {
   final hsnController = TextEditingController().obs;
   final priceController = TextEditingController().obs;
   final quantityController = TextEditingController().obs;
-  final remarksController = TextEditingController().obs;
   final gstController = TextEditingController().obs;
-  var Debit_products = <DebitProduct>[].obs;
-  var Debit_gstTotals = <Map<String, double>>[].obs;
-
+  var Quote_products = <QuoteProduct>[].obs;
+  var Quote_gstTotals = <QuoteGSTtotals>[].obs;
 //######################################################################################################################################
 //NOTES
   final noteformKey = GlobalKey<FormState>().obs;
@@ -40,13 +40,14 @@ class DebitModel {
   final recommendationKeyController = TextEditingController().obs;
   final recommendationValueController = TextEditingController().obs;
   // var selectedheadingType = Rxn<String>();
-  var Debit_noteList = <Note>[].obs;
-  var Debit_recommendationList = <Recommendation>[].obs;
+  var Quote_noteList = <Note>[].obs;
+  var Quote_recommendationList = <Recommendation>[].obs;
   final notecontent = <String>[
     'Delivery within 30 working days from the date of issuing the PO.',
     'Payment terms : 100% along with PO.',
     'Client needs to provide Ethernet cable and UPS power supply to the point where the device is proposed to install.',
   ].obs;
+
   // final noteType = [
   //   'With Heading',
   //   'Without Heading',

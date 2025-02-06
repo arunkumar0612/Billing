@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-import '../../../../controllers/Debit_actions.dart';
+import '../../../../controllers/SALEScontrollers/Debit_actions.dart';
 import '../../../../services/SALES/Debit_services/DebitProduct_services.dart';
 
 class DebitProducts extends StatefulWidget with DebitproductService {

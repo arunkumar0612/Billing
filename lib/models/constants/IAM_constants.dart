@@ -1,6 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+class IAMmodel {
+  final pagename = "Login".obs;
+}
+
 class LoginModel {
   final userController = TextEditingController().obs;
   final passwordController = TextEditingController().obs;
@@ -18,7 +22,6 @@ class RegisterModel {
   final confirmController = TextEditingController().obs;
   final indicator = false.obs;
   final passwordVisibility = true.obs;
-
   final errors = <String, String>{}.obs;
 }
 
@@ -38,4 +41,8 @@ class NewpasswordModel {
   final indicator = false.obs;
   final passwordVisibility = true.obs;
   final errors = <String, String>{}.obs;
+}
+
+class SessiontokenModel {
+  final sessiontokenController = "15b97917-b296-11ed-997a-b42e9923".obs;
 }

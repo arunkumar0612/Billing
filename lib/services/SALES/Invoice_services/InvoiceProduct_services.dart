@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/controllers/Invoice_actions.dart';
-import 'package:ssipl_billing/models/entities/product_entities.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
+import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
+
+import '../../../models/entities/SALES/Invoice_entities.dart';
 
 mixin InvoiceproductService {
   final InvoiceController invoiceController = Get.find<InvoiceController>();
@@ -33,17 +35,19 @@ mixin InvoiceproductService {
   }
 
   void onSubmit() {
-    invoiceController.invoiceModel.Invoice_gstTotals.assignAll(invoiceController.invoiceModel.Invoice_products
-        .fold<Map<double, double>>({}, (Map<double, double> accumulator, InvoiceProduct product) {
-          accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
-          return accumulator;
-        })
-        .entries
-        .map((entry) => {
-              'gst': entry.key,
-              'total': entry.value,
-            })
-        .toList());
+    invoiceController.invoiceModel.Invoice_gstTotals.assignAll(
+      invoiceController.invoiceModel.Invoice_products
+          .fold<Map<double, double>>({}, (Map<double, double> accumulator, InvoiceProduct product) {
+            accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
+            return accumulator;
+          })
+          .entries
+          .map((entry) => InvoiceGSTtotals(
+                gst: entry.key, // Convert key to String
+                total: entry.value, // Convert value to String
+              ))
+          .toList(),
+    );
   }
 
   void updateproduct(context) {

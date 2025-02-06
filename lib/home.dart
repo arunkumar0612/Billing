@@ -210,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   const Dashboard(),
                   const Billing(),
                   const Subscription_Client(),
-                  const Sales_Client(),
+                  Sales_Client(),
                   const Vendor(),
                   const Inventory(),
                   Container(),

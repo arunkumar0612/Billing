@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import '../../../../controllers/Credit_actions.dart';
+import '../../../../controllers/SALEScontrollers/Credit_actions.dart';
 import 'Credit_details.dart';
 import 'Credit_note.dart';
 import 'Credit_products.dart';

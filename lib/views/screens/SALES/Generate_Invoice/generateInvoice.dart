@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import '../../../../controllers/Invoice_actions.dart';
+import '../../../../controllers/SALEScontrollers/Invoice_actions.dart';
 import 'invoice_details.dart';
 import 'invoice_note.dart';
 import 'invoice_products.dart';

@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-import '../../../../controllers/RFQ_actions.dart';
-import '../../../../models/entities/product_entities.dart';
+import '../../../../controllers/SALEScontrollers/RFQ_actions.dart';
+import '../../../../models/entities/SALES/product_entities.dart';
 import '../../../../utils/helpers/support_functions.dart';
 
 Future<Uint8List> generate_RFQ(
@@ -16,7 +16,7 @@ Future<Uint8List> generate_RFQ(
   to_phone,
   to_addr,
   RFQ_num,
-) async {
+) {
   final RFQ = Request_for_quote(
     products: products,
     baseColor: PdfColors.green500,
@@ -32,7 +32,7 @@ Future<Uint8List> generate_RFQ(
     to_addr: "Address : 171, Palani Road,Udumalpet, 642154",
   );
 
-  return await RFQ.buildPdf(pageFormat);
+  return RFQ.buildPdf(pageFormat);
 }
 
 class Request_for_quote {

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-import '../../../../controllers/RFQ_actions.dart';
+import '../../../../controllers/SALEScontrollers/RFQ_actions.dart';
 import '../../../../services/SALES/RFQ_services/RFQDetails_service.dart';
 
 class RFQDetails extends StatefulWidget with RFQdetailsService {

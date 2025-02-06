@@ -3,9 +3,10 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:ssipl_billing/models/entities/SALES/Quote_entities.dart';
 
-import '../../../../controllers/Quote_actions.dart';
-import '../../../../models/entities/product_entities.dart';
+import '../../../../controllers/SALEScontrollers/Quote_actions.dart';
+import '../../../../models/entities/SALES/product_entities.dart';
 import '../../../../utils/helpers/support_functions.dart';
 
 Future<Uint8List> generate_Quote(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, quote_gstTotals) async {
@@ -19,7 +20,7 @@ class Quotation {
       // required this.items,
       });
   final QuoteController quoteController = Get.find<QuoteController>();
-  List<Map<String, dynamic>> quote_gstTotals = [];
+  List<QuoteGSTtotals> quote_gstTotals = [];
   String client_addr_name = "";
   String client_addr = "";
   String bill_addr_name = "";
@@ -33,8 +34,8 @@ class Quotation {
   final PdfColor baseColor;
   final PdfColor accentColor;
   static const _darkColor = PdfColors.blueGrey800;
-  double get CGST_total => quote_gstTotals.map((item) => (item['gst'] as double) / 2 * (item['total'] as double) / 100).reduce((a, b) => a + b);
-  double get SGST_total => quote_gstTotals.map((item) => (item['gst'] as double) / 2 * (item['total'] as double) / 100).reduce((a, b) => a + b);
+  double get CGST_total => quote_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
+  double get SGST_total => quote_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
   double get _total => products.map<double>((p) => p.total).reduce((a, b) => a + b);
   double get _grandTotal => _total + CGST_total + SGST_total;
   dynamic profileImage;
@@ -499,7 +500,7 @@ class Quotation {
                             ),
                             width: 80,
                             height: 38,
-                            child: pw.Center(child: regular(formatzero(quote_gstTotals[index]['total']), 10)),
+                            child: pw.Center(child: regular(formatzero(quote_gstTotals[index].total), 10)),
                           ),
                           pw.Container(
                             height: 38,
@@ -513,7 +514,7 @@ class Quotation {
                                   ),
                                   width: 40, // Define width instead of Expanded
                                   child: pw.Center(
-                                    child: regular((quote_gstTotals[index]['gst'] / 2).toString(), 10),
+                                    child: regular((quote_gstTotals[index].gst / 2).toString(), 10),
                                   ),
                                 ),
                                 pw.Container(
@@ -528,7 +529,7 @@ class Quotation {
                                   child: pw.Center(
                                     child: regular(
                                         formatzero(
-                                          ((quote_gstTotals[index]['total'].toInt() / 100) * (quote_gstTotals[index]['gst'] / 2)),
+                                          ((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst / 2)),
                                         ),
                                         10),
                                   ),
@@ -547,14 +548,14 @@ class Quotation {
                                     ),
                                   ),
                                   width: 40, // Define width instead of Expanded
-                                  child: pw.Center(child: regular((quote_gstTotals[index]['gst'] / 2).toString(), 10)),
+                                  child: pw.Center(child: regular((quote_gstTotals[index].gst / 2).toString(), 10)),
                                 ),
                                 pw.Container(
                                   width: 70, // Define width instead of Expanded
                                   decoration: const pw.BoxDecoration(
                                     border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700)),
                                   ),
-                                  child: pw.Center(child: regular(formatzero(((quote_gstTotals[index]['total'].toInt() / 100) * (quote_gstTotals[index]['gst'] / 2))), 10)),
+                                  child: pw.Center(child: regular(formatzero(((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst / 2))), 10)),
                                 ),
                               ],
                             ),

@@ -1,4 +1,4 @@
 class RouteNames {
-  static const String login = '/login';
+  static const String IAM = '/IAM';
   static const String home = '/home';
 }

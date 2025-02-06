@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/constants/IAM_constants.dart';
+import '../models/entities/IAM_entities.dart';
+import '../models/entities/Response_entities.dart';
+
+class IAMController extends GetxController {
+  var IAMModel = IAMmodel();
+
+  void updateUsernameController(String value) {
+    IAMModel.pagename.value = value;
+  }
+}
 
 class LoginController extends GetxController {
   var loginModel = LoginModel();
@@ -107,5 +117,17 @@ class NewpasswordController extends GetxController {
 
   void updateError(Map<String, String> value) {
     newpasswordModel.errors.value = value;
+  }
+}
+
+class SessiontokenController extends GetxController {
+  var sessiontokenModel = SessiontokenModel();
+  void loginApiData(CMDmResponse value) {
+    var sessionToken = LoginData.fromJson(value).SESSIONTOKEN;
+    updateSessiontoken(sessionToken);
+  }
+
+  void updateSessiontoken(String value) {
+    sessiontokenModel.sessiontokenController.value = value;
   }
 }

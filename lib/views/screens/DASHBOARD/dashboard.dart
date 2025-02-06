@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:ssipl_billing/views/screens/DASHBOARD/Graph.dart';
 // import 'package:ssipl_billing/cards.dart';
-import 'package:ssipl_billing/views/screens/DASHBOARD/dashboardcards.dart';
+
 import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/views/screens/DASHBOARD/Graph.dart';
+import 'package:ssipl_billing/views/screens/DASHBOARD/dashboardcards.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -243,10 +244,7 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       ShaderMask(
                         shaderCallback: (bounds) => const LinearGradient(
-                          colors: [
-                            Primary_colors.Color3,
-                            Primary_colors.Color4
-                          ], // Example gradient
+                          colors: [Primary_colors.Color3, Primary_colors.Color4], // Example gradient
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ).createShader(bounds),
@@ -358,7 +356,9 @@ class _DashboardState extends State<Dashboard> {
                     Expanded(
                       child: Column(
                         children: [
-                          const Expanded(child: Dashboard_cards()),
+                          const Expanded(
+                            child: Dashboard_cards(),
+                          ),
                           const SizedBox(height: 10),
                           Expanded(
                             child: Row(
@@ -409,10 +409,11 @@ class _DashboardState extends State<Dashboard> {
                                         ),
                                         // const SizedBox(height: 10),
                                         Expanded(
-                                            child: Padding(
-                                          padding: EdgeInsets.all(15),
-                                          child: Sales_Graph(),
-                                        )),
+                                          child: Padding(
+                                            padding: EdgeInsets.all(15),
+                                            child: Sales_Graph(),
+                                          ),
+                                        ),
                                         // const SizedBox(height: 10),
                                       ],
                                     ),
@@ -627,10 +628,7 @@ class _DashboardState extends State<Dashboard> {
                                               children: [
                                                 ShaderMask(
                                                   shaderCallback: (bounds) => const LinearGradient(
-                                                    colors: [
-                                                      Primary_colors.Color3,
-                                                      Primary_colors.Color4
-                                                    ],
+                                                    colors: [Primary_colors.Color3, Primary_colors.Color4],
                                                     begin: Alignment.topLeft,
                                                     end: Alignment.bottomRight,
                                                   ).createShader(bounds),
@@ -882,10 +880,7 @@ class _DashboardState extends State<Dashboard> {
                                                   // Forward Arrow Icon
                                                   ShaderMask(
                                                     shaderCallback: (bounds) => const LinearGradient(
-                                                      colors: [
-                                                        Primary_colors.Color3,
-                                                        Primary_colors.Color3
-                                                      ],
+                                                      colors: [Primary_colors.Color3, Primary_colors.Color3],
                                                       begin: Alignment.topLeft,
                                                       end: Alignment.bottomRight,
                                                     ).createShader(bounds),

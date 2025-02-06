@@ -1,3 +1,5 @@
+import 'Response_entities.dart';
+
 class Login_Request {
   String? username;
   String? password;
@@ -15,38 +17,6 @@ class Login_Request {
     return {
       "username": username,
       "password": password,
-    };
-  }
-}
-
-class Login_Response {
-  final bool code;
-  final String? message;
-  final int? userId;
-  final String? sessionToken;
-
-  Login_Response({
-    required this.code,
-    this.message,
-    this.userId,
-    this.sessionToken,
-  });
-
-  factory Login_Response.fromJson(Map<String, dynamic> json) {
-    return Login_Response(
-      code: json['code'] as bool,
-      message: json['message'] as String?,
-      userId: json['userid'] as int?,
-      sessionToken: json['SESSIONTOKEN'] as String?,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'code': code,
-      'message': message,
-      'userid': userId,
-      'SESSIONTOKEN': sessionToken,
     };
   }
 }
@@ -78,30 +48,6 @@ class Register_Request {
   }
 }
 
-class Register_Response {
-  final bool code;
-  final String? message;
-
-  Register_Response({
-    required this.code,
-    this.message,
-  });
-
-  factory Register_Response.fromJson(Map<String, dynamic> json) {
-    return Register_Response(
-      code: json['code'] as bool,
-      message: json['message'] as String?,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'code': code,
-      'message': message,
-    };
-  }
-}
-
 class Forgotpassword_Request {
   String? username;
 
@@ -116,30 +62,6 @@ class Forgotpassword_Request {
   Map<String, dynamic> toJson() {
     return {
       "username": username,
-    };
-  }
-}
-
-class Forgotpassword_Response {
-  final bool code;
-  final String? message;
-
-  Forgotpassword_Response({
-    required this.code,
-    this.message,
-  });
-
-  factory Forgotpassword_Response.fromJson(Map<String, dynamic> json) {
-    return Forgotpassword_Response(
-      code: json['code'] as bool,
-      message: json['message'] as String?,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'code': code,
-      'message': message,
     };
   }
 }
@@ -165,30 +87,6 @@ class VerifyOTP_Request {
   }
 }
 
-class VerifyOTP_Response {
-  final bool code;
-  final String? message;
-
-  VerifyOTP_Response({
-    required this.code,
-    this.message,
-  });
-
-  factory VerifyOTP_Response.fromJson(Map<String, dynamic> json) {
-    return VerifyOTP_Response(
-      code: json['code'] as bool,
-      message: json['message'] as String?,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'code': code,
-      'message': message,
-    };
-  }
-}
-
 class NewPassword_Request {
   String? username;
   String? password;
@@ -210,26 +108,26 @@ class NewPassword_Request {
   }
 }
 
-class Newpassword_Response {
-  final bool code;
-  final String? message;
+class LoginData {
+  final int userid;
+  final String SESSIONTOKEN;
 
-  Newpassword_Response({
-    required this.code,
-    this.message,
+  LoginData({
+    required this.userid,
+    required this.SESSIONTOKEN,
   });
 
-  factory Newpassword_Response.fromJson(Map<String, dynamic> json) {
-    return Newpassword_Response(
-      code: json['code'] as bool,
-      message: json['message'] as String?,
+  factory LoginData.fromJson(CMDmResponse json) {
+    return LoginData(
+      userid: json.data['userid'] as int,
+      SESSIONTOKEN: json.data['SESSIONTOKEN'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'code': code,
-      'message': message,
+      'userid': userid,
+      'SESSIONTOKEN': SESSIONTOKEN,
     };
   }
 }

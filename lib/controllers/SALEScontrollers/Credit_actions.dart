@@ -1,8 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../models/constants/Credit_constants.dart';
-import '../models/entities/Credit_entities.dart';
-import '../models/entities/product_entities.dart';
+import '../../models/constants/SALES_constants/Credit_constants.dart';
+import '../../models/entities/SALES/Credit_entities.dart';
+import '../../models/entities/SALES/product_entities.dart';
 
 class CreditController extends GetxController {
   var creditModel = CreditModel();
@@ -107,7 +108,9 @@ class CreditController extends GetxController {
     if (key.isNotEmpty && value.isNotEmpty) {
       creditModel.Credit_recommendationList.add(Recommendation(key: key, value: value));
     } else {
-      print('Key and value must not be empty');
+      if (kDebugMode) {
+        print('Key and value must not be empty');
+      }
     }
   }
 

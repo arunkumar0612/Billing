@@ -4,12 +4,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ssipl_billing/models/entities/IAM_entities.dart';
 import '../../controllers/IAM_actions.dart';
 import '../../models/constants/api.dart';
+import '../../models/entities/Response_entities.dart';
 import '../../routes/route_names.dart';
-import '../../utils/helpers/encrypt_decrypt.dart';
+// import '../../utils/helpers/encrypt_decrypt.dart';
 import '../../views/components/Basic_DialogBox.dart';
 import '../APIservices/invoker.dart';
 
 mixin LoginServices {
+  final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final LoginController loginController = Get.find<LoginController>();
   final Invoker apiController = Get.find<Invoker>();
 
@@ -23,19 +25,22 @@ mixin LoginServices {
       Map<String, dynamic>? response = await apiController.IAM(requestBody.toJson(), API.Login_API);
 
       if (response?['statusCode'] == 200) {
-        Login_Response data = Login_Response.fromJson(response!);
-        if (data.code) {
-          AES.SESSIONTOKEN = data.sessionToken ?? "null";
+        CMDmResponse value = CMDmResponse.fromJson(response!);
+        if (value.code) {
+          sessiontokenController.loginApiData(value);
+
           loginController.toggleIndicator(false);
           Get.toNamed(RouteNames.home);
         } else {
           loginController.toggleIndicator(false);
-          await Basic_dialog(context: context, title: 'Login Failed', content: data.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, title: 'Login Failed', content: value.message ?? "", onOk: () {});
         }
       } else {
+        loginController.toggleIndicator(false);
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
+      loginController.toggleIndicator(false);
       Basic_dialog(context: context, title: "ERROR", content: "$e");
     }
   }

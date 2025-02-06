@@ -39,3 +39,24 @@ class Note {
     };
   }
 }
+
+class QuoteGSTtotals {
+  final double gst;
+  final double total;
+
+  QuoteGSTtotals({
+    required this.gst,
+    required this.total,
+  });
+
+  factory QuoteGSTtotals.fromJson(Map<String, dynamic> json) {
+    return QuoteGSTtotals(gst: json['GST'], total: json['total']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'GST': gst,
+      'total': total,
+    };
+  }
+}

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/controllers/DC_actions.dart';
-import 'package:ssipl_billing/models/entities/product_entities.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
+import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 
 mixin DcproductService {
   final DCController dcController = Get.find<DCController>();

@@ -1,4 +1,4 @@
-import '../../utils/helpers/support_functions.dart';
+import '../../../utils/helpers/support_functions.dart';
 
 class DCProduct {
   const DCProduct(

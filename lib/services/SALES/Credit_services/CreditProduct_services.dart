@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/models/entities/product_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 
-import '../../../controllers/Credit_actions.dart';
+import '../../../controllers/SALEScontrollers/Credit_actions.dart';
+import '../../../models/entities/SALES/Credit_entities.dart';
 
 mixin CreditproductService {
   final CreditController creditController = Get.find<CreditController>();
@@ -35,17 +36,19 @@ mixin CreditproductService {
   }
 
   void onSubmit() {
-    creditController.creditModel.Credit_gstTotals.assignAll(creditController.creditModel.Credit_products
-        .fold<Map<double, double>>({}, (Map<double, double> accumulator, CreditProduct product) {
-          accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
-          return accumulator;
-        })
-        .entries
-        .map((entry) => {
-              'gst': entry.key,
-              'total': entry.value,
-            })
-        .toList());
+    creditController.creditModel.Credit_gstTotals.assignAll(
+      creditController.creditModel.Credit_products
+          .fold<Map<double, double>>({}, (Map<double, double> accumulator, CreditProduct product) {
+            accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
+            return accumulator;
+          })
+          .entries
+          .map((entry) => CreditGSTtotals(
+                gst: entry.key, // Convert key to String
+                total: entry.value, // Convert value to String
+              ))
+          .toList(),
+    );
   }
 
   void updateproduct(context) {

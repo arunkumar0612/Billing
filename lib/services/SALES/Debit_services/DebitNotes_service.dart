@@ -3,10 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
-import 'package:ssipl_billing/controllers/Debit_actions.dart';
-import 'package:ssipl_billing/models/entities/Debit_entities.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
+import 'package:ssipl_billing/models/entities/SALES/Debit_entities.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_Debit/Debit_template.dart';
 
+import '../../../controllers/viewSend_actions.dart';
 import '../../../themes/style.dart';
 import '../../../views/components/view_send_pdf.dart';
 import '../../../views/screens/SALES/Generate_DebitNote/Debit_template.dart';
@@ -14,6 +15,7 @@ import '../../../views/screens/SALES/Generate_DebitNote/Debit_template.dart';
 
 mixin DebitnotesService {
   final DebitController debitController = Get.find<DebitController>();
+  final ViewsendController viewsendController = Get.find<ViewsendController>();
 
   void addtable_row(context) {
     debitController.updateTableValueControllerText(debitController.debitModel.recommendationHeadingController.value.text);
@@ -93,27 +95,36 @@ mixin DebitnotesService {
     }
   }
 
-  void Generate_Debit(context) async {
-    final pdfData = await generate_Debit(PdfPageFormat.a4, debitController.debitModel.Debit_products, debitController.debitModel.clientAddressNameController.value.text, debitController.debitModel.clientAddressController.value.text, debitController.debitModel.billingAddressNameController.value.text, debitController.debitModel.billingAddressController.value.text, debitController.debitModel.Debit_no.value, 9, debitController.debitModel.Debit_gstTotals);
+  void Generate_Debit(BuildContext context) async {
+    // Start generating PDF data as a Future
+    viewsendController.setLoading(false);
+    final pdfGenerationFuture = generate_Debit(PdfPageFormat.a4, debitController.debitModel.Debit_products, debitController.debitModel.clientAddressNameController.value.text, debitController.debitModel.clientAddressController.value.text, debitController.debitModel.billingAddressNameController.value.text, debitController.debitModel.billingAddressController.value.text, debitController.debitModel.Debit_no.value, 9, debitController.debitModel.Debit_gstTotals);
 
-    const filePath = 'E://Debit.pdf';
-    final file = File(filePath);
-    await file.writeAsBytes(pdfData);
-
-    Future.delayed(const Duration(seconds: 4), () {
-      Generate_popup.callback();
-    });
-
+    // Show the dialog immediately (not awaited)
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            content: Generate_popup(
-              type: 'E://Debit.pdf',
-            ));
+          backgroundColor: Primary_colors.Light,
+          content: Generate_popup(
+            type: 'E://Debit.pdf', // Pass the expected file path
+          ),
+        );
       },
     );
-    // Sales_Client.Debit_Callback();
+
+    // Wait for PDF data generation to complete
+    final pdfData = await pdfGenerationFuture;
+    const filePath = 'E://Debit.pdf';
+    final file = File(filePath);
+
+    // Perform file writing and any other future tasks in parallel
+    await Future.wait([
+      file.writeAsBytes(pdfData), // Write PDF to file asynchronously
+      // Future.delayed(const Duration(seconds: )), // Simulate any other async task if needed
+    ]);
+
+    // Continue execution while the dialog is still open
+    viewsendController.setLoading(true);
   }
 }

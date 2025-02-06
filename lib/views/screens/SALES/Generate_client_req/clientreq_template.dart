@@ -4,10 +4,10 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/models/entities/product_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:image/image.dart' as img;
-import '../../../../controllers/ClientReq_actions.dart';
+import '../../../../controllers/SALEScontrollers/ClientReq_actions.dart';
 
 Future<Uint8List> generate_clientreq(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, clientreq_num, chosen_filepath) async {
   final clientreq = Request_for_quote(products: products, baseColor: PdfColors.green500, accentColor: PdfColors.blueGrey900, client_addr_name: client_addr_name, client_addr: client_addr, bill_addr_name: bill_addr_name, bill_addr: bill_addr, clientreq: clientreq_num ?? "", type: '', imagePath: chosen_filepath);

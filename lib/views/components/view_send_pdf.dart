@@ -106,7 +106,7 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
   }
 
   void _addclientRequest() async {
-    String? valueToToken = sessiontokenController.sessiontokenModel.sessiontokenController.value;
+    String? valueToToken = sessiontokenController.sessiontokenModel.sessiontoken.value;
 
     final formData = {
       "phoneno": "8248650039",

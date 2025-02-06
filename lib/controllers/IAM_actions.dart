@@ -128,6 +128,6 @@ class SessiontokenController extends GetxController {
   }
 
   void updateSessiontoken(String value) {
-    sessiontokenModel.sessiontokenController.value = value;
+    sessiontokenModel.sessiontoken.value = value;
   }
 }

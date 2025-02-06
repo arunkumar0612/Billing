@@ -17,7 +17,7 @@ mixin LoginServices {
 
   void Login(context) async {
     try {
-      final requestBody = Login_Request(
+      Login_Request requestBody = Login_Request(
         username: loginController.loginModel.userController.value.text,
         password: loginController.loginModel.passwordController.value.text,
       );

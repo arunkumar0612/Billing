@@ -247,7 +247,10 @@ class clientreqDetailsState extends State<clientreqDetails> {
                                       ),
                                       ElevatedButton(
                                         onPressed: () async {
-                                          clientreqController.pickFile(context);
+                                          await clientreqController.pickFile(context);
+                                          widget.add_details(context);
+                                          print('000000000000000000000000000000000000000000000000000000000');
+                                          widget.send_MOR(context);
                                         },
                                         style: ButtonStyle(
                                           overlayColor: WidgetStateProperty.all<Color>(
@@ -285,6 +288,7 @@ class clientreqDetailsState extends State<clientreqDetails> {
                                 onPressed: () async {
                                   if (clientreqController.clientReqModel.detailsformKey.value.currentState?.validate() ?? false) {
                                     widget.add_details(context);
+                                    widget.send_MOR(context);
                                   }
                                 },
                               ),

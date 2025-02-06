@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/constants/Quote_constants.dart';
@@ -111,7 +112,9 @@ class QuoteController extends GetxController {
     if (key.isNotEmpty && value.isNotEmpty) {
       quoteModel.Quote_recommendationList.add(Recommendation(key: key, value: value));
     } else {
-      print('Key and value must not be empty');
+      if (kDebugMode) {
+        print('Key and value must not be empty');
+      }
     }
   }
 
@@ -124,10 +127,14 @@ class QuoteController extends GetxController {
       if (key.isNotEmpty && value.isNotEmpty) {
         quoteModel.Quote_recommendationList[index] = Recommendation(key: key, value: value);
       } else {
-        print('Key and value must not be empty');
+        if (kDebugMode) {
+          print('Key and value must not be empty');
+        }
       }
     } else {
-      print('Invalid index provided');
+      if (kDebugMode) {
+        print('Invalid index provided');
+      }
     }
   }
 
@@ -135,7 +142,9 @@ class QuoteController extends GetxController {
     if (noteContent.isNotEmpty) {
       quoteModel.Quote_noteList.add(Note(notename: noteContent));
     } else {
-      print('Note content must not be empty'); // Handle empty input (optional)
+      if (kDebugMode) {
+        print('Note content must not be empty');
+      } // Handle empty input (optional)
     }
   }
 

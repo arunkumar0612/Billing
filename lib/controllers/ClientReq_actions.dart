@@ -136,12 +136,7 @@ class ClientreqController extends GetxController {
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: [
-        'png',
-        'jpg',
-        'jpeg',
-        'pdf'
-      ],
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf'],
     );
 
     if (result != null) {
@@ -183,7 +178,9 @@ class ClientreqController extends GetxController {
     if (key.isNotEmpty && value.isNotEmpty) {
       clientReqModel.clientReqRecommendationList.add(Recommendation(key: key, value: value));
     } else {
-      print('Key and value must not be empty');
+      if (kDebugMode) {
+        print('Key and value must not be empty');
+      }
     }
   }
 
@@ -196,10 +193,14 @@ class ClientreqController extends GetxController {
       if (key.isNotEmpty && value.isNotEmpty) {
         clientReqModel.clientReqRecommendationList[index] = Recommendation(key: key, value: value);
       } else {
-        print('Key and value must not be empty');
+        if (kDebugMode) {
+          print('Key and value must not be empty');
+        }
       }
     } else {
-      print('Invalid index provided');
+      if (kDebugMode) {
+        print('Invalid index provided');
+      }
     }
   }
 
@@ -207,7 +208,9 @@ class ClientreqController extends GetxController {
     if (noteContent.isNotEmpty) {
       clientReqModel.clientReqNoteList.add(Note(notename: noteContent));
     } else {
-      print('Note content must not be empty'); // Handle empty input (optional)
+      if (kDebugMode) {
+        print('Note content must not be empty');
+      } // Handle empty input (optional)
     }
   }
 

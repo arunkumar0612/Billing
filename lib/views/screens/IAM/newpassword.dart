@@ -7,7 +7,7 @@ import 'package:ssipl_billing/controllers/IAM_actions.dart';
 
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/validators/newpassword_validator.dart';
-import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
+// import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
 
 import 'package:glowy_borders/glowy_borders.dart';
 
@@ -19,6 +19,7 @@ class Newpassword extends StatefulWidget with NewpasswordValidator {
 }
 
 class _NewpasswordState extends State<Newpassword> {
+  final IAMController IamController = Get.find<IAMController>();
   final NewpasswordController forgotpasswordController = Get.find<NewpasswordController>();
   @override
   Widget build(BuildContext context) {
@@ -28,14 +29,7 @@ class _NewpasswordState extends State<Newpassword> {
       return AnimatedGradientBorder(
         animationTime: 2,
         glowSize: forgotpasswordController.newpasswordModel.indicator.value ? 5 : 5,
-        gradientColors: forgotpasswordController.newpasswordModel.indicator.value
-            ? [
-                Color.fromARGB(255, 157, 98, 253),
-                Colors.black
-              ]
-            : [
-                Primary_colors.Light
-              ],
+        gradientColors: forgotpasswordController.newpasswordModel.indicator.value ? [Color.fromARGB(255, 157, 98, 253), Colors.black] : [Primary_colors.Light],
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),
@@ -168,11 +162,9 @@ class _NewpasswordState extends State<Newpassword> {
                         ),
                         TextButton(
                           onPressed: () {
-                            setState(() {
-                              // IAM.Page_name = 'Forgotpassword';
-                              IAM.Page_name = 'Forgotpassword';
-                              IAM.update();
-                            });
+                            // IAM.Page_name = 'Forgotpassword';
+                            IamController.IAMModel.pagename.value = 'Forgotpassword';
+                            // IAM.update();
                           },
                           child: Text(
                             'Back',

@@ -1,6 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+class IAMmodel {
+  final pagename = "Login".obs;
+}
+
 class LoginModel {
   final userController = TextEditingController().obs;
   final passwordController = TextEditingController().obs;

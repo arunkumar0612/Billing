@@ -28,7 +28,7 @@ mixin LoginServices {
         CMDmResponse value = CMDmResponse.fromJson(response!);
         if (value.code) {
           sessiontokenController.loginApiData(value);
-          print(sessiontokenController.sessiontokenModel.sessiontokenController.value);
+
           loginController.toggleIndicator(false);
           Get.toNamed(RouteNames.home);
         } else {

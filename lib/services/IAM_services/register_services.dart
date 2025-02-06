@@ -4,11 +4,12 @@ import 'package:ssipl_billing/models/entities/IAM_entities.dart';
 import '../../controllers/IAM_actions.dart';
 import '../../models/constants/api.dart';
 import '../../models/entities/Response_entities.dart';
-import '../../routes/route_names.dart';
+// import '../../routes/route_names.dart';
 import '../../views/components/Basic_DialogBox.dart';
 import '../APIservices/invoker.dart';
 
 class RegisterServices {
+  final IAMController IamController = Get.find<IAMController>();
   final RegisterController registerController = Get.find<RegisterController>();
   final Invoker apiController = Get.find<Invoker>();
 
@@ -40,7 +41,7 @@ class RegisterServices {
             },
           );
           registerController.toggleIndicator(true);
-          Get.toNamed(RouteNames.login);
+          IamController.IAMModel.pagename.value = "Login";
         } else {
           registerController.toggleIndicator(false);
           await Basic_dialog(context: context, title: 'Register Failed', content: data.message ?? "", onOk: () {});

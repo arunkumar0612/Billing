@@ -3,8 +3,6 @@ import 'package:ssipl_billing/controllers/IAM_actions.dart';
 
 import 'package:ssipl_billing/utils/validators/register_validator.dart';
 
-import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
-
 import 'package:glowy_borders/glowy_borders.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:get/get.dart';
@@ -18,7 +16,7 @@ class RegisterPage extends StatefulWidget with RegisterValidator {
 
 class _RegisterPageState extends State<RegisterPage> {
   final RegisterController registerController = Get.find<RegisterController>();
-
+  final IAMController IamController = Get.find<IAMController>();
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -27,14 +25,7 @@ class _RegisterPageState extends State<RegisterPage> {
       return AnimatedGradientBorder(
         animationTime: 2,
         glowSize: registerController.registerModel.indicator.value ? 5 : 5,
-        gradientColors: registerController.registerModel.indicator.value
-            ? [
-                const Color.fromARGB(255, 157, 98, 253),
-                Colors.black
-              ]
-            : [
-                Primary_colors.Light
-              ],
+        gradientColors: registerController.registerModel.indicator.value ? [const Color.fromARGB(255, 157, 98, 253), Colors.black] : [Primary_colors.Light],
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),
@@ -265,10 +256,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         TextButton(
                           onPressed: () {
-                            setState(() {
-                              IAM.Page_name = 'Login';
-                              IAM.update();
-                            });
+                            IamController.IAMModel.pagename.value = 'Login';
                           },
                           child: Text(
                             'LogIn',

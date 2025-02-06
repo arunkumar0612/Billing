@@ -20,6 +20,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
 ////////////////////////////----IAM----////////////////////////////////////
+  Get.lazyPut<IAMController>(() => IAMController());
   Get.lazyPut<SessiontokenController>(() => SessiontokenController());
   Get.lazyPut<LoginController>(() => LoginController());
   Get.lazyPut<RegisterController>(() => RegisterController());
@@ -54,7 +55,6 @@ Future<void> main() async {
       },
     );
   }
-  // Run the app
   runApp(const MyApp());
 }
 
@@ -64,7 +64,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'ERP',
-      initialRoute: '/login',
+      // home: const IAM(),
+      initialRoute: '/IAM', // Set the initial route
       getPages: AppRoutes.routes,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

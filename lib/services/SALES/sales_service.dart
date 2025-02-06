@@ -1,16 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/controllers/DC_actions.dart';
-import 'package:ssipl_billing/controllers/Debit_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/controllers/Invoice_actions.dart';
-import 'package:ssipl_billing/controllers/Quote_actions.dart';
-import 'package:ssipl_billing/controllers/RFQ_actions.dart';
-import 'package:ssipl_billing/controllers/Credit_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/generateRFQ.dart';
-import '../../controllers/Sales_actions.dart';
+import '../../controllers/SALEScontrollers/Sales_actions.dart';
 import '../../models/constants/api.dart';
 import '../../models/entities/Response_entities.dart';
 import '../../views/components/Basic_DialogBox.dart';
@@ -19,6 +20,7 @@ import '../../views/screens/SALES/Generate_DC/generateDC.dart';
 import '../../views/screens/SALES/Generate_DebitNote/generateDebit.dart';
 import '../../views/screens/SALES/Generate_Invoice/generateInvoice.dart';
 import '../../views/screens/SALES/Generate_Quote/generateQuote.dart';
+import '../../views/screens/SALES/Generate_client_req/generate_clientreq.dart';
 import '../../views/screens/SALES/Generate_creditNote/generateCredit.dart';
 import '../APIservices/invoker.dart';
 // import 'package:ssipl_billing/view_send_pdf.dart';
@@ -33,6 +35,7 @@ mixin SalesServices {
   final DebitController debitController = Get.find<DebitController>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final SalesController salesController = Get.find<SalesController>();
+  final ClientreqController clientreqController = Get.find<ClientreqController>();
 
   void GetCustomerList(context) async {
     try {
@@ -57,6 +60,114 @@ mixin SalesServices {
     } catch (e) {
       Basic_dialog(context: context, title: "ERROR", content: "$e");
     }
+  }
+
+  dynamic Generate_client_reqirement_dialougebox(String value, context) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents closing the dialog by clicking outside
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Primary_colors.Dark,
+          content: Stack(
+            children: [
+              SizedBox(
+                height: 650,
+                width: 900,
+                child: Generate_clientreq(
+                  value: value,
+                ),
+              ),
+              Positioned(
+                top: 3,
+                right: 0,
+                child: IconButton(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: const Color.fromARGB(255, 219, 216, 216),
+                    ),
+                    height: 30,
+                    width: 30,
+                    child: const Icon(Icons.close, color: Colors.red),
+                  ),
+                  onPressed: () async {
+                    // Check if any data exists in clientreq variables
+                    if ((clientreqController.clientReqModel.clientReqProductDetails.isNotEmpty) || (clientreqController.clientReqModel.clientReqNoteList.isNotEmpty) || (clientreqController.clientReqModel.clientReqRecommendationList.isNotEmpty) || (clientreqController.clientReqModel.clientNameController.value.text.isNotEmpty) || (clientreqController.clientReqModel.clientAddressController.value.text.isNotEmpty) || (clientreqController.clientReqModel.billingAddressNameController.value.text.isNotEmpty) || (clientreqController.clientReqModel.billingAddressController.value.text.isNotEmpty) || (clientreqController.clientReqModel.clientReqNo.value.isNotEmpty) || (clientreqController.clientReqModel.clientReqTableHeading.value.isNotEmpty) || (clientreqController.clientReqModel.morController.value.text.isNotEmpty) || (clientreqController.clientReqModel.gstController.value.text.isNotEmpty) || (clientreqController.clientReqModel.emailController.value.text.isNotEmpty) || (clientreqController.clientReqModel.phoneController.value.text.isNotEmpty)) {
+                      // Show confirmation dialog
+                      bool? proceed = await showDialog<bool>(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text("Warning"),
+                            content: const Text(
+                              "The data may be lost. Do you want to proceed?",
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(false); // No action
+                                },
+                                child: const Text("No"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(true); // Yes action
+                                },
+                                child: const Text("Yes"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+                      // If user confirms (Yes), clear data and close the dialog
+                      if (proceed == true) {
+                        Navigator.of(context).pop(); // Close the dialog
+                        // Clear all the data when dialog is closed
+                        clientreqController.clientReqModel.clientReqProductDetails.clear();
+                        clientreqController.clientReqModel.clientReqNoteList.clear();
+                        clientreqController.clientReqModel.clientReqRecommendationList.clear();
+                        clientreqController.clientReqModel.clientNameController.value.clear();
+                        clientreqController.clientReqModel.clientAddressController.value.clear();
+                        clientreqController.clientReqModel.billingAddressNameController.value.clear();
+                        clientreqController.clientReqModel.billingAddressController.value.clear();
+                        clientreqController.clientReqModel.morController.value.clear();
+                        clientreqController.clientReqModel.gstController.value.clear();
+                        clientreqController.clientReqModel.emailController.value.clear();
+                        clientreqController.clientReqModel.phoneController.value.clear();
+                        clientreqController.clientReqModel.clientReqNo.value = '';
+                        clientreqController.clientReqModel.clientReqTableHeading.value = '';
+                        clientreqController.clientReqModel.pickedFile.value = null;
+                      }
+                    } else {
+                      // If no data, just close the dialog
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  dynamic generate_client_requirement(context) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+            backgroundColor: Primary_colors.Light,
+            content: Generate_popup(
+              type: 'E://Client_requirement.pdf',
+            ));
+      },
+    );
+    // }
   }
 
   dynamic GenerateInvoice_dialougebox(context) async {
@@ -91,16 +202,7 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( invoiceController.invoiceModel.Invoice_gstTotals.isNotEmpty)
-                    if ((invoiceController.invoiceModel.Invoice_products.isNotEmpty) ||
-                        (invoiceController.invoiceModel.Invoice_noteList.isNotEmpty) ||
-                        (invoiceController.invoiceModel.Invoice_recommendationList.isNotEmpty) ||
-                        (invoiceController.invoiceModel.clientAddressNameController.value.text != "") ||
-                        (invoiceController.invoiceModel.clientAddressController.value.text != "") ||
-                        (invoiceController.invoiceModel.billingAddressNameController.value.text != "") ||
-                        (invoiceController.invoiceModel.billingAddressController.value.text != "") ||
-                        (invoiceController.invoiceModel.Invoice_no.value != "") ||
-                        (invoiceController.invoiceModel.TitleController.value.text != "") ||
-                        (invoiceController.invoiceModel.Invoice_table_heading.value != "")) {
+                    if ((invoiceController.invoiceModel.Invoice_products.isNotEmpty) || (invoiceController.invoiceModel.Invoice_noteList.isNotEmpty) || (invoiceController.invoiceModel.Invoice_recommendationList.isNotEmpty) || (invoiceController.invoiceModel.clientAddressNameController.value.text != "") || (invoiceController.invoiceModel.clientAddressController.value.text != "") || (invoiceController.invoiceModel.billingAddressNameController.value.text != "") || (invoiceController.invoiceModel.billingAddressController.value.text != "") || (invoiceController.invoiceModel.Invoice_no.value != "") || (invoiceController.invoiceModel.TitleController.value.text != "") || (invoiceController.invoiceModel.Invoice_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -129,15 +231,11 @@ mixin SalesServices {
                         },
                       );
 
-                      // If user confirms (Yes), clear data and close the dialog
                       if (proceed == true) {
-                        Navigator.of(context).pop(); // Close the dialog
-                        // Clear all the data when dialog is closed
+                        Navigator.of(context).pop();
                         invoiceController.invoiceModel.Invoice_products.clear();
-                        //  invoiceController.invoiceModel.Invoice_gstTotals.clear();
                         invoiceController.invoiceModel.Invoice_noteList.clear();
                         invoiceController.invoiceModel.Invoice_recommendationList.clear();
-                        //  invoiceController.invoiceModel.iInvoice_productDetails.clear();
                         invoiceController.invoiceModel.clientAddressNameController.value.clear();
                         invoiceController.invoiceModel.clientAddressController.value.clear();
                         invoiceController.invoiceModel.billingAddressNameController.value.clear();
@@ -147,7 +245,6 @@ mixin SalesServices {
                         invoiceController.invoiceModel.Invoice_table_heading.value = "";
                       }
                     } else {
-                      // If no data, just close the dialog
                       Navigator.of(context).pop();
                     }
                   },
@@ -214,16 +311,7 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( quoteController.quoteModel.Quote_gstTotals.isNotEmpty)
-                    if ((quoteController.quoteModel.Quote_products.isNotEmpty) ||
-                        (quoteController.quoteModel.Quote_noteList.isNotEmpty) ||
-                        (quoteController.quoteModel.Quote_recommendationList.isNotEmpty) ||
-                        (quoteController.quoteModel.clientAddressNameController.value.text != "") ||
-                        (quoteController.quoteModel.clientAddressController.value.text != "") ||
-                        (quoteController.quoteModel.billingAddressNameController.value.text != "") ||
-                        (quoteController.quoteModel.billingAddressController.value.text != "") ||
-                        (quoteController.quoteModel.Quote_no.value != "") ||
-                        (quoteController.quoteModel.TitleController.value.text != "") ||
-                        (quoteController.quoteModel.Quote_table_heading.value != "")) {
+                    if ((quoteController.quoteModel.Quote_products.isNotEmpty) || (quoteController.quoteModel.Quote_noteList.isNotEmpty) || (quoteController.quoteModel.Quote_recommendationList.isNotEmpty) || (quoteController.quoteModel.clientAddressNameController.value.text != "") || (quoteController.quoteModel.clientAddressController.value.text != "") || (quoteController.quoteModel.billingAddressNameController.value.text != "") || (quoteController.quoteModel.billingAddressController.value.text != "") || (quoteController.quoteModel.Quote_no.value != "") || (quoteController.quoteModel.TitleController.value.text != "") || (quoteController.quoteModel.Quote_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -337,15 +425,7 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( rfqController.rfqModel.RFQ_gstTotals.isNotEmpty)
-                    if ((rfqController.rfqModel.RFQ_products.isNotEmpty) ||
-                        (rfqController.rfqModel.RFQ_noteList.isNotEmpty) ||
-                        (rfqController.rfqModel.RFQ_recommendationList.isNotEmpty) ||
-                        (rfqController.rfqModel.vendor_address_controller.value.text != "") ||
-                        (rfqController.rfqModel.vendor_email_controller.value.text != "") ||
-                        (rfqController.rfqModel.vendor_name_controller.value.text != "") ||
-                        (rfqController.rfqModel.vendor_phone_controller.value.text != "") ||
-                        (rfqController.rfqModel.RFQ_no.value != "") ||
-                        (rfqController.rfqModel.RFQ_table_heading.value != "")) {
+                    if ((rfqController.rfqModel.RFQ_products.isNotEmpty) || (rfqController.rfqModel.RFQ_noteList.isNotEmpty) || (rfqController.rfqModel.RFQ_recommendationList.isNotEmpty) || (rfqController.rfqModel.vendor_address_controller.value.text != "") || (rfqController.rfqModel.vendor_email_controller.value.text != "") || (rfqController.rfqModel.vendor_name_controller.value.text != "") || (rfqController.rfqModel.vendor_phone_controller.value.text != "") || (rfqController.rfqModel.RFQ_no.value != "") || (rfqController.rfqModel.RFQ_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -461,16 +541,7 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
 
-                    if ((dcController.dcModel.Delivery_challan_products.isNotEmpty) ||
-                        (dcController.dcModel.Delivery_challan_noteList.isNotEmpty) ||
-                        (dcController.dcModel.Delivery_challan_recommendationList.isNotEmpty) ||
-                        dcController.dcModel.clientAddressNameController.value.text != "" ||
-                        dcController.dcModel.clientAddressController.value.text != "" ||
-                        dcController.dcModel.billingAddressNameController.value.text != "" ||
-                        dcController.dcModel.billingAddressController.value.text != "" ||
-                        dcController.dcModel.Delivery_challan_no.value != "" ||
-                        dcController.dcModel.TitleController.value.text != "" ||
-                        dcController.dcModel.Delivery_challan_table_heading.value != "") {
+                    if ((dcController.dcModel.Delivery_challan_products.isNotEmpty) || (dcController.dcModel.Delivery_challan_noteList.isNotEmpty) || (dcController.dcModel.Delivery_challan_recommendationList.isNotEmpty) || dcController.dcModel.clientAddressNameController.value.text != "" || dcController.dcModel.clientAddressController.value.text != "" || dcController.dcModel.billingAddressNameController.value.text != "" || dcController.dcModel.billingAddressController.value.text != "" || dcController.dcModel.Delivery_challan_no.value != "" || dcController.dcModel.TitleController.value.text != "" || dcController.dcModel.Delivery_challan_table_heading.value != "") {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -561,15 +632,7 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( debitController.debitModel.Debit_gstTotals.isNotEmpty)
-                    if ((debitController.debitModel.Debit_products.isNotEmpty) ||
-                        (debitController.debitModel.Debit_noteList.isNotEmpty) ||
-                        (debitController.debitModel.Debit_recommendationList.isNotEmpty) ||
-                        (debitController.debitModel.clientAddressNameController.value.text != "") ||
-                        (debitController.debitModel.clientAddressController.value.text != "") ||
-                        (debitController.debitModel.billingAddressNameController.value.text != "") ||
-                        (debitController.debitModel.billingAddressController.value.text != "") ||
-                        (debitController.debitModel.Debit_no.value != "") ||
-                        (debitController.debitModel.Debit_table_heading.value != "")) {
+                    if ((debitController.debitModel.Debit_products.isNotEmpty) || (debitController.debitModel.Debit_noteList.isNotEmpty) || (debitController.debitModel.Debit_recommendationList.isNotEmpty) || (debitController.debitModel.clientAddressNameController.value.text != "") || (debitController.debitModel.clientAddressController.value.text != "") || (debitController.debitModel.billingAddressNameController.value.text != "") || (debitController.debitModel.billingAddressController.value.text != "") || (debitController.debitModel.Debit_no.value != "") || (debitController.debitModel.Debit_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -674,15 +737,7 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( creditController.creditModel.Credit_gstTotals.isNotEmpty)
-                    if ((creditController.creditModel.Credit_products.isNotEmpty) ||
-                        (creditController.creditModel.Credit_noteList.isNotEmpty) ||
-                        (creditController.creditModel.Credit_recommendationList.isNotEmpty) ||
-                        (creditController.creditModel.clientAddressNameController.value.text != "") ||
-                        (creditController.creditModel.clientAddressController.value.text != "") ||
-                        (creditController.creditModel.billingAddressNameController.value.text != "") ||
-                        (creditController.creditModel.billingAddressController.value.text != "") ||
-                        (creditController.creditModel.Credit_no.value != "") ||
-                        (creditController.creditModel.Credit_table_heading.value != "")) {
+                    if ((creditController.creditModel.Credit_products.isNotEmpty) || (creditController.creditModel.Credit_noteList.isNotEmpty) || (creditController.creditModel.Credit_recommendationList.isNotEmpty) || (creditController.creditModel.clientAddressNameController.value.text != "") || (creditController.creditModel.clientAddressController.value.text != "") || (creditController.creditModel.billingAddressNameController.value.text != "") || (creditController.creditModel.billingAddressController.value.text != "") || (creditController.creditModel.Credit_no.value != "") || (creditController.creditModel.Credit_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,

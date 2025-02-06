@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:ssipl_billing/controllers/RFQ_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 
 mixin RFQdetailsService {
   final RFQController rfqController = Get.find<RFQController>();

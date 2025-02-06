@@ -6,7 +6,7 @@ import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_note.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_products.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import '../../../../controllers/DC_actions.dart';
+import '../../../../controllers/SALEScontrollers/DC_actions.dart';
 
 class GenerateDelivery_challan extends StatefulWidget {
   const GenerateDelivery_challan({super.key});

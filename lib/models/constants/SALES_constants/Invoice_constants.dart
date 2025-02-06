@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
-import '../entities/SALES/Quote_entities.dart';
+import '../../entities/SALES/Invoice_entities.dart';
 
-class QuoteModel {
+class InvoiceModel {
   final Rxn<TabController> tabController = Rxn<TabController>();
 
-  var Quote_no = "".obs;
-  var Quote_table_heading = "".obs;
+  var Invoice_no = "".obs;
+  var Invoice_table_heading = "".obs;
 
 //######################################################################################################################################
 //DETAILS
@@ -26,8 +26,9 @@ class QuoteModel {
   final priceController = TextEditingController().obs;
   final quantityController = TextEditingController().obs;
   final gstController = TextEditingController().obs;
-  var Quote_products = <QuoteProduct>[].obs;
-  var Quote_gstTotals = <QuoteGSTtotals>[].obs;
+  var Invoice_products = <InvoiceProduct>[].obs;
+
+  var Invoice_gstTotals = <InvoiceGSTtotals>[].obs;
 //######################################################################################################################################
 //NOTES
   final noteformKey = GlobalKey<FormState>().obs;
@@ -40,14 +41,13 @@ class QuoteModel {
   final recommendationKeyController = TextEditingController().obs;
   final recommendationValueController = TextEditingController().obs;
   // var selectedheadingType = Rxn<String>();
-  var Quote_noteList = <Note>[].obs;
-  var Quote_recommendationList = <Recommendation>[].obs;
+  var Invoice_noteList = <Note>[].obs;
+  var Invoice_recommendationList = <Recommendation>[].obs;
   final notecontent = <String>[
     'Delivery within 30 working days from the date of issuing the PO.',
     'Payment terms : 100% along with PO.',
     'Client needs to provide Ethernet cable and UPS power supply to the point where the device is proposed to install.',
   ].obs;
-
   // final noteType = [
   //   'With Heading',
   //   'Without Heading',

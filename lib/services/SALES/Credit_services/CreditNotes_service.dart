@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/models/entities/SALES/Credit_entities.dart';
-import '../../../controllers/Credit_actions.dart';
+import '../../../controllers/SALEScontrollers/Credit_actions.dart';
+import '../../../controllers/viewSend_actions.dart';
 import '../../../themes/style.dart';
 import '../../../views/components/view_send_pdf.dart';
 import '../../../views/screens/SALES/Generate_creditNote/Credit_template.dart';
 
 mixin CreditnotesService {
   final CreditController creditController = Get.find<CreditController>();
+  final ViewsendController viewsendController = Get.find<ViewsendController>();
 
   void addtable_row(context) {
     creditController.updateTableHeadingControllerText(creditController.creditModel.recommendationHeadingController.value.text);
@@ -89,27 +91,36 @@ mixin CreditnotesService {
     }
   }
 
-  void Generate_Credit(context) async {
-    final pdfData = await generate_Credit(PdfPageFormat.a4, creditController.creditModel.Credit_products, creditController.creditModel.clientAddressNameController.value.text, creditController.creditModel.clientAddressController.value.text, creditController.creditModel.billingAddressNameController.value.text, creditController.creditModel.billingAddressController.value.text, creditController.creditModel.Credit_no.value, 9, creditController.creditModel.Credit_gstTotals);
+  void Generate_Credit(BuildContext context) async {
+    // Start generating PDF data as a Future
+    viewsendController.setLoading(false);
+    final pdfGenerationFuture = generate_Credit(PdfPageFormat.a4, creditController.creditModel.Credit_products, creditController.creditModel.clientAddressNameController.value.text, creditController.creditModel.clientAddressController.value.text, creditController.creditModel.billingAddressNameController.value.text, creditController.creditModel.billingAddressController.value.text, creditController.creditModel.Credit_no.value, 9, creditController.creditModel.Credit_gstTotals);
 
-    const filePath = 'E://Credit.pdf';
-    final file = File(filePath);
-    await file.writeAsBytes(pdfData);
-
-    // Future.delayed(const Duration(seconds: 4), () {
-    //   Generate_popup.callback();
-    // });
-
+    // Show the dialog immediately (not awaited)
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            content: Generate_popup(
-              type: 'E://Credit.pdf',
-            ));
+          backgroundColor: Primary_colors.Light,
+          content: Generate_popup(
+            type: 'E://Credit.pdf', // Pass the expected file path
+          ),
+        );
       },
     );
-    // Sales_Client.Credit_Callback();
+
+    // Wait for PDF data generation to complete
+    final pdfData = await pdfGenerationFuture;
+    const filePath = 'E://Credit.pdf';
+    final file = File(filePath);
+
+    // Perform file writing and any other future tasks in parallel
+    await Future.wait([
+      file.writeAsBytes(pdfData), // Write PDF to file asynchronously
+      // Future.delayed(const Duration(seconds: )), // Simulate any other async task if needed
+    ]);
+
+    // Continue execution while the dialog is still open
+    viewsendController.setLoading(true);
   }
 }

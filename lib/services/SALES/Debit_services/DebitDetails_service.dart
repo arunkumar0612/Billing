@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:ssipl_billing/controllers/Debit_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
 
 mixin DebitdetailsService {
   final DebitController debitController = Get.find<DebitController>();

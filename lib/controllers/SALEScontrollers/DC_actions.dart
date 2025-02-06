@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../models/constants/DC_constants.dart';
-import '../models/entities/SALES/DC_entities.dart';
-import '../models/entities/SALES/product_entities.dart';
+import '../../models/constants/SALES_constants/DC_constants.dart';
+import '../../models/entities/SALES/DC_entities.dart';
+import '../../models/entities/SALES/product_entities.dart';
 
 class DCController extends GetxController {
   var dcModel = DCModel();

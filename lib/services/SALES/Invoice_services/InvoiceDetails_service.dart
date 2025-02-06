@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:ssipl_billing/controllers/Invoice_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
 
 mixin InvoicedetailsService {
   final InvoiceController invoiceController = Get.find<InvoiceController>();

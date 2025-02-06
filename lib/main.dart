@@ -1,16 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/controllers/Sales_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Sales_actions.dart';
+import 'package:ssipl_billing/controllers/viewSend_actions.dart';
 import 'package:window_manager/window_manager.dart';
-import 'controllers/ClientReq_actions.dart';
-import 'controllers/Credit_actions.dart';
-import 'controllers/DC_actions.dart';
-import 'controllers/Debit_actions.dart';
+import 'controllers/SALEScontrollers/ClientReq_actions.dart';
+import 'controllers/SALEScontrollers/Credit_actions.dart';
+import 'controllers/SALEScontrollers/DC_actions.dart';
+import 'controllers/SALEScontrollers/Debit_actions.dart';
 import 'controllers/IAM_actions.dart';
-import 'controllers/Invoice_actions.dart';
-import 'controllers/Quote_actions.dart';
-import 'controllers/RFQ_actions.dart';
+import 'controllers/SALEScontrollers/Invoice_actions.dart';
+import 'controllers/SALEScontrollers/Quote_actions.dart';
+import 'controllers/SALEScontrollers/RFQ_actions.dart';
 import 'routes/app_routes.dart';
 import 'services/APIservices/invoker.dart';
 
@@ -28,7 +29,6 @@ Future<void> main() async {
   Get.lazyPut<Invoker>(() => Invoker());
   Get.lazyPut<VerifyOTPControllers>(() => VerifyOTPControllers());
   Get.lazyPut<SalesController>(() => SalesController());
-  // final SalesController salesController =Get.f
 
 ////////////////////////////----SALES----////////////////////////////////////
   Get.lazyPut<ClientreqController>(() => ClientreqController());
@@ -38,6 +38,7 @@ Future<void> main() async {
   Get.lazyPut<CreditController>(() => CreditController());
   Get.lazyPut<DebitController>(() => DebitController());
   Get.lazyPut<DCController>(() => DCController());
+  Get.lazyPut<ViewsendController>(() => ViewsendController());
   if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux)) {
     await windowManager.ensureInitialized();
     WindowOptions windowOptions = const WindowOptions(
@@ -54,7 +55,6 @@ Future<void> main() async {
       },
     );
   }
-  // Run the app
   runApp(const MyApp());
 }
 

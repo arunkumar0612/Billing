@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-import '../../../../controllers/Quote_actions.dart';
+import '../../../../controllers/SALEScontrollers/Quote_actions.dart';
 import '../../../../services/SALES/Quotation_services/QuoteNotes_service.dart';
 
 class QuoteNote extends StatefulWidget with QuotenotesService {

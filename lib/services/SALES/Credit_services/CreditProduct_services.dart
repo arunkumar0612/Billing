@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 
-import '../../../controllers/Credit_actions.dart';
+import '../../../controllers/SALEScontrollers/Credit_actions.dart';
 import '../../../models/entities/SALES/Credit_entities.dart';
 
 mixin CreditproductService {

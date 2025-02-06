@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import '../../../../controllers/Quote_actions.dart';
+import '../../../../controllers/SALEScontrollers/Quote_actions.dart';
 import 'quote_details.dart';
 import 'quote_note.dart';
 import 'quote_products.dart';

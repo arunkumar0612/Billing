@@ -1,45 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
-import '../entities/SALES/Credit_entities.dart';
+import '../../entities/SALES/RFQ_entities.dart';
 
-class CreditModel {
+class RFQModel {
   final Rxn<TabController> tabController = Rxn<TabController>();
-  var Credit_no = "".obs;
-  var Credit_table_heading = "".obs;
+
+  var RFQ_no = "".obs;
+
 //######################################################################################################################################
 //DETAILS
-  final clientAddressNameController = TextEditingController().obs;
-  final clientAddressController = TextEditingController().obs;
-  final billingAddressNameController = TextEditingController().obs;
-  final billingAddressController = TextEditingController().obs;
+  final vendor_address_controller = TextEditingController().obs;
+  final vendor_phone_controller = TextEditingController().obs;
+  final vendor_email_controller = TextEditingController().obs;
+  var vendor_name_controller = TextEditingController().obs;
   final detailsKey = GlobalKey<FormState>().obs;
 //######################################################################################################################################
 //PRODUCTS
   final productKey = GlobalKey<FormState>().obs;
   final product_editIndex = Rxn<int>();
   final productNameController = TextEditingController().obs;
-  final hsnController = TextEditingController().obs;
-  final priceController = TextEditingController().obs;
   final quantityController = TextEditingController().obs;
-  final remarksController = TextEditingController().obs;
-  final gstController = TextEditingController().obs;
-  var Credit_products = <CreditProduct>[].obs;
-  var Credit_gstTotals = <CreditGSTtotals>[].obs;
+  var RFQ_products = <RFQProduct>[].obs;
 //######################################################################################################################################
 //NOTES
   final noteformKey = GlobalKey<FormState>().obs;
+  // var notelength = 0.obs;
+  // var notetablelength = 0.obs;
   var note_editIndex = Rxn<int>();
   final notecontentController = TextEditingController().obs;
   var recommendation_editIndex = Rxn<int>();
-  var recommendationHeadingController = TextEditingController().obs;
-  var recommendationKeyController = TextEditingController().obs;
+  final recommendationHeadingController = TextEditingController().obs;
+  final recommendationKeyController = TextEditingController().obs;
   final recommendationValueController = TextEditingController().obs;
-  var Credit_noteList = <Note>[].obs;
-  var Credit_recommendationList = <Recommendation>[].obs;
+  var RFQ_table_heading = "".obs;
+  var RFQ_noteList = <Note>[].obs;
+  var RFQ_recommendationList = <Recommendation>[].obs;
+  // var selectedheadingType = Rxn<String>();
   final notecontent = <String>[
     'Delivery within 30 working days from the date of issuing the PO.',
     'Payment terms : 100% along with PO.',
     'Client needs to provide Ethernet cable and UPS power supply to the point where the device is proposed to install.',
   ].obs;
+  // final noteType = [
+  //   'With Heading',
+  //   'Without Heading',
+  // ].obs;
 }

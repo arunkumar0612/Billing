@@ -20,37 +20,33 @@ class Textfield_1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 400,
-      child: Column(
-        children: [
-          TextFormField(
-            readOnly: readonly,
-            style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
-            controller: controller,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Primary_colors.Dark,
-              focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.black,
-                ),
-              ),
-
-              enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-              // labelText: text,
-              hintText: text,
-              hintStyle: const TextStyle(
-                fontSize: Primary_font_size.Text7,
-                color: Color.fromARGB(255, 167, 165, 165),
-              ),
-              border: const OutlineInputBorder(),
-              prefixIcon: Icon(
-                icon,
-                color: Colors.white,
-              ),
+      child: TextFormField(
+        readOnly: readonly,
+        style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
+        controller: controller,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Primary_colors.Dark,
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
             ),
-            validator: validator,
           ),
-        ],
+
+          enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+          // labelText: text,
+          hintText: text,
+          hintStyle: const TextStyle(
+            fontSize: Primary_font_size.Text7,
+            color: Color.fromARGB(255, 167, 165, 165),
+          ),
+          border: const OutlineInputBorder(),
+          prefixIcon: Icon(
+            icon,
+            color: Colors.white,
+          ),
+        ),
+        validator: validator,
       ),
     );
   }

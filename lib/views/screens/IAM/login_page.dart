@@ -101,35 +101,36 @@ class _LoginpageState extends State<Loginpage> {
                       child: TextFormField(
                         style: const TextStyle(fontSize: 13, color: Colors.white),
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(1),
-                            filled: true,
-                            fillColor: const Color.fromARGB(255, 75, 75, 96),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: const BorderSide(
-                                color: Colors.black,
-                              ),
+                          contentPadding: EdgeInsets.all(1),
+                          filled: true,
+                          fillColor: const Color.fromARGB(255, 75, 75, 96),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(
+                              color: Colors.black,
                             ),
-                            labelStyle: TextStyle(
-                              fontSize: screenWidth > 1000 ? baseFontSize * (screenWidth / 7500) : 10,
-                              color: Color.fromARGB(255, 167, 165, 165),
-                            ),
-                            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: const BorderSide(color: Colors.black)),
-                            labelText: "Password",
-                            border: const OutlineInputBorder(),
-                            prefixIcon: GestureDetector(
-                              onTap: () {
-                                // setState(() {
-                                loginController.togglePasswordVisibility(loginController.loginModel.passwordVisibility.value ? false : true);
+                          ),
+                          labelStyle: TextStyle(
+                            fontSize: screenWidth > 1000 ? baseFontSize * (screenWidth / 7500) : 10,
+                            color: Color.fromARGB(255, 167, 165, 165),
+                          ),
+                          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: const BorderSide(color: Colors.black)),
+                          labelText: "Password",
+                          border: const OutlineInputBorder(),
+                          prefixIcon: GestureDetector(
+                            onTap: () {
+                              // setState(() {
+                              loginController.togglePasswordVisibility(loginController.loginModel.passwordVisibility.value ? false : true);
 
-                                // password_view = password_view == true ? false : true;
-                                // });
-                              },
-                              child: Icon(
-                                loginController.loginModel.passwordVisibility.value == true ? Icons.remove_red_eye : Icons.visibility_off,
-                                color: Colors.white,
-                              ),
-                            )),
+                              // password_view = password_view == true ? false : true;
+                              // });
+                            },
+                            child: Icon(
+                              loginController.loginModel.passwordVisibility.value == true ? Icons.remove_red_eye : Icons.visibility_off,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                         controller: loginController.loginModel.passwordController.value,
                         obscureText: loginController.loginModel.passwordVisibility.value,
                         validator: (value) {

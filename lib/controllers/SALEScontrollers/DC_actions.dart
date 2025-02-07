@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../models/constants/SALES_constants/DC_constants.dart';
@@ -103,7 +104,9 @@ class DCController extends GetxController {
     if (key.isNotEmpty && value.isNotEmpty) {
       dcModel.Delivery_challan_recommendationList.add(Recommendation(key: key, value: value));
     } else {
-      print('Key and value must not be empty');
+      if (kDebugMode) {
+        print('Key and value must not be empty');
+      }
     }
   }
 
@@ -116,10 +119,14 @@ class DCController extends GetxController {
       if (key.isNotEmpty && value.isNotEmpty) {
         dcModel.Delivery_challan_recommendationList[index] = Recommendation(key: key, value: value);
       } else {
-        print('Key and value must not be empty');
+        if (kDebugMode) {
+          print('Key and value must not be empty');
+        }
       }
     } else {
-      print('Invalid index provided');
+      if (kDebugMode) {
+        print('Invalid index provided');
+      }
     }
   }
 
@@ -127,7 +134,9 @@ class DCController extends GetxController {
     if (noteContent.isNotEmpty) {
       dcModel.Delivery_challan_noteList.add(Note(notename: noteContent));
     } else {
-      print('Note content must not be empty'); // Handle empty input (optional)
+      if (kDebugMode) {
+        print('Note content must not be empty');
+      } // Handle empty input (optional)
     }
   }
 

@@ -123,10 +123,14 @@ class CreditController extends GetxController {
       if (key.isNotEmpty && value.isNotEmpty) {
         creditModel.Credit_recommendationList[index] = Recommendation(key: key, value: value);
       } else {
-        print('Key and value must not be empty');
+        if (kDebugMode) {
+          print('Key and value must not be empty');
+        }
       }
     } else {
-      print('Invalid index provided');
+      if (kDebugMode) {
+        print('Invalid index provided');
+      }
     }
   }
 
@@ -134,7 +138,9 @@ class CreditController extends GetxController {
     if (noteContent.isNotEmpty) {
       creditModel.Credit_noteList.add(Note(notename: noteContent));
     } else {
-      print('Note content must not be empty'); // Handle empty input (optional)
+      if (kDebugMode) {
+        print('Note content must not be empty');
+      } // Handle empty input (optional)
     }
   }
 
@@ -168,7 +174,15 @@ class CreditController extends GetxController {
     }
   }
 
-  void updateProduct({required BuildContext context, required int editIndex, required String productName, required String hsn, required double price, required int quantity, required double gst, required String remarks}) {
+  void updateProduct(
+      {required BuildContext context,
+      required int editIndex,
+      required String productName,
+      required String hsn,
+      required double price,
+      required int quantity,
+      required double gst,
+      required String remarks}) {
     try {
       // Validate input fields
       if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {

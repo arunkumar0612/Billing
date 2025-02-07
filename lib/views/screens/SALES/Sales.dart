@@ -439,10 +439,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                               height: 40,
                               decoration: BoxDecoration(
                                 gradient: const LinearGradient(
-                                  colors: [
-                                    Primary_colors.Color3,
-                                    Primary_colors.Color3
-                                  ], // Example gradient colors
+                                  colors: [Primary_colors.Color3, Primary_colors.Color3], // Example gradient colors
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 ),
@@ -808,7 +805,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                   ];
                                 },
                                 child: const Icon(size: 30, Icons.add, color: Primary_colors.Color3),
-                              )
+                              ),
                             ],
                           ),
                           const SizedBox(height: 10),
@@ -846,10 +843,7 @@ class _Sales_ClientState extends State<Sales_Client> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: showcustomerprocess == index
-                ? [
-                    Primary_colors.Color3,
-                    Primary_colors.Color3
-                  ]
+                ? [Primary_colors.Color3, Primary_colors.Color3]
                 : [
                     Primary_colors.Light,
                     Primary_colors.Light,

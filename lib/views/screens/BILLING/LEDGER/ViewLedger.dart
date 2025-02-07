@@ -46,26 +46,10 @@ class _ViewLedgerState extends State<ViewLedger> {
   ];
   List<ValueItem> _selectedvendor = [];
   String? Selected_ledger_type = 'Client';
-  List<String> amounttype_list = [
-    'Debit',
-    'Credit',
-    'All'
-  ];
+  List<String> amounttype_list = ['Debit', 'Credit', 'All'];
   String? Selected_amounte_type = 'All';
-  List<String> accounting_ledger_type_list = [
-    'Client',
-    'Vendor',
-    'Output GST',
-    'Input GST',
-    'Receivable TDS',
-    'Payable TDS',
-    'Consolidated'
-  ];
-  List<String> Inventory_ledger_type_list = [
-    'Petty Cash',
-    'Inward',
-    'Outward'
-  ];
+  List<String> accounting_ledger_type_list = ['Client', 'Vendor', 'Output GST', 'Input GST', 'Receivable TDS', 'Payable TDS', 'Consolidated'];
+  List<String> Inventory_ledger_type_list = ['Petty Cash', 'Inward', 'Outward'];
   String selectedContent = "Consolidated Ledger"; // Default content
   String selectedMenu = "Accounting Ledger"; // Tracks the currently selected menu item
   final TextEditingController _fromDateController = TextEditingController();
@@ -506,47 +490,9 @@ class _ViewLedgerState extends State<ViewLedger> {
                           height: 15,
                         ),
                       if (selectedMenu == 'Accounting Ledger' && Selected_ledger_type == 'Vendor')
-                        MultiSelectDropDown(
-                          searchBackgroundColor: Primary_colors.Color1,
-                          hint: 'Select Client',
-                          selectedOptionTextColor: Primary_colors.Color1,
-                          dropdownBorderRadius: 10,
-                          dropdownBackgroundColor: Primary_colors.Color3,
-                          selectedOptionBackgroundColor: Primary_colors.Color3,
-                          optionsBackgroundColor: Primary_colors.Color3,
-                          padding: const EdgeInsets.all(10),
-                          dropdownMargin: 0,
-                          searchEnabled: true,
-                          suffixIcon: const Icon(
-                            Icons.arrow_drop_down,
-                            color: Color.fromARGB(255, 102, 102, 102),
-                          ),
-                          inputDecoration: BoxDecoration(color: Primary_colors.Light, borderRadius: BorderRadius.circular(20)),
-                          onOptionSelected: (options) {
-                            setState(() {
-                              _selectedvendor = options;
-                            });
-                          },
-                          options: vendor_list,
-                          maxItems: vendor_list.length,
-                          selectionType: SelectionType.multi,
-                          chipConfig: const ChipConfig(
-                            deleteIconColor: Color.fromARGB(255, 105, 105, 105),
-                            backgroundColor: Primary_colors.Light,
-                            wrapType: WrapType.scroll,
-                          ),
-                          dropdownHeight: 300,
-                          optionTextStyle: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
-                          selectedOptionIcon: const Icon(Icons.check_circle),
-                          clearIcon: const Icon(
-                            Icons.close,
-                            color: Colors.red,
-                            size: 20,
-                          ),
+                        const SizedBox(
+                          height: 20,
                         ),
-                      const SizedBox(
-                        height: 20,
-                      ),
                       const Text(
                         'Using Amount',
                         style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8),

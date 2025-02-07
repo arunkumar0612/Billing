@@ -3,12 +3,12 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
-import '../../../controllers/SALEScontrollers/ClientReq_actions.dart';
-import '../../../models/constants/api.dart';
-import '../../../models/entities/Response_entities.dart';
-import '../../../models/entities/SALES/ClientReq_entities.dart';
-import '../../../views/components/Basic_DialogBox.dart';
-import '../../APIservices/invoker.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
+import 'package:ssipl_billing/models/constants/api.dart';
+import 'package:ssipl_billing/models/entities/Response_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/ClientReq_entities.dart';
+import 'package:ssipl_billing/services/APIservices/invoker.dart';
+import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
 
 mixin ClientreqdetailsService {
   final Invoker apiController = Get.find<Invoker>();
@@ -39,6 +39,7 @@ mixin ClientreqdetailsService {
         if (value.code) {
           await Basic_dialog(context: context, title: 'Upload MOR', content: "MOR uploaded Successfully", onOk: () {});
           clientreqController.updateMOR_uploadedPath(value);
+          print(clientreqController.clientReqModel.MOR_uploadedPath.value);
         } else {
           await Basic_dialog(context: context, title: 'Upload MOR', content: value.message ?? "", onOk: () {});
         }

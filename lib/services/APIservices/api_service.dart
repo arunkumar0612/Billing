@@ -9,4 +9,14 @@ class ApiService extends GetConnect {
       return Response(statusCode: 500, statusText: e.toString());
     }
   }
+
+  Future<Response> postMulter(String url, FormData formData) async {
+    try {
+      // ✅ Send the request
+      Response response = await post(url, formData);
+      return response;
+    } catch (e) {
+      return Response(statusCode: 500, statusText: e.toString());
+    }
+  }
 }

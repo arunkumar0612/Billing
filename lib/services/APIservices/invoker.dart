@@ -78,27 +78,58 @@ class Invoker extends GetxController {
     }
   }
 
-  Future<Map<String, dynamic>?> Multer(String Token, String body, File file, String API) async {
+  Future<Map<String, dynamic>?> multiPart(File file, String API) async {
     isLoading.value = true;
-    final configData = await loadConfigFile('assets/key.config');
-    final apiKey = configData['APIkey'];
-    final secret = configData['Secret'];
 
-    final dataToEncrypt = jsonEncode(body);
-    final encryptedData = AES.encryptWithAES(secret, dataToEncrypt);
-    final requestData = {
-      "file": apiKey,
-      "STOKEN": secret,
-      "querystring": encryptedData,
-    };
-    final response = await apiService.postData(API, requestData);
+    // final dataToEncrypt = jsonEncode(body);
+    // final encryptedData = AES.encryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), body);
+
+    FormData formData = FormData({
+      "file": MultipartFile(file, filename: file.path.split('/').last), // Attach file
+      "STOKEN": sessiontokenController.sessiontokenModel.sessiontoken.value,
+      // "querystring": encryptedData
+    });
+    final response = await apiService.postMulter(API, formData);
 
     isLoading.value = false;
-
     if (response.statusCode == 200) {
       final responseData = response.body;
       String encryptedResponse = responseData['encryptedResponse'];
-      final decryptedResponse = AES.decryptWithAES(secret.substring(0, 16), encryptedResponse);
+      final decryptedResponse = AES.decryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), encryptedResponse);
+      Map<String, dynamic> decodedResponse = jsonDecode(decryptedResponse);
+      final result = <String, int>{
+        "statusCode": response.statusCode!
+      };
+      decodedResponse.addEntries(result.entries.map((e) => MapEntry(e.key, e.value)));
+
+      return decodedResponse;
+    } else {
+      Map<String, dynamic> reply = {
+        "statusCode": response.statusCode,
+        "message": "Server Error"
+      };
+      return reply;
+    }
+  }
+
+  Future<Map<String, dynamic>?> Multer(String Token, String body, File file, String API) async {
+    isLoading.value = true;
+
+    // final dataToEncrypt = jsonEncode(body);
+    final encryptedData = AES.encryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), body);
+
+    FormData formData = FormData({
+      "file": MultipartFile(file, filename: file.path.split('/').last), // Attach file
+      "STOKEN": sessiontokenController.sessiontokenModel.sessiontoken.value,
+      "querystring": encryptedData
+    });
+    final response = await apiService.postMulter(API, formData);
+
+    isLoading.value = false;
+    if (response.statusCode == 200) {
+      final responseData = response.body;
+      String encryptedResponse = responseData['encryptedResponse'];
+      final decryptedResponse = AES.decryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), encryptedResponse);
       Map<String, dynamic> decodedResponse = jsonDecode(decryptedResponse);
       final result = <String, int>{
         "statusCode": response.statusCode!

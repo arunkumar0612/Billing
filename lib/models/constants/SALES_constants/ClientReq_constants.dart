@@ -10,6 +10,8 @@ import '../../entities/SALES/product_entities.dart';
 class ClientReqModel {
   var clientReqTableHeading = "".obs;
   var clientReqNo = '1'.obs;
+
+  var MOR_uploadedPath = Rxn<String>();
 //######################################################################################################################################
 //DETAILS
   final Rxn<TabController> tabController = Rxn<TabController>();

@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/constants/SALES_constants/ClientReq_constants.dart';
-
+import 'package:ssipl_billing/models/entities/Response_entities.dart';
 import '../../models/entities/SALES/ClientReq_entities.dart';
 import '../../models/entities/SALES/product_entities.dart';
 
@@ -131,6 +131,10 @@ class ClientreqController extends GetxController {
   void removeFromRecommendationList(int index) {
     clientReqModel.clientReqRecommendationList.removeAt(index);
     clientReqModel.clientReqRecommendationList.isEmpty ? clientReqModel.tableHeadingController.value.clear() : null;
+  }
+
+  void updateMOR_uploadedPath(CMDmResponse value) {
+    clientReqModel.MOR_uploadedPath.value = MORpath.fromJson(value).path;
   }
 
   Future<void> pickFile(BuildContext context) async {

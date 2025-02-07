@@ -16,10 +16,10 @@ mixin ClientreqdetailsService {
 
   final ClientreqController clientreqController = Get.find<ClientreqController>();
   void add_details(context) {
-    send_MOR(context);
+    // send_MOR(context);
     if (clientreqController.clientReqModel.detailsformKey.value.currentState?.validate() ?? false) {
       if (clientreqController.clientReqModel.pickedFile.value != null) {
-        // clientreqController.nextTab();
+        clientreqController.nextTab();
       } else {
         Basic_dialog(
           context: context,
@@ -31,7 +31,27 @@ mixin ClientreqdetailsService {
     }
   }
 
-  void send_MOR(context) async {
+  void uploadMor(context, File file) async {
+    try {
+      Map<String, dynamic>? response = await apiController.multiPart(file, API.Upload_MOR_API);
+      if (response?['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        if (value.code) {
+          await Basic_dialog(context: context, title: 'Upload MOR', content: "MOR uploaded Successfully", onOk: () {});
+          clientreqController.updateMOR_uploadedPath(value);
+        } else {
+          await Basic_dialog(context: context, title: 'Upload MOR', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
+  void postData(context) async {
+    print("salesData.address");
     try {
       String jsonData = '''{
     "name": "JK constructiond",
@@ -55,17 +75,20 @@ mixin ClientreqdetailsService {
   }''';
 
       Map<String, dynamic> jsonMap = jsonDecode(jsonData);
+      print(jsonMap);
       AddSales salesData = AddSales.fromJson(jsonMap);
       print(salesData.address);
       send_data(context, jsonData, clientreqController.clientReqModel.morFile.value!);
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   void send_data(context, String jsonData, File file) async {
     try {
-      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.Upload_MOR_API);
+      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.sales_add_details_API);
       if (response?['statusCode'] == 200) {
-        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
           await Basic_dialog(context: context, title: 'Customer List', content: "Customer List fetched successfully", onOk: () {});
           // salesController.addToCustomerList(value);

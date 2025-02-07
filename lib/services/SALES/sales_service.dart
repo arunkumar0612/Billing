@@ -44,14 +44,12 @@ mixin SalesServices {
         if (value.code) {
           await Basic_dialog(context: context, title: 'Customer List', content: "Customer List fetched successfully", onOk: () {});
           salesController.addToCustomerList(value);
-          print("*****************${salesController.salesModel.customerList[1].customerId}");
         } else {
           await Basic_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
-      print(response);
     } catch (e) {
       Basic_dialog(context: context, title: "ERROR", content: "$e");
     }

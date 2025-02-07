@@ -21,6 +21,8 @@
 //   }
 // }
 
+import 'package:ssipl_billing/models/entities/Response_entities.dart';
+
 class Recommendation {
   final String key;
   final String value;
@@ -63,6 +65,24 @@ class Note {
   }
 }
 
+class MORpath {
+  final String path;
+
+  MORpath({required this.path});
+
+  factory MORpath.fromJson(CMDmResponse json) {
+    return MORpath(
+      path: json.data['path'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'path': path,
+    };
+  }
+}
+
 class AddSales {
   String? name;
   String? emailId;
@@ -75,7 +95,7 @@ class AddSales {
   String? modeOfRequest;
   String? morReference;
   List<Product>? product;
-  List<Note>? notes;
+  List<NoteList>? notes;
   int? messageType;
   double? invoiceAmount;
   String? date;
@@ -111,7 +131,7 @@ class AddSales {
       modeOfRequest: json['modeofrequest'],
       morReference: json['MORreference'],
       product: (json['product'] as List<dynamic>?)?.map((item) => Product.fromJson(item)).toList(),
-      notes: (json['notes'] as List<dynamic>?)?.map((item) => Note.fromJson(item)).toList(),
+      notes: (json['notes'] as List<dynamic>?)?.map((item) => NoteList.fromJson(item)).toList(),
       messageType: json['messagetype'],
       invoiceAmount: (json['invoiceamount'] as num?)?.toDouble(),
       date: json['date'],

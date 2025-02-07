@@ -1,16 +1,11 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/RFQ_entities.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/RFQ_template.dart';
 
 import '../../../controllers/viewSend_actions.dart';
-import '../../../themes/style.dart';
-import '../../../views/components/view_send_pdf.dart';
-import '../../../views/screens/SALES/Generate_RFQ/RFQ_template.dart';
 // import '../../../views/screens/SALES/Generate_RFQ/rfq_template.dart';
 
 mixin RFQnotesService {
@@ -96,43 +91,96 @@ mixin RFQnotesService {
   }
 
   void Generate_RFQ(BuildContext context) async {
+    showMultipleDialogs(context);
     // Start generating PDF data as a Future
-    viewsendController.setLoading(false);
-    final pdfGenerationFuture = generate_RFQ(
-      PdfPageFormat.a4,
-      rfqController.rfqModel.RFQ_products,
-      rfqController.rfqModel.vendor_name_controller.value.text,
-      rfqController.rfqModel.vendor_email_controller.value.text,
-      rfqController.rfqModel.vendor_phone_controller.value.text,
-      rfqController.rfqModel.vendor_address_controller.value.text,
-      rfqController.rfqModel.RFQ_no.value,
+    // viewsendController.setLoading(false);
+    // final pdfGenerationFuture = generate_RFQ(
+    //   PdfPageFormat.a4,
+    //   rfqController.rfqModel.RFQ_products,
+    //   rfqController.rfqModel.vendor_name_controller.value.text,
+    //   rfqController.rfqModel.vendor_email_controller.value.text,
+    //   rfqController.rfqModel.vendor_phone_controller.value.text,
+    //   rfqController.rfqModel.vendor_address_controller.value.text,
+    //   rfqController.rfqModel.RFQ_no.value,
+    // );
+
+    // // Show the dialog immediately (not awaited)
+    // showDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return AlertDialog(
+    //       backgroundColor: Primary_colors.Light,
+    //       content: Generate_popup(
+    //         type: 'E://RFQ.pdf', // Pass the expected file path
+    //       ),
+    //     );
+    //   },
+    // );
+
+    // // Wait for PDF data generation to complete
+    // final pdfData = await pdfGenerationFuture;
+    // const filePath = 'E://RFQ.pdf';
+    // final file = File(filePath);
+
+    // // Perform file writing and any other future tasks in parallel
+    // await Future.wait([
+    //   file.writeAsBytes(pdfData), // Write PDF to file asynchronously
+    //   Future.delayed(const Duration(seconds: 2)), // Simulate any other async task if needed
+    // ]);
+
+    // // Continue execution while the dialog is still open
+    // viewsendController.setLoading(true);
+  }
+
+  void showMultipleDialogs(BuildContext context) {
+    // Show the first dialog
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AlertDialog(
+          title: const Text("Dialog 1"),
+          content: const Text("This is the first dialog."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // When this dialog is closed, show the next one
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => AlertDialog(
+                      title: const Text("Dialog 2"),
+                      content: const Text("This is the second dialog."),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            // When this dialog is closed, show the next one
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => AlertDialog(
+                                  title: const Text("Dialog 3"),
+                                  content: const Text("This is the third dialog."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(); // Close all dialogs
+                                      },
+                                      child: const Text('Close'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          child: const Text('Next'),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              child: const Text('Next'),
+            ),
+          ],
+        ),
+      ),
     );
-
-    // Show the dialog immediately (not awaited)
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Primary_colors.Light,
-          content: Generate_popup(
-            type: 'E://RFQ.pdf', // Pass the expected file path
-          ),
-        );
-      },
-    );
-
-    // Wait for PDF data generation to complete
-    final pdfData = await pdfGenerationFuture;
-    const filePath = 'E://RFQ.pdf';
-    final file = File(filePath);
-
-    // Perform file writing and any other future tasks in parallel
-    await Future.wait([
-      file.writeAsBytes(pdfData), // Write PDF to file asynchronously
-      Future.delayed(const Duration(seconds: 2)), // Simulate any other async task if needed
-    ]);
-
-    // Continue execution while the dialog is still open
-    viewsendController.setLoading(true);
   }
 }

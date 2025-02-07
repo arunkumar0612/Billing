@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/views/components/button.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
+import 'package:ssipl_billing/services/SALES/ClientReq_services/Clientreqdetails_service.dart';
+import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
+// import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-
-import '../../../../../controllers/SALEScontrollers/ClientReq_actions.dart';
-import '../../../../../services/SALES/ClientReq_services/Clientreqdetails_service.dart';
-import '../../../../../utils/validators/minimal_validators.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 class customerDetails extends StatefulWidget with ClientreqdetailsService {
@@ -100,16 +100,14 @@ class customerDetailsState extends State<customerDetails> {
                       ),
                       Textfield_1(
                         readonly: false,
-                        text: 'Email',
-                        controller: clientreqController.clientReqModel.emailController.value,
+                        text: 'GST',
+                        controller: clientreqController.clientReqModel.gstController.value,
                         icon: Icons.people,
                         validator: (value) {
-                          Validators.email_validator(value);
+                          Validators.GST_validator(value);
                           return null;
                         },
                       ),
-                      // const SizedBox(height: 25),
-
                       ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
                         child: DropdownButtonFormField<String>(
@@ -161,50 +159,17 @@ class customerDetailsState extends State<customerDetails> {
                           },
                         ),
                       ),
-                      // const SizedBox(height: 25),
-
-                      // const SizedBox(height: 25),
-
-                      // const SizedBox(height: 25),
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
-                        child: MultiSelectDropDown(
-                          searchBackgroundColor: Primary_colors.Color1,
-                          hint: 'Select Client',
-                          selectedOptionTextColor: Primary_colors.Color1,
-                          dropdownBorderRadius: 10,
-                          dropdownBackgroundColor: Primary_colors.Dark,
-                          selectedOptionBackgroundColor: Primary_colors.Dark,
-                          optionsBackgroundColor: Primary_colors.Dark,
-                          padding: const EdgeInsets.all(10),
-                          dropdownMargin: 0,
-                          searchEnabled: true,
-                          hintColor: Colors.white,
-                          suffixIcon: const Icon(
-                            Icons.arrow_drop_down,
-                            color: Color.fromARGB(255, 102, 102, 102),
-                          ),
-                          inputDecoration: BoxDecoration(border: Border.all(color: const Color.fromARGB(255, 0, 0, 0)), color: Primary_colors.Dark, borderRadius: BorderRadius.circular(5)),
-                          onOptionSelected: (options) {
-                            setState(() {});
-                          },
-                          options: client_list,
-                          maxItems: client_list.length,
-                          selectionType: SelectionType.multi,
-                          chipConfig: const ChipConfig(
-                            deleteIconColor: Color.fromARGB(255, 105, 105, 105),
-                            backgroundColor: Primary_colors.Light,
-                            wrapType: WrapType.scroll,
-                          ),
-                          dropdownHeight: 300,
-                          optionTextStyle: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
-                          selectedOptionIcon: const Icon(Icons.check_circle),
-                          clearIcon: const Icon(
-                            Icons.close,
-                            color: Colors.red,
-                            size: 20,
-                          ),
-                        ),
+                      Textfield_1(
+                        readonly: false,
+                        text: 'Client Address ',
+                        controller: clientreqController.clientReqModel.clientAddressController.value,
+                        icon: Icons.location_history_outlined,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Client Address';
+                          }
+                          return null;
+                        },
                       ),
                       ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
@@ -257,81 +222,17 @@ class customerDetailsState extends State<customerDetails> {
                           },
                         ),
                       ),
-                      // const SizedBox(height: 25),
                       Textfield_1(
                         readonly: false,
-                        text: 'Client Address ',
-                        controller: clientreqController.clientReqModel.clientAddressController.value,
-                        icon: Icons.location_history_outlined,
+                        text: 'Billing Address name',
+                        controller: clientreqController.clientReqModel.billingAddressNameController.value,
+                        icon: Icons.price_change,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Client Address';
+                            return 'Please enter Billing Address name';
                           }
                           return null;
                         },
-                      ),
-
-                      // const SizedBox(height: 25),
-                      Textfield_1(
-                        readonly: false,
-                        text: 'Contact Number',
-                        controller: clientreqController.clientReqModel.phoneController.value,
-                        icon: Icons.people,
-                        validator: (value) {
-                          Validators.phnNo_validator(value);
-                          return null;
-                        },
-                      ),
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
-                        child: DropdownButtonFormField<String>(
-                          dropdownColor: Primary_colors.Dark,
-                          decoration: const InputDecoration(
-                              label: Text(
-                                'Select Type',
-                                style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176)),
-                              ),
-                              // hintText: 'Customer Type',hintStyle: TextStyle(),
-                              contentPadding: EdgeInsets.all(13),
-                              labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
-                              filled: true,
-                              fillColor: Primary_colors.Dark,
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(),
-                              ),
-                              prefixIcon: Icon(
-                                Icons.people,
-                                color: Colors.white,
-                              )),
-                          value: clientreqController.clientReqModel.clientNameController.value.text == "" ? null : clientreqController.clientReqModel.clientNameController.value.text,
-                          items: <String>[
-                            'Option 1',
-                            'Option 2',
-                          ].map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            clientreqController.updateClientName(newValue!);
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please Select customer type';
-                            }
-                            return null;
-                          },
-                        ),
                       ),
                       ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
@@ -384,35 +285,6 @@ class customerDetailsState extends State<customerDetails> {
                           },
                         ),
                       ),
-                      // const SizedBox(height: 25),
-
-                      // const SizedBox(height: 25),
-                      Textfield_1(
-                        readonly: false,
-                        text: 'GST',
-                        controller: clientreqController.clientReqModel.gstController.value,
-                        icon: Icons.people,
-                        validator: (value) {
-                          Validators.GST_validator(value);
-                          return null;
-                        },
-                      ),
-                      // const SizedBox(height: 25),
-                      Textfield_1(
-                        readonly: false,
-                        text: 'Billing Address name',
-                        controller: clientreqController.clientReqModel.billingAddressNameController.value,
-                        icon: Icons.price_change,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter Billing Address name';
-                          }
-                          return null;
-                        },
-                      ),
-                      // const SizedBox(
-                      //   height: 25,
-                      // ),
                       Textfield_1(
                         readonly: false,
                         text: 'Billing Address',
@@ -425,9 +297,46 @@ class customerDetailsState extends State<customerDetails> {
                           return null;
                         },
                       ),
-                      // const SizedBox(
-                      //   height: 25,
-                      // ),
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
+                        child: MultiSelectDropDown(
+                          searchBackgroundColor: Primary_colors.Color1,
+                          hint: 'Select Client',
+                          selectedOptionTextColor: Primary_colors.Color1,
+                          dropdownBorderRadius: 10,
+                          dropdownBackgroundColor: Primary_colors.Dark,
+                          selectedOptionBackgroundColor: Primary_colors.Dark,
+                          optionsBackgroundColor: Primary_colors.Dark,
+                          padding: const EdgeInsets.all(10),
+                          dropdownMargin: 0,
+                          searchEnabled: true,
+                          hintColor: Colors.white,
+                          suffixIcon: const Icon(
+                            Icons.arrow_drop_down,
+                            color: Color.fromARGB(255, 102, 102, 102),
+                          ),
+                          inputDecoration: BoxDecoration(border: Border.all(color: const Color.fromARGB(255, 0, 0, 0)), color: Primary_colors.Dark, borderRadius: BorderRadius.circular(5)),
+                          onOptionSelected: (options) {
+                            setState(() {});
+                          },
+                          options: client_list,
+                          maxItems: client_list.length,
+                          selectionType: SelectionType.multi,
+                          chipConfig: const ChipConfig(
+                            deleteIconColor: Color.fromARGB(255, 105, 105, 105),
+                            backgroundColor: Primary_colors.Light,
+                            wrapType: WrapType.scroll,
+                          ),
+                          dropdownHeight: 300,
+                          optionTextStyle: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
+                          selectedOptionIcon: const Icon(Icons.check_circle),
+                          clearIcon: const Icon(
+                            Icons.close,
+                            color: Colors.red,
+                            size: 20,
+                          ),
+                        ),
+                      ),
                       Textfield_1(
                         readonly: false,
                         text: 'Mode of request',
@@ -440,9 +349,16 @@ class customerDetailsState extends State<customerDetails> {
                           return null;
                         },
                       ),
-                      // const SizedBox(
-                      //   height: 25,
-                      // ),
+                      Textfield_1(
+                        readonly: false,
+                        text: 'Contact Number',
+                        controller: clientreqController.clientReqModel.phoneController.value,
+                        icon: Icons.people,
+                        validator: (value) {
+                          Validators.phnNo_validator(value);
+                          return null;
+                        },
+                      ),
                       SizedBox(
                         width: 400,
                         height: 50,
@@ -490,6 +406,7 @@ class customerDetailsState extends State<customerDetails> {
                                   ElevatedButton(
                                     onPressed: () async {
                                       clientreqController.pickFile(context);
+                                      widget.add_details(context);
                                     },
                                     style: ButtonStyle(
                                       overlayColor: WidgetStateProperty.all<Color>(
@@ -516,31 +433,117 @@ class customerDetailsState extends State<customerDetails> {
                           ],
                         ),
                       ),
+                      Textfield_1(
+                        readonly: false,
+                        text: 'Email',
+                        controller: clientreqController.clientReqModel.emailController.value,
+                        icon: Icons.people,
+                        validator: (value) {
+                          Validators.email_validator(value);
+                          return null;
+                        },
+                      ),
+                      // const SizedBox(height: 25),
+
+                      // const SizedBox(height: 25),
+
+                      // const SizedBox(height: 25),
+
+                      // const SizedBox(height: 25),
+
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Button1(
+                              colors: Colors.green,
+                              text: 'Add Details',
+                              onPressed: () async {
+                                if (clientreqController.clientReqModel.detailsformKey.value.currentState?.validate() ?? false) {
+                                  widget.add_details(context);
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      // const SizedBox(height: 25),
+
+                      // const SizedBox(height: 25),
+
+                      // ConstrainedBox(
+                      //   constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
+                      //   child: DropdownButtonFormField<String>(
+                      //     dropdownColor: Primary_colors.Dark,
+                      //     decoration: const InputDecoration(
+                      //         label: Text(
+                      //           'Select Type',
+                      //           style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176)),
+                      //         ),
+                      //         // hintText: 'Customer Type',hintStyle: TextStyle(),
+                      //         contentPadding: EdgeInsets.all(13),
+                      //         labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
+                      //         filled: true,
+                      //         fillColor: Primary_colors.Dark,
+                      //         border: OutlineInputBorder(
+                      //           borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                      //         ),
+                      //         enabledBorder: OutlineInputBorder(
+                      //           borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                      //         ),
+                      //         focusedBorder: OutlineInputBorder(
+                      //           borderSide: BorderSide(),
+                      //         ),
+                      //         prefixIcon: Icon(
+                      //           Icons.people,
+                      //           color: Colors.white,
+                      //         )),
+                      //     value: clientreqController.clientReqModel.clientNameController.value.text == "" ? null : clientreqController.clientReqModel.clientNameController.value.text,
+                      //     items: <String>[
+                      //       'Option 1',
+                      //       'Option 2',
+                      //     ].map((String value) {
+                      //       return DropdownMenuItem<String>(
+                      //         value: value,
+                      //         child: Text(
+                      //           value,
+                      //           style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
+                      //         ),
+                      //       );
+                      //     }).toList(),
+                      //     onChanged: (String? newValue) {
+                      //       clientreqController.updateClientName(newValue!);
+                      //     },
+                      //     validator: (value) {
+                      //       if (value == null || value.isEmpty) {
+                      //         return 'Please Select customer type';
+                      //       }
+                      //       return null;
+                      //     },
+                      //   ),
+                      // ),
+
+                      // const SizedBox(height: 25),
+
+                      // const SizedBox(height: 25),
+
+                      // const SizedBox(height: 25),
+
+                      // const SizedBox(
+                      //   height: 25,
+                      // ),
+
+                      // const SizedBox(
+                      //   height: 25,
+                      // ),
+
+                      // const SizedBox(
+                      //   height: 25,
+                      // ),
                     ],
                   ),
-                  // Column(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-
-                  //     // const SizedBox(height: 30),
-                  //     // Row(
-                  //     //   crossAxisAlignment: CrossAxisAlignment.end,
-                  //     //   mainAxisAlignment: MainAxisAlignment.end,
-                  //     //   children: [
-                  //     //     Button1(
-                  //     //       colors: Colors.green,
-                  //     //       text: 'Add Details',
-                  //     //       onPressed: () async {
-                  //     //         if (clientreqController.clientReqModel.detailsformKey.value.currentState?.validate() ?? false) {
-                  //     //           widget.add_details(context);
-                  //     //         }
-                  //     //       },
-                  //     //     ),
-                  //     //   ],
-                  //     // ),
-                  //     // const SizedBox(height: 10),
-                  //   ],
-                  // ),
                 ),
                 // const SizedBox(height: 25),
                 const SizedBox(

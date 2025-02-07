@@ -51,7 +51,6 @@ mixin ClientreqdetailsService {
   }
 
   void postData(context) async {
-    print("salesData.address");
     try {
       String jsonData = '''{
     "name": "JK constructiond",

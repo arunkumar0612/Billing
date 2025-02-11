@@ -239,4 +239,13 @@ class ClientreqProduct {
     }
     return '';
   }
+
+  // Convert object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      "sno": sno,
+      "productName": productName,
+      "quantity": quantity,
+    };
+  }
 }

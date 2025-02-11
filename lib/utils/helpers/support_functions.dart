@@ -62,6 +62,11 @@ String formatDate(DateTime date) {
   return format.format(date);
 }
 
+String getCurrentDate() {
+  DateTime now = DateTime.now();
+  return "$now";
+}
+
 pw.Widget regular(String value, int size) {
   // loadFont();
   return pw.Text(

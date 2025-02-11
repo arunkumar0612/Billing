@@ -9,7 +9,7 @@ import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
-class customerDetails extends StatefulWidget with ClientreqdetailsService {
+class customerDetails extends StatefulWidget with ClientreqDetailsService {
   customerDetails({super.key});
 
   @override

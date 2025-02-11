@@ -137,10 +137,18 @@ class ClientreqController extends GetxController {
     clientReqModel.MOR_uploadedPath.value = MORpath.fromJson(value).path;
   }
 
-  Future<void> pickFile(BuildContext context) async {
+  void update_EnqID(CMDmResponse value) {
+    clientReqModel.Enq_ID.value = EnqID.fromJson(value).ID;
+  }
+
+  Future<bool> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf'],
+      allowedExtensions: [
+        'png',
+        'jpg',
+        'jpeg'
+      ],
     );
 
     if (result != null) {
@@ -174,8 +182,13 @@ class ClientreqController extends GetxController {
         if (kDebugMode) {
           print("Selected File Name: ${result.files.single.name}");
         }
+
+        return true;
       }
+    } else {
+      return false;
     }
+    return false;
   }
 
   void addRecommendation({required String key, required String value}) {

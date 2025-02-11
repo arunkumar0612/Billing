@@ -437,7 +437,8 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                 text: 'Submit',
                                 onPressed: () async {
                                   if (clientreqController.clientReqModel.clientReqProductDetails.isNotEmpty && clientreqController.clientReqModel.clientNameController.value.text.isNotEmpty && clientreqController.clientReqModel.clientAddressController.value.text.isNotEmpty && clientreqController.clientReqModel.billingAddressNameController.value.text.isNotEmpty && clientreqController.clientReqModel.billingAddressController.value.text.isNotEmpty) {
-                                    widget.Generate_clientReq(context);
+                                    // widget.Generate_clientReq(context);
+                                    widget.postData(context);
                                     // Navigator.of(context).pop();
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(

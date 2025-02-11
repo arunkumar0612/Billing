@@ -8,7 +8,7 @@ import '../../../../../controllers/SALEScontrollers/ClientReq_actions.dart';
 import '../../../../../services/SALES/ClientReq_services/Clientreqdetails_service.dart';
 import '../../../../../utils/validators/minimal_validators.dart';
 
-class enquryDetails extends StatefulWidget with ClientreqdetailsService {
+class enquryDetails extends StatefulWidget with ClientreqDetailsService {
   enquryDetails({super.key});
 
   @override
@@ -17,6 +17,12 @@ class enquryDetails extends StatefulWidget with ClientreqdetailsService {
 
 class enquryDetailsState extends State<enquryDetails> {
   final ClientreqController clientreqController = Get.find<ClientreqController>();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget.getEnquiry_processID(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -192,8 +198,7 @@ class enquryDetailsState extends State<enquryDetails> {
                                       ),
                                       ElevatedButton(
                                         onPressed: () async {
-                                          await clientreqController.pickFile(context);
-                                          widget.uploadMor(context, clientreqController.clientReqModel.morFile.value!);
+                                          widget.MORaction(context);
                                         },
                                         style: ButtonStyle(
                                           overlayColor: WidgetStateProperty.all<Color>(

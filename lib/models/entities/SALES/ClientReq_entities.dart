@@ -22,6 +22,8 @@
 // }
 
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_products.dart';
 
 class Recommendation {
   final String key;
@@ -83,6 +85,24 @@ class MORpath {
   }
 }
 
+class EnqID {
+  final String ID;
+
+  EnqID({required this.ID});
+
+  factory EnqID.fromJson(CMDmResponse json) {
+    return EnqID(
+      ID: json.data['requirementid'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'ID': ID,
+    };
+  }
+}
+
 class AddSales {
   String? name;
   String? emailId;
@@ -94,47 +114,57 @@ class AddSales {
   String? billingAddress;
   String? modeOfRequest;
   String? morReference;
-  List<Product>? product;
-  List<NoteList>? notes;
+  List<ClientreqProduct>? product;
+  List<Note>? notes;
   int? messageType;
   double? invoiceAmount;
   String? date;
 
   AddSales({
-    this.name,
-    this.emailId,
-    this.phoneNo,
-    this.address,
-    this.gst,
-    this.billingAddressName,
-    this.customerRequirementId,
-    this.billingAddress,
-    this.modeOfRequest,
-    this.morReference,
-    this.product,
-    this.notes,
-    this.messageType,
-    this.invoiceAmount,
-    this.date,
+    required this.name,
+    required this.emailId,
+    required this.phoneNo,
+    required this.address,
+    required this.gst,
+    required this.billingAddressName,
+    required this.customerRequirementId,
+    required this.billingAddress,
+    required this.modeOfRequest,
+    required this.morReference,
+    required this.product,
+    required this.notes,
+    required this.date,
   });
 
-  factory AddSales.fromJson(Map<String, dynamic> json) {
+  factory AddSales.fromJson(
+    String name,
+    String emailId,
+    String phoneNo,
+    String address,
+    String gst,
+    String billingAddressName,
+    String customerRequirementId,
+    String billingAddress,
+    String modeOfRequest,
+    String morReference,
+    List<ClientreqProduct> product,
+    List<Note> notes,
+    String date,
+  ) {
     return AddSales(
-      name: json['name'],
-      emailId: json['emailid'],
-      phoneNo: json['phoneno'],
-      address: json['address'],
-      gst: json['gst'],
-      billingAddressName: json['billingaddressname'],
-      customerRequirementId: json['customerrequirementid'],
-      billingAddress: json['billingaddress'],
-      modeOfRequest: json['modeofrequest'],
-      morReference: json['MORreference'],
-      product: (json['product'] as List<dynamic>?)?.map((item) => Product.fromJson(item)).toList(),
-      notes: (json['notes'] as List<dynamic>?)?.map((item) => NoteList.fromJson(item)).toList(),
-      messageType: json['messagetype'],
-      invoiceAmount: (json['invoiceamount'] as num?)?.toDouble(),
-      date: json['date'],
+      name: name,
+      emailId: emailId,
+      phoneNo: phoneNo,
+      address: address,
+      gst: gst,
+      billingAddressName: billingAddressName,
+      customerRequirementId: customerRequirementId,
+      billingAddress: billingAddress,
+      modeOfRequest: modeOfRequest,
+      morReference: morReference,
+      product: product,
+      notes: notes,
+      date: date,
     );
   }
 
@@ -152,48 +182,46 @@ class AddSales {
       "MORreference": morReference,
       "product": product?.map((item) => item.toJson()).toList(),
       "notes": notes?.map((item) => item.toJson()).toList(),
-      "messagetype": messageType,
-      "invoiceamount": invoiceAmount,
       "date": date,
     };
   }
 }
 
-class Product {
-  String? productName;
-  int? productQuantity;
+// class Product {
+//   String? productName;
+//   int? productQuantity;
 
-  Product({this.productName, this.productQuantity});
+//   Product({this.productName, this.productQuantity});
 
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
-      productName: json['productname'],
-      productQuantity: json['productquantity'],
-    );
-  }
+//   factory Product.fromJson(Map<String, dynamic> json) {
+//     return Product(
+//       productName: json['productname'],
+//       productQuantity: json['productquantity'],
+//     );
+//   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      "productname": productName,
-      "productquantity": productQuantity,
-    };
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     return {
+//       "productname": productName,
+//       "productquantity": productQuantity,
+//     };
+//   }
+// }
 
-class NoteList {
-  String? note;
+// class NoteList {
+//   String? note;
 
-  NoteList({this.note});
+//   NoteList({this.note});
 
-  factory NoteList.fromJson(Map<String, dynamic> json) {
-    return NoteList(
-      note: json['note'],
-    );
-  }
+//   factory NoteList.fromJson(Map<String, dynamic> json) {
+//     return NoteList(
+//       note: json['note'],
+//     );
+//   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      "note": note,
-    };
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     return {
+//       "note": note,
+//     };
+//   }
+// }

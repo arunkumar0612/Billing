@@ -12,4 +12,16 @@ class SalesController extends GetxController {
       salesModel.customerList.add(Customer.fromJson(value, i));
     }
   }
+
+  void addToProcesscustomerList(CMDlResponse value) {
+    for (int i = 0; i < value.data.length; i++) {
+      salesModel.processcustomerList.add(Processcustomer.fromJson(value, i));
+    }
+  }
+
+  void addToProcessList(CMDlResponse value) {
+    for (int i = 0; i < value.data.length; i++) {
+      salesModel.processList.add(Process.fromJson(value, i));
+    }
+  }
 }

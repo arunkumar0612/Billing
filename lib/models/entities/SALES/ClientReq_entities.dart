@@ -104,6 +104,7 @@ class EnqID {
 }
 
 class AddSales {
+  String? title;
   String? name;
   String? emailId;
   String? phoneNo;
@@ -119,8 +120,11 @@ class AddSales {
   int? messageType;
   double? invoiceAmount;
   String? date;
+  int? companyID;
+  int? branchID;
 
   AddSales({
+    required this.title,
     required this.name,
     required this.emailId,
     required this.phoneNo,
@@ -134,42 +138,17 @@ class AddSales {
     required this.product,
     required this.notes,
     required this.date,
+    required this.companyID,
+    required this.branchID,
   });
 
-  factory AddSales.fromJson(
-    String name,
-    String emailId,
-    String phoneNo,
-    String address,
-    String gst,
-    String billingAddressName,
-    String customerRequirementId,
-    String billingAddress,
-    String modeOfRequest,
-    String morReference,
-    List<ClientreqProduct> product,
-    List<Note> notes,
-    String date,
-  ) {
-    return AddSales(
-      name: name,
-      emailId: emailId,
-      phoneNo: phoneNo,
-      address: address,
-      gst: gst,
-      billingAddressName: billingAddressName,
-      customerRequirementId: customerRequirementId,
-      billingAddress: billingAddress,
-      modeOfRequest: modeOfRequest,
-      morReference: morReference,
-      product: product,
-      notes: notes,
-      date: date,
-    );
+  factory AddSales.fromJson(String title, String name, String emailId, String phoneNo, String address, String gst, String billingAddressName, String customerRequirementId, String billingAddress, String modeOfRequest, String morReference, List<ClientreqProduct> product, List<Note> notes, String date, int companyID, int branchID) {
+    return AddSales(title: title, name: name, emailId: emailId, phoneNo: phoneNo, address: address, gst: gst, billingAddressName: billingAddressName, customerRequirementId: customerRequirementId, billingAddress: billingAddress, modeOfRequest: modeOfRequest, morReference: morReference, product: product, notes: notes, date: date, companyID: companyID, branchID: branchID);
   }
 
   Map<String, dynamic> toJson() {
     return {
+      "title": title,
       "name": name,
       "emailid": emailId,
       "phoneno": phoneNo,
@@ -183,45 +162,96 @@ class AddSales {
       "product": product?.map((item) => item.toJson()).toList(),
       "notes": notes?.map((item) => item.toJson()).toList(),
       "date": date,
+      "companyid": companyID,
+      "branchid": branchID
     };
   }
 }
 
-// class Product {
-//   String? productName;
-//   int? productQuantity;
+class Organization {
+  int? organizationId;
+  String? organizationName;
+  String? orgCode;
 
-//   Product({this.productName, this.productQuantity});
+  Organization({
+    required this.organizationId,
+    required this.organizationName,
+    this.orgCode,
+  });
 
-//   factory Product.fromJson(Map<String, dynamic> json) {
-//     return Product(
-//       productName: json['productname'],
-//       productQuantity: json['productquantity'],
-//     );
-//   }
+  factory Organization.fromJson(CMDlResponse json, i) {
+    return Organization(
+      organizationId: json.data[i]['Organization_id'],
+      organizationName: json.data[i]['Organization_name'],
+      orgCode: json.data[i]['orgcode'],
+    );
+  }
 
-//   Map<String, dynamic> toJson() {
-//     return {
-//       "productname": productName,
-//       "productquantity": productQuantity,
-//     };
-//   }
-// }
+  Map<String, dynamic> toJson() {
+    return {
+      "Organization_id": organizationId,
+      "Organization_name": organizationName,
+      "orgcode": orgCode,
+    };
+  }
+}
 
-// class NoteList {
-//   String? note;
+class Company {
+  int? companyId;
+  String? companyName;
+  String? emailId;
 
-//   NoteList({this.note});
+  Company({
+    required this.companyId,
+    required this.companyName,
+    required this.emailId,
+  });
 
-//   factory NoteList.fromJson(Map<String, dynamic> json) {
-//     return NoteList(
-//       note: json['note'],
-//     );
-//   }
+  // Factory method to create an instance from JSON
+  factory Company.fromJson(CMDlResponse json, i) {
+    return Company(
+      companyId: json.data[i]['companyid'],
+      companyName: json.data[i]['companyname'],
+      emailId: json.data[i]['Email_id'],
+    );
+  }
 
-//   Map<String, dynamic> toJson() {
-//     return {
-//       "note": note,
-//     };
-//   }
-// }
+  // Method to convert the object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      "companyid": companyId,
+      "companyname": companyName,
+      "Email_id": emailId,
+    };
+  }
+}
+
+class Branch {
+  int? Branch_id;
+  String? Branch_name;
+  String? Branch_code;
+
+  Branch({
+    required this.Branch_id,
+    required this.Branch_name,
+    required this.Branch_code,
+  });
+
+  // Factory method to create an instance from JSON
+  factory Branch.fromJson(CMDlResponse json, i) {
+    return Branch(
+      Branch_id: json.data[i]['Branch_id'],
+      Branch_name: json.data[i]['Branch_name'],
+      Branch_code: json.data[i]['Branch_code'],
+    );
+  }
+
+  // Method to convert the object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      "Branch_id": Branch_id,
+      "Branch_name": Branch_name,
+      "Branch_code": Branch_code,
+    };
+  }
+}

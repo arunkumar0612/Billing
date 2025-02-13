@@ -436,7 +436,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                 colors: Colors.green,
                                 text: 'Submit',
                                 onPressed: () async {
-                                  if (clientreqController.clientReqModel.clientReqProductDetails.isNotEmpty && clientreqController.clientReqModel.clientNameController.value.text.isNotEmpty && clientreqController.clientReqModel.clientAddressController.value.text.isNotEmpty && clientreqController.clientReqModel.billingAddressNameController.value.text.isNotEmpty && clientreqController.clientReqModel.billingAddressController.value.text.isNotEmpty) {
+                                  if (clientreqController.clientReqModel.clientReqProductDetails.isNotEmpty && clientreqController.clientReqModel.clientNameController.value.text.isNotEmpty && clientreqController.clientReqModel.clientAddressController.value.text.isNotEmpty && clientreqController.clientReqModel.billingAddressNameController.value.text.isNotEmpty && clientreqController.clientReqModel.billingAddressController.value.text.isNotEmpty && clientreqController.clientReqModel.titleController.value.text.isNotEmpty) {
                                     // widget.Generate_clientReq(context);
                                     widget.postData(context);
                                     // Navigator.of(context).pop();

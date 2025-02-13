@@ -1,15 +1,19 @@
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
+
 import 'package:ssipl_billing/services/SALES/ClientReq_services/Clientreqdetails_service.dart';
+import 'package:ssipl_billing/services/SALES/sales_service.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
 // import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:ssipl_billing/views/screens/SALES/Sales.dart';
 
-class customerDetails extends StatefulWidget with ClientreqDetailsService {
+class customerDetails extends StatefulWidget with ClientreqDetailsService, SalesServices {
   customerDetails({super.key});
 
   @override
@@ -18,14 +22,24 @@ class customerDetails extends StatefulWidget with ClientreqDetailsService {
 
 class customerDetailsState extends State<customerDetails> {
   final ClientreqController clientreqController = Get.find<ClientreqController>();
-  List<ValueItem> client_list = [
-    const ValueItem(label: 'Option 1', value: '1'),
-    const ValueItem(label: 'Option 2', value: '2'),
-    const ValueItem(label: 'Option 3', value: '3'),
-    const ValueItem(label: 'Option 4', value: '4'),
-    const ValueItem(label: 'Option 5', value: '5'),
-    const ValueItem(label: 'Option 6', value: '6')
-  ];
+  // List<ValueItem> client_list = [
+  //   const ValueItem(label: 'Option 1', value: '1'),
+  //   const ValueItem(label: 'Option 2', value: '2'),
+  //   const ValueItem(label: 'Option 3', value: '3'),
+  //   const ValueItem(label: 'Option 4', value: '4'),
+  //   const ValueItem(label: 'Option 5', value: '5'),
+  //   const ValueItem(label: 'Option 6', value: '6')
+  // ];
+  late MultiValueDropDownController _cntMulti;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _cntMulti = MultiValueDropDownController();
+    super.initState();
+    widget.get_OrganizatioList(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -46,58 +60,6 @@ class customerDetailsState extends State<customerDetails> {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // const SizedBox(height: 25),
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
-                        child: DropdownButtonFormField<String>(
-                          dropdownColor: Primary_colors.Dark,
-                          decoration: const InputDecoration(
-                              label: Text(
-                                'Customer Type',
-                                style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176)),
-                              ),
-                              // hintText: 'Customer Type',hintStyle: TextStyle(),
-                              contentPadding: EdgeInsets.all(13),
-                              labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
-                              filled: true,
-                              fillColor: Primary_colors.Dark,
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(),
-                              ),
-                              prefixIcon: Icon(
-                                Icons.people,
-                                color: Colors.white,
-                              )),
-                          value: clientreqController.clientReqModel.clientNameController.value.text == "" ? null : clientreqController.clientReqModel.clientNameController.value.text,
-                          items: <String>[
-                            'Option 1',
-                            'Option 2',
-                          ].map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            clientreqController.updateClientName(newValue!);
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please Select customer type';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
                       Textfield_1(
                         readonly: false,
                         text: 'GST',
@@ -111,10 +73,11 @@ class customerDetailsState extends State<customerDetails> {
                       ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
                         child: DropdownButtonFormField<String>(
+                          isExpanded: true,
                           dropdownColor: Primary_colors.Dark,
                           decoration: const InputDecoration(
                               label: Text(
-                                'Select Customer Name',
+                                'Select Organization Name',
                                 style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176)),
                               ),
                               // hintText: 'Customer Type',hintStyle: TextStyle(),
@@ -135,21 +98,19 @@ class customerDetailsState extends State<customerDetails> {
                                 Icons.people,
                                 color: Colors.white,
                               )),
-                          value: clientreqController.clientReqModel.clientNameController.value.text == "" ? null : clientreqController.clientReqModel.clientNameController.value.text,
-                          items: <String>[
-                            'Option 1',
-                            'Option 2',
-                          ].map((String value) {
+                          value: clientreqController.clientReqModel.Org_Controller.value == "" ? null : clientreqController.clientReqModel.Org_Controller.value,
+                          items: clientreqController.clientReqModel.organizationList.map((organization) {
                             return DropdownMenuItem<String>(
-                              value: value,
+                              value: organization.organizationName,
                               child: Text(
-                                value,
-                                style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
+                                organization.organizationName ?? "Unknown",
+                                style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1, overflow: TextOverflow.ellipsis),
                               ),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            clientreqController.updateClientName(newValue!);
+                            clientreqController.updateOrgName(newValue!);
+                            widget.on_Orgselected(context, newValue);
                           },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -174,6 +135,7 @@ class customerDetailsState extends State<customerDetails> {
                       ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
                         child: DropdownButtonFormField<String>(
+                          isExpanded: true,
                           dropdownColor: Primary_colors.Dark,
                           decoration: const InputDecoration(
                               label: Text(
@@ -198,21 +160,20 @@ class customerDetailsState extends State<customerDetails> {
                                 Icons.people,
                                 color: Colors.white,
                               )),
-                          value: clientreqController.clientReqModel.clientNameController.value.text == "" ? null : clientreqController.clientReqModel.clientNameController.value.text,
-                          items: <String>[
-                            'Option 1',
-                            'Option 2',
-                          ].map((String value) {
+                          value: clientreqController.clientReqModel.Company_Controller.value,
+                          items: clientreqController.clientReqModel.CompanyList.map((company) {
                             return DropdownMenuItem<String>(
-                              value: value,
+                              value: company.companyName,
                               child: Text(
-                                value,
-                                style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
+                                company.companyName ?? "Unknown",
+                                style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1, overflow: TextOverflow.ellipsis),
                               ),
                             );
                           }).toList(),
-                          onChanged: (String? newValue) {
-                            clientreqController.updateClientName(newValue!);
+                          onChanged: (String? newValue) async {
+                            clientreqController.updateCompanyName(newValue!);
+                            widget.on_Compselected(context, newValue);
+                            setState(() {});
                           },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -234,57 +195,6 @@ class customerDetailsState extends State<customerDetails> {
                           return null;
                         },
                       ),
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
-                        child: DropdownButtonFormField<String>(
-                          dropdownColor: Primary_colors.Dark,
-                          decoration: const InputDecoration(
-                              label: Text(
-                                'Select Consolidate',
-                                style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176)),
-                              ),
-                              // hintText: 'Customer Type',hintStyle: TextStyle(),
-                              contentPadding: EdgeInsets.all(13),
-                              labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
-                              filled: true,
-                              fillColor: Primary_colors.Dark,
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(),
-                              ),
-                              prefixIcon: Icon(
-                                Icons.people,
-                                color: Colors.white,
-                              )),
-                          value: clientreqController.clientReqModel.clientNameController.value.text == "" ? null : clientreqController.clientReqModel.clientNameController.value.text,
-                          items: <String>[
-                            'Option 1',
-                            'Option 2',
-                          ].map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            clientreqController.updateClientName(newValue!);
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please Select customer type';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
                       Textfield_1(
                         readonly: false,
                         text: 'Billing Address',
@@ -297,46 +207,56 @@ class customerDetailsState extends State<customerDetails> {
                           return null;
                         },
                       ),
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
-                        child: MultiSelectDropDown(
-                          searchBackgroundColor: Primary_colors.Color1,
-                          hint: 'Select Client',
-                          selectedOptionTextColor: Primary_colors.Color1,
-                          dropdownBorderRadius: 10,
-                          dropdownBackgroundColor: Primary_colors.Dark,
-                          selectedOptionBackgroundColor: Primary_colors.Dark,
-                          optionsBackgroundColor: Primary_colors.Dark,
-                          padding: const EdgeInsets.all(10),
-                          dropdownMargin: 0,
-                          searchEnabled: true,
-                          hintColor: Colors.white,
-                          suffixIcon: const Icon(
-                            Icons.arrow_drop_down,
-                            color: Color.fromARGB(255, 102, 102, 102),
-                          ),
-                          inputDecoration: BoxDecoration(border: Border.all(color: const Color.fromARGB(255, 0, 0, 0)), color: Primary_colors.Dark, borderRadius: BorderRadius.circular(5)),
-                          onOptionSelected: (options) {
-                            setState(() {});
-                          },
-                          options: client_list,
-                          maxItems: client_list.length,
-                          selectionType: SelectionType.multi,
-                          chipConfig: const ChipConfig(
-                            deleteIconColor: Color.fromARGB(255, 105, 105, 105),
-                            backgroundColor: Primary_colors.Light,
-                            wrapType: WrapType.scroll,
-                          ),
-                          dropdownHeight: 300,
-                          optionTextStyle: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
-                          selectedOptionIcon: const Icon(Icons.check_circle),
-                          clearIcon: const Icon(
-                            Icons.close,
-                            color: Colors.red,
-                            size: 20,
-                          ),
-                        ),
-                      ),
+                      clientreqController.clientReqModel.BranchList.isNotEmpty
+                          ? ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
+                              child: DropDownTextField.multiSelection(
+                                submitButtonTextStyle: const TextStyle(color: Primary_colors.Color1),
+                                submitButtonColor: Primary_colors.Color3,
+                                controller: _cntMulti,
+                                textStyle: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
+                                // initialValue: const ["name1", "name2", "name8", "name3"],
+                                displayCompleteItem: true,
+                                checkBoxProperty: CheckBoxProperty(fillColor: WidgetStateProperty.all<Color>(Colors.white), checkColor: Colors.blue),
+                                dropDownList: clientreqController.clientReqModel.BranchList,
+                                onChanged: (val) {
+                                  print(val);
+                                  setState(() {});
+                                },
+                                textFieldDecoration: const InputDecoration(
+                                  suffixIconColor: Color.fromARGB(255, 99, 98, 98),
+                                  filled: true,
+                                  fillColor: Primary_colors.Dark,
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+
+                                  enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                                  // labelText: text,
+                                  hintText: 'Select Branch Name',
+                                  hintStyle: const TextStyle(
+                                    fontSize: Primary_font_size.Text7,
+                                    color: Color.fromARGB(255, 167, 165, 165),
+                                  ),
+                                  border: const OutlineInputBorder(),
+                                  prefixIcon: Icon(
+                                    Icons.merge_outlined,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Textfield_1(
+                              readonly: false,
+                              text: 'Select Branch Name',
+                              controller: clientreqController.clientReqModel.billingAddressController.value,
+                              icon: Icons.merge_outlined,
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
                       Textfield_1(
                         readonly: false,
                         text: 'Mode of request',
@@ -443,14 +363,6 @@ class customerDetailsState extends State<customerDetails> {
                           return null;
                         },
                       ),
-                      // const SizedBox(height: 25),
-
-                      // const SizedBox(height: 25),
-
-                      // const SizedBox(height: 25),
-
-                      // const SizedBox(height: 25),
-
                       ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
                         child: Row(
@@ -469,79 +381,6 @@ class customerDetailsState extends State<customerDetails> {
                           ],
                         ),
                       ),
-                      // const SizedBox(height: 25),
-
-                      // const SizedBox(height: 25),
-
-                      // ConstrainedBox(
-                      //   constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
-                      //   child: DropdownButtonFormField<String>(
-                      //     dropdownColor: Primary_colors.Dark,
-                      //     decoration: const InputDecoration(
-                      //         label: Text(
-                      //           'Select Type',
-                      //           style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176)),
-                      //         ),
-                      //         // hintText: 'Customer Type',hintStyle: TextStyle(),
-                      //         contentPadding: EdgeInsets.all(13),
-                      //         labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
-                      //         filled: true,
-                      //         fillColor: Primary_colors.Dark,
-                      //         border: OutlineInputBorder(
-                      //           borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                      //         ),
-                      //         enabledBorder: OutlineInputBorder(
-                      //           borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                      //         ),
-                      //         focusedBorder: OutlineInputBorder(
-                      //           borderSide: BorderSide(),
-                      //         ),
-                      //         prefixIcon: Icon(
-                      //           Icons.people,
-                      //           color: Colors.white,
-                      //         )),
-                      //     value: clientreqController.clientReqModel.clientNameController.value.text == "" ? null : clientreqController.clientReqModel.clientNameController.value.text,
-                      //     items: <String>[
-                      //       'Option 1',
-                      //       'Option 2',
-                      //     ].map((String value) {
-                      //       return DropdownMenuItem<String>(
-                      //         value: value,
-                      //         child: Text(
-                      //           value,
-                      //           style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
-                      //         ),
-                      //       );
-                      //     }).toList(),
-                      //     onChanged: (String? newValue) {
-                      //       clientreqController.updateClientName(newValue!);
-                      //     },
-                      //     validator: (value) {
-                      //       if (value == null || value.isEmpty) {
-                      //         return 'Please Select customer type';
-                      //       }
-                      //       return null;
-                      //     },
-                      //   ),
-                      // ),
-
-                      // const SizedBox(height: 25),
-
-                      // const SizedBox(height: 25),
-
-                      // const SizedBox(height: 25),
-
-                      // const SizedBox(
-                      //   height: 25,
-                      // ),
-
-                      // const SizedBox(
-                      //   height: 25,
-                      // ),
-
-                      // const SizedBox(
-                      //   height: 25,
-                      // ),
                     ],
                   ),
                 ),

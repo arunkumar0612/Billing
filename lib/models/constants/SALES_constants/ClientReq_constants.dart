@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:ssipl_billing/models/entities/SALES/ClientReq_entities.dart';
 
 import '../../entities/SALES/product_entities.dart';
@@ -18,6 +20,7 @@ class ClientReqModel {
   final Rx<File> selectedPdf = File('E://Client_requirement.pdf').obs;
   final detailsformKey = GlobalKey<FormState>().obs;
   var clientNameController = TextEditingController().obs;
+  var titleController = TextEditingController().obs;
   var clientAddressController = TextEditingController().obs;
   var billingAddressNameController = TextEditingController().obs;
   var billingAddressController = TextEditingController().obs;
@@ -25,8 +28,14 @@ class ClientReqModel {
   var phoneController = TextEditingController().obs;
   var emailController = TextEditingController().obs;
   var gstController = TextEditingController().obs;
+  var Org_Controller = Rxn<String>();
+  var Company_Controller = Rxn<String>();
+  var Branch_Controller = Rxn<String>();
   var pickedFile = Rxn<FilePickerResult>();
   var morFile = Rxn<File>();
+  var organizationList = <Organization>[].obs;
+  var CompanyList = <Company>[].obs;
+  var BranchList = <DropDownValueModel>[].obs;
 //######################################################################################################################################
 //PRODUCTS
   final productFormkey = GlobalKey<FormState>().obs;

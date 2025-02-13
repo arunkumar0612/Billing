@@ -9,4 +9,7 @@ class API {
   static String sales_add_client_requirement_API = "http://192.168.0.200:8081/admin/sendmailwhatsapp";
   static String sales_getcustomerlist_API = "http://192.168.0.200:8081/sales/getcustomerlist";
   static String sales_fetchEnquiryID_API = "http://192.168.0.200:8081/sales/fetchenquiryid";
+  static String sales_fetchOrg_list = "http://192.168.0.200:8081/admin/organizationlist";
+  static String sales_fetchCompany_list = "http://192.168.0.200:8081/admin/companylist";
+  static String sales_fetchBranch_list = "http://192.168.0.200:8081/admin/branchlist";
 }

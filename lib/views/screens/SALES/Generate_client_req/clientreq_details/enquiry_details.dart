@@ -45,6 +45,19 @@ class enquryDetailsState extends State<enquryDetails> {
                           const SizedBox(height: 25),
                           Textfield_1(
                             readonly: false,
+                            text: 'Title',
+                            controller: clientreqController.clientReqModel.titleController.value,
+                            icon: Icons.person,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter client name';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 25),
+                          Textfield_1(
+                            readonly: false,
                             text: 'Client Name',
                             controller: clientreqController.clientReqModel.clientNameController.value,
                             icon: Icons.person,

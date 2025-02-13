@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:multi_dropdown/models/value_item.dart';
 import 'package:ssipl_billing/models/constants/SALES_constants/ClientReq_constants.dart';
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 import '../../models/entities/SALES/ClientReq_entities.dart';
@@ -45,6 +47,28 @@ class ClientreqController extends GetxController {
   // Update Text Controllers
   void updateClientName(String name) {
     clientReqModel.clientNameController.value.text = name;
+  }
+
+  void updateOrgName(String org) {
+    clientReqModel.Org_Controller.value = org;
+  }
+
+  void updateCompanyName(String comp) {
+    clientReqModel.Company_Controller.value = comp;
+  }
+
+  void clear_CompanyData() async {
+    clientReqModel.Company_Controller.value = null;
+    clientReqModel.CompanyList.clear();
+  }
+
+  void clear_BranchData() async {
+    clientReqModel.Branch_Controller.value = null;
+    clientReqModel.BranchList.clear();
+  }
+
+  void updateTitle(String title) {
+    clientReqModel.titleController.value.text = title;
   }
 
   void updateClientAddress(String address) {
@@ -139,6 +163,32 @@ class ClientreqController extends GetxController {
 
   void update_EnqID(CMDmResponse value) {
     clientReqModel.Enq_ID.value = EnqID.fromJson(value).ID;
+  }
+
+  void update_OrganizationList(CMDlResponse value) {
+    clientReqModel.organizationList.clear();
+    for (int i = 0; i < value.data.length; i++) {
+      clientReqModel.organizationList.add(Organization.fromJson(value, i));
+    }
+  }
+
+  void update_CompanyList(CMDlResponse value) {
+    clear_CompanyData();
+    clear_BranchData();
+    for (int i = 0; i < value.data.length; i++) {
+      clientReqModel.CompanyList.add(Company.fromJson(value, i));
+    }
+  }
+
+  void update_BranchList(CMDlResponse value) async {
+    clear_BranchData();
+    await Future.delayed(const Duration(microseconds: 10));
+    for (int i = 0; i < value.data.length; i++) {
+      clientReqModel.BranchList.add(DropDownValueModel(
+        name: Branch.fromJson(value, i).Branch_name ?? "Unknown", // Provide a default label if null
+        value: Branch.fromJson(value, i).Branch_id?.toString() ?? "", // Convert ID to String
+      ));
+    }
   }
 
   Future<bool> pickFile(BuildContext context) async {

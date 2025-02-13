@@ -5,4 +5,6 @@ class SalesModel {
   var customerList = <Customer>[].obs;
   var processcustomerList = <Processcustomer>[].obs;
   var processList = <Process>[].obs;
+  final showcustomerprocess = 0.obs;
+  final customerId = Rxn<int>();
 }

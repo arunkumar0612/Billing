@@ -8,18 +8,18 @@ import 'package:ssipl_billing/models/constants/api.dart';
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 import 'package:ssipl_billing/models/entities/SALES/ClientReq_entities.dart';
 import 'package:ssipl_billing/services/APIservices/invoker.dart';
+import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
 
-mixin ClientreqdetailsService {
+mixin ClientreqDetailsService {
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
 
   final ClientreqController clientreqController = Get.find<ClientreqController>();
-  void add_details(context) {
-    send_MOR(context);
+  void add_details(context) async {
     if (clientreqController.clientReqModel.detailsformKey.value.currentState?.validate() ?? false) {
       if (clientreqController.clientReqModel.pickedFile.value != null) {
-        // clientreqController.nextTab();
+        clientreqController.nextTab();
       } else {
         Basic_dialog(
           context: context,
@@ -31,54 +31,53 @@ mixin ClientreqdetailsService {
     }
   }
 
-  void send_MOR(context) async {
-    try {
-      String jsonData = '''{
-    "name": "JK constructiond",
-    "emailid": "ganeshkumar.m@sporadasecure.com",
-    "phoneno": "8248650039",
-    "address": "chinnverampatti,udumallai",
-    "gst": "33ABCD43wsd123",
-    "billingaddressname": "JK construction",
-    "customerrequirementid": "ssipl/ec250101",
-    "billingaddress": "chinnverampatti,udumallai",
-    "modeofrequest": "mailid",
-    "MORreference": "//192.168.0.156/backup",
-    "product": [
-      {"productname": "camera", "productquantity": 1},
-      {"productname": "dvr", "productquantity": 1}
-    ],
-    "notes": [{"note": "aqefrfcqf"}],
-    "messagetype": 3,
-    "invoiceamount": 2423,
-    "date": "2025-02-06"
-  }''';
-
-      Map<String, dynamic> jsonMap = jsonDecode(jsonData);
-      AddSales salesData = AddSales.fromJson(jsonMap);
-      print(salesData.address);
-      send_data(context, jsonData, clientreqController.clientReqModel.morFile.value!);
-    } catch (e) {}
+  void MORaction(context) async {
+    bool pickedStatus = await clientreqController.pickFile(context);
+    if (pickedStatus) {
+      uploadMor(context, clientreqController.clientReqModel.morFile.value!);
+    } else {
+      null;
+    }
   }
 
-  void send_data(context, String jsonData, File file) async {
+  void uploadMor(context, File file) async {
     try {
-      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.Upload_MOR_API);
+      Map<String, dynamic>? response = await apiController.multiPart(file, API.Upload_MOR_API);
       if (response?['statusCode'] == 200) {
-        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
-          await Basic_dialog(context: context, title: 'Customer List', content: "Customer List fetched successfully", onOk: () {});
-          // salesController.addToCustomerList(value);
-          // print("*****************${salesController.salesModel.customerList[1].customerId}");
+          await Basic_dialog(context: context, title: 'Upload MOR', content: "MOR uploaded Successfully", onOk: () {});
+          clientreqController.updateMOR_uploadedPath(value);
+          print(clientreqController.clientReqModel.MOR_uploadedPath.value);
         } else {
-          await Basic_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, title: 'Upload MOR', content: value.message ?? "", onOk: () {});
         }
       } else {
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
-      print(response);
     } catch (e) {
       Basic_dialog(context: context, title: "ERROR", content: "$e");
     }
+  }
+
+  void getEnquiry_processID(context) async {
+    // try {
+    Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_fetchEnquiryID_API);
+    if (response?['statusCode'] == 200) {
+      CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+      if (value.code) {
+        await Basic_dialog(context: context, title: 'Enquiry - ID', content: value.message!, onOk: () {});
+        clientreqController.update_EnqID(value);
+
+        // salesController.addToCustomerList(value);
+      } else {
+        await Basic_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
+      }
+    } else {
+      Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+    }
+    // } catch (e) {
+    //   Basic_dialog(context: context, title: "ERROR", content: "$e");
+    // }
   }
 }

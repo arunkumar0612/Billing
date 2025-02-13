@@ -407,8 +407,6 @@ class _Sales_ClientState extends State<Sales_Client> {
   //   }
   // ];
 
-  int showcustomerprocess = 1;
-
   @override
   void initState() {
     super.initState();
@@ -488,254 +486,273 @@ class _Sales_ClientState extends State<Sales_Client> {
                               ),
                               const SizedBox(height: 5),
                               Expanded(
-                                child: Container(),
-                                // child: ListView.builder(
-                                //   itemCount: items[showcustomerprocess]['process'].length,
-                                //   itemBuilder: (context, index) {
-                                //     return Padding(
-                                //       padding: const EdgeInsets.only(top: 10),
-                                //       child: ClipRRect(
-                                //         borderRadius: BorderRadius.circular(15),
-                                //         child: Container(
-                                //           decoration: BoxDecoration(
-                                //             color: Primary_colors.Dark,
-                                //             borderRadius: BorderRadius.circular(15),
-                                //           ),
-                                //           child: ExpansionTile(
-                                //             collapsedIconColor: const Color.fromARGB(255, 135, 132, 132),
-                                //             iconColor: Colors.red,
-                                //             collapsedBackgroundColor: Primary_colors.Dark,
-                                //             backgroundColor: Primary_colors.Dark,
-                                //             title: Row(
-                                //               children: [
-                                //                 Expanded(
-                                //                   flex: 2,
-                                //                   child: Text(
-                                //                     items[showcustomerprocess]['process'][index]['id'],
-                                //                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                //                   ),
-                                //                 ),
-                                //                 Expanded(
-                                //                   flex: 4,
-                                //                   child: Text(
-                                //                     items[showcustomerprocess]['name'],
-                                //                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                //                   ),
-                                //                 ),
-                                //                 Expanded(
-                                //                   flex: 2,
-                                //                   child: Text(
-                                //                     items[showcustomerprocess]['process'][index]['date'],
-                                //                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                //                   ),
-                                //                 ),
-                                //                 Expanded(
-                                //                   flex: 2,
-                                //                   child: Text(
-                                //                     items[showcustomerprocess]['process'][index]['daycounts'],
-                                //                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                //                   ),
-                                //                 ),
-                                //               ],
-                                //             ),
-                                //             children: [
-                                //               SizedBox(
-                                //                 height: ((items[showcustomerprocess]['process'][index]['child'].length * 80) + 20).toDouble(),
-                                //                 child: Padding(
-                                //                   padding: const EdgeInsets.all(16.0),
-                                //                   child: ListView.builder(
-                                //                     itemCount: items[showcustomerprocess]['process'][index]['child'].length, // +1 for "Add Event" button
-                                //                     itemBuilder: (context, childIndex) {
-                                //                       return Row(
-                                //                         crossAxisAlignment: CrossAxisAlignment.start,
-                                //                         children: [
-                                //                           Column(
-                                //                             children: [
-                                //                               Container(
-                                //                                 padding: const EdgeInsets.all(8),
-                                //                                 decoration: const BoxDecoration(
-                                //                                   shape: BoxShape.circle,
-                                //                                   color: Colors.green,
-                                //                                 ),
-                                //                                 child: const Icon(
-                                //                                   Icons.event,
-                                //                                   color: Colors.white,
-                                //                                 ),
-                                //                               ),
-                                //                               if (childIndex != items[showcustomerprocess]['process'][index]['child'].length - 1)
-                                //                                 Container(
-                                //                                   width: 2,
-                                //                                   height: 40,
-                                //                                   color: Colors.green,
-                                //                                 ),
-                                //                             ],
-                                //                           ),
-                                //                           Expanded(
-                                //                               child: Row(
-                                //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //                             children: [
-                                //                               Expanded(
-                                //                                 child: Column(
-                                //                                   mainAxisAlignment: MainAxisAlignment.start,
-                                //                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                //                                   children: [
-                                //                                     Padding(
-                                //                                       padding: const EdgeInsets.only(top: 2.0, left: 10),
-                                //                                       child: Row(
-                                //                                         children: [
-                                //                                           Text(
-                                //                                             items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
-                                //                                             style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
-                                //                                           ),
-                                //                                           // const SizedBox(width: 5),
-                                //                                           // Expanded(
-                                //                                           //   child: Text(
-                                //                                           //     overflow: TextOverflow.ellipsis,
-                                //                                           //     items[showcustomerprocess]['process'][index]['child'][childIndex]["feedback"],
-                                //                                           //     style: const TextStyle(color: Colors.red, fontSize: Primary_font_size.Text5),
-                                //                                           //   ),
-                                //                                           // )
-                                //                                         ],
-                                //                                       ),
-                                //                                     ),
-                                //                                     Row(
-                                //                                       mainAxisAlignment: MainAxisAlignment.start,
-                                //                                       children: [
-                                //                                         if (items[showcustomerprocess]['process'][index]['child'][childIndex]["generate_Quote"] == true)
-                                //                                           TextButton(
-                                //                                             onPressed: () {
-                                //                                               widget.GenerateQuote_dialougebox(context);
-                                //                                             },
-                                //                                             child: const Text(
-                                //                                               "Quotation",
-                                //                                               style: TextStyle(color: Colors.blue, fontSize: 12),
-                                //                                             ),
-                                //                                           ),
-                                //                                         if (items[showcustomerprocess]['process'][index]['child'][childIndex]["generate_revisedQuote"] == true)
-                                //                                           TextButton(
-                                //                                             onPressed: () {
-                                //                                               // GenerateQuotation_dialougebox();
-                                //                                             },
-                                //                                             child: const Text(
-                                //                                               "RevisedQuotation",
-                                //                                               style: TextStyle(color: Colors.blue, fontSize: 12),
-                                //                                             ),
-                                //                                           ),
-                                //                                         if (items[showcustomerprocess]['process'][index]['child'][childIndex]["generate_RFQ"] == true)
-                                //                                           TextButton(
-                                //                                             onPressed: () {
-                                //                                               widget.GenerateRFQ_dialougebox(context);
-                                //                                             },
-                                //                                             child: const Text(
-                                //                                               "Generate RFQ",
-                                //                                               style: TextStyle(color: Colors.blue, fontSize: 12),
-                                //                                             ),
-                                //                                           ),
-                                //                                         if (items[showcustomerprocess]['process'][index]['child'][childIndex]["generate_Invoice"] == true)
-                                //                                           TextButton(
-                                //                                             onPressed: () {
-                                //                                               widget.GenerateInvoice_dialougebox(context);
-                                //                                             },
-                                //                                             child: const Text(
-                                //                                               "Invoice",
-                                //                                               style: TextStyle(color: Colors.blue, fontSize: 12),
-                                //                                             ),
-                                //                                           ),
-                                //                                         if (items[showcustomerprocess]['process'][index]['child'][childIndex]["generate_deliverychallan"] == true)
-                                //                                           TextButton(
-                                //                                             onPressed: () {
-                                //                                               widget.GenerateDelivery_challan_dialougebox(context);
-                                //                                               // (items[showcustomerprocess]['process'][index]['child'] as List).add({
-                                //                                               //   "name": "Requirement4",
-                                //                                               //   "generate_po": true,
-                                //                                               //   "generate_RFQ": false,
-                                //                                               // });
-                                //                                             },
-                                //                                             child: const Text(
-                                //                                               "Deliverychallan",
-                                //                                               style: TextStyle(color: Colors.blue, fontSize: 12),
-                                //                                             ),
-                                //                                           ),
-                                //                                         if (items[showcustomerprocess]['process'][index]['child'][childIndex]["credit_note"] == true)
-                                //                                           TextButton(
-                                //                                             onPressed: () {
-                                //                                               widget.GenerateCredit_dialougebox(context);
-                                //                                               // (items[showcustomerprocess]['process'][index]['child'] as List).add({
-                                //                                               //   "name": "Requirement4",
-                                //                                               //   "generate_po": true,
-                                //                                               //   "generate_RFQ": false,
-                                //                                               // });
-                                //                                             },
-                                //                                             child: const Text(
-                                //                                               "Credit",
-                                //                                               style: TextStyle(color: Colors.blue, fontSize: 12),
-                                //                                             ),
-                                //                                           ),
-                                //                                         if (items[showcustomerprocess]['process'][index]['child'][childIndex]["debit_note"] == true)
-                                //                                           TextButton(
-                                //                                             onPressed: () {
-                                //                                               widget.GenerateDebit_dialougebox(context);
-                                //                                               // (items[showcustomerprocess]['process'][index]['child'] as List).add({
-                                //                                               //   "name": "Requirement4",
-                                //                                               //   "generate_po": true,
-                                //                                               //   "generate_RFQ": false,
-                                //                                               // });
-                                //                                             },
-                                //                                             child: const Text(
-                                //                                               "Debit",
-                                //                                               style: TextStyle(color: Colors.blue, fontSize: 12),
-                                //                                             ),
-                                //                                           ),
-                                //                                       ],
-                                //                                     )
-                                //                                   ],
-                                //                                 ),
-                                //                               ),
-                                //                               Row(
-                                //                                 children: [
-                                //                                   Container(
-                                //                                     height: 40,
-                                //                                     width: 2,
-                                //                                     color: const Color.fromARGB(78, 172, 170, 170),
-                                //                                   ),
-                                //                                   SizedBox(
-                                //                                     width: 200,
-                                //                                     child: TextFormField(
-                                //                                       maxLines: 2,
-                                //                                       style: const TextStyle(
-                                //                                         fontSize: Primary_font_size.Text7,
-                                //                                         color: Colors.white,
-                                //                                       ),
-                                //                                       decoration: const InputDecoration(
-                                //                                         filled: true,
-                                //                                         fillColor: Primary_colors.Dark,
-                                //                                         hintText: 'Enter Feedback',
-                                //                                         hintStyle: TextStyle(
-                                //                                           fontSize: Primary_font_size.Text7,
-                                //                                           color: Color.fromARGB(255, 179, 178, 178),
-                                //                                         ),
-                                //                                         border: InputBorder.none, // Remove default border
-                                //                                         contentPadding: EdgeInsets.all(10), // Adjust padding
-                                //                                       ),
-                                //                                     ),
-                                //                                   ),
-                                //                                 ],
-                                //                               )
-                                //                             ],
-                                //                           ))
-                                //                         ],
-                                //                       );
-                                //                     },
-                                //                   ),
-                                //                 ),
-                                //               )
-                                //             ],
-                                //           ),
-                                //         ),
-                                //       ),
-                                //     );
-                                //   },
-                                // ),
+                                // child: Container(),
+                                child: ListView.builder(
+                                  itemCount: salesController.salesModel.processList.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Primary_colors.Dark,
+                                            borderRadius: BorderRadius.circular(15),
+                                          ),
+                                          child: ExpansionTile(
+                                            collapsedIconColor: const Color.fromARGB(255, 135, 132, 132),
+                                            iconColor: Colors.red,
+                                            collapsedBackgroundColor: Primary_colors.Dark,
+                                            backgroundColor: Primary_colors.Dark,
+                                            title: Row(
+                                              children: [
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Text(
+                                                    salesController.salesModel.processList[index].processid.toString(),
+                                                    // items[showcustomerprocess]['process'][index]['id'],
+                                                    style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 4,
+                                                  child: Text(
+                                                    salesController.salesModel.processList[index].title,
+                                                    // items[showcustomerprocess]['name'],
+                                                    style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Text(
+                                                    salesController.salesModel.processList[index].Process_date,
+                                                    // items[showcustomerprocess]['process'][index]['date'],
+                                                    style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Text(
+                                                    salesController.salesModel.processList[index].age_in_days.toString(),
+                                                    // items[showcustomerprocess]['process'][index]['daycounts'],
+                                                    style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            children: [
+                                              SizedBox(
+                                                height: ((salesController.salesModel.processList[index].TimelineEvents.length * 80) + 20).toDouble(),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(16.0),
+                                                  child: ListView.builder(
+                                                    itemCount: salesController.salesModel.processList[index].TimelineEvents.length, // +1 for "Add Event" button
+                                                    itemBuilder: (context, childIndex) {
+                                                      return Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Column(
+                                                            children: [
+                                                              Container(
+                                                                padding: const EdgeInsets.all(8),
+                                                                decoration: const BoxDecoration(
+                                                                  shape: BoxShape.circle,
+                                                                  color: Colors.green,
+                                                                ),
+                                                                child: const Icon(
+                                                                  Icons.event,
+                                                                  color: Colors.white,
+                                                                ),
+                                                              ),
+                                                              if (childIndex != salesController.salesModel.processList[index].TimelineEvents.length - 1)
+                                                                Container(
+                                                                  width: 2,
+                                                                  height: 40,
+                                                                  color: Colors.green,
+                                                                ),
+                                                            ],
+                                                          ),
+                                                          Expanded(
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: [
+                                                                Expanded(
+                                                                  child: Column(
+                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                    children: [
+                                                                      Padding(
+                                                                        padding: const EdgeInsets.only(top: 2.0, left: 10),
+                                                                        child: Row(
+                                                                          children: [
+                                                                            Text(
+                                                                              salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname!,
+                                                                              // items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
+                                                                              style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
+                                                                            ),
+                                                                            // const SizedBox(width: 5),
+                                                                            // Expanded(
+                                                                            //   child: Text(
+                                                                            //     overflow: TextOverflow.ellipsis,
+                                                                            //     items[showcustomerprocess]['process'][index]['child'][childIndex]["feedback"],
+                                                                            //     style: const TextStyle(color: Colors.red, fontSize: Primary_font_size.Text5),
+                                                                            //   ),
+                                                                            // )
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      Row(
+                                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                                        children: [
+                                                                          if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation == true)
+                                                                            TextButton(
+                                                                              onPressed: () {
+                                                                                widget.GenerateQuote_dialougebox(context);
+                                                                              },
+                                                                              child: const Text(
+                                                                                "Quotation",
+                                                                                style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                              ),
+                                                                            ),
+                                                                          if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation == true)
+                                                                            TextButton(
+                                                                              onPressed: () {
+                                                                                // GenerateQuotation_dialougebox();
+                                                                              },
+                                                                              child: const Text(
+                                                                                "RevisedQuotation",
+                                                                                style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                              ),
+                                                                            ),
+                                                                          if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.rfq == true)
+                                                                            TextButton(
+                                                                              onPressed: () {
+                                                                                widget.GenerateRFQ_dialougebox(context);
+                                                                              },
+                                                                              child: const Text(
+                                                                                "Generate RFQ",
+                                                                                style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                              ),
+                                                                            ),
+                                                                          if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.invoice == true)
+                                                                            TextButton(
+                                                                              onPressed: () {
+                                                                                widget.GenerateInvoice_dialougebox(context);
+                                                                              },
+                                                                              child: const Text(
+                                                                                "Invoice",
+                                                                                style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                              ),
+                                                                            ),
+                                                                          if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan == true)
+                                                                            TextButton(
+                                                                              onPressed: () {
+                                                                                widget.GenerateDelivery_challan_dialougebox(context);
+                                                                                // (items[showcustomerprocess]['process'][index]['child'] as List).add({
+                                                                                //   "name": "Requirement4",
+                                                                                //   "generate_po": true,
+                                                                                //   "generate_RFQ": false,
+                                                                                // });
+                                                                              },
+                                                                              child: const Text(
+                                                                                "Deliverychallan",
+                                                                                style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                              ),
+                                                                            ),
+                                                                          if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.credit_note == true)
+                                                                            TextButton(
+                                                                              onPressed: () {
+                                                                                widget.GenerateCredit_dialougebox(context);
+                                                                                // (items[showcustomerprocess]['process'][index]['child'] as List).add({
+                                                                                //   "name": "Requirement4",
+                                                                                //   "generate_po": true,
+                                                                                //   "generate_RFQ": false,
+                                                                                // });
+                                                                              },
+                                                                              child: const Text(
+                                                                                "Credit",
+                                                                                style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                              ),
+                                                                            ),
+                                                                          if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.debit_note == true)
+                                                                            TextButton(
+                                                                              onPressed: () {
+                                                                                widget.GenerateDebit_dialougebox(context);
+                                                                                // (items[showcustomerprocess]['process'][index]['child'] as List).add({
+                                                                                //   "name": "Requirement4",
+                                                                                //   "generate_po": true,
+                                                                                //   "generate_RFQ": false,
+                                                                                // });
+                                                                              },
+                                                                              child: const Text(
+                                                                                "Debit",
+                                                                                style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                              ),
+                                                                            ),
+                                                                        ],
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      height: 40,
+                                                                      width: 2,
+                                                                      color: const Color.fromARGB(78, 172, 170, 170),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 200,
+                                                                      child: TextFormField(
+                                                                          maxLines: 2,
+                                                                          style: const TextStyle(
+                                                                            fontSize: Primary_font_size.Text7,
+                                                                            color: Colors.white,
+                                                                          ),
+                                                                          decoration: const InputDecoration(
+                                                                            filled: true,
+                                                                            fillColor: Primary_colors.Dark,
+                                                                            hintText: 'Enter Feedback',
+                                                                            hintStyle: TextStyle(
+                                                                              fontSize: Primary_font_size.Text7,
+                                                                              color: Color.fromARGB(255, 179, 178, 178),
+                                                                            ),
+                                                                            border: InputBorder.none, // Remove default border
+                                                                            contentPadding: EdgeInsets.all(10), // Adjust padding
+                                                                          ),
+                                                                          controller: salesController.salesModel.processList[index].TimelineEvents[childIndex].feedback),
+                                                                    ),
+                                                                    GestureDetector(
+                                                                      child: const Icon(
+                                                                        Icons.check_circle,
+                                                                        color: Colors.green,
+                                                                      ),
+                                                                      onTap: () {
+                                                                        widget.UpdateFeedback(
+                                                                            context,
+                                                                            salesController.salesModel.customerId.value!,
+                                                                            salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                            salesController.salesModel.processList[index].TimelineEvents[childIndex].feedback.text);
+                                                                      },
+                                                                    )
+                                                                  ],
+                                                                )
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
                             ],
                           ),
@@ -819,8 +836,9 @@ class _Sales_ClientState extends State<Sales_Client> {
                               child: ListView.builder(
                                 itemCount: salesController.salesModel.processcustomerList.length,
                                 itemBuilder: (context, index) {
-                                  final Sales_Processcustomer = salesController.salesModel.processcustomerList[index].customerName;
-                                  return _buildSales_ClientCard(Sales_Processcustomer, index);
+                                  final customername = salesController.salesModel.processcustomerList[index].customerName;
+                                  final customerid = salesController.salesModel.processcustomerList[index].customerId;
+                                  return _buildSales_ClientCard(customername, customerid, index);
                                 },
                               ),
                             )
@@ -838,62 +856,57 @@ class _Sales_ClientState extends State<Sales_Client> {
     });
   }
 
-  Widget _buildSales_ClientCard(String Sales_Client, int index) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Container(
-        // shape: RoundedRectangleBorder(
-        //   borderRadius: BorderRadius.circular(15),
-        // ),
-        // elevation: 3,
-
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: showcustomerprocess == index
-                ? [Primary_colors.Color3, Primary_colors.Color3]
-                : [
-                    Primary_colors.Light,
-                    Primary_colors.Light,
-                  ], // Example gradient colors
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(20), // Ensure border radius for smooth corners
-        ),
-        child: ListTile(
-          leading: Icon(
-            Icons.people,
-            color: Colors.white,
-            size: 25,
-          ),
-          title: Text(
-            Sales_Client,
-            style: GoogleFonts.lato(
-              textStyle: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7, fontWeight: FontWeight.w500),
-            ),
-          ),
-          trailing: IconButton(
-            onPressed: () {},
-            icon: Icon(
-              size: 20,
-              Icons.notifications,
-              color: showcustomerprocess == index ? Colors.red : Colors.amber,
-            ),
-          ),
-          // const SizedBox(width: 5),
-          // const Icon(
-          //   Icons.arrow_forward_ios,
-          //   color: Colors.grey,
-          //   size: 15,
+  Widget _buildSales_ClientCard(String customername, int customerid, int index) {
+    return Obx(() {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Container(
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(15),
           // ),
-          onTap: () {
-            setState(() {
-              showcustomerprocess = index;
-            });
-            // Implement Sales_Client details or actions here
-          },
+          // elevation: 3,
+
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: salesController.salesModel.showcustomerprocess.value == index
+                  ? [Primary_colors.Color3, Primary_colors.Color3]
+                  : [
+                      Primary_colors.Light,
+                      Primary_colors.Light,
+                    ], // Example gradient colors
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(20), // Ensure border radius for smooth corners
+          ),
+          child: ListTile(
+            leading: const Icon(
+              Icons.people,
+              color: Colors.white,
+              size: 25,
+            ),
+            title: Text(
+              customername,
+              style: GoogleFonts.lato(
+                textStyle: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7, fontWeight: FontWeight.w500),
+              ),
+            ),
+            trailing: IconButton(
+              onPressed: () {},
+              icon: Icon(
+                size: 20,
+                Icons.notifications,
+                color: salesController.salesModel.showcustomerprocess.value == index ? Colors.red : Colors.amber,
+              ),
+            ),
+            onTap: () {
+              salesController.updatecustomerId(customerid);
+              salesController.updateshowcustomerprocess(index);
+              widget.GetProcessList(context, customerid);
+            },
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

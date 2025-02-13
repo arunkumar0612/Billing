@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_details.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_details/customer_details.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_details/enqury_details.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_details/enquiry_details.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_note.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_products.dart';
 import 'package:ssipl_billing/themes/style.dart';

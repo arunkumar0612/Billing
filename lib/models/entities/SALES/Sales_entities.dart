@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 
 class Customer {
@@ -66,14 +67,14 @@ class Processcustomer {
 
 class Process {
   final int processid;
-  final String processname;
+  final String title;
   final String customer_name;
   final String Process_date;
-  final String age_in_days;
+  final int age_in_days;
   final List<TimelineEvent> TimelineEvents;
   Process({
     required this.processid,
-    required this.processname,
+    required this.title,
     required this.customer_name,
     required this.Process_date,
     required this.age_in_days,
@@ -83,18 +84,18 @@ class Process {
   factory Process.fromJson(CMDlResponse json, int i) {
     return Process(
       processid: json.data[i]['processid'] as int,
-      processname: json.data[i]['processname'] as String,
+      title: json.data[i]['title'] ?? '',
       customer_name: json.data[i]['customer_name'] as String,
-      Process_date: json.data[i]['customer_gstno'] as String,
-      age_in_days: json.data[i]['age_in_days'] as String,
-      TimelineEvents: json.data[i]['TimelineEvents'] as List<TimelineEvent>,
+      Process_date: json.data[i]['Process_date'] as String,
+      age_in_days: json.data[i]['age_in_days'] as int,
+      TimelineEvents: (json.data[i]['TimelineEvents'] as List<dynamic>).map((event) => TimelineEvent.fromJson(event as Map<String, dynamic>)).toList(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'processid': processid,
-      'processname': processname,
+      'title': title,
       'customer_name': customer_name,
       'Process_date': Process_date,
       'age_in_days': age_in_days,
@@ -105,23 +106,26 @@ class Process {
 
 class TimelineEvent {
   final String pdfpath;
-  final String feedback;
+  final TextEditingController feedback;
   final String Eventname;
+  final int Eventid;
   final Allowedprocess Allowed_process;
+
   TimelineEvent({
     required this.pdfpath,
     required this.feedback,
     required this.Eventname,
+    required this.Eventid,
     required this.Allowed_process,
   });
 
-  factory TimelineEvent.fromJson(List<Map<String, dynamic>> json, int i) {
+  factory TimelineEvent.fromJson(Map<String, dynamic> json) {
     return TimelineEvent(
-      pdfpath: json[i]['pdfpath'] as String,
-      feedback: json[i]['feedback'] as String,
-      Eventname: json[i]['Eventname'] as String,
-      Allowed_process: json[i]['Allowed_process'] as Allowedprocess,
-    );
+        pdfpath: json['pdfpath'] as String? ?? '',
+        feedback: TextEditingController(text: json['feedback'] as String? ?? ''),
+        Eventname: json['Eventname'] as String? ?? '',
+        Eventid: json['Eventid'] as int,
+        Allowed_process: Allowedprocess.fromJson(json['Allowed_process'] != null ? json['Allowed_process'] as Map<String, dynamic> : {}));
   }
 
   Map<String, dynamic> toJson() {
@@ -129,7 +133,8 @@ class TimelineEvent {
       'pdfpath': pdfpath,
       'feedback': feedback,
       'Eventname': Eventname,
-      'Allowed_process': Allowed_process,
+      'Eventid': Eventid,
+      'Allowed_process': Allowed_process.toJson(), // Ensure serialization works for Allowed_process
     };
   }
 }
@@ -155,13 +160,13 @@ class Allowedprocess {
 
   factory Allowedprocess.fromJson(Map<String, dynamic> json) {
     return Allowedprocess(
-      rfq: json['rfq'] as bool,
-      invoice: json['invoice'] as bool,
-      quotation: json['quotation'] as bool,
-      debit_note: json['debit_note'] as bool,
-      credit_note: json['credit_note'] as bool,
-      delivery_challan: json['delivery_challan'] as bool,
-      revised_quatation: json['revised_quatation'] as bool,
+      rfq: json['rfq'] as bool? ?? false,
+      invoice: json['invoice'] as bool? ?? false,
+      quotation: json['quotation'] as bool? ?? false,
+      debit_note: json['debit_note'] as bool? ?? false,
+      credit_note: json['credit_note'] as bool? ?? false,
+      delivery_challan: json['delivery_challan'] as bool? ?? false,
+      revised_quatation: json['revised_quatation'] as bool? ?? false,
     );
   }
 

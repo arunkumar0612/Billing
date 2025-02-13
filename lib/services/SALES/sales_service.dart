@@ -71,17 +71,46 @@ mixin SalesServices {
           // await Basic_dialog(context: context, title: 'Processcustomer List', content: "Processcustomer List fetched successfully", onOk: () {});
           salesController.salesModel.processcustomerList.clear();
           salesController.addToProcesscustomerList(value);
+          GetProcessList(context, salesController.salesModel.processcustomerList[salesController.salesModel.showcustomerprocess.value].customerId);
         } else {
           await Basic_dialog(context: context, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
-      if (kDebugMode) {
-        print(response);
-      }
     } catch (e) {
       Basic_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
+  void GetProcessList(context, int customerid) async {
+    Map<String, dynamic>? response = await apiController.GetbyQueryString({"customerid": customerid}, API.sales_getprocesslist_API);
+    if (response?['statusCode'] == 200) {
+      CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+      if (value.code) {
+        // await Basic_dialog(context: context, title: 'Process List', content: "Process List fetched successfully", onOk: () {});
+        salesController.salesModel.processList.clear();
+        salesController.addToProcessList(value);
+      } else {
+        await Basic_dialog(context: context, title: 'Process List Error', content: value.message ?? "", onOk: () {});
+      }
+    } else {
+      Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+    }
+  }
+
+  void UpdateFeedback(context, int customerid, int eventid, feedback) async {
+    Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid, "feedback": feedback}, API.sales_addfeedback_API);
+    if (response?['statusCode'] == 200) {
+      CMResponse value = CMResponse.fromJson(response ?? {});
+      if (value.code) {
+        GetProcessList(context, customerid);
+        // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+      } else {
+        await Basic_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
+      }
+    } else {
+      Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
     }
   }
 

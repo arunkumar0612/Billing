@@ -24,4 +24,12 @@ class SalesController extends GetxController {
       salesModel.processList.add(Process.fromJson(value, i));
     }
   }
+
+  void updatecustomerId(int value) {
+    salesModel.customerId.value = value;
+  }
+
+  void updateshowcustomerprocess(int value) {
+    salesModel.showcustomerprocess.value = value;
+  }
 }

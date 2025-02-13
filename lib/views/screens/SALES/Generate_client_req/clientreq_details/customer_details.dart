@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
-import 'package:ssipl_billing/services/SALES/ClientReq_services/Clientreqdetails_service.dart';
+import 'package:ssipl_billing/services/SALES/ClientReq_services/ClientreqDetails_service.dart';
+// import 'package:ssipl_billing/services/SALES/ClientReq_services/Clientreqdetails_service.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
 // import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
@@ -9,7 +10,7 @@ import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
-class customerDetails extends StatefulWidget with ClientreqdetailsService {
+class customerDetails extends StatefulWidget with ClientreqDetailsService {
   customerDetails({super.key});
 
   @override

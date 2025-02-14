@@ -68,9 +68,9 @@ class CMDlResponse {
   factory CMDlResponse.fromJson(Map<String, dynamic> json) {
     var list = json['data'] as List<dynamic>? ?? [];
     List<Map<String, dynamic>> data = List<Map<String, dynamic>>.from(list.map((e) => e as Map<String, dynamic>));
-    if (kDebugMode) {
-      print(data);
-    }
+    // if (kDebugMode) {
+    //   print(data);
+    // }
 
     return CMDlResponse(
       code: json['code'] as bool,

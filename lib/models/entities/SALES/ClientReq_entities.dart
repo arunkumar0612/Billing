@@ -23,7 +23,6 @@
 
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_products.dart';
 
 class Recommendation {
   final String key;

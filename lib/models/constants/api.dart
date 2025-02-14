@@ -12,4 +12,5 @@ class API {
   static String sales_getprocesscustomer_API = "http://192.168.0.200:8081/sales/getprocesscustomer";
   static String sales_getprocesslist_API = "http://192.168.0.200:8081/sales/getprocesslist";
   static String sales_addfeedback_API = "http://192.168.0.200:8081/sales/addfeedback";
+  static String sales_getbinaryfile_API = "http://192.168.0.200:8081/sales/getbinaryfile";
 }

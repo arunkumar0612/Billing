@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/constants/SALES_constants/Sales_constants.dart';
 
@@ -29,7 +31,17 @@ class SalesController extends GetxController {
     salesModel.customerId.value = value;
   }
 
-  void updateshowcustomerprocess(int value) {
+  void updateshowcustomerprocess(int? value) {
     salesModel.showcustomerprocess.value = value;
+  }
+
+  Future<void> PDFfileApiData(CMDmResponse value) async {
+    var pdfFileData = await PDFfileData.fromJson(value); // Await async function
+    var binaryData = pdfFileData.data; // Extract File object
+    updatePDFfile(binaryData);
+  }
+
+  void updatePDFfile(File value) {
+    salesModel.pdfFile.value = value;
   }
 }

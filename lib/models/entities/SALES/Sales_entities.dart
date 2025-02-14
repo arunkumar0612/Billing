@@ -1,4 +1,8 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 
 class Customer {
@@ -179,6 +183,36 @@ class Allowedprocess {
       'credit_note': credit_note,
       'delivery_challan': delivery_challan,
       'revised_quatation': revised_quatation,
+    };
+  }
+}
+
+class PDFfileData {
+  final File data;
+
+  PDFfileData({
+    required this.data,
+  });
+
+  static Future<File> saveBytesToFile(Uint8List bytes) async {
+    final tempDir = await getTemporaryDirectory(); // Get temporary directory
+    final file = File('${tempDir.path}/temp.pdf'); // Define file path
+    await file.writeAsBytes(bytes); // Write bytes to file
+    return file;
+  }
+
+  static Future<PDFfileData> fromJson(CMDmResponse json) async {
+    if (json.data['data'] is List<dynamic>) {
+      Uint8List fileBytes = Uint8List.fromList(json.data['data'].cast<int>());
+      File file = await saveBytesToFile(fileBytes);
+      return PDFfileData(data: file);
+    }
+    throw TypeError();
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'data': data.path, // Convert File to path string for JSON
     };
   }
 }

@@ -11,6 +11,7 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/generateRFQ.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../controllers/SALEScontrollers/Sales_actions.dart';
 import '../../models/constants/api.dart';
 import '../../models/entities/Response_entities.dart';
@@ -24,6 +25,7 @@ import '../../views/screens/SALES/Generate_client_req/generate_clientreq.dart';
 import '../../views/screens/SALES/Generate_creditNote/generateCredit.dart';
 import '../APIservices/invoker.dart';
 // import 'package:ssipl_billing/view_send_pdf.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 mixin SalesServices {
   final Invoker apiController = Get.find<Invoker>();
@@ -71,7 +73,8 @@ mixin SalesServices {
           // await Basic_dialog(context: context, title: 'Processcustomer List', content: "Processcustomer List fetched successfully", onOk: () {});
           salesController.salesModel.processcustomerList.clear();
           salesController.addToProcesscustomerList(value);
-          GetProcessList(context, salesController.salesModel.processcustomerList[salesController.salesModel.showcustomerprocess.value].customerId);
+
+          // salesController.updatecustomerId(salesController.salesModel.processcustomerList[salesController.salesModel.showcustomerprocess.value!].customerId);
         } else {
           await Basic_dialog(context: context, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
@@ -105,6 +108,7 @@ mixin SalesServices {
       CMResponse value = CMResponse.fromJson(response ?? {});
       if (value.code) {
         GetProcessList(context, customerid);
+        showCustomSnackBar(context);
         // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
         await Basic_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
@@ -112,6 +116,54 @@ mixin SalesServices {
     } else {
       Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
     }
+  }
+
+  void GetPDFfile(context, int eventid) async {
+    Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid}, API.sales_getbinaryfile_API);
+    if (response?['statusCode'] == 200) {
+      CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+      if (value.code) {
+        salesController.PDFfileApiData(value);
+        print(salesController.salesModel.pdfFile.value);
+        await showDialog(
+          context: context,
+          builder: (context) => Dialog(
+            insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+              height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
+              child: SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
+            ),
+          ),
+        );
+        // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+      } else {
+        await Basic_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
+      }
+    } else {
+      Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+    }
+  }
+
+  void showCustomSnackBar(BuildContext context) {
+    Flushbar(
+      message: "Feedback added successfully",
+      margin: const EdgeInsets.all(10),
+      borderRadius: BorderRadius.circular(10),
+      backgroundColor: Primary_colors.Color3,
+      icon: const Icon(Icons.check_circle, color: Primary_colors.Color1),
+      duration: const Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.BOTTOM, // Change to BOTTOM if needed
+      animationDuration: const Duration(milliseconds: 500),
+      leftBarIndicatorColor: Primary_colors.Color1,
+      boxShadows: [
+        BoxShadow(
+          color: Primary_colors.Color3.withOpacity(0.3),
+          blurRadius: 10,
+          spreadRadius: 2,
+        ),
+      ],
+    ).show(context);
   }
 
   dynamic Generate_client_reqirement_dialougebox(String value, context) async {

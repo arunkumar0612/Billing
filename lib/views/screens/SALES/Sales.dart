@@ -10,7 +10,6 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
 import 'package:ssipl_billing/services/SALES/sales_service.dart';
 import 'package:ssipl_billing/views/components/cards.dart';
 import 'package:ssipl_billing/themes/style.dart';
-
 import '../../../controllers/SALEScontrollers/Sales_actions.dart';
 
 class Sales_Client extends StatefulWidget with SalesServices {
@@ -411,7 +410,9 @@ class _Sales_ClientState extends State<Sales_Client> {
   void initState() {
     super.initState();
     // widget.GetCustomerList(context);
+    salesController.updateshowcustomerprocess(null);
     widget.GetProcesscustomerList(context);
+    widget.GetProcessList(context, 0);
   }
 
 // // ##################################################################################################################################################################################################################################################################################################################################################################
@@ -548,21 +549,45 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                   child: ListView.builder(
                                                     itemCount: salesController.salesModel.processList[index].TimelineEvents.length, // +1 for "Add Event" button
                                                     itemBuilder: (context, childIndex) {
+                                                      final Rx<Color> textColor = const Color.fromARGB(255, 199, 198, 198).obs;
                                                       return Row(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
                                                           Column(
                                                             children: [
-                                                              Container(
-                                                                padding: const EdgeInsets.all(8),
-                                                                decoration: const BoxDecoration(
-                                                                  shape: BoxShape.circle,
-                                                                  color: Colors.green,
+                                                              GestureDetector(
+                                                                child: Container(
+                                                                  padding: const EdgeInsets.all(8),
+                                                                  decoration: const BoxDecoration(
+                                                                    shape: BoxShape.circle,
+                                                                    color: Colors.green,
+                                                                  ),
+                                                                  child: const Icon(
+                                                                    Icons.event,
+                                                                    color: Colors.white,
+                                                                  ),
                                                                 ),
-                                                                child: const Icon(
-                                                                  Icons.event,
-                                                                  color: Colors.white,
-                                                                ),
+                                                                onTap: () {
+                                                                  // print(
+                                                                  //   salesController.salesModel.processList[index].TimelineEvents[childIndex].pdfpath,
+                                                                  // );
+                                                                  widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                  // showDialog(
+                                                                  //   context: context,
+                                                                  //   builder: (context) => Dialog(
+                                                                  //     insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+                                                                  //     child: SizedBox(
+                                                                  //       width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+                                                                  //       height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
+                                                                  //       child: SfPdfViewer.file(
+                                                                  //         File('E://Quote.pdf'
+                                                                  //             // salesController.salesModel.processList[index].TimelineEvents[childIndex].pdfpath,
+                                                                  //             ),
+                                                                  //       ),
+                                                                  //     ),
+                                                                  //   ),
+                                                                  // );
+                                                                },
                                                               ),
                                                               if (childIndex != salesController.salesModel.processList[index].TimelineEvents.length - 1)
                                                                 Container(
@@ -586,7 +611,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                         child: Row(
                                                                           children: [
                                                                             Text(
-                                                                              salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname!,
+                                                                              salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname,
                                                                               // items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
                                                                               style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
                                                                             ),
@@ -701,14 +726,12 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                       width: 2,
                                                                       color: const Color.fromARGB(78, 172, 170, 170),
                                                                     ),
-                                                                    SizedBox(
-                                                                      width: 200,
-                                                                      child: TextFormField(
-                                                                          maxLines: 2,
-                                                                          style: const TextStyle(
-                                                                            fontSize: Primary_font_size.Text7,
-                                                                            color: Colors.white,
-                                                                          ),
+                                                                    Obx(
+                                                                      () => SizedBox(
+                                                                        width: 200,
+                                                                        child: TextFormField(
+                                                                          // maxLines: 2,
+                                                                          style: TextStyle(fontSize: Primary_font_size.Text7, color: textColor.value),
                                                                           decoration: const InputDecoration(
                                                                             filled: true,
                                                                             fillColor: Primary_colors.Dark,
@@ -720,20 +743,34 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                             border: InputBorder.none, // Remove default border
                                                                             contentPadding: EdgeInsets.all(10), // Adjust padding
                                                                           ),
-                                                                          controller: salesController.salesModel.processList[index].TimelineEvents[childIndex].feedback),
-                                                                    ),
-                                                                    GestureDetector(
-                                                                      child: const Icon(
-                                                                        Icons.check_circle,
-                                                                        color: Colors.green,
+                                                                          controller: salesController.salesModel.processList[index].TimelineEvents[childIndex].feedback,
+
+                                                                          onChanged: (value) {
+                                                                            textColor.value = Colors.white;
+                                                                          },
+                                                                          onFieldSubmitted: (newValue) {
+                                                                            // textColor = Colors.green;
+                                                                            widget.UpdateFeedback(
+                                                                                context,
+                                                                                salesController.salesModel.customerId.value!,
+                                                                                salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                                salesController.salesModel.processList[index].TimelineEvents[childIndex].feedback.text);
+                                                                          },
+                                                                        ),
                                                                       ),
-                                                                      onTap: () {
-                                                                        widget.UpdateFeedback(
-                                                                            context,
-                                                                            salesController.salesModel.customerId.value!,
-                                                                            salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid,
-                                                                            salesController.salesModel.processList[index].TimelineEvents[childIndex].feedback.text);
-                                                                      },
+                                                                      // GestureDetector(
+                                                                      //   child: const Icon(
+                                                                      //     Icons.check_circle,
+                                                                      //     color: Colors.green,
+                                                                      //   ),
+                                                                      //   onTap: () {
+                                                                      //     widget.UpdateFeedback(
+                                                                      //         context,
+                                                                      //         salesController.salesModel.customerId.value!,
+                                                                      //         salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                      //         salesController.salesModel.processList[index].TimelineEvents[childIndex].feedback.text);
+                                                                      //   },
+                                                                      // )
                                                                     )
                                                                   ],
                                                                 )
@@ -857,56 +894,63 @@ class _Sales_ClientState extends State<Sales_Client> {
   }
 
   Widget _buildSales_ClientCard(String customername, int customerid, int index) {
-    return Obx(() {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 10),
-        child: Container(
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.circular(15),
-          // ),
-          // elevation: 3,
+    return Obx(
+      () {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Container(
+            // shape: RoundedRectangleBorder(
+            //   borderRadius: BorderRadius.circular(15),
+            // ),
+            // elevation: 3,
 
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: salesController.salesModel.showcustomerprocess.value == index
-                  ? [Primary_colors.Color3, Primary_colors.Color3]
-                  : [
-                      Primary_colors.Light,
-                      Primary_colors.Light,
-                    ], // Example gradient colors
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(20), // Ensure border radius for smooth corners
-          ),
-          child: ListTile(
-            leading: const Icon(
-              Icons.people,
-              color: Colors.white,
-              size: 25,
-            ),
-            title: Text(
-              customername,
-              style: GoogleFonts.lato(
-                textStyle: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7, fontWeight: FontWeight.w500),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: (salesController.salesModel.showcustomerprocess.value != null && salesController.salesModel.showcustomerprocess.value == index)
+                    ? [Primary_colors.Color3, Primary_colors.Color3]
+                    : [Primary_colors.Light, Primary_colors.Light],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
+              borderRadius: BorderRadius.circular(20), // Ensure border radius for smooth corners
             ),
-            trailing: IconButton(
-              onPressed: () {},
-              icon: Icon(
-                size: 20,
-                Icons.notifications,
-                color: salesController.salesModel.showcustomerprocess.value == index ? Colors.red : Colors.amber,
+            child: ListTile(
+              leading: const Icon(
+                Icons.people,
+                color: Colors.white,
+                size: 25,
               ),
+              title: Text(
+                customername,
+                style: GoogleFonts.lato(
+                  textStyle: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7, fontWeight: FontWeight.w500),
+                ),
+              ),
+              trailing: IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  size: 20,
+                  Icons.notifications,
+                  color: salesController.salesModel.showcustomerprocess.value == index ? Colors.red : Colors.amber,
+                ),
+              ),
+              onTap: salesController.salesModel.showcustomerprocess.value != index
+                  ? () {
+                      salesController.updateshowcustomerprocess(index);
+                      salesController.updatecustomerId(customerid);
+
+                      widget.GetProcessList(context, customerid);
+                    }
+                  : () {
+                      salesController.updateshowcustomerprocess(null);
+                      salesController.updatecustomerId(0);
+                      widget.GetProcessList(context, salesController.salesModel.customerId.value!);
+                      print('object');
+                    },
             ),
-            onTap: () {
-              salesController.updatecustomerId(customerid);
-              salesController.updateshowcustomerprocess(index);
-              widget.GetProcessList(context, customerid);
-            },
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }

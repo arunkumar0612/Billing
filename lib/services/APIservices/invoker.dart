@@ -145,7 +145,7 @@ class Invoker extends GetxController {
     }
   }
 
-  Future<Map<String, dynamic>?> Multer(String Token, String body, File file, String API) async {
+  Future<Map<String, dynamic>> Multer(String Token, String body, File file, String API) async {
     isLoading.value = true;
 
     // final dataToEncrypt = jsonEncode(body);

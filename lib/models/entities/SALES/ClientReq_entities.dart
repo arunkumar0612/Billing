@@ -111,7 +111,7 @@ class AddSales {
   String? address;
   String? gst;
   String? billingAddressName;
-  String? customerRequirementId;
+  // String? customerRequirementId;
   String? billingAddress;
   String? modeOfRequest;
   String? morReference;
@@ -121,7 +121,8 @@ class AddSales {
   double? invoiceAmount;
   String? date;
   int? companyID;
-  int? branchID;
+  List<int?> branchID;
+  int? customer_type;
 
   AddSales({
     required this.title,
@@ -131,7 +132,7 @@ class AddSales {
     required this.address,
     required this.gst,
     required this.billingAddressName,
-    required this.customerRequirementId,
+    // required this.customerRequirementId,
     required this.billingAddress,
     required this.modeOfRequest,
     required this.morReference,
@@ -140,10 +141,29 @@ class AddSales {
     required this.date,
     required this.companyID,
     required this.branchID,
+    required this.customer_type,
   });
 
-  factory AddSales.fromJson(String title, String name, String emailId, String phoneNo, String address, String gst, String billingAddressName, String customerRequirementId, String billingAddress, String modeOfRequest, String morReference, List<ClientreqProduct> product, List<Note> notes, String date, int companyID, int branchID) {
-    return AddSales(title: title, name: name, emailId: emailId, phoneNo: phoneNo, address: address, gst: gst, billingAddressName: billingAddressName, customerRequirementId: customerRequirementId, billingAddress: billingAddress, modeOfRequest: modeOfRequest, morReference: morReference, product: product, notes: notes, date: date, companyID: companyID, branchID: branchID);
+  factory AddSales.fromJson(
+    String title,
+    String name,
+    String emailId,
+    String phoneNo,
+    String address,
+    String gst,
+    String billingAddressName,
+    // String customerRequirementId,
+    String billingAddress,
+    String modeOfRequest,
+    String morReference,
+    List<ClientreqProduct> product,
+    List<Note> notes,
+    String date,
+    int companyID,
+    List<int?> branchID,
+    int customer_type,
+  ) {
+    return AddSales(title: title, name: name, emailId: emailId, phoneNo: phoneNo, address: address, gst: gst, billingAddressName: billingAddressName, billingAddress: billingAddress, modeOfRequest: modeOfRequest, morReference: morReference, product: product, notes: notes, date: date, companyID: companyID, branchID: branchID, customer_type: customer_type);
   }
 
   Map<String, dynamic> toJson() {
@@ -155,7 +175,7 @@ class AddSales {
       "address": address,
       "gst": gst,
       "billingaddressname": billingAddressName,
-      "customerrequirementid": customerRequirementId,
+      // "customerrequirementid": customerRequirementId,
       "billingaddress": billingAddress,
       "modeofrequest": modeOfRequest,
       "MORreference": morReference,
@@ -163,7 +183,8 @@ class AddSales {
       "notes": notes?.map((item) => item.toJson()).toList(),
       "date": date,
       "companyid": companyID,
-      "branchid": branchID
+      "branchid": branchID,
+      "customer_type": customer_type
     };
   }
 }
@@ -199,20 +220,28 @@ class Organization {
 class Company {
   int? companyId;
   String? companyName;
-  String? emailId;
+  String? emailid;
+  String? client_addressname;
+  String? client_address;
+  String? billing_addressname;
+  String? billing_address;
+  String? contact_number;
+  String? gst_number;
 
-  Company({
-    required this.companyId,
-    required this.companyName,
-    required this.emailId,
-  });
+  Company({required this.companyId, required this.companyName, required this.emailid, required this.client_addressname, required this.client_address, required this.billing_addressname, required this.billing_address, required this.contact_number, required this.gst_number});
 
   // Factory method to create an instance from JSON
   factory Company.fromJson(CMDlResponse json, i) {
     return Company(
       companyId: json.data[i]['companyid'],
       companyName: json.data[i]['companyname'],
-      emailId: json.data[i]['Email_id'],
+      emailid: json.data[i]['emailid'],
+      client_addressname: json.data[i]['client_addressname'],
+      client_address: json.data[i]['client_address'],
+      billing_addressname: json.data[i]['billing_addressname'],
+      billing_address: json.data[i]['billing_address'],
+      contact_number: json.data[i]['contact_number'],
+      gst_number: json.data[i]['gst_number'],
     );
   }
 
@@ -221,7 +250,13 @@ class Company {
     return {
       "companyid": companyId,
       "companyname": companyName,
-      "Email_id": emailId,
+      "emailid": emailid,
+      "client_addressname": client_addressname,
+      "client_address": client_address,
+      "billing_addressname": billing_addressname,
+      "billing_address": billing_address,
+      "contact_number": contact_number,
+      "gst_number": gst_number,
     };
   }
 }
@@ -230,12 +265,15 @@ class Branch {
   int? Branch_id;
   String? Branch_name;
   String? Branch_code;
+  String? client_addressname;
+  String? client_address;
+  String? billing_addressname;
+  String? billing_address;
+  String? emailid;
+  String? contact_number;
+  String? gst_number;
 
-  Branch({
-    required this.Branch_id,
-    required this.Branch_name,
-    required this.Branch_code,
-  });
+  Branch({required this.Branch_id, required this.Branch_name, required this.Branch_code, required this.client_addressname, required this.client_address, required this.billing_addressname, required this.billing_address, required this.emailid, required this.contact_number, required this.gst_number});
 
   // Factory method to create an instance from JSON
   factory Branch.fromJson(CMDlResponse json, i) {
@@ -243,6 +281,13 @@ class Branch {
       Branch_id: json.data[i]['Branch_id'],
       Branch_name: json.data[i]['Branch_name'],
       Branch_code: json.data[i]['Branch_code'],
+      client_addressname: json.data[i]['client_addressname'],
+      client_address: json.data[i]['client_address'],
+      billing_addressname: json.data[i]['billing_addressname'],
+      billing_address: json.data[i]['billing_address'],
+      emailid: json.data[i]['emailid'],
+      contact_number: json.data[i]['contact_number'],
+      gst_number: json.data[i]['gst_number'],
     );
   }
 
@@ -252,6 +297,13 @@ class Branch {
       "Branch_id": Branch_id,
       "Branch_name": Branch_name,
       "Branch_code": Branch_code,
+      "client_addressname": client_addressname,
+      "client_address": client_address,
+      "billing_addressname": billing_addressname,
+      "billing_address": billing_address,
+      "emailid": emailid,
+      "contact_number": contact_number,
+      "gst_number": gst_number,
     };
   }
 }

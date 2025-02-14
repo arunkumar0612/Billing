@@ -35,7 +35,10 @@ class ClientReqModel {
   var morFile = Rxn<File>();
   var organizationList = <Organization>[].obs;
   var CompanyList = <Company>[].obs;
-  var BranchList = <DropDownValueModel>[].obs;
+  var BranchFullList = <Branch>[].obs;
+  var BranchList_valueModel = <DropDownValueModel>[].obs;
+  var customer_id = Rxn<int>();
+  var selected_branchList = <int>[].obs;
 //######################################################################################################################################
 //PRODUCTS
   final productFormkey = GlobalKey<FormState>().obs;

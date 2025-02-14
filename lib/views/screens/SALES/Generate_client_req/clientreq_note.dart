@@ -7,7 +7,8 @@ import '../../../../controllers/SALEScontrollers/ClientReq_actions.dart';
 import '../../../../services/SALES/ClientReq_services/ClientreqNote_service.dart';
 
 class ClientreqNote extends StatefulWidget with ClientreqNoteService {
-  ClientreqNote({super.key});
+  final String? customer_type;
+  ClientreqNote({super.key, required this.customer_type});
 
   @override
   State<ClientreqNote> createState() => _ClientreqNoteState();
@@ -438,7 +439,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                 onPressed: () async {
                                   if (clientreqController.clientReqModel.clientReqProductDetails.isNotEmpty && clientreqController.clientReqModel.clientNameController.value.text.isNotEmpty && clientreqController.clientReqModel.clientAddressController.value.text.isNotEmpty && clientreqController.clientReqModel.billingAddressNameController.value.text.isNotEmpty && clientreqController.clientReqModel.billingAddressController.value.text.isNotEmpty && clientreqController.clientReqModel.titleController.value.text.isNotEmpty) {
                                     // widget.Generate_clientReq(context);
-                                    widget.postData(context);
+                                    widget.postData(context, widget.customer_type);
                                     // Navigator.of(context).pop();
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(

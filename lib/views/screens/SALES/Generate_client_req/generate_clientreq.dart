@@ -95,7 +95,7 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
                           color: Primary_colors.Light,
                           child: clientreqProducts(),
                         ),
-                        ClientreqNote(),
+                        ClientreqNote(customer_type: widget.value),
                       ],
                     ),
                   ),

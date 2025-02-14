@@ -36,12 +36,6 @@ class CMDmResponse {
   });
 
   factory CMDmResponse.fromJson(Map<String, dynamic> json) {
-    // var map = json['data'] as Map<String, dynamic>? ?? {};
-    // Map<String, dynamic> data = Map<String, dynamic>.from(map.map((e) => e as Map<String, dynamic>));
-    if (kDebugMode) {
-      print(json['data']);
-    }
-
     return CMDmResponse(
       code: json['code'] as bool,
       message: json['message'] as String?,
@@ -50,7 +44,11 @@ class CMDmResponse {
   }
 
   Map<String, dynamic> toJson() {
-    return {'code': code, 'message': message, 'data': data};
+    return {
+      'code': code,
+      'message': message,
+      'data': data
+    };
   }
 }
 
@@ -68,9 +66,6 @@ class CMDlResponse {
   factory CMDlResponse.fromJson(Map<String, dynamic> json) {
     var list = json['data'] as List<dynamic>? ?? [];
     List<Map<String, dynamic>> data = List<Map<String, dynamic>>.from(list.map((e) => e as Map<String, dynamic>));
-    if (kDebugMode) {
-      print(data);
-    }
 
     return CMDlResponse(
       code: json['code'] as bool,
@@ -80,6 +75,10 @@ class CMDlResponse {
   }
 
   Map<String, dynamic> toJson() {
-    return {'code': code, 'message': message, 'data': data};
+    return {
+      'code': code,
+      'message': message,
+      'data': data
+    };
   }
 }

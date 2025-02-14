@@ -1,12 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 import 'package:ssipl_billing/services/APIservices/invoker.dart';
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_template.dart';
 import '../../../controllers/SALEScontrollers/ClientReq_actions.dart';
 import '../../../controllers/viewSend_actions.dart';
 import '../../../models/constants/api.dart';
@@ -139,19 +143,45 @@ mixin ClientreqNoteService {
   //   viewsendController.setLoading(true);
   // }
 
-  dynamic postData(context) async {
-    try {
-      AddSales salesData = AddSales.fromJson(clientreqController.clientReqModel.titleController.value.text, clientreqController.clientReqModel.clientNameController.value.text, clientreqController.clientReqModel.emailController.value.text, clientreqController.clientReqModel.phoneController.value.text, clientreqController.clientReqModel.clientAddressController.value.text, clientreqController.clientReqModel.gstController.value.text, clientreqController.clientReqModel.billingAddressNameController.value.text, clientreqController.clientReqModel.Enq_ID.value!, clientreqController.clientReqModel.billingAddressController.value.text, clientreqController.clientReqModel.morController.value.text, clientreqController.clientReqModel.MOR_uploadedPath.value!, clientreqController.clientReqModel.clientReqProductDetails, clientreqController.clientReqModel.clientReqNoteList, getCurrentDate(), 0, 0);
-      await send_data(context, jsonEncode(salesData.toJson()), clientreqController.clientReqModel.morFile.value!);
-    } catch (e) {
-      print(e);
-    }
+  Future<File> savePdfToCache() async {
+    // Generate the PDF data
+    Uint8List pdfData = await generate_clientreq(
+      PdfPageFormat.a4,
+      clientreqController.clientReqModel.clientReqProductDetails,
+      clientreqController.clientReqModel.billingAddressNameController.value.text,
+      clientreqController.clientReqModel.clientAddressController.value.text,
+      clientreqController.clientReqModel.billingAddressNameController.value.text,
+      clientreqController.clientReqModel.billingAddressController.value.text,
+      clientreqController.clientReqModel.clientReqNo.value,
+      clientreqController.clientReqModel.pickedFile.value?.files.single.path,
+    );
+
+    // Get the temporary directory
+    Directory tempDir = await getTemporaryDirectory();
+    String filePath = '${tempDir.path}/client_request.pdf';
+
+    // Create and write to the file
+    File file = File(filePath);
+    await file.writeAsBytes(pdfData);
+
+    print("PDF stored in cache: $filePath");
+    return file;
+  }
+
+  dynamic postData(context, customer_type) async {
+    // try {
+    File cachedPdf = await savePdfToCache();
+    AddSales salesData = AddSales.fromJson(clientreqController.clientReqModel.titleController.value.text, clientreqController.clientReqModel.clientNameController.value.text, clientreqController.clientReqModel.emailController.value.text, clientreqController.clientReqModel.phoneController.value.text, clientreqController.clientReqModel.clientAddressController.value.text, clientreqController.clientReqModel.gstController.value.text, clientreqController.clientReqModel.billingAddressNameController.value.text, clientreqController.clientReqModel.billingAddressController.value.text, clientreqController.clientReqModel.morController.value.text, clientreqController.clientReqModel.MOR_uploadedPath.value!, clientreqController.clientReqModel.clientReqProductDetails, clientreqController.clientReqModel.clientReqNoteList, getCurrentDate(), clientreqController.clientReqModel.customer_id.value!, clientreqController.clientReqModel.selected_branchList, customer_type == "Enquiry" ? 1 : 2);
+    await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
+    // } catch (e) {
+    //   print(e);
+    // }
   }
 
   dynamic send_data(context, String jsonData, File file) async {
     try {
       Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.sales_add_details_API);
-      if (response?['statusCode'] == 200) {
+      if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
           await Basic_dialog(context: context, title: "CLIENT REQUIREMENT", content: value.message!, onOk: () {});

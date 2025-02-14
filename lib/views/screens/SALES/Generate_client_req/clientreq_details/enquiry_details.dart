@@ -21,7 +21,7 @@ class enquryDetailsState extends State<enquryDetails> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    widget.getEnquiry_processID(context);
+    // widget.getEnquiry_processID(context);
   }
 
   @override
@@ -38,28 +38,16 @@ class enquryDetailsState extends State<enquryDetails> {
                   key: clientreqController.clientReqModel.detailsformKey.value,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 25),
+                          const SizedBox(height: 10),
                           Textfield_1(
                             readonly: false,
                             text: 'Title',
                             controller: clientreqController.clientReqModel.titleController.value,
-                            icon: Icons.person,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter client name';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 25),
-                          Textfield_1(
-                            readonly: false,
-                            text: 'Client Name',
-                            controller: clientreqController.clientReqModel.clientNameController.value,
                             icon: Icons.person,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -93,6 +81,50 @@ class enquryDetailsState extends State<enquryDetails> {
                           const SizedBox(height: 25),
                           Textfield_1(
                             readonly: false,
+                            text: 'GST',
+                            controller: clientreqController.clientReqModel.gstController.value,
+                            icon: Icons.people,
+                            validator: (value) {
+                              Validators.GST_validator(value);
+                              return null;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 25,
+                          ),
+                          Textfield_1(
+                            readonly: false,
+                            text: 'Mode of request',
+                            controller: clientreqController.clientReqModel.morController.value,
+                            icon: Icons.price_change,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter the mode of request';
+                              }
+                              return null;
+                            },
+                          ),
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 10),
+                          Textfield_1(
+                            readonly: false,
+                            text: 'Client Name',
+                            controller: clientreqController.clientReqModel.clientNameController.value,
+                            icon: Icons.person,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter client name';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 25),
+                          Textfield_1(
+                            readonly: false,
                             text: 'Client Address ',
                             controller: clientreqController.clientReqModel.clientAddressController.value,
                             icon: Icons.location_history_outlined,
@@ -106,23 +138,7 @@ class enquryDetailsState extends State<enquryDetails> {
                           const SizedBox(height: 25),
                           Textfield_1(
                             readonly: false,
-                            text: 'GST',
-                            controller: clientreqController.clientReqModel.gstController.value,
-                            icon: Icons.people,
-                            validator: (value) {
-                              Validators.GST_validator(value);
-                              return null;
-                            },
-                          ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(height: 10),
-                          Textfield_1(
-                            readonly: false,
-                            text: 'Billing Address name',
+                            text: 'Billing name',
                             controller: clientreqController.clientReqModel.billingAddressNameController.value,
                             icon: Icons.price_change,
                             validator: (value) {
@@ -143,21 +159,6 @@ class enquryDetailsState extends State<enquryDetails> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Billing Address';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(
-                            height: 25,
-                          ),
-                          Textfield_1(
-                            readonly: false,
-                            text: 'Mode of request',
-                            controller: clientreqController.clientReqModel.morController.value,
-                            icon: Icons.price_change,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter the mode of request';
                               }
                               return null;
                             },

@@ -45,7 +45,6 @@ mixin ClientreqDetailsService {
         )
         .companyId;
     get_BranchList(context, id!);
-    print("*****************$id");
     // get_CompanyList(context, id!);
   }
 
@@ -64,9 +63,8 @@ mixin ClientreqDetailsService {
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
-          await Basic_dialog(context: context, title: 'Upload MOR', content: "MOR uploaded Successfully", onOk: () {});
+          // await Basic_dialog(context: context, title: 'Upload MOR', content: "MOR uploaded Successfully", onOk: () {});
           clientreqController.updateMOR_uploadedPath(value);
-          print(clientreqController.clientReqModel.MOR_uploadedPath.value);
         } else {
           await Basic_dialog(context: context, title: 'Upload MOR', content: value.message ?? "", onOk: () {});
         }

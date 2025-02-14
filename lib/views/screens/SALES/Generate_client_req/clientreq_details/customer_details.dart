@@ -2,16 +2,12 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
-
 import 'package:ssipl_billing/services/SALES/ClientReq_services/Clientreqdetails_service.dart';
 import 'package:ssipl_billing/services/SALES/sales_service.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
-// import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-import 'package:multi_dropdown/multiselect_dropdown.dart';
-import 'package:ssipl_billing/views/screens/SALES/Sales.dart';
 
 class customerDetails extends StatefulWidget with ClientreqDetailsService, SalesServices {
   customerDetails({super.key});
@@ -41,6 +37,13 @@ class customerDetailsState extends State<customerDetails> {
   }
 
   @override
+  void dispose() {
+    _cntMulti.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Obx(
       () {
@@ -60,6 +63,18 @@ class customerDetailsState extends State<customerDetails> {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Textfield_1(
+                        readonly: false,
+                        text: 'Title',
+                        controller: clientreqController.clientReqModel.titleController.value,
+                        icon: Icons.person,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter client name';
+                          }
+                          return null;
+                        },
+                      ),
                       Textfield_1(
                         readonly: false,
                         text: 'GST',
@@ -172,8 +187,9 @@ class customerDetailsState extends State<customerDetails> {
                           }).toList(),
                           onChanged: (String? newValue) async {
                             clientreqController.updateCompanyName(newValue!);
+                            clientreqController.update_customerID(newValue, null);
                             widget.on_Compselected(context, newValue);
-                            setState(() {});
+                            // setState(() {});
                           },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -195,22 +211,11 @@ class customerDetailsState extends State<customerDetails> {
                           return null;
                         },
                       ),
-                      Textfield_1(
-                        readonly: false,
-                        text: 'Billing Address',
-                        controller: clientreqController.clientReqModel.billingAddressController.value,
-                        icon: Icons.price_change,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter Billing Address';
-                          }
-                          return null;
-                        },
-                      ),
-                      clientreqController.clientReqModel.BranchList.isNotEmpty
+                      clientreqController.clientReqModel.BranchList_valueModel.isNotEmpty
                           ? ConstrainedBox(
                               constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
                               child: DropDownTextField.multiSelection(
+                                clearOption: false,
                                 submitButtonTextStyle: const TextStyle(color: Primary_colors.Color1),
                                 submitButtonColor: Primary_colors.Color3,
                                 controller: _cntMulti,
@@ -218,10 +223,13 @@ class customerDetailsState extends State<customerDetails> {
                                 // initialValue: const ["name1", "name2", "name8", "name3"],
                                 displayCompleteItem: true,
                                 checkBoxProperty: CheckBoxProperty(fillColor: WidgetStateProperty.all<Color>(Colors.white), checkColor: Colors.blue),
-                                dropDownList: clientreqController.clientReqModel.BranchList,
-                                onChanged: (val) {
-                                  print(val);
-                                  setState(() {});
+                                dropDownList: clientreqController.clientReqModel.BranchList_valueModel,
+                                onChanged: (selectedList) {
+                                  Future.delayed(const Duration(milliseconds: 10), () {
+                                    if (mounted) {
+                                      clientreqController.update_selectedBranches(selectedList);
+                                    }
+                                  });
                                 },
                                 textFieldDecoration: const InputDecoration(
                                   suffixIconColor: Color.fromARGB(255, 99, 98, 98),
@@ -248,15 +256,59 @@ class customerDetailsState extends State<customerDetails> {
                                 ),
                               ),
                             )
-                          : Textfield_1(
-                              readonly: false,
-                              text: 'Select Branch Name',
-                              controller: clientreqController.clientReqModel.billingAddressController.value,
-                              icon: Icons.merge_outlined,
-                              validator: (value) {
-                                return null;
-                              },
+                          : SizedBox(
+                              width: 400,
+                              child: TextFormField(
+                                readOnly: true,
+                                style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
+                                // controller: controller,
+                                decoration: const InputDecoration(
+                                  filled: true,
+                                  fillColor: Color.fromARGB(255, 12, 15, 22),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+
+                                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                                  // labelText: text,
+                                  hintText: 'Select Branch Name',
+                                  hintStyle: TextStyle(
+                                    fontSize: Primary_font_size.Text7,
+                                    color: Color.fromARGB(255, 131, 130, 130),
+                                  ),
+                                  border: OutlineInputBorder(),
+                                  prefixIcon: Icon(
+                                    Icons.merge_outlined,
+                                    color: Color.fromARGB(255, 187, 187, 187),
+                                  ),
+                                ),
+                                // validator: validator,
+                              ),
                             ),
+                      Textfield_1(
+                        readonly: false,
+                        text: 'Billing Address',
+                        controller: clientreqController.clientReqModel.billingAddressController.value,
+                        icon: Icons.price_change,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Billing Address';
+                          }
+                          return null;
+                        },
+                      ),
+                      Textfield_1(
+                        readonly: false,
+                        text: 'Email',
+                        controller: clientreqController.clientReqModel.emailController.value,
+                        icon: Icons.people,
+                        validator: (value) {
+                          Validators.email_validator(value);
+                          return null;
+                        },
+                      ),
                       Textfield_1(
                         readonly: false,
                         text: 'Mode of request',
@@ -325,8 +377,7 @@ class customerDetailsState extends State<customerDetails> {
                                   ),
                                   ElevatedButton(
                                     onPressed: () async {
-                                      clientreqController.pickFile(context);
-                                      widget.add_details(context);
+                                      widget.MORaction(context);
                                     },
                                     style: ButtonStyle(
                                       overlayColor: WidgetStateProperty.all<Color>(
@@ -352,16 +403,6 @@ class customerDetailsState extends State<customerDetails> {
                             ),
                           ],
                         ),
-                      ),
-                      Textfield_1(
-                        readonly: false,
-                        text: 'Email',
-                        controller: clientreqController.clientReqModel.emailController.value,
-                        icon: Icons.people,
-                        validator: (value) {
-                          Validators.email_validator(value);
-                          return null;
-                        },
                       ),
                       ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
@@ -389,7 +430,7 @@ class customerDetailsState extends State<customerDetails> {
                   width: 660,
                   child: Text(
                     textAlign: TextAlign.center,
-                    'The Client requirement shown beside can be used as a reference for generating the clientreq. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
+                    'Generating a client requirement is the initial step in acquiring essential data that will be reflected in subsequent processes. Therefore, please exercise caution when handling sensitive information such as phone numbers, email addresses, GST numbers, and physical addresses.',
                     style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                   ),
                 )

@@ -35,6 +35,7 @@ class ClientReqModel {
   var BranchFullList = <Branch>[].obs;
   var BranchList_valueModel = <DropDownValueModel>[].obs;
   var selected_branchList = <int>[].obs;
+  final cntMulti = MultiValueDropDownController().obs;
 //######################################################################################################################################
 //PRODUCTS
   final productFormkey = GlobalKey<FormState>().obs;

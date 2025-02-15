@@ -137,11 +137,12 @@ class _ClientreqNoteState extends State<ClientreqNote> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Obx(
                       () {
@@ -150,8 +151,9 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              const SizedBox(height: 50),
                               const Text(
-                                'Note',
+                                'NOTE',
                                 style: TextStyle(color: Primary_colors.Color1),
                               ),
                               const SizedBox(height: 10),
@@ -190,6 +192,15 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                   },
                                 ).toList(),
                               ),
+                              const SizedBox(height: 25),
+                              const SizedBox(
+                                width: 380,
+                                child: Text(
+                                  textAlign: TextAlign.center,
+                                  "Please ensure that all notes added here are accurate and relevant to the client's requirements. Once submitted, these notes will be used for further processing and communication.",
+                                  style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text6),
+                                ),
+                              ),
                               const SizedBox(height: 30),
                               SizedBox(
                                 width: 400,
@@ -199,7 +210,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                   children: [
                                     Obx(
                                       () {
-                                        return Button1(
+                                        return BasicButton(
                                           colors: clientreqController.clientReqModel.noteEditIndex.value == null ? Colors.blue : Colors.orange,
                                           text: clientreqController.clientReqModel.noteEditIndex.value == null ? 'Add note' : 'Update',
                                           onPressed: () {
@@ -211,7 +222,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 75),
+                              // const SizedBox(height: 75),
                             ],
                           ),
                         );
@@ -220,14 +231,17 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        const SizedBox(height: 50),
                         const Text(
-                          'Recommendation',
+                          'RECOMMENDATION',
                           style: TextStyle(color: Primary_colors.Color1),
                         ),
                         const SizedBox(height: 10),
                         Obx(
                           () {
                             return BasicTextfield(
+                              digitsOnly: false,
+                              width: 400,
                               readonly: clientreqController.clientReqModel.Rec_HeadingController.value.text.isEmpty ? false : true,
                               text: 'Recommendation Heading',
                               controller: clientreqController.clientReqModel.Rec_HeadingController.value,
@@ -250,29 +264,19 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                 children: [
                                   Obx(
                                     () {
-                                      return TextFormField(
-                                        style: const TextStyle(fontSize: 13, color: Colors.white),
+                                      return BasicTextfield(
+                                        digitsOnly: false,
+                                        width: 190,
+                                        readonly: false,
+                                        text: 'Product name',
                                         controller: clientreqController.clientReqModel.Rec_KeyController.value,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          fillColor: Primary_colors.Dark,
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                                          hintText: "Product name",
-                                          hintStyle: TextStyle(
-                                            fontSize: 13,
-                                            color: Color.fromARGB(255, 167, 165, 165),
-                                          ),
-                                          border: OutlineInputBorder(),
-                                          prefixIcon: Icon(
-                                            Icons.production_quantity_limits,
-                                            color: Colors.white,
-                                          ),
-                                        ),
+                                        icon: Icons.production_quantity_limits,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter a product name';
+                                          }
+                                          return null;
+                                        },
                                       );
                                     },
                                   ),
@@ -286,31 +290,19 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                 children: [
                                   Obx(
                                     () {
-                                      return TextFormField(
-                                        style: const TextStyle(fontSize: 13, color: Colors.white),
+                                      return BasicTextfield(
+                                        digitsOnly: true,
+                                        width: 190,
+                                        readonly: false,
+                                        text: 'Product value',
                                         controller: clientreqController.clientReqModel.Rec_ValueController.value,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          fillColor: Primary_colors.Dark,
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Colors.black,
-                                            ),
-                                          ),
-
-                                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                                          // labelText: text,
-                                          hintText: "Product Quantity",
-                                          hintStyle: TextStyle(
-                                            fontSize: 13,
-                                            color: Color.fromARGB(255, 167, 165, 165),
-                                          ),
-                                          border: OutlineInputBorder(),
-                                          prefixIcon: Icon(
-                                            Icons.production_quantity_limits,
-                                            color: Colors.white,
-                                          ),
-                                        ),
+                                        icon: Icons.production_quantity_limits,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter a product value';
+                                          }
+                                          return null;
+                                        },
                                       );
                                     },
                                   ),
@@ -318,6 +310,15 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                               ),
                             ),
                           ],
+                        ),
+                        const SizedBox(height: 25),
+                        const SizedBox(
+                          width: 410,
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            "Recommendations should be carefully selected based on the client's needs. Double-check all product names and quantities before adding them to avoid errors in future references.",
+                            style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text6),
+                          ),
                         ),
                         const SizedBox(height: 30),
                         SizedBox(
@@ -328,9 +329,9 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                             children: [
                               Obx(
                                 () {
-                                  return Button1(
+                                  return BasicButton(
                                       colors: clientreqController.clientReqModel.Rec_EditIndex.value == null ? Colors.blue : Colors.orange,
-                                      text: clientreqController.clientReqModel.Rec_EditIndex.value == null ? 'Add' : 'Update',
+                                      text: clientreqController.clientReqModel.Rec_EditIndex.value == null ? 'Add Recommendation ' : 'Update Recommendation',
                                       onPressed: () {
                                         clientreqController.clientReqModel.Rec_EditIndex.value == null ? widget.addtable_row(context) : widget.updatetable();
                                       });
@@ -338,90 +339,97 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                               ),
                             ],
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ],
                 ),
-                Obx(() {
-                  return clientreqController.clientReqModel.clientReqNoteList.isNotEmpty
-                      ? Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(left: 5),
-                                child: Text(
-                                  'Note List',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: Color.fromARGB(255, 119, 199, 253),
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                SizedBox(
+                  height: 180,
+                  child: Row(
+                    children: [
+                      Obx(() {
+                        return clientreqController.clientReqModel.clientReqNoteList.isNotEmpty
+                            ? Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.only(left: 5),
+                                      child: Text(
+                                        'Note List',
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: Color.fromARGB(255, 119, 199, 253),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Expanded(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          color: Primary_colors.Dark,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: Clientreq_noteLists(),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              Expanded(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Primary_colors.Dark,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Clientreq_noteLists(),
-                                  ),
+                              )
+                            : const SizedBox.shrink();
+                      }),
+                      const SizedBox(width: 10),
+                      Obx(() {
+                        return clientreqController.clientReqModel.clientReqRecommendationList.isNotEmpty
+                            ? Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 5),
+                                      child: Text(
+                                        clientreqController.clientReqModel.Rec_HeadingController.value.text,
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          color: Color.fromARGB(255, 119, 199, 253),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Expanded(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          color: Primary_colors.Dark,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: RecommendationTable(),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : const SizedBox.shrink();
-                }),
-                const SizedBox(height: 10),
-                Obx(() {
-                  return clientreqController.clientReqModel.clientReqRecommendationList.isNotEmpty
-                      ? Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 5),
-                                child: Text(
-                                  clientreqController.clientReqModel.Rec_HeadingController.value.text,
-                                  style: const TextStyle(
-                                    fontSize: 13,
-                                    color: Color.fromARGB(255, 119, 199, 253),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Expanded(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Primary_colors.Dark,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: RecommendationTable(),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : const SizedBox.shrink();
-                }),
+                              )
+                            : const SizedBox.shrink();
+                      }),
+                    ],
+                  ),
+                ),
                 const SizedBox(height: 15),
                 SizedBox(
-                  width: 400,
+                  width: 300,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Button1(
+                      BasicButton(
                         colors: Colors.red,
                         text: clientreqController.clientReqModel.noteEditIndex.value == null ? 'Back' : 'Cancel',
                         onPressed: () {
@@ -433,23 +441,11 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                           children: [
                             if (clientreqController.clientReqModel.clientReqNoteList.isNotEmpty) const SizedBox(width: 10),
                             if (clientreqController.clientReqModel.clientReqNoteList.isNotEmpty || clientreqController.clientReqModel.clientReqRecommendationList.isNotEmpty)
-                              Button1(
+                              BasicButton(
                                 colors: Colors.green,
                                 text: 'Submit',
                                 onPressed: () async {
-                                  if (clientreqController.clientReqModel.clientReqProductDetails.isNotEmpty && clientreqController.clientReqModel.clientNameController.value.text.isNotEmpty && clientreqController.clientReqModel.clientAddressController.value.text.isNotEmpty && clientreqController.clientReqModel.billingAddressNameController.value.text.isNotEmpty && clientreqController.clientReqModel.billingAddressController.value.text.isNotEmpty && clientreqController.clientReqModel.titleController.value.text.isNotEmpty) {
-                                    // widget.Generate_clientReq(context);
-                                    widget.postData(context, widget.customer_type);
-                                    // Navigator.of(context).pop();
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        backgroundColor: Colors.blue,
-                                        content: Text('Please fill all the required fields'),
-                                      ),
-                                    );
-                                    return;
-                                  }
+                                  await widget.postData(context, widget.customer_type);
                                 },
                               ),
                           ],

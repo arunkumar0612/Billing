@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
@@ -22,12 +23,18 @@ class Sales_Client extends StatefulWidget with SalesServices {
 
 class _Sales_ClientState extends State<Sales_Client> {
   final SalesController salesController = Get.find<SalesController>();
+  final ClientreqController clientreqController = Get.find<ClientreqController>();
   final DCController dcController = Get.find<DCController>();
   final InvoiceController invoiceController = Get.find<InvoiceController>();
   final QuoteController quoteController = Get.find<QuoteController>();
   final RFQController rfqController = Get.find<RFQController>();
   final CreditController creditController = Get.find<CreditController>();
   final DebitController debitController = Get.find<DebitController>();
+  @override
+  void dispose() {
+    clientreqController.clientReqModel.cntMulti.value.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {

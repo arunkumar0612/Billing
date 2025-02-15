@@ -94,6 +94,8 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                     Obx(
                       () {
                         return BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Product Name',
                           controller: dcController.dcModel.productNameController.value,
@@ -111,6 +113,8 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                     Obx(
                       () {
                         return BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'HSN',
                           controller: dcController.dcModel.hsnController.value,
@@ -179,7 +183,7 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Button1(
+                            BasicButton(
                               colors: Colors.red,
                               text: dcController.dcModel.product_editIndex.value == null ? 'Back' : 'Cancel',
                               onPressed: () {
@@ -187,7 +191,7 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                               },
                             ),
                             const SizedBox(width: 30),
-                            Button1(
+                            BasicButton(
                               colors: dcController.dcModel.product_editIndex.value == null ? Colors.blue : Colors.orange,
                               text: dcController.dcModel.product_editIndex.value == null ? 'Add product' : 'Update',
                               onPressed: () {
@@ -239,7 +243,7 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                               ),
                               const SizedBox(height: 25),
                               if (dcController.dcModel.Delivery_challan_products.isNotEmpty)
-                                Button1(
+                                BasicButton(
                                   colors: Colors.green,
                                   text: 'Submit',
                                   onPressed: () {

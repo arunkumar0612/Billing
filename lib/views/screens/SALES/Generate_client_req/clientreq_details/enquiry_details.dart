@@ -48,6 +48,8 @@ class enquryDetailsState extends State<enquryDetails> {
                           children: [
                             const SizedBox(height: 10),
                             BasicTextfield(
+                              digitsOnly: false,
+                              width: 400,
                               readonly: false,
                               text: 'Title',
                               controller: clientreqController.clientReqModel.titleController.value,
@@ -61,6 +63,8 @@ class enquryDetailsState extends State<enquryDetails> {
                             ),
                             const SizedBox(height: 25),
                             BasicTextfield(
+                              digitsOnly: true,
+                              width: 400,
                               readonly: false,
                               text: 'Contact Number',
                               controller: clientreqController.clientReqModel.phoneController.value,
@@ -71,6 +75,8 @@ class enquryDetailsState extends State<enquryDetails> {
                             ),
                             const SizedBox(height: 25),
                             BasicTextfield(
+                              digitsOnly: false,
+                              width: 400,
                               readonly: false,
                               text: 'Email',
                               controller: clientreqController.clientReqModel.emailController.value,
@@ -81,6 +87,8 @@ class enquryDetailsState extends State<enquryDetails> {
                             ),
                             const SizedBox(height: 25),
                             BasicTextfield(
+                              digitsOnly: false,
+                              width: 400,
                               readonly: false,
                               text: 'GST',
                               controller: clientreqController.clientReqModel.gstController.value,
@@ -91,6 +99,8 @@ class enquryDetailsState extends State<enquryDetails> {
                             ),
                             const SizedBox(height: 25),
                             BasicTextfield(
+                              digitsOnly: false,
+                              width: 400,
                               readonly: false,
                               text: 'Mode of request',
                               controller: clientreqController.clientReqModel.morController.value,
@@ -109,6 +119,8 @@ class enquryDetailsState extends State<enquryDetails> {
                           children: [
                             const SizedBox(height: 10),
                             BasicTextfield(
+                              digitsOnly: false,
+                              width: 400,
                               readonly: false,
                               text: 'Client Name',
                               controller: clientreqController.clientReqModel.clientNameController.value,
@@ -122,6 +134,8 @@ class enquryDetailsState extends State<enquryDetails> {
                             ),
                             const SizedBox(height: 25),
                             BasicTextfield(
+                              digitsOnly: false,
+                              width: 400,
                               readonly: false,
                               text: 'Client Address ',
                               controller: clientreqController.clientReqModel.clientAddressController.value,
@@ -135,6 +149,8 @@ class enquryDetailsState extends State<enquryDetails> {
                             ),
                             const SizedBox(height: 25),
                             BasicTextfield(
+                              digitsOnly: false,
+                              width: 400,
                               readonly: false,
                               text: 'Billing name',
                               controller: clientreqController.clientReqModel.billingAddressNameController.value,
@@ -148,6 +164,8 @@ class enquryDetailsState extends State<enquryDetails> {
                             ),
                             const SizedBox(height: 25),
                             BasicTextfield(
+                              digitsOnly: false,
+                              width: 400,
                               readonly: false,
                               text: 'Billing Address',
                               controller: clientreqController.clientReqModel.billingAddressController.value,
@@ -212,8 +230,9 @@ class enquryDetailsState extends State<enquryDetails> {
                                                 const SizedBox(width: 2),
                                                 ElevatedButton(
                                                   onPressed: () async {
-                                                    widget.MORaction(context);
+                                                    await widget.MORaction(context);
                                                     field.didChange(clientreqController.clientReqModel.pickedFile.value);
+                                                    // clientreqController.clientReqModel.pickedFile.refresh();
                                                   },
                                                   style: ButtonStyle(
                                                     overlayColor: WidgetStateProperty.all<Color>(Primary_colors.Dark),
@@ -251,7 +270,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Button1(
+                                BasicButton(
                                   colors: Colors.green,
                                   text: 'Add Details',
                                   onPressed: () async {

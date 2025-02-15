@@ -34,6 +34,8 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                         children: [
                           const SizedBox(height: 25),
                           BasicTextfield(
+                            digitsOnly: false,
+                            width: 400,
                             readonly: false,
                             text: 'Title',
                             controller: invoiceController.invoiceModel.TitleController.value,
@@ -47,6 +49,8 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                           ),
                           const SizedBox(height: 25),
                           BasicTextfield(
+                            digitsOnly: false,
+                            width: 400,
                             readonly: false,
                             text: 'Client Address name',
                             controller: invoiceController.invoiceModel.clientAddressNameController.value,
@@ -60,6 +64,8 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                           ),
                           const SizedBox(height: 25),
                           BasicTextfield(
+                            digitsOnly: false,
+                            width: 400,
                             readonly: false,
                             text: 'Client Address ',
                             controller: invoiceController.invoiceModel.clientAddressController.value,
@@ -78,6 +84,8 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                         children: [
                           const SizedBox(height: 10),
                           BasicTextfield(
+                            digitsOnly: false,
+                            width: 400,
                             readonly: false,
                             text: 'Billing Address name',
                             controller: invoiceController.invoiceModel.billingAddressNameController.value,
@@ -91,6 +99,8 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                           ),
                           const SizedBox(height: 25),
                           BasicTextfield(
+                            digitsOnly: false,
+                            width: 400,
                             readonly: false,
                             text: 'Billing Address',
                             controller: invoiceController.invoiceModel.billingAddressController.value,
@@ -107,7 +117,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Button1(
+                              BasicButton(
                                 colors: Colors.green,
                                 text: 'Add Details',
                                 onPressed: () {

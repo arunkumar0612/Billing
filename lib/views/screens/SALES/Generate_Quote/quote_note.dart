@@ -196,7 +196,7 @@ class _QuoteNoteState extends State<QuoteNote> {
                               children: [
                                 Obx(
                                   () {
-                                    return Button1(
+                                    return BasicButton(
                                       colors: quoteController.quoteModel.note_editIndex.value == null ? Colors.blue : Colors.orange,
                                       text: quoteController.quoteModel.note_editIndex.value == null ? 'Add note' : 'Update',
                                       onPressed: () {
@@ -225,6 +225,8 @@ class _QuoteNoteState extends State<QuoteNote> {
                     Obx(
                       () {
                         return BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Table Heading',
                           controller: quoteController.quoteModel.recommendationHeadingController.value,
@@ -325,7 +327,7 @@ class _QuoteNoteState extends State<QuoteNote> {
                         children: [
                           Obx(
                             () {
-                              return Button1(
+                              return BasicButton(
                                   colors: quoteController.quoteModel.recommendation_editIndex.value == null ? Colors.blue : Colors.orange,
                                   text: quoteController.quoteModel.recommendation_editIndex.value == null ? 'Add' : 'Update',
                                   onPressed: () {
@@ -418,7 +420,7 @@ class _QuoteNoteState extends State<QuoteNote> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Button1(
+                  BasicButton(
                     colors: Colors.red,
                     text: quoteController.quoteModel.note_editIndex.value == null ? 'Back' : 'Cancel',
                     onPressed: () {
@@ -430,7 +432,7 @@ class _QuoteNoteState extends State<QuoteNote> {
                       children: [
                         if (quoteController.quoteModel.Quote_noteList.isNotEmpty) const SizedBox(width: 10),
                         if (quoteController.quoteModel.Quote_noteList.isNotEmpty || quoteController.quoteModel.Quote_recommendationList.isNotEmpty)
-                          Button1(
+                          BasicButton(
                             colors: Colors.green,
                             text: 'Submit',
                             onPressed: () async {

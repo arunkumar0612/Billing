@@ -343,7 +343,7 @@ class _sub_QuotationProductsState extends State<sub_QuotationProducts> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Button1(
+                        BasicButton(
                           colors: Colors.red,
                           text: 'Back',
                           onPressed: () {
@@ -351,14 +351,14 @@ class _sub_QuotationProductsState extends State<sub_QuotationProducts> {
                           },
                         ),
                         // const SizedBox(width: 30),
-                        // Button1(
+                        // BasicButton(
                         //   colors:   Colors.blue ,
                         //   text:  'Add product' : 'Update',
                         //   onPressed: editIndex1 == null ? _addproduct : _updateproduct,
                         // ),
                         const SizedBox(width: 30),
                         if (package_Controller.text != "" && regular_price_Controller.text != "" && special_price_Controller.text != "" && GSTController.text != "")
-                          Button1(
+                          BasicButton(
                             colors: Colors.green,
                             text: 'Submit',
                             onPressed: () {
@@ -416,7 +416,7 @@ class _sub_QuotationProductsState extends State<sub_QuotationProducts> {
                 //     ),
                 //     const SizedBox(height: 25),
                 //     if (sub_quote_productDetails.isNotEmpty)
-                //       Button1(
+                //       BasicButton(
                 //         colors: Colors.green,
                 //         text: 'Submit',
                 //         onPressed: () {

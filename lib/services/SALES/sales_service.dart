@@ -220,11 +220,7 @@ mixin SalesServices {
                     child: const Icon(Icons.close, color: Colors.red),
                   ),
                   onPressed: () async {
-                    // Check if any data exists in clientreq variables
                     if (clientreqController.anyHavedata()) {
-                      // All forms are valid, proceed with submission
-
-                      // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
                         builder: (context) {
@@ -256,7 +252,6 @@ mixin SalesServices {
                         clientreqController.resetData();
                       }
                     } else {
-                      // If no data, just close the dialog
                       Navigator.of(context).pop();
                     }
                   },

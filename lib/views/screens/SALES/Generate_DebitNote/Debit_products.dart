@@ -93,6 +93,8 @@ class _DebitProductsState extends State<DebitProducts> {
                     Obx(
                       () {
                         return BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Product Name',
                           controller: debitController.debitModel.productNameController.value,
@@ -110,6 +112,8 @@ class _DebitProductsState extends State<DebitProducts> {
                     Obx(
                       () {
                         return BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'HSN',
                           controller: debitController.debitModel.hsnController.value,
@@ -316,7 +320,7 @@ class _DebitProductsState extends State<DebitProducts> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Button1(
+                            BasicButton(
                               colors: Colors.red,
                               text: debitController.debitModel.product_editIndex.value == null ? 'Back' : 'Cancel',
                               onPressed: () {
@@ -324,7 +328,7 @@ class _DebitProductsState extends State<DebitProducts> {
                               },
                             ),
                             const SizedBox(width: 30),
-                            Button1(
+                            BasicButton(
                               colors: debitController.debitModel.product_editIndex.value == null ? Colors.blue : Colors.orange,
                               text: debitController.debitModel.product_editIndex.value == null ? 'Add product' : 'Update',
                               onPressed: () {
@@ -376,7 +380,7 @@ class _DebitProductsState extends State<DebitProducts> {
                               ),
                               const SizedBox(height: 25),
                               if (debitController.debitModel.Debit_products.isNotEmpty)
-                                Button1(
+                                BasicButton(
                                   colors: Colors.green,
                                   text: 'Submit',
                                   onPressed: () {

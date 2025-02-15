@@ -196,7 +196,7 @@ class _DebitNoteState extends State<DebitNote> {
                               children: [
                                 Obx(
                                   () {
-                                    return Button1(
+                                    return BasicButton(
                                       colors: debitController.debitModel.note_editIndex.value == null ? Colors.blue : Colors.orange,
                                       text: debitController.debitModel.note_editIndex.value == null ? 'Add note' : 'Update',
                                       onPressed: () {
@@ -225,6 +225,8 @@ class _DebitNoteState extends State<DebitNote> {
                     Obx(
                       () {
                         return BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Table Heading',
                           controller: debitController.debitModel.recommendationHeadingController.value,
@@ -325,7 +327,7 @@ class _DebitNoteState extends State<DebitNote> {
                         children: [
                           Obx(
                             () {
-                              return Button1(
+                              return BasicButton(
                                   colors: debitController.debitModel.recommendation_editIndex.value == null ? Colors.blue : Colors.orange,
                                   text: debitController.debitModel.recommendation_editIndex.value == null ? 'Add' : 'Update',
                                   onPressed: () {
@@ -418,7 +420,7 @@ class _DebitNoteState extends State<DebitNote> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Button1(
+                  BasicButton(
                     colors: Colors.red,
                     text: debitController.debitModel.note_editIndex.value == null ? 'Back' : 'Cancel',
                     onPressed: () {
@@ -430,7 +432,7 @@ class _DebitNoteState extends State<DebitNote> {
                       children: [
                         if (debitController.debitModel.Debit_noteList.isNotEmpty) const SizedBox(width: 10),
                         if (debitController.debitModel.Debit_noteList.isNotEmpty || debitController.debitModel.Debit_recommendationList.isNotEmpty)
-                          Button1(
+                          BasicButton(
                             colors: Colors.green,
                             text: 'Submit',
                             onPressed: () async {

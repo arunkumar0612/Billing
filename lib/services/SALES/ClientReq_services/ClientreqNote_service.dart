@@ -8,7 +8,6 @@ import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 import 'package:ssipl_billing/services/APIservices/invoker.dart';
-import 'package:ssipl_billing/services/SALES/sales_service.dart';
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_template.dart';
@@ -24,19 +23,21 @@ mixin ClientreqNoteService {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
 
   void addtable_row(context) {
-    clientreqController.updateRec_ValueControllerText(clientreqController.clientReqModel.Rec_HeadingController.value.text);
-    bool exists = clientreqController.clientReqModel.clientReqRecommendationList.any((note) => note.key == clientreqController.clientReqModel.Rec_KeyController.value.text);
-    if (exists) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.blue,
-          content: Text('This note Name already exists.'),
-        ),
-      );
-      return;
+    if (clientreqController.clientReqModel.noteFormKey.value.currentState?.validate() ?? false) {
+      clientreqController.updateRec_ValueControllerText(clientreqController.clientReqModel.Rec_HeadingController.value.text);
+      bool exists = clientreqController.clientReqModel.clientReqRecommendationList.any((note) => note.key == clientreqController.clientReqModel.Rec_KeyController.value.text);
+      if (exists) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.blue,
+            content: Text('This note Name already exists.'),
+          ),
+        );
+        return;
+      }
+      clientreqController.addRecommendation(key: clientreqController.clientReqModel.Rec_KeyController.value.text, value: clientreqController.clientReqModel.Rec_ValueController.value.text);
+      cleartable_Fields();
     }
-    clientreqController.addRecommendation(key: clientreqController.clientReqModel.Rec_KeyController.value.text, value: clientreqController.clientReqModel.Rec_ValueController.value.text);
-    cleartable_Fields();
   }
 
   void updatenote() {
@@ -101,66 +102,20 @@ mixin ClientreqNoteService {
     }
   }
 
-  // void Generate_clientReq(BuildContext context) async {
-  //   // Start generating PDF data as a Future
-  //   viewsendController.setLoading(false);
-  //   final pdfGenerationFuture = generate_clientreq(
-  //     PdfPageFormat.a4,
-  //     clientreqController.clientReqModel.clientReqProductDetails,
-  //     clientreqController.clientReqModel.billingAddressNameController.value.text,
-  //     clientreqController.clientReqModel.clientAddressController.value.text,
-  //     clientreqController.clientReqModel.billingAddressNameController.value.text,
-  //     clientreqController.clientReqModel.billingAddressController.value.text,
-  //     clientreqController.clientReqModel.clientReqNo.value,
-  //     clientreqController.clientReqModel.pickedFile.value?.files.single.path,
-  //   );
-
-  //   // Show the dialog immediately (not awaited)
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         backgroundColor: Primary_colors.Light,
-  //         content: Generate_popup(
-  //           type: 'E://clientReq.pdf', // Pass the expected file path
-  //         ),
-  //       );
-  //     },
-  //   );
-
-  //   // Wait for PDF data generation to complete
-  //   final pdfData = await pdfGenerationFuture;
-
-  //   const filePath = 'E://clientReq.pdf';
-  //   final file = File(filePath);
-
-  //   // Perform file writing and any other future tasks in parallel
-  //   await Future.wait([
-  //     file.writeAsBytes(pdfData), // Write PDF to file asynchronously
-  //     // Future.delayed(const Duration(seconds: )), // Simulate any other async task if needed
-  //   ]);
-
-  //   // Continue execution while the dialog is still open
-  //   viewsendController.setLoading(true);
-  // }
-
   Future<File> savePdfToCache() async {
-    // Generate the PDF data
-    Uint8List pdfData = await generate_clientreq(
-      PdfPageFormat.a4,
-      clientreqController.clientReqModel.clientReqProductDetails,
-      clientreqController.clientReqModel.billingAddressNameController.value.text,
-      clientreqController.clientReqModel.clientAddressController.value.text,
-      clientreqController.clientReqModel.billingAddressNameController.value.text,
-      clientreqController.clientReqModel.billingAddressController.value.text,
-      clientreqController.clientReqModel.pickedFile.value?.files.single.path,
+    Uint8List pdfData = await generateClientReq(
+      pageFormat: PdfPageFormat.a4,
+      products: clientreqController.clientReqModel.clientReqProductDetails,
+      clientAddrName: clientreqController.clientReqModel.clientAddressController.value.text,
+      clientAddr: clientreqController.clientReqModel.clientAddressController.value.text,
+      billAddrName: clientreqController.clientReqModel.billingAddressNameController.value.text,
+      billAddr: clientreqController.clientReqModel.billingAddressController.value.text,
+      chosenFilepath: clientreqController.clientReqModel.pickedFile.value?.files.single.path ?? '',
     );
 
-    // Get the temporary directory
     Directory tempDir = await getTemporaryDirectory();
     String filePath = '${tempDir.path}/client_request.pdf';
 
-    // Create and write to the file
     File file = File(filePath);
     await file.writeAsBytes(pdfData);
 
@@ -169,13 +124,18 @@ mixin ClientreqNoteService {
   }
 
   dynamic postData(context, customer_type) async {
-    // try {
-    File cachedPdf = await savePdfToCache();
-    AddSales salesData = AddSales.fromJson(clientreqController.clientReqModel.titleController.value.text, clientreqController.clientReqModel.clientNameController.value.text, clientreqController.clientReqModel.emailController.value.text, clientreqController.clientReqModel.phoneController.value.text, clientreqController.clientReqModel.clientAddressController.value.text, clientreqController.clientReqModel.gstController.value.text, clientreqController.clientReqModel.billingAddressNameController.value.text, clientreqController.clientReqModel.billingAddressController.value.text, clientreqController.clientReqModel.morController.value.text, clientreqController.clientReqModel.MOR_uploadedPath.value!, clientreqController.clientReqModel.clientReqProductDetails, clientreqController.clientReqModel.clientReqNoteList, getCurrentDate(), clientreqController.clientReqModel.customer_id.value, clientreqController.clientReqModel.selected_branchList, customer_type == "Enquiry" ? 1 : 2);
-    await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
-    // } catch (e) {
-    //   print(e);
-    // }
+    try {
+      if (clientreqController.postDatavalidation()) {
+        await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {});
+        return;
+      }
+      File cachedPdf = await savePdfToCache();
+      AddSales salesData = AddSales.fromJson(clientreqController.clientReqModel.titleController.value.text, clientreqController.clientReqModel.clientNameController.value.text, clientreqController.clientReqModel.emailController.value.text, clientreqController.clientReqModel.phoneController.value.text, clientreqController.clientReqModel.clientAddressController.value.text, clientreqController.clientReqModel.gstController.value.text, clientreqController.clientReqModel.billingAddressNameController.value.text, clientreqController.clientReqModel.billingAddressController.value.text, clientreqController.clientReqModel.morController.value.text, clientreqController.clientReqModel.MOR_uploadedPath.value!, clientreqController.clientReqModel.clientReqProductDetails, clientreqController.clientReqModel.clientReqNoteList, getCurrentDate(), clientreqController.clientReqModel.customer_id.value, clientreqController.clientReqModel.selected_branchList, customer_type == "Enquiry" ? 1 : 2);
+
+      await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
+    } catch (e) {
+      await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {});
+    }
   }
 
   dynamic send_data(context, String jsonData, File file) async {
@@ -187,15 +147,12 @@ mixin ClientreqNoteService {
           await Basic_dialog(context: context, title: "CLIENT REQUIREMENT", content: value.message!, onOk: () {});
           Navigator.of(context).pop(true);
           clientreqController.resetData();
-          // salesController.addToCustomerList(value);
-          // print("*****************${salesController.salesModel.customerList[1].customerId}");
         } else {
-          await Basic_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, title: 'Processing client requirement', content: value.message ?? "", onOk: () {});
         }
       } else {
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
-      print(response);
     } catch (e) {
       Basic_dialog(context: context, title: "ERROR", content: "$e");
     }

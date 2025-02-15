@@ -38,7 +38,7 @@ mixin ClientreqDetailsService {
     // get_CompanyList(context, id!);
   }
 
-  void MORaction(context) async {
+  Future<void> MORaction(context) async {
     bool pickedStatus = await clientreqController.pickFile(context);
     if (pickedStatus) {
       uploadMor(context, clientreqController.clientReqModel.morFile.value!);
@@ -66,7 +66,7 @@ mixin ClientreqDetailsService {
     }
   }
 
-  void get_OrganizatioList(context) async {
+  void get_OrganizationList(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_fetchOrg_list);
       if (response?['statusCode'] == 200) {
@@ -75,13 +75,13 @@ mixin ClientreqDetailsService {
           // await Basic_dialog(context: context, title: 'Organization List', content: value.message!, onOk: () {});
           clientreqController.update_OrganizationList(value);
         } else {
-          // await Basic_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, title: 'Fetching Organization List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        // Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      // Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -97,13 +97,13 @@ mixin ClientreqDetailsService {
           // await Basic_dialog(context: context, title: 'Organization List', content: value.message!, onOk: () {});
           clientreqController.update_CompanyList(value);
         } else {
-          // await Basic_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, title: 'Fetching Company List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        // Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      // Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -119,13 +119,13 @@ mixin ClientreqDetailsService {
           // await Basic_dialog(context: context, title: 'Organization List', content: value.message!, onOk: () {});
           clientreqController.update_BranchList(value);
         } else {
-          // await Basic_dialog(context: context, title: 'Branch List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, title: 'Fetching Branch List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        // Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      // Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 }

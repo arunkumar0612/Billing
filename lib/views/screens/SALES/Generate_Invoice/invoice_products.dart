@@ -93,6 +93,8 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
                     Obx(
                       () {
                         return BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Product Name',
                           controller: invoiceController.invoiceModel.productNameController.value,
@@ -110,6 +112,8 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
                     Obx(
                       () {
                         return BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'HSN',
                           controller: invoiceController.invoiceModel.hsnController.value,
@@ -268,7 +272,7 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Button1(
+                            BasicButton(
                               colors: Colors.red,
                               text: invoiceController.invoiceModel.product_editIndex.value == null ? 'Back' : 'Cancel',
                               onPressed: () {
@@ -276,7 +280,7 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
                               },
                             ),
                             const SizedBox(width: 30),
-                            Button1(
+                            BasicButton(
                               colors: invoiceController.invoiceModel.product_editIndex.value == null ? Colors.blue : Colors.orange,
                               text: invoiceController.invoiceModel.product_editIndex.value == null ? 'Add product' : 'Update',
                               onPressed: () {
@@ -328,7 +332,7 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
                               ),
                               const SizedBox(height: 25),
                               if (invoiceController.invoiceModel.Invoice_products.isNotEmpty)
-                                Button1(
+                                BasicButton(
                                   colors: Colors.green,
                                   text: 'Submit',
                                   onPressed: () {

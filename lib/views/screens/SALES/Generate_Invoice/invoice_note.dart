@@ -196,7 +196,7 @@ class _InvoiceNoteState extends State<InvoiceNote> {
                               children: [
                                 Obx(
                                   () {
-                                    return Button1(
+                                    return BasicButton(
                                       colors: invoiceController.invoiceModel.note_editIndex.value == null ? Colors.blue : Colors.orange,
                                       text: invoiceController.invoiceModel.note_editIndex.value == null ? 'Add note' : 'Update',
                                       onPressed: () {
@@ -225,6 +225,8 @@ class _InvoiceNoteState extends State<InvoiceNote> {
                     Obx(
                       () {
                         return BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Table Heading',
                           controller: invoiceController.invoiceModel.recommendationHeadingController.value,
@@ -325,7 +327,7 @@ class _InvoiceNoteState extends State<InvoiceNote> {
                         children: [
                           Obx(
                             () {
-                              return Button1(
+                              return BasicButton(
                                   colors: invoiceController.invoiceModel.recommendation_editIndex.value == null ? Colors.blue : Colors.orange,
                                   text: invoiceController.invoiceModel.recommendation_editIndex.value == null ? 'Add' : 'Update',
                                   onPressed: () {
@@ -418,7 +420,7 @@ class _InvoiceNoteState extends State<InvoiceNote> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Button1(
+                  BasicButton(
                     colors: Colors.red,
                     text: invoiceController.invoiceModel.note_editIndex.value == null ? 'Back' : 'Cancel',
                     onPressed: () {
@@ -430,7 +432,7 @@ class _InvoiceNoteState extends State<InvoiceNote> {
                       children: [
                         if (invoiceController.invoiceModel.Invoice_noteList.isNotEmpty) const SizedBox(width: 10),
                         if (invoiceController.invoiceModel.Invoice_noteList.isNotEmpty || invoiceController.invoiceModel.Invoice_recommendationList.isNotEmpty)
-                          Button1(
+                          BasicButton(
                             colors: Colors.green,
                             text: 'Submit',
                             onPressed: () async {

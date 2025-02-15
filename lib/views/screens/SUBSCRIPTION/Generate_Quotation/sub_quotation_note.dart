@@ -374,7 +374,7 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Button1(
+                            BasicButton(
                               colors: noteeditIndex == null ? Colors.blue : Colors.orange,
                               text: noteeditIndex == null ? 'Add note' : 'Update',
                               onPressed: noteeditIndex == null ? _addNotes : _updatenote,
@@ -395,6 +395,8 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
                     ),
                     const SizedBox(height: 10),
                     BasicTextfield(
+                      digitsOnly: false,
+                      width: 400,
                       readonly: Rec_HeadingController.text.isEmpty ? false : true,
                       text: 'Table Heading',
                       controller: Rec_HeadingController,
@@ -488,7 +490,7 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Button1(
+                          BasicButton(
                             colors: notetable_editIndex == null ? Colors.blue : Colors.orange,
                             text: notetable_editIndex == null ? 'Add' : 'Update',
                             onPressed: notetable_editIndex == null ? _addtable_row : _updatetable,
@@ -561,7 +563,7 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Button1(
+                  BasicButton(
                     colors: Colors.red,
                     text: noteeditIndex == null ? 'Back' : 'Cancel',
                     onPressed: () {
@@ -570,7 +572,7 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
                   ),
                   if (sub_quote_noteList.isNotEmpty) const SizedBox(width: 10),
                   if (sub_quote_noteList.isNotEmpty || sub_quote_recommendationList.isNotEmpty)
-                    Button1(
+                    BasicButton(
                       colors: Colors.green,
                       text: 'Submit',
                       onPressed: () async {

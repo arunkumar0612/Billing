@@ -9,8 +9,16 @@ import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:image/image.dart' as img;
 import '../../../../controllers/SALEScontrollers/ClientReq_actions.dart';
 
-Future<Uint8List> generate_clientreq(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, chosen_filepath) async {
-  final clientreq = Client_requirement(products: products, baseColor: PdfColors.green500, accentColor: PdfColors.blueGrey900, client_addr_name: client_addr_name, client_addr: client_addr, bill_addr_name: bill_addr_name, bill_addr: bill_addr, imagePath: chosen_filepath);
+Future<Uint8List> generateClientReq({
+  required PdfPageFormat pageFormat,
+  required List<ClientreqProduct> products,
+  required String clientAddrName,
+  required String clientAddr,
+  required String billAddrName,
+  required String billAddr,
+  required String chosenFilepath,
+}) async {
+  final clientreq = Client_requirement(products: products, baseColor: PdfColors.green500, accentColor: PdfColors.blueGrey900, client_addr_name: clientAddrName, client_addr: clientAddr, bill_addr_name: billAddrName, bill_addr: billAddr, imagePath: chosenFilepath);
   return await clientreq.buildPdf(pageFormat);
 }
 

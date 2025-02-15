@@ -171,6 +171,8 @@
 //                   children: [
 //                     const SizedBox(height: 25),
 //                     BasicTextfield(
+// digitsOnly: false,
+// width: 400,
 //                       readonly: false,
 //                       text: 'Product Name',
 //                       controller: productNameController,
@@ -231,7 +233,7 @@
 //                     //   crossAxisAlignment: CrossAxisAlignment.start,
 //                     //   mainAxisAlignment: MainAxisAlignment.center,
 //                     //   children: [
-//                     //     Button1(
+//                     //     BasicButton(
 //                     //       colors: Colors.red,
 //                     //       text: editIndex1 == null ? 'Back' : 'Cancle',
 //                     //       onPressed: () {
@@ -239,7 +241,7 @@
 //                     //       },
 //                     //     ),
 //                     //     const SizedBox(width: 30),
-//                     //     Button1(
+//                     //     BasicButton(
 //                     //       colors: editIndex1 == null ? Colors.blue : Colors.orange,
 //                     //       text: editIndex1 == null ? 'Add product' : 'Update',
 //                     //       onPressed: editIndex1 == null ? _addproduct : _updateproduct,
@@ -285,7 +287,7 @@
 //                       ),
 //                       const SizedBox(height: 25),
 //                       if (sub_clientreq_productDetails.isNotEmpty)
-//                         Button1(
+//                         BasicButton(
 //                           colors: Colors.green,
 //                           text: 'Submit',
 //                           onPressed: () {

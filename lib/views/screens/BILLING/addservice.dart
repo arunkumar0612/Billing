@@ -111,6 +111,8 @@ class addservice_pageState extends State<addservice_page> {
                       ),
                       const SizedBox(height: 25),
                       BasicTextfield(
+                        digitsOnly: false,
+                        width: 400,
                         readonly: false,
                         text: 'service name',
                         controller: nameController,
@@ -124,6 +126,8 @@ class addservice_pageState extends State<addservice_page> {
                       ),
                       const SizedBox(height: 25),
                       BasicTextfield(
+                        digitsOnly: false,
+                        width: 400,
                         readonly: false,
                         text: 'service Cost',
                         controller: costController,
@@ -140,7 +144,7 @@ class addservice_pageState extends State<addservice_page> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Button1(
+                          BasicButton(
                             colors: Colors.red,
                             text: 'Back',
                             onPressed: () {
@@ -148,7 +152,7 @@ class addservice_pageState extends State<addservice_page> {
                             },
                           ),
                           const SizedBox(width: 30),
-                          Button1(
+                          BasicButton(
                             colors: editIndex == null ? Colors.blue : Colors.orange,
                             text: editIndex == null ? 'Add service' : 'Update',
                             onPressed: editIndex == null ? _addservice : _updateCamera,
@@ -194,7 +198,7 @@ class addservice_pageState extends State<addservice_page> {
                         ),
                         const SizedBox(height: 25),
                         if (servicelist.isNotEmpty)
-                          Button1(
+                          BasicButton(
                             colors: Colors.green,
                             text: 'Submit',
                             onPressed: () {

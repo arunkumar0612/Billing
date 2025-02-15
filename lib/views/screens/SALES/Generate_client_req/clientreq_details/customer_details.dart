@@ -20,29 +20,12 @@ class customerDetails extends StatefulWidget with ClientreqDetailsService, Sales
 
 class customerDetailsState extends State<customerDetails> {
   final ClientreqController clientreqController = Get.find<ClientreqController>();
-  // List<ValueItem> client_list = [
-  //   const ValueItem(label: 'Option 1', value: '1'),
-  //   const ValueItem(label: 'Option 2', value: '2'),
-  //   const ValueItem(label: 'Option 3', value: '3'),
-  //   const ValueItem(label: 'Option 4', value: '4'),
-  //   const ValueItem(label: 'Option 5', value: '5'),
-  //   const ValueItem(label: 'Option 6', value: '6')
-  // ];
-  late MultiValueDropDownController _cntMulti;
 
   @override
   void initState() {
-    // TODO: implement initState
-    _cntMulti = MultiValueDropDownController();
     super.initState();
-    widget.get_OrganizatioList(context);
-  }
-
-  @override
-  void dispose() {
-    _cntMulti.dispose();
-    // TODO: implement dispose
-    super.dispose();
+    widget.get_OrganizationList(context);
+    clientreqController.updateGST("33AABCC2462L1ZT");
   }
 
   @override
@@ -67,6 +50,8 @@ class customerDetailsState extends State<customerDetails> {
                       // mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Title',
                           controller: clientreqController.clientReqModel.titleController.value,
@@ -79,13 +64,14 @@ class customerDetailsState extends State<customerDetails> {
                           },
                         ),
                         BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'GST',
                           controller: clientreqController.clientReqModel.gstController.value,
                           icon: Icons.people,
                           validator: (value) {
-                            Validators.GST_validator(value);
-                            return null;
+                            return Validators.GST_validator(value);
                           },
                         ),
                         ConstrainedBox(
@@ -139,6 +125,8 @@ class customerDetailsState extends State<customerDetails> {
                           ),
                         ),
                         BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Client Address ',
                           controller: clientreqController.clientReqModel.clientAddressController.value,
@@ -203,6 +191,8 @@ class customerDetailsState extends State<customerDetails> {
                           ),
                         ),
                         BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Billing Address name',
                           controller: clientreqController.clientReqModel.billingAddressNameController.value,
@@ -221,9 +211,8 @@ class customerDetailsState extends State<customerDetails> {
                                   clearOption: false,
                                   submitButtonTextStyle: const TextStyle(color: Primary_colors.Color1),
                                   submitButtonColor: Primary_colors.Color3,
-                                  controller: _cntMulti,
+                                  controller: clientreqController.clientReqModel.cntMulti.value,
                                   textStyle: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
-                                  // initialValue: const ["name1", "name2", "name8", "name3"],
                                   displayCompleteItem: true,
                                   checkBoxProperty: CheckBoxProperty(fillColor: WidgetStateProperty.all<Color>(Colors.white), checkColor: Colors.blue),
                                   dropDownList: clientreqController.clientReqModel.BranchList_valueModel,
@@ -291,6 +280,8 @@ class customerDetailsState extends State<customerDetails> {
                                 ),
                               ),
                         BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Billing Address',
                           controller: clientreqController.clientReqModel.billingAddressController.value,
@@ -303,16 +294,19 @@ class customerDetailsState extends State<customerDetails> {
                           },
                         ),
                         BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Email',
                           controller: clientreqController.clientReqModel.emailController.value,
                           icon: Icons.people,
                           validator: (value) {
-                            Validators.email_validator(value);
-                            return null;
+                            return Validators.email_validator(value);
                           },
                         ),
                         BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Mode of request',
                           controller: clientreqController.clientReqModel.morController.value,
@@ -325,13 +319,14 @@ class customerDetailsState extends State<customerDetails> {
                           },
                         ),
                         BasicTextfield(
+                          digitsOnly: true,
+                          width: 400,
                           readonly: false,
                           text: 'Contact Number',
                           controller: clientreqController.clientReqModel.phoneController.value,
                           icon: Icons.people,
                           validator: (value) {
-                            Validators.phnNo_validator(value);
-                            return null;
+                            return Validators.phnNo_validator(value);
                           },
                         ),
                         FormField<FilePickerResult>(
@@ -384,8 +379,9 @@ class customerDetailsState extends State<customerDetails> {
                                             const SizedBox(width: 2),
                                             ElevatedButton(
                                               onPressed: () async {
-                                                widget.MORaction(context);
+                                                await widget.MORaction(context);
                                                 field.didChange(clientreqController.clientReqModel.pickedFile.value);
+                                                // clientreqController.clientReqModel.pickedFile.refresh();
                                               },
                                               style: ButtonStyle(
                                                 overlayColor: WidgetStateProperty.all<Color>(Primary_colors.Dark),
@@ -397,9 +393,10 @@ class customerDetailsState extends State<customerDetails> {
                                               ),
                                               child: const Text(
                                                 'Choose File',
-                                                style: TextStyle(color: Colors.white, fontSize: 13),
+                                                style: TextStyle(color: Colors.white, fontSize: 11),
                                               ),
                                             ),
+                                            const SizedBox(width: 2),
                                           ],
                                         ),
                                       ),
@@ -424,7 +421,7 @@ class customerDetailsState extends State<customerDetails> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Button1(
+                              BasicButton(
                                 colors: Colors.green,
                                 text: 'Add Details',
                                 onPressed: () async {
@@ -439,9 +436,9 @@ class customerDetailsState extends State<customerDetails> {
                       ],
                     ),
                   ),
-                  // const SizedBox(height: 25),
+                  const SizedBox(height: 25),
                   const SizedBox(
-                    width: 660,
+                    width: 750,
                     child: Text(
                       textAlign: TextAlign.center,
                       'Generating a client requirement is the initial step in acquiring essential data that will be reflected in subsequent processes. Therefore, please exercise caution when handling sensitive information such as phone numbers, email addresses, GST numbers, and physical addresses.',

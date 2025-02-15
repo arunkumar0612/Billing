@@ -93,6 +93,8 @@ class _QuoteProductsState extends State<QuoteProducts> {
                     Obx(
                       () {
                         return BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Product Name',
                           controller: quoteController.quoteModel.productNameController.value,
@@ -110,6 +112,8 @@ class _QuoteProductsState extends State<QuoteProducts> {
                     Obx(
                       () {
                         return BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'HSN',
                           controller: quoteController.quoteModel.hsnController.value,
@@ -268,7 +272,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Button1(
+                            BasicButton(
                               colors: Colors.red,
                               text: quoteController.quoteModel.product_editIndex.value == null ? 'Back' : 'Cancel',
                               onPressed: () {
@@ -276,7 +280,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                               },
                             ),
                             const SizedBox(width: 30),
-                            Button1(
+                            BasicButton(
                               colors: quoteController.quoteModel.product_editIndex.value == null ? Colors.blue : Colors.orange,
                               text: quoteController.quoteModel.product_editIndex.value == null ? 'Add product' : 'Update',
                               onPressed: () {
@@ -328,7 +332,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                               ),
                               const SizedBox(height: 25),
                               if (quoteController.quoteModel.Quote_products.isNotEmpty)
-                                Button1(
+                                BasicButton(
                                   colors: Colors.green,
                                   text: 'Submit',
                                   onPressed: () {

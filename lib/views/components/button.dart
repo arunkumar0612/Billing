@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ssipl_billing/themes/style.dart';
 
-class Button1 extends StatelessWidget {
+class BasicButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final Color colors;
-  const Button1({
+  const BasicButton({
     super.key,
     required this.text,
     required this.colors,
@@ -15,7 +15,7 @@ class Button1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 105,
+      width: text.characters.length > 8 ? null : 105,
       // height: 40,
       decoration: BoxDecoration(
         color: colors,
@@ -27,11 +27,14 @@ class Button1 extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
       ),
 
-      child: TextButton(
-        onPressed: onPressed,
-        child: Text(
-          text,
-          style: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text7),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 5, right: 5),
+        child: TextButton(
+          onPressed: onPressed,
+          child: Text(
+            text,
+            style: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text7),
+          ),
         ),
       ),
     );

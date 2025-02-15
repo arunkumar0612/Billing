@@ -158,10 +158,6 @@ class ClientreqController extends GetxController {
   void addRecommendation({required String key, required String value}) {
     if (key.isNotEmpty && value.isNotEmpty) {
       clientReqModel.clientReqRecommendationList.add(Recommendation(key: key, value: value));
-    } else {
-      if (kDebugMode) {
-        print('Key and value must not be empty');
-      }
     }
   }
 
@@ -185,11 +181,6 @@ class ClientreqController extends GetxController {
       final fileLength = await file.length();
 
       if (fileLength > 2 * 1024 * 1024) {
-        // File exceeds 2 MB size limit
-        if (kDebugMode) {
-          print('Selected file exceeds 2MB in size.');
-        }
-        // Show Alert Dialog
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -207,11 +198,6 @@ class ClientreqController extends GetxController {
       } else {
         clientReqModel.pickedFile.value = result;
         clientReqModel.morFile.value = file;
-
-        if (kDebugMode) {
-          print("Selected File Name: ${result.files.single.name}");
-        }
-
         return true;
       }
     } else {
@@ -225,17 +211,15 @@ class ClientreqController extends GetxController {
     required String key,
     required String value,
   }) {
-    if (index >= 0 && index < clientReqModel.clientReqRecommendationList.length) {
-      if (key.isNotEmpty && value.isNotEmpty) {
-        clientReqModel.clientReqRecommendationList[index] = Recommendation(key: key, value: value);
-      } else {
-        if (kDebugMode) {
-          print('Key and value must not be empty');
+    try {
+      if (index >= 0 && index < clientReqModel.clientReqRecommendationList.length) {
+        if (key.isNotEmpty && value.isNotEmpty) {
+          clientReqModel.clientReqRecommendationList[index] = Recommendation(key: key, value: value);
         }
       }
-    } else {
+    } catch (e) {
       if (kDebugMode) {
-        print('Invalid index provided');
+        print("$e");
       }
     }
   }
@@ -243,10 +227,6 @@ class ClientreqController extends GetxController {
   void addNote(String noteContent) {
     if (noteContent.isNotEmpty) {
       clientReqModel.clientReqNoteList.add(Note(notename: noteContent));
-    } else {
-      if (kDebugMode) {
-        print('Note content must not be empty');
-      } // Handle empty input (optional)
     }
   }
 
@@ -261,15 +241,7 @@ class ClientreqController extends GetxController {
         );
         return;
       }
-
       clientReqModel.clientReqProductDetails.add(ClientreqProduct((clientReqModel.clientReqProductDetails.length + 1).toString(), productName, quantity));
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text('Product added successfully.'),
-        ),
-      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -429,7 +401,11 @@ class ClientreqController extends GetxController {
   }
 
   bool anyHavedata() {
-    return (clientReqModel.MOR_uploadedPath.value != null || clientReqModel.customer_id.value != 0 || clientReqModel.clientNameController.value.text.isNotEmpty || clientReqModel.titleController.value.text.isNotEmpty || clientReqModel.clientAddressController.value.text.isNotEmpty || clientReqModel.billingAddressNameController.value.text.isNotEmpty || clientReqModel.billingAddressController.value.text.isNotEmpty || clientReqModel.morController.value.text.isNotEmpty || clientReqModel.phoneController.value.text.isNotEmpty || clientReqModel.emailController.value.text.isNotEmpty || clientReqModel.gstController.value.text.isNotEmpty || clientReqModel.Org_Controller.value != null || clientReqModel.Company_Controller.value != null || clientReqModel.Branch_Controller.value != null || clientReqModel.pickedFile.value != null || clientReqModel.morFile.value != null || clientReqModel.organizationList.isNotEmpty || clientReqModel.CompanyList.isNotEmpty || clientReqModel.BranchFullList.isNotEmpty || clientReqModel.BranchList_valueModel.isNotEmpty || clientReqModel.selected_branchList.isNotEmpty || clientReqModel.productNameController.value.text.isNotEmpty || clientReqModel.quantityController.value.text.isNotEmpty || clientReqModel.clientReqProductDetails.isNotEmpty || clientReqModel.Rec_HeadingController.value.text.isNotEmpty || clientReqModel.Rec_KeyController.value.text.isNotEmpty || clientReqModel.Rec_ValueController.value.text.isNotEmpty || clientReqModel.clientReqNoteList.isNotEmpty || clientReqModel.clientReqRecommendationList.isNotEmpty); // <-- Trailing comma here
+    return (clientReqModel.MOR_uploadedPath.value != null || clientReqModel.customer_id.value != 0 || clientReqModel.clientNameController.value.text.isNotEmpty || clientReqModel.titleController.value.text.isNotEmpty || clientReqModel.clientAddressController.value.text.isNotEmpty || clientReqModel.billingAddressNameController.value.text.isNotEmpty || clientReqModel.billingAddressController.value.text.isNotEmpty || clientReqModel.morController.value.text.isNotEmpty || clientReqModel.phoneController.value.text.isNotEmpty || clientReqModel.emailController.value.text.isNotEmpty || clientReqModel.gstController.value.text.isNotEmpty || clientReqModel.Org_Controller.value != null || clientReqModel.Company_Controller.value != null || clientReqModel.Branch_Controller.value != null || clientReqModel.pickedFile.value != null || clientReqModel.morFile.value != null || clientReqModel.organizationList.isNotEmpty || clientReqModel.CompanyList.isNotEmpty || clientReqModel.BranchFullList.isNotEmpty || clientReqModel.BranchList_valueModel.isNotEmpty || clientReqModel.selected_branchList.isNotEmpty || clientReqModel.productNameController.value.text.isNotEmpty || clientReqModel.quantityController.value.text.isNotEmpty || clientReqModel.clientReqProductDetails.isNotEmpty || clientReqModel.Rec_HeadingController.value.text.isNotEmpty || clientReqModel.Rec_KeyController.value.text.isNotEmpty || clientReqModel.Rec_ValueController.value.text.isNotEmpty || clientReqModel.clientReqNoteList.isNotEmpty || clientReqModel.clientReqRecommendationList.isNotEmpty);
+  }
+
+  bool postDatavalidation() {
+    return (clientReqModel.titleController.value.text.isEmpty || clientReqModel.clientNameController.value.text.isEmpty || clientReqModel.emailController.value.text.isEmpty || clientReqModel.phoneController.value.text.isEmpty || clientReqModel.clientAddressController.value.text.isEmpty || clientReqModel.gstController.value.text.isEmpty || clientReqModel.billingAddressNameController.value.text.isEmpty || clientReqModel.billingAddressController.value.text.isEmpty || clientReqModel.morController.value.text.isEmpty || clientReqModel.MOR_uploadedPath.value == null);
   }
 
   bool anyDontHavedata() {

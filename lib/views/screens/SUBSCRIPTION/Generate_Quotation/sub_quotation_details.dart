@@ -44,6 +44,8 @@ class _sub_QuotationDetailsState extends State<sub_QuotationDetails> {
                       children: [
                         const SizedBox(height: 25),
                         BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Title',
                           controller: titleController,
@@ -57,6 +59,8 @@ class _sub_QuotationDetailsState extends State<sub_QuotationDetails> {
                         ),
                         const SizedBox(height: 25),
                         BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Client Address name',
                           controller: clientaddressnameController,
@@ -70,6 +74,8 @@ class _sub_QuotationDetailsState extends State<sub_QuotationDetails> {
                         ),
                         const SizedBox(height: 25),
                         BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Client Address ',
                           controller: clientaddressController,
@@ -88,6 +94,8 @@ class _sub_QuotationDetailsState extends State<sub_QuotationDetails> {
                       children: [
                         const SizedBox(height: 10),
                         BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Billing Address name',
                           controller: billingaddressnameController,
@@ -101,6 +109,8 @@ class _sub_QuotationDetailsState extends State<sub_QuotationDetails> {
                         ),
                         const SizedBox(height: 25),
                         BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Billing Address',
                           controller: billingaddressController,
@@ -117,7 +127,7 @@ class _sub_QuotationDetailsState extends State<sub_QuotationDetails> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Button1(
+                            BasicButton(
                               colors: Colors.green,
                               text: 'Add Details',
                               onPressed: () {

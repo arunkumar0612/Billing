@@ -92,7 +92,7 @@ class _CreditProductsState extends State<CreditProducts> {
                     const SizedBox(height: 25),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: false,
                           text: 'Product Name',
                           controller: creditController.creditModel.productNameController.value,
@@ -109,7 +109,7 @@ class _CreditProductsState extends State<CreditProducts> {
                     const SizedBox(height: 25),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: false,
                           text: 'HSN',
                           controller: creditController.creditModel.hsnController.value,

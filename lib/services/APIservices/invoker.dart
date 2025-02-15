@@ -4,15 +4,12 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/services/APIservices/api_service.dart';
 import 'package:ssipl_billing/utils/helpers/returns.dart';
 import 'package:ssipl_billing/utils/helpers/encrypt_decrypt.dart';
-
 import '../../controllers/IAM_actions.dart';
 
 class Invoker extends GetxController {
   final ApiService apiService = ApiService();
-  var isLoading = false.obs;
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   Future<Map<String, dynamic>?> IAM(Map<String, dynamic> body, String API) async {
-    isLoading.value = true;
     final configData = await loadConfigFile('assets/key.config');
     final apiKey = configData['APIkey'];
     final secret = configData['Secret'];
@@ -26,8 +23,6 @@ class Invoker extends GetxController {
     };
     final response = await apiService.postData(API, requestData);
 
-    isLoading.value = false;
-
     if (response.statusCode == 200) {
       final responseData = response.body;
       String encryptedResponse = responseData['encryptedResponse'];
@@ -37,7 +32,6 @@ class Invoker extends GetxController {
         "statusCode": response.statusCode!
       };
       decodedResponse.addEntries(result.entries.map((e) => MapEntry(e.key, e.value)));
-
       return decodedResponse;
     } else {
       Map<String, dynamic> reply = {
@@ -49,14 +43,10 @@ class Invoker extends GetxController {
   }
 
   Future<Map<String, dynamic>?> GetbyToken(String API) async {
-    isLoading.value = true;
-
     final requestData = {
       "STOKEN": sessiontokenController.sessiontokenModel.sessiontoken.value
     };
     final response = await apiService.postData(API, requestData);
-
-    isLoading.value = false;
 
     if (response.statusCode == 200) {
       final responseData = response.body;
@@ -66,8 +56,11 @@ class Invoker extends GetxController {
       final result = <String, int>{
         "statusCode": response.statusCode!
       };
-      decodedResponse.addEntries(result.entries.map((e) => MapEntry(e.key, e.value)));
-
+      decodedResponse.addEntries(
+        result.entries.map(
+          (e) => MapEntry(e.key, e.value),
+        ),
+      );
       return decodedResponse;
     } else {
       Map<String, dynamic> reply = {
@@ -79,8 +72,6 @@ class Invoker extends GetxController {
   }
 
   Future<Map<String, dynamic>?> GetbyQueryString(Map<String, dynamic> body, String API) async {
-    isLoading.value = true;
-
     final dataToEncrypt = jsonEncode(body);
     final encryptedData = AES.encryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), dataToEncrypt);
 
@@ -90,7 +81,6 @@ class Invoker extends GetxController {
     };
     final response = await apiService.postData(API, formData);
 
-    isLoading.value = false;
     if (response.statusCode == 200) {
       final responseData = response.body;
       String encryptedResponse = responseData['encryptedResponse'];
@@ -112,19 +102,12 @@ class Invoker extends GetxController {
   }
 
   Future<Map<String, dynamic>?> multiPart(File file, String API) async {
-    isLoading.value = true;
-
-    // final dataToEncrypt = jsonEncode(body);
-    // final encryptedData = AES.encryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), body);
-
     FormData formData = FormData({
       "file": MultipartFile(file, filename: file.path.split('/').last), // Attach file
       "STOKEN": sessiontokenController.sessiontokenModel.sessiontoken.value,
-      // "querystring": encryptedData
     });
     final response = await apiService.postMulter(API, formData);
 
-    isLoading.value = false;
     if (response.statusCode == 200) {
       final responseData = response.body;
       String encryptedResponse = responseData['encryptedResponse'];
@@ -133,7 +116,11 @@ class Invoker extends GetxController {
       final result = <String, int>{
         "statusCode": response.statusCode!
       };
-      decodedResponse.addEntries(result.entries.map((e) => MapEntry(e.key, e.value)));
+      decodedResponse.addEntries(
+        result.entries.map(
+          (e) => MapEntry(e.key, e.value),
+        ),
+      );
 
       return decodedResponse;
     } else {
@@ -146,9 +133,6 @@ class Invoker extends GetxController {
   }
 
   Future<Map<String, dynamic>> Multer(String Token, String body, File file, String API) async {
-    isLoading.value = true;
-
-    // final dataToEncrypt = jsonEncode(body);
     final encryptedData = AES.encryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), body);
 
     FormData formData = FormData({
@@ -158,7 +142,6 @@ class Invoker extends GetxController {
     });
     final response = await apiService.postMulter(API, formData);
 
-    isLoading.value = false;
     if (response.statusCode == 200) {
       final responseData = response.body;
       String encryptedResponse = responseData['encryptedResponse'];

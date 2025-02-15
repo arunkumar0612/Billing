@@ -73,7 +73,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
         });
   }
 
-  Widget noteTable() {
+  RecommendationTable() {
     return ListView.builder(
         itemCount: clientreqController.clientReqModel.clientReqRecommendationList.length,
         itemBuilder: (context, index) {
@@ -221,20 +221,20 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
-                          'Table',
+                          'Recommendation',
                           style: TextStyle(color: Primary_colors.Color1),
                         ),
                         const SizedBox(height: 10),
                         Obx(
                           () {
-                            return Textfield_1(
-                              readonly: clientreqController.clientReqModel.tableHeadingController.value.text.isEmpty ? false : true,
-                              text: 'Table Heading',
-                              controller: clientreqController.clientReqModel.tableHeadingController.value,
+                            return BasicTextfield(
+                              readonly: clientreqController.clientReqModel.Rec_HeadingController.value.text.isEmpty ? false : true,
+                              text: 'Recommendation Heading',
+                              controller: clientreqController.clientReqModel.Rec_HeadingController.value,
                               icon: Icons.title,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter Table heading';
+                                  return 'Please enter Recommendation heading';
                                 }
                                 return null;
                               },
@@ -252,7 +252,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                     () {
                                       return TextFormField(
                                         style: const TextStyle(fontSize: 13, color: Colors.white),
-                                        controller: clientreqController.clientReqModel.tableKeyController.value,
+                                        controller: clientreqController.clientReqModel.Rec_KeyController.value,
                                         decoration: const InputDecoration(
                                           filled: true,
                                           fillColor: Primary_colors.Dark,
@@ -288,7 +288,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                     () {
                                       return TextFormField(
                                         style: const TextStyle(fontSize: 13, color: Colors.white),
-                                        controller: clientreqController.clientReqModel.tableValueController.value,
+                                        controller: clientreqController.clientReqModel.Rec_ValueController.value,
                                         decoration: const InputDecoration(
                                           filled: true,
                                           fillColor: Primary_colors.Dark,
@@ -329,10 +329,10 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                               Obx(
                                 () {
                                   return Button1(
-                                      colors: clientreqController.clientReqModel.noteTableEditIndex.value == null ? Colors.blue : Colors.orange,
-                                      text: clientreqController.clientReqModel.noteTableEditIndex.value == null ? 'Add' : 'Update',
+                                      colors: clientreqController.clientReqModel.Rec_EditIndex.value == null ? Colors.blue : Colors.orange,
+                                      text: clientreqController.clientReqModel.Rec_EditIndex.value == null ? 'Add' : 'Update',
                                       onPressed: () {
-                                        clientreqController.clientReqModel.noteTableEditIndex.value == null ? widget.addtable_row(context) : widget.updatetable();
+                                        clientreqController.clientReqModel.Rec_EditIndex.value == null ? widget.addtable_row(context) : widget.updatetable();
                                       });
                                 },
                               ),
@@ -388,7 +388,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 5),
                                 child: Text(
-                                  clientreqController.clientReqModel.clientReqTableHeading.value,
+                                  clientreqController.clientReqModel.Rec_HeadingController.value.text,
                                   style: const TextStyle(
                                     fontSize: 13,
                                     color: Color.fromARGB(255, 119, 199, 253),
@@ -405,7 +405,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(10),
-                                    child: noteTable(),
+                                    child: RecommendationTable(),
                                   ),
                                 ),
                               ),

@@ -1,29 +1,5 @@
-// class ProductDetail {
-//   String productName;
-//   int productQuantity;
-
-//   ProductDetail({required this.productName, required this.productQuantity});
-
-//   // Convert ProductDetail to Map (useful for JSON serialization if needed)
-//   Map<String, dynamic> toMap() {
-//     return {
-//       'productName': productName,
-//       'productQuantity': productQuantity,
-//     };
-//   }
-
-//   // Factory method to create ProductDetail from Map
-//   factory ProductDetail.fromMap(Map<String, dynamic> map) {
-//     return ProductDetail(
-//       productName: map['productName'] ?? '',
-//       productQuantity: map['productQuantity'] ?? 0,
-//     );
-//   }
-// }
-
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
-import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_products.dart';
 
 class Recommendation {
   final String key;
@@ -85,24 +61,6 @@ class MORpath {
   }
 }
 
-class EnqID {
-  final String ID;
-
-  EnqID({required this.ID});
-
-  factory EnqID.fromJson(CMDmResponse json) {
-    return EnqID(
-      ID: json.data['requirementid'] as String,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'ID': ID,
-    };
-  }
-}
-
 class AddSales {
   String? title;
   String? name;
@@ -111,14 +69,11 @@ class AddSales {
   String? address;
   String? gst;
   String? billingAddressName;
-  // String? customerRequirementId;
   String? billingAddress;
   String? modeOfRequest;
   String? morReference;
   List<ClientreqProduct>? product;
   List<Note>? notes;
-  int? messageType;
-  double? invoiceAmount;
   String? date;
   int? companyID;
   List<int?> branchID;
@@ -132,7 +87,6 @@ class AddSales {
     required this.address,
     required this.gst,
     required this.billingAddressName,
-    // required this.customerRequirementId,
     required this.billingAddress,
     required this.modeOfRequest,
     required this.morReference,

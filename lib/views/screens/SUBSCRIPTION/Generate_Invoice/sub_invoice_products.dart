@@ -184,7 +184,7 @@ class _sub_invoiceProductsState extends State<sub_invoiceProducts> {
                 Column(
                   children: [
                     const SizedBox(height: 25),
-                    Textfield_1(
+                    BasicTextfield(
                       readonly: false,
                       text: 'Product Name',
                       controller: productNameController,
@@ -197,7 +197,7 @@ class _sub_invoiceProductsState extends State<sub_invoiceProducts> {
                       },
                     ),
                     const SizedBox(height: 25),
-                    Textfield_1(
+                    BasicTextfield(
                       readonly: false,
                       text: 'HSN',
                       controller: hsnController,

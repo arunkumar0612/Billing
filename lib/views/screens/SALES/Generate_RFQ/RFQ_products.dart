@@ -92,7 +92,7 @@ class _RFQProductsState extends State<RFQProducts> {
                     const SizedBox(height: 25),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: false,
                           text: 'Product Name',
                           controller: rfqController.rfqModel.productNameController.value,

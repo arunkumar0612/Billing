@@ -224,7 +224,7 @@ class _InvoiceNoteState extends State<InvoiceNote> {
                     const SizedBox(height: 10),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: false,
                           text: 'Table Heading',
                           controller: invoiceController.invoiceModel.recommendationHeadingController.value,

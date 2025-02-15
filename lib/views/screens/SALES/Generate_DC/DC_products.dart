@@ -93,7 +93,7 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                     const SizedBox(height: 25),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: false,
                           text: 'Product Name',
                           controller: dcController.dcModel.productNameController.value,
@@ -110,7 +110,7 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                     const SizedBox(height: 25),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: false,
                           text: 'HSN',
                           controller: dcController.dcModel.hsnController.value,

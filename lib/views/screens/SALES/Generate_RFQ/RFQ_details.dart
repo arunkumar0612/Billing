@@ -93,7 +93,7 @@ class _RFQDetailsState extends State<RFQDetails> {
                             ),
                           ),
                           const SizedBox(height: 25),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Vendor Address ',
                             controller: rfqController.rfqModel.vendor_address_controller.value,
@@ -111,7 +111,7 @@ class _RFQDetailsState extends State<RFQDetails> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           const SizedBox(height: 25),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Vendor Phone number',
                             controller: rfqController.rfqModel.vendor_phone_controller.value,
@@ -124,7 +124,7 @@ class _RFQDetailsState extends State<RFQDetails> {
                             },
                           ),
                           const SizedBox(height: 25),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Vendor Email address',
                             controller: rfqController.rfqModel.vendor_email_controller.value,

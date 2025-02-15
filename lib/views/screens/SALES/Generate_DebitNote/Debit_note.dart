@@ -224,7 +224,7 @@ class _DebitNoteState extends State<DebitNote> {
                     const SizedBox(height: 10),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: false,
                           text: 'Table Heading',
                           controller: debitController.debitModel.recommendationHeadingController.value,

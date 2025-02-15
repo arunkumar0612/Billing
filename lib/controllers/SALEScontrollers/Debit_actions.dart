@@ -88,15 +88,15 @@ class DebitController extends GetxController {
     debitModel.notecontentController.value.text = text;
   }
 
-  void updateTableHeadingControllerText(String text) {
+  void updateRec_HeadingControllerText(String text) {
     debitModel.recommendationHeadingController.value.text = text;
   }
 
-  void updateTableKeyControllerText(String text) {
+  void updateRec_KeyControllerText(String text) {
     debitModel.recommendationKeyController.value.text = text;
   }
 
-  void updateTableValueControllerText(String text) {
+  void updateRec_ValueControllerText(String text) {
     debitModel.recommendationValueController.value.text = text;
   }
 
@@ -178,15 +178,7 @@ class DebitController extends GetxController {
     }
   }
 
-  void updateProduct(
-      {required BuildContext context,
-      required int editIndex,
-      required String productName,
-      required String hsn,
-      required double price,
-      required int quantity,
-      required double gst,
-      required String remarks}) {
+  void updateProduct({required BuildContext context, required int editIndex, required String productName, required String hsn, required double price, required int quantity, required double gst, required String remarks}) {
     try {
       // Validate input fields
       if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
@@ -297,7 +289,7 @@ class DebitController extends GetxController {
     // Reset heading type and note arrays
     // debitModel.selectedheadingType.value = null;
     // debitModel.notelength.value = 0;
-    // debitModel.notetablelength.value = 0;
+    // debitModel.Rec_Length.value = 0;
     debitModel.notecontent.clear();
     // debitModel.noteType.clear();
     // debitModel.noteType.addAll([

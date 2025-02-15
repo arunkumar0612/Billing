@@ -11,6 +11,7 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/generateRFQ.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../controllers/SALEScontrollers/Sales_actions.dart';
 import '../../models/constants/api.dart';
 import '../../models/entities/Response_entities.dart';
@@ -24,6 +25,7 @@ import '../../views/screens/SALES/Generate_client_req/generate_clientreq.dart';
 import '../../views/screens/SALES/Generate_creditNote/generateCredit.dart';
 import '../APIservices/invoker.dart';
 // import 'package:ssipl_billing/view_send_pdf.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 mixin SalesServices {
   final Invoker apiController = Get.find<Invoker>();
@@ -45,8 +47,36 @@ mixin SalesServices {
         if (value.code) {
           await Basic_dialog(context: context, title: 'Customer List', content: "Customer List fetched successfully", onOk: () {});
           salesController.addToCustomerList(value);
+          // if (kDebugMode) {
+          //   print("*****************${salesController.salesModel.customerList[1].customerId}");
+          // }
         } else {
           await Basic_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+      if (kDebugMode) {
+        print(response);
+      }
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
+  void GetProcesscustomerList(context) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getprocesscustomer_API);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          // await Basic_dialog(context: context, title: 'Processcustomer List', content: "Processcustomer List fetched successfully", onOk: () {});
+          salesController.salesModel.processcustomerList.clear();
+          salesController.addToProcesscustomerList(value);
+
+          // salesController.updatecustomerId(salesController.salesModel.processcustomerList[salesController.salesModel.showcustomerprocess.value!].customerId);
+        } else {
+          await Basic_dialog(context: context, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
@@ -54,6 +84,108 @@ mixin SalesServices {
     } catch (e) {
       Basic_dialog(context: context, title: "ERROR", content: "$e");
     }
+  }
+
+  void GetProcessList(context, int customerid) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({
+        "customerid": customerid
+      }, API.sales_getprocesslist_API);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          // await Basic_dialog(context: context, title: 'Process List', content: "Process List fetched successfully", onOk: () {});
+          salesController.salesModel.processList.clear();
+          salesController.addToProcessList(value);
+        } else {
+          await Basic_dialog(context: context, title: 'Process List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
+  void UpdateFeedback(context, int customerid, int eventid, feedback) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({
+        "eventid": eventid,
+        "feedback": feedback
+      }, API.sales_addfeedback_API);
+      if (response?['statusCode'] == 200) {
+        CMResponse value = CMResponse.fromJson(response ?? {});
+        if (value.code) {
+          GetProcessList(context, customerid);
+          showCustomSnackBar(context);
+          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Basic_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
+  void GetPDFfile(context, int eventid) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({
+        "eventid": eventid
+      }, API.sales_getbinaryfile_API);
+      if (response?['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        if (value.code) {
+          await salesController.PDFfileApiData(value);
+          print(salesController.salesModel.pdfFile.value);
+          if (salesController.salesModel.pdfFile.value != null) {
+            await showDialog(
+              context: context,
+              builder: (context) => Dialog(
+                insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+                  height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
+                  child: SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
+                ),
+              ),
+            );
+          }
+
+          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Basic_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
+  void showCustomSnackBar(BuildContext context) {
+    Flushbar(
+      message: "Feedback added successfully",
+      margin: const EdgeInsets.all(10),
+      borderRadius: BorderRadius.circular(10),
+      backgroundColor: Primary_colors.Color3,
+      icon: const Icon(Icons.check_circle, color: Primary_colors.Color1),
+      duration: const Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.BOTTOM, // Change to BOTTOM if needed
+      animationDuration: const Duration(milliseconds: 500),
+      leftBarIndicatorColor: Primary_colors.Color1,
+      boxShadows: [
+        BoxShadow(
+          color: Primary_colors.Color3.withOpacity(0.3),
+          blurRadius: 10,
+          spreadRadius: 2,
+        ),
+      ],
+    ).show(context);
   }
 
   dynamic Generate_client_reqirement_dialougebox(String value, context) async {
@@ -89,7 +221,9 @@ mixin SalesServices {
                   ),
                   onPressed: () async {
                     // Check if any data exists in clientreq variables
-                    if ((clientreqController.clientReqModel.clientReqProductDetails.isNotEmpty) || (clientreqController.clientReqModel.clientReqNoteList.isNotEmpty) || (clientreqController.clientReqModel.clientReqRecommendationList.isNotEmpty) || (clientreqController.clientReqModel.clientNameController.value.text.isNotEmpty) || (clientreqController.clientReqModel.clientAddressController.value.text.isNotEmpty) || (clientreqController.clientReqModel.billingAddressNameController.value.text.isNotEmpty) || (clientreqController.clientReqModel.billingAddressController.value.text.isNotEmpty) || (clientreqController.clientReqModel.clientReqNo.value.isNotEmpty) || (clientreqController.clientReqModel.clientReqTableHeading.value.isNotEmpty) || (clientreqController.clientReqModel.morController.value.text.isNotEmpty) || (clientreqController.clientReqModel.gstController.value.text.isNotEmpty) || (clientreqController.clientReqModel.emailController.value.text.isNotEmpty) || (clientreqController.clientReqModel.phoneController.value.text.isNotEmpty)) {
+                    if (clientreqController.anyHavedata()) {
+                      // All forms are valid, proceed with submission
+
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -117,24 +251,9 @@ mixin SalesServices {
                         },
                       );
 
-                      // If user confirms (Yes), clear data and close the dialog
                       if (proceed == true) {
-                        Navigator.of(context).pop(); // Close the dialog
-                        // Clear all the data when dialog is closed
-                        clientreqController.clientReqModel.clientReqProductDetails.clear();
-                        clientreqController.clientReqModel.clientReqNoteList.clear();
-                        clientreqController.clientReqModel.clientReqRecommendationList.clear();
-                        clientreqController.clientReqModel.clientNameController.value.clear();
-                        clientreqController.clientReqModel.clientAddressController.value.clear();
-                        clientreqController.clientReqModel.billingAddressNameController.value.clear();
-                        clientreqController.clientReqModel.billingAddressController.value.clear();
-                        clientreqController.clientReqModel.morController.value.clear();
-                        clientreqController.clientReqModel.gstController.value.clear();
-                        clientreqController.clientReqModel.emailController.value.clear();
-                        clientreqController.clientReqModel.phoneController.value.clear();
-                        clientreqController.clientReqModel.clientReqNo.value = '';
-                        clientreqController.clientReqModel.clientReqTableHeading.value = '';
-                        clientreqController.clientReqModel.pickedFile.value = null;
+                        Navigator.of(context).pop();
+                        clientreqController.resetData();
                       }
                     } else {
                       // If no data, just close the dialog

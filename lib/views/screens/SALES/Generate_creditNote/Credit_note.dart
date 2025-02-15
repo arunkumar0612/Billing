@@ -224,7 +224,7 @@ class _CreditNoteState extends State<CreditNote> {
                     const SizedBox(height: 10),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: false,
                           text: 'Table Heading',
                           controller: creditController.creditModel.recommendationHeadingController.value,

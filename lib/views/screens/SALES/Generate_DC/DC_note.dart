@@ -224,7 +224,7 @@ class _Delivery_challanNoteState extends State<Delivery_challanNote> {
                     const SizedBox(height: 10),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: false,
                           text: 'Table Heading',
                           controller: dcController.dcModel.recommendationHeadingController.value,

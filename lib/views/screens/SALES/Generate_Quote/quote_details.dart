@@ -15,6 +15,13 @@ class QuoteDetails extends StatefulWidget with QuotedetailsService {
 
 class _QuoteDetailsState extends State<QuoteDetails> {
   final QuoteController quoteController = Get.find<QuoteController>();
+
+  @override
+  void initState() {
+    widget.get_requiredData(context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -33,7 +40,7 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const SizedBox(height: 25),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Title',
                             controller: quoteController.quoteModel.TitleController.value,
@@ -46,7 +53,7 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                             },
                           ),
                           const SizedBox(height: 25),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Client Address name',
                             controller: quoteController.quoteModel.clientAddressNameController.value,
@@ -59,7 +66,7 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                             },
                           ),
                           const SizedBox(height: 25),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Client Address ',
                             controller: quoteController.quoteModel.clientAddressController.value,
@@ -77,7 +84,7 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const SizedBox(height: 10),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Billing Address name',
                             controller: quoteController.quoteModel.billingAddressNameController.value,
@@ -90,7 +97,7 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                             },
                           ),
                           const SizedBox(height: 25),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Billing Address',
                             controller: quoteController.quoteModel.billingAddressController.value,

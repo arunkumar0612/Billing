@@ -42,7 +42,7 @@ class _sub_invoiceDetailsState extends State<sub_invoiceDetails> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(height: 25),
-                        Textfield_1(
+                        BasicTextfield(
                           readonly: false,
                           text: 'GST',
                           controller: GSTController,
@@ -55,7 +55,7 @@ class _sub_invoiceDetailsState extends State<sub_invoiceDetails> {
                           },
                         ),
                         const SizedBox(height: 25),
-                        Textfield_1(
+                        BasicTextfield(
                           readonly: false,
                           text: 'Client Address name',
                           controller: clientaddressnameController,
@@ -68,7 +68,7 @@ class _sub_invoiceDetailsState extends State<sub_invoiceDetails> {
                           },
                         ),
                         const SizedBox(height: 25),
-                        Textfield_1(
+                        BasicTextfield(
                           readonly: false,
                           text: 'Client Address ',
                           controller: clientaddressController,
@@ -86,7 +86,7 @@ class _sub_invoiceDetailsState extends State<sub_invoiceDetails> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(height: 10),
-                        Textfield_1(
+                        BasicTextfield(
                           readonly: false,
                           text: 'Billing Address name',
                           controller: billingaddressnameController,
@@ -99,7 +99,7 @@ class _sub_invoiceDetailsState extends State<sub_invoiceDetails> {
                           },
                         ),
                         const SizedBox(height: 25),
-                        Textfield_1(
+                        BasicTextfield(
                           readonly: false,
                           text: 'Billing Address',
                           controller: billingaddressController,

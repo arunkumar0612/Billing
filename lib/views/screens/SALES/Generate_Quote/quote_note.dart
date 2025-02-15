@@ -224,7 +224,7 @@ class _QuoteNoteState extends State<QuoteNote> {
                     const SizedBox(height: 10),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: false,
                           text: 'Table Heading',
                           controller: quoteController.quoteModel.recommendationHeadingController.value,

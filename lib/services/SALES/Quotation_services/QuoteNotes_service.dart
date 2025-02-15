@@ -14,7 +14,7 @@ mixin QuotenotesService {
   final ViewsendController viewsendController = Get.find<ViewsendController>();
 
   void addtable_row(context) {
-    quoteController.updateTableValueControllerText(quoteController.quoteModel.recommendationHeadingController.value.text);
+    quoteController.updateRec_ValueControllerText(quoteController.quoteModel.recommendationHeadingController.value.text);
     bool exists = quoteController.quoteModel.Quote_recommendationList.any((note) => note.key == quoteController.quoteModel.recommendationKeyController.value.text);
     if (exists) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -51,8 +51,8 @@ mixin QuotenotesService {
 
   void editnotetable(int index) {
     final note = quoteController.quoteModel.Quote_recommendationList[index];
-    quoteController.updateTableKeyControllerText(note.key.toString());
-    quoteController.updateTableValueControllerText(note.value.toString());
+    quoteController.updateRec_KeyControllerText(note.key.toString());
+    quoteController.updateRec_ValueControllerText(note.value.toString());
     quoteController.updateRecommendationEditindex(index);
   }
 

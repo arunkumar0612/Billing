@@ -33,7 +33,7 @@ class _CreditDetailsState extends State<CreditDetails> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Client Address name',
                             controller: creditController.creditModel.clientAddressNameController.value,
@@ -46,7 +46,7 @@ class _CreditDetailsState extends State<CreditDetails> {
                             },
                           ),
                           const SizedBox(height: 25),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Client Address ',
                             controller: creditController.creditModel.clientAddressController.value,
@@ -64,7 +64,7 @@ class _CreditDetailsState extends State<CreditDetails> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           // const SizedBox(height: 55),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Billing Address name',
                             controller: creditController.creditModel.billingAddressNameController.value,
@@ -77,7 +77,7 @@ class _CreditDetailsState extends State<CreditDetails> {
                             },
                           ),
                           const SizedBox(height: 25),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Billing Address',
                             controller: creditController.creditModel.billingAddressController.value,

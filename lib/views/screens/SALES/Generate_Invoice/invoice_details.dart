@@ -33,7 +33,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const SizedBox(height: 25),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Title',
                             controller: invoiceController.invoiceModel.TitleController.value,
@@ -46,7 +46,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                             },
                           ),
                           const SizedBox(height: 25),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Client Address name',
                             controller: invoiceController.invoiceModel.clientAddressNameController.value,
@@ -59,7 +59,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                             },
                           ),
                           const SizedBox(height: 25),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Client Address ',
                             controller: invoiceController.invoiceModel.clientAddressController.value,
@@ -77,7 +77,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const SizedBox(height: 10),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Billing Address name',
                             controller: invoiceController.invoiceModel.billingAddressNameController.value,
@@ -90,7 +90,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                             },
                           ),
                           const SizedBox(height: 25),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Billing Address',
                             controller: invoiceController.invoiceModel.billingAddressController.value,

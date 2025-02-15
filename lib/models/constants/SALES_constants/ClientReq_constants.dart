@@ -4,20 +4,17 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:ssipl_billing/models/entities/SALES/ClientReq_entities.dart';
 
 import '../../entities/SALES/product_entities.dart';
 
 class ClientReqModel {
-  var clientReqTableHeading = "".obs;
-  var clientReqNo = '1'.obs;
-  var Enq_ID = Rxn<String>();
   var MOR_uploadedPath = Rxn<String>();
-//######################################################################################################################################
-//DETAILS
+  var customer_id = 0.obs;
   final Rxn<TabController> tabController = Rxn<TabController>();
   final Rx<File> selectedPdf = File('E://Client_requirement.pdf').obs;
+//######################################################################################################################################
+//DETAILS
   final detailsformKey = GlobalKey<FormState>().obs;
   var clientNameController = TextEditingController().obs;
   var titleController = TextEditingController().obs;
@@ -37,7 +34,6 @@ class ClientReqModel {
   var CompanyList = <Company>[].obs;
   var BranchFullList = <Branch>[].obs;
   var BranchList_valueModel = <DropDownValueModel>[].obs;
-  var customer_id = Rxn<int>();
   var selected_branchList = <int>[].obs;
 //######################################################################################################################################
 //PRODUCTS
@@ -50,16 +46,15 @@ class ClientReqModel {
 //NOTES
   final noteFormKey = GlobalKey<FormState>().obs;
   final noteContentController = TextEditingController().obs;
-  final tableHeadingController = TextEditingController().obs;
-  final tableKeyController = TextEditingController().obs;
-  final tableValueController = TextEditingController().obs;
+  final Rec_HeadingController = TextEditingController().obs;
+  final Rec_KeyController = TextEditingController().obs;
+  final Rec_ValueController = TextEditingController().obs;
   final noteEditIndex = Rxn<int>();
-  final noteTableEditIndex = Rxn<int>();
+  final Rec_EditIndex = Rxn<int>();
   var clientReqNoteList = <Note>[].obs;
   var clientReqRecommendationList = <Recommendation>[].obs;
   var noteLength = 0.obs;
-  var noteTableLength = 0.obs;
-  var selectedHeadingType = Rxn<String>();
+  var Rec_Length = 0.obs;
   var noteContent = <String>[
     'Delivery within 30 working days from the date of issuing the PO.',
     'Payment terms: 100% along with PO.',

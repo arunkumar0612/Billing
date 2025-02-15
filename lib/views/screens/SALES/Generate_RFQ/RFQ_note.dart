@@ -224,7 +224,7 @@ class _RFQNoteState extends State<RFQNote> {
                     const SizedBox(height: 10),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: rfqController.rfqModel.recommendationHeadingController.value.text.isEmpty ? false : true,
                           text: 'Table Heading',
                           controller: rfqController.rfqModel.recommendationHeadingController.value,

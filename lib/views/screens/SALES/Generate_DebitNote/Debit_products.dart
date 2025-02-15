@@ -92,7 +92,7 @@ class _DebitProductsState extends State<DebitProducts> {
                     const SizedBox(height: 25),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: false,
                           text: 'Product Name',
                           controller: debitController.debitModel.productNameController.value,
@@ -109,7 +109,7 @@ class _DebitProductsState extends State<DebitProducts> {
                     const SizedBox(height: 25),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: false,
                           text: 'HSN',
                           controller: debitController.debitModel.hsnController.value,

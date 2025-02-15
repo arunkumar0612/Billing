@@ -92,7 +92,7 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
                     const SizedBox(height: 25),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: false,
                           text: 'Product Name',
                           controller: invoiceController.invoiceModel.productNameController.value,
@@ -109,7 +109,7 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
                     const SizedBox(height: 25),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: false,
                           text: 'HSN',
                           controller: invoiceController.invoiceModel.hsnController.value,

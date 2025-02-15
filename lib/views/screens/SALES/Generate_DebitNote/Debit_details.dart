@@ -33,7 +33,7 @@ class _DebitDetailsState extends State<DebitDetails> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Client Address name',
                             controller: debitController.debitModel.clientAddressNameController.value,
@@ -46,7 +46,7 @@ class _DebitDetailsState extends State<DebitDetails> {
                             },
                           ),
                           const SizedBox(height: 25),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Client Address ',
                             controller: debitController.debitModel.clientAddressController.value,
@@ -63,7 +63,7 @@ class _DebitDetailsState extends State<DebitDetails> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Billing Address name',
                             controller: debitController.debitModel.billingAddressNameController.value,
@@ -76,7 +76,7 @@ class _DebitDetailsState extends State<DebitDetails> {
                             },
                           ),
                           const SizedBox(height: 25),
-                          Textfield_1(
+                          BasicTextfield(
                             readonly: false,
                             text: 'Billing Address',
                             controller: debitController.debitModel.billingAddressController.value,

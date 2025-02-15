@@ -92,7 +92,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                     const SizedBox(height: 25),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: false,
                           text: 'Product Name',
                           controller: quoteController.quoteModel.productNameController.value,
@@ -109,7 +109,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                     const SizedBox(height: 25),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
                           readonly: false,
                           text: 'HSN',
                           controller: quoteController.quoteModel.hsnController.value,

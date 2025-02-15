@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/models/entities/Response_entities.dart';
 import '../../models/constants/SALES_constants/Quote_constants.dart';
 import '../../models/entities/SALES/Quote_entities.dart';
 import '../../models/entities/SALES/product_entities.dart';
@@ -60,24 +61,40 @@ class QuoteController extends GetxController {
     quoteModel.tabController.value = tabController;
   }
 
-  void updateTitleControllerText(String text) {
+  void updateTitle(String text) {
     quoteModel.TitleController.value.text = text;
   }
 
-  void updateClientAddressNameControllerText(String text) {
+  void updateQuotenumber(String text) {
+    quoteModel.Quote_no.value = text;
+  }
+
+  void updateGSTnumber(String text) {
+    quoteModel.gst_no.value = text;
+  }
+
+  void updateClientAddressName(String text) {
     quoteModel.clientAddressNameController.value.text = text;
   }
 
-  void updateClientAddressControllerText(String text) {
+  void updateClientAddress(String text) {
     quoteModel.clientAddressController.value.text = text;
   }
 
-  void updateBillingAddressNameControllerText(String text) {
+  void updateBillingAddressName(String text) {
     quoteModel.billingAddressNameController.value.text = text;
   }
 
-  void updateBillingAddressControllerText(String text) {
+  void updateBillingAddress(String text) {
     quoteModel.billingAddressController.value.text = text;
+  }
+
+  void updatePhone(String phone) {
+    quoteModel.phoneController.value.text = phone;
+  }
+
+  void updateEmail(String email) {
+    quoteModel.emailController.value.text = email;
   }
 
   void updateRecommendationEditindex(int? index) {
@@ -88,15 +105,15 @@ class QuoteController extends GetxController {
     quoteModel.notecontentController.value.text = text;
   }
 
-  void updateTableHeadingControllerText(String text) {
+  void updateRec_HeadingControllerText(String text) {
     quoteModel.recommendationHeadingController.value.text = text;
   }
 
-  void updateTableKeyControllerText(String text) {
+  void updateRec_KeyControllerText(String text) {
     quoteModel.recommendationKeyController.value.text = text;
   }
 
-  void updateTableValueControllerText(String text) {
+  void updateRec_ValueControllerText(String text) {
     quoteModel.recommendationValueController.value.text = text;
   }
 
@@ -274,6 +291,20 @@ class QuoteController extends GetxController {
     quoteModel.Quote_products.removeAt(index);
   }
 
+  void update_requiredData(CMDmResponse value) {
+    RequiredData instance = RequiredData.fromJson(value);
+    quoteModel.Quote_no.value = instance.eventnumber;
+    updateQuotenumber(instance.eventnumber);
+    updateTitle(instance.title!);
+    updateEmail(instance.emailId!);
+    updateGSTnumber(instance.gst!);
+    updatePhone(instance.phoneNo!);
+    updateClientAddressName(instance.name!);
+    updateClientAddress(instance.address!);
+    updateBillingAddressName(instance.billingAddressName!);
+    updateBillingAddress(instance.billingAddress!);
+  }
+
   void clearAll() {
     // Reset all observable strings to empty
 
@@ -317,7 +348,7 @@ class QuoteController extends GetxController {
     // Reset heading type and note arrays
     // quoteModel.selectedheadingType.value = null;
     // quoteModel.notelength.value = 0;
-    // quoteModel.notetablelength.value = 0;
+    // quoteModel.Rec_Length.value = 0;
     quoteModel.notecontent.clear();
     // quoteModel.noteType.clear();
     // quoteModel.noteType.addAll([

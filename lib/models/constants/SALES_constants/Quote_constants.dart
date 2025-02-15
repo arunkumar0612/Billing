@@ -6,9 +6,11 @@ import '../../entities/SALES/Quote_entities.dart';
 class QuoteModel {
   final Rxn<TabController> tabController = Rxn<TabController>();
 
-  var Quote_no = "".obs;
+  var Quote_no = Rxn<String>();
+  var gst_no = Rxn<String>();
   var Quote_table_heading = "".obs;
-
+  final phoneController = TextEditingController().obs;
+  final emailController = TextEditingController().obs;
 //######################################################################################################################################
 //DETAILS
   final TitleController = TextEditingController().obs;
@@ -32,7 +34,7 @@ class QuoteModel {
 //NOTES
   final noteformKey = GlobalKey<FormState>().obs;
   // var notelength = 0.obs;
-  // var notetablelength = 0.obs;
+  // var Rec_Length = 0.obs;
   var note_editIndex = Rxn<int>();
   final notecontentController = TextEditingController().obs;
   var recommendation_editIndex = Rxn<int>();

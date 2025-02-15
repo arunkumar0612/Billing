@@ -338,7 +338,7 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
                             ),
                             Expanded(
                               child: SizedBox(
-                                child: Textfield_1(
+                                child: BasicTextfield(
                                   readonly: false,
                                   controller: viewsendController.viewSendModel.phoneNumberController.value,
                                   text: 'Enter Phone Number',
@@ -364,7 +364,7 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
                             ),
                             Expanded(
                               child: SizedBox(
-                                child: Textfield_1(
+                                child: BasicTextfield(
                                   readonly: false,
                                   controller: viewsendController.viewSendModel.emailController.value,
                                   text: 'Enter Email ID',

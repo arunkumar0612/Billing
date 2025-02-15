@@ -110,7 +110,7 @@ class addservice_pageState extends State<addservice_page> {
                         style: TextStyle(fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
                       ),
                       const SizedBox(height: 25),
-                      Textfield_1(
+                      BasicTextfield(
                         readonly: false,
                         text: 'service name',
                         controller: nameController,
@@ -123,7 +123,7 @@ class addservice_pageState extends State<addservice_page> {
                         },
                       ),
                       const SizedBox(height: 25),
-                      Textfield_1(
+                      BasicTextfield(
                         readonly: false,
                         text: 'service Cost',
                         controller: costController,

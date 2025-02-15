@@ -28,4 +28,11 @@ class Validators {
     }
     return null;
   }
+
+  static String? fileValidator(value) {
+    if (value == null) {
+      return "File is required!";
+    }
+    return null;
+  }
 }

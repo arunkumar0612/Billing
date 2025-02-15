@@ -197,7 +197,7 @@ class sub_clientreqDetailsState extends State<sub_clientreqDetails> {
                                 ),
                               ),
                         const SizedBox(height: 25),
-                        Textfield_1(
+                        BasicTextfield(
                           readonly: false,
                           text: 'Contact Number',
                           controller: phone_Controller,
@@ -210,7 +210,7 @@ class sub_clientreqDetailsState extends State<sub_clientreqDetails> {
                           },
                         ),
                         const SizedBox(height: 25),
-                        Textfield_1(
+                        BasicTextfield(
                           readonly: false,
                           text: 'Email',
                           controller: Email_Controller,
@@ -223,7 +223,7 @@ class sub_clientreqDetailsState extends State<sub_clientreqDetails> {
                           },
                         ),
                         const SizedBox(height: 25),
-                        Textfield_1(
+                        BasicTextfield(
                           readonly: false,
                           text: 'Client Address ',
                           controller: clientaddressController,
@@ -236,7 +236,7 @@ class sub_clientreqDetailsState extends State<sub_clientreqDetails> {
                           },
                         ),
                         const SizedBox(height: 25),
-                        Textfield_1(
+                        BasicTextfield(
                           readonly: false,
                           text: 'GST',
                           controller: gst_Controller,
@@ -254,7 +254,7 @@ class sub_clientreqDetailsState extends State<sub_clientreqDetails> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(height: 10),
-                        Textfield_1(
+                        BasicTextfield(
                           readonly: false,
                           text: 'Billing Address name',
                           controller: billingaddressnameController,
@@ -269,7 +269,7 @@ class sub_clientreqDetailsState extends State<sub_clientreqDetails> {
                         const SizedBox(
                           height: 25,
                         ),
-                        Textfield_1(
+                        BasicTextfield(
                           readonly: false,
                           text: 'Billing Address',
                           controller: billingaddressController,
@@ -284,7 +284,7 @@ class sub_clientreqDetailsState extends State<sub_clientreqDetails> {
                         const SizedBox(
                           height: 25,
                         ),
-                        Textfield_1(
+                        BasicTextfield(
                           readonly: false,
                           text: 'Mode of request',
                           controller: MOR_Controller,

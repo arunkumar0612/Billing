@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:ssipl_billing/themes/style.dart';
 
-class Textfield_1 extends StatelessWidget {
+class BasicTextfield extends StatelessWidget {
   final bool readonly;
   final String text;
   final String? Function(String?)? validator;
   final TextEditingController controller;
   final IconData icon;
-  const Textfield_1({
+  const BasicTextfield({
     super.key,
     required this.readonly,
     required this.text,
@@ -35,8 +35,8 @@ class Textfield_1 extends StatelessWidget {
 
           enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
           // labelText: text,
-          hintText: text,
-          hintStyle: const TextStyle(
+          label: Text(text),
+          labelStyle: const TextStyle(
             fontSize: Primary_font_size.Text7,
             color: Color.fromARGB(255, 167, 165, 165),
           ),

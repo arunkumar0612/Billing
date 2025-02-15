@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
@@ -13,7 +12,7 @@ mixin RFQnotesService {
   final ViewsendController viewsendController = Get.find<ViewsendController>();
 
   void addtable_row(context) {
-    rfqController.updateTableValueControllerText(rfqController.rfqModel.recommendationHeadingController.value.text);
+    rfqController.updateRec_ValueControllerText(rfqController.rfqModel.recommendationHeadingController.value.text);
     bool exists = rfqController.rfqModel.RFQ_recommendationList.any((note) => note.key == rfqController.rfqModel.recommendationKeyController.value.text);
     if (exists) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -50,8 +49,8 @@ mixin RFQnotesService {
 
   void editnotetable(int index) {
     final note = rfqController.rfqModel.RFQ_recommendationList[index];
-    rfqController.updateTableKeyControllerText(note.key.toString());
-    rfqController.updateTableValueControllerText(note.value.toString());
+    rfqController.updateRec_KeyControllerText(note.key.toString());
+    rfqController.updateRec_ValueControllerText(note.value.toString());
     rfqController.updateRecommendationEditindex(index);
   }
 

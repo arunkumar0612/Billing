@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class CMResponse {
   final bool code;
   final String? message;

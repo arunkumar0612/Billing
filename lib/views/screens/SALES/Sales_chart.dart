@@ -1,14 +1,15 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:ssipl_billing/themes/style.dart';
 
-class Pie_chart extends StatefulWidget {
-  const Pie_chart({super.key});
+class Sales_chart extends StatefulWidget {
+  const Sales_chart({super.key});
 
   @override
-  Pie_chartState createState() => Pie_chartState();
+  Sales_chartState createState() => Sales_chartState();
 }
 
-class Pie_chartState extends State<Pie_chart> {
+class Sales_chartState extends State<Sales_chart> {
   int touchedIndex = -1; // Initialize touchedIndex
 
   @override
@@ -66,16 +67,8 @@ class Pie_chartState extends State<Pie_chart> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Indicator(
-              color: Color.fromARGB(255, 131, 195, 247),
-              text: 'Paid',
-              isSquare: true,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Indicator(
               color: Color.fromARGB(255, 249, 140, 236),
-              text: 'Unpaid',
+              text: 'Completed',
               isSquare: true,
             ),
             SizedBox(
@@ -83,15 +76,7 @@ class Pie_chartState extends State<Pie_chart> {
             ),
             Indicator(
               color: Color.fromARGB(255, 168, 122, 248),
-              text: 'Draft',
-              isSquare: true,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Indicator(
-              color: Color.fromARGB(255, 246, 224, 176),
-              text: 'Overdue',
+              text: 'Pending',
               isSquare: true,
             ),
           ],
@@ -104,7 +89,7 @@ class Pie_chartState extends State<Pie_chart> {
   }
 
   List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
+    return List.generate(2, (i) {
       final isTouched = i == touchedIndex;
       final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 60.0 : 15.0; // Increased size on hover
@@ -129,13 +114,10 @@ class Pie_chartState extends State<Pie_chart> {
   Color getColor(int index) {
     switch (index) {
       case 0:
-        return const Color.fromARGB(255, 131, 195, 247);
+        return Primary_colors.Color8;
       case 1:
-        return const Color.fromARGB(255, 249, 140, 236);
-      case 2:
-        return const Color.fromARGB(255, 168, 122, 248);
-      case 3:
-        return const Color.fromARGB(255, 246, 224, 176);
+        return Primary_colors.Color5;
+
       default:
         return Colors.grey;
     }
@@ -166,13 +148,10 @@ class Pie_chartState extends State<Pie_chart> {
 
     switch (maxIndex) {
       case 0:
-        return 'Paid';
+        return 'Completed';
       case 1:
-        return 'Unpaid';
-      case 2:
-        return 'Draft';
-      case 3:
-        return 'Overdue';
+        return 'Pending';
+
       default:
         return '';
     }

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -119,7 +119,9 @@ mixin ClientreqNoteService {
     File file = File(filePath);
     await file.writeAsBytes(pdfData);
 
-    print("PDF stored in cache: $filePath");
+    if (kDebugMode) {
+      print("PDF stored in cache: $filePath");
+    }
     return file;
   }
 

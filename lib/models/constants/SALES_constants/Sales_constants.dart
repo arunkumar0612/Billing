@@ -8,7 +8,8 @@ class SalesModel {
   var processcustomerList = <Processcustomer>[].obs;
   var processList = <Process>[].obs;
   final showcustomerprocess = Rxn<int>();
-
   final customerId = Rxn<int>();
   final pdfFile = Rxn<File>();
+  final selectedIndices = <int>[].obs;
+  final RxBool isAllSelected = false.obs;
 }

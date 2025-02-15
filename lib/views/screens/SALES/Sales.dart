@@ -460,7 +460,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                         GestureDetector(
                           onTap: () {},
                           child: Container(
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                             ),
                             padding: const EdgeInsets.all(0),
@@ -474,33 +474,33 @@ class _Sales_ClientState extends State<Sales_Client> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         SizedBox(
                           width: 400,
                           height: 40,
                           child: TextFormField(
                             style: const TextStyle(fontSize: 13, color: Colors.white),
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.all(10),
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.all(10),
                               filled: true,
                               fillColor: Primary_colors.Light,
                               focusedBorder: UnderlineInputBorder(
-                                borderSide: const BorderSide(
+                                borderSide: BorderSide(
                                   color: Color.fromARGB(227, 79, 78, 78),
                                 ),
                               ),
                               enabledBorder: UnderlineInputBorder(
-                                borderSide: const BorderSide(
+                                borderSide: BorderSide(
                                   color: Color.fromARGB(255, 77, 76, 76),
                                 ),
                               ),
-                              hintStyle: const TextStyle(
+                              hintStyle: TextStyle(
                                 fontSize: Primary_font_size.Text7,
                                 color: Primary_colors.Color1,
                                 letterSpacing: 1,
                               ),
                               hintText: 'Search from the list',
-                              prefixIcon: const Icon(
+                              prefixIcon: Icon(
                                 Icons.search,
                                 color: Colors.white,
                               ),

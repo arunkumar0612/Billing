@@ -166,6 +166,25 @@ mixin SalesServices {
     ).show(context);
   }
 
+  void DeleteProcess(context, List processid) async {
+    print(processid.toString());
+    // Map<String, dynamic>? response = await apiController.GetbyQueryString({
+    //   "processid": processid,
+    // }, API.sales_addfeedback_API);
+    // if (response?['statusCode'] == 200) {
+    //   CMResponse value = CMResponse.fromJson(response ?? {});
+    //   if (value.code) {
+    //     // GetProcessList(context, processid);
+    //     showCustomSnackBar(context);
+    //     // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+    //   } else {
+    //     await Basic_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
+    //   }
+    // } else {
+    //   Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+    // }
+  }
+
   dynamic Generate_client_reqirement_dialougebox(String value, context) async {
     await showDialog(
       context: context,

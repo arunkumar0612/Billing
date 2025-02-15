@@ -44,4 +44,12 @@ class SalesController extends GetxController {
   void updatePDFfile(File value) {
     salesModel.pdfFile.value = value;
   }
+
+  void updateisAllSelected(bool value) {
+    salesModel.isAllSelected.value = value;
+  }
+
+  void updateselectedIndices(List<int> value) {
+    salesModel.selectedIndices.value = value;
+  }
 }

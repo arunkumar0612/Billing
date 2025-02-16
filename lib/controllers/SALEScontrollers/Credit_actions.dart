@@ -84,15 +84,15 @@ class CreditController extends GetxController {
     creditModel.notecontentController.value.text = text;
   }
 
-  void updateTableHeadingControllerText(String text) {
+  void updateRec_HeadingControllerText(String text) {
     creditModel.recommendationHeadingController.value.text = text;
   }
 
-  void updateTableKeyControllerText(String text) {
+  void updateRec_KeyControllerText(String text) {
     creditModel.recommendationKeyController.value.text = text;
   }
 
-  void updateTableValueControllerText(String text) {
+  void updateRec_ValueControllerText(String text) {
     creditModel.recommendationValueController.value.text = text;
   }
 
@@ -174,15 +174,7 @@ class CreditController extends GetxController {
     }
   }
 
-  void updateProduct(
-      {required BuildContext context,
-      required int editIndex,
-      required String productName,
-      required String hsn,
-      required double price,
-      required int quantity,
-      required double gst,
-      required String remarks}) {
+  void updateProduct({required BuildContext context, required int editIndex, required String productName, required String hsn, required double price, required int quantity, required double gst, required String remarks}) {
     try {
       // Validate input fields
       if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
@@ -287,7 +279,7 @@ class CreditController extends GetxController {
     // Reset heading type and note arrays
     // creditModel.selectedheadingType.value = null;
     // creditModel.notelength.value = 0;
-    // creditModel.notetablelength.value = 0;
+    // creditModel.Rec_Length.value = 0;
     creditModel.notecontent.clear();
     // creditModel.noteType.clear();
     // creditModel.noteType.addAll([

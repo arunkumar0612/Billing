@@ -88,15 +88,15 @@ class InvoiceController extends GetxController {
     invoiceModel.notecontentController.value.text = text;
   }
 
-  void updateTableHeadingControllerText(String text) {
+  void updateRec_HeadingControllerText(String text) {
     invoiceModel.recommendationHeadingController.value.text = text;
   }
 
-  void updateTableKeyControllerText(String text) {
+  void updateRec_KeyControllerText(String text) {
     invoiceModel.recommendationKeyController.value.text = text;
   }
 
-  void updateTableValueControllerText(String text) {
+  void updateRec_ValueControllerText(String text) {
     invoiceModel.recommendationValueController.value.text = text;
   }
 
@@ -316,7 +316,7 @@ class InvoiceController extends GetxController {
     // Reset heading type and note arrays
     // invoiceModel.selectedheadingType.value = null;
     // invoiceModel.notelength.value = 0;
-    // invoiceModel.notetablelength.value = 0;
+    // invoiceModel.Rec_Length.value = 0;
     invoiceModel.notecontent.clear();
     // invoiceModel.noteType.clear();
     // invoiceModel.noteType.addAll([

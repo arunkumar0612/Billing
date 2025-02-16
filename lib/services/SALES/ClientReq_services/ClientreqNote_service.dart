@@ -1,12 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 import 'package:ssipl_billing/services/APIservices/invoker.dart';
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_template.dart';
 import '../../../controllers/SALEScontrollers/ClientReq_actions.dart';
 import '../../../controllers/viewSend_actions.dart';
 import '../../../models/constants/api.dart';
@@ -19,19 +23,21 @@ mixin ClientreqNoteService {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
 
   void addtable_row(context) {
-    clientreqController.updateTableValueControllerText(clientreqController.clientReqModel.tableHeadingController.value.text);
-    bool exists = clientreqController.clientReqModel.clientReqRecommendationList.any((note) => note.key == clientreqController.clientReqModel.tableKeyController.value.text);
-    if (exists) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.blue,
-          content: Text('This note Name already exists.'),
-        ),
-      );
-      return;
+    if (clientreqController.clientReqModel.noteFormKey.value.currentState?.validate() ?? false) {
+      clientreqController.updateRec_ValueControllerText(clientreqController.clientReqModel.Rec_HeadingController.value.text);
+      bool exists = clientreqController.clientReqModel.clientReqRecommendationList.any((note) => note.key == clientreqController.clientReqModel.Rec_KeyController.value.text);
+      if (exists) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.blue,
+            content: Text('This note Name already exists.'),
+          ),
+        );
+        return;
+      }
+      clientreqController.addRecommendation(key: clientreqController.clientReqModel.Rec_KeyController.value.text, value: clientreqController.clientReqModel.Rec_ValueController.value.text);
+      cleartable_Fields();
     }
-    clientreqController.addRecommendation(key: clientreqController.clientReqModel.tableKeyController.value.text, value: clientreqController.clientReqModel.tableValueController.value.text);
-    cleartable_Fields();
   }
 
   void updatenote() {
@@ -43,7 +49,7 @@ mixin ClientreqNoteService {
   }
 
   void updatetable() {
-    clientreqController.updateRecommendation(index: clientreqController.clientReqModel.noteTableEditIndex.value!, key: clientreqController.clientReqModel.tableKeyController.value.text.toString(), value: clientreqController.clientReqModel.tableValueController.value.text.toString());
+    clientreqController.updateRecommendation(index: clientreqController.clientReqModel.Rec_EditIndex.value!, key: clientreqController.clientReqModel.Rec_KeyController.value.text.toString(), value: clientreqController.clientReqModel.Rec_ValueController.value.text.toString());
     cleartable_Fields();
     clientreqController.updateRecommendationEditindex(null);
   }
@@ -56,8 +62,8 @@ mixin ClientreqNoteService {
 
   void editnotetable(int index) {
     final note = clientreqController.clientReqModel.clientReqRecommendationList[index];
-    clientreqController.updateTableKeyControllerText(note.key.toString());
-    clientreqController.updateTableValueControllerText(note.value.toString());
+    clientreqController.updateRec_KeyControllerText(note.key.toString());
+    clientreqController.updateRec_ValueControllerText(note.value.toString());
     clientreqController.updateRecommendationEditindex(index);
   }
 
@@ -75,8 +81,8 @@ mixin ClientreqNoteService {
   }
 
   void cleartable_Fields() {
-    clientreqController.clientReqModel.tableKeyController.value.clear();
-    clientreqController.clientReqModel.tableValueController.value.clear();
+    clientreqController.clientReqModel.Rec_KeyController.value.clear();
+    clientreqController.clientReqModel.Rec_ValueController.value.clear();
   }
 
   void addNotes(context) {
@@ -96,74 +102,59 @@ mixin ClientreqNoteService {
     }
   }
 
-  // void Generate_clientReq(BuildContext context) async {
-  //   // Start generating PDF data as a Future
-  //   viewsendController.setLoading(false);
-  //   final pdfGenerationFuture = generate_clientreq(
-  //     PdfPageFormat.a4,
-  //     clientreqController.clientReqModel.clientReqProductDetails,
-  //     clientreqController.clientReqModel.billingAddressNameController.value.text,
-  //     clientreqController.clientReqModel.clientAddressController.value.text,
-  //     clientreqController.clientReqModel.billingAddressNameController.value.text,
-  //     clientreqController.clientReqModel.billingAddressController.value.text,
-  //     clientreqController.clientReqModel.clientReqNo.value,
-  //     clientreqController.clientReqModel.pickedFile.value?.files.single.path,
-  //   );
+  Future<File> savePdfToCache() async {
+    Uint8List pdfData = await generateClientReq(
+      pageFormat: PdfPageFormat.a4,
+      products: clientreqController.clientReqModel.clientReqProductDetails,
+      clientAddrName: clientreqController.clientReqModel.clientAddressController.value.text,
+      clientAddr: clientreqController.clientReqModel.clientAddressController.value.text,
+      billAddrName: clientreqController.clientReqModel.billingAddressNameController.value.text,
+      billAddr: clientreqController.clientReqModel.billingAddressController.value.text,
+      chosenFilepath: clientreqController.clientReqModel.pickedFile.value?.files.single.path ?? '',
+    );
 
-  //   // Show the dialog immediately (not awaited)
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         backgroundColor: Primary_colors.Light,
-  //         content: Generate_popup(
-  //           type: 'E://clientReq.pdf', // Pass the expected file path
-  //         ),
-  //       );
-  //     },
-  //   );
+    Directory tempDir = await getTemporaryDirectory();
+    String filePath = '${tempDir.path}/client_request.pdf';
 
-  //   // Wait for PDF data generation to complete
-  //   final pdfData = await pdfGenerationFuture;
+    File file = File(filePath);
+    await file.writeAsBytes(pdfData);
 
-  //   const filePath = 'E://clientReq.pdf';
-  //   final file = File(filePath);
+    if (kDebugMode) {
+      print("PDF stored in cache: $filePath");
+    }
+    return file;
+  }
 
-  //   // Perform file writing and any other future tasks in parallel
-  //   await Future.wait([
-  //     file.writeAsBytes(pdfData), // Write PDF to file asynchronously
-  //     // Future.delayed(const Duration(seconds: )), // Simulate any other async task if needed
-  //   ]);
-
-  //   // Continue execution while the dialog is still open
-  //   viewsendController.setLoading(true);
-  // }
-
-  dynamic postData(context) async {
+  dynamic postData(context, customer_type) async {
     try {
-      AddSales salesData = AddSales.fromJson(clientreqController.clientReqModel.clientNameController.value.text, clientreqController.clientReqModel.emailController.value.text, clientreqController.clientReqModel.phoneController.value.text, clientreqController.clientReqModel.clientAddressController.value.text, clientreqController.clientReqModel.gstController.value.text, clientreqController.clientReqModel.billingAddressNameController.value.text, "ssipl/ec250101", clientreqController.clientReqModel.billingAddressController.value.text, clientreqController.clientReqModel.morController.value.text, clientreqController.clientReqModel.MOR_uploadedPath.value!, clientreqController.clientReqModel.clientReqProductDetails, clientreqController.clientReqModel.clientReqNoteList, getCurrentDate());
-      await send_data(context, jsonEncode(salesData.toJson()), clientreqController.clientReqModel.morFile.value!);
+      if (clientreqController.postDatavalidation()) {
+        await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {});
+        return;
+      }
+      File cachedPdf = await savePdfToCache();
+      AddSales salesData = AddSales.fromJson(clientreqController.clientReqModel.titleController.value.text, clientreqController.clientReqModel.clientNameController.value.text, clientreqController.clientReqModel.emailController.value.text, clientreqController.clientReqModel.phoneController.value.text, clientreqController.clientReqModel.clientAddressController.value.text, clientreqController.clientReqModel.gstController.value.text, clientreqController.clientReqModel.billingAddressNameController.value.text, clientreqController.clientReqModel.billingAddressController.value.text, clientreqController.clientReqModel.morController.value.text, clientreqController.clientReqModel.MOR_uploadedPath.value!, clientreqController.clientReqModel.clientReqProductDetails, clientreqController.clientReqModel.clientReqNoteList, getCurrentDate(), clientreqController.clientReqModel.customer_id.value, clientreqController.clientReqModel.selected_branchList, customer_type == "Enquiry" ? 1 : 2);
+
+      await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
     } catch (e) {
-      print(e);
+      await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {});
     }
   }
 
   dynamic send_data(context, String jsonData, File file) async {
     try {
       Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.sales_add_details_API);
-      if (response?['statusCode'] == 200) {
-        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+      if (response['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
           await Basic_dialog(context: context, title: "CLIENT REQUIREMENT", content: value.message!, onOk: () {});
-          // salesController.addToCustomerList(value);
-          // print("*****************${salesController.salesModel.customerList[1].customerId}");
+          Navigator.of(context).pop(true);
+          clientreqController.resetData();
         } else {
-          await Basic_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, title: 'Processing client requirement', content: value.message ?? "", onOk: () {});
         }
       } else {
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
-      print(response);
     } catch (e) {
       Basic_dialog(context: context, title: "ERROR", content: "$e");
     }

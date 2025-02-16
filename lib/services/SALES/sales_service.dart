@@ -87,61 +87,82 @@ mixin SalesServices {
   }
 
   void GetProcessList(context, int customerid) async {
-    Map<String, dynamic>? response = await apiController.GetbyQueryString({"customerid": customerid}, API.sales_getprocesslist_API);
-    if (response?['statusCode'] == 200) {
-      CMDlResponse value = CMDlResponse.fromJson(response ?? {});
-      if (value.code) {
-        // await Basic_dialog(context: context, title: 'Process List', content: "Process List fetched successfully", onOk: () {});
-        salesController.salesModel.processList.clear();
-        salesController.addToProcessList(value);
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({
+        "customerid": customerid
+      }, API.sales_getprocesslist_API);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          // await Basic_dialog(context: context, title: 'Process List', content: "Process List fetched successfully", onOk: () {});
+          salesController.salesModel.processList.clear();
+          salesController.addToProcessList(value);
+        } else {
+          await Basic_dialog(context: context, title: 'Process List Error', content: value.message ?? "", onOk: () {});
+        }
       } else {
-        await Basic_dialog(context: context, title: 'Process List Error', content: value.message ?? "", onOk: () {});
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
-    } else {
-      Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
   void UpdateFeedback(context, int customerid, int eventid, feedback) async {
-    Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid, "feedback": feedback}, API.sales_addfeedback_API);
-    if (response?['statusCode'] == 200) {
-      CMResponse value = CMResponse.fromJson(response ?? {});
-      if (value.code) {
-        GetProcessList(context, customerid);
-        showCustomSnackBar(context);
-        // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({
+        "eventid": eventid,
+        "feedback": feedback
+      }, API.sales_addfeedback_API);
+      if (response?['statusCode'] == 200) {
+        CMResponse value = CMResponse.fromJson(response ?? {});
+        if (value.code) {
+          GetProcessList(context, customerid);
+          showCustomSnackBar(context);
+          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Basic_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
+        }
       } else {
-        await Basic_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
-    } else {
-      Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
   void GetPDFfile(context, int eventid) async {
-    Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid}, API.sales_getbinaryfile_API);
-    if (response?['statusCode'] == 200) {
-      CMDmResponse value = CMDmResponse.fromJson(response ?? {});
-      if (value.code) {
-        salesController.PDFfileApiData(value);
-        print(salesController.salesModel.pdfFile.value);
-        await showDialog(
-          context: context,
-          builder: (context) => Dialog(
-            insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-              height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
-              child: SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
-            ),
-          ),
-        );
-        // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({
+        "eventid": eventid
+      }, API.sales_getbinaryfile_API);
+      if (response?['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        if (value.code) {
+          await salesController.PDFfileApiData(value);
+          if (salesController.salesModel.pdfFile.value != null) {
+            await showDialog(
+              context: context,
+              builder: (context) => Dialog(
+                insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+                  height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
+                  child: SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
+                ),
+              ),
+            );
+          }
+
+          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Basic_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
+        }
       } else {
-        await Basic_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
-    } else {
-      Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -217,21 +238,7 @@ mixin SalesServices {
                     child: const Icon(Icons.close, color: Colors.red),
                   ),
                   onPressed: () async {
-                    // Check if any data exists in clientreq variables
-                    if ((clientreqController.clientReqModel.clientReqProductDetails.isNotEmpty) ||
-                        (clientreqController.clientReqModel.clientReqNoteList.isNotEmpty) ||
-                        (clientreqController.clientReqModel.clientReqRecommendationList.isNotEmpty) ||
-                        (clientreqController.clientReqModel.clientNameController.value.text.isNotEmpty) ||
-                        (clientreqController.clientReqModel.clientAddressController.value.text.isNotEmpty) ||
-                        (clientreqController.clientReqModel.billingAddressNameController.value.text.isNotEmpty) ||
-                        (clientreqController.clientReqModel.billingAddressController.value.text.isNotEmpty) ||
-                        (clientreqController.clientReqModel.clientReqNo.value.isNotEmpty) ||
-                        (clientreqController.clientReqModel.clientReqTableHeading.value.isNotEmpty) ||
-                        (clientreqController.clientReqModel.morController.value.text.isNotEmpty) ||
-                        (clientreqController.clientReqModel.gstController.value.text.isNotEmpty) ||
-                        (clientreqController.clientReqModel.emailController.value.text.isNotEmpty) ||
-                        (clientreqController.clientReqModel.phoneController.value.text.isNotEmpty)) {
-                      // Show confirmation dialog
+                    if (clientreqController.anyHavedata()) {
                       bool? proceed = await showDialog<bool>(
                         context: context,
                         builder: (context) {
@@ -258,27 +265,11 @@ mixin SalesServices {
                         },
                       );
 
-                      // If user confirms (Yes), clear data and close the dialog
                       if (proceed == true) {
-                        Navigator.of(context).pop(); // Close the dialog
-                        // Clear all the data when dialog is closed
-                        clientreqController.clientReqModel.clientReqProductDetails.clear();
-                        clientreqController.clientReqModel.clientReqNoteList.clear();
-                        clientreqController.clientReqModel.clientReqRecommendationList.clear();
-                        clientreqController.clientReqModel.clientNameController.value.clear();
-                        clientreqController.clientReqModel.clientAddressController.value.clear();
-                        clientreqController.clientReqModel.billingAddressNameController.value.clear();
-                        clientreqController.clientReqModel.billingAddressController.value.clear();
-                        clientreqController.clientReqModel.morController.value.clear();
-                        clientreqController.clientReqModel.gstController.value.clear();
-                        clientreqController.clientReqModel.emailController.value.clear();
-                        clientreqController.clientReqModel.phoneController.value.clear();
-                        clientreqController.clientReqModel.clientReqNo.value = '';
-                        clientreqController.clientReqModel.clientReqTableHeading.value = '';
-                        clientreqController.clientReqModel.pickedFile.value = null;
+                        Navigator.of(context).pop();
+                        clientreqController.resetData();
                       }
                     } else {
-                      // If no data, just close the dialog
                       Navigator.of(context).pop();
                     }
                   },
@@ -337,16 +328,7 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( invoiceController.invoiceModel.Invoice_gstTotals.isNotEmpty)
-                    if ((invoiceController.invoiceModel.Invoice_products.isNotEmpty) ||
-                        (invoiceController.invoiceModel.Invoice_noteList.isNotEmpty) ||
-                        (invoiceController.invoiceModel.Invoice_recommendationList.isNotEmpty) ||
-                        (invoiceController.invoiceModel.clientAddressNameController.value.text != "") ||
-                        (invoiceController.invoiceModel.clientAddressController.value.text != "") ||
-                        (invoiceController.invoiceModel.billingAddressNameController.value.text != "") ||
-                        (invoiceController.invoiceModel.billingAddressController.value.text != "") ||
-                        (invoiceController.invoiceModel.Invoice_no.value != "") ||
-                        (invoiceController.invoiceModel.TitleController.value.text != "") ||
-                        (invoiceController.invoiceModel.Invoice_table_heading.value != "")) {
+                    if ((invoiceController.invoiceModel.Invoice_products.isNotEmpty) || (invoiceController.invoiceModel.Invoice_noteList.isNotEmpty) || (invoiceController.invoiceModel.Invoice_recommendationList.isNotEmpty) || (invoiceController.invoiceModel.clientAddressNameController.value.text != "") || (invoiceController.invoiceModel.clientAddressController.value.text != "") || (invoiceController.invoiceModel.billingAddressNameController.value.text != "") || (invoiceController.invoiceModel.billingAddressController.value.text != "") || (invoiceController.invoiceModel.Invoice_no.value != "") || (invoiceController.invoiceModel.TitleController.value.text != "") || (invoiceController.invoiceModel.Invoice_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -455,16 +437,7 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( quoteController.quoteModel.Quote_gstTotals.isNotEmpty)
-                    if ((quoteController.quoteModel.Quote_products.isNotEmpty) ||
-                        (quoteController.quoteModel.Quote_noteList.isNotEmpty) ||
-                        (quoteController.quoteModel.Quote_recommendationList.isNotEmpty) ||
-                        (quoteController.quoteModel.clientAddressNameController.value.text != "") ||
-                        (quoteController.quoteModel.clientAddressController.value.text != "") ||
-                        (quoteController.quoteModel.billingAddressNameController.value.text != "") ||
-                        (quoteController.quoteModel.billingAddressController.value.text != "") ||
-                        (quoteController.quoteModel.Quote_no.value != "") ||
-                        (quoteController.quoteModel.TitleController.value.text != "") ||
-                        (quoteController.quoteModel.Quote_table_heading.value != "")) {
+                    if ((quoteController.quoteModel.Quote_products.isNotEmpty) || (quoteController.quoteModel.Quote_noteList.isNotEmpty) || (quoteController.quoteModel.Quote_recommendationList.isNotEmpty) || (quoteController.quoteModel.clientAddressNameController.value.text != "") || (quoteController.quoteModel.clientAddressController.value.text != "") || (quoteController.quoteModel.billingAddressNameController.value.text != "") || (quoteController.quoteModel.billingAddressController.value.text != "") || (quoteController.quoteModel.Quote_no.value != "") || (quoteController.quoteModel.TitleController.value.text != "") || (quoteController.quoteModel.Quote_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -578,15 +551,7 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( rfqController.rfqModel.RFQ_gstTotals.isNotEmpty)
-                    if ((rfqController.rfqModel.RFQ_products.isNotEmpty) ||
-                        (rfqController.rfqModel.RFQ_noteList.isNotEmpty) ||
-                        (rfqController.rfqModel.RFQ_recommendationList.isNotEmpty) ||
-                        (rfqController.rfqModel.vendor_address_controller.value.text != "") ||
-                        (rfqController.rfqModel.vendor_email_controller.value.text != "") ||
-                        (rfqController.rfqModel.vendor_name_controller.value.text != "") ||
-                        (rfqController.rfqModel.vendor_phone_controller.value.text != "") ||
-                        (rfqController.rfqModel.RFQ_no.value != "") ||
-                        (rfqController.rfqModel.RFQ_table_heading.value != "")) {
+                    if ((rfqController.rfqModel.RFQ_products.isNotEmpty) || (rfqController.rfqModel.RFQ_noteList.isNotEmpty) || (rfqController.rfqModel.RFQ_recommendationList.isNotEmpty) || (rfqController.rfqModel.vendor_address_controller.value.text != "") || (rfqController.rfqModel.vendor_email_controller.value.text != "") || (rfqController.rfqModel.vendor_name_controller.value.text != "") || (rfqController.rfqModel.vendor_phone_controller.value.text != "") || (rfqController.rfqModel.RFQ_no.value != "") || (rfqController.rfqModel.RFQ_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -702,16 +667,7 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
 
-                    if ((dcController.dcModel.Delivery_challan_products.isNotEmpty) ||
-                        (dcController.dcModel.Delivery_challan_noteList.isNotEmpty) ||
-                        (dcController.dcModel.Delivery_challan_recommendationList.isNotEmpty) ||
-                        dcController.dcModel.clientAddressNameController.value.text != "" ||
-                        dcController.dcModel.clientAddressController.value.text != "" ||
-                        dcController.dcModel.billingAddressNameController.value.text != "" ||
-                        dcController.dcModel.billingAddressController.value.text != "" ||
-                        dcController.dcModel.Delivery_challan_no.value != "" ||
-                        dcController.dcModel.TitleController.value.text != "" ||
-                        dcController.dcModel.Delivery_challan_table_heading.value != "") {
+                    if ((dcController.dcModel.Delivery_challan_products.isNotEmpty) || (dcController.dcModel.Delivery_challan_noteList.isNotEmpty) || (dcController.dcModel.Delivery_challan_recommendationList.isNotEmpty) || dcController.dcModel.clientAddressNameController.value.text != "" || dcController.dcModel.clientAddressController.value.text != "" || dcController.dcModel.billingAddressNameController.value.text != "" || dcController.dcModel.billingAddressController.value.text != "" || dcController.dcModel.Delivery_challan_no.value != "" || dcController.dcModel.TitleController.value.text != "" || dcController.dcModel.Delivery_challan_table_heading.value != "") {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -802,15 +758,7 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( debitController.debitModel.Debit_gstTotals.isNotEmpty)
-                    if ((debitController.debitModel.Debit_products.isNotEmpty) ||
-                        (debitController.debitModel.Debit_noteList.isNotEmpty) ||
-                        (debitController.debitModel.Debit_recommendationList.isNotEmpty) ||
-                        (debitController.debitModel.clientAddressNameController.value.text != "") ||
-                        (debitController.debitModel.clientAddressController.value.text != "") ||
-                        (debitController.debitModel.billingAddressNameController.value.text != "") ||
-                        (debitController.debitModel.billingAddressController.value.text != "") ||
-                        (debitController.debitModel.Debit_no.value != "") ||
-                        (debitController.debitModel.Debit_table_heading.value != "")) {
+                    if ((debitController.debitModel.Debit_products.isNotEmpty) || (debitController.debitModel.Debit_noteList.isNotEmpty) || (debitController.debitModel.Debit_recommendationList.isNotEmpty) || (debitController.debitModel.clientAddressNameController.value.text != "") || (debitController.debitModel.clientAddressController.value.text != "") || (debitController.debitModel.billingAddressNameController.value.text != "") || (debitController.debitModel.billingAddressController.value.text != "") || (debitController.debitModel.Debit_no.value != "") || (debitController.debitModel.Debit_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -915,15 +863,7 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( creditController.creditModel.Credit_gstTotals.isNotEmpty)
-                    if ((creditController.creditModel.Credit_products.isNotEmpty) ||
-                        (creditController.creditModel.Credit_noteList.isNotEmpty) ||
-                        (creditController.creditModel.Credit_recommendationList.isNotEmpty) ||
-                        (creditController.creditModel.clientAddressNameController.value.text != "") ||
-                        (creditController.creditModel.clientAddressController.value.text != "") ||
-                        (creditController.creditModel.billingAddressNameController.value.text != "") ||
-                        (creditController.creditModel.billingAddressController.value.text != "") ||
-                        (creditController.creditModel.Credit_no.value != "") ||
-                        (creditController.creditModel.Credit_table_heading.value != "")) {
+                    if ((creditController.creditModel.Credit_products.isNotEmpty) || (creditController.creditModel.Credit_noteList.isNotEmpty) || (creditController.creditModel.Credit_recommendationList.isNotEmpty) || (creditController.creditModel.clientAddressNameController.value.text != "") || (creditController.creditModel.clientAddressController.value.text != "") || (creditController.creditModel.billingAddressNameController.value.text != "") || (creditController.creditModel.billingAddressController.value.text != "") || (creditController.creditModel.Credit_no.value != "") || (creditController.creditModel.Credit_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,

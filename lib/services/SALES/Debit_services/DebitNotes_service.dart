@@ -18,7 +18,7 @@ mixin DebitnotesService {
   final ViewsendController viewsendController = Get.find<ViewsendController>();
 
   void addtable_row(context) {
-    debitController.updateTableValueControllerText(debitController.debitModel.recommendationHeadingController.value.text);
+    debitController.updateRec_ValueControllerText(debitController.debitModel.recommendationHeadingController.value.text);
     bool exists = debitController.debitModel.Debit_recommendationList.any((note) => note.key == debitController.debitModel.recommendationKeyController.value.text);
     if (exists) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -55,8 +55,8 @@ mixin DebitnotesService {
 
   void editnotetable(int index) {
     final note = debitController.debitModel.Debit_recommendationList[index];
-    debitController.updateTableKeyControllerText(note.key.toString());
-    debitController.updateTableValueControllerText(note.value.toString());
+    debitController.updateRec_KeyControllerText(note.key.toString());
+    debitController.updateRec_ValueControllerText(note.value.toString());
     debitController.updateRecommendationEditindex(index);
   }
 

@@ -26,7 +26,7 @@ class RFQModel {
 //NOTES
   final noteformKey = GlobalKey<FormState>().obs;
   // var notelength = 0.obs;
-  // var notetablelength = 0.obs;
+  // var Rec_Length = 0.obs;
   var note_editIndex = Rxn<int>();
   final notecontentController = TextEditingController().obs;
   var recommendation_editIndex = Rxn<int>();

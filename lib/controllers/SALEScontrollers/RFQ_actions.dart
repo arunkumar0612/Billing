@@ -62,15 +62,15 @@ class RFQController extends GetxController {
     rfqModel.notecontentController.value.text = text;
   }
 
-  void updateTableHeadingControllerText(String text) {
+  void updateRec_HeadingControllerText(String text) {
     rfqModel.recommendationHeadingController.value.text = text;
   }
 
-  void updateTableKeyControllerText(String text) {
+  void updateRec_KeyControllerText(String text) {
     rfqModel.recommendationKeyController.value.text = text;
   }
 
-  void updateTableValueControllerText(String text) {
+  void updateRec_ValueControllerText(String text) {
     rfqModel.recommendationValueController.value.text = text;
   }
 
@@ -279,7 +279,7 @@ class RFQController extends GetxController {
     // Reset heading type and note arrays
     // rfqModel.selectedheadingType.value = null;
     // rfqModel.notelength.value = 0;
-    // rfqModel.notetablelength.value = 0;
+    // rfqModel.Rec_Length.value = 0;
     rfqModel.notecontent.clear();
     // rfqModel.noteType.clear();
     // rfqModel.noteType.addAll([

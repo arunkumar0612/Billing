@@ -184,7 +184,9 @@ class _sub_invoiceProductsState extends State<sub_invoiceProducts> {
                 Column(
                   children: [
                     const SizedBox(height: 25),
-                    Textfield_1(
+                    BasicTextfield(
+                      digitsOnly: false,
+                      width: 400,
                       readonly: false,
                       text: 'Product Name',
                       controller: productNameController,
@@ -197,7 +199,9 @@ class _sub_invoiceProductsState extends State<sub_invoiceProducts> {
                       },
                     ),
                     const SizedBox(height: 25),
-                    Textfield_1(
+                    BasicTextfield(
+                      digitsOnly: false,
+                      width: 400,
                       readonly: false,
                       text: 'HSN',
                       controller: hsnController,
@@ -340,7 +344,7 @@ class _sub_invoiceProductsState extends State<sub_invoiceProducts> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Button1(
+                        BasicButton(
                           colors: Colors.red,
                           text: editIndex1 == null ? 'Back' : 'Cancle',
                           onPressed: () {
@@ -348,7 +352,7 @@ class _sub_invoiceProductsState extends State<sub_invoiceProducts> {
                           },
                         ),
                         const SizedBox(width: 30),
-                        Button1(
+                        BasicButton(
                           colors: editIndex1 == null ? Colors.blue : Colors.orange,
                           text: editIndex1 == null ? 'Add product' : 'Update',
                           onPressed: editIndex1 == null ? _addproduct : _updateproduct,
@@ -394,7 +398,7 @@ class _sub_invoiceProductsState extends State<sub_invoiceProducts> {
                       ),
                       const SizedBox(height: 25),
                       if (sub_invoice_productDetails.isNotEmpty)
-                        Button1(
+                        BasicButton(
                           colors: Colors.green,
                           text: 'Submit',
                           onPressed: () {

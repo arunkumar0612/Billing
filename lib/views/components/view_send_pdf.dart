@@ -33,24 +33,6 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final ViewsendController viewsendController = Get.find<ViewsendController>();
 
-  // Future<void> _pickPdf() async {
-  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
-  //     type: FileType.custom,
-  //     allowedExtensions: ['pdf'],
-  //   );
-
-  //   if (result != null) {
-  //     setState(() {
-  //       _selectedPdf = File(result.files.single.path!);
-  //       if (kDebugMode) {
-  //         print(File(result.files.single.path!));
-  //       }
-  //       file_path_Controller = TextEditingController(text: path.absolute(_selectedPdf.toString()));
-  //     });
-  //   }
-  // }
-
-  // Function to show PDF in readable size
   void _showReadablePdf() {
     showDialog(
       context: context,
@@ -89,12 +71,11 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
     super.initState();
     viewsendController.viewSendModel.selectedPdf.value = File(widget.type);
     viewsendController.viewSendModel.filePathController.value = TextEditingController(text: viewsendController.viewSendModel.selectedPdf.value!.path.toString());
-    // viewsendController.viewSendModel.isLoading.value = false;
 
     viewsendController.viewSendModel.animationController = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
-    )..repeat(reverse: true); // Repeat the animation with reverse
+    )..repeat(reverse: true);
 
     viewsendController.viewSendModel.animation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
@@ -338,7 +319,9 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
                             ),
                             Expanded(
                               child: SizedBox(
-                                child: Textfield_1(
+                                child: BasicTextfield(
+                                  digitsOnly: false,
+                                  width: 400,
                                   readonly: false,
                                   controller: viewsendController.viewSendModel.phoneNumberController.value,
                                   text: 'Enter Phone Number',
@@ -364,7 +347,9 @@ class Generate_popupState extends State<Generate_popup> with SingleTickerProvide
                             ),
                             Expanded(
                               child: SizedBox(
-                                child: Textfield_1(
+                                child: BasicTextfield(
+                                  digitsOnly: false,
+                                  width: 400,
                                   readonly: false,
                                   controller: viewsendController.viewSendModel.emailController.value,
                                   text: 'Enter Email ID',

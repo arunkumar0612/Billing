@@ -50,90 +50,101 @@ class _IAMState extends State<IAM> {
                 minHeight: constraints.maxHeight,
               ),
               child: IntrinsicHeight(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Primary_colors.Dark,
+                  child: Stack(
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/geo.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                'assets/images/logo.svg',
-                                // ignore: deprecated_member_use
-                                // color: const Color.fromARGB(255, 168, 167, 167),
-                                width: screenWidth > 1000 ? screenWidth / 7 : screenWidth / 3,
-                                fit: BoxFit.contain,
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Stack(
-                                children: [
-                                  // Bottom shadow for the recessed effect
-                                  Text(
-                                    'Billing Management System',
-                                    style: TextStyle(
-                                      fontSize: screenWidth > 1000 ? baseFontSize * (screenWidth / 3500) : baseFontSize * (screenWidth / 2700),
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 2,
-                                      color: Colors.white.withOpacity(0.2),
-                                      shadows: const [
-                                        Shadow(
-                                          offset: Offset(2, 2),
-                                          blurRadius: 2,
-                                          color: Colors.black,
-                                        ),
-                                      ],
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Primary_colors.Light.withOpacity(0.85),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/images/logo.svg',
+                                  // ignore: deprecated_member_use
+                                  // color: const Color.fromARGB(255, 168, 167, 167),
+                                  width: screenWidth > 1000 ? screenWidth / 7 : screenWidth / 3,
+                                  fit: BoxFit.contain,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Stack(
+                                  children: [
+                                    // Bottom shadow for the recessed effect
+                                    Text(
+                                      'Billing Management System',
+                                      style: TextStyle(
+                                        fontSize: screenWidth > 1000 ? baseFontSize * (screenWidth / 3500) : baseFontSize * (screenWidth / 2700),
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 2,
+                                        color: Colors.white.withOpacity(0.2),
+                                        shadows: const [
+                                          Shadow(
+                                            offset: Offset(2, 2),
+                                            blurRadius: 2,
+                                            color: Colors.black,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  // Top layer to give the 3D embossed effect
-                                  Text(
-                                    'Billing Management System',
-                                    style: TextStyle(
-                                      fontSize: screenWidth > 1000 ? baseFontSize * (screenWidth / 3500) : baseFontSize * (screenWidth / 2700),
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 2,
-                                      foreground: Paint()
-                                        ..shader = LinearGradient(
-                                          colors: [
-                                            Colors.black.withOpacity(0.8),
-                                            const Color.fromARGB(255, 255, 255, 255),
-                                          ],
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                        ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
+                                    // Top layer to give the 3D embossed effect
+                                    Text(
+                                      'Billing Management System',
+                                      style: TextStyle(
+                                        fontSize: screenWidth > 1000 ? baseFontSize * (screenWidth / 3500) : baseFontSize * (screenWidth / 2700),
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 2,
+                                        foreground: Paint()
+                                          ..shader = LinearGradient(
+                                            colors: [
+                                              Colors.black.withOpacity(0.8),
+                                              const Color.fromARGB(255, 255, 255, 255),
+                                            ],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: IamController.IAMModel.pagename.value == 'Login'
-                            ? Loginpage()
-                            : IamController.IAMModel.pagename.value == 'Register'
-                                ? RegisterPage()
-                                : IamController.IAMModel.pagename.value == 'Forgotpassword'
-                                    ? Forgot_password()
-                                    : IamController.IAMModel.pagename.value == 'OTPverification'
-                                        ? Verify_OTP()
-                                        : IamController.IAMModel.pagename.value == 'Setnewpassword'
-                                            ? Newpassword()
-                                            : const SizedBox.shrink(),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: IamController.IAMModel.pagename.value == 'Login'
+                              ? Loginpage()
+                              : IamController.IAMModel.pagename.value == 'Register'
+                                  ? RegisterPage()
+                                  : IamController.IAMModel.pagename.value == 'Forgotpassword'
+                                      ? Forgot_password()
+                                      : IamController.IAMModel.pagename.value == 'OTPverification'
+                                          ? Verify_OTP()
+                                          : IamController.IAMModel.pagename.value == 'Setnewpassword'
+                                              ? Newpassword()
+                                              : const SizedBox.shrink(),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                ],
+              )),
             ),
           );
         },

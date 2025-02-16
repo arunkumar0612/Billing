@@ -42,7 +42,9 @@ class _sub_invoiceDetailsState extends State<sub_invoiceDetails> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(height: 25),
-                        Textfield_1(
+                        BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'GST',
                           controller: GSTController,
@@ -55,7 +57,9 @@ class _sub_invoiceDetailsState extends State<sub_invoiceDetails> {
                           },
                         ),
                         const SizedBox(height: 25),
-                        Textfield_1(
+                        BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Client Address name',
                           controller: clientaddressnameController,
@@ -68,7 +72,9 @@ class _sub_invoiceDetailsState extends State<sub_invoiceDetails> {
                           },
                         ),
                         const SizedBox(height: 25),
-                        Textfield_1(
+                        BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Client Address ',
                           controller: clientaddressController,
@@ -86,7 +92,9 @@ class _sub_invoiceDetailsState extends State<sub_invoiceDetails> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(height: 10),
-                        Textfield_1(
+                        BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Billing Address name',
                           controller: billingaddressnameController,
@@ -99,7 +107,9 @@ class _sub_invoiceDetailsState extends State<sub_invoiceDetails> {
                           },
                         ),
                         const SizedBox(height: 25),
-                        Textfield_1(
+                        BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Billing Address',
                           controller: billingaddressController,
@@ -116,7 +126,7 @@ class _sub_invoiceDetailsState extends State<sub_invoiceDetails> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Button1(
+                            BasicButton(
                               colors: Colors.green,
                               text: 'Add Details',
                               onPressed: () {

@@ -80,15 +80,15 @@ class DCController extends GetxController {
     dcModel.notecontentController.value.text = text;
   }
 
-  void updateTableHeadingControllerText(String text) {
+  void updateRec_HeadingControllerText(String text) {
     dcModel.recommendationHeadingController.value.text = text;
   }
 
-  void updateTableKeyControllerText(String text) {
+  void updateRec_KeyControllerText(String text) {
     dcModel.recommendationKeyController.value.text = text;
   }
 
-  void updateTableValueControllerText(String text) {
+  void updateRec_ValueControllerText(String text) {
     dcModel.recommendationValueController.value.text = text;
   }
 
@@ -298,7 +298,7 @@ class DCController extends GetxController {
     // Reset heading type and note arrays
     // dcModel.selectedheadingType.value = null;
     // dcModel.notelength.value = 0;
-    // dcModel.notetablelength.value = 0;
+    // dcModel.Rec_Length.value = 0;
     dcModel.notecontent.clear();
     // dcModel.noteType.clear();
     // dcModel.noteType.addAll([

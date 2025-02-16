@@ -57,7 +57,18 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
           children: [
             Expanded(
                 child: Container(
-              color: Primary_colors.Light,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: const LinearGradient(
+                  colors: [
+                    // Primary_colors.Dark,
+                    Color.fromARGB(255, 4, 6, 10), // Slightly lighter blue-grey
+                    Primary_colors.Light, // Dark purple/blue
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.centerRight,
+                ),
+              ),
               child: Column(
                 children: [
                   Container(
@@ -91,11 +102,8 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
                       controller: clientreqController.clientReqModel.tabController.value,
                       children: [
                         widget.value == "Enquiry" ? enquryDetails() : customerDetails(),
-                        Container(
-                          color: Primary_colors.Light,
-                          child: clientreqProducts(),
-                        ),
-                        ClientreqNote(),
+                        clientreqProducts(),
+                        ClientreqNote(customer_type: widget.value),
                       ],
                     ),
                   ),

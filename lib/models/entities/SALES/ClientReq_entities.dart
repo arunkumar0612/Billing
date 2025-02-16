@@ -1,26 +1,3 @@
-// class ProductDetail {
-//   String productName;
-//   int productQuantity;
-
-//   ProductDetail({required this.productName, required this.productQuantity});
-
-//   // Convert ProductDetail to Map (useful for JSON serialization if needed)
-//   Map<String, dynamic> toMap() {
-//     return {
-//       'productName': productName,
-//       'productQuantity': productQuantity,
-//     };
-//   }
-
-//   // Factory method to create ProductDetail from Map
-//   factory ProductDetail.fromMap(Map<String, dynamic> map) {
-//     return ProductDetail(
-//       productName: map['productName'] ?? '',
-//       productQuantity: map['productQuantity'] ?? 0,
-//     );
-//   }
-// }
-
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 
@@ -84,143 +61,203 @@ class MORpath {
   }
 }
 
-class EnqID {
-  final String ID;
-
-  EnqID({required this.ID});
-
-  factory EnqID.fromJson(CMDmResponse json) {
-    return EnqID(
-      ID: json.data['requirementid'] as String,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'ID': ID,
-    };
-  }
-}
-
 class AddSales {
+  String? title;
   String? name;
   String? emailId;
   String? phoneNo;
   String? address;
   String? gst;
   String? billingAddressName;
-  String? customerRequirementId;
   String? billingAddress;
   String? modeOfRequest;
   String? morReference;
   List<ClientreqProduct>? product;
   List<Note>? notes;
-  int? messageType;
-  double? invoiceAmount;
   String? date;
+  int? companyID;
+  List<int?> branchID;
+  int? customer_type;
 
   AddSales({
+    required this.title,
     required this.name,
     required this.emailId,
     required this.phoneNo,
     required this.address,
     required this.gst,
     required this.billingAddressName,
-    required this.customerRequirementId,
     required this.billingAddress,
     required this.modeOfRequest,
     required this.morReference,
     required this.product,
     required this.notes,
     required this.date,
+    required this.companyID,
+    required this.branchID,
+    required this.customer_type,
   });
 
   factory AddSales.fromJson(
+    String title,
     String name,
     String emailId,
     String phoneNo,
     String address,
     String gst,
     String billingAddressName,
-    String customerRequirementId,
+    // String customerRequirementId,
     String billingAddress,
     String modeOfRequest,
     String morReference,
     List<ClientreqProduct> product,
     List<Note> notes,
     String date,
+    int companyID,
+    List<int?> branchID,
+    int customer_type,
   ) {
-    return AddSales(
-      name: name,
-      emailId: emailId,
-      phoneNo: phoneNo,
-      address: address,
-      gst: gst,
-      billingAddressName: billingAddressName,
-      customerRequirementId: customerRequirementId,
-      billingAddress: billingAddress,
-      modeOfRequest: modeOfRequest,
-      morReference: morReference,
-      product: product,
-      notes: notes,
-      date: date,
-    );
+    return AddSales(title: title, name: name, emailId: emailId, phoneNo: phoneNo, address: address, gst: gst, billingAddressName: billingAddressName, billingAddress: billingAddress, modeOfRequest: modeOfRequest, morReference: morReference, product: product, notes: notes, date: date, companyID: companyID, branchID: branchID, customer_type: customer_type);
   }
 
   Map<String, dynamic> toJson() {
     return {
+      "title": title,
       "name": name,
       "emailid": emailId,
       "phoneno": phoneNo,
       "address": address,
       "gst": gst,
       "billingaddressname": billingAddressName,
-      "customerrequirementid": customerRequirementId,
+      // "customerrequirementid": customerRequirementId,
       "billingaddress": billingAddress,
       "modeofrequest": modeOfRequest,
       "MORreference": morReference,
       "product": product?.map((item) => item.toJson()).toList(),
       "notes": notes?.map((item) => item.toJson()).toList(),
       "date": date,
+      "companyid": companyID,
+      "branchid": branchID,
+      "customer_type": customer_type
     };
   }
 }
 
-// class Product {
-//   String? productName;
-//   int? productQuantity;
+class Organization {
+  int? organizationId;
+  String? organizationName;
+  String? orgCode;
 
-//   Product({this.productName, this.productQuantity});
+  Organization({
+    required this.organizationId,
+    required this.organizationName,
+    this.orgCode,
+  });
 
-//   factory Product.fromJson(Map<String, dynamic> json) {
-//     return Product(
-//       productName: json['productname'],
-//       productQuantity: json['productquantity'],
-//     );
-//   }
+  factory Organization.fromJson(CMDlResponse json, i) {
+    return Organization(
+      organizationId: json.data[i]['Organization_id'],
+      organizationName: json.data[i]['Organization_name'],
+      orgCode: json.data[i]['orgcode'],
+    );
+  }
 
-//   Map<String, dynamic> toJson() {
-//     return {
-//       "productname": productName,
-//       "productquantity": productQuantity,
-//     };
-//   }
-// }
+  Map<String, dynamic> toJson() {
+    return {
+      "Organization_id": organizationId,
+      "Organization_name": organizationName,
+      "orgcode": orgCode,
+    };
+  }
+}
 
-// class NoteList {
-//   String? note;
+class Company {
+  int? companyId;
+  String? companyName;
+  String? emailid;
+  String? client_addressname;
+  String? client_address;
+  String? billing_addressname;
+  String? billing_address;
+  String? contact_number;
+  String? gst_number;
 
-//   NoteList({this.note});
+  Company({required this.companyId, required this.companyName, required this.emailid, required this.client_addressname, required this.client_address, required this.billing_addressname, required this.billing_address, required this.contact_number, required this.gst_number});
 
-//   factory NoteList.fromJson(Map<String, dynamic> json) {
-//     return NoteList(
-//       note: json['note'],
-//     );
-//   }
+  // Factory method to create an instance from JSON
+  factory Company.fromJson(CMDlResponse json, i) {
+    return Company(
+      companyId: json.data[i]['companyid'],
+      companyName: json.data[i]['companyname'],
+      emailid: json.data[i]['emailid'],
+      client_addressname: json.data[i]['client_addressname'],
+      client_address: json.data[i]['client_address'],
+      billing_addressname: json.data[i]['billing_addressname'],
+      billing_address: json.data[i]['billing_address'],
+      contact_number: json.data[i]['contact_number'],
+      gst_number: json.data[i]['gst_number'],
+    );
+  }
 
-//   Map<String, dynamic> toJson() {
-//     return {
-//       "note": note,
-//     };
-//   }
-// }
+  // Method to convert the object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      "companyid": companyId,
+      "companyname": companyName,
+      "emailid": emailid,
+      "client_addressname": client_addressname,
+      "client_address": client_address,
+      "billing_addressname": billing_addressname,
+      "billing_address": billing_address,
+      "contact_number": contact_number,
+      "gst_number": gst_number,
+    };
+  }
+}
+
+class Branch {
+  int? Branch_id;
+  String? Branch_name;
+  String? Branch_code;
+  String? client_addressname;
+  String? client_address;
+  String? billing_addressname;
+  String? billing_address;
+  String? emailid;
+  String? contact_number;
+  String? gst_number;
+
+  Branch({required this.Branch_id, required this.Branch_name, required this.Branch_code, required this.client_addressname, required this.client_address, required this.billing_addressname, required this.billing_address, required this.emailid, required this.contact_number, required this.gst_number});
+
+  // Factory method to create an instance from JSON
+  factory Branch.fromJson(CMDlResponse json, i) {
+    return Branch(
+      Branch_id: json.data[i]['Branch_id'],
+      Branch_name: json.data[i]['Branch_name'],
+      Branch_code: json.data[i]['Branch_code'],
+      client_addressname: json.data[i]['client_addressname'],
+      client_address: json.data[i]['client_address'],
+      billing_addressname: json.data[i]['billing_addressname'],
+      billing_address: json.data[i]['billing_address'],
+      emailid: json.data[i]['emailid'],
+      contact_number: json.data[i]['contact_number'],
+      gst_number: json.data[i]['gst_number'],
+    );
+  }
+
+  // Method to convert the object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      "Branch_id": Branch_id,
+      "Branch_name": Branch_name,
+      "Branch_code": Branch_code,
+      "client_addressname": client_addressname,
+      "client_address": client_address,
+      "billing_addressname": billing_addressname,
+      "billing_address": billing_address,
+      "emailid": emailid,
+      "contact_number": contact_number,
+      "gst_number": gst_number,
+    };
+  }
+}

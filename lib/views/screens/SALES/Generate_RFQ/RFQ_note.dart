@@ -196,7 +196,7 @@ class _RFQNoteState extends State<RFQNote> {
                               children: [
                                 Obx(
                                   () {
-                                    return Button1(
+                                    return BasicButton(
                                       colors: rfqController.rfqModel.note_editIndex.value == null ? Colors.blue : Colors.orange,
                                       text: rfqController.rfqModel.note_editIndex.value == null ? 'Add note' : 'Update',
                                       onPressed: () {
@@ -224,7 +224,9 @@ class _RFQNoteState extends State<RFQNote> {
                     const SizedBox(height: 10),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: rfqController.rfqModel.recommendationHeadingController.value.text.isEmpty ? false : true,
                           text: 'Table Heading',
                           controller: rfqController.rfqModel.recommendationHeadingController.value,
@@ -325,7 +327,7 @@ class _RFQNoteState extends State<RFQNote> {
                         children: [
                           Obx(
                             () {
-                              return Button1(
+                              return BasicButton(
                                   colors: rfqController.rfqModel.recommendation_editIndex.value == null ? Colors.blue : Colors.orange,
                                   text: rfqController.rfqModel.recommendation_editIndex.value == null ? 'Add' : 'Update',
                                   onPressed: () {
@@ -418,7 +420,7 @@ class _RFQNoteState extends State<RFQNote> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Button1(
+                  BasicButton(
                     colors: Colors.red,
                     text: rfqController.rfqModel.note_editIndex.value == null ? 'Back' : 'Cancel',
                     onPressed: () {
@@ -430,7 +432,7 @@ class _RFQNoteState extends State<RFQNote> {
                       children: [
                         if (rfqController.rfqModel.RFQ_noteList.isNotEmpty) const SizedBox(width: 10),
                         if (rfqController.rfqModel.RFQ_noteList.isNotEmpty || rfqController.rfqModel.RFQ_recommendationList.isNotEmpty)
-                          Button1(
+                          BasicButton(
                             colors: Colors.green,
                             text: 'Submit',
                             onPressed: () async {

@@ -196,7 +196,7 @@ class _CreditNoteState extends State<CreditNote> {
                               children: [
                                 Obx(
                                   () {
-                                    return Button1(
+                                    return BasicButton(
                                       colors: creditController.creditModel.note_editIndex.value == null ? Colors.blue : Colors.orange,
                                       text: creditController.creditModel.note_editIndex.value == null ? 'Add note' : 'Update',
                                       onPressed: () {
@@ -224,7 +224,9 @@ class _CreditNoteState extends State<CreditNote> {
                     const SizedBox(height: 10),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Table Heading',
                           controller: creditController.creditModel.recommendationHeadingController.value,
@@ -325,7 +327,7 @@ class _CreditNoteState extends State<CreditNote> {
                         children: [
                           Obx(
                             () {
-                              return Button1(
+                              return BasicButton(
                                   colors: creditController.creditModel.recommendation_editIndex.value == null ? Colors.blue : Colors.orange,
                                   text: creditController.creditModel.recommendation_editIndex.value == null ? 'Add' : 'Update',
                                   onPressed: () {
@@ -418,7 +420,7 @@ class _CreditNoteState extends State<CreditNote> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Button1(
+                  BasicButton(
                     colors: Colors.red,
                     text: creditController.creditModel.note_editIndex.value == null ? 'Back' : 'Cancel',
                     onPressed: () {
@@ -430,7 +432,7 @@ class _CreditNoteState extends State<CreditNote> {
                       children: [
                         if (creditController.creditModel.Credit_noteList.isNotEmpty) const SizedBox(width: 10),
                         if (creditController.creditModel.Credit_noteList.isNotEmpty || creditController.creditModel.Credit_recommendationList.isNotEmpty)
-                          Button1(
+                          BasicButton(
                             colors: Colors.green,
                             text: 'Submit',
                             onPressed: () async {

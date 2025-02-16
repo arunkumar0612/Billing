@@ -16,7 +16,7 @@ mixin DcnotesService {
   final ViewsendController viewsendController = Get.find<ViewsendController>();
 
   void addtable_row(context) {
-    dcController.updateTableValueControllerText(dcController.dcModel.recommendationHeadingController.value.text);
+    dcController.updateRec_ValueControllerText(dcController.dcModel.recommendationHeadingController.value.text);
     bool exists = dcController.dcModel.Delivery_challan_recommendationList.any((note) => note.key == dcController.dcModel.recommendationKeyController.value.text);
     if (exists) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -53,8 +53,8 @@ mixin DcnotesService {
 
   void editnotetable(int index) {
     final note = dcController.dcModel.Delivery_challan_recommendationList[index];
-    dcController.updateTableKeyControllerText(note.key.toString());
-    dcController.updateTableValueControllerText(note.value.toString());
+    dcController.updateRec_KeyControllerText(note.key.toString());
+    dcController.updateRec_ValueControllerText(note.value.toString());
     dcController.updateRecommendationEditindex(index);
   }
 

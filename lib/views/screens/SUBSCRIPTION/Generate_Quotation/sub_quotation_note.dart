@@ -20,13 +20,13 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
   final _noteformKey = GlobalKey<FormState>();
   // final _notetable_formKey = GlobalKey<FormState>();
   int notelength = 0;
-  int notetablelength = 0;
+  int Rec_Length = 0;
 
   int? noteeditIndex;
   int? notetable_editIndex;
   // final TextEditingController NoteHeadingController = TextEditingController();
   final TextEditingController notecontentController = TextEditingController();
-  final TextEditingController TableHeadingController = TextEditingController();
+  final TextEditingController Rec_HeadingController = TextEditingController();
   final TextEditingController tablekey_Controller = TextEditingController();
   final TextEditingController tablevalue_Controller = TextEditingController();
   String? selectedheadingType;
@@ -41,7 +41,7 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
   ];
 
   void _addtable_row() {
-    sub_quote_table_heading = TableHeadingController.text;
+    sub_quote_table_heading = Rec_HeadingController.text;
     // if (_notetable_formKey.currentState?.validate() ?? false) {
     // Check if note Name already exists
     bool exists = sub_quote_recommendationList.any((note) => note['key'] == tablekey_Controller.text);
@@ -62,7 +62,7 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
           'key': tablekey_Controller.text,
           'value': tablevalue_Controller.text,
         });
-        notetablelength = sub_quote_recommendationList.length;
+        Rec_Length = sub_quote_recommendationList.length;
         _cleartable_Fields();
       },
     );
@@ -96,7 +96,7 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
     };
     _cleartable_Fields();
     notetable_editIndex = null;
-    notetablelength = sub_quote_recommendationList.length;
+    Rec_Length = sub_quote_recommendationList.length;
     setState(
       () {},
     );
@@ -292,7 +292,7 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
                       onPressed: () {
                         setState(() {
                           sub_quote_recommendationList.removeAt(index);
-                          notetablelength = sub_quote_recommendationList.length;
+                          Rec_Length = sub_quote_recommendationList.length;
                         });
                       },
                       icon: const Icon(
@@ -310,7 +310,7 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
 
   @override
   Widget build(BuildContext context) {
-    sub_quote_recommendationList.isEmpty ? TableHeadingController.clear() : null;
+    sub_quote_recommendationList.isEmpty ? Rec_HeadingController.clear() : null;
 
     return Center(
       child: Padding(
@@ -374,7 +374,7 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Button1(
+                            BasicButton(
                               colors: noteeditIndex == null ? Colors.blue : Colors.orange,
                               text: noteeditIndex == null ? 'Add note' : 'Update',
                               onPressed: noteeditIndex == null ? _addNotes : _updatenote,
@@ -394,10 +394,12 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
                       style: TextStyle(color: Primary_colors.Color1),
                     ),
                     const SizedBox(height: 10),
-                    Textfield_1(
-                      readonly: TableHeadingController.text.isEmpty ? false : true,
+                    BasicTextfield(
+                      digitsOnly: false,
+                      width: 400,
+                      readonly: Rec_HeadingController.text.isEmpty ? false : true,
                       text: 'Table Heading',
-                      controller: TableHeadingController,
+                      controller: Rec_HeadingController,
                       icon: Icons.title,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -488,7 +490,7 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Button1(
+                          BasicButton(
                             colors: notetable_editIndex == null ? Colors.blue : Colors.orange,
                             text: notetable_editIndex == null ? 'Add' : 'Update',
                             onPressed: notetable_editIndex == null ? _addtable_row : _updatetable,
@@ -561,7 +563,7 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Button1(
+                  BasicButton(
                     colors: Colors.red,
                     text: noteeditIndex == null ? 'Back' : 'Cancel',
                     onPressed: () {
@@ -570,7 +572,7 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
                   ),
                   if (sub_quote_noteList.isNotEmpty) const SizedBox(width: 10),
                   if (sub_quote_noteList.isNotEmpty || sub_quote_recommendationList.isNotEmpty)
-                    Button1(
+                    BasicButton(
                       colors: Colors.green,
                       text: 'Submit',
                       onPressed: () async {

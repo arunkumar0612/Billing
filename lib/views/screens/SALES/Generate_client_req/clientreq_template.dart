@@ -9,23 +9,27 @@ import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:image/image.dart' as img;
 import '../../../../controllers/SALEScontrollers/ClientReq_actions.dart';
 
-Future<Uint8List> generate_clientreq(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, clientreq_num, chosen_filepath) async {
-  final clientreq = Request_for_quote(products: products, baseColor: PdfColors.green500, accentColor: PdfColors.blueGrey900, client_addr_name: client_addr_name, client_addr: client_addr, bill_addr_name: bill_addr_name, bill_addr: bill_addr, clientreq: clientreq_num ?? "", type: '', imagePath: chosen_filepath);
+Future<Uint8List> generateClientReq({
+  required PdfPageFormat pageFormat,
+  required List<ClientreqProduct> products,
+  required String clientAddrName,
+  required String clientAddr,
+  required String billAddrName,
+  required String billAddr,
+  required String chosenFilepath,
+}) async {
+  final clientreq = Client_requirement(products: products, baseColor: PdfColors.green500, accentColor: PdfColors.blueGrey900, client_addr_name: clientAddrName, client_addr: clientAddr, bill_addr_name: billAddrName, bill_addr: billAddr, imagePath: chosenFilepath);
   return await clientreq.buildPdf(pageFormat);
 }
 
-class Request_for_quote {
-  Request_for_quote({required this.products, required this.baseColor, required this.accentColor, required this.client_addr_name, required this.client_addr, required this.bill_addr_name, required this.bill_addr, required this.clientreq, required this.type, required this.imagePath});
+class Client_requirement {
+  Client_requirement({required this.products, required this.baseColor, required this.accentColor, required this.client_addr_name, required this.client_addr, required this.bill_addr_name, required this.bill_addr, required this.imagePath});
   final ClientreqController clientreqController = Get.find<ClientreqController>();
 
   String client_addr_name = "";
   String client_addr = "";
   String bill_addr_name = "";
   String bill_addr = "";
-  String clientreq = "";
-
-  String type = "";
-
   final List<ClientreqProduct> products;
   final PdfColor baseColor;
   final PdfColor accentColor;

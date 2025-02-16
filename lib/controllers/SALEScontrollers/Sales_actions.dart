@@ -38,10 +38,10 @@ class SalesController extends GetxController {
   Future<void> PDFfileApiData(CMDmResponse value) async {
     var pdfFileData = await PDFfileData.fromJson(value); // Await async function
     var binaryData = pdfFileData.data; // Extract File object
-    updatePDFfile(binaryData);
+    await updatePDFfile(binaryData);
   }
 
-  void updatePDFfile(File value) {
+  Future<void> updatePDFfile(File value) async {
     salesModel.pdfFile.value = value;
   }
 

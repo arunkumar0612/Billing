@@ -18,7 +18,7 @@ mixin InvoicenotesService {
   final ViewsendController viewsendController = Get.find<ViewsendController>();
 
   void addtable_row(context) {
-    invoiceController.updateTableValueControllerText(invoiceController.invoiceModel.recommendationHeadingController.value.text);
+    invoiceController.updateRec_ValueControllerText(invoiceController.invoiceModel.recommendationHeadingController.value.text);
     bool exists = invoiceController.invoiceModel.Invoice_recommendationList.any((note) => note.key == invoiceController.invoiceModel.recommendationKeyController.value.text);
     if (exists) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -55,8 +55,8 @@ mixin InvoicenotesService {
 
   void editnotetable(int index) {
     final note = invoiceController.invoiceModel.Invoice_recommendationList[index];
-    invoiceController.updateTableKeyControllerText(note.key.toString());
-    invoiceController.updateTableValueControllerText(note.value.toString());
+    invoiceController.updateRec_KeyControllerText(note.key.toString());
+    invoiceController.updateRec_ValueControllerText(note.value.toString());
     invoiceController.updateRecommendationEditindex(index);
   }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/services/SALES/ClientReq_services/ClientreqProduct_service.dart';
 import 'package:ssipl_billing/views/components/button.dart';
@@ -89,57 +88,32 @@ class _clientreqProductsState extends State<clientreqProducts> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      children: [
-                        const SizedBox(height: 25),
-                        Textfield_1(
-                          readonly: false,
-                          text: 'Product Name',
-                          controller: clientreqController.clientReqModel.productNameController.value,
-                          icon: Icons.production_quantity_limits,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter Product name';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 25),
-                        SizedBox(
-                          width: 400,
-                          child: TextFormField(
-                            readOnly: false,
-                            style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
-                            decoration: const InputDecoration(
-                              filled: true,
-                              fillColor: Primary_colors.Dark,
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                ),
-                              ),
-
-                              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                              // labelText: text,
-                              hintText: 'Product Quantity',
-                              hintStyle: TextStyle(
-                                fontSize: Primary_font_size.Text7,
-                                color: Color.fromARGB(255, 167, 165, 165),
-                              ),
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(
-                                Icons.production_quantity_limits,
-                                color: Colors.white,
-                              ),
-                            ),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
+                    Expanded(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 25),
+                          BasicTextfield(
+                            digitsOnly: false,
+                            width: 400,
+                            readonly: false,
+                            text: 'Product Name',
+                            controller: clientreqController.clientReqModel.productNameController.value,
+                            icon: Icons.production_quantity_limits,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter Product name';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 25),
+                          BasicTextfield(
+                            digitsOnly: true,
+                            width: 400,
+                            readonly: false,
+                            text: 'Product Quantity',
                             controller: clientreqController.clientReqModel.quantityController.value,
-                            keyboardType: TextInputType.number,
-                            // inputFormatters: [
-                            //   FilteringTextInputFormatter.digitsOnly
-                            // ],
+                            icon: Icons.production_quantity_limits,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Product Quantity';
@@ -147,30 +121,39 @@ class _clientreqProductsState extends State<clientreqProducts> {
                               return null;
                             },
                           ),
-                        ),
-                        const SizedBox(height: 30),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Button1(
-                              colors: Colors.red,
-                              text: clientreqController.clientReqModel.product_editIndex.value == null ? 'Back' : 'Cancle',
-                              onPressed: () {
-                                clientreqController.clientReqModel.product_editIndex.value == null ? clientreqController.backTab() : widget.resetEditingState(); // Reset editing state when going back
-                              },
+                          const SizedBox(height: 30),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              BasicButton(
+                                colors: Colors.red,
+                                text: clientreqController.clientReqModel.product_editIndex.value == null ? 'Back' : 'Cancle',
+                                onPressed: () {
+                                  clientreqController.clientReqModel.product_editIndex.value == null ? clientreqController.backTab() : widget.resetEditingState(); // Reset editing state when going back
+                                },
+                              ),
+                              const SizedBox(width: 30),
+                              BasicButton(
+                                colors: clientreqController.clientReqModel.product_editIndex.value == null ? Colors.blue : Colors.orange,
+                                text: clientreqController.clientReqModel.product_editIndex.value == null ? 'Add product' : 'Update',
+                                onPressed: () {
+                                  clientreqController.clientReqModel.product_editIndex.value == null ? widget.addproduct(context) : widget.updateproduct(context);
+                                },
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 85),
+                          const SizedBox(
+                            // width: 750,
+                            child: Text(
+                              textAlign: TextAlign.center,
+                              "The client requirement product details play a crucial role in the procurement process. Please ensure accuracy when entering product names and quantities, as these details directly impact order processing, inventory management, and subsequent workflows.",
+                              style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                             ),
-                            const SizedBox(width: 30),
-                            Button1(
-                              colors: clientreqController.clientReqModel.product_editIndex.value == null ? Colors.blue : Colors.orange,
-                              text: clientreqController.clientReqModel.product_editIndex.value == null ? 'Add product' : 'Update',
-                              onPressed: () {
-                                clientreqController.clientReqModel.product_editIndex.value == null ? widget.addproduct(context) : widget.updateproduct(context);
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                     // if (length != 0) const SizedBox(width: 60),
                     if (clientreqController.clientReqModel.clientReqProductDetails.isNotEmpty)
@@ -209,26 +192,10 @@ class _clientreqProductsState extends State<clientreqProducts> {
                           ),
                           const SizedBox(height: 25),
                           if (clientreqController.clientReqModel.clientReqProductDetails.isNotEmpty)
-                            Button1(
+                            BasicButton(
                               colors: Colors.green,
                               text: 'Submit',
                               onPressed: () {
-                                // clientreq_products.clear();
-                                // // Step 1: Add non-duplicate items to clientreq_products
-                                // for (var entry in clientreqProducts.clientreq_productDetails) {
-                                //   // final isDuplicate = clientreq_products.any((product) => product.productName == entry['productName'] && product.quantity == entry['quantity']);
-
-                                //   // if (!isDuplicate) {
-                                //   final index = clientreq_products.length + 1; // Generate serial number
-                                //   clientreq_products.add(Product(
-                                //     index.toString(),
-                                //     entry['productName'] as String,
-                                //     entry['quantity'] as int,
-                                //   ));
-                                //   // }
-                                // }
-
-                                // Step 2: Navigate to the next tab
                                 clientreqController.nextTab();
                               },
                             ),

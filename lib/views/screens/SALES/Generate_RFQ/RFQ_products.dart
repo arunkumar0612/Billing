@@ -92,7 +92,9 @@ class _RFQProductsState extends State<RFQProducts> {
                     const SizedBox(height: 25),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Product Name',
                           controller: rfqController.rfqModel.productNameController.value,
@@ -161,7 +163,7 @@ class _RFQProductsState extends State<RFQProducts> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Button1(
+                            BasicButton(
                               colors: Colors.red,
                               text: rfqController.rfqModel.product_editIndex.value == null ? 'Back' : 'Cancel',
                               onPressed: () {
@@ -169,7 +171,7 @@ class _RFQProductsState extends State<RFQProducts> {
                               },
                             ),
                             const SizedBox(width: 30),
-                            Button1(
+                            BasicButton(
                               colors: rfqController.rfqModel.product_editIndex.value == null ? Colors.blue : Colors.orange,
                               text: rfqController.rfqModel.product_editIndex.value == null ? 'Add product' : 'Update',
                               onPressed: () {
@@ -221,7 +223,7 @@ class _RFQProductsState extends State<RFQProducts> {
                               ),
                               const SizedBox(height: 25),
                               if (rfqController.rfqModel.RFQ_products.isNotEmpty)
-                                Button1(
+                                BasicButton(
                                   colors: Colors.green,
                                   text: 'Submit',
                                   onPressed: () {

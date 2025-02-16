@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
@@ -9,12 +10,13 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
 import 'package:ssipl_billing/services/SALES/sales_service.dart';
 import 'package:ssipl_billing/themes/style.dart';
-
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:ssipl_billing/views/screens/SALES/Sales_chart.dart';
 import '../../../controllers/SALEScontrollers/Sales_actions.dart';
 
 class Sales_Client extends StatefulWidget with SalesServices {
   Sales_Client({super.key});
+  static late dynamic Function() fetchsite_Callback;
 
   @override
   _Sales_ClientState createState() => _Sales_ClientState();
@@ -22,390 +24,18 @@ class Sales_Client extends StatefulWidget with SalesServices {
 
 class _Sales_ClientState extends State<Sales_Client> {
   final SalesController salesController = Get.find<SalesController>();
+  final ClientreqController clientreqController = Get.find<ClientreqController>();
   final DCController dcController = Get.find<DCController>();
   final InvoiceController invoiceController = Get.find<InvoiceController>();
   final QuoteController quoteController = Get.find<QuoteController>();
   final RFQController rfqController = Get.find<RFQController>();
   final CreditController creditController = Get.find<CreditController>();
   final DebitController debitController = Get.find<DebitController>();
-  // final List<Map<String, dynamic>> items = [
-  //   {
-  //     "name": "Khivraj Groups",
-  //     "type": "Customer",
-  //     "process": [
-  //       {
-  //         "id": "EST/SSIPL - 1001",
-  //         "date": "16/03/2023",
-  //         "daycounts": "21 days",
-  //         "child": [
-  //           {
-  //             "name": "Invoice 1",
-  //             "feedback": "Hello",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": true,
-  //             "generate_RFQ": true,
-  //             "generate_Invoice": true,
-  //             "generate_deliverychallan": true,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 2",
-  //             "feedback": "Hello",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 3",
-  //             "feedback": "Hello",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //         ]
-  //       },
-  //       {
-  //         "id": "EST/SSIPL - 1006",
-  //         "date": "16/03/2023",
-  //         "daycounts": "21 days",
-  //         "child": [
-  //           {
-  //             "name": "Invoice 1",
-  //             "feedback": "Hello",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 2",
-  //             "feedback": "Hello",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 3",
-  //             "feedback": "Hello",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 4",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           }
-  //         ]
-  //       },
-  //       {
-  //         "id": "EST/SSIPL - 1008",
-  //         "date": "16/03/2023",
-  //         "daycounts": "21 days",
-  //         "child": [
-  //           {
-  //             "name": "Invoice 1",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 2",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 3",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 4",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 5",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           }
-  //         ]
-  //       },
-  //       {
-  //         "id": "EST/SSIPL - 1010",
-  //         "date": "16/03/2023",
-  //         "daycounts": "21 days",
-  //         "child": [
-  //           {
-  //             "name": "Invoice 1",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 2",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           }
-  //         ]
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "name": "Nexa sales and service",
-  //     "type": "Customer",
-  //     "process": [
-  //       {
-  //         "id": "EST/SSIPL - 1001",
-  //         "date": "16/03/2023",
-  //         "daycounts": "21 days",
-  //         "child": [
-  //           {
-  //             "name": "Invoice 1",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 2",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 3",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           }
-  //         ]
-  //       },
-  //       {
-  //         "id": "EST/SSIPL - 1006",
-  //         "date": "16/03/2023",
-  //         "daycounts": "21 days",
-  //         "child": [
-  //           {
-  //             "name": "Invoice 1",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 2",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 3",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 4",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           }
-  //         ]
-  //       },
-  //       {
-  //         "id": "EST/SSIPL - 1008",
-  //         "date": "16/03/2023",
-  //         "daycounts": "21 days",
-  //         "child": [
-  //           {
-  //             "name": "Invoice 1",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 2",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 3",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 4",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 5",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           }
-  //         ]
-  //       },
-  //       {
-  //         "id": "EST/SSIPL - 1010",
-  //         "date": "16/03/2023",
-  //         "daycounts": "21 days",
-  //         "child": [
-  //           {
-  //             "name": "Invoice 1",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           },
-  //           {
-  //             "name": "Invoice 2",
-  //             "feedback": "",
-  //             "generate_Quote": true,
-  //             "generate_revisedQuote": false,
-  //             "generate_RFQ": false,
-  //             "generate_Invoice": false,
-  //             "generate_deliverychallan": false,
-  //             "credit_note": true,
-  //             "debit_note": true,
-  //           }
-  //         ]
-  //       }
-  //     ]
-  //   }
-  // ];
+  @override
+  void dispose() {
+    clientreqController.clientReqModel.cntMulti.value.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -416,8 +46,6 @@ class _Sales_ClientState extends State<Sales_Client> {
     widget.GetProcesscustomerList(context);
     widget.GetProcessList(context, 0);
   }
-
-// // ##################################################################################################################################################################################################################################################################################################################################################################
 
   @override
   Widget build(BuildContext context) {
@@ -474,40 +102,84 @@ class _Sales_ClientState extends State<Sales_Client> {
                             ),
                           ),
                         ),
+
                         const SizedBox(width: 10),
                         SizedBox(
                           width: 400,
                           height: 40,
-                          child: TextFormField(
-                            style: const TextStyle(fontSize: 13, color: Colors.white),
-                            decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.all(10),
-                              filled: true,
-                              fillColor: Primary_colors.Light,
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color.fromARGB(227, 79, 78, 78),
+                          child: Stack(
+                            alignment: Alignment.centerLeft,
+                            children: [
+                              TextFormField(
+                                style: const TextStyle(fontSize: 13, color: Colors.white),
+                                decoration: const InputDecoration(
+                                  contentPadding: EdgeInsets.all(10),
+                                  filled: true,
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color.fromARGB(226, 89, 147, 255),
+                                    ),
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color.fromARGB(255, 104, 93, 255),
+                                    ),
+                                  ),
+                                  hintText: "", // Hide default hintText
+                                  border: UnderlineInputBorder(borderSide: BorderSide.none),
+                                  prefixIcon: Icon(
+                                    Icons.search,
+                                    color: Color.fromARGB(255, 151, 151, 151),
+                                  ),
                                 ),
                               ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color.fromARGB(255, 77, 76, 76),
+                              Positioned(
+                                left: 40, // Adjust positioning as needed
+                                child: IgnorePointer(
+                                  child: AnimatedTextKit(
+                                    repeatForever: true,
+                                    animatedTexts: [
+                                      TypewriterAnimatedText(
+                                        "Search from the list...",
+                                        textStyle: const TextStyle(
+                                          fontSize: 13,
+                                          color: Color.fromARGB(255, 185, 183, 183),
+                                          letterSpacing: 1,
+                                        ),
+                                        speed: const Duration(milliseconds: 100),
+                                      ),
+                                      TypewriterAnimatedText(
+                                        "Enter customer name...",
+                                        textStyle: const TextStyle(
+                                          fontSize: 13,
+                                          color: Color.fromARGB(255, 185, 183, 183),
+                                          letterSpacing: 1,
+                                        ),
+                                        speed: const Duration(milliseconds: 100),
+                                      ),
+                                      TypewriterAnimatedText(
+                                        "Find an invoice...",
+                                        textStyle: const TextStyle(
+                                          fontSize: 13,
+                                          color: Color.fromARGB(255, 185, 183, 183),
+                                          letterSpacing: 1,
+                                        ),
+                                        speed: const Duration(milliseconds: 100),
+                                      ),
+                                      TypewriterAnimatedText(
+                                        "Find an Quotation...",
+                                        textStyle: const TextStyle(
+                                          fontSize: 13,
+                                          color: Color.fromARGB(255, 185, 183, 183),
+                                          letterSpacing: 1,
+                                        ),
+                                        speed: const Duration(milliseconds: 100),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              hintStyle: TextStyle(
-                                fontSize: Primary_font_size.Text7,
-                                color: Primary_colors.Color1,
-                                letterSpacing: 1,
-                              ),
-                              hintText: 'Search from the list',
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: Colors.white,
-                              ),
-                              border: UnderlineInputBorder(
-                                borderSide: BorderSide.none, // No additional border
-                              ),
-                            ),
+                            ],
                           ),
                         ),
 
@@ -615,7 +287,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                             padding: EdgeInsets.only(left: 15),
                                             child: Text(
                                               'PROCESS DATA',
-                                              style: TextStyle(letterSpacing: 2, color: Primary_colors.Color3, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
+                                              style: TextStyle(letterSpacing: 1, wordSpacing: 3, color: Primary_colors.Color3, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
                                             ),
                                           ),
                                           Padding(
@@ -952,7 +624,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                     padding: EdgeInsets.only(left: 15),
                                     child: Text(
                                       'ACTIVE PROCESS LIST',
-                                      style: TextStyle(letterSpacing: 2, color: Primary_colors.Color3, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
+                                      style: TextStyle(letterSpacing: 1, wordSpacing: 3, color: Primary_colors.Color3, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                   Row(
@@ -1031,7 +703,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                       const Expanded(
                                         flex: 15,
                                         child: Text(
-                                          'Sales_Client Name',
+                                          'Process Title',
                                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                                         ),
                                       ),
@@ -1328,6 +1000,95 @@ class _Sales_ClientState extends State<Sales_Client> {
                         ),
                       ),
                       const SizedBox(width: 10),
+                      // Expanded(
+                      //   flex: 1,
+                      //   child: Column(
+                      //     children: [
+                      //       Row(
+                      //         mainAxisAlignment: MainAxisAlignment.end,
+                      //         children: [
+                      //           Expanded(
+                      //             child: SizedBox(
+                      //               height: 40,
+                      //               child: TextFormField(
+                      //                 style: const TextStyle(fontSize: 13, color: Colors.white),
+                      //                 decoration: InputDecoration(
+                      //                   contentPadding: const EdgeInsets.all(1),
+                      //                   filled: true,
+                      //                   fillColor: Primary_colors.Light,
+                      //                   focusedBorder: OutlineInputBorder(
+                      //                     borderRadius: BorderRadius.circular(30),
+                      //                     borderSide: const BorderSide(
+                      //                       color: Color.fromARGB(0, 0, 0, 0),
+                      //                     ),
+                      //                   ),
+                      //                   enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Colors.black)),
+                      //                   hintStyle: const TextStyle(
+                      //                     fontSize: Primary_font_size.Text7,
+                      //                     color: Color.fromARGB(255, 167, 165, 165),
+                      //                   ),
+                      //                   hintText: 'Search Sales Client from the list',
+                      //                   prefixIcon: const Icon(
+                      //                     Icons.search,
+                      //                     color: Colors.white,
+                      //                   ),
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //           IconButton(
+                      //             onPressed: () {},
+                      //             icon: const Icon(
+                      //               size: 30,
+                      //               Icons.filter_alt,
+                      //               color: Colors.white,
+                      //             ),
+                      //           ),
+                      //           const SizedBox(width: 5),
+                      //           PopupMenuButton<String>(
+                      //             color: const Color.fromARGB(255, 86, 86, 114),
+                      //             onSelected: (String value) async {
+                      //               await widget.Generate_client_reqirement_dialougebox(value, context);
+                      //               salesController.updateshowcustomerprocess(null);
+                      //               widget.GetProcesscustomerList(context);
+                      //               widget.GetProcessList(context, 0);
+                      //             },
+                      //             itemBuilder: (BuildContext context) {
+                      //               return <PopupMenuEntry<String>>[
+                      //                 const PopupMenuItem<String>(
+                      //                   value: "Enquiry",
+                      //                   child: Text(
+                      //                     "Enquiry",
+                      //                     style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                      //                   ),
+                      //                 ),
+                      //                 const PopupMenuItem<String>(
+                      //                   value: "Customer",
+                      //                   child: Text(
+                      //                     "Customer",
+                      //                     style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                      //                   ),
+                      //                 ),
+                      //               ];
+                      //             },
+                      //             child: const Icon(size: 30, Icons.add, color: Primary_colors.Color3),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //       const SizedBox(height: 10),
+                      //       Expanded(
+                      //         child: ListView.builder(
+                      //           itemCount: salesController.salesModel.processcustomerList.length,
+                      //           itemBuilder: (context, index) {
+                      //             final customername = salesController.salesModel.processcustomerList[index].customerName;
+                      //             final customerid = salesController.salesModel.processcustomerList[index].customerId;
+                      //             return _buildSales_ClientCard(customername, customerid, index);
+                      //           },
+                      //         ),
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
                       Expanded(
                           flex: 1,
                           child: Container(
@@ -1341,7 +1102,13 @@ class _Sales_ClientState extends State<Sales_Client> {
                                     padding: EdgeInsets.only(left: 10, top: 5),
                                     child: Text(
                                       'ACTIVE CUSTOMER LIST',
-                                      style: TextStyle(letterSpacing: 2, color: Primary_colors.Color3, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                        letterSpacing: 1,
+                                        wordSpacing: 3,
+                                        color: Primary_colors.Color3,
+                                        fontSize: Primary_font_size.Text10,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(height: 10),

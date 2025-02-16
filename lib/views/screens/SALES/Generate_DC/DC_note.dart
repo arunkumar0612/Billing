@@ -196,7 +196,7 @@ class _Delivery_challanNoteState extends State<Delivery_challanNote> {
                               children: [
                                 Obx(
                                   () {
-                                    return Button1(
+                                    return BasicButton(
                                       colors: dcController.dcModel.note_editIndex.value == null ? Colors.blue : Colors.orange,
                                       text: dcController.dcModel.note_editIndex.value == null ? 'Add note' : 'Update',
                                       onPressed: () {
@@ -224,7 +224,9 @@ class _Delivery_challanNoteState extends State<Delivery_challanNote> {
                     const SizedBox(height: 10),
                     Obx(
                       () {
-                        return Textfield_1(
+                        return BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
                           readonly: false,
                           text: 'Table Heading',
                           controller: dcController.dcModel.recommendationHeadingController.value,
@@ -325,7 +327,7 @@ class _Delivery_challanNoteState extends State<Delivery_challanNote> {
                         children: [
                           Obx(
                             () {
-                              return Button1(
+                              return BasicButton(
                                   colors: dcController.dcModel.recommendation_editIndex.value == null ? Colors.blue : Colors.orange,
                                   text: dcController.dcModel.recommendation_editIndex.value == null ? 'Add' : 'Update',
                                   onPressed: () {
@@ -418,7 +420,7 @@ class _Delivery_challanNoteState extends State<Delivery_challanNote> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Button1(
+                  BasicButton(
                     colors: Colors.red,
                     text: dcController.dcModel.note_editIndex.value == null ? 'Back' : 'Cancel',
                     onPressed: () {
@@ -430,7 +432,7 @@ class _Delivery_challanNoteState extends State<Delivery_challanNote> {
                       children: [
                         if (dcController.dcModel.Delivery_challan_noteList.isNotEmpty) const SizedBox(width: 10),
                         if (dcController.dcModel.Delivery_challan_noteList.isNotEmpty || dcController.dcModel.Delivery_challan_recommendationList.isNotEmpty)
-                          Button1(
+                          BasicButton(
                             colors: Colors.green,
                             text: 'Submit',
                             onPressed: () async {

@@ -45,13 +45,14 @@ Future<void> main() async {
       minimumSize: Size(1200, 700),
       center: true,
       backgroundColor: Colors.transparent,
-      title: 'B I L L I N G',
+      title: 'ERP system',
     );
     await windowManager.waitUntilReadyToShow(
       windowOptions,
       () async {
         await windowManager.show();
         await windowManager.focus();
+        await windowManager.maximize();
       },
     );
   }

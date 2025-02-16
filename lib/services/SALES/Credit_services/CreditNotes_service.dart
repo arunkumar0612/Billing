@@ -14,7 +14,7 @@ mixin CreditnotesService {
   final ViewsendController viewsendController = Get.find<ViewsendController>();
 
   void addtable_row(context) {
-    creditController.updateTableHeadingControllerText(creditController.creditModel.recommendationHeadingController.value.text);
+    creditController.updateRec_HeadingControllerText(creditController.creditModel.recommendationHeadingController.value.text);
     bool exists = creditController.creditModel.Credit_recommendationList.any((note) => note.key == creditController.creditModel.recommendationKeyController.value.text);
     if (exists) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -51,8 +51,8 @@ mixin CreditnotesService {
 
   void editnotetable(int index) {
     final note = creditController.creditModel.Credit_recommendationList[index];
-    creditController.updateTableKeyControllerText(note.key.toString());
-    creditController.updateTableValueControllerText(note.value.toString());
+    creditController.updateRec_KeyControllerText(note.key.toString());
+    creditController.updateRec_ValueControllerText(note.value.toString());
     creditController.updateRecommendationEditindex(index);
   }
 

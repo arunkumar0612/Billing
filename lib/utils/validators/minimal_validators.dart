@@ -23,8 +23,16 @@ class Validators {
     if (value == null || value.isEmpty) {
       return 'Please enter GST number';
     }
-    if (!RegExp(r'^[0-9]{15}$').hasMatch(value)) {
-      return 'Please enter a valid 15-digit GST number';
+    if (!RegExp(r'^[0-3][0-9][A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[A-Z0-9]$').hasMatch(value)) {
+      return 'Please enter a valid 15-character GST number';
+    }
+
+    return null;
+  }
+
+  static String? fileValidator(value) {
+    if (value == null) {
+      return "File is required!";
     }
     return null;
   }

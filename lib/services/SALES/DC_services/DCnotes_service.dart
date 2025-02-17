@@ -7,13 +7,13 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/DC_entities.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_template.dart';
 
-import '../../../controllers/viewSend_actions.dart';
+// import '../../../controllers/viewSend_actions.dart';
 import '../../../themes/style.dart';
 import '../../../views/components/view_send_pdf.dart';
 
 mixin DcnotesService {
   final DCController dcController = Get.find<DCController>();
-  final ViewsendController viewsendController = Get.find<ViewsendController>();
+  // final ViewsendController viewsendController = Get.find<ViewsendController>();
 
   void addtable_row(context) {
     dcController.updateRec_ValueControllerText(dcController.dcModel.recommendationHeadingController.value.text);
@@ -95,7 +95,7 @@ mixin DcnotesService {
 
   void generate_DC(BuildContext context) async {
     // Start generating PDF data as a Future
-    viewsendController.setLoading(false);
+    // viewsendController.setLoading(false);
     final pdfGenerationFuture = generate_Delivery_challan(
       PdfPageFormat.a4,
       dcController.dcModel.Delivery_challan_products,
@@ -108,17 +108,17 @@ mixin DcnotesService {
     );
 
     // Show the dialog immediately (not awaited)
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Primary_colors.Light,
-          content: Generate_popup(
-            type: 'E://Delivery_challan.pdf', // Pass the expected file path
-          ),
-        );
-      },
-    );
+    // showDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return AlertDialog(
+    //       backgroundColor: Primary_colors.Light,
+    //       content: Generate_popup(
+    //         type: 'E://Delivery_challan.pdf', // Pass the expected file path
+    //       ),
+    //     );
+    //   },
+    // );
 
     // Wait for PDF data generation to complete
     final pdfData = await pdfGenerationFuture;
@@ -132,6 +132,6 @@ mixin DcnotesService {
     ]);
 
     // Continue execution while the dialog is still open
-    viewsendController.setLoading(true);
+    // viewsendController.setLoading(true);
   }
 }

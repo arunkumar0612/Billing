@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Sales_actions.dart';
-import 'package:ssipl_billing/controllers/viewSend_actions.dart';
+// import 'package:ssipl_billing/controllers/viewSend_actions.dart';
 import 'package:window_manager/window_manager.dart';
 import 'controllers/SALEScontrollers/ClientReq_actions.dart';
 import 'controllers/SALEScontrollers/Credit_actions.dart';
@@ -38,7 +38,7 @@ Future<void> main() async {
   Get.lazyPut<CreditController>(() => CreditController());
   Get.lazyPut<DebitController>(() => DebitController());
   Get.lazyPut<DCController>(() => DCController());
-  Get.lazyPut<ViewsendController>(() => ViewsendController());
+  // Get.lazyPut<ViewsendController>(() => ViewsendController());
   if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux)) {
     await windowManager.ensureInitialized();
     WindowOptions windowOptions = const WindowOptions(

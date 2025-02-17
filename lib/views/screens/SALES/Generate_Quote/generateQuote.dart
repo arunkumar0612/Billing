@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Sales_actions.dart';
 import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_Quote/post_Quote.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../../../controllers/SALEScontrollers/Quote_actions.dart';
+import '../../../components/view_send_pdf.dart';
 import 'quote_details.dart';
 import 'quote_note.dart';
 import 'quote_products.dart';
@@ -16,14 +19,13 @@ class GenerateQuote extends StatefulWidget {
 }
 
 class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProviderStateMixin {
-  final File _selectedPdf = File('E://Quote.pdf');
   final QuoteController quoteController = Get.find<QuoteController>();
-
+  final SalesController salesController = Get.find<SalesController>();
   @override
   void initState() {
     super.initState();
     // GenerateQuote._tabController = ;
-    quoteController.initializeTabController(TabController(length: 3, vsync: this));
+    quoteController.initializeTabController(TabController(length: 4, vsync: this));
   }
 
   @override
@@ -41,7 +43,7 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
           height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
-          child: SfPdfViewer.file(_selectedPdf),
+          child: SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
         ),
       ),
     );
@@ -65,10 +67,13 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
                 Expanded(
                   child: SizedBox(
                     width: 420,
+                    // decoration: BoxDecoration(
+                    //   border: Border.all(width: 3, color: const Color.fromARGB(255, 161, 232, 250)),
+                    // ),
                     child: GestureDetector(
                       child: Stack(
                         children: [
-                          SfPdfViewer.file(_selectedPdf),
+                          SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
                           Align(
                             alignment: AlignmentDirectional.bottomEnd,
                             child: Padding(
@@ -116,6 +121,7 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
                             Tab(text: "Details"),
                             Tab(text: "Product"),
                             Tab(text: "Note"),
+                            Tab(text: "Post"),
                           ],
                         ),
                       ),
@@ -131,6 +137,9 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
                           child: QuoteProducts(),
                         ),
                         QuoteNote(),
+                        PostQuote(
+                          type: 'E://Quote.pdf', // Pass the expected file path
+                        ),
                       ],
                     ),
                   ),

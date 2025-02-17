@@ -131,7 +131,7 @@ mixin SalesServices {
     }
   }
 
-  void GetPDFfile(context, int eventid) async {
+  Future<bool> GetPDFfile(context, int eventid) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({
         "eventid": eventid
@@ -140,20 +140,7 @@ mixin SalesServices {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
           await salesController.PDFfileApiData(value);
-          if (salesController.salesModel.pdfFile.value != null) {
-            await showDialog(
-              context: context,
-              builder: (context) => Dialog(
-                insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-                  height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
-                  child: SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
-                ),
-              ),
-            );
-          }
-
+          return true;
           // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
           await Basic_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
@@ -161,8 +148,26 @@ mixin SalesServices {
       } else {
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
+      return false;
     } catch (e) {
       Basic_dialog(context: context, title: "ERROR", content: "$e");
+      return false;
+    }
+  }
+
+  void showPDF(context) async {
+    if (salesController.salesModel.pdfFile.value != null) {
+      await showDialog(
+        context: context,
+        builder: (context) => Dialog(
+          insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+            height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
+            child: SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
+          ),
+        ),
+      );
     }
   }
 
@@ -283,16 +288,16 @@ mixin SalesServices {
   }
 
   dynamic generate_client_requirement(context) async {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            content: Generate_popup(
-              type: 'E://Client_requirement.pdf',
-            ));
-      },
-    );
+    // showDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return AlertDialog(
+    //         backgroundColor: Primary_colors.Light,
+    //         content: Generate_popup(
+    //           type: 'E://Client_requirement.pdf',
+    //         ));
+    //   },
+    // );
     // }
   }
 
@@ -392,16 +397,16 @@ mixin SalesServices {
     //   Generate_popup.callback();
     // });
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            content: Generate_popup(
-              type: 'E://Invoice.pdf',
-            ));
-      },
-    );
+    // showDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return AlertDialog(
+    //         backgroundColor: Primary_colors.Light,
+    //         content: Generate_popup(
+    //           type: 'E://Invoice.pdf',
+    //         ));
+    //   },
+    // );
     // }
   }
 
@@ -456,7 +461,6 @@ mixin SalesServices {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  quoteController.clearAll();
                                   Navigator.of(context).pop(true); // Yes action
                                 },
                                 child: const Text("Yes"),
@@ -506,16 +510,16 @@ mixin SalesServices {
     //   Generate_popup.callback();
     // });
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            content: Generate_popup(
-              type: 'E://Quote.pdf',
-            ));
-      },
-    );
+    // showDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return AlertDialog(
+    //         backgroundColor: Primary_colors.Light,
+    //         content: Generate_popup(
+    //           type: 'E://Quote.pdf',
+    //         ));
+    //   },
+    // );
     // }
   }
 
@@ -620,16 +624,16 @@ mixin SalesServices {
     //   Generate_popup.callback();
     // });
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            content: Generate_popup(
-              type: 'E://RFQ.pdf',
-            ));
-      },
-    );
+    // showDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return AlertDialog(
+    //         backgroundColor: Primary_colors.Light,
+    //         content: Generate_popup(
+    //           type: 'E://RFQ.pdf',
+    //         ));
+    //   },
+    // );
     // }
   }
 
@@ -818,16 +822,16 @@ mixin SalesServices {
     //   Generate_popup.callback();
     // });
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            content: Generate_popup(
-              type: 'E://Debit.pdf',
-            ));
-      },
-    );
+    // showDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return AlertDialog(
+    //         backgroundColor: Primary_colors.Light,
+    //         content: Generate_popup(
+    //           type: 'E://Debit.pdf',
+    //         ));
+    //   },
+    // );
     // }
   }
 
@@ -931,16 +935,16 @@ mixin SalesServices {
     //   Generate_popup.callback();
     // });
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            content: Generate_popup(
-              type: 'E://Credit.pdf',
-            ));
-      },
-    );
+    // showDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return AlertDialog(
+    //         backgroundColor: Primary_colors.Light,
+    //         content: Generate_popup(
+    //           type: 'E://Credit.pdf',
+    //         ));
+    //   },
+    // );
     // }
   }
 }

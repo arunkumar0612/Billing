@@ -1,17 +1,19 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
+import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/Quote_entities.dart';
-import '../../../controllers/viewSend_actions.dart';
-import '../../../themes/style.dart';
-import '../../../views/components/view_send_pdf.dart';
-import '../../../views/screens/SALES/Generate_Quote/quote_template.dart';
+import 'package:ssipl_billing/services/APIservices/invoker.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_Quote/quote_template.dart';
 
 mixin QuotenotesService {
   final QuoteController quoteController = Get.find<QuoteController>();
-  final ViewsendController viewsendController = Get.find<ViewsendController>();
+  final Invoker apiController = Get.find<Invoker>();
+  final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
 
   void addtable_row(context) {
     quoteController.updateRec_ValueControllerText(quoteController.quoteModel.recommendationHeadingController.value.text);
@@ -91,10 +93,57 @@ mixin QuotenotesService {
     }
   }
 
-  void Generate_Quote(BuildContext context) async {
-    // Start generating PDF data as a Future
-    viewsendController.setLoading(false);
-    final pdfGenerationFuture = generate_Quote(
+  // void Generate_Quote(BuildContext context) async {
+  //   // viewsendController.setLoading(false);
+  //   quoteController.nextTab();
+  //   await Future.delayed(const Duration(milliseconds: 200));
+  //   sub();
+  //   // Start generating PDF data as a Future
+  // }
+
+  // void sub() async {
+  //   final pdfData = await generate_Quote(
+  //     PdfPageFormat.a4,
+  //     quoteController.quoteModel.Quote_products,
+  //     quoteController.quoteModel.clientAddressNameController.value.text,
+  //     quoteController.quoteModel.clientAddressController.value.text,
+  //     quoteController.quoteModel.billingAddressNameController.value.text,
+  //     quoteController.quoteModel.billingAddressController.value.text,
+  //     quoteController.quoteModel.Quote_no.value,
+  //     quoteController.quoteModel.TitleController.value.text,
+  //     9,
+  //     quoteController.quoteModel.Quote_gstTotals,
+  //   );
+
+  //   // Show the dialog immediately (not awaited)
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         backgroundColor: Primary_colors.Light,
+  //         content: Generate_popup(
+  //           type: 'E://Quote.pdf', // Pass the expected file path
+  //         ),
+  //       );
+  //     },
+  //   );
+
+  //   // Wait for PDF data generation to complete
+
+  //   const filePath = 'E://Quote.pdf';
+  //   final file = File(filePath);
+
+  //   // Perform file writing and any other future tasks in parallel
+
+  //   file.writeAsBytes(pdfData); // Write PDF to file asynchronously
+  //   // Future.delayed(const Duration(seconds: )), // Simulate any other async task if needed
+
+  //   // Continue execution while the dialog is still open
+  //   viewsendController.setLoading(true);
+  // }
+
+  Future<void> savePdfToCache() async {
+    Uint8List pdfData = await generate_Quote(
       PdfPageFormat.a4,
       quoteController.quoteModel.Quote_products,
       quoteController.quoteModel.clientAddressNameController.value.text,
@@ -107,32 +156,16 @@ mixin QuotenotesService {
       quoteController.quoteModel.Quote_gstTotals,
     );
 
-    // Show the dialog immediately (not awaited)
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Primary_colors.Light,
-          content: Generate_popup(
-            type: 'E://Quote.pdf', // Pass the expected file path
-          ),
-        );
-      },
-    );
+    Directory tempDir = await getTemporaryDirectory();
+    String filePath = '${tempDir.path}/Quotation.pdf';
 
-    // Wait for PDF data generation to complete
-    final pdfData = await pdfGenerationFuture;
+    File file = File(filePath);
+    await file.writeAsBytes(pdfData);
 
-    const filePath = 'E://Quote.pdf';
-    final file = File(filePath);
-
-    // Perform file writing and any other future tasks in parallel
-    await Future.wait([
-      file.writeAsBytes(pdfData), // Write PDF to file asynchronously
-      // Future.delayed(const Duration(seconds: )), // Simulate any other async task if needed
-    ]);
-
-    // Continue execution while the dialog is still open
-    viewsendController.setLoading(true);
+    if (kDebugMode) {
+      print("PDF stored in cache: $filePath");
+    }
+    quoteController.quoteModel.selectedPdf.value = file;
+    // return file;
   }
 }

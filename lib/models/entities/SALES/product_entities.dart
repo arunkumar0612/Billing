@@ -44,6 +44,7 @@ class QuoteProduct {
   final double gst;
   final double price;
   final int quantity;
+
   double get total => price * quantity;
 
   String getIndex(int index) {
@@ -64,6 +65,18 @@ class QuoteProduct {
         return formatCurrency(total);
     }
     return '';
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'productsno': sno,
+      'productname': productName,
+      'producthsn': hsn,
+      'productgst': gst,
+      'productprice': price,
+      'productquantity': quantity,
+      'producttotal': total,
+    };
   }
 }
 

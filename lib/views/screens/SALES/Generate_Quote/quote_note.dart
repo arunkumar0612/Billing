@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
@@ -432,24 +433,98 @@ class _QuoteNoteState extends State<QuoteNote> {
                       children: [
                         if (quoteController.quoteModel.Quote_noteList.isNotEmpty) const SizedBox(width: 10),
                         if (quoteController.quoteModel.Quote_noteList.isNotEmpty || quoteController.quoteModel.Quote_recommendationList.isNotEmpty)
-                          BasicButton(
-                            colors: Colors.green,
-                            text: 'Submit',
-                            onPressed: () async {
-                              if (quoteController.quoteModel.Quote_products.isNotEmpty && quoteController.quoteModel.clientAddressNameController.value.text.isNotEmpty && quoteController.quoteModel.clientAddressController.value.text.isNotEmpty && quoteController.quoteModel.billingAddressNameController.value.text.isNotEmpty && quoteController.quoteModel.billingAddressController.value.text.isNotEmpty && quoteController.quoteModel.TitleController.value.text.isNotEmpty) {
-                                widget.Generate_Quote(context);
-                                // Navigator.of(context).pop();
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    backgroundColor: Colors.blue,
-                                    content: Text('Please fill all the required fields'),
+                          quoteController.quoteModel.isLoading.value
+                              ? SizedBox(
+                                  width: 125,
+                                  child: Stack(
+                                    children: [
+                                      LinearPercentIndicator(
+                                        lineHeight: 27,
+                                        // width: 105,
+                                        percent: quoteController.quoteModel.progress.value,
+                                        barRadius: const Radius.circular(5),
+                                        backgroundColor: const Color.fromARGB(255, 31, 38, 63),
+                                        progressColor: Colors.blue,
+                                        center: Text(
+                                          "${(quoteController.quoteModel.progress.value * 100).toInt()}%",
+                                          style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 12),
+                                        ),
+                                      ),
+                                      Positioned.fill(
+                                        child: ShaderMask(
+                                          blendMode: BlendMode.srcIn,
+                                          shaderCallback: (Rect bounds) {
+                                            return const LinearGradient(
+                                              colors: [
+                                                Colors.blue,
+                                                Colors.transparent,
+                                                Primary_colors.Dark,
+                                              ],
+                                              stops: [
+                                                0.0,
+                                                0.5,
+                                                1.0,
+                                              ],
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                            ).createShader(bounds);
+                                          },
+                                          child: LinearPercentIndicator(
+                                            lineHeight: 30,
+                                            // width: 105,
+                                            percent: quoteController.quoteModel.progress.value,
+                                            barRadius: const Radius.circular(5),
+                                            backgroundColor: Primary_colors.Dark,
+                                            progressColor: Colors.blue,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                );
-                                return;
-                              }
-                            },
-                          ),
+                                )
+                              : Container(
+                                  width: 125,
+                                  // height: 40,
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: TextButton(
+                                    onPressed: () async {
+                                      // if (quoteController.quoteModel.Quote_products.isNotEmpty && quoteController.quoteModel.clientAddressNameController.value.text.isNotEmpty && quoteController.quoteModel.clientAddressController.value.text.isNotEmpty && quoteController.quoteModel.billingAddressNameController.value.text.isNotEmpty && quoteController.quoteModel.billingAddressController.value.text.isNotEmpty && quoteController.quoteModel.TitleController.value.text.isNotEmpty) {
+                                      //   widget.savePdfToCache();
+                                      //   // Navigator.of(context).pop();
+                                      // }
+                                      await Future.wait([
+                                        quoteController.startProgress(),
+                                        widget.savePdfToCache(),
+                                      ]);
+
+                                      quoteController.nextTab();
+                                    },
+                                    child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),
+                                  )),
+
+                        // BasicButton(
+                        //   colors: Colors.green,
+                        //   text: 'Submit',
+                        //   onPressed: () async {
+                        //     quoteController.nextTab();
+
+                        //     if (quoteController.quoteModel.Quote_products.isNotEmpty && quoteController.quoteModel.clientAddressNameController.value.text.isNotEmpty && quoteController.quoteModel.clientAddressController.value.text.isNotEmpty && quoteController.quoteModel.billingAddressNameController.value.text.isNotEmpty && quoteController.quoteModel.billingAddressController.value.text.isNotEmpty && quoteController.quoteModel.TitleController.value.text.isNotEmpty) {
+                        //       // widget.Generate_Quote(context);
+                        //       // Navigator.of(context).pop();
+                        //     } else {
+                        //       ScaffoldMessenger.of(context).showSnackBar(
+                        //         const SnackBar(
+                        //           backgroundColor: Colors.blue,
+                        //           content: Text('Please fill all the required fields'),
+                        //         ),
+                        //       );
+                        //       return;
+                        //     }
+                        //   },
+                        // ),
                       ],
                     );
                   })

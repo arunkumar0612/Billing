@@ -61,7 +61,7 @@ class MORpath {
   }
 }
 
-class AddSales {
+class Post_ClientRequirement {
   String? title;
   String? name;
   String? emailId;
@@ -79,7 +79,7 @@ class AddSales {
   List<int?> branchID;
   int? customer_type;
 
-  AddSales({
+  Post_ClientRequirement({
     required this.title,
     required this.name,
     required this.emailId,
@@ -98,7 +98,7 @@ class AddSales {
     required this.customer_type,
   });
 
-  factory AddSales.fromJson(
+  factory Post_ClientRequirement.fromJson(
     String title,
     String name,
     String emailId,
@@ -117,7 +117,7 @@ class AddSales {
     List<int?> branchID,
     int customer_type,
   ) {
-    return AddSales(title: title, name: name, emailId: emailId, phoneNo: phoneNo, address: address, gst: gst, billingAddressName: billingAddressName, billingAddress: billingAddress, modeOfRequest: modeOfRequest, morReference: morReference, product: product, notes: notes, date: date, companyID: companyID, branchID: branchID, customer_type: customer_type);
+    return Post_ClientRequirement(title: title, name: name, emailId: emailId, phoneNo: phoneNo, address: address, gst: gst, billingAddressName: billingAddressName, billingAddress: billingAddress, modeOfRequest: modeOfRequest, morReference: morReference, product: product, notes: notes, date: date, companyID: companyID, branchID: branchID, customer_type: customer_type);
   }
 
   Map<String, dynamic> toJson() {

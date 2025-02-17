@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -123,6 +126,110 @@ class QuoteController extends GetxController {
 
   void addProductEditindex(int? index) {
     quoteModel.product_editIndex.value = index;
+  }
+
+  void setProcessID(int processid) {
+    quoteModel.processID.value = processid;
+  }
+
+  void updateSelectedPdf(File file) {
+    quoteModel.selectedPdf.value = file;
+  }
+
+  // Toggle loading state
+  void setLoading(bool value) {
+    quoteModel.isLoading.value = value;
+  }
+
+  // Toggle WhatsApp state
+  void toggleWhatsApp(bool value) {
+    quoteModel.whatsapp_selectionStatus.value = value;
+  }
+
+  // Toggle Gmail state
+  void toggleGmail(bool value) {
+    quoteModel.gmail_selectionStatus.value = value;
+  }
+
+  // Update phone number text
+  void updatePhoneNumber(String phoneNumber) {
+    quoteModel.phoneController.value.text = phoneNumber;
+  }
+
+  // Update feedback text
+  void updateFeedback(String feedback) {
+    quoteModel.feedbackController.value.text = feedback;
+  }
+
+  // Update file path text
+  void updateFilePath(String filePath) {
+    quoteModel.filePathController.value.text = filePath;
+  }
+
+  Future<void> pickFile(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: [
+        'png',
+        'jpg',
+        'jpeg',
+        'pdf'
+      ],
+    );
+
+    if (result != null) {
+      final file = File(result.files.single.path!);
+      final fileLength = await file.length();
+
+      if (fileLength > 2 * 1024 * 1024) {
+        // File exceeds 2 MB size limit
+        if (kDebugMode) {
+          print('Selected file exceeds 2MB in size.');
+        }
+        // Show Alert Dialog
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: const Text('Selected file exceeds 2MB in size.'),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+        quoteModel.pickedFile.value = null;
+        quoteModel.selectedPdf.value = null;
+      } else {
+        quoteModel.pickedFile.value = result;
+        quoteModel.selectedPdf.value = file;
+
+        if (kDebugMode) {
+          print("Selected File Name: ${result.files.single.name}");
+        }
+      }
+    }
+  }
+
+  int fetch_messageType() {
+    if (quoteModel.whatsapp_selectionStatus.value && quoteModel.gmail_selectionStatus.value) return 3;
+    if (quoteModel.whatsapp_selectionStatus.value) return 1;
+    if (quoteModel.gmail_selectionStatus.value) return 2;
+
+    return 0;
+  }
+
+  Future<void> startProgress() async {
+    quoteModel.isLoading.value = true;
+    quoteModel.progress.value = 0.0;
+
+    for (int i = 0; i <= 100; i++) {
+      await Future.delayed(const Duration(milliseconds: 20));
+      quoteModel.progress.value = i / 100; // Convert to percentage
+    }
+
+    quoteModel.isLoading.value = false;
   }
 
   void addRecommendation({required String key, required String value}) {
@@ -305,55 +412,45 @@ class QuoteController extends GetxController {
     updateBillingAddress(instance.billingAddress!);
   }
 
-  void clearAll() {
-    // Reset all observable strings to empty
+  bool postDatavalidation() {
+    return (quoteModel.TitleController.value.text.isEmpty || quoteModel.processID.value == null || quoteModel.clientAddressNameController.value.text.isEmpty || quoteModel.clientAddressController.value.text.isEmpty || quoteModel.billingAddressNameController.value.text.isEmpty || quoteModel.billingAddressController.value.text.isEmpty || quoteModel.emailController.value.text.isEmpty || quoteModel.phoneController.value.text.isEmpty || quoteModel.gst_no.value!.isEmpty || quoteModel.Quote_products.isEmpty || quoteModel.Quote_noteList.isEmpty || quoteModel.Quote_no.value == null);
+  }
 
-    quoteModel.Quote_no.value = '';
-    quoteModel.Quote_table_heading.value = '';
+  void resetData() {
+    quoteModel.tabController.value = null;
+    quoteModel.processID.value = null;
+    quoteModel.Quote_no.value = null;
+    quoteModel.gst_no.value = null;
+    quoteModel.Quote_table_heading.value = "";
 
-    // Clear note list and recommendation list
+    quoteModel.phoneController.value.text = "";
+    quoteModel.emailController.value.text = "";
+
+    // Reset details
+    quoteModel.TitleController.value.text = "";
+    quoteModel.clientAddressNameController.value.text = "";
+    quoteModel.clientAddressController.value.text = "";
+    quoteModel.billingAddressNameController.value.text = "";
+    quoteModel.billingAddressController.value.text = "";
+
+    // Reset product details
+    quoteModel.product_editIndex.value = null;
+    quoteModel.productNameController.value.text = "";
+    quoteModel.hsnController.value.text = "";
+    quoteModel.priceController.value.text = "";
+    quoteModel.quantityController.value.text = "";
+    quoteModel.gstController.value.text = "";
+    quoteModel.Quote_products.clear();
+    quoteModel.Quote_gstTotals.clear();
+
+    // Reset notes
+    quoteModel.note_editIndex.value = null;
+    quoteModel.notecontentController.value.text = "";
+    quoteModel.recommendation_editIndex.value = null;
+    quoteModel.recommendationHeadingController.value.text = "";
+    quoteModel.recommendationKeyController.value.text = "";
+    quoteModel.recommendationValueController.value.text = "";
     quoteModel.Quote_noteList.clear();
     quoteModel.Quote_recommendationList.clear();
-    // quoteModel.Quote_productDetails.clear();
-
-    // Clear products list
-    quoteModel.Quote_products.clear();
-
-    // Reset text controllers
-    quoteModel.TitleController.value.clear();
-    quoteModel.clientAddressNameController.value.clear();
-    quoteModel.clientAddressController.value.clear();
-    quoteModel.billingAddressNameController.value.clear();
-    quoteModel.billingAddressController.value.clear();
-    quoteModel.productNameController.value.clear();
-    quoteModel.hsnController.value.clear();
-    quoteModel.priceController.value.clear();
-    quoteModel.quantityController.value.clear();
-    quoteModel.gstController.value.clear();
-    quoteModel.notecontentController.value.clear();
-    quoteModel.recommendationHeadingController.value.clear();
-    quoteModel.recommendationKeyController.value.clear();
-    quoteModel.recommendationValueController.value.clear();
-
-    // Reset form keys
-    quoteModel.detailsKey.value = GlobalKey<FormState>();
-    quoteModel.productKey.value = GlobalKey<FormState>();
-    quoteModel.noteformKey.value = GlobalKey<FormState>();
-
-    // Reset edit indices
-    quoteModel.product_editIndex.value = null;
-    quoteModel.note_editIndex.value = null;
-    quoteModel.recommendation_editIndex.value = null;
-
-    // Reset heading type and note arrays
-    // quoteModel.selectedheadingType.value = null;
-    // quoteModel.notelength.value = 0;
-    // quoteModel.Rec_Length.value = 0;
-    quoteModel.notecontent.clear();
-    // quoteModel.noteType.clear();
-    // quoteModel.noteType.addAll([
-    //   'With Heading',
-    //   'Without Heading'
-    // ]);
   }
 }

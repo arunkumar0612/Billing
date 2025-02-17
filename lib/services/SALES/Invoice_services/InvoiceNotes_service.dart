@@ -7,7 +7,6 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart'
 import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/Invoice_template.dart';
 
-import '../../../controllers/viewSend_actions.dart';
 import '../../../themes/style.dart';
 import '../../../views/components/view_send_pdf.dart';
 import '../../../views/screens/SALES/Generate_Invoice/invoice_template.dart';
@@ -15,8 +14,6 @@ import '../../../views/screens/SALES/Generate_Invoice/invoice_template.dart';
 
 mixin InvoicenotesService {
   final InvoiceController invoiceController = Get.find<InvoiceController>();
-  final ViewsendController viewsendController = Get.find<ViewsendController>();
-
   void addtable_row(context) {
     invoiceController.updateRec_ValueControllerText(invoiceController.invoiceModel.recommendationHeadingController.value.text);
     bool exists = invoiceController.invoiceModel.Invoice_recommendationList.any((note) => note.key == invoiceController.invoiceModel.recommendationKeyController.value.text);
@@ -97,20 +94,20 @@ mixin InvoicenotesService {
 
   void Generate_Invoice(BuildContext context) async {
     // Start generating PDF data as a Future
-    viewsendController.setLoading(false);
+    // viewsendController.setLoading(false);
     final pdfGenerationFuture = generate_Invoice(PdfPageFormat.a4, invoiceController.invoiceModel.Invoice_products, invoiceController.invoiceModel.clientAddressNameController.value.text, invoiceController.invoiceModel.clientAddressController.value.text, invoiceController.invoiceModel.billingAddressNameController.value.text, invoiceController.invoiceModel.billingAddressController.value.text, invoiceController.invoiceModel.Invoice_no.value, invoiceController.invoiceModel.TitleController.value.text, 9, invoiceController.invoiceModel.Invoice_gstTotals);
     // Show the dialog immediately (not awaited)
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Primary_colors.Light,
-          content: Generate_popup(
-            type: 'E://Invoice.pdf', // Pass the expected file path
-          ),
-        );
-      },
-    );
+    // showDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return AlertDialog(
+    //       backgroundColor: Primary_colors.Light,
+    //       content: Generate_popup(
+    //         type: 'E://Invoice.pdf', // Pass the expected file path
+    //       ),
+    //     );
+    //   },
+    // );
 
     // Wait for PDF data generation to complete
     final pdfData = await pdfGenerationFuture;
@@ -124,6 +121,6 @@ mixin InvoicenotesService {
     ]);
 
     // Continue execution while the dialog is still open
-    viewsendController.setLoading(true);
+    // viewsendController.setLoading(true);
   }
 }

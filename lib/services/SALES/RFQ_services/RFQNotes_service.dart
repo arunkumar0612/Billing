@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/RFQ_entities.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/RFQ_template.dart';
-
-import '../../../controllers/viewSend_actions.dart';
+//
+// import '../../../controllers/viewSend_actions.dart';
 // import '../../../views/screens/SALES/Generate_RFQ/rfq_template.dart';
 
 mixin RFQnotesService {
   final RFQController rfqController = Get.find<RFQController>();
-  final ViewsendController viewsendController = Get.find<ViewsendController>();
+  // final ViewsendController viewsendController = Get.find<ViewsendController>();
 
   void addtable_row(context) {
     rfqController.updateRec_ValueControllerText(rfqController.rfqModel.recommendationHeadingController.value.text);

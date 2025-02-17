@@ -1,4 +1,5 @@
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 
 class Recommendation {
   final String key;
@@ -101,6 +102,80 @@ class RequiredData {
   Map<String, dynamic> toJson() {
     return {
       'ID': eventnumber,
+    };
+  }
+}
+
+class Post_Quotation {
+  String? title;
+  int? processid;
+  String? ClientAddressname;
+  String? ClientAddress;
+  String? emailId;
+  String? phoneNo;
+  String? gst;
+  String? billingAddressName;
+  String? billingAddress;
+  String? modeOfRequest;
+  String? morReference;
+  List<QuoteProduct>? product;
+  List<Note>? notes;
+  String? date;
+  String? quotationGenID;
+  int? messageType;
+
+  Post_Quotation({
+    required this.title,
+    required this.processid,
+    required this.ClientAddressname,
+    required this.ClientAddress,
+    required this.billingAddressName,
+    required this.billingAddress,
+    required this.emailId,
+    required this.phoneNo,
+    required this.gst,
+    required this.date,
+    required this.product,
+    required this.notes,
+    required this.quotationGenID,
+    required this.messageType,
+  });
+
+  factory Post_Quotation.fromJson({
+    required String title,
+    required int processid,
+    required String ClientAddressname,
+    required String ClientAddress,
+    required String billingAddressName,
+    required String billingAddress,
+    required String emailId,
+    required String phoneNo,
+    required String gst,
+    required List<QuoteProduct> product,
+    required List<Note> notes,
+    required String date,
+    required String quotationGenID,
+    required int messageType,
+  }) {
+    return Post_Quotation(title: title, processid: processid, ClientAddressname: ClientAddressname, ClientAddress: ClientAddress, billingAddressName: billingAddressName, billingAddress: billingAddress, emailId: emailId, phoneNo: phoneNo, gst: gst, product: product, notes: notes, date: date, quotationGenID: quotationGenID, messageType: messageType);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "title": title,
+      "processid": processid,
+      "clientaddressname": ClientAddressname,
+      "clientaddress": ClientAddress,
+      "billingaddressname": billingAddressName,
+      "billingaddress": billingAddress,
+      "emailid": emailId,
+      "phoneno": phoneNo,
+      "gst": gst,
+      "product": product?.map((item) => item.toJson()).toList(),
+      "notes": notes?.map((item) => item.toJson()).toList(),
+      "date": date,
+      "quotationgenid": quotationGenID,
+      "messagetype": messageType
     };
   }
 }

@@ -293,15 +293,26 @@ class _Subscription_ClientState extends State<Subscription_Client> {
   late List<bool> isAddingList;
   late List<TextEditingController> controllers;
   int showcustomerprocess = 1;
-  List<String> list = <String>['One', 'Two', 'Three', 'Four'];
+  List<String> list = <String>[
+    'One',
+    'Two',
+    'Three',
+    'Four'
+  ];
   String Subscription_ClientSearchQuery = '';
   @override
   void initState() {
     super.initState();
-    Subscription_Client.sub_quote_Callback = () async => {await generate_quotation()};
-    Subscription_Client.sub_invoice_Callback = () async => {await generate_invoice()};
+    Subscription_Client.sub_quote_Callback = () async => {
+          await generate_quotation()
+        };
+    Subscription_Client.sub_invoice_Callback = () async => {
+          await generate_invoice()
+        };
 
-    Subscription_Client.sub_clientreq_Callback = () async => {await generate_client_requirement()};
+    Subscription_Client.sub_clientreq_Callback = () async => {
+          await generate_client_requirement()
+        };
     // Initialize isAddingList and controllers based on the number of items
     isAddingList = List<bool>.filled(items.length, false);
     controllers = List<TextEditingController>.generate(items.length, (index) => TextEditingController());
@@ -338,16 +349,7 @@ class _Subscription_ClientState extends State<Subscription_Client> {
                   ),
                   onPressed: () async {
                     // Check if the data has any value
-                    if ((sub_quote_products.isNotEmpty) ||
-                        (sub_quote_gstTotals.isNotEmpty) ||
-                        (sub_quote_noteList.isNotEmpty) ||
-                        (sub_quote_recommendationList.isNotEmpty) ||
-                        sub_quote_client_addr_name.isNotEmpty ||
-                        sub_quote_client_addr.isNotEmpty ||
-                        sub_quote_bill_addr_name.isNotEmpty ||
-                        sub_quote_bill_addr.isNotEmpty ||
-                        sub_quote_title.isNotEmpty ||
-                        sub_quote_table_heading.isNotEmpty) {
+                    if ((sub_quote_products.isNotEmpty) || (sub_quote_gstTotals.isNotEmpty) || (sub_quote_noteList.isNotEmpty) || (sub_quote_recommendationList.isNotEmpty) || sub_quote_client_addr_name.isNotEmpty || sub_quote_client_addr.isNotEmpty || sub_quote_bill_addr_name.isNotEmpty || sub_quote_bill_addr.isNotEmpty || sub_quote_title.isNotEmpty || sub_quote_table_heading.isNotEmpty) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -411,16 +413,16 @@ class _Subscription_ClientState extends State<Subscription_Client> {
     // if (confirmed) {
     // Only proceed if the dialog was confirmed
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            content: Generate_popup(
-              type: 'E://sub_Quotation.pdf',
-            ));
-      },
-    );
+    // showDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return AlertDialog(
+    //         backgroundColor: Primary_colors.Light,
+    //         content: Generate_popup(
+    //           type: 'E://sub_Quotation.pdf',
+    //         ));
+    //   },
+    // );
     // }
   }
 
@@ -457,18 +459,7 @@ class _Subscription_ClientState extends State<Subscription_Client> {
                   ),
                   onPressed: () async {
                     // Check if the data has any value
-                    if ((sub_invoice_products.isNotEmpty) ||
-                        (sub_invoice_gstTotals.isNotEmpty) ||
-                        (sub_invoice_noteList.isNotEmpty) ||
-                        (sub_invoice_recommendationList.isNotEmpty) ||
-                        (sub_invoice_productDetails.isNotEmpty) ||
-                        (sub_invoice_client_addr_name != "") ||
-                        (sub_invoice_client_addr != "") ||
-                        (sub_invoice_bill_addr_name != "") ||
-                        (sub_invoice_bill_addr != "") ||
-                        (sub_invoice_no != "") ||
-                        (sub_invoice_title != "") ||
-                        (sub_invoice_table_heading != "")) {
+                    if ((sub_invoice_products.isNotEmpty) || (sub_invoice_gstTotals.isNotEmpty) || (sub_invoice_noteList.isNotEmpty) || (sub_invoice_recommendationList.isNotEmpty) || (sub_invoice_productDetails.isNotEmpty) || (sub_invoice_client_addr_name != "") || (sub_invoice_client_addr != "") || (sub_invoice_bill_addr_name != "") || (sub_invoice_bill_addr != "") || (sub_invoice_no != "") || (sub_invoice_title != "") || (sub_invoice_table_heading != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -533,16 +524,16 @@ class _Subscription_ClientState extends State<Subscription_Client> {
     // if (confirmed) {
     // Proceed only if the dialog was confirmed
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            content: Generate_popup(
-              type: 'E://Invoice.pdf',
-            ));
-      },
-    );
+    // showDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return AlertDialog(
+    //         backgroundColor: Primary_colors.Light,
+    //         content: Generate_popup(
+    //           type: 'E://Invoice.pdf',
+    //         ));
+    //   },
+    // );
     // }
   }
 
@@ -581,20 +572,7 @@ class _Subscription_ClientState extends State<Subscription_Client> {
                   ),
                   onPressed: () async {
                     // Check if any data exists in sub_clientreq variables
-                    if ((sub_clientreq_products.isNotEmpty) ||
-                        (sub_clientreq_noteList.isNotEmpty) ||
-                        (sub_clientreq_recommendationList.isNotEmpty) ||
-                        (sub_clientreq_productDetails.isNotEmpty) ||
-                        sub_clientreq_client_addr_name != "" ||
-                        sub_clientreq_client_addr != "" ||
-                        sub_clientreq_bill_addr_name != "" ||
-                        sub_clientreq_bill_addr != "" ||
-                        sub_clientreq_no != "" ||
-                        sub_clientreq_table_heading != "" ||
-                        sub_clientreq_MOR != "" ||
-                        sub_clientreq_GST != "" ||
-                        sub_clientreq_email != "" ||
-                        sub_clientreq_contact_number != "") {
+                    if ((sub_clientreq_products.isNotEmpty) || (sub_clientreq_noteList.isNotEmpty) || (sub_clientreq_recommendationList.isNotEmpty) || (sub_clientreq_productDetails.isNotEmpty) || sub_clientreq_client_addr_name != "" || sub_clientreq_client_addr != "" || sub_clientreq_bill_addr_name != "" || sub_clientreq_bill_addr != "" || sub_clientreq_no != "" || sub_clientreq_table_heading != "" || sub_clientreq_MOR != "" || sub_clientreq_GST != "" || sub_clientreq_email != "" || sub_clientreq_contact_number != "") {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -662,16 +640,16 @@ class _Subscription_ClientState extends State<Subscription_Client> {
     // if (confirmed) {
     // Proceed only if the dialog was confirmed
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-            backgroundColor: Primary_colors.Light,
-            content: Generate_popup(
-              type: 'E://Client_requirement.pdf',
-            ));
-      },
-    );
+    // showDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return AlertDialog(
+    //         backgroundColor: Primary_colors.Light,
+    //         content: Generate_popup(
+    //           type: 'E://Client_requirement.pdf',
+    //         ));
+    //   },
+    // );
     // }
   }
 
@@ -709,7 +687,10 @@ class _Subscription_ClientState extends State<Subscription_Client> {
                               height: 40,
                               decoration: BoxDecoration(
                                 gradient: const LinearGradient(
-                                  colors: [Primary_colors.Color3, Primary_colors.Color3], // Example gradient colors
+                                  colors: [
+                                    Primary_colors.Color3,
+                                    Primary_colors.Color3
+                                  ], // Example gradient colors
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 ),
@@ -1076,7 +1057,10 @@ class _Subscription_ClientState extends State<Subscription_Client> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: showcustomerprocess == index
-                ? [Primary_colors.Color3, Primary_colors.Color3]
+                ? [
+                    Primary_colors.Color3,
+                    Primary_colors.Color3
+                  ]
                 : [
                     Primary_colors.Light,
                     Primary_colors.Light,

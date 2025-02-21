@@ -1,3 +1,4 @@
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -40,6 +41,7 @@ class _Sales_ClientState extends State<Sales_Client> {
   void initState() {
     super.initState();
     // widget.GetCustomerList(context);
+    clientreqController.clientReqModel.cntMulti.value = MultiValueDropDownController();
     salesController.updateshowcustomerprocess(null);
     salesController.updatecustomerId(0);
     widget.GetProcesscustomerList(context);
@@ -875,7 +877,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                                 bool success = await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
 
                                                                                 if (success) {
-                                                                                  widget.GenerateQuote_dialougebox(context);
+                                                                                  widget.GenerateQuote_dialougebox(context, "quotation");
                                                                                   quoteController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                 }
                                                                               },
@@ -886,8 +888,13 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                             ),
                                                                           if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation == true)
                                                                             TextButton(
-                                                                              onPressed: () {
-                                                                                // GenerateQuotation_dialougebox();
+                                                                              onPressed: () async {
+                                                                                bool success = await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+
+                                                                                if (success) {
+                                                                                  widget.GenerateQuote_dialougebox(context, "revisedquotation");
+                                                                                  quoteController.setProcessID(salesController.salesModel.processList[index].processid);
+                                                                                }
                                                                               },
                                                                               child: const Text(
                                                                                 "RevisedQuotation",

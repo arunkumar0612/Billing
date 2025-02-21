@@ -7,8 +7,8 @@ import '../../../../controllers/SALEScontrollers/Quote_actions.dart';
 import '../../../../services/SALES/Quotation_services/QuoteDetails_service.dart';
 
 class QuoteDetails extends StatefulWidget with QuotedetailsService {
-  QuoteDetails({super.key});
-
+  QuoteDetails({super.key, required this.eventtype});
+  String eventtype;
   @override
   State<QuoteDetails> createState() => _QuoteDetailsState();
 }
@@ -18,7 +18,7 @@ class _QuoteDetailsState extends State<QuoteDetails> {
 
   @override
   void initState() {
-    widget.get_requiredData(context);
+    widget.get_requiredData(context, widget.eventtype);
     super.initState();
   }
 
@@ -34,12 +34,13 @@ class _QuoteDetailsState extends State<QuoteDetails> {
               Form(
                   key: quoteController.quoteModel.detailsKey.value,
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 25),
+                          // const SizedBox(height: 25),
                           BasicTextfield(
                             digitsOnly: false,
                             width: 400,
@@ -89,7 +90,7 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 10),
+                          // const SizedBox(height: 10),
                           BasicTextfield(
                             digitsOnly: false,
                             width: 400,
@@ -119,6 +120,21 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                               return null;
                             },
                           ),
+                          const SizedBox(height: 25),
+                          BasicTextfield(
+                            digitsOnly: false,
+                            width: 400,
+                            readonly: false,
+                            text: 'GST number',
+                            controller: quoteController.quoteModel.gstNumController.value,
+                            icon: Icons.price_change,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter GST number';
+                              }
+                              return null;
+                            },
+                          ),
                           const SizedBox(height: 30),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,7 +144,7 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                                 colors: Colors.green,
                                 text: 'Add Details',
                                 onPressed: () {
-                                  widget.add_details();
+                                  widget.nextTab();
                                 },
                               ),
                             ],

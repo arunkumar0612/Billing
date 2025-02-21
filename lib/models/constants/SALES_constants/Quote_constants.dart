@@ -9,8 +9,9 @@ class QuoteModel extends GetxController with GetSingleTickerProviderStateMixin {
   final Rxn<TabController> tabController = Rxn<TabController>();
   var processID = Rxn<int>();
   var Quote_no = Rxn<String>();
-  var gst_no = Rxn<String>();
+  // var gst_no = Rxn<String>();
   var Quote_table_heading = "".obs;
+  final gstNumController = TextEditingController().obs;
 
   // DETAILS
   final TitleController = TextEditingController().obs;
@@ -56,12 +57,14 @@ class QuoteModel extends GetxController with GetSingleTickerProviderStateMixin {
   var pickedFile = Rxn<FilePickerResult>();
   var selectedPdf = Rxn<File>();
   var ispdfLoading = false.obs;
-  var whatsapp_selectionStatus = false.obs;
-  var gmail_selectionStatus = false.obs;
+  var whatsapp_selectionStatus = true.obs;
+  var gmail_selectionStatus = true.obs;
   final phoneController = TextEditingController().obs;
   final emailController = TextEditingController().obs;
+  final CCemailController = TextEditingController().obs;
   var feedbackController = TextEditingController().obs;
   var filePathController = TextEditingController().obs;
+  var CCemailToggle = false.obs;
 
   @override
   void onInit() {

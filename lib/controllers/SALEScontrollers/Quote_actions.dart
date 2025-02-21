@@ -32,8 +32,8 @@ class QuoteController extends GetxController {
     quoteModel.productNameController.value.text = productName;
   }
 
-  void updateHSN(String hsn) {
-    quoteModel.hsnController.value.text = hsn;
+  void updateHSN(int hsn) {
+    quoteModel.hsnController.value.text = hsn.toString();
   }
 
   void updatePrice(double price) {
@@ -73,7 +73,7 @@ class QuoteController extends GetxController {
   }
 
   void updateGSTnumber(String text) {
-    quoteModel.gst_no.value = text;
+    quoteModel.gstNumController.value.text = text;
   }
 
   void updateClientAddressName(String text) {
@@ -98,6 +98,14 @@ class QuoteController extends GetxController {
 
   void updateEmail(String email) {
     quoteModel.emailController.value.text = email;
+  }
+
+  void updatCC(String CC) {
+    quoteModel.CCemailController.value.text = CC;
+  }
+
+  void toggleCCemailvisibility(bool value) {
+    quoteModel.CCemailToggle.value = value;
   }
 
   void updateRecommendationEditindex(int? index) {
@@ -139,6 +147,10 @@ class QuoteController extends GetxController {
   // Toggle loading state
   void setLoading(bool value) {
     quoteModel.isLoading.value = value;
+  }
+
+  void setpdfLoading(bool value) {
+    quoteModel.ispdfLoading.value = value;
   }
 
   // Toggle WhatsApp state
@@ -221,7 +233,7 @@ class QuoteController extends GetxController {
   }
 
   Future<void> startProgress() async {
-    quoteModel.isLoading.value = true;
+    setLoading(true);
     quoteModel.progress.value = 0.0;
 
     for (int i = 0; i <= 100; i++) {
@@ -229,7 +241,7 @@ class QuoteController extends GetxController {
       quoteModel.progress.value = i / 100; // Convert to percentage
     }
 
-    quoteModel.isLoading.value = false;
+    setLoading(false);
   }
 
   void addRecommendation({required String key, required String value}) {
@@ -292,20 +304,13 @@ class QuoteController extends GetxController {
       }
 
       quoteModel.Quote_products.add(QuoteProduct(
-        (quoteModel.Quote_products.length + 1).toString(),
-        productName,
-        hsn,
-        gst,
-        price,
-        quantity,
+        sno: (quoteModel.Quote_products.length + 1),
+        productName: productName,
+        hsn: int.parse(hsn),
+        gst: gst,
+        price: price,
+        quantity: quantity,
       ));
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text('Product added successfully.'),
-        ),
-      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -349,7 +354,14 @@ class QuoteController extends GetxController {
       }
 
       // Update the product details at the specified index
-      quoteModel.Quote_products[editIndex] = QuoteProduct((editIndex + 1).toString(), productName, hsn, gst, price, quantity);
+      quoteModel.Quote_products[editIndex] = QuoteProduct(
+        sno: (editIndex + 1),
+        productName: productName,
+        hsn: int.parse(hsn),
+        gst: gst,
+        price: price,
+        quantity: quantity,
+      );
 
       // ProductDetail(
       //   productName: productName.trim(),
@@ -413,19 +425,20 @@ class QuoteController extends GetxController {
   }
 
   bool postDatavalidation() {
-    return (quoteModel.TitleController.value.text.isEmpty || quoteModel.processID.value == null || quoteModel.clientAddressNameController.value.text.isEmpty || quoteModel.clientAddressController.value.text.isEmpty || quoteModel.billingAddressNameController.value.text.isEmpty || quoteModel.billingAddressController.value.text.isEmpty || quoteModel.emailController.value.text.isEmpty || quoteModel.phoneController.value.text.isEmpty || quoteModel.gst_no.value!.isEmpty || quoteModel.Quote_products.isEmpty || quoteModel.Quote_noteList.isEmpty || quoteModel.Quote_no.value == null);
-  }
+    return (quoteModel.TitleController.value.text.isEmpty || quoteModel.processID.value == null || quoteModel.clientAddressNameController.value.text.isEmpty || quoteModel.clientAddressController.value.text.isEmpty || quoteModel.billingAddressNameController.value.text.isEmpty || quoteModel.billingAddressController.value.text.isEmpty || quoteModel.emailController.value.text.isEmpty || quoteModel.phoneController.value.text.isEmpty || quoteModel.gstNumController.value.text.isEmpty || quoteModel.Quote_products.isEmpty || quoteModel.Quote_noteList.isEmpty || quoteModel.Quote_no.value == null);
+  } // If any one is empty or null, then it returns true
 
   void resetData() {
     quoteModel.tabController.value = null;
     quoteModel.processID.value = null;
     quoteModel.Quote_no.value = null;
-    quoteModel.gst_no.value = null;
+    quoteModel.gstNumController.value.text = "";
     quoteModel.Quote_table_heading.value = "";
 
     quoteModel.phoneController.value.text = "";
     quoteModel.emailController.value.text = "";
-
+    quoteModel.CCemailToggle.value = false;
+    quoteModel.CCemailController.value.clear();
     // Reset details
     quoteModel.TitleController.value.text = "";
     quoteModel.clientAddressNameController.value.text = "";

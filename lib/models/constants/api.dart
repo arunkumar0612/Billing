@@ -7,6 +7,10 @@ class API {
   static String Upload_MOR_API = "http://192.168.0.200:8081/sales/uploadmor";
   static String sales_add_details_API = "http://192.168.0.200:8081/sales/add";
   static String add_Quotation = "http://192.168.0.200:8081/sales/addquotation";
+  static String add_RevisedQuotation = "http://192.168.0.200:8081/sales/addrevisedquotation";
+
+  static String add_invoice = "http://192.168.0.200:8081/sales/addinvoice";
+
   static String sales_add_client_requirement_API = "http://192.168.0.200:8081/admin/sendmailwhatsapp";
   static String sales_fetchEventNumber_API = "http://192.168.0.200:8081/sales/fetcheventnumber";
   static String sales_getcustomerlist_API = "http://192.168.0.200:8081/sales/getcustomerlist";

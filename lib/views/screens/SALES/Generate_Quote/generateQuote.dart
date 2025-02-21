@@ -12,8 +12,8 @@ import 'quote_note.dart';
 import 'quote_products.dart';
 
 class GenerateQuote extends StatefulWidget {
-  const GenerateQuote({super.key});
-
+  GenerateQuote({super.key, required this.quoteType});
+  String quoteType;
   @override
   _GenerateQuoteState createState() => _GenerateQuoteState();
 }
@@ -57,11 +57,11 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
           children: [
             Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.all(15),
+                Padding(
+                  padding: const EdgeInsets.all(15),
                   child: Text(
-                    "Client Requirement",
-                    style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                    widget.quoteType == "quotation" ? "CLIENT REQUEST" : "QUOTATION",
+                    style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                   ),
                 ),
                 Expanded(
@@ -97,7 +97,18 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
             ),
             Expanded(
                 child: Container(
-              color: Primary_colors.Light,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: const LinearGradient(
+                  colors: [
+                    // Primary_colors.Dark,
+                    Color.fromARGB(255, 4, 6, 10), // Slightly lighter blue-grey
+                    Primary_colors.Light, // Dark purple/blue
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.centerRight,
+                ),
+              ),
               child: Column(
                 children: [
                   Container(
@@ -118,10 +129,10 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
                           controller: quoteController.quoteModel.tabController.value,
                           indicator: const BoxDecoration(),
                           tabs: const [
-                            Tab(text: "Details"),
-                            Tab(text: "Product"),
-                            Tab(text: "Note"),
-                            Tab(text: "Post"),
+                            Tab(text: "DETAILS"),
+                            Tab(text: "PRODUCT"),
+                            Tab(text: "NOTE"),
+                            Tab(text: "POST"),
                           ],
                         ),
                       ),
@@ -131,31 +142,17 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
                     child: TabBarView(
                       controller: quoteController.quoteModel.tabController.value,
                       children: [
-                        QuoteDetails(),
-                        Container(
-                          color: Primary_colors.Light,
-                          child: QuoteProducts(),
+                        QuoteDetails(
+                          eventtype: widget.quoteType,
                         ),
+                        QuoteProducts(),
                         QuoteNote(),
-                        PostQuote(
-                          type: 'E://Quote.pdf', // Pass the expected file path
-                        ),
+                        PostQuote(type: 'E:/${(quoteController.quoteModel.Quote_no.value ?? "default_filename").replaceAll("/", "-")}.pdf', eventtype: widget.quoteType
+                            // Pass the expected file path
+                            ),
                       ],
                     ),
                   ),
-                  // const Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: [
-                  //     ElevatedButton(
-                  //       onPressed: GenerateQuote.backTab,
-                  //       child: Text("Back"),
-                  //     ),
-                  //     ElevatedButton(
-                  //       onPressed: GenerateQuote.nextTab,
-                  //       child: Text("Next"),
-                  //     ),
-                  //   ],
-                  // ),
                 ],
               ),
             ))

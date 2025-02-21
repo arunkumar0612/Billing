@@ -1,29 +1,34 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Sales_actions.dart';
 import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/invoice_details.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/invoice_note.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/invoice_products.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/post_Invoice.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../../../controllers/SALEScontrollers/Invoice_actions.dart';
-import 'invoice_details.dart';
-import 'invoice_note.dart';
-import 'invoice_products.dart';
 
 class GenerateInvoice extends StatefulWidget {
-  const GenerateInvoice({super.key});
+  const GenerateInvoice({
+    super.key,
+  });
 
   @override
   _GenerateInvoiceState createState() => _GenerateInvoiceState();
 }
 
 class _GenerateInvoiceState extends State<GenerateInvoice> with SingleTickerProviderStateMixin {
-  final File _selectedPdf = File('E://Invoice.pdf');
   final InvoiceController invoiceController = Get.find<InvoiceController>();
-
+  final SalesController salesController = Get.find<SalesController>();
   @override
   void initState() {
     super.initState();
     // GenerateInvoice._tabController = ;
-    invoiceController.initializeTabController(TabController(length: 3, vsync: this));
+    invoiceController.initializeTabController(TabController(length: 4, vsync: this));
   }
 
   @override
@@ -41,7 +46,7 @@ class _GenerateInvoiceState extends State<GenerateInvoice> with SingleTickerProv
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
           height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
-          child: SfPdfViewer.file(_selectedPdf),
+          child: SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
         ),
       ),
     );
@@ -58,17 +63,20 @@ class _GenerateInvoiceState extends State<GenerateInvoice> with SingleTickerProv
                 const Padding(
                   padding: EdgeInsets.all(15),
                   child: Text(
-                    "Client Requirement",
+                    "APPROVED QUOTATION",
                     style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                   ),
                 ),
                 Expanded(
                   child: SizedBox(
                     width: 420,
+                    // decoration: BoxDecoration(
+                    //   border: Border.all(width: 3, color: const Color.fromARGB(255, 161, 232, 250)),
+                    // ),
                     child: GestureDetector(
                       child: Stack(
                         children: [
-                          SfPdfViewer.file(_selectedPdf),
+                          if (salesController.salesModel.pdfFile.value != null) SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
                           Align(
                             alignment: AlignmentDirectional.bottomEnd,
                             child: Padding(
@@ -92,7 +100,18 @@ class _GenerateInvoiceState extends State<GenerateInvoice> with SingleTickerProv
             ),
             Expanded(
                 child: Container(
-              color: Primary_colors.Light,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: const LinearGradient(
+                  colors: [
+                    // Primary_colors.Dark,
+                    Color.fromARGB(255, 4, 6, 10), // Slightly lighter blue-grey
+                    Primary_colors.Light, // Dark purple/blue
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.centerRight,
+                ),
+              ),
               child: Column(
                 children: [
                   Container(
@@ -113,9 +132,10 @@ class _GenerateInvoiceState extends State<GenerateInvoice> with SingleTickerProv
                           controller: invoiceController.invoiceModel.tabController.value,
                           indicator: const BoxDecoration(),
                           tabs: const [
-                            Tab(text: "Details"),
-                            Tab(text: "Product"),
-                            Tab(text: "Note"),
+                            Tab(text: "DETAILS"),
+                            Tab(text: "PRODUCT"),
+                            Tab(text: "NOTE"),
+                            Tab(text: "POST"),
                           ],
                         ),
                       ),
@@ -126,27 +146,14 @@ class _GenerateInvoiceState extends State<GenerateInvoice> with SingleTickerProv
                       controller: invoiceController.invoiceModel.tabController.value,
                       children: [
                         InvoiceDetails(),
-                        Container(
-                          color: Primary_colors.Light,
-                          child: InvoiceProducts(),
-                        ),
+                        InvoiceProducts(),
                         InvoiceNote(),
+                        PostInvoice(type: 'E:/${(invoiceController.invoiceModel.Invoice_no.value ?? "default_filename").replaceAll("/", "-")}.pdf'
+                            // Pass the expected file path
+                            ),
                       ],
                     ),
                   ),
-                  // const Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: [
-                  //     ElevatedButton(
-                  //       onPressed: GenerateInvoice.backTab,
-                  //       child: Text("Back"),
-                  //     ),
-                  //     ElevatedButton(
-                  //       onPressed: GenerateInvoice.nextTab,
-                  //       child: Text("Next"),
-                  //     ),
-                  //   ],
-                  // ),
                 ],
               ),
             ))

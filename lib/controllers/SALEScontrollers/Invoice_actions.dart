@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/models/entities/Response_entities.dart';
 import '../../models/constants/SALES_constants/Invoice_constants.dart';
 import '../../models/entities/SALES/Invoice_entities.dart';
 import '../../models/entities/SALES/product_entities.dart';
@@ -28,8 +32,8 @@ class InvoiceController extends GetxController {
     invoiceModel.productNameController.value.text = productName;
   }
 
-  void updateHSN(String hsn) {
-    invoiceModel.hsnController.value.text = hsn;
+  void updateHSN(int hsn) {
+    invoiceModel.hsnController.value.text = hsn.toString();
   }
 
   void updatePrice(double price) {
@@ -60,24 +64,48 @@ class InvoiceController extends GetxController {
     invoiceModel.tabController.value = tabController;
   }
 
-  void updateTitleControllerText(String text) {
+  void updateTitle(String text) {
     invoiceModel.TitleController.value.text = text;
   }
 
-  void updateClientAddressNameControllerText(String text) {
+  void updateInvoicenumber(String text) {
+    invoiceModel.Invoice_no.value = text;
+  }
+
+  void updateGSTnumber(String text) {
+    invoiceModel.gstNumController.value.text = text;
+  }
+
+  void updateClientAddressName(String text) {
     invoiceModel.clientAddressNameController.value.text = text;
   }
 
-  void updateClientAddressControllerText(String text) {
+  void updateClientAddress(String text) {
     invoiceModel.clientAddressController.value.text = text;
   }
 
-  void updateBillingAddressNameControllerText(String text) {
+  void updateBillingAddressName(String text) {
     invoiceModel.billingAddressNameController.value.text = text;
   }
 
-  void updateBillingAddressControllerText(String text) {
+  void updateBillingAddress(String text) {
     invoiceModel.billingAddressController.value.text = text;
+  }
+
+  void updatePhone(String phone) {
+    invoiceModel.phoneController.value.text = phone;
+  }
+
+  void updateEmail(String email) {
+    invoiceModel.emailController.value.text = email;
+  }
+
+  void updatCC(String CC) {
+    invoiceModel.CCemailController.value.text = CC;
+  }
+
+  void toggleCCemailvisibility(bool value) {
+    invoiceModel.CCemailToggle.value = value;
   }
 
   void updateRecommendationEditindex(int? index) {
@@ -106,6 +134,114 @@ class InvoiceController extends GetxController {
 
   void addProductEditindex(int? index) {
     invoiceModel.product_editIndex.value = index;
+  }
+
+  void setProcessID(int processid) {
+    invoiceModel.processID.value = processid;
+  }
+
+  void updateSelectedPdf(File file) {
+    invoiceModel.selectedPdf.value = file;
+  }
+
+  // Toggle loading state
+  void setLoading(bool value) {
+    invoiceModel.isLoading.value = value;
+  }
+
+  void setpdfLoading(bool value) {
+    invoiceModel.ispdfLoading.value = value;
+  }
+
+  // Toggle WhatsApp state
+  void toggleWhatsApp(bool value) {
+    invoiceModel.whatsapp_selectionStatus.value = value;
+  }
+
+  // Toggle Gmail state
+  void toggleGmail(bool value) {
+    invoiceModel.gmail_selectionStatus.value = value;
+  }
+
+  // Update phone number text
+  void updatePhoneNumber(String phoneNumber) {
+    invoiceModel.phoneController.value.text = phoneNumber;
+  }
+
+  // Update feedback text
+  void updateFeedback(String feedback) {
+    invoiceModel.feedbackController.value.text = feedback;
+  }
+
+  // Update file path text
+  void updateFilePath(String filePath) {
+    invoiceModel.filePathController.value.text = filePath;
+  }
+
+  Future<void> pickFile(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: [
+        'png',
+        'jpg',
+        'jpeg',
+        'pdf'
+      ],
+    );
+
+    if (result != null) {
+      final file = File(result.files.single.path!);
+      final fileLength = await file.length();
+
+      if (fileLength > 2 * 1024 * 1024) {
+        // File exceeds 2 MB size limit
+        if (kDebugMode) {
+          print('Selected file exceeds 2MB in size.');
+        }
+        // Show Alert Dialog
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: const Text('Selected file exceeds 2MB in size.'),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+        invoiceModel.pickedFile.value = null;
+        invoiceModel.selectedPdf.value = null;
+      } else {
+        invoiceModel.pickedFile.value = result;
+        invoiceModel.selectedPdf.value = file;
+
+        if (kDebugMode) {
+          print("Selected File Name: ${result.files.single.name}");
+        }
+      }
+    }
+  }
+
+  int fetch_messageType() {
+    if (invoiceModel.whatsapp_selectionStatus.value && invoiceModel.gmail_selectionStatus.value) return 3;
+    if (invoiceModel.whatsapp_selectionStatus.value) return 1;
+    if (invoiceModel.gmail_selectionStatus.value) return 2;
+
+    return 0;
+  }
+
+  Future<void> startProgress() async {
+    setLoading(true);
+    invoiceModel.progress.value = 0.0;
+
+    for (int i = 0; i <= 100; i++) {
+      await Future.delayed(const Duration(milliseconds: 20));
+      invoiceModel.progress.value = i / 100; // Convert to percentage
+    }
+
+    setLoading(false);
   }
 
   void addRecommendation({required String key, required String value}) {
@@ -167,21 +303,7 @@ class InvoiceController extends GetxController {
         return;
       }
 
-      invoiceModel.Invoice_products.add(InvoiceProduct(
-        (invoiceModel.Invoice_products.length + 1).toString(),
-        productName,
-        hsn,
-        gst,
-        price,
-        quantity,
-      ));
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text('Product added successfully.'),
-        ),
-      );
+      invoiceModel.Invoice_products.add(InvoiceProduct(sno: (invoiceModel.Invoice_products.length + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -225,7 +347,7 @@ class InvoiceController extends GetxController {
       }
 
       // Update the product details at the specified index
-      invoiceModel.Invoice_products[editIndex] = InvoiceProduct((editIndex + 1).toString(), productName, hsn, gst, price, quantity);
+      invoiceModel.Invoice_products[editIndex] = InvoiceProduct(sno: (editIndex + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity);
 
       // ProductDetail(
       //   productName: productName.trim(),
@@ -274,54 +396,65 @@ class InvoiceController extends GetxController {
     invoiceModel.Invoice_products.removeAt(index);
   }
 
-  void clearAll() {
-    invoiceModel.Invoice_no.value = '';
+  void update_requiredData(CMDmResponse value) {
+    RequiredData instance = RequiredData.fromJson(value);
+    invoiceModel.Invoice_no.value = instance.eventnumber;
+    updateInvoicenumber(instance.eventnumber);
+    updateTitle(instance.title!);
+    updateEmail(instance.emailId!);
+    updateGSTnumber(instance.gst!);
+    updatePhone(instance.phoneNo!);
+    updateClientAddressName(instance.name!);
+    updateClientAddress(instance.address!);
+    updateBillingAddressName(instance.billingAddressName!);
+    updateBillingAddress(instance.billingAddress!);
+    updateProducts(instance.product);
+    // for(int i=0;i<instance.product.length;i++){
+    //    invoiceController.addProduct(context: context, productName: invoiceController.invoiceModel.productNameController.value.text, hsn: invoiceController.invoiceModel.hsnController.value.text, price: double.parse(invoiceController.invoiceModel.priceController.value.text), quantity: int.parse(invoiceController.invoiceModel.quantityController.value.text), gst: double.parse(invoiceController.invoiceModel.gstController.value.text));
 
-    invoiceModel.Invoice_table_heading.value = '';
+    // }
+  }
 
-    // Clear note list and recommendation list
+  bool postDatavalidation() {
+    return (invoiceModel.TitleController.value.text.isEmpty || invoiceModel.processID.value == null || invoiceModel.clientAddressNameController.value.text.isEmpty || invoiceModel.clientAddressController.value.text.isEmpty || invoiceModel.billingAddressNameController.value.text.isEmpty || invoiceModel.billingAddressController.value.text.isEmpty || invoiceModel.emailController.value.text.isEmpty || invoiceModel.phoneController.value.text.isEmpty || invoiceModel.gstNumController.value.text.isEmpty || invoiceModel.Invoice_products.isEmpty || invoiceModel.Invoice_noteList.isEmpty || invoiceModel.Invoice_no.value == null);
+  } // If any one is empty or null, then it returns true
+
+  void resetData() {
+    invoiceModel.tabController.value = null;
+    invoiceModel.processID.value = null;
+    invoiceModel.Invoice_no.value = null;
+    invoiceModel.gstNumController.value.text = "";
+    invoiceModel.Invoice_table_heading.value = "";
+
+    invoiceModel.phoneController.value.text = "";
+    invoiceModel.emailController.value.text = "";
+    invoiceModel.CCemailToggle.value = false;
+    invoiceModel.CCemailController.value.clear();
+    // Reset details
+    invoiceModel.TitleController.value.text = "";
+    invoiceModel.clientAddressNameController.value.text = "";
+    invoiceModel.clientAddressController.value.text = "";
+    invoiceModel.billingAddressNameController.value.text = "";
+    invoiceModel.billingAddressController.value.text = "";
+
+    // Reset product details
+    invoiceModel.product_editIndex.value = null;
+    invoiceModel.productNameController.value.text = "";
+    invoiceModel.hsnController.value.text = "";
+    invoiceModel.priceController.value.text = "";
+    invoiceModel.quantityController.value.text = "";
+    invoiceModel.gstController.value.text = "";
+    invoiceModel.Invoice_products.clear();
+    invoiceModel.Invoice_gstTotals.clear();
+
+    // Reset notes
+    invoiceModel.note_editIndex.value = null;
+    invoiceModel.notecontentController.value.text = "";
+    invoiceModel.recommendation_editIndex.value = null;
+    invoiceModel.recommendationHeadingController.value.text = "";
+    invoiceModel.recommendationKeyController.value.text = "";
+    invoiceModel.recommendationValueController.value.text = "";
     invoiceModel.Invoice_noteList.clear();
     invoiceModel.Invoice_recommendationList.clear();
-    // invoiceModel.Invoice_productDetails.clear();
-
-    // Clear products list
-    invoiceModel.Invoice_products.clear();
-
-    // Reset text controllers
-    invoiceModel.TitleController.value.clear();
-    invoiceModel.clientAddressNameController.value.clear();
-    invoiceModel.clientAddressController.value.clear();
-    invoiceModel.billingAddressNameController.value.clear();
-    invoiceModel.billingAddressController.value.clear();
-    invoiceModel.productNameController.value.clear();
-    invoiceModel.hsnController.value.clear();
-    invoiceModel.priceController.value.clear();
-    invoiceModel.quantityController.value.clear();
-    invoiceModel.gstController.value.clear();
-    invoiceModel.notecontentController.value.clear();
-    invoiceModel.recommendationHeadingController.value.clear();
-    invoiceModel.recommendationKeyController.value.clear();
-    invoiceModel.recommendationValueController.value.clear();
-
-    // Reset form keys
-    invoiceModel.detailsKey.value = GlobalKey<FormState>();
-    invoiceModel.productKey.value = GlobalKey<FormState>();
-    invoiceModel.noteformKey.value = GlobalKey<FormState>();
-
-    // Reset edit indices
-    invoiceModel.product_editIndex.value = null;
-    invoiceModel.note_editIndex.value = null;
-    invoiceModel.recommendation_editIndex.value = null;
-
-    // Reset heading type and note arrays
-    // invoiceModel.selectedheadingType.value = null;
-    // invoiceModel.notelength.value = 0;
-    // invoiceModel.Rec_Length.value = 0;
-    invoiceModel.notecontent.clear();
-    // invoiceModel.noteType.clear();
-    // invoiceModel.noteType.addAll([
-    //   'With Heading',
-    //   'Without Heading'
-    // ]);
   }
 }

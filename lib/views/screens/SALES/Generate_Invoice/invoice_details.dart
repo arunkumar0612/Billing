@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/services/SALES/Invoice_services/InvoiceDetails_service.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
 import '../../../../controllers/SALEScontrollers/Invoice_actions.dart';
-import '../../../../services/SALES/Invoice_services/InvoiceDetails_service.dart';
 
 class InvoiceDetails extends StatefulWidget with InvoicedetailsService {
   InvoiceDetails({super.key});
@@ -15,6 +15,13 @@ class InvoiceDetails extends StatefulWidget with InvoicedetailsService {
 
 class _InvoiceDetailsState extends State<InvoiceDetails> {
   final InvoiceController invoiceController = Get.find<InvoiceController>();
+
+  @override
+  void initState() {
+    widget.get_requiredData(context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -27,12 +34,13 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
               Form(
                   key: invoiceController.invoiceModel.detailsKey.value,
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 25),
+                          // const SizedBox(height: 25),
                           BasicTextfield(
                             digitsOnly: false,
                             width: 400,
@@ -82,7 +90,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 10),
+                          // const SizedBox(height: 10),
                           BasicTextfield(
                             digitsOnly: false,
                             width: 400,
@@ -112,6 +120,21 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                               return null;
                             },
                           ),
+                          const SizedBox(height: 25),
+                          BasicTextfield(
+                            digitsOnly: false,
+                            width: 400,
+                            readonly: false,
+                            text: 'GST number',
+                            controller: invoiceController.invoiceModel.gstNumController.value,
+                            icon: Icons.price_change,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter GST number';
+                              }
+                              return null;
+                            },
+                          ),
                           const SizedBox(height: 30),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +144,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                                 colors: Colors.green,
                                 text: 'Add Details',
                                 onPressed: () {
-                                  widget.add_details();
+                                  widget.nextTab();
                                 },
                               ),
                             ],

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
@@ -20,12 +19,7 @@ mixin QuoteproductService {
       bool exists = quoteController.quoteModel.Quote_products.any((product) => product.productName == quoteController.quoteModel.productNameController.value.text && product.hsn == quoteController.quoteModel.hsnController.value.text && product.quantity == int.parse(quoteController.quoteModel.quantityController.value.text));
 
       if (exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.blue,
-            content: Text('This product already exists.'),
-          ),
-        );
+        Get.snackbar("Product", "This product already exists.");
         return;
       }
       quoteController.addProduct(context: context, productName: quoteController.quoteModel.productNameController.value.text, hsn: quoteController.quoteModel.hsnController.value.text, price: double.parse(quoteController.quoteModel.priceController.value.text), quantity: int.parse(quoteController.quoteModel.quantityController.value.text), gst: double.parse(quoteController.quoteModel.gstController.value.text));

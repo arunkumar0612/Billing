@@ -10,17 +10,17 @@ mixin QuotedetailsService {
   final QuoteController quoteController = Get.find<QuoteController>();
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
-  void add_details() {
+  void nextTab() {
     if (quoteController.quoteModel.detailsKey.value.currentState?.validate() ?? false) {
       quoteController.nextTab();
     }
   }
 
-  void get_requiredData(context) async {
+  void get_requiredData(context, String eventtype) async {
     try {
       Map<String, dynamic> body = {
         "eventid": 1,
-        "eventtype": "quotation"
+        "eventtype": eventtype
       };
       Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.sales_fetchEventNumber_API);
       if (response?['statusCode'] == 200) {
@@ -31,7 +31,7 @@ mixin QuotedetailsService {
           // print(clientreqController.clientReqModel.Enq_ID.value);
           // salesController.addToCustomerList(value);
         } else {
-          await Basic_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {});
         }
       } else {
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/sub_clientreq_details.dart';
 import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/sub_clientreq_template.dart';
@@ -169,12 +170,7 @@ class _sub_clientreqNoteState extends State<sub_clientreqNote> {
       // Check if note Name already exists
       bool exists = sub_clientreq_noteList.any((note) => note['notename'] == notecontentController.text);
       if (exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.blue,
-            content: Text('This note Name already exists.'),
-          ),
-        );
+        Get.snackbar("Note", 'This note Name already exists.');
         return; // Exit the method without adding the note
       }
       setState(

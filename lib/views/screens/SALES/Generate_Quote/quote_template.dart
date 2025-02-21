@@ -131,7 +131,7 @@ class Quotation {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular(estimate, 10),
+                            child: regular("SSIPL/INST/250202", 10),
                           ),
                         ),
                       ],
@@ -743,40 +743,41 @@ class Quotation {
               ],
             ),
           ),
-          pw.Padding(
-            padding: const pw.EdgeInsets.only(left: 0, top: 5),
-            child: pw.Row(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                regular("${quoteController.quoteModel.Quote_noteList.length + 2}.", 10),
-                pw.SizedBox(width: 5),
-                pw.Expanded(
-                  child: pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    children: [
-                      bold(quoteController.quoteModel.Quote_table_heading.value, 10),
-                      ...quoteController.quoteModel.Quote_recommendationList.map((recommendation) {
-                        return pw.Padding(
-                          padding: const pw.EdgeInsets.only(left: 5, top: 5),
-                          child: pw.Row(
-                            children: [
-                              pw.Container(
-                                width: 120,
-                                child: regular(recommendation.key.toString(), 10),
-                              ),
-                              regular(":", 10),
-                              pw.SizedBox(width: 5),
-                              regular(recommendation.value.toString(), 10),
-                            ],
-                          ),
-                        );
-                      }),
-                    ],
+          if (quoteController.quoteModel.Quote_recommendationList.isNotEmpty)
+            pw.Padding(
+              padding: const pw.EdgeInsets.only(left: 0, top: 5),
+              child: pw.Row(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  regular("${quoteController.quoteModel.Quote_noteList.length + 2}.", 10),
+                  pw.SizedBox(width: 5),
+                  pw.Expanded(
+                    child: pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        bold(quoteController.quoteModel.Quote_table_heading.value, 10),
+                        ...quoteController.quoteModel.Quote_recommendationList.map((recommendation) {
+                          return pw.Padding(
+                            padding: const pw.EdgeInsets.only(left: 5, top: 5),
+                            child: pw.Row(
+                              children: [
+                                pw.Container(
+                                  width: 120,
+                                  child: regular(recommendation.key.toString(), 10),
+                                ),
+                                regular(":", 10),
+                                pw.SizedBox(width: 5),
+                                regular(recommendation.value.toString(), 10),
+                              ],
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
         ],
       ),
     );

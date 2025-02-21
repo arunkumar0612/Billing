@@ -56,60 +56,61 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
         body: Row(
           children: [
             Expanded(
-                child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                gradient: const LinearGradient(
-                  colors: [
-                    // Primary_colors.Dark,
-                    Color.fromARGB(255, 4, 6, 10), // Slightly lighter blue-grey
-                    Primary_colors.Light, // Dark purple/blue
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.centerRight,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  gradient: const LinearGradient(
+                    colors: [
+                      // Primary_colors.Dark,
+                      Color.fromARGB(255, 4, 6, 10), // Slightly lighter blue-grey
+                      Primary_colors.Light, // Dark purple/blue
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.centerRight,
+                  ),
                 ),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    color: Primary_colors.Dark,
-                    child: PreferredSize(
-                      preferredSize: const Size.fromHeight(50),
-                      child: IgnorePointer(
-                        child: TabBar(
-                          unselectedLabelStyle: const TextStyle(
-                            color: Primary_colors.Color1,
-                            fontSize: Primary_font_size.Text7,
+                child: Column(
+                  children: [
+                    Container(
+                      color: Primary_colors.Dark,
+                      child: PreferredSize(
+                        preferredSize: const Size.fromHeight(50),
+                        child: IgnorePointer(
+                          child: TabBar(
+                            unselectedLabelStyle: const TextStyle(
+                              color: Primary_colors.Color1,
+                              fontSize: Primary_font_size.Text7,
+                            ),
+                            labelStyle: const TextStyle(
+                              color: Color.fromARGB(255, 227, 77, 60),
+                              fontSize: Primary_font_size.Text10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            controller: clientreqController.clientReqModel.tabController.value,
+                            indicator: const BoxDecoration(),
+                            tabs: const [
+                              Tab(text: "Details"),
+                              Tab(text: "Product"),
+                              Tab(text: "Note"),
+                            ],
                           ),
-                          labelStyle: const TextStyle(
-                            color: Color.fromARGB(255, 227, 77, 60),
-                            fontSize: Primary_font_size.Text10,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          controller: clientreqController.clientReqModel.tabController.value,
-                          indicator: const BoxDecoration(),
-                          tabs: const [
-                            Tab(text: "Details"),
-                            Tab(text: "Product"),
-                            Tab(text: "Note"),
-                          ],
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: TabBarView(
-                      controller: clientreqController.clientReqModel.tabController.value,
-                      children: [
-                        widget.value == "Enquiry" ? enquryDetails() : customerDetails(),
-                        clientreqProducts(),
-                        ClientreqNote(customer_type: widget.value),
-                      ],
+                    Expanded(
+                      child: TabBarView(
+                        controller: clientreqController.clientReqModel.tabController.value,
+                        children: [
+                          widget.value == "Enquiry" ? enquryDetails() : customerDetails(),
+                          clientreqProducts(),
+                          ClientreqNote(customer_type: widget.value),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ))
+            ),
           ],
         ));
   }

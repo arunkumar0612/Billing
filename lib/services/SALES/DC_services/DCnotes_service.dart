@@ -80,12 +80,7 @@ mixin DcnotesService {
     if (dcController.dcModel.noteformKey.value.currentState?.validate() ?? false) {
       bool exists = dcController.dcModel.Delivery_challan_noteList.any((note) => note.notename == dcController.dcModel.notecontentController.value.text);
       if (exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.blue,
-            content: Text('This note Name already exists.'),
-          ),
-        );
+        Get.snackbar("Note", 'This note Name already exists.');
         return;
       }
       dcController.addNote(dcController.dcModel.notecontentController.value.text);

@@ -10,7 +10,7 @@ class Invoker extends GetxController {
   final ApiService apiService = ApiService();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   Future<Map<String, dynamic>?> IAM(Map<String, dynamic> body, String API) async {
-    final configData = await loadConfigFile('assets/key.config');
+    final configData = await Returns.loadConfigFile('assets/key.config');
     final apiKey = configData['APIkey'];
     final secret = configData['Secret'];
 

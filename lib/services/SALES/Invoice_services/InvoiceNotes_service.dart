@@ -1,19 +1,22 @@
 import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
+import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
-// import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/Invoice_template.dart';
-
-import '../../../themes/style.dart';
-import '../../../views/components/view_send_pdf.dart';
-import '../../../views/screens/SALES/Generate_Invoice/invoice_template.dart';
-// import '../../../views/screens/SALES/Generate_Invoice/invoice_template.dart';
+import 'package:ssipl_billing/services/APIservices/invoker.dart';
+import 'package:ssipl_billing/utils/helpers/returns.dart';
+// import 'package:ssipl_billing/utils/helpers/returns.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_Invoice/invoice_template.dart';
 
 mixin InvoicenotesService {
   final InvoiceController invoiceController = Get.find<InvoiceController>();
+  final Invoker apiController = Get.find<Invoker>();
+  final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
+
   void addtable_row(context) {
     invoiceController.updateRec_ValueControllerText(invoiceController.invoiceModel.recommendationHeadingController.value.text);
     bool exists = invoiceController.invoiceModel.Invoice_recommendationList.any((note) => note.key == invoiceController.invoiceModel.recommendationKeyController.value.text);
@@ -79,12 +82,7 @@ mixin InvoicenotesService {
     if (invoiceController.invoiceModel.noteformKey.value.currentState?.validate() ?? false) {
       bool exists = invoiceController.invoiceModel.Invoice_noteList.any((note) => note.notename == invoiceController.invoiceModel.notecontentController.value.text);
       if (exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.blue,
-            content: Text('This note Name already exists.'),
-          ),
-        );
+        Get.snackbar("Note", 'This note Name already exists.');
         return;
       }
       invoiceController.addNote(invoiceController.invoiceModel.notecontentController.value.text);
@@ -92,35 +90,79 @@ mixin InvoicenotesService {
     }
   }
 
-  void Generate_Invoice(BuildContext context) async {
-    // Start generating PDF data as a Future
-    // viewsendController.setLoading(false);
-    final pdfGenerationFuture = generate_Invoice(PdfPageFormat.a4, invoiceController.invoiceModel.Invoice_products, invoiceController.invoiceModel.clientAddressNameController.value.text, invoiceController.invoiceModel.clientAddressController.value.text, invoiceController.invoiceModel.billingAddressNameController.value.text, invoiceController.invoiceModel.billingAddressController.value.text, invoiceController.invoiceModel.Invoice_no.value, invoiceController.invoiceModel.TitleController.value.text, 9, invoiceController.invoiceModel.Invoice_gstTotals);
-    // Show the dialog immediately (not awaited)
-    // showDialog(
-    //   context: context,
-    //   builder: (context) {
-    //     return AlertDialog(
-    //       backgroundColor: Primary_colors.Light,
-    //       content: Generate_popup(
-    //         type: 'E://Invoice.pdf', // Pass the expected file path
-    //       ),
-    //     );
-    //   },
-    // );
+  // void Generate_Invoice(BuildContext context) async {
+  //   // viewsendController.setLoading(false);
+  //   invoiceController.nextTab();
+  //   await Future.delayed(const Duration(milliseconds: 200));
+  //   sub();
+  //   // Start generating PDF data as a Future
+  // }
 
-    // Wait for PDF data generation to complete
-    final pdfData = await pdfGenerationFuture;
-    const filePath = 'E://Invoice.pdf';
-    final file = File(filePath);
+  // void sub() async {
+  //   final pdfData = await generate_Invoice(
+  //     PdfPageFormat.a4,
+  //     invoiceController.invoiceModel.Invoice_products,
+  //     invoiceController.invoiceModel.clientAddressNameController.value.text,
+  //     invoiceController.invoiceModel.clientAddressController.value.text,
+  //     invoiceController.invoiceModel.billingAddressNameController.value.text,
+  //     invoiceController.invoiceModel.billingAddressController.value.text,
+  //     invoiceController.invoiceModel.Invoice_no.value,
+  //     invoiceController.invoiceModel.TitleController.value.text,
+  //     9,
+  //     invoiceController.invoiceModel.Invoice_gstTotals,
+  //   );
 
-    // Perform file writing and any other future tasks in parallel
-    await Future.wait([
-      file.writeAsBytes(pdfData), // Write PDF to file asynchronously
-      // Future.delayed(const Duration(seconds: )), // Simulate any other async task if needed
-    ]);
+  //   // Show the dialog immediately (not awaited)
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         backgroundColor: Primary_colors.Light,
+  //         content: Generate_popup(
+  //           type: 'E://Invoice.pdf', // Pass the expected file path
+  //         ),
+  //       );
+  //     },
+  //   );
 
-    // Continue execution while the dialog is still open
-    // viewsendController.setLoading(true);
+  //   // Wait for PDF data generation to complete
+
+  //   const filePath = 'E://Invoice.pdf';
+  //   final file = File(filePath);
+
+  //   // Perform file writing and any other future tasks in parallel
+
+  //   file.writeAsBytes(pdfData); // Write PDF to file asynchronously
+  //   // Future.delayed(const Duration(seconds: )), // Simulate any other async task if needed
+
+  //   // Continue execution while the dialog is still open
+  //   viewsendController.setLoading(true);
+  // }
+
+  Future<void> savePdfToCache() async {
+    Uint8List pdfData = await generate_Invoice(
+      PdfPageFormat.a4,
+      invoiceController.invoiceModel.Invoice_products,
+      invoiceController.invoiceModel.clientAddressNameController.value.text,
+      invoiceController.invoiceModel.clientAddressController.value.text,
+      invoiceController.invoiceModel.billingAddressNameController.value.text,
+      invoiceController.invoiceModel.billingAddressController.value.text,
+      invoiceController.invoiceModel.Invoice_no.value,
+      invoiceController.invoiceModel.TitleController.value.text,
+      9,
+      invoiceController.invoiceModel.Invoice_gstTotals,
+    );
+
+    Directory tempDir = await getTemporaryDirectory();
+    String? sanitizedInvoiceNo = Returns.replace_Slash_hypen(invoiceController.invoiceModel.Invoice_no.value!);
+    String filePath = '${tempDir.path}/$sanitizedInvoiceNo.pdf';
+    File file = File(filePath);
+    await file.writeAsBytes(pdfData);
+
+    if (kDebugMode) {
+      print("PDF stored in cache: $filePath");
+    }
+    invoiceController.invoiceModel.selectedPdf.value = file;
+    // return file;
   }
 }

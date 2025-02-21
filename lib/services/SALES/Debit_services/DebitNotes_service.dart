@@ -82,12 +82,7 @@ mixin DebitnotesService {
     if (debitController.debitModel.noteformKey.value.currentState?.validate() ?? false) {
       bool exists = debitController.debitModel.Debit_noteList.any((note) => note.notename == debitController.debitModel.notecontentController.value.text);
       if (exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.blue,
-            content: Text('This note Name already exists.'),
-          ),
-        );
+        Get.snackbar("Note", 'This note Name already exists.');
         return;
       }
       debitController.addNote(debitController.debitModel.notecontentController.value.text);

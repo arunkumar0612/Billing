@@ -8,6 +8,8 @@ import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/Quote_entities.dart';
 import 'package:ssipl_billing/services/APIservices/invoker.dart';
+import 'package:ssipl_billing/utils/helpers/returns.dart';
+// import 'package:ssipl_billing/utils/helpers/returns.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_Quote/quote_template.dart';
 
 mixin QuotenotesService {
@@ -80,12 +82,7 @@ mixin QuotenotesService {
     if (quoteController.quoteModel.noteformKey.value.currentState?.validate() ?? false) {
       bool exists = quoteController.quoteModel.Quote_noteList.any((note) => note.notename == quoteController.quoteModel.notecontentController.value.text);
       if (exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.blue,
-            content: Text('This note Name already exists.'),
-          ),
-        );
+        Get.snackbar("Note", 'This note Name already exists.');
         return;
       }
       quoteController.addNote(quoteController.quoteModel.notecontentController.value.text);
@@ -157,8 +154,8 @@ mixin QuotenotesService {
     );
 
     Directory tempDir = await getTemporaryDirectory();
-    String filePath = '${tempDir.path}/Quotation.pdf';
-
+    String? sanitizedQuoteNo = Returns.replace_Slash_hypen(quoteController.quoteModel.Quote_no.value!);
+    String filePath = '${tempDir.path}/$sanitizedQuoteNo.pdf';
     File file = File(filePath);
     await file.writeAsBytes(pdfData);
 

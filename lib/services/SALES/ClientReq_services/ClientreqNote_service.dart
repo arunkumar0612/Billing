@@ -25,12 +25,8 @@ mixin ClientreqNoteService {
       clientreqController.updateRec_ValueControllerText(clientreqController.clientReqModel.Rec_HeadingController.value.text);
       bool exists = clientreqController.clientReqModel.clientReqRecommendationList.any((note) => note.key == clientreqController.clientReqModel.Rec_KeyController.value.text);
       if (exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.blue,
-            content: Text('This note Name already exists.'),
-          ),
-        );
+        Get.snackbar("Note", 'This note Name already exists.');
+
         return;
       }
       clientreqController.addRecommendation(key: clientreqController.clientReqModel.Rec_KeyController.value.text, value: clientreqController.clientReqModel.Rec_ValueController.value.text);
@@ -87,12 +83,7 @@ mixin ClientreqNoteService {
     if (clientreqController.clientReqModel.noteFormKey.value.currentState?.validate() ?? false) {
       bool exists = clientreqController.clientReqModel.clientReqNoteList.any((note) => note.notename == clientreqController.clientReqModel.noteContentController.value.text);
       if (exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.blue,
-            content: Text('This note Name already exists.'),
-          ),
-        );
+        Get.snackbar("Note", 'This note Name already exists.');
         return;
       }
       clientreqController.addNote(clientreqController.clientReqModel.noteContentController.value.text);

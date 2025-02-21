@@ -89,7 +89,8 @@ mixin SalesServices {
   void GetProcessList(context, int customerid) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({
-        "customerid": customerid
+        "customerid": customerid,
+        "listtype": 0,
       }, API.sales_getprocesslist_API);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
@@ -248,6 +249,7 @@ mixin SalesServices {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             title: const Text("Warning"),
                             content: const Text(
                               "The data may be lost. Do you want to proceed?",
@@ -339,6 +341,7 @@ mixin SalesServices {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             title: const Text("Warning"),
                             content: const Text(
                               "The data may be lost. Do you want to proceed?",
@@ -352,7 +355,7 @@ mixin SalesServices {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  invoiceController.clearAll();
+                                  invoiceController.resetData();
                                   Navigator.of(context).pop(true); // Yes action
                                 },
                                 child: const Text("Yes"),
@@ -410,7 +413,7 @@ mixin SalesServices {
     // }
   }
 
-  dynamic GenerateQuote_dialougebox(context) async {
+  dynamic GenerateQuote_dialougebox(context, String quoteType) async {
     await showDialog(
       context: context,
       barrierDismissible: false, // Prevents closing the dialog by clicking outside
@@ -421,10 +424,10 @@ mixin SalesServices {
           backgroundColor: Primary_colors.Dark,
           content: Stack(
             children: [
-              const SizedBox(
+              SizedBox(
                 height: 650,
                 width: 1300,
-                child: GenerateQuote(),
+                child: GenerateQuote(quoteType: quoteType),
               ),
               Positioned(
                 top: 3,
@@ -448,6 +451,7 @@ mixin SalesServices {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             title: const Text("Warning"),
                             content: const Text(
                               "The data may be lost. Do you want to proceed?",
@@ -561,6 +565,7 @@ mixin SalesServices {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             title: const Text("Warning"),
                             content: const Text(
                               "The data may be lost. Do you want to proceed?",
@@ -677,6 +682,7 @@ mixin SalesServices {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             title: const Text("Warning"),
                             content: const Text(
                               "The data may be lost. Do you want to proceed?",
@@ -768,6 +774,7 @@ mixin SalesServices {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             title: const Text("Warning"),
                             content: const Text(
                               "The data may be lost. Do you want to proceed?",
@@ -873,6 +880,7 @@ mixin SalesServices {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             title: const Text("Warning"),
                             content: const Text(
                               "The data may be lost. Do you want to proceed?",

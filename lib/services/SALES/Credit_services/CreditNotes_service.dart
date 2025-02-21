@@ -78,12 +78,7 @@ mixin CreditnotesService {
     if (creditController.creditModel.noteformKey.value.currentState?.validate() ?? false) {
       bool exists = creditController.creditModel.Credit_noteList.any((note) => note.notename == creditController.creditModel.notecontentController.value.text);
       if (exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.blue,
-            content: Text('This note Name already exists.'),
-          ),
-        );
+        Get.snackbar("Note", 'This note Name already exists.');
         return;
       }
       creditController.addNote(creditController.creditModel.notecontentController.value.text);

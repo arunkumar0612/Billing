@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_Quotation/sub_generateQuotaion.dart';
 import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_Quotation/sub_quotation_template.dart';
@@ -168,12 +169,7 @@ class _sub_QuotationNoteState extends State<sub_QuotationNote> {
       // Check if note Name already exists
       bool exists = sub_quote_noteList.any((note) => note['notename'] == notecontentController.text);
       if (exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.blue,
-            content: Text('This note Name already exists.'),
-          ),
-        );
+        Get.snackbar("Note", 'This note Name already exists.');
         return; // Exit the method without adding the note
       }
       setState(

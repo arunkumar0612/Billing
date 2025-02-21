@@ -76,12 +76,7 @@ mixin RFQnotesService {
     if (rfqController.rfqModel.noteformKey.value.currentState?.validate() ?? false) {
       bool exists = rfqController.rfqModel.RFQ_noteList.any((note) => note.notename == rfqController.rfqModel.notecontentController.value.text);
       if (exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.blue,
-            content: Text('This note Name already exists.'),
-          ),
-        );
+        Get.snackbar("Note", 'This note Name already exists.');
         return;
       }
       rfqController.addNote(rfqController.rfqModel.notecontentController.value.text);

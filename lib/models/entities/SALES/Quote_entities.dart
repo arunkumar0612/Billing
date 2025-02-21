@@ -123,6 +123,8 @@ class Post_Quotation {
   String? date;
   String? quotationGenID;
   int? messageType;
+  String? feedback;
+  String? ccEmail;
 
   Post_Quotation({
     required this.title,
@@ -139,6 +141,8 @@ class Post_Quotation {
     required this.notes,
     required this.quotationGenID,
     required this.messageType,
+    required this.feedback,
+    required this.ccEmail,
   });
 
   factory Post_Quotation.fromJson({
@@ -156,8 +160,10 @@ class Post_Quotation {
     required String date,
     required String quotationGenID,
     required int messageType,
+    required String feedback,
+    required String ccEmail,
   }) {
-    return Post_Quotation(title: title, processid: processid, ClientAddressname: ClientAddressname, ClientAddress: ClientAddress, billingAddressName: billingAddressName, billingAddress: billingAddress, emailId: emailId, phoneNo: phoneNo, gst: gst, product: product, notes: notes, date: date, quotationGenID: quotationGenID, messageType: messageType);
+    return Post_Quotation(title: title, processid: processid, ClientAddressname: ClientAddressname, ClientAddress: ClientAddress, billingAddressName: billingAddressName, billingAddress: billingAddress, emailId: emailId, phoneNo: phoneNo, gst: gst, product: product, notes: notes, date: date, quotationGenID: quotationGenID, messageType: messageType, feedback: feedback, ccEmail: ccEmail);
   }
 
   Map<String, dynamic> toJson() {
@@ -175,7 +181,9 @@ class Post_Quotation {
       "notes": notes?.map((item) => item.toJson()).toList(),
       "date": date,
       "quotationgenid": quotationGenID,
-      "messagetype": messageType
+      "messagetype": messageType,
+      "feedback": feedback,
+      "ccemail": ccEmail,
     };
   }
 }

@@ -33,15 +33,15 @@ mixin LoginServices {
           Get.toNamed(RouteNames.home);
         } else {
           loginController.toggleIndicator(false);
-          await Basic_dialog(context: context, title: 'Login Failed', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Login Failed', content: value.message ?? "", onOk: () {});
         }
       } else {
         loginController.toggleIndicator(false);
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
       loginController.toggleIndicator(false);
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 

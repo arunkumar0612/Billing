@@ -31,22 +31,20 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         child: SizedBox(
           width: 500,
+          height: 550,
           child: Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: const Color.fromARGB(255, 121, 121, 135).withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 4,
-                  offset: const Offset(0, 1), // Shadow offset
-                ),
-              ],
-              borderRadius: BorderRadius.circular(10),
-              color: const Color.fromARGB(255, 33, 33, 48),
-            ),
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                color: registerController.registerModel.indicator.value ? Colors.transparent : Primary_colors.Color3.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 4,
+                offset: const Offset(0, 1), // Shadow offset
+              ),
+            ], borderRadius: BorderRadius.circular(10), color: Primary_colors.Light),
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(10),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
                     'Register',
@@ -56,7 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  // const SizedBox(height: 20),
                   SizedBox(
                     width: 400,
                     height: screenWidth > 1000 ? 55 : 50,
@@ -88,7 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: registerController.registerModel.nameController.value,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  // const SizedBox(height: 20),
                   SizedBox(
                     width: 400,
                     height: screenWidth > 1000 ? 55 : 50,
@@ -117,7 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: registerController.registerModel.emailController.value,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  // const SizedBox(height: 20),
                   SizedBox(
                     width: 400,
                     height: screenWidth > 1000 ? 55 : 50,
@@ -148,7 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: registerController.registerModel.phoneController.value,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  // const SizedBox(height: 20),
                   SizedBox(
                     width: 400,
                     height: screenWidth > 1000 ? 55 : 50,
@@ -189,7 +187,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         controller: registerController.registerModel.passwordController.value,
                         obscureText: registerController.registerModel.passwordVisibility.value),
                   ),
-                  const SizedBox(height: 20),
+                  // const SizedBox(height: 20),
                   SizedBox(
                     width: 400,
                     height: screenWidth > 1000 ? 55 : 50,
@@ -220,7 +218,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         controller: registerController.registerModel.confirmController.value,
                         obscureText: registerController.registerModel.passwordVisibility.value),
                   ),
-                  const SizedBox(height: 20),
+                  // const SizedBox(height: 20),
                   SizedBox(
                     width: 400,
                     height: 45,
@@ -244,7 +242,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  // const SizedBox(height: 10),
                   SizedBox(
                     width: 400,
                     child: Row(

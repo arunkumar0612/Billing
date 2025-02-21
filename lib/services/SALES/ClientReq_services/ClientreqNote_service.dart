@@ -117,7 +117,7 @@ mixin ClientreqNoteService {
   dynamic postData(context, customer_type) async {
     try {
       if (clientreqController.postDatavalidation()) {
-        await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {});
+        await Basic_dialog(context: context, showCancel: false, title: "POST", content: "All fields must be filled", onOk: () {});
         return;
       }
       File cachedPdf = await savePdfToCache();
@@ -125,7 +125,7 @@ mixin ClientreqNoteService {
 
       await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
     } catch (e) {
-      await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {});
+      await Basic_dialog(context: context, showCancel: false, title: "POST", content: "$e", onOk: () {});
     }
   }
 
@@ -135,17 +135,17 @@ mixin ClientreqNoteService {
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
-          await Basic_dialog(context: context, title: "CLIENT REQUIREMENT", content: value.message!, onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: "CLIENT REQUIREMENT", content: value.message!, onOk: () {});
           Navigator.of(context).pop(true);
           clientreqController.resetData();
         } else {
-          await Basic_dialog(context: context, title: 'Processing client requirement', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Processing client requirement', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 }

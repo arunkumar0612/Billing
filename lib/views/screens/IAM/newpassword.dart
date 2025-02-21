@@ -20,7 +20,7 @@ class Newpassword extends StatefulWidget with NewpasswordValidator {
 
 class _NewpasswordState extends State<Newpassword> {
   final IAMController IamController = Get.find<IAMController>();
-  final NewpasswordController forgotpasswordController = Get.find<NewpasswordController>();
+  final NewpasswordController newpasswordController = Get.find<NewpasswordController>();
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -28,26 +28,22 @@ class _NewpasswordState extends State<Newpassword> {
     return Obx(() {
       return AnimatedGradientBorder(
         animationTime: 2,
-        glowSize: forgotpasswordController.newpasswordModel.indicator.value ? 5 : 5,
-        gradientColors: forgotpasswordController.newpasswordModel.indicator.value ? [Color.fromARGB(255, 157, 98, 253), Colors.black] : [Primary_colors.Light],
+        glowSize: newpasswordController.newpasswordModel.indicator.value ? 5 : 5,
+        gradientColors: newpasswordController.newpasswordModel.indicator.value ? [Color.fromARGB(255, 157, 98, 253), Colors.black] : [Primary_colors.Light],
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),
         child: SizedBox(
           width: 500,
           child: Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: const Color.fromARGB(255, 121, 121, 135).withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 4,
-                  offset: const Offset(0, 1), // Shadow offset
-                ),
-              ],
-              borderRadius: BorderRadius.circular(10),
-              color: const Color.fromARGB(255, 33, 33, 48),
-            ),
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                color: newpasswordController.newpasswordModel.indicator.value ? Colors.transparent : Primary_colors.Color3.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 4,
+                offset: const Offset(0, 1), // Shadow offset
+              ),
+            ], borderRadius: BorderRadius.circular(10), color: Primary_colors.Light),
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -69,33 +65,33 @@ class _NewpasswordState extends State<Newpassword> {
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
                           borderSide: BorderSide(
-                            color: forgotpasswordController.newpasswordModel.errors['password'] == null ? Colors.black : Colors.red,
+                            color: newpasswordController.newpasswordModel.errors['password'] == null ? Colors.black : Colors.red,
                           ),
                         ),
                         labelStyle: TextStyle(
                           fontSize: screenWidth > 1000 ? baseFontSize * (screenWidth / 7500) : 10,
-                          color: forgotpasswordController.newpasswordModel.errors['password'] == null ? const Color.fromARGB(255, 167, 165, 165) : Colors.red,
+                          color: newpasswordController.newpasswordModel.errors['password'] == null ? const Color.fromARGB(255, 167, 165, 165) : Colors.red,
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(color: forgotpasswordController.newpasswordModel.errors['password'] == null ? Colors.black : Colors.red),
+                          borderSide: BorderSide(color: newpasswordController.newpasswordModel.errors['password'] == null ? Colors.black : Colors.red),
                         ),
-                        labelText: forgotpasswordController.newpasswordModel.errors['password'] ?? 'Password',
+                        labelText: newpasswordController.newpasswordModel.errors['password'] ?? 'Password',
                         border: const OutlineInputBorder(),
                         prefixIcon: GestureDetector(
                           onTap: () {
                             setState(() {
-                              forgotpasswordController.newpasswordModel.passwordVisibility.value = forgotpasswordController.newpasswordModel.passwordVisibility.value == true ? false : true;
+                              newpasswordController.newpasswordModel.passwordVisibility.value = newpasswordController.newpasswordModel.passwordVisibility.value == true ? false : true;
                             });
                           },
                           child: Icon(
-                            forgotpasswordController.newpasswordModel.passwordVisibility.value == true ? Icons.remove_red_eye : Icons.visibility_off,
-                            color: forgotpasswordController.newpasswordModel.errors['password'] == null ? Colors.white : Colors.red,
+                            newpasswordController.newpasswordModel.passwordVisibility.value == true ? Icons.remove_red_eye : Icons.visibility_off,
+                            color: newpasswordController.newpasswordModel.errors['password'] == null ? Colors.white : Colors.red,
                           ),
                         ),
                       ),
-                      controller: forgotpasswordController.newpasswordModel.passwordController.value,
-                      obscureText: forgotpasswordController.newpasswordModel.passwordVisibility.value,
+                      controller: newpasswordController.newpasswordModel.passwordController.value,
+                      obscureText: newpasswordController.newpasswordModel.passwordVisibility.value,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -111,23 +107,23 @@ class _NewpasswordState extends State<Newpassword> {
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
                           borderSide: BorderSide(
-                            color: forgotpasswordController.newpasswordModel.errors['confirmPassword'] == null ? Colors.black : Colors.red,
+                            color: newpasswordController.newpasswordModel.errors['confirmPassword'] == null ? Colors.black : Colors.red,
                           ),
                         ),
                         labelStyle: TextStyle(
                           fontSize: screenWidth > 1000 ? baseFontSize * (screenWidth / 7500) : 10,
-                          color: forgotpasswordController.newpasswordModel.errors['confirmPassword'] == null ? const Color.fromARGB(255, 167, 165, 165) : Colors.red,
+                          color: newpasswordController.newpasswordModel.errors['confirmPassword'] == null ? const Color.fromARGB(255, 167, 165, 165) : Colors.red,
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(color: forgotpasswordController.newpasswordModel.errors['confirmPassword'] == null ? Colors.black : Colors.red),
+                          borderSide: BorderSide(color: newpasswordController.newpasswordModel.errors['confirmPassword'] == null ? Colors.black : Colors.red),
                         ),
-                        labelText: forgotpasswordController.newpasswordModel.errors['confirmPassword'] ?? 'Confirm Password',
+                        labelText: newpasswordController.newpasswordModel.errors['confirmPassword'] ?? 'Confirm Password',
                         border: const OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.lock, color: forgotpasswordController.newpasswordModel.errors['confirmPassword'] == null ? Colors.white : Colors.red),
+                        prefixIcon: Icon(Icons.lock, color: newpasswordController.newpasswordModel.errors['confirmPassword'] == null ? Colors.white : Colors.red),
                       ),
-                      controller: forgotpasswordController.newpasswordModel.confirmController.value,
-                      obscureText: forgotpasswordController.newpasswordModel.passwordVisibility.value,
+                      controller: newpasswordController.newpasswordModel.confirmController.value,
+                      obscureText: newpasswordController.newpasswordModel.passwordVisibility.value,
                     ),
                   ),
                   const SizedBox(height: 30),

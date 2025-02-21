@@ -68,7 +68,7 @@ mixin PostServices {
   dynamic postData(context, int messageType) async {
     try {
       if (invoiceController.postDatavalidation()) {
-        await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {});
+        await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
         return;
       }
       File cachedPdf = invoiceController.invoiceModel.selectedPdf.value!;
@@ -77,7 +77,7 @@ mixin PostServices {
 
       await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
     } catch (e) {
-      await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {});
+      await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {}, showCancel: false);
     }
   }
 
@@ -87,17 +87,17 @@ mixin PostServices {
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
-          await Basic_dialog(context: context, title: "Invoice", content: value.message!, onOk: () {});
+          await Basic_dialog(context: context, title: "Invoice", content: value.message!, onOk: () {}, showCancel: false);
           // Navigator.of(context).pop(true);
           // invoiceController.resetData();
         } else {
-          await Basic_dialog(context: context, title: 'Processing Invoice', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, title: 'Processing Invoice', content: value.message ?? "", onOk: () {}, showCancel: false);
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
     }
   }
 }

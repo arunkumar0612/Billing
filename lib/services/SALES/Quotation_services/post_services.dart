@@ -68,7 +68,7 @@ mixin PostServices {
   dynamic postData(context, int messageType, String eventtype) async {
     try {
       if (quoteController.postDatavalidation()) {
-        await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {});
+        await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
         return;
       }
       File cachedPdf = quoteController.quoteModel.selectedPdf.value!;
@@ -77,7 +77,7 @@ mixin PostServices {
 
       await send_data(context, jsonEncode(salesData.toJson()), cachedPdf, eventtype);
     } catch (e) {
-      await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {});
+      await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {}, showCancel: false);
     }
   }
 
@@ -87,17 +87,17 @@ mixin PostServices {
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
-          await Basic_dialog(context: context, title: "Quotation", content: value.message!, onOk: () {});
+          await Basic_dialog(context: context, title: "Quotation", content: value.message!, onOk: () {}, showCancel: false);
           // Navigator.of(context).pop(true);
           // quoteController.resetData();
         } else {
-          await Basic_dialog(context: context, title: 'Processing Quotation', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, title: 'Processing Quotation', content: value.message ?? "", onOk: () {}, showCancel: false);
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
     }
   }
 }

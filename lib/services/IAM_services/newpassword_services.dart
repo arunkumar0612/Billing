@@ -31,6 +31,7 @@ class NewpasswordServices {
           forgotpasswordController.toggleIndicator(false);
           await Basic_dialog(
             context: context,
+            showCancel: false,
             title: 'New Password Failed',
             content: data.message ?? "",
             onOk: () {},
@@ -38,11 +39,11 @@ class NewpasswordServices {
         }
       } else {
         forgotpasswordController.toggleIndicator(false);
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
       forgotpasswordController.toggleIndicator(false);
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 }

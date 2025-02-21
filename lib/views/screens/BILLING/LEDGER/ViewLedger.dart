@@ -44,7 +44,7 @@ class _ViewLedgerState extends State<ViewLedger> {
     const ValueItem(label: 'Option 5', value: '5'),
     const ValueItem(label: 'Option 6', value: '6')
   ];
-  List<ValueItem> _selectedvendor = [];
+  final List<ValueItem> _selectedvendor = [];
   String? Selected_ledger_type = 'Client';
   List<String> amounttype_list = ['Debit', 'Credit', 'All'];
   String? Selected_amounte_type = 'All';

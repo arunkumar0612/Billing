@@ -53,16 +53,16 @@ mixin ClientreqDetailsService {
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
-          // await Basic_dialog(context: context, title: 'Upload MOR', content: "MOR uploaded Successfully", onOk: () {});
+          // await Basic_dialog(context: context,showCancel: false, title: 'Upload MOR', content: "MOR uploaded Successfully", onOk: () {});
           clientreqController.updateMOR_uploadedPath(value);
         } else {
-          await Basic_dialog(context: context, title: 'Upload MOR', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Upload MOR', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 
@@ -72,60 +72,56 @@ mixin ClientreqDetailsService {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          // await Basic_dialog(context: context, title: 'Organization List', content: value.message!, onOk: () {});
+          // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
           clientreqController.update_OrganizationList(value);
         } else {
-          await Basic_dialog(context: context, title: 'Fetching Organization List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Fetching Organization List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 
   void get_CompanyList(context, int org_id) async {
     try {
-      Map<String, dynamic> body = {
-        "organizationid": org_id
-      };
+      Map<String, dynamic> body = {"organizationid": org_id};
       Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.sales_fetchCompany_list);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          // await Basic_dialog(context: context, title: 'Organization List', content: value.message!, onOk: () {});
+          // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
           clientreqController.update_CompanyList(value);
         } else {
-          await Basic_dialog(context: context, title: 'Fetching Company List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Fetching Company List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 
   void get_BranchList(context, int comp_id) async {
     try {
-      Map<String, dynamic> body = {
-        "companyid": comp_id
-      };
+      Map<String, dynamic> body = {"companyid": comp_id};
       Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.sales_fetchBranch_list);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          // await Basic_dialog(context: context, title: 'Organization List', content: value.message!, onOk: () {});
+          // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
           clientreqController.update_BranchList(value);
         } else {
-          await Basic_dialog(context: context, title: 'Fetching Branch List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Fetching Branch List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 }

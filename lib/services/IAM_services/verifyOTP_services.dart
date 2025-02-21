@@ -33,16 +33,17 @@ mixin VerifyotpServices {
           VerifyOTPController.toggleIndicator(false);
           await Basic_dialog(
             context: context,
+            showCancel: false,
             title: 'Verify OTP Failed',
             content: data.message ?? "",
             onOk: () {},
           );
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 }

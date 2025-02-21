@@ -25,7 +25,6 @@ import '../../views/screens/SALES/Generate_client_req/generate_clientreq.dart';
 import '../../views/screens/SALES/Generate_creditNote/generateCredit.dart';
 import '../APIservices/invoker.dart';
 // import 'package:ssipl_billing/view_send_pdf.dart';
-import 'package:another_flushbar/flushbar.dart';
 
 mixin SalesServices {
   final Invoker apiController = Get.find<Invoker>();
@@ -45,22 +44,22 @@ mixin SalesServices {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          await Basic_dialog(context: context, title: 'Customer List', content: "Customer List fetched successfully", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Customer List', content: "Customer List fetched successfully", onOk: () {});
           salesController.addToCustomerList(value);
           // if (kDebugMode) {
           //   print("*****************${salesController.salesModel.customerList[1].customerId}");
           // }
         } else {
-          await Basic_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
       if (kDebugMode) {
         print(response);
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 
@@ -70,19 +69,19 @@ mixin SalesServices {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          // await Basic_dialog(context: context, title: 'Processcustomer List', content: "Processcustomer List fetched successfully", onOk: () {});
+          // await Basic_dialog(context: context,showCancel: false, title: 'Processcustomer List', content: "Processcustomer List fetched successfully", onOk: () {});
           salesController.salesModel.processcustomerList.clear();
           salesController.addToProcesscustomerList(value);
 
           // salesController.updatecustomerId(salesController.salesModel.processcustomerList[salesController.salesModel.showcustomerprocess.value!].customerId);
         } else {
-          await Basic_dialog(context: context, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 
@@ -90,22 +89,22 @@ mixin SalesServices {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({
         "customerid": customerid,
-        "listtype": 0,
+        "listtype": salesController.salesModel.type.value
       }, API.sales_getprocesslist_API);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          // await Basic_dialog(context: context, title: 'Process List', content: "Process List fetched successfully", onOk: () {});
+          // await Basic_dialog(context: context,showCancel: false, title: 'Process List', content: "Process List fetched successfully", onOk: () {});
           salesController.salesModel.processList.clear();
           salesController.addToProcessList(value);
         } else {
-          await Basic_dialog(context: context, title: 'Process List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Process List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 
@@ -119,16 +118,16 @@ mixin SalesServices {
         CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {
           GetProcessList(context, customerid);
-          showCustomSnackBar(context);
-          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+          Basic_SnackBar(context, "Feedback added successfully");
+          // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 
@@ -144,14 +143,14 @@ mixin SalesServices {
           return true;
           // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {}, showCancel: false);
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
       }
       return false;
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
       return false;
     }
   }
@@ -172,44 +171,49 @@ mixin SalesServices {
     }
   }
 
-  void showCustomSnackBar(BuildContext context) {
-    Flushbar(
-      message: "Feedback added successfully",
-      margin: const EdgeInsets.all(10),
-      borderRadius: BorderRadius.circular(10),
-      backgroundColor: Primary_colors.Color3,
-      icon: const Icon(Icons.check_circle, color: Primary_colors.Color1),
-      duration: const Duration(seconds: 3),
-      flushbarPosition: FlushbarPosition.BOTTOM, // Change to BOTTOM if needed
-      animationDuration: const Duration(milliseconds: 500),
-      leftBarIndicatorColor: Primary_colors.Color1,
-      boxShadows: [
-        BoxShadow(
-          color: Primary_colors.Color3.withOpacity(0.3),
-          blurRadius: 10,
-          spreadRadius: 2,
-        ),
-      ],
-    ).show(context);
+  void DeleteProcess(context, List processid) async {
+    if (kDebugMode) {
+      print(processid.toString());
+    }
+    Map<String, dynamic>? response = await apiController.GetbyQueryString({
+      "processid": processid,
+    }, API.sales_deleteprocess_API);
+    if (response?['statusCode'] == 200) {
+      CMResponse value = CMResponse.fromJson(response ?? {});
+      if (value.code) {
+        salesController.salesModel.selectedIndices.clear();
+        GetProcessList(context, salesController.salesModel.customerId.value!);
+        Basic_SnackBar(context, "Process Deleted successfully");
+        // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+      } else {
+        await Basic_dialog(context: context, showCancel: false, title: 'Delete Process Error', content: value.message ?? "", onOk: () {});
+      }
+    } else {
+      Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+    }
   }
 
-  void DeleteProcess(context, List processid) async {
-    print(processid.toString());
-    // Map<String, dynamic>? response = await apiController.GetbyQueryString({
-    //   "processid": processid,
-    // }, API.sales_addfeedback_API);
-    // if (response?['statusCode'] == 200) {
-    //   CMResponse value = CMResponse.fromJson(response ?? {});
-    //   if (value.code) {
-    //     // GetProcessList(context, processid);
-    //     showCustomSnackBar(context);
-    //     // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
-    //   } else {
-    //     await Basic_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
-    //   }
-    // } else {
-    //   Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
-    // }
+  void ArchiveProcesscontrol(context, List processid, int type) async {
+    if (kDebugMode) {
+      print(processid.toString());
+    }
+    Map<String, dynamic>? response = await apiController.GetbyQueryString({
+      "processid": processid,
+      "type": type
+    }, API.sales_archiveprocess_API);
+    if (response?['statusCode'] == 200) {
+      CMResponse value = CMResponse.fromJson(response ?? {});
+      if (value.code) {
+        salesController.salesModel.selectedIndices.clear();
+        GetProcessList(context, salesController.salesModel.customerId.value!);
+        Basic_SnackBar(context, type == 0 ? "Process Unarchived successfully" : "Process Archived successfully");
+        // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+      } else {
+        await Basic_dialog(context: context, showCancel: false, title: type == 0 ? 'Error : Failed to unarchive the process.' : 'Error : Failed to archive the process.', content: value.message ?? "", onOk: () {});
+      }
+    } else {
+      Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+    }
   }
 
   dynamic Generate_client_reqirement_dialougebox(String value, context) async {

@@ -33,13 +33,13 @@ mixin InvoicedetailsService {
           // print(clientreqController.clientReqModel.Enq_ID.value);
           // salesController.addToCustomerList(value);
         } else {
-          await Basic_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {}, showCancel: false);
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
     }
   }
 }

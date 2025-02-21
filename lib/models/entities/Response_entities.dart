@@ -42,11 +42,7 @@ class CMDmResponse {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'code': code,
-      'message': message,
-      'data': data
-    };
+    return {'code': code, 'message': message, 'data': data};
   }
 }
 
@@ -77,10 +73,6 @@ class CMDlResponse {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'code': code,
-      'message': message,
-      'data': data
-    };
+    return {'code': code, 'message': message, 'data': data};
   }
 }

@@ -75,7 +75,7 @@ class Sales_chartState extends State<Sales_chart> {
               height: 10,
             ),
             Indicator(
-              color: Color.fromARGB(255, 168, 122, 248),
+              color: Primary_colors.Color8,
               text: 'Pending',
               isSquare: true,
             ),

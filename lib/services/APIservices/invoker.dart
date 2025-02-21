@@ -28,24 +28,17 @@ class Invoker extends GetxController {
       String encryptedResponse = responseData['encryptedResponse'];
       final decryptedResponse = AES.decryptWithAES(secret.substring(0, 16), encryptedResponse);
       Map<String, dynamic> decodedResponse = jsonDecode(decryptedResponse);
-      final result = <String, int>{
-        "statusCode": response.statusCode!
-      };
+      final result = <String, int>{"statusCode": response.statusCode!};
       decodedResponse.addEntries(result.entries.map((e) => MapEntry(e.key, e.value)));
       return decodedResponse;
     } else {
-      Map<String, dynamic> reply = {
-        "statusCode": response.statusCode,
-        "message": "Server Error"
-      };
+      Map<String, dynamic> reply = {"statusCode": response.statusCode, "message": "Server Error"};
       return reply;
     }
   }
 
   Future<Map<String, dynamic>?> GetbyToken(String API) async {
-    final requestData = {
-      "STOKEN": sessiontokenController.sessiontokenModel.sessiontoken.value
-    };
+    final requestData = {"STOKEN": sessiontokenController.sessiontokenModel.sessiontoken.value};
     final response = await apiService.postData(API, requestData);
 
     if (response.statusCode == 200) {
@@ -53,9 +46,7 @@ class Invoker extends GetxController {
       String encryptedResponse = responseData['encryptedResponse'];
       final decryptedResponse = AES.decryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), encryptedResponse);
       Map<String, dynamic> decodedResponse = jsonDecode(decryptedResponse);
-      final result = <String, int>{
-        "statusCode": response.statusCode!
-      };
+      final result = <String, int>{"statusCode": response.statusCode!};
       decodedResponse.addEntries(
         result.entries.map(
           (e) => MapEntry(e.key, e.value),
@@ -63,10 +54,7 @@ class Invoker extends GetxController {
       );
       return decodedResponse;
     } else {
-      Map<String, dynamic> reply = {
-        "statusCode": response.statusCode,
-        "message": "Server Error"
-      };
+      Map<String, dynamic> reply = {"statusCode": response.statusCode, "message": "Server Error"};
       return reply;
     }
   }
@@ -75,10 +63,7 @@ class Invoker extends GetxController {
     final dataToEncrypt = jsonEncode(body);
     final encryptedData = AES.encryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), dataToEncrypt);
 
-    Map<String, dynamic> formData = {
-      "STOKEN": sessiontokenController.sessiontokenModel.sessiontoken.value,
-      "querystring": encryptedData
-    };
+    Map<String, dynamic> formData = {"STOKEN": sessiontokenController.sessiontokenModel.sessiontoken.value, "querystring": encryptedData};
     final response = await apiService.postData(API, formData);
 
     if (response.statusCode == 200) {
@@ -86,17 +71,11 @@ class Invoker extends GetxController {
       String encryptedResponse = responseData['encryptedResponse'];
       final decryptedResponse = AES.decryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), encryptedResponse);
       Map<String, dynamic> decodedResponse = jsonDecode(decryptedResponse);
-      final result = <String, int>{
-        "statusCode": response.statusCode!
-      };
+      final result = <String, int>{"statusCode": response.statusCode!};
       decodedResponse.addEntries(result.entries.map((e) => MapEntry(e.key, e.value)));
-
       return decodedResponse;
     } else {
-      Map<String, dynamic> reply = {
-        "statusCode": response.statusCode,
-        "message": "Server Error"
-      };
+      Map<String, dynamic> reply = {"statusCode": response.statusCode, "message": "Server Error"};
       return reply;
     }
   }
@@ -113,9 +92,7 @@ class Invoker extends GetxController {
       String encryptedResponse = responseData['encryptedResponse'];
       final decryptedResponse = AES.decryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), encryptedResponse);
       Map<String, dynamic> decodedResponse = jsonDecode(decryptedResponse);
-      final result = <String, int>{
-        "statusCode": response.statusCode!
-      };
+      final result = <String, int>{"statusCode": response.statusCode!};
       decodedResponse.addEntries(
         result.entries.map(
           (e) => MapEntry(e.key, e.value),
@@ -124,10 +101,7 @@ class Invoker extends GetxController {
 
       return decodedResponse;
     } else {
-      Map<String, dynamic> reply = {
-        "statusCode": response.statusCode,
-        "message": "Server Error"
-      };
+      Map<String, dynamic> reply = {"statusCode": response.statusCode, "message": "Server Error"};
       return reply;
     }
   }
@@ -147,17 +121,12 @@ class Invoker extends GetxController {
       String encryptedResponse = responseData['encryptedResponse'];
       final decryptedResponse = AES.decryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), encryptedResponse);
       Map<String, dynamic> decodedResponse = jsonDecode(decryptedResponse);
-      final result = <String, int>{
-        "statusCode": response.statusCode!
-      };
+      final result = <String, int>{"statusCode": response.statusCode!};
       decodedResponse.addEntries(result.entries.map((e) => MapEntry(e.key, e.value)));
 
       return decodedResponse;
     } else {
-      Map<String, dynamic> reply = {
-        "statusCode": response.statusCode,
-        "message": "Server Error"
-      };
+      Map<String, dynamic> reply = {"statusCode": response.statusCode, "message": "Server Error"};
       return reply;
     }
   }

@@ -52,4 +52,8 @@ class SalesController extends GetxController {
   void updateselectedIndices(List<int> value) {
     salesModel.selectedIndices.value = value;
   }
+
+  void updatetype(int value) {
+    salesModel.type.value = value;
+  }
 }

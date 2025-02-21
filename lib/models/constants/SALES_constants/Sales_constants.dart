@@ -12,4 +12,5 @@ class SalesModel {
   final pdfFile = Rxn<File>();
   final selectedIndices = <int>[].obs;
   final RxBool isAllSelected = false.obs;
+  final type = 0.obs;
 }

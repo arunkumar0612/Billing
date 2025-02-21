@@ -60,6 +60,7 @@ dependencies:
   dropdown_textfield: ^1.2.0
   another_flushbar: ^1.12.30
   animated_text_kit: ^4.2.3
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -76,7 +77,6 @@ flutter:
     - assets/fonts/
     - assets/fonts/Helvetica.ttf
     - assets/fonts/Helvetica-Bold.ttf
-
   fonts:
     - family: Poppins
       fonts:

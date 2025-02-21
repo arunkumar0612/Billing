@@ -1,3 +1,4 @@
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +12,7 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
 import 'package:ssipl_billing/services/SALES/sales_service.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
 import 'package:ssipl_billing/views/screens/SALES/Sales_chart.dart';
 import '../../../controllers/SALEScontrollers/Sales_actions.dart';
 
@@ -40,6 +42,7 @@ class _Sales_ClientState extends State<Sales_Client> {
   @override
   void initState() {
     super.initState();
+    clientreqController.clientReqModel.cntMulti.value = MultiValueDropDownController();
     // widget.GetCustomerList(context);
     salesController.updateshowcustomerprocess(null);
     salesController.updatecustomerId(0);
@@ -78,7 +81,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                           width: 10,
                         ),
                         const Text(
-                          'Sales Customer',
+                          'Sales',
                           style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text13),
                         ),
                       ],
@@ -102,7 +105,6 @@ class _Sales_ClientState extends State<Sales_Client> {
                             ),
                           ),
                         ),
-
                         const SizedBox(width: 10),
                         SizedBox(
                           width: 400,
@@ -182,64 +184,9 @@ class _Sales_ClientState extends State<Sales_Client> {
                             ],
                           ),
                         ),
-
                         const SizedBox(
                           width: 10,
                         ),
-                        // ShaderMask(
-                        //   shaderCallback: (bounds) => const LinearGradient(
-                        //     colors: [Primary_colors.Color5, Primary_colors.Color4], // Example gradient
-                        //     begin: Alignment.topLeft,
-                        //     end: Alignment.bottomRight,
-                        //   ).createShader(bounds),
-                        //   child: const Icon(
-                        //     Icons.people,
-                        //     size: 20.0,
-                        //   ),
-                        // ),
-                        // Container(
-                        //   width: 35, // Diameter of the CircleAvatar (2 * radius)
-                        //   height: 35, // Diameter of the CircleAvatar (2 * radius)
-                        //   decoration: const BoxDecoration(
-                        //     shape: BoxShape.circle,
-                        //     gradient: LinearGradient(
-                        //       colors: [
-                        //         Primary_colors.Color3,
-                        //         Primary_colors.Color4,
-                        //       ],
-                        //       begin: Alignment.topLeft,
-                        //       end: Alignment.bottomRight,
-                        //     ),
-                        //   ),
-                        //   child: const CircleAvatar(
-                        //     backgroundColor: Colors.transparent, // Make background transparent to show gradient
-                        //     radius: 20,
-                        //     child: Icon(
-                        //       Icons.person,
-                        //       color: Primary_colors.Color1,
-                        //     ),
-                        //   ),
-                        // ),
-                        // const SizedBox(
-                        //   width: 10,
-                        // ),
-                        // const Column(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   crossAxisAlignment: CrossAxisAlignment.start,
-                        //   children: [
-                        //     Text(
-                        //       'User Name',
-                        //       style: TextStyle(
-                        //         color: Primary_colors.Color1,
-                        //         fontSize: Primary_font_size.Text8,
-                        //       ),
-                        //     ),
-                        //     Text(
-                        //       'User',
-                        //       style: TextStyle(color: Color.fromARGB(255, 198, 198, 198), fontSize: Primary_font_size.Text6),
-                        //     )
-                        //   ],
-                        // )
                       ],
                     ),
                   ],
@@ -286,7 +233,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                           const Padding(
                                             padding: EdgeInsets.only(left: 15),
                                             child: Text(
-                                              'PROCESS DATA',
+                                              'SALES DATA',
                                               style: TextStyle(letterSpacing: 1, wordSpacing: 3, color: Primary_colors.Color3, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
                                             ),
                                           ),
@@ -362,7 +309,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                               children: [
                                                 Column(
                                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
                                                   children: [
                                                     const Text(
                                                       'TOTAL',
@@ -397,7 +344,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                 ),
                                                 Column(
                                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
                                                   children: [
                                                     const Text(
                                                       'RECEIVED',
@@ -432,7 +379,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                 ),
                                                 Column(
                                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
                                                   children: [
                                                     const Text(
                                                       'PENDING',
@@ -478,40 +425,9 @@ class _Sales_ClientState extends State<Sales_Client> {
                             const SizedBox(
                               width: 15,
                             ),
-                            // Column(
-                            //   mainAxisAlignment: MainAxisAlignment.center,
-                            //   children: [
-                            //     Container(
-                            //       height: 180,
-                            //       width: 2,
-                            //       color: const Color.fromARGB(255, 111, 110, 110),
-                            //     ),
-                            //   ],
-                            // ),
-                            // const SizedBox(
-                            //   width: 10,
-                            // ),
                             Expanded(
                               child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16),
-                                    // gradient: const LinearGradient(
-                                    //   colors: [
-                                    //     Primary_colors.Light,
-                                    //     Color.fromARGB(255, 40, 39, 59),
-                                    //     Primary_colors.Light,
-                                    //   ],
-                                    //   begin: Alignment.topLeft,
-                                    //   end: Alignment.bottomRight,
-                                    // ),
-                                    // boxShadow: const [
-                                    //   BoxShadow(
-                                    //     color: Colors.black26,
-                                    //     offset: Offset(0, 6),
-                                    //     blurRadius: 12,
-                                    //   ),
-                                    // ],
-                                    color: Primary_colors.Light),
+                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Primary_colors.Light),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                                   child: Column(
@@ -548,7 +464,15 @@ class _Sales_ClientState extends State<Sales_Client> {
                                       Row(
                                         children: [
                                           Expanded(
-                                            child: _buildIconWithLabel(image: 'assets/images/viewarchivelist.png', label: 'Archive List', color: Primary_colors.Color8, onPressed: () {}),
+                                            child: _buildIconWithLabel(
+                                                image: salesController.salesModel.type.value == 0 ? 'assets/images/viewarchivelist.png' : 'assets/images/mainlist.png',
+                                                label: salesController.salesModel.type.value == 0 ? 'Archive List' : 'Main List',
+                                                color: Primary_colors.Color8,
+                                                onPressed: () {
+                                                  salesController.salesModel.selectedIndices.clear();
+                                                  salesController.updatetype(salesController.salesModel.type.value == 0 ? 1 : 0);
+                                                  widget.GetProcessList(context, salesController.salesModel.customerId.value!);
+                                                }),
                                           ),
                                           Expanded(
                                             child: _buildIconWithLabel(image: 'assets/images/settings.png', label: 'Settings', color: Primary_colors.Dark, onPressed: () {}),
@@ -572,29 +496,9 @@ class _Sales_ClientState extends State<Sales_Client> {
                           padding: const EdgeInsets.all(0),
                           child: Column(
                             children: [
-                              // const Text(
-                              //   'Invoice status',
-                              //   style: TextStyle(color: Primary_colors.Color1, fontSize: 20),
-                              // ),
-                              // const SizedBox(
-                              //   height: 10,
-                              // ),
                               Expanded(
                                 child: Container(
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Primary_colors.Light
-                                      // gradient: const LinearGradient(
-                                      //   colors: [Primary_colors.Light, Color.fromARGB(255, 40, 39, 59), Primary_colors.Light],
-                                      //   begin: Alignment.topLeft,
-                                      //   end: Alignment.bottomRight,
-                                      // ),
-                                      // boxShadow: const [
-                                      //   BoxShadow(
-                                      //     color: Colors.black12,
-                                      //     offset: Offset(0, 10),
-                                      //     blurRadius: 20,
-                                      //   ),
-                                      // ],
-                                      ),
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Primary_colors.Light),
                                   child: const Padding(padding: EdgeInsets.all(16), child: Sales_chart()),
                                 ),
                               )
@@ -620,42 +524,105 @@ class _Sales_ClientState extends State<Sales_Client> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Padding(
-                                    padding: EdgeInsets.only(left: 15),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 15),
                                     child: Text(
-                                      'ACTIVE PROCESS LIST',
-                                      style: TextStyle(letterSpacing: 1, wordSpacing: 3, color: Primary_colors.Color3, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
+                                      salesController.salesModel.type.value == 0 ? 'ACTIVE PROCESS LIST' : "ARCHIVED PROCESS LIST",
+                                      style: TextStyle(
+                                          letterSpacing: 1,
+                                          wordSpacing: 3,
+                                          color: salesController.salesModel.type.value == 0 ? Primary_colors.Color3 : const Color.fromARGB(255, 254, 113, 113),
+                                          fontSize: Primary_font_size.Text10,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                   Row(
                                     children: [
                                       if (salesController.salesModel.selectedIndices.isNotEmpty)
-                                        Container(
-                                          width: 80,
+                                        SizedBox(
+                                          width: 150,
                                           height: 30,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                            color: Primary_colors.Color3,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black.withOpacity(0.3), // Shadow color
-                                                blurRadius: 6, // Blur effect
-                                                spreadRadius: 2, // Spread effect
-                                                offset: const Offset(2, 3), // Shadow position
+                                          child: Obx(() {
+                                            var selectedValue = ''.obs; // Observable variable to handle value resetting
+
+                                            return DecoratedBox(
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(147, 100, 110, 255), // Background color
+                                                borderRadius: BorderRadius.circular(30),
+                                                border: Border.all(color: Primary_colors.Color3),
                                               ),
-                                            ],
-                                          ),
-                                          child: TextButton(
-                                            onPressed: () {
-                                              // widget.DeleteProcess(
-                                              //     context, salesController.salesModel.selectedIndices.map((index) => salesController.salesModel.processList[index].processid).toList());
-                                            },
-                                            child: const Text(
-                                              'Delete',
-                                              style: TextStyle(color: Primary_colors.Color1),
-                                            ),
-                                          ),
-                                        )
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                                child: DropdownButton<String>(
+                                                  isExpanded: true,
+                                                  value: selectedValue.value.isEmpty ? null : selectedValue.value,
+                                                  hint: const Center(
+                                                    child: Text(
+                                                      'Select an action',
+                                                      style: TextStyle(color: Primary_colors.Color1, fontSize: 12),
+                                                      textAlign: TextAlign.center,
+                                                    ),
+                                                  ),
+                                                  icon: const Icon(Icons.arrow_drop_down, color: Primary_colors.Color1),
+                                                  style: const TextStyle(fontSize: 13, color: Primary_colors.Color1, height: 1.5),
+                                                  underline: const SizedBox(), // Remove default underline
+                                                  dropdownColor: Primary_colors.Color3,
+                                                  onChanged: (String? newValue) {
+                                                    if (newValue != null) {
+                                                      selectedValue.value = newValue;
+
+                                                      if (newValue == 'Delete') {
+                                                        Basic_dialog(
+                                                          context: context,
+                                                          title: 'Confirmation',
+                                                          content: 'Are you sure you want to delete this process?',
+                                                          showCancel: true,
+                                                          onOk: () {
+                                                            widget.DeleteProcess(
+                                                              context,
+                                                              salesController.salesModel.selectedIndices.map((index) => salesController.salesModel.processList[index].processid).toList(),
+                                                            );
+                                                          },
+                                                        );
+                                                      } else if (newValue == 'Archive' || newValue == 'Unarchive') {
+                                                        Basic_dialog(
+                                                          context: context,
+                                                          title: 'Confirmation',
+                                                          content: 'Are you sure you want to ${newValue.toLowerCase()} this process?',
+                                                          showCancel: true,
+                                                          onOk: () {
+                                                            widget.ArchiveProcesscontrol(
+                                                              context,
+                                                              salesController.salesModel.selectedIndices.map((index) => salesController.salesModel.processList[index].processid).toList(),
+                                                              salesController.salesModel.type.value == 0 ? 1 : 0, // 1 for Archive, 0 for Unarchive
+                                                            );
+                                                          },
+                                                        );
+                                                        selectedValue.value = '';
+                                                      } else if (newValue == 'Modify') {
+                                                        // print('Modify selected');
+                                                      }
+                                                    }
+                                                  },
+                                                  items: [
+                                                    DropdownMenuItem(
+                                                      value: salesController.salesModel.type.value == 0 ? 'Archive' : 'Unarchive',
+                                                      child: Center(child: Text(salesController.salesModel.type.value == 0 ? 'Archive' : 'Unarchive')),
+                                                    ),
+                                                    const DropdownMenuItem(
+                                                      value: 'Modify',
+                                                      child: Center(child: Text('Modify')),
+                                                    ),
+                                                    const DropdownMenuItem(
+                                                      value: 'Delete',
+                                                      child: Center(child: Text('Delete')),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                        ),
                                     ],
                                   )
                                 ],
@@ -1000,95 +967,6 @@ class _Sales_ClientState extends State<Sales_Client> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      // Expanded(
-                      //   flex: 1,
-                      //   child: Column(
-                      //     children: [
-                      //       Row(
-                      //         mainAxisAlignment: MainAxisAlignment.end,
-                      //         children: [
-                      //           Expanded(
-                      //             child: SizedBox(
-                      //               height: 40,
-                      //               child: TextFormField(
-                      //                 style: const TextStyle(fontSize: 13, color: Colors.white),
-                      //                 decoration: InputDecoration(
-                      //                   contentPadding: const EdgeInsets.all(1),
-                      //                   filled: true,
-                      //                   fillColor: Primary_colors.Light,
-                      //                   focusedBorder: OutlineInputBorder(
-                      //                     borderRadius: BorderRadius.circular(30),
-                      //                     borderSide: const BorderSide(
-                      //                       color: Color.fromARGB(0, 0, 0, 0),
-                      //                     ),
-                      //                   ),
-                      //                   enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Colors.black)),
-                      //                   hintStyle: const TextStyle(
-                      //                     fontSize: Primary_font_size.Text7,
-                      //                     color: Color.fromARGB(255, 167, 165, 165),
-                      //                   ),
-                      //                   hintText: 'Search Sales Client from the list',
-                      //                   prefixIcon: const Icon(
-                      //                     Icons.search,
-                      //                     color: Colors.white,
-                      //                   ),
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //           ),
-                      //           IconButton(
-                      //             onPressed: () {},
-                      //             icon: const Icon(
-                      //               size: 30,
-                      //               Icons.filter_alt,
-                      //               color: Colors.white,
-                      //             ),
-                      //           ),
-                      //           const SizedBox(width: 5),
-                      //           PopupMenuButton<String>(
-                      //             color: const Color.fromARGB(255, 86, 86, 114),
-                      //             onSelected: (String value) async {
-                      //               await widget.Generate_client_reqirement_dialougebox(value, context);
-                      //               salesController.updateshowcustomerprocess(null);
-                      //               widget.GetProcesscustomerList(context);
-                      //               widget.GetProcessList(context, 0);
-                      //             },
-                      //             itemBuilder: (BuildContext context) {
-                      //               return <PopupMenuEntry<String>>[
-                      //                 const PopupMenuItem<String>(
-                      //                   value: "Enquiry",
-                      //                   child: Text(
-                      //                     "Enquiry",
-                      //                     style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                      //                   ),
-                      //                 ),
-                      //                 const PopupMenuItem<String>(
-                      //                   value: "Customer",
-                      //                   child: Text(
-                      //                     "Customer",
-                      //                     style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                      //                   ),
-                      //                 ),
-                      //               ];
-                      //             },
-                      //             child: const Icon(size: 30, Icons.add, color: Primary_colors.Color3),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //       const SizedBox(height: 10),
-                      //       Expanded(
-                      //         child: ListView.builder(
-                      //           itemCount: salesController.salesModel.processcustomerList.length,
-                      //           itemBuilder: (context, index) {
-                      //             final customername = salesController.salesModel.processcustomerList[index].customerName;
-                      //             final customerid = salesController.salesModel.processcustomerList[index].customerId;
-                      //             return _buildSales_ClientCard(customername, customerid, index);
-                      //           },
-                      //         ),
-                      //       )
-                      //     ],
-                      //   ),
-                      // ),
                       Expanded(
                           flex: 1,
                           child: Container(
@@ -1188,7 +1066,6 @@ class _Sales_ClientState extends State<Sales_Client> {
                       salesController.updateshowcustomerprocess(null);
                       salesController.updatecustomerId(0);
                       widget.GetProcessList(context, salesController.salesModel.customerId.value!);
-                      print('object');
                     },
             ),
           ),

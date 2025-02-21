@@ -47,18 +47,14 @@ class _Verify_OTPState extends State<Verify_OTP> {
         child: SizedBox(
           width: 500,
           child: Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: const Color.fromARGB(255, 121, 121, 135).withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 4,
-                  offset: const Offset(0, 1), // Shadow offset
-                ),
-              ],
-              borderRadius: BorderRadius.circular(10),
-              color: const Color.fromARGB(255, 33, 33, 48),
-            ),
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                color: VerifyOTPController.verifyOTPModel.indicator.value ? Colors.transparent : Primary_colors.Color3.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 4,
+                offset: const Offset(0, 1), // Shadow offset
+              ),
+            ], borderRadius: BorderRadius.circular(10), color: Primary_colors.Light),
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -161,7 +157,7 @@ class _Verify_OTPState extends State<Verify_OTP> {
 
                             widget.Verify_OTP(context);
                           } else {
-                            Basic_dialog(context: context, title: "Error", content: "Please enter OTP Correctly!");
+                            Basic_dialog(context: context, showCancel: false, title: "Error", content: "Please enter OTP Correctly!");
                           }
                         },
                         child: Text(

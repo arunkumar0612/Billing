@@ -117,7 +117,23 @@ class AddSales {
     List<int?> branchID,
     int customer_type,
   ) {
-    return AddSales(title: title, name: name, emailId: emailId, phoneNo: phoneNo, address: address, gst: gst, billingAddressName: billingAddressName, billingAddress: billingAddress, modeOfRequest: modeOfRequest, morReference: morReference, product: product, notes: notes, date: date, companyID: companyID, branchID: branchID, customer_type: customer_type);
+    return AddSales(
+        title: title,
+        name: name,
+        emailId: emailId,
+        phoneNo: phoneNo,
+        address: address,
+        gst: gst,
+        billingAddressName: billingAddressName,
+        billingAddress: billingAddress,
+        modeOfRequest: modeOfRequest,
+        morReference: morReference,
+        product: product,
+        notes: notes,
+        date: date,
+        companyID: companyID,
+        branchID: branchID,
+        customer_type: customer_type);
   }
 
   Map<String, dynamic> toJson() {
@@ -182,7 +198,16 @@ class Company {
   String? contact_number;
   String? gst_number;
 
-  Company({required this.companyId, required this.companyName, required this.emailid, required this.client_addressname, required this.client_address, required this.billing_addressname, required this.billing_address, required this.contact_number, required this.gst_number});
+  Company(
+      {required this.companyId,
+      required this.companyName,
+      required this.emailid,
+      required this.client_addressname,
+      required this.client_address,
+      required this.billing_addressname,
+      required this.billing_address,
+      required this.contact_number,
+      required this.gst_number});
 
   // Factory method to create an instance from JSON
   factory Company.fromJson(CMDlResponse json, i) {
@@ -227,7 +252,17 @@ class Branch {
   String? contact_number;
   String? gst_number;
 
-  Branch({required this.Branch_id, required this.Branch_name, required this.Branch_code, required this.client_addressname, required this.client_address, required this.billing_addressname, required this.billing_address, required this.emailid, required this.contact_number, required this.gst_number});
+  Branch(
+      {required this.Branch_id,
+      required this.Branch_name,
+      required this.Branch_code,
+      required this.client_addressname,
+      required this.client_address,
+      required this.billing_addressname,
+      required this.billing_address,
+      required this.emailid,
+      required this.contact_number,
+      required this.gst_number});
 
   // Factory method to create an instance from JSON
   factory Branch.fromJson(CMDlResponse json, i) {

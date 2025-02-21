@@ -18,26 +18,23 @@ mixin QuotedetailsService {
 
   void get_requiredData(context) async {
     try {
-      Map<String, dynamic> body = {
-        "eventid": 1,
-        "eventtype": "quotation"
-      };
+      Map<String, dynamic> body = {"eventid": 1, "eventtype": "quotation"};
       Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.sales_fetchEventNumber_API);
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
-          // await Basic_dialog(context: context, title: 'Enquiry - ID', content: value.message!, onOk: () {});
+          // await Basic_dialog(context: context,showCancel: false, title: 'Enquiry - ID', content: value.message!, onOk: () {});
           quoteController.update_requiredData(value);
           // print(clientreqController.clientReqModel.Enq_ID.value);
           // salesController.addToCustomerList(value);
         } else {
-          await Basic_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 }

@@ -25,7 +25,6 @@ import '../../views/screens/SALES/Generate_client_req/generate_clientreq.dart';
 import '../../views/screens/SALES/Generate_creditNote/generateCredit.dart';
 import '../APIservices/invoker.dart';
 // import 'package:ssipl_billing/view_send_pdf.dart';
-import 'package:another_flushbar/flushbar.dart';
 
 mixin SalesServices {
   final Invoker apiController = Get.find<Invoker>();
@@ -45,22 +44,22 @@ mixin SalesServices {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          await Basic_dialog(context: context, title: 'Customer List', content: "Customer List fetched successfully", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Customer List', content: "Customer List fetched successfully", onOk: () {});
           salesController.addToCustomerList(value);
           // if (kDebugMode) {
           //   print("*****************${salesController.salesModel.customerList[1].customerId}");
           // }
         } else {
-          await Basic_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
       if (kDebugMode) {
         print(response);
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 
@@ -70,72 +69,65 @@ mixin SalesServices {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          // await Basic_dialog(context: context, title: 'Processcustomer List', content: "Processcustomer List fetched successfully", onOk: () {});
+          // await Basic_dialog(context: context,showCancel: false, title: 'Processcustomer List', content: "Processcustomer List fetched successfully", onOk: () {});
           salesController.salesModel.processcustomerList.clear();
           salesController.addToProcesscustomerList(value);
 
           // salesController.updatecustomerId(salesController.salesModel.processcustomerList[salesController.salesModel.showcustomerprocess.value!].customerId);
         } else {
-          await Basic_dialog(context: context, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 
   void GetProcessList(context, int customerid) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyQueryString({
-        "customerid": customerid
-      }, API.sales_getprocesslist_API);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"customerid": customerid, "listtype": salesController.salesModel.type.value}, API.sales_getprocesslist_API);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          // await Basic_dialog(context: context, title: 'Process List', content: "Process List fetched successfully", onOk: () {});
+          // await Basic_dialog(context: context,showCancel: false, title: 'Process List', content: "Process List fetched successfully", onOk: () {});
           salesController.salesModel.processList.clear();
           salesController.addToProcessList(value);
         } else {
-          await Basic_dialog(context: context, title: 'Process List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Process List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 
   void UpdateFeedback(context, int customerid, int eventid, feedback) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyQueryString({
-        "eventid": eventid,
-        "feedback": feedback
-      }, API.sales_addfeedback_API);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid, "feedback": feedback}, API.sales_addfeedback_API);
       if (response?['statusCode'] == 200) {
         CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {
           GetProcessList(context, customerid);
-          showCustomSnackBar(context);
-          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+          Basic_SnackBar(context, "Feedback added successfully");
+          // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 
   void GetPDFfile(context, int eventid) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyQueryString({
-        "eventid": eventid
-      }, API.sales_getbinaryfile_API);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid}, API.sales_getbinaryfile_API);
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
@@ -154,56 +146,59 @@ mixin SalesServices {
             );
           }
 
-          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+          // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e");
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 
-  void showCustomSnackBar(BuildContext context) {
-    Flushbar(
-      message: "Feedback added successfully",
-      margin: const EdgeInsets.all(10),
-      borderRadius: BorderRadius.circular(10),
-      backgroundColor: Primary_colors.Color3,
-      icon: const Icon(Icons.check_circle, color: Primary_colors.Color1),
-      duration: const Duration(seconds: 3),
-      flushbarPosition: FlushbarPosition.BOTTOM, // Change to BOTTOM if needed
-      animationDuration: const Duration(milliseconds: 500),
-      leftBarIndicatorColor: Primary_colors.Color1,
-      boxShadows: [
-        BoxShadow(
-          color: Primary_colors.Color3.withOpacity(0.3),
-          blurRadius: 10,
-          spreadRadius: 2,
-        ),
-      ],
-    ).show(context);
+  void DeleteProcess(context, List processid) async {
+    if (kDebugMode) {
+      print(processid.toString());
+    }
+    Map<String, dynamic>? response = await apiController.GetbyQueryString({
+      "processid": processid,
+    }, API.sales_deleteprocess_API);
+    if (response?['statusCode'] == 200) {
+      CMResponse value = CMResponse.fromJson(response ?? {});
+      if (value.code) {
+        salesController.salesModel.selectedIndices.clear();
+        GetProcessList(context, salesController.salesModel.customerId.value!);
+        Basic_SnackBar(context, "Process Deleted successfully");
+        // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+      } else {
+        await Basic_dialog(context: context, showCancel: false, title: 'Delete Process Error', content: value.message ?? "", onOk: () {});
+      }
+    } else {
+      Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+    }
   }
 
-  void DeleteProcess(context, List processid) async {
-    print(processid.toString());
-    // Map<String, dynamic>? response = await apiController.GetbyQueryString({
-    //   "processid": processid,
-    // }, API.sales_addfeedback_API);
-    // if (response?['statusCode'] == 200) {
-    //   CMResponse value = CMResponse.fromJson(response ?? {});
-    //   if (value.code) {
-    //     // GetProcessList(context, processid);
-    //     showCustomSnackBar(context);
-    //     // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
-    //   } else {
-    //     await Basic_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
-    //   }
-    // } else {
-    //   Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
-    // }
+  void ArchiveProcesscontrol(context, List processid, int type) async {
+    if (kDebugMode) {
+      print(processid.toString());
+    }
+    Map<String, dynamic>? response = await apiController.GetbyQueryString({"processid": processid, "type": type}, API.sales_archiveprocess_API);
+    if (response?['statusCode'] == 200) {
+      CMResponse value = CMResponse.fromJson(response ?? {});
+      if (value.code) {
+        salesController.salesModel.selectedIndices.clear();
+        GetProcessList(context, salesController.salesModel.customerId.value!);
+        Basic_SnackBar(context, type == 0 ? "Process Unarchived successfully" : "Process Archived successfully");
+        // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+      } else {
+        await Basic_dialog(
+            context: context, showCancel: false, title: type == 0 ? 'Error : Failed to unarchive the process.' : 'Error : Failed to archive the process.', content: value.message ?? "", onOk: () {});
+      }
+    } else {
+      Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+    }
   }
 
   dynamic Generate_client_reqirement_dialougebox(String value, context) async {
@@ -328,7 +323,16 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( invoiceController.invoiceModel.Invoice_gstTotals.isNotEmpty)
-                    if ((invoiceController.invoiceModel.Invoice_products.isNotEmpty) || (invoiceController.invoiceModel.Invoice_noteList.isNotEmpty) || (invoiceController.invoiceModel.Invoice_recommendationList.isNotEmpty) || (invoiceController.invoiceModel.clientAddressNameController.value.text != "") || (invoiceController.invoiceModel.clientAddressController.value.text != "") || (invoiceController.invoiceModel.billingAddressNameController.value.text != "") || (invoiceController.invoiceModel.billingAddressController.value.text != "") || (invoiceController.invoiceModel.Invoice_no.value != "") || (invoiceController.invoiceModel.TitleController.value.text != "") || (invoiceController.invoiceModel.Invoice_table_heading.value != "")) {
+                    if ((invoiceController.invoiceModel.Invoice_products.isNotEmpty) ||
+                        (invoiceController.invoiceModel.Invoice_noteList.isNotEmpty) ||
+                        (invoiceController.invoiceModel.Invoice_recommendationList.isNotEmpty) ||
+                        (invoiceController.invoiceModel.clientAddressNameController.value.text != "") ||
+                        (invoiceController.invoiceModel.clientAddressController.value.text != "") ||
+                        (invoiceController.invoiceModel.billingAddressNameController.value.text != "") ||
+                        (invoiceController.invoiceModel.billingAddressController.value.text != "") ||
+                        (invoiceController.invoiceModel.Invoice_no.value != "") ||
+                        (invoiceController.invoiceModel.TitleController.value.text != "") ||
+                        (invoiceController.invoiceModel.Invoice_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -437,7 +441,16 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( quoteController.quoteModel.Quote_gstTotals.isNotEmpty)
-                    if ((quoteController.quoteModel.Quote_products.isNotEmpty) || (quoteController.quoteModel.Quote_noteList.isNotEmpty) || (quoteController.quoteModel.Quote_recommendationList.isNotEmpty) || (quoteController.quoteModel.clientAddressNameController.value.text != "") || (quoteController.quoteModel.clientAddressController.value.text != "") || (quoteController.quoteModel.billingAddressNameController.value.text != "") || (quoteController.quoteModel.billingAddressController.value.text != "") || (quoteController.quoteModel.Quote_no.value != "") || (quoteController.quoteModel.TitleController.value.text != "") || (quoteController.quoteModel.Quote_table_heading.value != "")) {
+                    if ((quoteController.quoteModel.Quote_products.isNotEmpty) ||
+                        (quoteController.quoteModel.Quote_noteList.isNotEmpty) ||
+                        (quoteController.quoteModel.Quote_recommendationList.isNotEmpty) ||
+                        (quoteController.quoteModel.clientAddressNameController.value.text != "") ||
+                        (quoteController.quoteModel.clientAddressController.value.text != "") ||
+                        (quoteController.quoteModel.billingAddressNameController.value.text != "") ||
+                        (quoteController.quoteModel.billingAddressController.value.text != "") ||
+                        (quoteController.quoteModel.Quote_no.value != "") ||
+                        (quoteController.quoteModel.TitleController.value.text != "") ||
+                        (quoteController.quoteModel.Quote_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -551,7 +564,15 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( rfqController.rfqModel.RFQ_gstTotals.isNotEmpty)
-                    if ((rfqController.rfqModel.RFQ_products.isNotEmpty) || (rfqController.rfqModel.RFQ_noteList.isNotEmpty) || (rfqController.rfqModel.RFQ_recommendationList.isNotEmpty) || (rfqController.rfqModel.vendor_address_controller.value.text != "") || (rfqController.rfqModel.vendor_email_controller.value.text != "") || (rfqController.rfqModel.vendor_name_controller.value.text != "") || (rfqController.rfqModel.vendor_phone_controller.value.text != "") || (rfqController.rfqModel.RFQ_no.value != "") || (rfqController.rfqModel.RFQ_table_heading.value != "")) {
+                    if ((rfqController.rfqModel.RFQ_products.isNotEmpty) ||
+                        (rfqController.rfqModel.RFQ_noteList.isNotEmpty) ||
+                        (rfqController.rfqModel.RFQ_recommendationList.isNotEmpty) ||
+                        (rfqController.rfqModel.vendor_address_controller.value.text != "") ||
+                        (rfqController.rfqModel.vendor_email_controller.value.text != "") ||
+                        (rfqController.rfqModel.vendor_name_controller.value.text != "") ||
+                        (rfqController.rfqModel.vendor_phone_controller.value.text != "") ||
+                        (rfqController.rfqModel.RFQ_no.value != "") ||
+                        (rfqController.rfqModel.RFQ_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -667,7 +688,16 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
 
-                    if ((dcController.dcModel.Delivery_challan_products.isNotEmpty) || (dcController.dcModel.Delivery_challan_noteList.isNotEmpty) || (dcController.dcModel.Delivery_challan_recommendationList.isNotEmpty) || dcController.dcModel.clientAddressNameController.value.text != "" || dcController.dcModel.clientAddressController.value.text != "" || dcController.dcModel.billingAddressNameController.value.text != "" || dcController.dcModel.billingAddressController.value.text != "" || dcController.dcModel.Delivery_challan_no.value != "" || dcController.dcModel.TitleController.value.text != "" || dcController.dcModel.Delivery_challan_table_heading.value != "") {
+                    if ((dcController.dcModel.Delivery_challan_products.isNotEmpty) ||
+                        (dcController.dcModel.Delivery_challan_noteList.isNotEmpty) ||
+                        (dcController.dcModel.Delivery_challan_recommendationList.isNotEmpty) ||
+                        dcController.dcModel.clientAddressNameController.value.text != "" ||
+                        dcController.dcModel.clientAddressController.value.text != "" ||
+                        dcController.dcModel.billingAddressNameController.value.text != "" ||
+                        dcController.dcModel.billingAddressController.value.text != "" ||
+                        dcController.dcModel.Delivery_challan_no.value != "" ||
+                        dcController.dcModel.TitleController.value.text != "" ||
+                        dcController.dcModel.Delivery_challan_table_heading.value != "") {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -758,7 +788,15 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( debitController.debitModel.Debit_gstTotals.isNotEmpty)
-                    if ((debitController.debitModel.Debit_products.isNotEmpty) || (debitController.debitModel.Debit_noteList.isNotEmpty) || (debitController.debitModel.Debit_recommendationList.isNotEmpty) || (debitController.debitModel.clientAddressNameController.value.text != "") || (debitController.debitModel.clientAddressController.value.text != "") || (debitController.debitModel.billingAddressNameController.value.text != "") || (debitController.debitModel.billingAddressController.value.text != "") || (debitController.debitModel.Debit_no.value != "") || (debitController.debitModel.Debit_table_heading.value != "")) {
+                    if ((debitController.debitModel.Debit_products.isNotEmpty) ||
+                        (debitController.debitModel.Debit_noteList.isNotEmpty) ||
+                        (debitController.debitModel.Debit_recommendationList.isNotEmpty) ||
+                        (debitController.debitModel.clientAddressNameController.value.text != "") ||
+                        (debitController.debitModel.clientAddressController.value.text != "") ||
+                        (debitController.debitModel.billingAddressNameController.value.text != "") ||
+                        (debitController.debitModel.billingAddressController.value.text != "") ||
+                        (debitController.debitModel.Debit_no.value != "") ||
+                        (debitController.debitModel.Debit_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -863,7 +901,15 @@ mixin SalesServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( creditController.creditModel.Credit_gstTotals.isNotEmpty)
-                    if ((creditController.creditModel.Credit_products.isNotEmpty) || (creditController.creditModel.Credit_noteList.isNotEmpty) || (creditController.creditModel.Credit_recommendationList.isNotEmpty) || (creditController.creditModel.clientAddressNameController.value.text != "") || (creditController.creditModel.clientAddressController.value.text != "") || (creditController.creditModel.billingAddressNameController.value.text != "") || (creditController.creditModel.billingAddressController.value.text != "") || (creditController.creditModel.Credit_no.value != "") || (creditController.creditModel.Credit_table_heading.value != "")) {
+                    if ((creditController.creditModel.Credit_products.isNotEmpty) ||
+                        (creditController.creditModel.Credit_noteList.isNotEmpty) ||
+                        (creditController.creditModel.Credit_recommendationList.isNotEmpty) ||
+                        (creditController.creditModel.clientAddressNameController.value.text != "") ||
+                        (creditController.creditModel.clientAddressController.value.text != "") ||
+                        (creditController.creditModel.billingAddressNameController.value.text != "") ||
+                        (creditController.creditModel.billingAddressController.value.text != "") ||
+                        (creditController.creditModel.Credit_no.value != "") ||
+                        (creditController.creditModel.Credit_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,

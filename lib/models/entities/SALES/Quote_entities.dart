@@ -25,23 +25,23 @@ class Recommendation {
   }
 }
 
-class Note {
-  final String notename;
+// class Note {
+//   final String notename;
 
-  Note({required this.notename});
+//   Note({required this.notename});
 
-  factory Note.fromJson(Map<String, dynamic> json) {
-    return Note(
-      notename: json['notename'] as String,
-    );
-  }
+//   factory Note.fromJson(Map<String, dynamic> json) {
+//     return Note(
+//       notename: json['notename'] as String,
+//     );
+//   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'notename': notename,
-    };
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'notename': notename,
+//     };
+//   }
+// }
 
 class QuoteGSTtotals {
   final double gst;
@@ -119,7 +119,7 @@ class Post_Quotation {
   String? modeOfRequest;
   String? morReference;
   List<QuoteProduct>? product;
-  List<Note>? notes;
+  List? notes;
   String? date;
   String? quotationGenID;
   int? messageType;
@@ -156,7 +156,7 @@ class Post_Quotation {
     required String phoneNo,
     required String gst,
     required List<QuoteProduct> product,
-    required List<Note> notes,
+    required List notes,
     required String date,
     required String quotationGenID,
     required int messageType,
@@ -178,7 +178,7 @@ class Post_Quotation {
       "phoneno": phoneNo,
       "gst": gst,
       "product": product?.map((item) => item.toJson()).toList(),
-      "notes": notes?.map((item) => item.toJson()).toList(),
+      "notes": notes,
       "date": date,
       "quotationgenid": quotationGenID,
       "messagetype": messageType,

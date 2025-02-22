@@ -10,14 +10,13 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
 import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_DC/generateDC.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/generateRFQ.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../controllers/SALEScontrollers/Sales_actions.dart';
 import '../../models/constants/api.dart';
 import '../../models/entities/Response_entities.dart';
 import '../../views/components/Basic_DialogBox.dart';
-import '../../views/components/view_send_pdf.dart';
-import '../../views/screens/SALES/Generate_DC/generateDC.dart';
 import '../../views/screens/SALES/Generate_DebitNote/generateDebit.dart';
 import '../../views/screens/SALES/Generate_Invoice/generateInvoice.dart';
 import '../../views/screens/SALES/Generate_Quote/generateQuote.dart';
@@ -28,7 +27,7 @@ import '../APIservices/invoker.dart';
 
 mixin SalesServices {
   final Invoker apiController = Get.find<Invoker>();
-  final DCController dcController = Get.find<DCController>();
+  final DcController dcController = Get.find<DcController>();
   final InvoiceController invoiceController = Get.find<InvoiceController>();
   final QuoteController quoteController = Get.find<QuoteController>();
   final RFQController rfqController = Get.find<RFQController>();
@@ -307,7 +306,7 @@ mixin SalesServices {
     // }
   }
 
-  dynamic GenerateInvoice_dialougebox(context) async {
+  dynamic GenerateInvoice_dialougebox(context, eventID) async {
     await showDialog(
       context: context,
       barrierDismissible: false, // Prevents closing the dialog by clicking outside
@@ -318,10 +317,12 @@ mixin SalesServices {
           backgroundColor: Primary_colors.Dark,
           content: Stack(
             children: [
-              const SizedBox(
+              SizedBox(
                 height: 650,
                 width: 1300,
-                child: GenerateInvoice(),
+                child: GenerateInvoice(
+                  eventID: eventID,
+                ),
               ),
               Positioned(
                 top: 3,
@@ -417,7 +418,7 @@ mixin SalesServices {
     // }
   }
 
-  dynamic GenerateQuote_dialougebox(context, String quoteType) async {
+  dynamic GenerateQuote_dialougebox(context, String quoteType, int eventID) async {
     await showDialog(
       context: context,
       barrierDismissible: false, // Prevents closing the dialog by clicking outside
@@ -431,7 +432,10 @@ mixin SalesServices {
               SizedBox(
                 height: 650,
                 width: 1300,
-                child: GenerateQuote(quoteType: quoteType),
+                child: GenerateQuote(
+                  quoteType: quoteType,
+                  eventID: eventID,
+                ),
               ),
               Positioned(
                 top: 3,
@@ -648,7 +652,7 @@ mixin SalesServices {
 
 // // ##################################################################################################################################################################################################################################################################################################################################################################
 
-  dynamic GenerateDelivery_challan_dialougebox(context) async {
+  dynamic GenerateDelivery_challan_dialougebox(context, eventID) async {
     await showDialog(
       context: context,
       barrierDismissible: false, // Prevents closing the dialog by clicking outside
@@ -659,10 +663,12 @@ mixin SalesServices {
           backgroundColor: Primary_colors.Dark,
           content: Stack(
             children: [
-              const SizedBox(
+              SizedBox(
                 height: 650,
                 width: 1300,
-                child: GenerateDelivery_challan(),
+                child: GenerateDc(
+                  eventID: eventID,
+                ),
               ),
               Positioned(
                 top: 3,
@@ -679,8 +685,8 @@ mixin SalesServices {
                   ),
                   onPressed: () async {
                     // Check if the data has any value
-
-                    if ((dcController.dcModel.Delivery_challan_products.isNotEmpty) || (dcController.dcModel.Delivery_challan_noteList.isNotEmpty) || (dcController.dcModel.Delivery_challan_recommendationList.isNotEmpty) || dcController.dcModel.clientAddressNameController.value.text != "" || dcController.dcModel.clientAddressController.value.text != "" || dcController.dcModel.billingAddressNameController.value.text != "" || dcController.dcModel.billingAddressController.value.text != "" || dcController.dcModel.Delivery_challan_no.value != "" || dcController.dcModel.TitleController.value.text != "" || dcController.dcModel.Delivery_challan_table_heading.value != "") {
+                    // || ( invoiceController.invoiceModel.Dc_gstTotals.isNotEmpty)
+                    if ((dcController.dcModel.Dc_products.isNotEmpty) || (dcController.dcModel.Dc_noteList.isNotEmpty) || (dcController.dcModel.Dc_recommendationList.isNotEmpty) || (dcController.dcModel.clientAddressNameController.value.text != "") || (dcController.dcModel.clientAddressController.value.text != "") || (dcController.dcModel.billingAddressNameController.value.text != "") || (dcController.dcModel.billingAddressController.value.text != "") || (dcController.dcModel.Dc_no.value != "") || (dcController.dcModel.TitleController.value.text != "") || (dcController.dcModel.Dc_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -700,7 +706,7 @@ mixin SalesServices {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  dcController.clearAll();
+                                  dcController.resetData();
                                   Navigator.of(context).pop(true); // Yes action
                                 },
                                 child: const Text("Yes"),
@@ -710,24 +716,20 @@ mixin SalesServices {
                         },
                       );
 
-                      // If user confirms (Yes), clear data and close the dialog
                       if (proceed == true) {
-                        Navigator.of(context).pop(); // Close the dialog
-                        // Clear all the data when dialog is closed
-                        dcController.dcModel.Delivery_challan_products.clear();
-                        dcController.dcModel.Delivery_challan_noteList.clear();
-                        dcController.dcModel.Delivery_challan_recommendationList.clear();
-                        // dcController.dcModel.Delivery_challan_productDetails.clear();
+                        Navigator.of(context).pop();
+                        dcController.dcModel.Dc_products.clear();
+                        dcController.dcModel.Dc_noteList.clear();
+                        dcController.dcModel.Dc_recommendationList.clear();
                         dcController.dcModel.clientAddressNameController.value.clear();
                         dcController.dcModel.clientAddressController.value.clear();
                         dcController.dcModel.billingAddressNameController.value.clear();
                         dcController.dcModel.billingAddressController.value.clear();
-                        dcController.dcModel.Delivery_challan_no.value = "";
+                        dcController.dcModel.Dc_no.value = "";
                         dcController.dcModel.TitleController.value.clear();
-                        dcController.dcModel.Delivery_challan_table_heading.value = "";
+                        dcController.dcModel.Dc_table_heading.value = "";
                       }
                     } else {
-                      // If no data, just close the dialog
                       Navigator.of(context).pop();
                     }
                   },

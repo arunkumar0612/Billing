@@ -12,6 +12,7 @@ class InvoiceModel extends GetxController with GetSingleTickerProviderStateMixin
   // var gst_no = Rxn<String>();
   var Invoice_table_heading = "".obs;
   final gstNumController = TextEditingController().obs;
+  var invoice_amount = Rxn<double>();
 
   // DETAILS
   final TitleController = TextEditingController().obs;
@@ -30,6 +31,7 @@ class InvoiceModel extends GetxController with GetSingleTickerProviderStateMixin
   final quantityController = TextEditingController().obs;
   final gstController = TextEditingController().obs;
   var Invoice_products = <InvoiceProduct>[].obs;
+  var Invoice_productSuggestion = <ProductSuggestion>[].obs;
   var Invoice_gstTotals = <InvoiceGSTtotals>[].obs;
 
   // NOTES
@@ -42,13 +44,9 @@ class InvoiceModel extends GetxController with GetSingleTickerProviderStateMixin
   final recommendationHeadingController = TextEditingController().obs;
   final recommendationKeyController = TextEditingController().obs;
   final recommendationValueController = TextEditingController().obs;
-  var Invoice_noteList = <Note>[].obs;
+  var Invoice_noteList = [].obs;
   var Invoice_recommendationList = <Recommendation>[].obs;
-  final notecontent = <String>[
-    'Delivery within 30 working days from the date of issuing the PO.',
-    'Payment terms : 100% along with PO.',
-    'Client needs to provide Ethernet cable and UPS power supply to the point where the device is proposed to install.',
-  ].obs;
+  final noteSuggestion = <String>[].obs;
 
   // POST
   late AnimationController animationController;

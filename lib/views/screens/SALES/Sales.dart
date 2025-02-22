@@ -26,7 +26,7 @@ class Sales_Client extends StatefulWidget with SalesServices {
 class _Sales_ClientState extends State<Sales_Client> {
   final SalesController salesController = Get.find<SalesController>();
   final ClientreqController clientreqController = Get.find<ClientreqController>();
-  final DCController dcController = Get.find<DCController>();
+  final DcController dcController = Get.find<DcController>();
   final InvoiceController invoiceController = Get.find<InvoiceController>();
   final QuoteController quoteController = Get.find<QuoteController>();
   final RFQController rfqController = Get.find<RFQController>();
@@ -814,7 +814,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                   padding: const EdgeInsets.all(8),
                                                                   decoration: const BoxDecoration(
                                                                     shape: BoxShape.circle,
-                                                                    color: Colors.green,
+                                                                    color: Color.fromARGB(157, 100, 110, 255),
                                                                   ),
                                                                   child: const Icon(
                                                                     Icons.event,
@@ -830,7 +830,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                 Container(
                                                                   width: 2,
                                                                   height: 40,
-                                                                  color: Colors.green,
+                                                                  color: const Color.fromARGB(150, 100, 110, 255),
                                                                 ),
                                                             ],
                                                           ),
@@ -864,7 +864,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                                 bool success = await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
 
                                                                                 if (success) {
-                                                                                  widget.GenerateQuote_dialougebox(context, "quotation");
+                                                                                  widget.GenerateQuote_dialougebox(context, "quotation", salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                   quoteController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                 }
                                                                               },
@@ -879,7 +879,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                                 bool success = await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
 
                                                                                 if (success) {
-                                                                                  widget.GenerateQuote_dialougebox(context, "revisedquotation");
+                                                                                  widget.GenerateQuote_dialougebox(context, "revisedquotation", salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                   quoteController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                 }
                                                                               },
@@ -900,8 +900,13 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                             ),
                                                                           if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.invoice == true)
                                                                             TextButton(
-                                                                              onPressed: () {
-                                                                                widget.GenerateInvoice_dialougebox(context);
+                                                                              onPressed: () async {
+                                                                                bool success = await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                if (success) {
+                                                                                  widget.GenerateInvoice_dialougebox(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                  invoiceController.setProcessID(salesController.salesModel.processList[index].processid);
+                                                                                  print(invoiceController.invoiceModel.processID);
+                                                                                }
                                                                               },
                                                                               child: const Text(
                                                                                 "Invoice",
@@ -910,11 +915,16 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                             ),
                                                                           if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan == true)
                                                                             TextButton(
-                                                                              onPressed: () {
-                                                                                // widget.GenerateDelivery_challan_dialougebox(context);
+                                                                              onPressed: () async {
+                                                                                bool success = await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                if (success) {
+                                                                                  widget.GenerateDelivery_challan_dialougebox(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                  dcController.setProcessID(salesController.salesModel.processList[index].processid);
+                                                                                  print(dcController.dcModel.processID);
+                                                                                }
                                                                               },
                                                                               child: const Text(
-                                                                                "Deliverychallan",
+                                                                                "Delivery challan",
                                                                                 style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                               ),
                                                                             ),

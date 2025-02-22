@@ -1,20 +1,31 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/services/SALES/DC_services/DCdetails_service.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
+import 'package:ssipl_billing/services/SALES/DC_services/DC_Details_service.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-import '../../../../controllers/SALEScontrollers/DC_actions.dart';
 
-class Delivery_challanDetails extends StatefulWidget with DcdetailsService {
-  Delivery_challanDetails({super.key});
-
+class DcDetails extends StatefulWidget with DcdetailsService {
+  DcDetails({super.key, required this.eventID});
+  int eventID;
   @override
-  State<Delivery_challanDetails> createState() => _Delivery_challanDetailsState();
+  State<DcDetails> createState() => _DcDetailsState();
 }
 
-class _Delivery_challanDetailsState extends State<Delivery_challanDetails> {
-  final DCController dcController = Get.find<DCController>();
+class _DcDetailsState extends State<DcDetails> {
+  final DcController dcController = Get.find<DcController>();
+
+  @override
+  void initState() {
+    widget.get_requiredData(context, widget.eventID, "deliverychallan");
+    widget.get_productSuggestionList(context);
+    widget.get_noteSuggestionList(context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -27,12 +38,13 @@ class _Delivery_challanDetailsState extends State<Delivery_challanDetails> {
               Form(
                   key: dcController.dcModel.detailsKey.value,
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 25),
+                          // const SizedBox(height: 25),
                           BasicTextfield(
                             digitsOnly: false,
                             width: 400,
@@ -82,7 +94,7 @@ class _Delivery_challanDetailsState extends State<Delivery_challanDetails> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 10),
+                          // const SizedBox(height: 10),
                           BasicTextfield(
                             digitsOnly: false,
                             width: 400,
@@ -112,6 +124,21 @@ class _Delivery_challanDetailsState extends State<Delivery_challanDetails> {
                               return null;
                             },
                           ),
+                          const SizedBox(height: 25),
+                          BasicTextfield(
+                            digitsOnly: false,
+                            width: 400,
+                            readonly: false,
+                            text: 'GST number',
+                            controller: dcController.dcModel.gstNumController.value,
+                            icon: Icons.price_change,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter GST number';
+                              }
+                              return null;
+                            },
+                          ),
                           const SizedBox(height: 30),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +148,7 @@ class _Delivery_challanDetailsState extends State<Delivery_challanDetails> {
                                 colors: Colors.green,
                                 text: 'Add Details',
                                 onPressed: () {
-                                  widget.add_details();
+                                  widget.nextTab();
                                 },
                               ),
                             ],
@@ -135,7 +162,7 @@ class _Delivery_challanDetailsState extends State<Delivery_challanDetails> {
                 width: 660,
                 child: Text(
                   textAlign: TextAlign.center,
-                  'The approved Quotation shown beside can be used as a reference for generating the Delivery_challan. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
+                  'The approved Quotation shown beside can be used as a reference for generating the Dc. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
                   style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                 ),
               )

@@ -35,7 +35,7 @@ Future<bool?> Basic_dialog({
         ),
         content: Text(
           content,
-          style: const TextStyle(color: Primary_colors.Light), // Adjusting text color for visibility
+          style: const TextStyle(color: Primary_colors.Light, fontSize: 12), // Adjusting text color for visibility
         ),
         actions: [
           if (showCancel)

@@ -4,8 +4,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
-import 'package:ssipl_billing/services/SALES/Quotation_services/QuotePost_services.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
+import 'package:ssipl_billing/services/SALES/DC_services/DcPost_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
 import 'package:ssipl_billing/views/components/button.dart';
@@ -14,34 +14,34 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:path/path.dart' as path;
 
 // ignore: must_be_immutable
-class PostQuote extends StatefulWidget with PostServices {
+class PostDc extends StatefulWidget with PostServices {
   String type;
-  PostQuote({super.key, required this.type, required this.eventtype});
-  String eventtype;
+  PostDc({super.key, required this.type});
+
   @override
-  State<PostQuote> createState() => PostQuoteState();
+  State<PostDc> createState() => PostDcState();
 }
 
-class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixin {
+class PostDcState extends State<PostDc> with SingleTickerProviderStateMixin {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
-  final QuoteController quoteController = Get.find<QuoteController>();
+  final DcController dcController = Get.find<DcController>();
 
   @override
   void initState() {
     super.initState();
 
-    // quoteController.quoteModel.selected
+    // dcController.dcModel.selected
     // Pdf.value = File(widget.type);
-    quoteController.quoteModel.filePathController.value = TextEditingController(text: quoteController.quoteModel.selectedPdf.value?.path.toString());
+    dcController.dcModel.filePathController.value = TextEditingController(text: dcController.dcModel.selectedPdf.value?.path.toString());
 
-    quoteController.quoteModel.animationController = AnimationController(
+    dcController.dcModel.animationController = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
     )..repeat(reverse: true);
 
-    quoteController.quoteModel.animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    dcController.dcModel.animation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
-        parent: quoteController.quoteModel.animationController,
+        parent: dcController.dcModel.animationController,
         curve: Curves.linear,
       ),
     );
@@ -56,8 +56,8 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
   //     "phoneno": "8248650039",
   //     "mailto:emailid": "hariprasath.s@sporadasecure.com",
   //     "pdfpath": "\\\\192.168.0.198\\backup\\Hari\\BM-blueprint.pdf",
-  //     "feedback": "Invoice for your request",
-  //     "documenttype": "Invoice"
+  //     "feedback": "Dc for your request",
+  //     "documenttype": "Dc"
   //   };
 
   //   final dataToEncrypt = jsonEncode(formData);
@@ -128,8 +128,8 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
 
   @override
   void dispose() {
-    quoteController.quoteModel.animationController.dispose(); // Dispose of the animation controller
-    quoteController.quoteModel.filePathController.value.dispose(); // Dispose of the text controller
+    dcController.dcModel.animationController.dispose(); // Dispose of the animation controller
+    dcController.dcModel.filePathController.value.dispose(); // Dispose of the text controller
     super.dispose();
   }
 
@@ -146,7 +146,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
               const SizedBox(
                 width: 10,
               ),
-              quoteController.quoteModel.ispdfLoading.value
+              dcController.dcModel.ispdfLoading.value
                   ? Expanded(
                       child: Container(
                         // decoration: BoxDecoration(
@@ -155,8 +155,8 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                         child: GestureDetector(
                           child: Stack(
                             children: [
-                              quoteController.quoteModel.selectedPdf.value != null
-                                  ? SfPdfViewer.file(quoteController.quoteModel.selectedPdf.value!)
+                              dcController.dcModel.selectedPdf.value != null
+                                  ? SfPdfViewer.file(dcController.dcModel.selectedPdf.value!)
                                   : Container(
                                       color: Colors.white,
                                       child: const Column(
@@ -201,7 +201,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                             ],
                           ),
                           onDoubleTap: () {
-                            if (quoteController.quoteModel.selectedPdf.value != null) {
+                            if (dcController.dcModel.selectedPdf.value != null) {
                               widget.showReadablePdf(context);
                             } else {
                               Get.snackbar("No data", "Maximizing is restricted!");
@@ -221,7 +221,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                               color: Colors.white, // Add background color if needed
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color.fromARGB(199, 120, 250, 120).withOpacity(0.9), // Shadow color with opacity
+                                  color: const Color.fromARGB(198, 30, 31, 30).withOpacity(0.9), // Shadow color with opacity
                                   spreadRadius: 5, // How much the shadow spreads
                                   blurRadius: 7, // How blurry the shadow looks
                                   offset: const Offset(0, 3), // Shadow position (x, y)
@@ -240,10 +240,10 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                           )),
 
                           AnimatedBuilder(
-                            animation: quoteController.quoteModel.animation,
+                            animation: dcController.dcModel.animation,
                             builder: (context, child) {
                               return Positioned(
-                                top: (590) * quoteController.quoteModel.animation.value, // Adjust top position
+                                top: (590) * dcController.dcModel.animation.value, // Adjust top position
                                 left: 0,
                                 right: 0,
                                 child: Padding(
@@ -267,12 +267,12 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          widget.eventtype == "quotation" ? 'QUOTATION' : 'REVISED QUOTATION',
-                          style: const TextStyle(fontSize: 20, color: Primary_colors.Color1, fontWeight: FontWeight.bold),
+                          'Dc',
+                          style: TextStyle(fontSize: 20, color: Primary_colors.Color1, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -287,7 +287,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                           width: 10,
                         ),
                         Text(
-                          path.basename(quoteController.quoteModel.selectedPdf.value?.path ?? ""),
+                          path.basename(dcController.dcModel.selectedPdf.value?.path ?? ""),
                           style: const TextStyle(
                             fontSize: 13,
                             color: Colors.white,
@@ -312,7 +312,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                               digitsOnly: false,
                               width: 400,
                               readonly: false,
-                              controller: quoteController.quoteModel.phoneController.value,
+                              controller: dcController.dcModel.phoneController.value,
                               // text: 'Enter Phone Number',
                               // icon: Icons.phone,
                               validator: (value) {
@@ -343,7 +343,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                                   child: TextFormField(
                                     readOnly: false,
                                     style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
-                                    controller: quoteController.quoteModel.emailController.value,
+                                    controller: dcController.dcModel.emailController.value,
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor: Primary_colors.Dark,
@@ -366,7 +366,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                                         cursor: SystemMouseCursors.click, // Change cursor to hand
                                         child: GestureDetector(
                                           onTap: () {
-                                            quoteController.toggleCCemailvisibility(!quoteController.quoteModel.CCemailToggle.value);
+                                            dcController.toggleCCemailvisibility(!dcController.dcModel.CCemailToggle.value);
                                           },
                                           child: SizedBox(
                                             height: 20,
@@ -376,7 +376,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                                                 Align(
                                                   alignment: Alignment.center,
                                                   child: Icon(
-                                                    quoteController.quoteModel.CCemailToggle.value ? Icons.closed_caption_outlined : Icons.closed_caption_disabled_outlined,
+                                                    dcController.dcModel.CCemailToggle.value ? Icons.closed_caption_outlined : Icons.closed_caption_disabled_outlined,
                                                     color: Colors.blue,
                                                   ),
                                                 ),
@@ -404,11 +404,11 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                               ),
                             ],
                           ),
-                          if (quoteController.quoteModel.CCemailToggle.value)
+                          if (dcController.dcModel.CCemailToggle.value)
                             const SizedBox(
                               height: 10,
                             ),
-                          if (quoteController.quoteModel.CCemailToggle.value)
+                          if (dcController.dcModel.CCemailToggle.value)
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
@@ -427,7 +427,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                                     child: TextFormField(
                                       readOnly: false,
                                       style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 204, 204, 204)),
-                                      controller: quoteController.quoteModel.CCemailController.value,
+                                      controller: dcController.dcModel.CCemailController.value,
                                       decoration: const InputDecoration(
                                         filled: true,
                                         fillColor: Color.fromARGB(255, 38, 39, 44),
@@ -448,10 +448,10 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
 
                                         // suffixIcon: GestureDetector(
                                         //   onTap: () {
-                                        //     quoteController.toggleCCemailvisibility(!quoteController.quoteModel.CCemailToggle.value);
+                                        //     dcController.toggleCCemailvisibility(!dcController.dcModel.CCemailToggle.value);
                                         //   },
                                         //   child: Icon(
-                                        //     quoteController.quoteModel.CCemailToggle.value ? Icons.closed_caption_outlined : Icons.closed_caption_disabled_outlined,
+                                        //     dcController.dcModel.CCemailToggle.value ? Icons.closed_caption_outlined : Icons.closed_caption_disabled_outlined,
                                         //     color: Colors.blue,
                                         //   ),
                                         // ),
@@ -472,7 +472,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                                 //       width: 400,
 
                                 //       readonly: false,
-                                //       controller: quoteController.quoteModel.CCemailController.value,
+                                //       controller: dcController.dcModel.CCemailController.value,
                                 //       validator: (value) {
                                 //         Validators.email_validator(value);
 
@@ -534,7 +534,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                                     width: 80,
                                     child: TextButton(
                                       onPressed: () {
-                                        quoteController.pickFile(context);
+                                        dcController.pickFile(context);
                                       },
                                       child: const Text(
                                         'Choose',
@@ -547,7 +547,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                                 ),
                                 prefixIcon: const Icon(Icons.file_open, color: Colors.white),
                               ),
-                              controller: quoteController.quoteModel.filePathController.value,
+                              controller: dcController.dcModel.filePathController.value,
                             ),
                           ),
                         ),
@@ -611,13 +611,13 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                                   IconButton(
                                     iconSize: 30,
                                     onPressed: () {
-                                      quoteController.quoteModel.whatsapp_selectionStatus.value = quoteController.quoteModel.whatsapp_selectionStatus.value == false ? true : false;
+                                      dcController.dcModel.whatsapp_selectionStatus.value = dcController.dcModel.whatsapp_selectionStatus.value == false ? true : false;
                                     },
                                     icon: Image.asset(
                                       'assets/images/whatsapp.png',
                                     ),
                                   ),
-                                  if (quoteController.quoteModel.whatsapp_selectionStatus.value)
+                                  if (dcController.dcModel.whatsapp_selectionStatus.value)
                                     Align(
                                       // alignment: Alignment.topLeft,
                                       child: Container(
@@ -643,11 +643,11 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                                   IconButton(
                                     iconSize: 35,
                                     onPressed: () {
-                                      quoteController.quoteModel.gmail_selectionStatus.value = quoteController.quoteModel.gmail_selectionStatus.value == false ? true : false;
+                                      dcController.dcModel.gmail_selectionStatus.value = dcController.dcModel.gmail_selectionStatus.value == false ? true : false;
                                     },
                                     icon: Image.asset('assets/images/gmail.png'),
                                   ),
-                                  if (quoteController.quoteModel.gmail_selectionStatus.value)
+                                  if (dcController.dcModel.gmail_selectionStatus.value)
                                     Align(
                                       // alignment: Alignment.topLeft,
                                       child: Container(
@@ -691,7 +691,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                           labelStyle: const TextStyle(color: Color.fromARGB(255, 126, 126, 125), fontSize: 13),
                           border: const OutlineInputBorder(),
                         ),
-                        controller: quoteController.quoteModel.feedbackController.value,
+                        controller: dcController.dcModel.feedbackController.value,
                       ),
                     ),
                     const SizedBox(
@@ -705,7 +705,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                               text: "Send",
                               colors: Colors.blue,
                               onPressed: () {
-                                widget.postData(context, quoteController.fetch_messageType(), widget.eventtype);
+                                widget.postData(context, dcController.fetch_messageType());
                               })),
                     )
                   ],

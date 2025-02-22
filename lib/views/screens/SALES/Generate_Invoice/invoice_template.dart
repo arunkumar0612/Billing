@@ -41,6 +41,8 @@ class Quotation {
   dynamic profileImage;
 
   Future<Uint8List> buildPdf(PdfPageFormat pageFormat) async {
+    invoiceController.update_invoiceAmount(_grandTotal);
+
     Helvetica = await loadFont_regular();
     Helvetica_bold = await loadFont_bold();
     final doc = pw.Document();
@@ -88,7 +90,7 @@ class Quotation {
                 child: pw.Image(profileImage),
               ),
               pw.Text(
-                'QUOTATION',
+                'INVOICE',
                 style: pw.TextStyle(
                   font: Helvetica_bold,
                   fontSize: 15,
@@ -105,7 +107,7 @@ class Quotation {
                       children: [
                         regular('Date', 10),
                         pw.SizedBox(height: 5),
-                        regular('Estimate no', 10),
+                        regular('Invoice no', 10),
                       ],
                     ),
                     pw.Column(
@@ -124,14 +126,15 @@ class Quotation {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular(formatDate(DateTime.now()), 10),
+                            child: regular("Feb 05, 2025", 10),
+                            // formatDate(DateTime.now()), 10
                           ),
                         ),
                         pw.SizedBox(height: 5),
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("SSIPL/INST/250202", 10),
+                            child: regular("AA/INST/250201", 10),
                           ),
                         ),
                       ],
@@ -327,7 +330,7 @@ class Quotation {
       cellAlignments: {
         0: pw.Alignment.centerLeft,
         1: pw.Alignment.centerLeft,
-        2: pw.Alignment.centerLeft,
+        2: pw.Alignment.center,
         3: pw.Alignment.center,
         4: pw.Alignment.centerRight,
         5: pw.Alignment.center,
@@ -586,19 +589,7 @@ class Quotation {
     );
   }
 
-// Define a function to format currency to two decimal places
-  String formatCurrency(double value) {
-    return value.toStringAsFixed(2);
-  }
-
-// Display the result
-// Text('Round off : ${formatCurrency(roundOffDifference)}', style: TextStyle(fontSize: 10)),
-
   pw.Widget final_amount(pw.Context context) {
-    // Calculate the rounded difference
-    // double roundedTotal = double.parse(formatCurrency(_grandTotal));
-    // double nearestInteger = _grandTotal.roundToDouble();
-    // double roundOffDifference = roundedTotal - nearestInteger;
     return pw.Container(
       width: 185, // Define width to ensure bounded constraints
       child: pw.Column(
@@ -671,7 +662,7 @@ class Quotation {
                   pw.SizedBox(width: 5),
                   pw.Expanded(
                     child: pw.Text(
-                      invoiceController.invoiceModel.Invoice_noteList[index].notename,
+                      invoiceController.invoiceModel.Invoice_noteList[index],
                       textAlign: pw.TextAlign.start,
                       style: pw.TextStyle(
                         font: Helvetica,
@@ -718,7 +709,7 @@ class Quotation {
                         children: [
                           regular("Bank name:", 10),
                           pw.SizedBox(width: 5),
-                          regular("IndusInd Bank Limited", 10),
+                          regular(": IndusInd Bank Limited", 10),
                         ],
                       ),
                       pw.SizedBox(height: 5),
@@ -729,55 +720,46 @@ class Quotation {
                           regular("R.S. Puram, Coimbatore.", 10),
                         ],
                       ),
-                      pw.SizedBox(height: 5),
-                      pw.Row(
-                        children: [
-                          regular("UPI Id:", 10),
-                          pw.SizedBox(width: 5),
-                          regular("sporadasecure@indus", 10),
-                        ],
-                      ),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          if (invoiceController.invoiceModel.Invoice_recommendationList.isNotEmpty)
-            pw.Padding(
-              padding: const pw.EdgeInsets.only(left: 0, top: 5),
-              child: pw.Row(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  regular("${invoiceController.invoiceModel.Invoice_noteList.length + 2}.", 10),
-                  pw.SizedBox(width: 5),
-                  pw.Expanded(
-                    child: pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        bold(invoiceController.invoiceModel.Invoice_table_heading.value, 10),
-                        ...invoiceController.invoiceModel.Invoice_recommendationList.map((recommendation) {
-                          return pw.Padding(
-                            padding: const pw.EdgeInsets.only(left: 5, top: 5),
-                            child: pw.Row(
-                              children: [
-                                pw.Container(
-                                  width: 120,
-                                  child: regular(recommendation.key.toString(), 10),
-                                ),
-                                regular(":", 10),
-                                pw.SizedBox(width: 5),
-                                regular(recommendation.value.toString(), 10),
-                              ],
-                            ),
-                          );
-                        }),
-                      ],
-                    ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.only(left: 0, top: 5),
+            child: pw.Row(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                // regular("${invoice_noteList.length + 2}.", 10),
+                pw.SizedBox(width: 5),
+                pw.Expanded(
+                  child: pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      bold(invoiceController.invoiceModel.Invoice_table_heading.value, 10),
+                      ...invoiceController.invoiceModel.Invoice_recommendationList.map((recommendation) {
+                        return pw.Padding(
+                          padding: const pw.EdgeInsets.only(left: 5, top: 5),
+                          child: pw.Row(
+                            children: [
+                              pw.Container(
+                                width: 120,
+                                child: regular(recommendation.key.toString(), 10),
+                              ),
+                              regular(":", 10),
+                              pw.SizedBox(width: 5),
+                              regular(recommendation.value.toString(), 10),
+                            ],
+                          ),
+                        );
+                      }),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
         ],
       ),
     );

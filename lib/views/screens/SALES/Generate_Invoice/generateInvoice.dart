@@ -1,6 +1,4 @@
 // ignore_for_file: must_be_immutable
-
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Sales_actions.dart';
@@ -13,10 +11,8 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../../../controllers/SALEScontrollers/Invoice_actions.dart';
 
 class GenerateInvoice extends StatefulWidget {
-  const GenerateInvoice({
-    super.key,
-  });
-
+  GenerateInvoice({super.key, required this.eventID});
+  int eventID;
   @override
   _GenerateInvoiceState createState() => _GenerateInvoiceState();
 }
@@ -145,7 +141,9 @@ class _GenerateInvoiceState extends State<GenerateInvoice> with SingleTickerProv
                     child: TabBarView(
                       controller: invoiceController.invoiceModel.tabController.value,
                       children: [
-                        InvoiceDetails(),
+                        InvoiceDetails(
+                          eventID: widget.eventID,
+                        ),
                         InvoiceProducts(),
                         InvoiceNote(),
                         PostInvoice(type: 'E:/${(invoiceController.invoiceModel.Invoice_no.value ?? "default_filename").replaceAll("/", "-")}.pdf'

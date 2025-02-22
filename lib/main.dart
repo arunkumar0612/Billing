@@ -37,7 +37,7 @@ Future<void> main() async {
   Get.lazyPut<RFQController>(() => RFQController());
   Get.lazyPut<CreditController>(() => CreditController());
   Get.lazyPut<DebitController>(() => DebitController());
-  Get.lazyPut<DCController>(() => DCController());
+  Get.lazyPut<DcController>(() => DcController());
   // Get.lazyPut<ViewsendController>(() => ViewsendController());
   if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux)) {
     await windowManager.ensureInitialized();

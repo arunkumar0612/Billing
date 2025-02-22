@@ -6,7 +6,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
-import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
 import 'package:ssipl_billing/services/APIservices/invoker.dart';
 import 'package:ssipl_billing/utils/helpers/returns.dart';
 // import 'package:ssipl_billing/utils/helpers/returns.dart';
@@ -48,8 +47,7 @@ mixin InvoicenotesService {
   }
 
   void editnote(int index) {
-    Note note = invoiceController.invoiceModel.Invoice_noteList[index];
-    invoiceController.updateNoteContentControllerText(note.notename);
+    invoiceController.updateNoteContentControllerText(invoiceController.invoiceModel.Invoice_noteList[index]);
     invoiceController.updateNoteEditindex(index);
   }
 
@@ -80,7 +78,7 @@ mixin InvoicenotesService {
 
   void addNotes(context) {
     if (invoiceController.invoiceModel.noteformKey.value.currentState?.validate() ?? false) {
-      bool exists = invoiceController.invoiceModel.Invoice_noteList.any((note) => note.notename == invoiceController.invoiceModel.notecontentController.value.text);
+      bool exists = invoiceController.invoiceModel.Invoice_noteList.any((note) => note == invoiceController.invoiceModel.notecontentController.value.text);
       if (exists) {
         Get.snackbar("Note", 'This note Name already exists.');
         return;

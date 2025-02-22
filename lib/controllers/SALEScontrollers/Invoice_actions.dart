@@ -57,7 +57,7 @@ class InvoiceController extends GetxController {
   }
 
   void updateNoteList(String value, int index) {
-    invoiceModel.Invoice_noteList[invoiceModel.note_editIndex.value!] = Note(notename: invoiceModel.notecontentController.value.text);
+    invoiceModel.Invoice_noteList[invoiceModel.note_editIndex.value!] = invoiceModel.notecontentController.value.text;
   }
 
   void updateTabController(TabController tabController) {
@@ -129,7 +129,7 @@ class InvoiceController extends GetxController {
   }
 
   void addNoteToList(String note) {
-    invoiceModel.notecontent.add(note);
+    invoiceModel.noteSuggestion.add(note);
   }
 
   void addProductEditindex(int? index) {
@@ -176,6 +176,10 @@ class InvoiceController extends GetxController {
   // Update file path text
   void updateFilePath(String filePath) {
     invoiceModel.filePathController.value.text = filePath;
+  }
+
+  void update_invoiceAmount(double amount) {
+    invoiceModel.invoice_amount.value = amount;
   }
 
   Future<void> pickFile(BuildContext context) async {
@@ -276,7 +280,7 @@ class InvoiceController extends GetxController {
 
   void addNote(String noteContent) {
     if (noteContent.isNotEmpty) {
-      invoiceModel.Invoice_noteList.add(Note(notename: noteContent));
+      invoiceModel.Invoice_noteList.add(noteContent);
     } else {
       if (kDebugMode) {
         print('Note content must not be empty');
@@ -358,12 +362,12 @@ class InvoiceController extends GetxController {
       // );
 
       // Notify success
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text('Product updated successfully.'),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     backgroundColor: Colors.green,
+      //     content: Text('Product updated successfully.'),
+      //   ),
+      // );
 
       // Optional: Update UI or state if needed
       // .updateProductDetails(invoiceController.invoiceModel.Invoice_productDetails);
@@ -375,6 +379,20 @@ class InvoiceController extends GetxController {
           content: Text('An error occurred while updating the product.'),
         ),
       );
+    }
+  }
+
+  void add_productSuggestion(List<dynamic> suggestionList) {
+    for (var item in suggestionList) {
+      invoiceModel.Invoice_productSuggestion.add(ProductSuggestion.fromJson(item));
+      print(invoiceModel.Invoice_productSuggestion[0].productName);
+    }
+  }
+
+  void add_noteSuggestion(Map<String, dynamic> suggestionList) {
+    for (var item in suggestionList['notes']) {
+      invoiceModel.noteSuggestion.add(item);
+      print(invoiceModel.noteSuggestion[0]);
     }
   }
 
@@ -446,6 +464,7 @@ class InvoiceController extends GetxController {
     invoiceModel.gstController.value.text = "";
     invoiceModel.Invoice_products.clear();
     invoiceModel.Invoice_gstTotals.clear();
+    invoiceModel.Invoice_productSuggestion.clear();
 
     // Reset notes
     invoiceModel.note_editIndex.value = null;
@@ -456,5 +475,6 @@ class InvoiceController extends GetxController {
     invoiceModel.recommendationValueController.value.text = "";
     invoiceModel.Invoice_noteList.clear();
     invoiceModel.Invoice_recommendationList.clear();
+    invoiceModel.noteSuggestion.clear();
   }
 }

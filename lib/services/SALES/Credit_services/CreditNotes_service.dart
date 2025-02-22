@@ -4,9 +4,6 @@ import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/models/entities/SALES/Credit_entities.dart';
 import '../../../controllers/SALEScontrollers/Credit_actions.dart';
-// import '../../../controllers/viewSend_actions.dart';
-import '../../../themes/style.dart';
-import '../../../views/components/view_send_pdf.dart';
 import '../../../views/screens/SALES/Generate_creditNote/Credit_template.dart';
 
 mixin CreditnotesService {

@@ -6,10 +6,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
-import 'package:ssipl_billing/models/entities/SALES/Quote_entities.dart';
 import 'package:ssipl_billing/services/APIservices/invoker.dart';
 import 'package:ssipl_billing/utils/helpers/returns.dart';
-// import 'package:ssipl_billing/utils/helpers/returns.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_Quote/quote_template.dart';
 
 mixin QuotenotesService {
@@ -48,8 +46,7 @@ mixin QuotenotesService {
   }
 
   void editnote(int index) {
-    Note note = quoteController.quoteModel.Quote_noteList[index];
-    quoteController.updateNoteContentControllerText(note.notename);
+    quoteController.updateNoteContentControllerText(quoteController.quoteModel.Quote_noteList[index]);
     quoteController.updateNoteEditindex(index);
   }
 
@@ -80,7 +77,7 @@ mixin QuotenotesService {
 
   void addNotes(context) {
     if (quoteController.quoteModel.noteformKey.value.currentState?.validate() ?? false) {
-      bool exists = quoteController.quoteModel.Quote_noteList.any((note) => note.notename == quoteController.quoteModel.notecontentController.value.text);
+      bool exists = quoteController.quoteModel.Quote_noteList.any((note) => note == quoteController.quoteModel.notecontentController.value.text);
       if (exists) {
         Get.snackbar("Note", 'This note Name already exists.');
         return;

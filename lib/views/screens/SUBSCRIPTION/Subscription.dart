@@ -9,7 +9,6 @@ import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/sub
 import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/sub_generate_clientreq.dart';
 import 'package:ssipl_billing/views/components/cards.dart';
 import 'package:ssipl_billing/themes/style.dart';
-import 'package:ssipl_billing/views/components/view_send_pdf.dart';
 
 class Subscription_Client extends StatefulWidget {
   const Subscription_Client({super.key});

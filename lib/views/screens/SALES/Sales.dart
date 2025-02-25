@@ -14,9 +14,10 @@ import 'package:ssipl_billing/themes/style.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
 import 'package:ssipl_billing/views/screens/SALES/Sales_chart.dart';
+import 'package:ssipl_billing/views/screens/SALES/pdfpopup.dart';
 import '../../../controllers/SALEScontrollers/Sales_actions.dart';
 
-class Sales_Client extends StatefulWidget with SalesServices {
+class Sales_Client extends StatefulWidget with SalesServices, Pdfpopup {
   Sales_Client({super.key});
 
   @override
@@ -68,10 +69,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                       children: [
                         ShaderMask(
                           shaderCallback: (bounds) => const LinearGradient(
-                            colors: [
-                              Primary_colors.Color3,
-                              Primary_colors.Color4
-                            ], // Example gradient
+                            colors: [Primary_colors.Color3, Primary_colors.Color4], // Example gradient
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ).createShader(bounds),
@@ -503,7 +501,11 @@ class _Sales_ClientState extends State<Sales_Client> {
                                               image: 'assets/images/settings.png',
                                               label: 'Settings',
                                               color: Primary_colors.Dark,
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                widget.pdfpopup_controller.initializeTextControllers();
+                                                widget.pdfpopup_controller.initializeCheckboxes();
+                                                widget.showA4StyledPopup(context);
+                                              },
                                             ),
                                           ),
                                         ],
@@ -557,7 +559,12 @@ class _Sales_ClientState extends State<Sales_Client> {
                                     padding: const EdgeInsets.only(left: 15),
                                     child: Text(
                                       salesController.salesModel.type.value == 0 ? 'ACTIVE PROCESS LIST' : "ARCHIVED PROCESS LIST",
-                                      style: TextStyle(letterSpacing: 1, wordSpacing: 3, color: salesController.salesModel.type.value == 0 ? Primary_colors.Color3 : const Color.fromARGB(255, 254, 113, 113), fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                          letterSpacing: 1,
+                                          wordSpacing: 3,
+                                          color: salesController.salesModel.type.value == 0 ? Primary_colors.Color3 : const Color.fromARGB(255, 254, 113, 113),
+                                          fontSize: Primary_font_size.Text10,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                   Row(
@@ -656,10 +663,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                 height: 40,
                                 decoration: BoxDecoration(
                                   gradient: const LinearGradient(
-                                    colors: [
-                                      Primary_colors.Color3,
-                                      Primary_colors.Color3
-                                    ], // Example gradient colors
+                                    colors: [Primary_colors.Color3, Primary_colors.Color3], // Example gradient colors
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                   ),
@@ -861,10 +865,12 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                           if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation == true)
                                                                             TextButton(
                                                                               onPressed: () async {
-                                                                                bool success = await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                bool success =
+                                                                                    await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
 
                                                                                 if (success) {
-                                                                                  widget.GenerateQuote_dialougebox(context, "quotation", salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                  widget.GenerateQuote_dialougebox(
+                                                                                      context, "quotation", salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                   quoteController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                 }
                                                                               },
@@ -876,10 +882,12 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                           if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation == true)
                                                                             TextButton(
                                                                               onPressed: () async {
-                                                                                bool success = await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                bool success =
+                                                                                    await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
 
                                                                                 if (success) {
-                                                                                  widget.GenerateQuote_dialougebox(context, "revisedquotation", salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                  widget.GenerateQuote_dialougebox(
+                                                                                      context, "revisedquotation", salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                   quoteController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                 }
                                                                               },
@@ -891,7 +899,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                           if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.rfq == true)
                                                                             TextButton(
                                                                               onPressed: () {
-                                                                                // widget.GenerateRFQ_dialougebox(context);
+                                                                                widget.GenerateRFQ_dialougebox(context);
                                                                               },
                                                                               child: const Text(
                                                                                 "Generate RFQ",
@@ -901,9 +909,11 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                           if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.invoice == true)
                                                                             TextButton(
                                                                               onPressed: () async {
-                                                                                bool success = await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                bool success =
+                                                                                    await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                 if (success) {
-                                                                                  widget.GenerateInvoice_dialougebox(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                  widget.GenerateInvoice_dialougebox(
+                                                                                      context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                   invoiceController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                   print(invoiceController.invoiceModel.processID);
                                                                                 }
@@ -916,9 +926,11 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                           if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan == true)
                                                                             TextButton(
                                                                               onPressed: () async {
-                                                                                bool success = await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                bool success =
+                                                                                    await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                 if (success) {
-                                                                                  widget.GenerateDelivery_challan_dialougebox(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                  widget.GenerateDelivery_challan_dialougebox(
+                                                                                      context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                   dcController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                   print(dcController.dcModel.processID);
                                                                                 }
@@ -983,7 +995,11 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                         },
                                                                         onFieldSubmitted: (newValue) {
                                                                           // textColor = Colors.green;
-                                                                          widget.UpdateFeedback(context, salesController.salesModel.customerId.value!, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid, salesController.salesModel.processList[index].TimelineEvents[childIndex].feedback.text);
+                                                                          widget.UpdateFeedback(
+                                                                              context,
+                                                                              salesController.salesModel.customerId.value!,
+                                                                              salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                              salesController.salesModel.processList[index].TimelineEvents[childIndex].feedback.text);
                                                                         },
                                                                       ),
                                                                     ),
@@ -1072,14 +1088,8 @@ class _Sales_ClientState extends State<Sales_Client> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: (salesController.salesModel.showcustomerprocess.value != null && salesController.salesModel.showcustomerprocess.value == index)
-                    ? [
-                        Primary_colors.Color3,
-                        Primary_colors.Color3
-                      ]
-                    : [
-                        Primary_colors.Dark,
-                        Primary_colors.Dark
-                      ],
+                    ? [Primary_colors.Color3, Primary_colors.Color3]
+                    : [Primary_colors.Dark, Primary_colors.Dark],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -1146,10 +1156,7 @@ class _Sales_ClientState extends State<Sales_Client> {
               key: ValueKey(image), // ✅ Key ensures animation on image change
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    color,
-                    color
-                  ],
+                  colors: [color, color],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),

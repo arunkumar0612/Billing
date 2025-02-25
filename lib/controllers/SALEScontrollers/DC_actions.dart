@@ -11,7 +11,6 @@ import '../../models/entities/SALES/product_entities.dart';
 
 class DcController extends GetxController {
   var dcModel = DcModel();
-
   void initializeTabController(TabController tabController) {
     dcModel.tabController.value = tabController;
   }
@@ -161,6 +160,14 @@ class DcController extends GetxController {
   // Toggle Gmail state
   void toggleGmail(bool value) {
     dcModel.gmail_selectionStatus.value = value;
+  }
+
+  void togglProduct_selectAll(bool value) {
+    dcModel.selectall_status.value = value;
+  }
+
+  void toggleProduct_selection(bool value, int index) {
+    dcModel.checkboxValues[index] = value;
   }
 
   // Update phone number text
@@ -399,6 +406,10 @@ class DcController extends GetxController {
   // Update products list
   void updateProducts(List<DcProduct> products) {
     dcModel.Dc_products.value = products;
+    dcModel.checkboxValues.clear();
+    for (int i = 0; i < products.length; i++) {
+      dcModel.checkboxValues.add(false);
+    }
   }
 
   void removeFromNoteList(int index) {

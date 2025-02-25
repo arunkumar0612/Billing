@@ -33,6 +33,8 @@ class DcModel extends GetxController with GetSingleTickerProviderStateMixin {
   var Dc_products = <DcProduct>[].obs;
   var Dc_productSuggestion = <ProductSuggestion>[].obs;
   var Dc_gstTotals = <DcGSTtotals>[].obs;
+  var checkboxValues = <bool>[].obs;
+  var selectall_status = false.obs;
 
   // NOTES
   final noteformKey = GlobalKey<FormState>().obs;

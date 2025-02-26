@@ -16,13 +16,24 @@ mixin QuoteproductService {
 
   void addproduct(context) {
     if (quoteController.quoteModel.productKey.value.currentState?.validate() ?? false) {
-      bool exists = quoteController.quoteModel.Quote_products.any((product) => product.productName == quoteController.quoteModel.productNameController.value.text && product.hsn == quoteController.quoteModel.hsnController.value.text && product.quantity == int.parse(quoteController.quoteModel.quantityController.value.text));
+      // ignore: unrelated_type_equality_checks
+      bool exists = quoteController.quoteModel.Quote_products.any((product) =>
+          product.productName == quoteController.quoteModel.productNameController.value.text &&
+          // ignore: unrelated_type_equality_checks
+          product.hsn == quoteController.quoteModel.hsnController.value.text &&
+          product.quantity == int.parse(quoteController.quoteModel.quantityController.value.text));
 
       if (exists) {
         Get.snackbar("Product", "This product already exists.");
         return;
       }
-      quoteController.addProduct(context: context, productName: quoteController.quoteModel.productNameController.value.text, hsn: quoteController.quoteModel.hsnController.value.text, price: double.parse(quoteController.quoteModel.priceController.value.text), quantity: int.parse(quoteController.quoteModel.quantityController.value.text), gst: double.parse(quoteController.quoteModel.gstController.value.text));
+      quoteController.addProduct(
+          context: context,
+          productName: quoteController.quoteModel.productNameController.value.text,
+          hsn: quoteController.quoteModel.hsnController.value.text,
+          price: double.parse(quoteController.quoteModel.priceController.value.text),
+          quantity: int.parse(quoteController.quoteModel.quantityController.value.text),
+          gst: double.parse(quoteController.quoteModel.gstController.value.text));
 
       clearFields();
     }

@@ -18,13 +18,10 @@ mixin InvoicedetailsService {
 
   void get_requiredData(context) async {
     try {
-      Map<String, dynamic> body = {
-        "eventid": 1,
-        "eventtype": "invoice"
-      };
+      Map<String, dynamic> body = {"eventid": 1, "eventtype": "invoice"};
       Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.sales_fetchEventNumber_API);
 
-      print(response);
+      // print(response);
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {

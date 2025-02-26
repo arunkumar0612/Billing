@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -147,14 +146,7 @@ class _Verify_OTPState extends State<Verify_OTP> {
                           bool allCompleted = VerifyOTPController.verifyOTPModel.otpControllers.every((controller) => controller.text.isNotEmpty);
 
                           if (allCompleted) {
-                            setState(() {
-                              VerifyOTPController.verifyOTPModel.indicator.value = true;
-                            });
-                            String otpCode = VerifyOTPController.verifyOTPModel.otpControllers.map((controller) => controller.text).join();
-                            if (kDebugMode) {
-                              print("Entered OTP: $otpCode");
-                            }
-
+                            VerifyOTPController.toggleIndicator(true);
                             widget.Verify_OTP(context);
                           } else {
                             Basic_dialog(context: context, showCancel: false, title: "Error", content: "Please enter OTP Correctly!");
@@ -179,9 +171,7 @@ class _Verify_OTPState extends State<Verify_OTP> {
                         ),
                         TextButton(
                           onPressed: () {
-                            setState(() {
-                              IamController.IAMModel.pagename.value = 'Forgotpassword';
-                            });
+                            IamController.IAMModel.pagename.value = 'Forgotpassword';
                           },
                           child: Text(
                             'Back',

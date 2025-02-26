@@ -16,13 +16,24 @@ mixin InvoiceproductService {
 
   void addproduct(context) {
     if (invoiceController.invoiceModel.productKey.value.currentState?.validate() ?? false) {
-      bool exists = invoiceController.invoiceModel.Invoice_products.any((product) => product.productName == invoiceController.invoiceModel.productNameController.value.text && product.hsn == invoiceController.invoiceModel.hsnController.value.text && product.quantity == int.parse(invoiceController.invoiceModel.quantityController.value.text));
+      // ignore: unrelated_type_equality_checks
+      bool exists = invoiceController.invoiceModel.Invoice_products.any((product) =>
+          product.productName == invoiceController.invoiceModel.productNameController.value.text &&
+          // ignore: unrelated_type_equality_checks
+          product.hsn == invoiceController.invoiceModel.hsnController.value.text &&
+          product.quantity == int.parse(invoiceController.invoiceModel.quantityController.value.text));
 
       if (exists) {
         Get.snackbar("Product", "This product already exists.");
         return;
       }
-      invoiceController.addProduct(context: context, productName: invoiceController.invoiceModel.productNameController.value.text, hsn: invoiceController.invoiceModel.hsnController.value.text, price: double.parse(invoiceController.invoiceModel.priceController.value.text), quantity: int.parse(invoiceController.invoiceModel.quantityController.value.text), gst: double.parse(invoiceController.invoiceModel.gstController.value.text));
+      invoiceController.addProduct(
+          context: context,
+          productName: invoiceController.invoiceModel.productNameController.value.text,
+          hsn: invoiceController.invoiceModel.hsnController.value.text,
+          price: double.parse(invoiceController.invoiceModel.priceController.value.text),
+          quantity: int.parse(invoiceController.invoiceModel.quantityController.value.text),
+          gst: double.parse(invoiceController.invoiceModel.gstController.value.text));
 
       clearFields();
     }

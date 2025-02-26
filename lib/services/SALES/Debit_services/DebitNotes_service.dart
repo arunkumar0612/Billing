@@ -8,8 +8,8 @@ import 'package:ssipl_billing/models/entities/SALES/Debit_entities.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_Debit/Debit_template.dart';
 
 // import '../../../controllers/viewSend_actions.dart';
-import '../../../themes/style.dart';
-import '../../../views/components/view_send_pdf.dart';
+// import '../../../themes/style.dart';
+// import '../../../views/components/view_send_pdf.dart';
 import '../../../views/screens/SALES/Generate_DebitNote/Debit_template.dart';
 // import '../../../views/screens/SALES/Generate_Debit/debit_template.dart';
 
@@ -42,7 +42,10 @@ mixin DebitnotesService {
   }
 
   void updatetable() {
-    debitController.updateRecommendation(index: debitController.debitModel.recommendation_editIndex.value!, key: debitController.debitModel.recommendationKeyController.value.text.toString(), value: debitController.debitModel.recommendationValueController.value.text.toString());
+    debitController.updateRecommendation(
+        index: debitController.debitModel.recommendation_editIndex.value!,
+        key: debitController.debitModel.recommendationKeyController.value.text.toString(),
+        value: debitController.debitModel.recommendationValueController.value.text.toString());
     cleartable_Fields();
     debitController.updateRecommendationEditindex(null);
   }
@@ -93,7 +96,16 @@ mixin DebitnotesService {
   void Generate_Debit(BuildContext context) async {
     // Start generating PDF data as a Future
     // viewsendController.setLoading(false);
-    final pdfGenerationFuture = generate_Debit(PdfPageFormat.a4, debitController.debitModel.Debit_products, debitController.debitModel.clientAddressNameController.value.text, debitController.debitModel.clientAddressController.value.text, debitController.debitModel.billingAddressNameController.value.text, debitController.debitModel.billingAddressController.value.text, debitController.debitModel.Debit_no.value, 9, debitController.debitModel.Debit_gstTotals);
+    final pdfGenerationFuture = generate_Debit(
+        PdfPageFormat.a4,
+        debitController.debitModel.Debit_products,
+        debitController.debitModel.clientAddressNameController.value.text,
+        debitController.debitModel.clientAddressController.value.text,
+        debitController.debitModel.billingAddressNameController.value.text,
+        debitController.debitModel.billingAddressController.value.text,
+        debitController.debitModel.Debit_no.value,
+        9,
+        debitController.debitModel.Debit_gstTotals);
 
     // Show the dialog immediately (not awaited)
     // showDialog(

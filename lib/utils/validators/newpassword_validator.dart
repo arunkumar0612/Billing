@@ -4,7 +4,6 @@ import '../../controllers/IAM_actions.dart';
 
 mixin NewpasswordValidator {
   final NewpasswordController newwordController = Get.find<NewpasswordController>();
-  final ForgotpasswordController forgotpasswordController = Get.find<ForgotpasswordController>();
 
   void validateForm(context) {
     newwordController.newpasswordModel.errors.clear();
@@ -38,7 +37,7 @@ mixin NewpasswordValidator {
     if (newwordController.newpasswordModel.errors.isEmpty) {
       NewpasswordServices().Newpassword(context);
 
-      forgotpasswordController.toggleIndicator(true);
+      newwordController.toggleIndicator(true);
     }
   }
 }

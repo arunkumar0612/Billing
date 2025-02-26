@@ -1,4 +1,5 @@
-import 'dart:io';
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Sales_actions.dart';
@@ -6,7 +7,6 @@ import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_Quote/post_Quote.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../../../controllers/SALEScontrollers/Quote_actions.dart';
-import '../../../components/view_send_pdf.dart';
 import 'quote_details.dart';
 import 'quote_note.dart';
 import 'quote_products.dart';

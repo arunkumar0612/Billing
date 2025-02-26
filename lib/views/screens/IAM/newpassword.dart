@@ -80,9 +80,7 @@ class _NewpasswordState extends State<Newpassword> {
                         border: const OutlineInputBorder(),
                         prefixIcon: GestureDetector(
                           onTap: () {
-                            setState(() {
-                              newpasswordController.newpasswordModel.passwordVisibility.value = newpasswordController.newpasswordModel.passwordVisibility.value == true ? false : true;
-                            });
+                            newpasswordController.newpasswordModel.passwordVisibility.value = newpasswordController.newpasswordModel.passwordVisibility.value == true ? false : true;
                           },
                           child: Icon(
                             newpasswordController.newpasswordModel.passwordVisibility.value == true ? Icons.remove_red_eye : Icons.visibility_off,

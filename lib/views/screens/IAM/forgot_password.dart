@@ -90,9 +90,8 @@ class _Forgot_passwordState extends State<Forgot_password> {
                           child: TextButton(
                             onPressed: () {
                               if (formKey1.currentState?.validate() ?? false) {
-                                setState(() {
-                                  forgotpasswordController.forgotpasswordModel.indicator.value = true;
-                                });
+                                forgotpasswordController.toggleIndicator(true);
+
                                 widget.Forgotpassword(context);
                               }
 

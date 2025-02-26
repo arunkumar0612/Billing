@@ -23,4 +23,6 @@ class API {
   static String sales_fetchBranch_list = "http://192.168.0.200:8081/admin/branchlist";
   static String sales_deleteprocess_API = "http://192.168.0.200:8081/sales/deleteprocess";
   static String sales_archiveprocess_API = "http://192.168.0.200:8081/sales/archiveprocess";
+  static String sales_getsalesdata_API = "http://192.168.0.200:8081/sales/salesdata";
+  static String sales_clientprofile_API = "http://192.168.0.200:8081/sales/clientprofile";
 }

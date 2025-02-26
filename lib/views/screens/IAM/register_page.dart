@@ -174,9 +174,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           border: const OutlineInputBorder(),
                           prefixIcon: GestureDetector(
                             onTap: () {
-                              setState(() {
-                                registerController.registerModel.passwordVisibility.value = registerController.registerModel.passwordVisibility.value == true ? false : true;
-                              });
+                              registerController.registerModel.passwordVisibility.value = registerController.registerModel.passwordVisibility.value == true ? false : true;
                             },
                             child: Icon(
                               registerController.registerModel.passwordVisibility.value == true ? Icons.remove_red_eye : Icons.visibility_off,

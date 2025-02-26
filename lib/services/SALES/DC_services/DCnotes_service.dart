@@ -8,8 +8,8 @@ import 'package:ssipl_billing/models/entities/SALES/DC_entities.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_template.dart';
 
 // import '../../../controllers/viewSend_actions.dart';
-import '../../../themes/style.dart';
-import '../../../views/components/view_send_pdf.dart';
+// import '../../../themes/style.dart';
+// import '../../../views/components/view_send_pdf.dart';
 
 mixin DcnotesService {
   final DCController dcController = Get.find<DCController>();
@@ -40,7 +40,10 @@ mixin DcnotesService {
   }
 
   void updatetable() {
-    dcController.updateRecommendation(index: dcController.dcModel.recommendation_editIndex.value!, key: dcController.dcModel.recommendationKeyController.value.text.toString(), value: dcController.dcModel.recommendationValueController.value.text.toString());
+    dcController.updateRecommendation(
+        index: dcController.dcModel.recommendation_editIndex.value!,
+        key: dcController.dcModel.recommendationKeyController.value.text.toString(),
+        value: dcController.dcModel.recommendationValueController.value.text.toString());
     cleartable_Fields();
     dcController.updateRecommendationEditindex(null);
   }

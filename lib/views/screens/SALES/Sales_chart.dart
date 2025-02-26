@@ -1,104 +1,102 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ssipl_billing/themes/style.dart';
 
-class Sales_chart extends StatefulWidget {
-  const Sales_chart({super.key});
+import '../../../controllers/SALEScontrollers/Sales_actions.dart';
+
+class SalesChart extends StatefulWidget {
+  const SalesChart({super.key});
 
   @override
-  Sales_chartState createState() => Sales_chartState();
+  SalesChartState createState() => SalesChartState();
 }
 
-class Sales_chartState extends State<Sales_chart> {
-  int touchedIndex = -1; // Initialize touchedIndex
+class SalesChartState extends State<SalesChart> {
+  int touchedIndex = -1;
 
   @override
+  @override
   Widget build(BuildContext context) {
-    double maxPercentage = getMaxPercentage();
-    String maxLabel = getMaxPercentageLabel(); // Get the label for the max percentage
+    final SalesController salesController = Get.find<SalesController>();
 
-    return Row(
-      children: <Widget>[
-        const SizedBox(
-          height: 18,
-        ),
-        Expanded(
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                PieChart(
-                  PieChartData(
-                    pieTouchData: PieTouchData(
-                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                        setState(() {
-                          if (!event.isInterestedForInteractions || pieTouchResponse == null || pieTouchResponse.touchedSection == null) {
+    return Obx(() {
+      final int completed = salesController.salesModel.salesdata.value?.paidinvoices ?? 0;
+      final int pending = salesController.salesModel.salesdata.value?.unpaidinvoices ?? 0;
+
+      double maxPercentage = getMaxPercentage(completed, pending);
+      String maxLabel = getMaxPercentageLabel(completed, pending);
+
+      return Row(
+        children: <Widget>[
+          Expanded(
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  PieChart(
+                    PieChartData(
+                      pieTouchData: PieTouchData(
+                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                          if (!event.isInterestedForInteractions || pieTouchResponse?.touchedSection == null) {
                             touchedIndex = -1;
-                            return;
+                          } else {
+                            touchedIndex = pieTouchResponse!.touchedSection!.touchedSectionIndex;
                           }
-                          touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
-                        });
-                      },
+                          setState(() {}); // Rebuild UI
+                        },
+                      ),
+                      borderData: FlBorderData(show: false),
+                      sectionsSpace: 2,
+                      sections: showingSections(completed, pending),
                     ),
-                    borderData: FlBorderData(show: false),
-                    sectionsSpace: 2,
-                    sections: showingSections(),
                   ),
-                ),
-                // Display the label and percentage in the center
-                Text(
-                  '$maxLabel\n${maxPercentage.toStringAsFixed(0)}%', // Show label and max percentage
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 15.0,
-                    color: Colors.white,
+                  Text(
+                    '$maxLabel\n${maxPercentage.toStringAsFixed(0)}%',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 13.0, color: Colors.white),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Indicator(
-              color: Color.fromARGB(255, 249, 140, 236),
-              text: 'Completed',
-              isSquare: true,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Indicator(
-              color: Primary_colors.Color8,
-              text: 'Pending',
-              isSquare: true,
-            ),
-          ],
-        ),
-        const SizedBox(
-          width: 28,
-        ),
-      ],
-    );
+          const SizedBox(width: 10),
+          const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Indicator(
+                color: Primary_colors.Color5,
+                text: 'Completed',
+                isSquare: true,
+              ),
+              SizedBox(height: 10),
+              Indicator(
+                color: Primary_colors.Color8,
+                text: 'Pending',
+                isSquare: true,
+              ),
+            ],
+          ),
+          const SizedBox(width: 28),
+        ],
+      );
+    });
   }
 
-  List<PieChartSectionData> showingSections() {
+  List<PieChartSectionData> showingSections(int completed, int pending) {
+    final List<int> valueList = [completed, pending];
     return List.generate(2, (i) {
       final isTouched = i == touchedIndex;
       final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 15.0; // Increased size on hover
+      final radius = isTouched ? 60.0 : 15.0;
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-      final valueList = [40, 30, 15, 15];
+
       return PieChartSectionData(
         color: getColor(i),
         value: valueList[i].toDouble(),
-        title: isTouched ? '${valueList[i]}%' : '', // Show value on hover
+        title: isTouched ? '${valueList[i]}' : '',
         radius: radius,
         titleStyle: TextStyle(
           fontSize: fontSize,
@@ -110,51 +108,25 @@ class Sales_chartState extends State<Sales_chart> {
     });
   }
 
-  // Utility function to get color by index
   Color getColor(int index) {
     switch (index) {
       case 0:
-        return Primary_colors.Color8;
+        return Primary_colors.Color5; // Completed
       case 1:
-        return Primary_colors.Color5;
-
+        return Primary_colors.Color8; // Pending
       default:
         return Colors.grey;
     }
   }
 
-  double getMaxPercentage() {
-    final sections = showingSections();
-    double maxValue = 0.0;
-    for (var section in sections) {
-      if (section.value > maxValue) {
-        maxValue = section.value;
-      }
-    }
-    return maxValue;
+  double getMaxPercentage(int completed, int pending) {
+    int maxValue = completed > pending ? completed : pending;
+    int total = completed + pending;
+    return total == 0 ? 0 : (maxValue / total) * 100;
   }
 
-  String getMaxPercentageLabel() {
-    final sections = showingSections();
-    double maxValue = 0.0;
-    int maxIndex = 0;
-
-    for (int i = 0; i < sections.length; i++) {
-      if (sections[i].value > maxValue) {
-        maxValue = sections[i].value;
-        maxIndex = i;
-      }
-    }
-
-    switch (maxIndex) {
-      case 0:
-        return 'Completed';
-      case 1:
-        return 'Pending';
-
-      default:
-        return '';
-    }
+  String getMaxPercentageLabel(int completed, int pending) {
+    return completed >= pending ? 'Completed' : 'Pending';
   }
 }
 
@@ -182,12 +154,10 @@ class Indicator extends StatelessWidget {
             color: color,
           ),
         ),
-        const SizedBox(
-          width: 4,
-        ),
+        const SizedBox(width: 4),
         Text(
           text,
-          style: const TextStyle(fontSize: 10, color: Color.fromARGB(255, 176, 176, 176)),
+          style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 176, 176, 176)),
         ),
       ],
     );

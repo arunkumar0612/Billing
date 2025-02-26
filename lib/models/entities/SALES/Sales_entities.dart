@@ -216,3 +216,114 @@ class PDFfileData {
     };
   }
 }
+
+class Salesdata {
+  final String? totalamount;
+  final String? paidamount;
+  final String? unpaidamount;
+  final int? totalinvoices;
+  final int? paidinvoices;
+  final int? unpaidinvoices;
+
+  Salesdata({
+    this.totalamount,
+    this.paidamount,
+    this.unpaidamount,
+    this.totalinvoices,
+    this.paidinvoices,
+    this.unpaidinvoices,
+  });
+
+  factory Salesdata.fromJson(CMDmResponse json) {
+    return Salesdata(
+      totalamount: json.data['totalamount'] as String?,
+      paidamount: json.data['paidamount'] as String?,
+      unpaidamount: json.data['unpaidamount'] as String?,
+      totalinvoices: json.data['totalinvoices'] as int?,
+      paidinvoices: json.data['paidinvoices'] as int?,
+      unpaidinvoices: json.data['unpaidinvoices'] as int?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'totalamount': totalamount,
+      'paidamount': paidamount,
+      'unpaidamount': unpaidamount,
+      'totalinvoices': totalinvoices,
+      'paidinvoices': paidinvoices,
+      'unpaidinvoices': unpaidinvoices,
+    };
+  }
+}
+
+class Clientprofiledata {
+  final String? customername;
+  final String? mailid;
+  final String? Phonenumber;
+  final String? gstnumber;
+  final String? clientaddress;
+  final String? clientaddressname;
+  final String? billingaddress;
+  final String? billingaddressname;
+  final int? totalprocess;
+  final int? inactive_process;
+  final int? activeprocess;
+  final String? clienttype;
+  final int? companycount;
+  final int? sitecount;
+  Clientprofiledata({
+    this.customername,
+    this.mailid,
+    this.Phonenumber,
+    this.gstnumber,
+    this.clientaddress,
+    this.clientaddressname,
+    this.billingaddress,
+    this.billingaddressname,
+    this.totalprocess,
+    this.inactive_process,
+    this.activeprocess,
+    this.clienttype,
+    this.companycount,
+    this.sitecount,
+  });
+
+  factory Clientprofiledata.fromJson(CMDmResponse json) {
+    return Clientprofiledata(
+      customername: json.data['customername'] as String?,
+      mailid: json.data['mailid'] as String?,
+      Phonenumber: json.data['Phonenumber'] as String?,
+      gstnumber: json.data['gstnumber'] as String?,
+      clientaddress: json.data['clientaddress'] as String?,
+      clientaddressname: json.data['clientaddressname'] as String?,
+      billingaddress: json.data['billingaddress'] as String?,
+      billingaddressname: json.data['billingaddressname'] as String?,
+      totalprocess: json.data['totalprocess'] as int?,
+      inactive_process: json.data['inactive_process'] as int?,
+      activeprocess: json.data['activeprocess'] as int?,
+      clienttype: json.data['clienttype'] as String?,
+      companycount: json.data['companycount'] as int?,
+      sitecount: json.data['sitecount'] as int?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'customername': customername,
+      'mailid': mailid,
+      'Phonenumber': Phonenumber,
+      'gstnumber': gstnumber,
+      'clientaddress': clientaddress,
+      'clientaddressname': clientaddressname,
+      'billingaddress': billingaddress,
+      'billingaddressname': billingaddressname,
+      'totalprocess': totalprocess,
+      'inactive_process': inactive_process,
+      'activeprocess': activeprocess,
+      'clienttype': clienttype,
+      'companycount': companycount,
+      'sitecount': sitecount,
+    };
+  }
+}

@@ -1,12 +1,12 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/Billing.dart';
-import 'package:ssipl_billing/Sales.dart';
-import 'package:ssipl_billing/Subscription.dart';
-import 'package:ssipl_billing/dashboard.dart';
-import 'package:ssipl_billing/inventory.dart';
-import 'package:ssipl_billing/common_modules/style.dart';
-import 'package:ssipl_billing/vendors.dart';
+import 'package:ssipl_billing/views/screens/BILLING/Billing.dart';
+import 'package:ssipl_billing/views/screens/SALES/Sales.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Subscription.dart';
+import 'package:ssipl_billing/views/screens/DASHBOARD/dashboard.dart';
+import 'package:ssipl_billing/views/screens/INVENTORY/inventory.dart';
+import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/views/screens/VENDOR/vendors.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -77,6 +77,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 unselectedIconColor: Primary_colors.Color1,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(30)),
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/bottom.jpg'), // ✅ Your image here
+                    fit: BoxFit.fill, // Covers the entire background
+                  ),
                 ),
               ),
               // title: Container(
@@ -92,10 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // ),
               title: Container(
                 decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
                   color: Primary_colors.Color3,
                 ),
                 child: Column(
@@ -213,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   const Dashboard(),
                   const Billing(),
                   const Subscription_Client(),
-                  const Sales_Client(),
+                  Sales_Client(),
                   const Vendor(),
                   const Inventory(),
                   Container(),

@@ -75,7 +75,17 @@ class RequiredData {
   final String? billingAddressName;
   final String? billingAddress;
   final List<DcProduct> product;
-  RequiredData({required this.eventnumber, required this.title, required this.name, required this.emailId, required this.phoneNo, required this.address, required this.gst, required this.billingAddressName, required this.billingAddress, required this.product});
+  RequiredData(
+      {required this.eventnumber,
+      required this.title,
+      required this.name,
+      required this.emailId,
+      required this.phoneNo,
+      required this.address,
+      required this.gst,
+      required this.billingAddressName,
+      required this.billingAddress,
+      required this.product});
 
   factory RequiredData.fromJson(CMDmResponse json) {
     return RequiredData(
@@ -117,6 +127,7 @@ class Post_Dc {
   int? messageType;
   String? feedback;
   String? ccEmail;
+  String? productFeedback;
 
   Post_Dc({
     required this.title,
@@ -135,6 +146,7 @@ class Post_Dc {
     required this.messageType,
     required this.feedback,
     required this.ccEmail,
+    required this.productFeedback,
   });
 
   factory Post_Dc.fromJson({
@@ -154,8 +166,26 @@ class Post_Dc {
     required int messageType,
     required String feedback,
     required String ccEmail,
+    required String? productFeedback,
   }) {
-    return Post_Dc(title: title, processid: processid, ClientAddressname: ClientAddressname, ClientAddress: ClientAddress, billingAddressName: billingAddressName, billingAddress: billingAddress, emailId: emailId, phoneNo: phoneNo, gst: gst, product: product, notes: notes, date: date, dcGenID: dcGenID, messageType: messageType, feedback: feedback, ccEmail: ccEmail);
+    return Post_Dc(
+        title: title,
+        processid: processid,
+        ClientAddressname: ClientAddressname,
+        ClientAddress: ClientAddress,
+        billingAddressName: billingAddressName,
+        billingAddress: billingAddress,
+        emailId: emailId,
+        phoneNo: phoneNo,
+        gst: gst,
+        product: product,
+        notes: notes,
+        date: date,
+        dcGenID: dcGenID,
+        messageType: messageType,
+        feedback: feedback,
+        ccEmail: ccEmail,
+        productFeedback: productFeedback);
   }
 
   Map<String, dynamic> toJson() {
@@ -176,6 +206,7 @@ class Post_Dc {
       "messagetype": messageType,
       "feedback": feedback,
       "ccemail": ccEmail,
+      "productfeedback": productFeedback
     };
   }
 }

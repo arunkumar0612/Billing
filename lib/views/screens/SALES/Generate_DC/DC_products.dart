@@ -78,6 +78,7 @@ class _DcProductsState extends State<DcProducts> {
 
   Widget buildProductlist() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         const SizedBox(height: 10),
         Container(
@@ -217,12 +218,13 @@ class _DcProductsState extends State<DcProducts> {
                   // final offline_color = iera
                   //     ? const Color.fromARGB(255, 255, 255, 255)
                   //     : Colors.red;
-                  final backgroundColor = isEvenRow ? const Color.fromARGB(211, 201, 200, 200) : const Color.fromARGB(255, 121, 117, 117);
+                  const backgroundColor = Color.fromARGB(211, 201, 200, 200);
 
                   return Column(
                     children: [
-                      buildProductRow(product.productName, product.hsn.toString(), product.price.toString(), product.quantity.toString(), (product.price * product.quantity).toString(), backgroundColor, index),
-                      const Text("dsfgdgdfg fgdfgdf df df df df df df df df df df df df df df df ggdfgdf fdgdfg dfgdfgdfg dfg df gdf gd "),
+                      buildProductRow(
+                          product.productName, product.hsn.toString(), product.price.toString(), product.quantity.toString(), (product.price * product.quantity).toString(), backgroundColor, index),
+                      // const Text("dsfgdgdfg fgdfgdf df df df df df df df df df df df df df df df ggdfgdf fdgdfg dfgdfgdfg dfg df gdf gd "),
                     ],
                   );
                 },
@@ -230,6 +232,13 @@ class _DcProductsState extends State<DcProducts> {
             ),
           ),
         ),
+        BasicButton(
+            text: "Submit",
+            colors: Colors.green,
+            onPressed: () {
+              widget.addto_Selectedproducts();
+              dcController.nextTab();
+            })
       ],
     );
   }

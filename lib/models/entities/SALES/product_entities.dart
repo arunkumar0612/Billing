@@ -7,7 +7,7 @@ class DcProduct {
   final double gst;
   final double price;
   final int quantity;
-
+  final int productid;
   const DcProduct({
     required this.sno,
     required this.productName,
@@ -15,6 +15,7 @@ class DcProduct {
     required this.gst,
     required this.price,
     required this.quantity,
+    required this.productid,
   });
 
   /// Calculates the total price for the product
@@ -37,6 +38,8 @@ class DcProduct {
         return quantity.toString();
       case 6:
         return formatCurrency(total);
+      case 7:
+        return productid.toString();
       default:
         return '';
     }
@@ -52,6 +55,7 @@ class DcProduct {
       'productprice': price,
       'productquantity': quantity,
       'producttotal': total,
+      'productid': productid,
     };
   }
 
@@ -64,6 +68,7 @@ class DcProduct {
       gst: (json['productgst'] as num).toDouble(),
       price: (json['productprice'] as num).toDouble(),
       quantity: json['productquantity'] as int,
+      productid: json['productid'] as int,
     );
   }
 }

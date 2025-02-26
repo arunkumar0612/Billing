@@ -192,12 +192,7 @@ class DcController extends GetxController {
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: [
-        'png',
-        'jpg',
-        'jpeg',
-        'pdf'
-      ],
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf'],
     );
 
     if (result != null) {
@@ -314,7 +309,7 @@ class DcController extends GetxController {
         return;
       }
 
-      dcModel.Dc_products.add(DcProduct(sno: (dcModel.Dc_products.length + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity));
+      dcModel.Dc_products.add(DcProduct(sno: (dcModel.Dc_products.length + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity, productid: 0));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -358,7 +353,7 @@ class DcController extends GetxController {
       }
 
       // Update the product details at the specified index
-      dcModel.Dc_products[editIndex] = DcProduct(sno: (editIndex + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity);
+      dcModel.Dc_products[editIndex] = DcProduct(sno: (editIndex + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity, productid: 0);
 
       // ProductDetail(
       //   productName: productName.trim(),
@@ -445,7 +440,18 @@ class DcController extends GetxController {
   }
 
   bool postDatavalidation() {
-    return (dcModel.TitleController.value.text.isEmpty || dcModel.processID.value == null || dcModel.clientAddressNameController.value.text.isEmpty || dcModel.clientAddressController.value.text.isEmpty || dcModel.billingAddressNameController.value.text.isEmpty || dcModel.billingAddressController.value.text.isEmpty || dcModel.emailController.value.text.isEmpty || dcModel.phoneController.value.text.isEmpty || dcModel.gstNumController.value.text.isEmpty || dcModel.Dc_products.isEmpty || dcModel.Dc_noteList.isEmpty || dcModel.Dc_no.value == null);
+    return (dcModel.TitleController.value.text.isEmpty ||
+        dcModel.processID.value == null ||
+        dcModel.clientAddressNameController.value.text.isEmpty ||
+        dcModel.clientAddressController.value.text.isEmpty ||
+        dcModel.billingAddressNameController.value.text.isEmpty ||
+        dcModel.billingAddressController.value.text.isEmpty ||
+        dcModel.emailController.value.text.isEmpty ||
+        dcModel.phoneController.value.text.isEmpty ||
+        dcModel.gstNumController.value.text.isEmpty ||
+        dcModel.Dc_products.isEmpty ||
+        dcModel.Dc_noteList.isEmpty ||
+        dcModel.Dc_no.value == null);
   } // If any one is empty or null, then it returns true
 
   void resetData() {

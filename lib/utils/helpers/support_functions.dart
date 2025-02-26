@@ -47,6 +47,13 @@ String formatCurrencyRoundedPaisa(double amount) {
   return formatter.format(roundedAmount);
 }
 
+String calculateFormattedDifference(double grandTotal) {
+  double formattedValue = double.parse(formatCurrencyRoundedPaisa(grandTotal).replaceAll(',', ''));
+  double difference = formattedValue - grandTotal;
+
+  return "${difference >= 0 ? '+' : ''}${difference.toStringAsFixed(2)}";
+}
+
 String formatCurrency(double amount) {
   final formatter = NumberFormat.currency(locale: 'en_IN', symbol: '', decimalDigits: 2);
   return formatter.format(amount);

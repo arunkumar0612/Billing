@@ -8,11 +8,12 @@ class API {
   static String sales_add_details_API = "http://192.168.0.200:8081/sales/add";
   static String add_Quotation = "http://192.168.0.200:8081/sales/addquotation";
   static String add_RevisedQuotation = "http://192.168.0.200:8081/sales/addrevisedquotation";
+  static String add_Dc = "http://192.168.0.200:8081/sales/adddeliverychallan";
 
   static String add_invoice = "http://192.168.0.200:8081/sales/addinvoice";
 
   static String sales_add_client_requirement_API = "http://192.168.0.200:8081/admin/sendmailwhatsapp";
-  static String sales_fetchEventNumber_API = "http://192.168.0.200:8081/sales/fetcheventnumber";
+  static String sales_detailsPreLoader_API = "http://192.168.0.200:8081/sales/detailspreloader";
   static String sales_getcustomerlist_API = "http://192.168.0.200:8081/sales/getcustomerlist";
   static String sales_getprocesscustomer_API = "http://192.168.0.200:8081/sales/getprocesscustomer";
   static String sales_getprocesslist_API = "http://192.168.0.200:8081/sales/getprocesslist";
@@ -23,6 +24,8 @@ class API {
   static String sales_fetchBranch_list = "http://192.168.0.200:8081/admin/branchlist";
   static String sales_deleteprocess_API = "http://192.168.0.200:8081/sales/deleteprocess";
   static String sales_archiveprocess_API = "http://192.168.0.200:8081/sales/archiveprocess";
+  static String sales_getProduct_SUGG_List = "http://192.168.0.200:8081/sales/getproducts";
+  static String sales_getNote_SUGG_List = "http://192.168.0.200:8081/sales/getnotes";
   static String sales_getsalesdata_API = "http://192.168.0.200:8081/sales/salesdata";
   static String sales_clientprofile_API = "http://192.168.0.200:8081/sales/clientprofile";
 }

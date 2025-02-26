@@ -119,7 +119,7 @@ class ClientreqController extends GetxController {
   }
 
   void updateNoteList(String value, int index) {
-    clientReqModel.clientReqNoteList[clientReqModel.noteEditIndex.value!] = Note(notename: clientReqModel.noteContentController.value.text);
+    clientReqModel.clientReqNoteList[clientReqModel.noteEditIndex.value!] = clientReqModel.noteContentController.value.text;
   }
 
   void updateNoteEditindex(int? index) {
@@ -226,7 +226,7 @@ class ClientreqController extends GetxController {
 
   void addNote(String noteContent) {
     if (noteContent.isNotEmpty) {
-      clientReqModel.clientReqNoteList.add(Note(notename: noteContent));
+      clientReqModel.clientReqNoteList.add(noteContent);
     }
   }
 
@@ -288,12 +288,12 @@ class ClientreqController extends GetxController {
       // );
 
       // Notify success
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text('Product updated successfully.'),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     backgroundColor: Colors.green,
+      //     content: Text('Product updated successfully.'),
+      //   ),
+      // );
 
       // Optional: Update UI or state if needed
       // .updateProductDetails(creditController.clientReqModel.clientReq_productDetails);

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/services/SALES/Invoice_services/InvoiceDetails_service.dart';
@@ -7,8 +9,8 @@ import 'package:ssipl_billing/views/components/textfield.dart';
 import '../../../../controllers/SALEScontrollers/Invoice_actions.dart';
 
 class InvoiceDetails extends StatefulWidget with InvoicedetailsService {
-  InvoiceDetails({super.key});
-
+  InvoiceDetails({super.key, required this.eventID});
+  int eventID;
   @override
   State<InvoiceDetails> createState() => _InvoiceDetailsState();
 }
@@ -18,7 +20,9 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
 
   @override
   void initState() {
-    widget.get_requiredData(context);
+    widget.get_requiredData(context, widget.eventID, "invoice");
+    widget.get_productSuggestionList(context);
+    widget.get_noteSuggestionList(context);
     super.initState();
   }
 

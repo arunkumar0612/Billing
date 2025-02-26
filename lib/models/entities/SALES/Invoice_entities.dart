@@ -25,23 +25,23 @@ class Recommendation {
   }
 }
 
-class Note {
-  final String notename;
+// class Note {
+//   final String notename;
 
-  Note({required this.notename});
+//   Note({required this.notename});
 
-  factory Note.fromJson(Map<String, dynamic> json) {
-    return Note(
-      notename: json['notename'] as String,
-    );
-  }
+//   factory Note.fromJson(Map<String, dynamic> json) {
+//     return Note(
+//       notename: json['notename'] as String,
+//     );
+//   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'notename': notename,
-    };
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'notename': notename,
+//     };
+//   }
+// }
 
 class InvoiceGSTtotals {
   final double gst;
@@ -110,15 +110,14 @@ class Post_Invoice {
   String? gst;
   String? billingAddressName;
   String? billingAddress;
-  String? modeOfRequest;
-  String? morReference;
   List<InvoiceProduct>? product;
-  List<Note>? notes;
+  List notes;
   String? date;
   String? invoiceGenID;
   int? messageType;
   String? feedback;
   String? ccEmail;
+  double? total_amount;
 
   Post_Invoice({
     required this.title,
@@ -137,6 +136,7 @@ class Post_Invoice {
     required this.messageType,
     required this.feedback,
     required this.ccEmail,
+    required this.total_amount,
   });
 
   factory Post_Invoice.fromJson({
@@ -150,14 +150,15 @@ class Post_Invoice {
     required String phoneNo,
     required String gst,
     required List<InvoiceProduct> product,
-    required List<Note> notes,
+    required List notes,
     required String date,
     required String invoiceGenID,
     required int messageType,
     required String feedback,
     required String ccEmail,
+    required double total_amount,
   }) {
-    return Post_Invoice(title: title, processid: processid, ClientAddressname: ClientAddressname, ClientAddress: ClientAddress, billingAddressName: billingAddressName, billingAddress: billingAddress, emailId: emailId, phoneNo: phoneNo, gst: gst, product: product, notes: notes, date: date, invoiceGenID: invoiceGenID, messageType: messageType, feedback: feedback, ccEmail: ccEmail);
+    return Post_Invoice(title: title, processid: processid, ClientAddressname: ClientAddressname, ClientAddress: ClientAddress, billingAddressName: billingAddressName, billingAddress: billingAddress, emailId: emailId, phoneNo: phoneNo, gst: gst, product: product, notes: notes, date: date, invoiceGenID: invoiceGenID, messageType: messageType, feedback: feedback, ccEmail: ccEmail, total_amount: total_amount);
   }
 
   Map<String, dynamic> toJson() {
@@ -172,12 +173,47 @@ class Post_Invoice {
       "phoneno": phoneNo,
       "gst_number": gst,
       "product": product?.map((item) => item.toJson()).toList(),
-      "notes": notes?.map((item) => item.toJson()).toList(),
+      "notes": notes,
       "date": date,
       "invoicegenid": invoiceGenID,
       "messagetype": messageType,
       "feedback": feedback,
       "ccemail": ccEmail,
+      "invoice_amount": total_amount
+    };
+  }
+}
+
+class ProductSuggestion {
+  final String productName;
+  final String productHsn;
+  final double productPrice;
+  final double productGst;
+
+  ProductSuggestion({
+    required this.productName,
+    required this.productHsn,
+    required this.productPrice,
+    required this.productGst,
+  });
+
+  /// Factory method to convert JSON to Product object
+  factory ProductSuggestion.fromJson(Map<String, dynamic> json) {
+    return ProductSuggestion(
+      productName: json['product_name'] as String,
+      productHsn: json['product_hsn'].toString(), // Ensure String type
+      productPrice: (json['product_price'] as num).toDouble(),
+      productGst: (json['product_gst'] as num).toDouble(),
+    );
+  }
+
+  /// Method to convert Product object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'product_name': productName,
+      'product_hsn': productHsn,
+      'product_price': productPrice,
+      'product_gst': productGst,
     };
   }
 }

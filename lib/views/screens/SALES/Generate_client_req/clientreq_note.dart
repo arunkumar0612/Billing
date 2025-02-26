@@ -50,7 +50,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                clientreqController.clientReqModel.clientReqNoteList[index].notename, // Display camera type from map
+                                clientreqController.clientReqModel.clientReqNoteList[index], // Display camera type from map
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
                               ),
                             ],

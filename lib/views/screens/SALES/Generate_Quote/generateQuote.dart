@@ -12,7 +12,8 @@ import 'quote_note.dart';
 import 'quote_products.dart';
 
 class GenerateQuote extends StatefulWidget {
-  GenerateQuote({super.key, required this.quoteType});
+  GenerateQuote({super.key, required this.quoteType, required this.eventID});
+  int eventID;
   String quoteType;
   @override
   _GenerateQuoteState createState() => _GenerateQuoteState();
@@ -144,6 +145,7 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
                       children: [
                         QuoteDetails(
                           eventtype: widget.quoteType,
+                          eventID: widget.eventID,
                         ),
                         QuoteProducts(),
                         QuoteNote(),

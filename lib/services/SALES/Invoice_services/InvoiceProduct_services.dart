@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
-
 import '../../../models/entities/SALES/Invoice_entities.dart';
 
 mixin InvoiceproductService {
@@ -86,5 +85,11 @@ mixin InvoiceproductService {
   void resetEditingState() {
     clearFields();
     invoiceController.addProductEditindex(null);
+  }
+
+  void set_ProductValues(ProductSuggestion value) {
+    invoiceController.updateHSN(int.parse(value.productHsn));
+    invoiceController.updateGST(value.productGst);
+    invoiceController.updatePrice(value.productPrice);
   }
 }

@@ -9,7 +9,8 @@ import '../../../../controllers/SALEScontrollers/Quote_actions.dart';
 import '../../../../services/SALES/Quotation_services/QuoteDetails_service.dart';
 
 class QuoteDetails extends StatefulWidget with QuotedetailsService {
-  QuoteDetails({super.key, required this.eventtype});
+  QuoteDetails({super.key, required this.eventtype, required this.eventID});
+  int eventID;
   String eventtype;
   @override
   State<QuoteDetails> createState() => _QuoteDetailsState();
@@ -20,7 +21,8 @@ class _QuoteDetailsState extends State<QuoteDetails> {
 
   @override
   void initState() {
-    widget.get_requiredData(context, widget.eventtype);
+    widget.get_requiredData(context, widget.eventtype, widget.eventID);
+
     super.initState();
   }
 

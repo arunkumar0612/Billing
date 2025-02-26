@@ -1,47 +1,93 @@
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/models/entities/SALES/DC_entities.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
-import '../../entities/SALES/DC_entities.dart';
 
-class DCModel {
+class DcModel extends GetxController with GetSingleTickerProviderStateMixin {
   final Rxn<TabController> tabController = Rxn<TabController>();
-  var Delivery_challan_products = <DCProduct>[].obs;
-//######################################################################################################################################
-//DETAILS
+  var processID = Rxn<int>();
+  var Dc_no = Rxn<String>();
+  // var gst_no = Rxn<String>();
+  var Dc_table_heading = "".obs;
+  final gstNumController = TextEditingController().obs;
+  var dc_amount = Rxn<double>();
+
+  // DETAILS
   final TitleController = TextEditingController().obs;
   final clientAddressNameController = TextEditingController().obs;
   final clientAddressController = TextEditingController().obs;
   final billingAddressNameController = TextEditingController().obs;
   final billingAddressController = TextEditingController().obs;
   final detailsKey = GlobalKey<FormState>().obs;
-//######################################################################################################################################
-//PRODUCTS
+
+  // PRODUCTS
   final productKey = GlobalKey<FormState>().obs;
   final product_editIndex = Rxn<int>();
   final productNameController = TextEditingController().obs;
   final hsnController = TextEditingController().obs;
+  final priceController = TextEditingController().obs;
   final quantityController = TextEditingController().obs;
-//######################################################################################################################################
-//NOTES
+  final gstController = TextEditingController().obs;
+  var Dc_products = <DcProduct>[].obs;
+  var Dc_productSuggestion = <ProductSuggestion>[].obs;
+  var Dc_gstTotals = <DcGSTtotals>[].obs;
+  var checkboxValues = <bool>[].obs;
+  var selectall_status = false.obs;
+
+  // NOTES
   final noteformKey = GlobalKey<FormState>().obs;
-  var Delivery_challan_no = "".obs;
-  var Delivery_challan_table_heading = "".obs;
-  var Delivery_challan_noteList = <Note>[].obs;
-  var Delivery_challan_recommendationList = <Recommendation>[].obs;
+  var progress = 0.0.obs;
+  var isLoading = false.obs;
   var note_editIndex = Rxn<int>();
   final notecontentController = TextEditingController().obs;
   var recommendation_editIndex = Rxn<int>();
   final recommendationHeadingController = TextEditingController().obs;
   final recommendationKeyController = TextEditingController().obs;
   final recommendationValueController = TextEditingController().obs;
-  // var selectedheadingType = Rxn<String>();
-  final notecontent = <String>[
-    'Delivery within 30 working days from the date of issuing the PO.',
-    'Payment terms : 100% along with PO.',
-    'Client needs to provide Ethernet cable and UPS power supply to the point where the device is proposed to install.',
-  ].obs;
-  // final noteType = [
-  //   'With Heading',
-  //   'Without Heading',
-  // ].obs;
+  var Dc_noteList = [].obs;
+  var Dc_recommendationList = <Recommendation>[].obs;
+  final noteSuggestion = <String>[].obs;
+
+  // POST
+  late AnimationController animationController;
+  late Animation<double> animation;
+
+  var pickedFile = Rxn<FilePickerResult>();
+  var selectedPdf = Rxn<File>();
+  var ispdfLoading = false.obs;
+  var whatsapp_selectionStatus = true.obs;
+  var gmail_selectionStatus = true.obs;
+  final phoneController = TextEditingController().obs;
+  final emailController = TextEditingController().obs;
+  final CCemailController = TextEditingController().obs;
+  var feedbackController = TextEditingController().obs;
+  var filePathController = TextEditingController().obs;
+  var CCemailToggle = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    // Initialize AnimationController
+    animationController = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this, // Now 'this' is a valid TickerProvider
+    )..repeat(reverse: true);
+
+    // Initialize Animation
+    animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: Curves.linear,
+      ),
+    );
+  }
+
+  @override
+  void onClose() {
+    animationController.dispose();
+    super.onClose();
+  }
 }

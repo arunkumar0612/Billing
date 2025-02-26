@@ -214,12 +214,12 @@ class DebitController extends GetxController {
       // );
 
       // Notify success
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text('Product updated successfully.'),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     backgroundColor: Colors.green,
+      //     content: Text('Product updated successfully.'),
+      //   ),
+      // );
 
       // Optional: Update UI or state if needed
       // .updateProductDetails(debitController.debitModel.Debit_productDetails);

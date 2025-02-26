@@ -42,7 +42,7 @@ class QuoteModel extends GetxController with GetSingleTickerProviderStateMixin {
   final recommendationHeadingController = TextEditingController().obs;
   final recommendationKeyController = TextEditingController().obs;
   final recommendationValueController = TextEditingController().obs;
-  var Quote_noteList = <Note>[].obs;
+  var Quote_noteList = [].obs;
   var Quote_recommendationList = <Recommendation>[].obs;
   final notecontent = <String>[
     'Delivery within 30 working days from the date of issuing the PO.',

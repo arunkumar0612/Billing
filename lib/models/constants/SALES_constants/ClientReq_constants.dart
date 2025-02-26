@@ -52,7 +52,7 @@ class ClientReqModel {
   final Rec_ValueController = TextEditingController().obs;
   final noteEditIndex = Rxn<int>();
   final Rec_EditIndex = Rxn<int>();
-  var clientReqNoteList = <Note>[].obs;
+  var clientReqNoteList = [].obs;
   var clientReqRecommendationList = <Recommendation>[].obs;
   var noteLength = 0.obs;
   var Rec_Length = 0.obs;

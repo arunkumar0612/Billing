@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/controllers/PDFpopup_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Sales_actions.dart';
+import 'package:ssipl_billing/themes/style.dart';
 // import 'package:ssipl_billing/controllers/viewSend_actions.dart';
 import 'package:window_manager/window_manager.dart';
 import 'controllers/SALEScontrollers/ClientReq_actions.dart';
@@ -29,6 +31,8 @@ Future<void> main() async {
   Get.lazyPut<Invoker>(() => Invoker());
   Get.lazyPut<VerifyOTPControllers>(() => VerifyOTPControllers());
   Get.lazyPut<SalesController>(() => SalesController());
+  Get.lazyPut<DcController>(() => DcController(), tag: "main");
+  Get.lazyPut<DcController>(() => DcController(), tag: "ref");
 
 ////////////////////////////----SALES----////////////////////////////////////
   Get.lazyPut<ClientreqController>(() => ClientreqController());
@@ -37,7 +41,8 @@ Future<void> main() async {
   Get.lazyPut<RFQController>(() => RFQController());
   Get.lazyPut<CreditController>(() => CreditController());
   Get.lazyPut<DebitController>(() => DebitController());
-  Get.lazyPut<DCController>(() => DCController());
+  Get.lazyPut<DcController>(() => DcController());
+  Get.lazyPut<PDFpopupController>(() => PDFpopupController());
   // Get.lazyPut<ViewsendController>(() => ViewsendController());
   if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux)) {
     await windowManager.ensureInitialized();
@@ -71,18 +76,18 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         iconTheme: const IconThemeData(color: Colors.white),
-        primarySwatch: Colors.blue,
+        primaryColor: Primary_colors.Color3,
         useMaterial3: false,
         textSelectionTheme: const TextSelectionThemeData(
-          cursorColor: Colors.orange,
-          selectionColor: Color.fromARGB(255, 72, 191, 147),
+          cursorColor: Primary_colors.Color3,
+          selectionColor: Color.fromARGB(255, 76, 77, 76),
         ),
         scrollbarTheme: ScrollbarThemeData(
           trackColor: WidgetStateProperty.all(
             const Color.fromARGB(255, 229, 204, 10),
           ),
           trackBorderColor: WidgetStateProperty.all(
-            const Color.fromARGB(255, 10, 183, 206),
+            Primary_colors.Color3,
           ),
           thumbColor: const WidgetStatePropertyAll(
             Color.fromARGB(255, 90, 90, 90),

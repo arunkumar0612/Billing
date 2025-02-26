@@ -290,7 +290,7 @@ class Client_requirement {
                     pw.SizedBox(width: 5),
                     pw.Expanded(
                       child: pw.Text(
-                        clientreqController.clientReqModel.clientReqNoteList[index].notename,
+                        clientreqController.clientReqModel.clientReqNoteList[index],
                         textAlign: pw.TextAlign.start,
                         style: pw.TextStyle(
                           font: Helvetica,

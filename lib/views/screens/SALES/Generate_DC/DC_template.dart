@@ -3,57 +3,40 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/utils/helpers/support_functions.dart';
-import '../../../../controllers/SALEScontrollers/DC_actions.dart';
-import '../../../../models/entities/SALES/product_entities.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
+import 'package:ssipl_billing/models/entities/SALES/DC_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
+import '../../../../utils/helpers/support_functions.dart';
 
-Future<Uint8List> generate_Delivery_challan(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, Delivery_challan_num, title) async {
-  final Delivery_challan = Delivery_challan_generate(
-    products: products,
-    baseColor: PdfColors.green500,
-    accentColor: PdfColors.blueGrey900,
-    client_addr_name: client_addr_name,
-    client_addr: client_addr,
-    bill_addr_name: bill_addr_name,
-    bill_addr: bill_addr,
-    Delivery_challan: Delivery_challan_num ?? "",
-    title_text: title,
-    type: '',
-  );
+Future<Uint8List> generate_Dc(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, dc_gstTotals) async {
+  final quotation = Quotation(products: products, GST: gst.toDouble(), baseColor: PdfColors.green500, accentColor: PdfColors.blueGrey900, client_addr_name: client_addr_name, client_addr: client_addr, bill_addr_name: bill_addr_name, bill_addr: bill_addr, estimate: estimate_num ?? "", title_text: title, type: '', dc_gstTotals: dc_gstTotals);
 
-  return await Delivery_challan.buildPdf(pageFormat);
+  return await quotation.buildPdf(pageFormat);
 }
 
-class Delivery_challan_generate {
-  Delivery_challan_generate({
-    required this.products,
-    required this.baseColor,
-    required this.accentColor,
-    required this.client_addr_name,
-    required this.client_addr,
-    required this.bill_addr_name,
-    required this.bill_addr,
-    required this.Delivery_challan,
-    required this.title_text,
-    required this.type,
-    // required this.items,
-  });
-
-  final DCController dcController = Get.find<DCController>();
-
+class Quotation {
+  Quotation({required this.products, required this.GST, required this.baseColor, required this.accentColor, required this.client_addr_name, required this.client_addr, required this.bill_addr_name, required this.bill_addr, required this.estimate, required this.title_text, required this.type, required this.dc_gstTotals
+      // required this.items,
+      });
+  final DcController dcController = Get.find<DcController>();
+  List<DcGSTtotals> dc_gstTotals = [];
   String client_addr_name = "";
   String client_addr = "";
   String bill_addr_name = "";
   String bill_addr = "";
-  String Delivery_challan = "";
+  String estimate = "";
   String title_text = "";
   String type = "";
 
-  final List<DCProduct> products;
-
+  final List<DcProduct> products;
+  final double GST;
   final PdfColor baseColor;
   final PdfColor accentColor;
   static const _darkColor = PdfColors.blueGrey800;
+  double get CGST_total => dc_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
+  double get SGST_total => dc_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
+  // double get _total => products.map<double>((p) => p.total).reduce((a, b) => a + b);
+  // double get _grandTotal => _total + CGST_total + SGST_total;
   dynamic profileImage;
 
   Future<Uint8List> buildPdf(PdfPageFormat pageFormat) async {
@@ -406,7 +389,7 @@ class Delivery_challan_generate {
                 child: bold("Note", 12),
                 padding: const pw.EdgeInsets.only(left: 0, bottom: 10),
               ),
-              ...List.generate(dcController.dcModel.Delivery_challan_noteList.length, (index) {
+              ...List.generate(dcController.dcModel.Dc_noteList.length, (index) {
                 return pw.Padding(
                   padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
                   child: pw.Row(
@@ -416,7 +399,7 @@ class Delivery_challan_generate {
                       pw.SizedBox(width: 5),
                       pw.Expanded(
                         child: pw.Text(
-                          dcController.dcModel.Delivery_challan_noteList[index].notename,
+                          dcController.dcModel.Dc_noteList[index],
                           textAlign: pw.TextAlign.start,
                           style: pw.TextStyle(
                             font: Helvetica,
@@ -491,8 +474,8 @@ class Delivery_challan_generate {
                       child: pw.Column(
                         crossAxisAlignment: pw.CrossAxisAlignment.start,
                         children: [
-                          bold(dcController.dcModel.Delivery_challan_table_heading.value, 10),
-                          ...dcController.dcModel.Delivery_challan_recommendationList.map((recommendation) {
+                          bold(dcController.dcModel.Dc_table_heading.value, 10),
+                          ...dcController.dcModel.Dc_recommendationList.map((recommendation) {
                             return pw.Padding(
                               padding: const pw.EdgeInsets.only(left: 5, top: 5),
                               child: pw.Row(

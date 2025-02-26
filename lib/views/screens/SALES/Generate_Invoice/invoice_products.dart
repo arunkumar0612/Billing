@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
 import 'package:ssipl_billing/services/SALES/Invoice_services/InvoiceProduct_services.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
@@ -93,20 +94,119 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
                       const SizedBox(height: 25),
                       Obx(
                         () {
-                          return BasicTextfield(
-                            digitsOnly: false,
+                          return
+
+                              // ConstrainedBox(
+                              //   constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
+                              //   child: DropdownButtonFormField<String>(
+                              //     isExpanded: true,
+                              //     dropdownColor: Primary_colors.Dark,
+                              //     decoration: const InputDecoration(
+                              //         label: Text(
+                              //           'Product',
+                              //           style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176)),
+                              //         ),
+                              //         // hintText: 'Customer Type',hintStyle: TextStyle(),
+                              //         contentPadding: EdgeInsets.all(13),
+                              //         labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
+                              //         filled: true,
+                              //         fillColor: Primary_colors.Dark,
+                              //         border: OutlineInputBorder(
+                              //           borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                              //         ),
+                              //         enabledBorder: OutlineInputBorder(
+                              //           borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                              //         ),
+                              //         focusedBorder: OutlineInputBorder(
+                              //           borderSide: BorderSide(),
+                              //         ),
+                              //         prefixIcon: Icon(
+                              //           Icons.people,
+                              //           color: Colors.white,
+                              //         )),
+                              //     // value: invoiceController.invoiceModel.productNameController.value.text,
+                              //     items: invoiceController.invoiceModel.Invoice_productSuggestion.map((product) {
+                              //       return DropdownMenuItem<String>(
+                              //         value: product.productName,
+                              //         child: Text(
+                              //           product.productName,
+                              //           style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1, overflow: TextOverflow.ellipsis),
+                              //         ),
+                              //       );
+                              //     }).toList(),
+                              //     onChanged: (String? newValue) async {
+                              //       // clientreqController.updateCompanyName(newValue!);
+                              //       // clientreqController.update_customerID(newValue, null);
+                              //       // widget.on_Compselected(context, newValue);
+                              //       // setState(() {});
+                              //     },
+                              //     validator: (value) {
+                              //       if (value == null || value.isEmpty) {
+                              //         return 'Please Select customer type';
+                              //       }
+                              //       return null;
+                              //     },
+                              //   ),
+                              // );
+                              DropdownMenu<ProductSuggestion>(
+                            trailingIcon: const Icon(
+                              Icons.arrow_drop_down,
+                              color: Color.fromARGB(255, 122, 121, 121),
+                            ),
+                            label: const Text(
+                              "Product",
+                              style: TextStyle(color: Color.fromARGB(255, 167, 165, 165), fontSize: Primary_font_size.Text7),
+                            ),
+                            textStyle: const TextStyle(color: Primary_colors.Color1),
                             width: 400,
-                            readonly: false,
-                            text: 'Product Name',
+                            inputDecorationTheme: const InputDecorationTheme(
+                              contentPadding: EdgeInsets.only(left: 10, right: 5),
+                              filled: true,
+                              fillColor: Primary_colors.Dark,
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              border: OutlineInputBorder(),
+                              hintStyle: TextStyle(
+                                fontSize: 13,
+                                color: Color.fromARGB(255, 167, 165, 165),
+                              ),
+                            ),
                             controller: invoiceController.invoiceModel.productNameController.value,
-                            icon: Icons.production_quantity_limits,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Product name';
+                            dropdownMenuEntries: invoiceController.invoiceModel.Invoice_productSuggestion.map<DropdownMenuEntry<ProductSuggestion>>((ProductSuggestion suggestion) {
+                              return DropdownMenuEntry<ProductSuggestion>(
+                                value: suggestion, // Passing the entire object
+                                label: suggestion.productName, // Display product name in dropdown
+                              );
+                            }).toList(),
+                            onSelected: (ProductSuggestion? selectedSuggestion) {
+                              if (selectedSuggestion != null) {
+                                widget.set_ProductValues(selectedSuggestion);
                               }
-                              return null;
                             },
                           );
+
+                          // BasicTextfield(
+                          //   digitsOnly: false,
+                          //   width: 400,
+                          //   readonly: false,
+                          //   text: 'Product Name',
+                          //   controller: invoiceController.invoiceModel.productNameController.value,
+                          //   icon: Icons.production_quantity_limits,
+                          //   validator: (value) {
+                          //     if (value == null || value.isEmpty) {
+                          //       return 'Please enter Product name';
+                          //     }
+                          //     return null;
+                          //   },
+                          // );
                         },
                       ),
                       const SizedBox(height: 25),

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
-import 'package:ssipl_billing/services/SALES/Quotation_services/post_services.dart';
+import 'package:ssipl_billing/services/SALES/Quotation_services/QuotePost_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
 import 'package:ssipl_billing/views/components/button.dart';
@@ -260,12 +260,12 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Client Requirement',
-                          style: TextStyle(fontSize: 20, color: Primary_colors.Color1, fontWeight: FontWeight.bold),
+                          widget.eventtype == "quotation" ? 'QUOTATION' : 'REVISED QUOTATION',
+                          style: const TextStyle(fontSize: 20, color: Primary_colors.Color1, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),

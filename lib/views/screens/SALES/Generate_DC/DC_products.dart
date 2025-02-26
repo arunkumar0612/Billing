@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/services/SALES/DC_services/DCproduct_services.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
+import 'package:ssipl_billing/models/entities/SALES/DC_entities.dart';
+import 'package:ssipl_billing/services/SALES/DC_services/DC_Product_services.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
 
-import '../../../../controllers/SALEScontrollers/DC_actions.dart';
-
-class Delivery_challanProducts extends StatefulWidget with DcproductService {
-  Delivery_challanProducts({super.key});
+class DcProducts extends StatefulWidget with DcproductService {
+  DcProducts({super.key});
 
   @override
-  State<Delivery_challanProducts> createState() => _Delivery_challanProductsState();
+  State<DcProducts> createState() => _DcProductsState();
 }
 
-class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
-  final DCController dcController = Get.find<DCController>();
+class _DcProductsState extends State<DcProducts> {
+  final DcController dcController = Get.find<DcController>();
 
-  Widget Delivery_challan_productDetailss() {
+  Widget Dc_productDetailss() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        for (int i = 0; i < dcController.dcModel.Delivery_challan_products.length; i++)
+        for (int i = 0; i < dcController.dcModel.Dc_products.length; i++)
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +46,7 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
                             padding: const EdgeInsets.only(left: 10),
                             child: Text(
                               overflow: TextOverflow.ellipsis,
-                              '${i + 1}. ${dcController.dcModel.Delivery_challan_products[i].productName}', // Display camera type from map
+                              '${i + 1}. ${dcController.dcModel.Dc_products[i].productName}', // Display camera type from map
                               style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                             ),
                           ),
@@ -76,190 +76,287 @@ class _Delivery_challanProductsState extends State<Delivery_challanProducts> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Form(
-            key: dcController.dcModel.productKey.value,
+  Widget buildProductlist() {
+    return Column(
+      children: [
+        const SizedBox(height: 10),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: const Color.fromARGB(36, 100, 110, 255),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Column(
-                  children: [
-                    const SizedBox(height: 25),
-                    Obx(
-                      () {
-                        return BasicTextfield(
-                          digitsOnly: false,
-                          width: 400,
-                          readonly: false,
-                          text: 'Product Name',
-                          controller: dcController.dcModel.productNameController.value,
-                          icon: Icons.production_quantity_limits,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter Product name';
-                            }
-                            return null;
-                          },
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 25),
-                    Obx(
-                      () {
-                        return BasicTextfield(
-                          digitsOnly: false,
-                          width: 400,
-                          readonly: false,
-                          text: 'HSN',
-                          controller: dcController.dcModel.hsnController.value,
-                          icon: Icons.numbers,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter HSN';
-                            }
-                            return null;
-                          },
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 25),
-                    Obx(
-                      () {
-                        return SizedBox(
-                          width: 400,
-                          child: TextFormField(
-                            readOnly: false,
-                            style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
-                            decoration: const InputDecoration(
-                              filled: true,
-                              fillColor: Primary_colors.Dark,
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                ),
-                              ),
-
-                              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                              // labelText: text,
-                              hintText: 'Product Quantity',
-                              hintStyle: TextStyle(
-                                fontSize: Primary_font_size.Text7,
-                                color: Color.fromARGB(255, 167, 165, 165),
-                              ),
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(
-                                Icons.production_quantity_limits,
-                                color: Colors.white,
-                              ),
-                            ),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            controller: dcController.dcModel.quantityController.value,
-                            keyboardType: TextInputType.number,
-                            // inputFormatters: [
-                            //   FilteringTextInputFormatter.digitsOnly
-                            // ],
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Product Quantity';
-                              }
-                              return null;
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 30),
-                    Obx(
-                      () {
-                        return Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Padding(
+                        padding: const EdgeInsets.only(),
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            BasicButton(
-                              colors: Colors.red,
-                              text: dcController.dcModel.product_editIndex.value == null ? 'Back' : 'Cancel',
-                              onPressed: () {
-                                dcController.dcModel.product_editIndex.value == null ? dcController.backTab() : widget.resetEditingState(); // Reset editing state when going back
+                            Checkbox(
+                              activeColor: Colors.green,
+                              side: const BorderSide(color: Color.fromARGB(255, 255, 255, 255), width: 2),
+                              value: dcController.dcModel.selectall_status.value,
+                              onChanged: (_) {
+                                dcController.togglProduct_selectAll(!dcController.dcModel.selectall_status.value);
                               },
                             ),
-                            const SizedBox(width: 30),
-                            BasicButton(
-                              colors: dcController.dcModel.product_editIndex.value == null ? Colors.blue : Colors.orange,
-                              text: dcController.dcModel.product_editIndex.value == null ? 'Add product' : 'Update',
-                              onPressed: () {
-                                dcController.dcModel.product_editIndex.value == null ? widget.addproduct(context) : widget.updateproduct(context);
-                              },
+                            const Text(
+                              'Select',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ],
-                        );
-                      },
-                    ),
-                  ],
+                        )),
+                  ),
                 ),
-                // if (length != 0) const SizedBox(width: 60),
-                Obx(
-                  () {
-                    return (dcController.dcModel.Delivery_challan_products.isNotEmpty)
-                        ? Column(
-                            children: [
-                              const SizedBox(height: 25),
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7),
-                                  color: Primary_colors.Dark,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 10, top: 15),
-                                  child: Column(
-                                    children: [
-                                      const Text(
-                                        'Product List',
-                                        style: TextStyle(fontSize: Primary_font_size.Text10, color: Primary_colors.Color1, fontWeight: FontWeight.bold),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      SizedBox(
-                                        height: 295,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(bottom: 10),
-                                          child: SingleChildScrollView(
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(10),
-                                              child: Delivery_challan_productDetailss(),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 25),
-                              if (dcController.dcModel.Delivery_challan_products.isNotEmpty)
-                                BasicButton(
-                                  colors: Colors.green,
-                                  text: 'Submit',
-                                  onPressed: () {
-                                    dcController.nextTab();
-                                  },
-                                ),
-                            ],
-                          )
-                        : const SizedBox.shrink();
-                  },
+                const Expanded(
+                  flex: 2,
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(),
+                      child: Text(
+                        'Product Name',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Text(
+                      'HSN',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                const Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(),
+                      child: Text(
+                        'Unit price',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(),
+                      child: Text(
+                        'Quantity',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(),
+                      child: Text(
+                        'Total price',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
         ),
-      ),
+        const SizedBox(height: 10),
+        Expanded(
+          child: Container(
+            // height: 200,
+            // width: 300,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.transparent),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: ListView.builder(
+                itemCount: dcController.dcModel.Dc_products.length,
+                itemBuilder: (context, index) {
+                  final product = dcController.dcModel.Dc_products[index];
+                  final isEvenRow = index % 2 == 0;
+                  // final iera = site['InactiveDevices'] == '0';
+                  // final offline_color = iera
+                  //     ? const Color.fromARGB(255, 255, 255, 255)
+                  //     : Colors.red;
+                  final backgroundColor = isEvenRow ? const Color.fromARGB(211, 201, 200, 200) : const Color.fromARGB(255, 121, 117, 117);
+
+                  return Column(
+                    children: [
+                      buildProductRow(product.productName, product.hsn.toString(), product.price.toString(), product.quantity.toString(), (product.price * product.quantity).toString(), backgroundColor, index),
+                      const Text("dsfgdgdfg fgdfgdf df df df df df df df df df df df df df df df ggdfgdf fdgdfg dfgdfgdfg dfg df gdf gd "),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildProductRow(String productName, String HSN, String unitPrice, String quantity, String totalPrice, Color backgroundColor, int index) {
+    return Obx(
+      () {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 5, top: 5, left: 10, right: 10),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: const Color.fromARGB(255, 70, 69, 69),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Checkbox(
+                          activeColor: Colors.green,
+                          value: dcController.dcModel.checkboxValues[index],
+                          onChanged: (bool? newValue) {
+                            dcController.toggleProduct_selection(newValue!, index);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(),
+                      child: Text(
+                        productName,
+                        style: TextStyle(
+                          color: backgroundColor,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(),
+                      child: Text(
+                        HSN,
+                        style: TextStyle(
+                          color: backgroundColor,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(),
+                      child: Text(
+                        unitPrice,
+                        style: TextStyle(
+                          color: backgroundColor,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(),
+                      child: Text(
+                        quantity,
+                        style: TextStyle(
+                          color: backgroundColor,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(),
+                      child: Text(
+                        totalPrice,
+                        style: TextStyle(
+                          color: backgroundColor,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () {
+        return Center(
+          child: Padding(padding: const EdgeInsets.all(16.0), child: buildProductlist()),
+        );
+      },
     );
   }
 }

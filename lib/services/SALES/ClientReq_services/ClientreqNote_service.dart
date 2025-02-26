@@ -49,8 +49,7 @@ mixin ClientreqNoteService {
   }
 
   void editnote(int index) {
-    Note note = clientreqController.clientReqModel.clientReqNoteList[index];
-    clientreqController.updateNoteContentControllerText(note.notename);
+    clientreqController.updateNoteContentControllerText(clientreqController.clientReqModel.clientReqNoteList[index]);
     clientreqController.updateNoteEditindex(index);
   }
 
@@ -81,7 +80,7 @@ mixin ClientreqNoteService {
 
   void addNotes(context) {
     if (clientreqController.clientReqModel.noteFormKey.value.currentState?.validate() ?? false) {
-      bool exists = clientreqController.clientReqModel.clientReqNoteList.any((note) => note.notename == clientreqController.clientReqModel.noteContentController.value.text);
+      bool exists = clientreqController.clientReqModel.clientReqNoteList.any((note) => note == clientreqController.clientReqModel.noteContentController.value.text);
       if (exists) {
         Get.snackbar("Note", 'This note Name already exists.');
         return;

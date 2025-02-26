@@ -50,7 +50,7 @@ class _InvoiceNoteState extends State<InvoiceNote> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                invoiceController.invoiceModel.Invoice_noteList[index].notename, // Display camera type from map
+                                invoiceController.invoiceModel.Invoice_noteList[index], // Display camera type from map
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
                               ),
                             ],
@@ -186,7 +186,7 @@ class _InvoiceNoteState extends State<InvoiceNote> {
                                   ),
                                 ),
                                 controller: invoiceController.invoiceModel.notecontentController.value,
-                                dropdownMenuEntries: invoiceController.invoiceModel.notecontent.map<DropdownMenuEntry<String>>(
+                                dropdownMenuEntries: invoiceController.invoiceModel.noteSuggestion.map<DropdownMenuEntry<String>>(
                                   (String value) {
                                     return DropdownMenuEntry<String>(value: value, label: value);
                                   },
@@ -498,21 +498,21 @@ class _InvoiceNoteState extends State<InvoiceNote> {
                                     ),
                                     child: TextButton(
                                       onPressed: () async {
-                                        // try {
-                                        if (invoiceController.postDatavalidation()) {
-                                          Get.snackbar("Error", "Any of the required fields is Empty!");
-                                          return;
+                                        try {
+                                          if (invoiceController.postDatavalidation()) {
+                                            Get.snackbar("Error", "Any of the required fields is Empty!");
+                                            return;
+                                          }
+                                          await Future.wait([
+                                            invoiceController.startProgress(),
+                                            widget.savePdfToCache(),
+                                          ]);
+                                          invoiceController.nextTab();
+                                        } catch (e, stackTrace) {
+                                          debugPrint("Error in Future.wait: $e");
+                                          debugPrint(stackTrace.toString());
+                                          Get.snackbar("Error", "Something went wrong. Please try again.");
                                         }
-                                        await Future.wait([
-                                          invoiceController.startProgress(),
-                                          widget.savePdfToCache(),
-                                        ]);
-                                        invoiceController.nextTab();
-                                        // } catch (e, stackTrace) {
-                                        //   debugPrint("Error in Future.wait: $e");
-                                        //   debugPrint(stackTrace.toString());
-                                        //   Get.snackbar("Error", "Something went wrong. Please try again.");
-                                        // }
                                       },
                                       child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),
                                     )),

@@ -57,7 +57,7 @@ class QuoteController extends GetxController {
   }
 
   void updateNoteList(String value, int index) {
-    quoteModel.Quote_noteList[quoteModel.note_editIndex.value!] = Note(notename: quoteModel.notecontentController.value.text);
+    quoteModel.Quote_noteList[quoteModel.note_editIndex.value!] = quoteModel.notecontentController.value.text;
   }
 
   void updateTabController(TabController tabController) {
@@ -276,7 +276,7 @@ class QuoteController extends GetxController {
 
   void addNote(String noteContent) {
     if (noteContent.isNotEmpty) {
-      quoteModel.Quote_noteList.add(Note(notename: noteContent));
+      quoteModel.Quote_noteList.add(noteContent);
     } else {
       if (kDebugMode) {
         print('Note content must not be empty');
@@ -372,12 +372,12 @@ class QuoteController extends GetxController {
       // );
 
       // Notify success
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text('Product updated successfully.'),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     backgroundColor: Colors.green,
+      //     content: Text('Product updated successfully.'),
+      //   ),
+      // );
 
       // Optional: Update UI or state if needed
       // .updateProductDetails(quoteController.quoteModel.Quote_productDetails);

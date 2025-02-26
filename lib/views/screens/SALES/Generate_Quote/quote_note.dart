@@ -50,7 +50,7 @@ class _QuoteNoteState extends State<QuoteNote> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                quoteController.quoteModel.Quote_noteList[index].notename, // Display camera type from map
+                                quoteController.quoteModel.Quote_noteList[index], // Display camera type from map
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
                               ),
                             ],

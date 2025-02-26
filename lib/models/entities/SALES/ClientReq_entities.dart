@@ -25,23 +25,23 @@ class Recommendation {
   }
 }
 
-class Note {
-  final String notename;
+// class Note {
+//   final String notename;
 
-  Note({required this.notename});
+//   Note({required this.notename});
 
-  factory Note.fromJson(Map<String, dynamic> json) {
-    return Note(
-      notename: json['notename'] as String,
-    );
-  }
+//   factory Note.fromJson(Map<String, dynamic> json) {
+//     return Note(
+//       notename: json['notename'] as String,
+//     );
+//   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'notename': notename,
-    };
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'notename': notename,
+//     };
+//   }
+// }
 
 class MORpath {
   final String path;
@@ -73,7 +73,7 @@ class Post_ClientRequirement {
   String? modeOfRequest;
   String? morReference;
   List<ClientreqProduct>? product;
-  List<Note>? notes;
+  List? notes;
   String? date;
   int? companyID;
   List<int?> branchID;
@@ -111,7 +111,7 @@ class Post_ClientRequirement {
     String modeOfRequest,
     String morReference,
     List<ClientreqProduct> product,
-    List<Note> notes,
+    List notes,
     String date,
     int companyID,
     List<int?> branchID,
@@ -134,7 +134,7 @@ class Post_ClientRequirement {
       "modeofrequest": modeOfRequest,
       "MORreference": morReference,
       "product": product?.map((item) => item.toJson()).toList(),
-      "notes": notes?.map((item) => item.toJson()).toList(),
+      "notes": notes,
       "date": date,
       "companyid": companyID,
       "branchid": branchID,

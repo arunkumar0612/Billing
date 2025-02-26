@@ -671,7 +671,7 @@ class Quotation {
                   pw.SizedBox(width: 5),
                   pw.Expanded(
                     child: pw.Text(
-                      quoteController.quoteModel.Quote_noteList[index].notename,
+                      quoteController.quoteModel.Quote_noteList[index],
                       textAlign: pw.TextAlign.start,
                       style: pw.TextStyle(
                         font: Helvetica,

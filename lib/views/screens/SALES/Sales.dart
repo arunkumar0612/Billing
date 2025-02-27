@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -790,6 +791,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(15),
                                         child: Card(
+                                          shadowColor: Colors.transparent,
                                           color: (salesController.salesModel.showcustomerprocess.value != null && salesController.salesModel.showcustomerprocess.value == index)
                                               ? Primary_colors.Color3
                                               : Primary_colors.Dark,
@@ -885,14 +887,22 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                             children: [
                                                               GestureDetector(
                                                                 child: Container(
+                                                                  height: 40,
+                                                                  width: 40,
                                                                   padding: const EdgeInsets.all(8),
                                                                   decoration: const BoxDecoration(
                                                                     shape: BoxShape.circle,
-                                                                    color: Color.fromARGB(157, 100, 110, 255),
+                                                                    color: Color.fromARGB(107, 199, 202, 249),
                                                                   ),
-                                                                  child: const Icon(
-                                                                    Icons.event,
-                                                                    color: Colors.white,
+                                                                  // child: const Icon(
+                                                                  //   Icons.event,
+                                                                  //   color: Colors.white,
+                                                                  // ),
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      (salesController.salesModel.processList[index].TimelineEvents.length - 1 - childIndex + 1).toString(),
+                                                                      style: const TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold),
+                                                                    ),
                                                                   ),
                                                                 ),
                                                                 onTap: () async {
@@ -904,7 +914,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                 Container(
                                                                   width: 2,
                                                                   height: 40,
-                                                                  color: const Color.fromARGB(150, 100, 110, 255),
+                                                                  color: const Color.fromARGB(107, 199, 202, 249),
                                                                 ),
                                                             ],
                                                           ),
@@ -985,7 +995,9 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                                   widget.GenerateInvoice_dialougebox(
                                                                                       context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                   invoiceController.setProcessID(salesController.salesModel.processList[index].processid);
-                                                                                  print(invoiceController.invoiceModel.processID);
+                                                                                  if (kDebugMode) {
+                                                                                    print(invoiceController.invoiceModel.processID);
+                                                                                  }
                                                                                 }
                                                                               },
                                                                               child: const Text(
@@ -1002,7 +1014,9 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                                   widget.GenerateDelivery_challan_dialougebox(
                                                                                       context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                   dcController.setProcessID(salesController.salesModel.processList[index].processid);
-                                                                                  print(dcController.dcModel.processID);
+                                                                                  if (kDebugMode) {
+                                                                                    print(dcController.dcModel.processID);
+                                                                                  }
                                                                                 }
                                                                               },
                                                                               child: const Text(
@@ -1229,6 +1243,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
+                        // ignore: deprecated_member_use
                         color: Primary_colors.Color5.withOpacity(0.1),
                         shape: BoxShape.circle,
                       ),

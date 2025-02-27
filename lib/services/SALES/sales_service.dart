@@ -17,7 +17,6 @@ import '../../controllers/SALEScontrollers/Sales_actions.dart';
 import '../../models/constants/api.dart';
 import '../../models/entities/Response_entities.dart';
 import '../../views/components/Basic_DialogBox.dart';
-import '../../views/screens/SALES/Generate_DC/generateDC.dart';
 import '../../views/screens/SALES/Generate_DebitNote/generateDebit.dart';
 import '../../views/screens/SALES/Generate_Invoice/generateInvoice.dart';
 import '../../views/screens/SALES/Generate_Quote/generateQuote.dart';

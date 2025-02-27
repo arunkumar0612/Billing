@@ -192,12 +192,7 @@ class DcController extends GetxController {
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: [
-        'png',
-        'jpg',
-        'jpeg',
-        'pdf'
-      ],
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf'],
     );
 
     if (result != null) {
@@ -392,14 +387,18 @@ class DcController extends GetxController {
   void add_productSuggestion(List<dynamic> suggestionList) {
     for (var item in suggestionList) {
       dcModel.Dc_productSuggestion.add(ProductSuggestion.fromJson(item));
-      print(dcModel.Dc_productSuggestion[0].productName);
+      if (kDebugMode) {
+        print(dcModel.Dc_productSuggestion[0].productName);
+      }
     }
   }
 
   void add_noteSuggestion(Map<String, dynamic> suggestionList) {
     for (var item in suggestionList['notes']) {
       dcModel.noteSuggestion.add(item);
-      print(dcModel.noteSuggestion[0]);
+      if (kDebugMode) {
+        print(dcModel.noteSuggestion[0]);
+      }
     }
   }
 
@@ -445,7 +444,18 @@ class DcController extends GetxController {
   }
 
   bool postDatavalidation() {
-    return (dcModel.TitleController.value.text.isEmpty || dcModel.processID.value == null || dcModel.clientAddressNameController.value.text.isEmpty || dcModel.clientAddressController.value.text.isEmpty || dcModel.billingAddressNameController.value.text.isEmpty || dcModel.billingAddressController.value.text.isEmpty || dcModel.emailController.value.text.isEmpty || dcModel.phoneController.value.text.isEmpty || dcModel.gstNumController.value.text.isEmpty || dcModel.Dc_products.isEmpty || dcModel.Dc_noteList.isEmpty || dcModel.Dc_no.value == null);
+    return (dcModel.TitleController.value.text.isEmpty ||
+        dcModel.processID.value == null ||
+        dcModel.clientAddressNameController.value.text.isEmpty ||
+        dcModel.clientAddressController.value.text.isEmpty ||
+        dcModel.billingAddressNameController.value.text.isEmpty ||
+        dcModel.billingAddressController.value.text.isEmpty ||
+        dcModel.emailController.value.text.isEmpty ||
+        dcModel.phoneController.value.text.isEmpty ||
+        dcModel.gstNumController.value.text.isEmpty ||
+        dcModel.Dc_products.isEmpty ||
+        dcModel.Dc_noteList.isEmpty ||
+        dcModel.Dc_no.value == null);
   } // If any one is empty or null, then it returns true
 
   void resetData() {

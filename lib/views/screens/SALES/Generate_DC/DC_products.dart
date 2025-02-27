@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
-import 'package:ssipl_billing/models/entities/SALES/DC_entities.dart';
+
 import 'package:ssipl_billing/services/SALES/DC_services/DC_Product_services.dart';
-import 'package:ssipl_billing/views/components/button.dart';
+
 import 'package:ssipl_billing/themes/style.dart';
-import 'package:ssipl_billing/views/components/textfield.dart';
 
 class DcProducts extends StatefulWidget with DcproductService {
   DcProducts({super.key});
@@ -221,7 +220,8 @@ class _DcProductsState extends State<DcProducts> {
 
                   return Column(
                     children: [
-                      buildProductRow(product.productName, product.hsn.toString(), product.price.toString(), product.quantity.toString(), (product.price * product.quantity).toString(), backgroundColor, index),
+                      buildProductRow(
+                          product.productName, product.hsn.toString(), product.price.toString(), product.quantity.toString(), (product.price * product.quantity).toString(), backgroundColor, index),
                       const Text("dsfgdgdfg fgdfgdf df df df df df df df df df df df df df df df ggdfgdf fdgdfg dfgdfgdfg dfg df gdf gd "),
                     ],
                   );

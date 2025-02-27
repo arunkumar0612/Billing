@@ -18,13 +18,9 @@ mixin DcdetailsService {
 
   void get_requiredData(context, int eventID, String eventType) async {
     try {
-      Map<String, dynamic> body = {
-        "eventid": eventID,
-        "eventtype": eventType
-      };
+      Map<String, dynamic> body = {"eventid": eventID, "eventtype": eventType};
       Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.sales_detailsPreLoader_API);
 
-      print(response);
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {

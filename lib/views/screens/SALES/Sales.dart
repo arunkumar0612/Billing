@@ -11,6 +11,7 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart'
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
+
 import 'package:ssipl_billing/services/SALES/sales_service.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -35,7 +36,7 @@ class _Sales_ClientState extends State<Sales_Client> {
   final DcController dcController = Get.find<DcController>();
   final InvoiceController invoiceController = Get.find<InvoiceController>();
   final QuoteController quoteController = Get.find<QuoteController>();
-  final RFQController rfqController = Get.find<RFQController>();
+  final RfqController rfqController = Get.find<RfqController>();
   final CreditController creditController = Get.find<CreditController>();
   final DebitController debitController = Get.find<DebitController>();
   @override
@@ -968,8 +969,15 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                             ),
                                                                           if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.rfq == true)
                                                                             TextButton(
-                                                                              onPressed: () {
-                                                                                widget.GenerateRFQ_dialougebox(context);
+                                                                              onPressed: () async {
+                                                                                bool success =
+                                                                                    await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                if (success) {
+                                                                                  widget.GenerateRfq_dialougebox(
+                                                                                      context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                  rfqController.setProcessID(salesController.salesModel.processList[index].processid);
+                                                                                  print(rfqController.rfqModel.processID);
+                                                                                }
                                                                               },
                                                                               child: const Text(
                                                                                 "Generate RFQ",

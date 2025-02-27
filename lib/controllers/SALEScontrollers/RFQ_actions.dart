@@ -1,12 +1,16 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../models/constants/SALES_constants/RFQ_constants.dart';
+import 'package:ssipl_billing/models/entities/Response_entities.dart';
+import '../../models/constants/SALES_constants/Rfq_constants.dart';
 import '../../models/entities/SALES/RFQ_entities.dart';
 import '../../models/entities/SALES/product_entities.dart';
 
-class RFQController extends GetxController {
-  var rfqModel = RFQModel();
+class RfqController extends GetxController {
+  var rfqModel = RfqModel();
 
   void initializeTabController(TabController tabController) {
     rfqModel.tabController.value = tabController;
@@ -24,16 +28,24 @@ class RFQController extends GetxController {
     }
   }
 
-  void updateVendorname(String vendor) {
-    rfqModel.vendor_name_controller.value.text = vendor;
-  }
-
   void updateProductName(String productName) {
     rfqModel.productNameController.value.text = productName;
   }
 
+  void updateHSN(int hsn) {
+    rfqModel.hsnController.value.text = hsn.toString();
+  }
+
+  void updatePrice(double price) {
+    rfqModel.priceController.value.text = price.toString();
+  }
+
   void updateQuantity(int quantity) {
     rfqModel.quantityController.value.text = quantity.toString();
+  }
+
+  void updateGST(double gst) {
+    rfqModel.gstController.value.text = gst.toString();
   }
 
   void updateNoteEditindex(int? index) {
@@ -41,18 +53,60 @@ class RFQController extends GetxController {
   }
 
   void updateChallanTableHeading(String tableHeading) {
-    rfqModel.RFQ_table_heading.value = tableHeading;
+    rfqModel.Rfq_table_heading.value = tableHeading;
   }
 
   void updateNoteList(String value, int index) {
-    rfqModel.RFQ_noteList[rfqModel.note_editIndex.value!] = Note(notename: rfqModel.notecontentController.value.text);
+    rfqModel.Rfq_noteList[rfqModel.note_editIndex.value!] = rfqModel.notecontentController.value.text;
   }
 
   void updateTabController(TabController tabController) {
     rfqModel.tabController.value = tabController;
   }
 
-  void updateVendorCredentials(String address, String phone, String email) {}
+  void updateTitle(String text) {
+    rfqModel.TitleController.value.text = text;
+  }
+
+  void updateRfqnumber(String text) {
+    rfqModel.Rfq_no.value = text;
+  }
+
+  void updateGSTnumber(String text) {
+    rfqModel.gstNumController.value.text = text;
+  }
+
+  // void updateClientAddressName(String text) {
+  //   rfqModel.clientAddressNameController.value.text = text;
+  // }
+
+  void updateClientAddress(String text) {
+    rfqModel.clientAddressController.value.text = text;
+  }
+
+  // void updateBillingAddressName(String text) {
+  //   rfqModel.billingAddressNameController.value.text = text;
+  // }
+
+  // void updateBillingAddress(String text) {
+  //   rfqModel.billingAddressController.value.text = text;
+  // }
+
+  void updatePhone(String phone) {
+    rfqModel.phoneController.value.text = phone;
+  }
+
+  void updateEmail(String email) {
+    rfqModel.emailController.value.text = email;
+  }
+
+  void updatCC(String CC) {
+    rfqModel.CCemailController.value.text = CC;
+  }
+
+  void toggleCCemailvisibility(bool value) {
+    rfqModel.CCemailToggle.value = value;
+  }
 
   void updateRecommendationEditindex(int? index) {
     rfqModel.recommendation_editIndex.value = index;
@@ -75,16 +129,123 @@ class RFQController extends GetxController {
   }
 
   void addNoteToList(String note) {
-    rfqModel.notecontent.add(note);
+    rfqModel.noteSuggestion.add(note);
   }
 
   void addProductEditindex(int? index) {
     rfqModel.product_editIndex.value = index;
   }
 
+  void setProcessID(int processid) {
+    rfqModel.processID.value = processid;
+  }
+
+  void updateSelectedPdf(File file) {
+    rfqModel.selectedPdf.value = file;
+  }
+
+  // Toggle loading state
+  void setLoading(bool value) {
+    rfqModel.isLoading.value = value;
+  }
+
+  void setpdfLoading(bool value) {
+    rfqModel.ispdfLoading.value = value;
+  }
+
+  // Toggle WhatsApp state
+  void toggleWhatsApp(bool value) {
+    rfqModel.whatsapp_selectionStatus.value = value;
+  }
+
+  // Toggle Gmail state
+  void toggleGmail(bool value) {
+    rfqModel.gmail_selectionStatus.value = value;
+  }
+
+  // Update phone number text
+  void updatePhoneNumber(String phoneNumber) {
+    rfqModel.phoneController.value.text = phoneNumber;
+  }
+
+  // Update feedback text
+  void updateFeedback(String feedback) {
+    rfqModel.feedbackController.value.text = feedback;
+  }
+
+  // Update file path text
+  void updateFilePath(String filePath) {
+    rfqModel.filePathController.value.text = filePath;
+  }
+
+  void update_rfqAmount(double amount) {
+    rfqModel.rfq_amount.value = amount;
+  }
+
+  Future<void> pickFile(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf'],
+    );
+
+    if (result != null) {
+      final file = File(result.files.single.path!);
+      final fileLength = await file.length();
+
+      if (fileLength > 2 * 1024 * 1024) {
+        // File exceeds 2 MB size limit
+        if (kDebugMode) {
+          print('Selected file exceeds 2MB in size.');
+        }
+        // Show Alert Dialog
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: const Text('Selected file exceeds 2MB in size.'),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+        rfqModel.pickedFile.value = null;
+        rfqModel.selectedPdf.value = null;
+      } else {
+        rfqModel.pickedFile.value = result;
+        rfqModel.selectedPdf.value = file;
+
+        if (kDebugMode) {
+          print("Selected File Name: ${result.files.single.name}");
+        }
+      }
+    }
+  }
+
+  int fetch_messageType() {
+    if (rfqModel.whatsapp_selectionStatus.value && rfqModel.gmail_selectionStatus.value) return 3;
+    if (rfqModel.whatsapp_selectionStatus.value) return 1;
+    if (rfqModel.gmail_selectionStatus.value) return 2;
+
+    return 0;
+  }
+
+  Future<void> startProgress() async {
+    setLoading(true);
+    rfqModel.progress.value = 0.0;
+
+    for (int i = 0; i <= 100; i++) {
+      await Future.delayed(const Duration(milliseconds: 20));
+      rfqModel.progress.value = i / 100; // Convert to percentage
+    }
+
+    setLoading(false);
+  }
+
   void addRecommendation({required String key, required String value}) {
     if (key.isNotEmpty && value.isNotEmpty) {
-      rfqModel.RFQ_recommendationList.add(Recommendation(key: key, value: value));
+      rfqModel.Rfq_recommendationList.add(Recommendation(key: key, value: value));
     } else {
       if (kDebugMode) {
         print('Key and value must not be empty');
@@ -97,9 +258,9 @@ class RFQController extends GetxController {
     required String key,
     required String value,
   }) {
-    if (index >= 0 && index < rfqModel.RFQ_recommendationList.length) {
+    if (index >= 0 && index < rfqModel.Rfq_recommendationList.length) {
       if (key.isNotEmpty && value.isNotEmpty) {
-        rfqModel.RFQ_recommendationList[index] = Recommendation(key: key, value: value);
+        rfqModel.Rfq_recommendationList[index] = Recommendation(key: key, value: value);
       } else {
         if (kDebugMode) {
           print('Key and value must not be empty');
@@ -114,7 +275,7 @@ class RFQController extends GetxController {
 
   void addNote(String noteContent) {
     if (noteContent.isNotEmpty) {
-      rfqModel.RFQ_noteList.add(Note(notename: noteContent));
+      rfqModel.Rfq_noteList.add(noteContent);
     } else {
       if (kDebugMode) {
         print('Note content must not be empty');
@@ -125,10 +286,13 @@ class RFQController extends GetxController {
   void addProduct({
     required BuildContext context,
     required String productName,
+    required String hsn,
+    required double price,
     required int quantity,
+    required double gst,
   }) {
     try {
-      if (productName.trim().isEmpty || quantity <= 0) {
+      if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
@@ -138,18 +302,7 @@ class RFQController extends GetxController {
         return;
       }
 
-      rfqModel.RFQ_products.add(RFQProduct(
-        (rfqModel.RFQ_products.length + 1).toString(),
-        productName,
-        quantity,
-      ));
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text('Product added successfully.'),
-        ),
-      );
+      rfqModel.Rfq_products.add(RFQProduct(sno: (rfqModel.Rfq_products.length + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -164,11 +317,14 @@ class RFQController extends GetxController {
     required BuildContext context,
     required int editIndex,
     required String productName,
+    required String hsn,
+    required double price,
     required int quantity,
+    required double gst,
   }) {
     try {
       // Validate input fields
-      if (productName.trim().isEmpty || quantity <= 0) {
+      if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
@@ -179,7 +335,7 @@ class RFQController extends GetxController {
       }
 
       // Check if the editIndex is valid
-      if (editIndex < 0 || editIndex >= rfqModel.RFQ_products.length) {
+      if (editIndex < 0 || editIndex >= rfqModel.Rfq_products.length) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
@@ -190,7 +346,7 @@ class RFQController extends GetxController {
       }
 
       // Update the product details at the specified index
-      rfqModel.RFQ_products[editIndex] = RFQProduct((editIndex + 1).toString(), productName, quantity);
+      rfqModel.Rfq_products[editIndex] = RFQProduct(sno: (editIndex + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity);
 
       // ProductDetail(
       //   productName: productName.trim(),
@@ -209,7 +365,7 @@ class RFQController extends GetxController {
       // );
 
       // Optional: Update UI or state if needed
-      // .updateProductDetails(rfqController.rfqModel.RFQ_productDetails);
+      // .updateProductDetails(rfqController.rfqModel.Rfq_productDetails);
     } catch (e) {
       // Handle unexpected errors
       ScaffoldMessenger.of(context).showSnackBar(
@@ -221,70 +377,119 @@ class RFQController extends GetxController {
     }
   }
 
+  void add_productSuggestion(List<dynamic> suggestionList) {
+    for (var item in suggestionList) {
+      rfqModel.Rfq_productSuggestion.add(ProductSuggestion.fromJson(item));
+      print(rfqModel.Rfq_productSuggestion[0].productName);
+    }
+  }
+
+  void add_noteSuggestion(Map<String, dynamic> suggestionList) {
+    for (var item in suggestionList['notes']) {
+      rfqModel.noteSuggestion.add(item);
+      print(rfqModel.noteSuggestion[0]);
+    }
+  }
+
   // Update products list
   void updateProducts(List<RFQProduct> products) {
-    rfqModel.RFQ_products.value = products;
+    rfqModel.Rfq_products.value = products;
   }
 
   void removeFromNoteList(int index) {
-    rfqModel.RFQ_noteList.removeAt(index);
+    rfqModel.Rfq_noteList.removeAt(index);
   }
 
   void removeFromRecommendationList(int index) {
-    rfqModel.RFQ_recommendationList.removeAt(index);
-    rfqModel.RFQ_recommendationList.isEmpty ? rfqModel.recommendationHeadingController.value.clear() : null;
+    rfqModel.Rfq_recommendationList.removeAt(index);
+    rfqModel.Rfq_recommendationList.isEmpty ? rfqModel.recommendationHeadingController.value.clear() : null;
   }
 
   void removeFromProductList(index) {
-    rfqModel.RFQ_products.removeAt(index);
+    rfqModel.Rfq_products.removeAt(index);
   }
 
-  void clearAll() {
-    // Reset all observable strings to empty
-    rfqModel.vendor_address_controller.value.clear();
-    rfqModel.vendor_email_controller.value.clear();
-    rfqModel.vendor_name_controller.value.clear();
-    rfqModel.vendor_phone_controller.value.clear();
-    rfqModel.RFQ_no.value = '';
-    rfqModel.RFQ_table_heading.value = '';
+  // void update_requiredData(CMDmResponse value) {
+  //   RequiredData instance = RequiredData.fromJson(value);
+  //   rfqModel.Rfq_no.value = instance.eventnumber;
+  //   updateRfqnumber(instance.eventnumber);
+  //   updateTitle(instance.title!);
+  //   updateEmail(instance.emailId!);
+  //   updateGSTnumber(instance.gst!);
+  //   updatePhone(instance.phoneNo!);
+  //   // updateClientAddressName(instance.name!);
+  //   updateClientAddress(instance.address!);
+  //   // updateBillingAddressName(instance.billingAddressName!);
+  //   // updateBillingAddress(instance.billingAddress!);
+  //   updateProducts(instance.product);
+  //   // for(int i=0;i<instance.product.length;i++){
+  //   //    rfqController.addProduct(context: context, productName: rfqController.rfqModel.productNameController.value.text, hsn: rfqController.rfqModel.hsnController.value.text, price: double.parse(rfqController.rfqModel.priceController.value.text), quantity: int.parse(rfqController.rfqModel.quantityController.value.text), gst: double.parse(rfqController.rfqModel.gstController.value.text));
 
-    // Clear note list and recommendation list
-    rfqModel.RFQ_noteList.clear();
-    rfqModel.RFQ_recommendationList.clear();
-    // rfqModel.RFQ_productDetails.clear();
+  //   // }
+  // }
 
-    // Clear products list
-    rfqModel.RFQ_products.clear();
+  void on_vendorSelected() {}
+  void update_vendorList(CMDlResponse value) {
+    for (int i = 0; i < value.data.length; i++) {
+      rfqModel.vendorList.add(VendorList.fromJson(value, i));
+      print(rfqModel.vendorList);
+    }
+    print(rfqModel.vendorList);
+  }
 
-    // Reset text controllers
+  bool postDatavalidation() {
+    return (rfqModel.TitleController.value.text.isEmpty ||
+        rfqModel.processID.value == null ||
+        // rfqModel.clientAddressNameController.value.text.isEmpty ||
+        rfqModel.clientAddressController.value.text.isEmpty ||
+        // rfqModel.billingAddressNameController.value.text.isEmpty ||
+        // rfqModel.billingAddressController.value.text.isEmpty ||
+        rfqModel.emailController.value.text.isEmpty ||
+        rfqModel.phoneController.value.text.isEmpty ||
+        rfqModel.gstNumController.value.text.isEmpty ||
+        rfqModel.Rfq_products.isEmpty ||
+        rfqModel.Rfq_noteList.isEmpty ||
+        rfqModel.Rfq_no.value == null);
+  } // If any one is empty or null, then it returns true
 
-    rfqModel.productNameController.value.clear();
-    rfqModel.quantityController.value.clear();
+  void resetData() {
+    rfqModel.tabController.value = null;
+    rfqModel.processID.value = null;
+    rfqModel.Rfq_no.value = null;
+    rfqModel.gstNumController.value.text = "";
+    rfqModel.Rfq_table_heading.value = "";
 
-    rfqModel.notecontentController.value.clear();
-    rfqModel.recommendationHeadingController.value.clear();
-    rfqModel.recommendationKeyController.value.clear();
-    rfqModel.recommendationValueController.value.clear();
+    rfqModel.phoneController.value.text = "";
+    rfqModel.emailController.value.text = "";
+    rfqModel.CCemailToggle.value = false;
+    rfqModel.CCemailController.value.clear();
+    // Reset details
+    rfqModel.TitleController.value.text = "";
+    // rfqModel.clientAddressNameController.value.text = "";
+    rfqModel.clientAddressController.value.text = "";
+    // rfqModel.billingAddressNameController.value.text = "";
+    // rfqModel.billingAddressController.value.text = "";
 
-    // Reset form keys
-    rfqModel.detailsKey.value = GlobalKey<FormState>();
-    rfqModel.productKey.value = GlobalKey<FormState>();
-    rfqModel.noteformKey.value = GlobalKey<FormState>();
-
-    // Reset edit indices
+    // Reset product details
     rfqModel.product_editIndex.value = null;
-    rfqModel.note_editIndex.value = null;
-    rfqModel.recommendation_editIndex.value = null;
+    rfqModel.productNameController.value.text = "";
+    rfqModel.hsnController.value.text = "";
+    rfqModel.priceController.value.text = "";
+    rfqModel.quantityController.value.text = "";
+    rfqModel.gstController.value.text = "";
+    rfqModel.Rfq_products.clear();
+    rfqModel.Rfq_gstTotals.clear();
+    rfqModel.Rfq_productSuggestion.clear();
 
-    // Reset heading type and note arrays
-    // rfqModel.selectedheadingType.value = null;
-    // rfqModel.notelength.value = 0;
-    // rfqModel.Rec_Length.value = 0;
-    rfqModel.notecontent.clear();
-    // rfqModel.noteType.clear();
-    // rfqModel.noteType.addAll([
-    //   'With Heading',
-    //   'Without Heading'
-    // ]);
+    // Reset notes
+    rfqModel.note_editIndex.value = null;
+    rfqModel.notecontentController.value.text = "";
+    rfqModel.recommendation_editIndex.value = null;
+    rfqModel.recommendationHeadingController.value.text = "";
+    rfqModel.recommendationKeyController.value.text = "";
+    rfqModel.recommendationValueController.value.text = "";
+    rfqModel.Rfq_noteList.clear();
+    rfqModel.Rfq_recommendationList.clear();
+    rfqModel.noteSuggestion.clear();
   }
 }

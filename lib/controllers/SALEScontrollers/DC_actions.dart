@@ -170,6 +170,16 @@ class DcController extends GetxController {
     dcModel.checkboxValues[index] = value;
   }
 
+  void refactorSelection() {
+    for (int i = 0; i < dcModel.checkboxValues.length; i++) {
+      if (dcModel.selectall_status.value) {
+        dcModel.checkboxValues[i] = true;
+      } else {
+        dcModel.checkboxValues[i] = false;
+      }
+    }
+  }
+
   // Update phone number text
   void updatePhoneNumber(String phoneNumber) {
     dcModel.phoneController.value.text = phoneNumber;

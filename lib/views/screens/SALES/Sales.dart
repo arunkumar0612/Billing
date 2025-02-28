@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:animations/animations.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/foundation.dart';
@@ -30,7 +32,7 @@ class Sales_Client extends StatefulWidget with SalesServices, Pdfpopup {
 
 // enum Menu { preview, share, getLink, remove, download }
 
-class _Sales_ClientState extends State<Sales_Client> {
+class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMixin {
   final SalesController salesController = Get.find<SalesController>();
   final ClientreqController clientreqController = Get.find<ClientreqController>();
   final DcController dcController = Get.find<DcController>();
@@ -39,9 +41,11 @@ class _Sales_ClientState extends State<Sales_Client> {
   final RFQController rfqController = Get.find<RFQController>();
   final CreditController creditController = Get.find<CreditController>();
   final DebitController debitController = Get.find<DebitController>();
+  late AnimationController _controller;
   @override
   void dispose() {
     clientreqController.clientReqModel.cntMulti.value.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -57,6 +61,18 @@ class _Sales_ClientState extends State<Sales_Client> {
     widget.GetProcesscustomerList(context);
     widget.GetProcessList(context, 0);
     widget.GetSalesData(context, salesController.salesModel.salesperiod.value);
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+  }
+
+  void _startAnimation() {
+    if (!_controller.isAnimating) {
+      _controller.forward(from: 0).then((_) {
+        widget.refresh(context);
+      });
+    }
   }
 
 // CircleAvatar(child: Text(item['name']![0])),
@@ -99,22 +115,34 @@ class _Sales_ClientState extends State<Sales_Client> {
                     Row(
                       children: [
                         GestureDetector(
-                          onTap: () {
-                            widget.refresh(context);
-                          },
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            padding: const EdgeInsets.all(0),
-                            child: ClipOval(
-                              child: Image.asset(
-                                'assets/images/reload.png',
-                                fit: BoxFit.cover, // Ensures the image covers the container
-                                width: 30, // Makes the image fill the container's width
-                                height: 30, // Makes the image fill the container's height
-                              ),
-                            ),
+                          onTap: _startAnimation,
+                          child: AnimatedBuilder(
+                            animation: _controller,
+                            builder: (context, child) {
+                              return Transform.rotate(
+                                angle: -_controller.value * 2 * pi, // Counterclockwise rotation
+                                child: Transform.scale(
+                                  scale: TweenSequence([
+                                    TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 1.2), weight: 50),
+                                    TweenSequenceItem(tween: Tween<double>(begin: 1.2, end: 1.0), weight: 50),
+                                  ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut)).value, // Zoom in and return to normal
+                                  child: Opacity(
+                                    opacity: TweenSequence([
+                                      TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.5), weight: 50),
+                                      TweenSequenceItem(tween: Tween<double>(begin: 0.5, end: 1.0), weight: 50),
+                                    ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut)).value, // Fade and return to normal
+                                    child: ClipOval(
+                                      child: Image.asset(
+                                        'assets/images/reload.png',
+                                        fit: BoxFit.cover,
+                                        width: 30,
+                                        height: 30,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
                         const SizedBox(width: 10),

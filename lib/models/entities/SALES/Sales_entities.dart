@@ -113,6 +113,7 @@ class TimelineEvent {
   final TextEditingController feedback;
   final String Eventname;
   final int Eventid;
+  final int apporvedstatus;
   final Allowedprocess Allowed_process;
 
   TimelineEvent({
@@ -120,6 +121,7 @@ class TimelineEvent {
     required this.feedback,
     required this.Eventname,
     required this.Eventid,
+    required this.apporvedstatus,
     required this.Allowed_process,
   });
 
@@ -129,6 +131,7 @@ class TimelineEvent {
         feedback: TextEditingController(text: json['feedback'] as String? ?? ''),
         Eventname: json['Eventname'] as String? ?? '',
         Eventid: json['Eventid'] as int,
+        apporvedstatus: json['apporvedstatus'] as int,
         Allowed_process: Allowedprocess.fromJson(json['Allowed_process'] != null ? json['Allowed_process'] as Map<String, dynamic> : {}));
   }
 
@@ -138,6 +141,7 @@ class TimelineEvent {
       'feedback': feedback,
       'Eventname': Eventname,
       'Eventid': Eventid,
+      'apporvedstatus': apporvedstatus,
       'Allowed_process': Allowed_process.toJson(), // Ensure serialization works for Allowed_process
     };
   }
@@ -151,7 +155,7 @@ class Allowedprocess {
   final bool credit_note;
   final bool delivery_challan;
   final bool revised_quatation;
-
+  final bool get_approval;
   Allowedprocess({
     required this.rfq,
     required this.invoice,
@@ -160,6 +164,7 @@ class Allowedprocess {
     required this.credit_note,
     required this.delivery_challan,
     required this.revised_quatation,
+    required this.get_approval,
   });
 
   factory Allowedprocess.fromJson(Map<String, dynamic> json) {
@@ -171,6 +176,7 @@ class Allowedprocess {
       credit_note: json['credit_note'] as bool? ?? false,
       delivery_challan: json['delivery_challan'] as bool? ?? false,
       revised_quatation: json['revised_quatation'] as bool? ?? false,
+      get_approval: json['get_approval'] as bool? ?? false,
     );
   }
 
@@ -183,6 +189,7 @@ class Allowedprocess {
       'credit_note': credit_note,
       'delivery_challan': delivery_challan,
       'revised_quatation': revised_quatation,
+      'get_approval': get_approval,
     };
   }
 }

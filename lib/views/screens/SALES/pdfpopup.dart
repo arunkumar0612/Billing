@@ -29,25 +29,62 @@ mixin Pdfpopup {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           header(),
+                          const SizedBox(height: 10),
                           addresses(),
                           const SizedBox(height: 5),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              BasicButton(
-                                  text: "Add product",
-                                  colors: const Color.fromARGB(202, 33, 149, 243),
-                                  onPressed: () {
-                                    pdfpopup_controller.addRow();
-                                  }),
-                              if (pdfpopup_controller.pdfModel.value.checkboxValues.contains(true)) const SizedBox(width: 5),
-                              if (pdfpopup_controller.pdfModel.value.checkboxValues.contains(true))
-                                BasicButton(
-                                    text: "Delete",
-                                    colors: const Color.fromARGB(204, 244, 67, 54),
-                                    onPressed: () {
-                                      pdfpopup_controller.deleteRow();
-                                    }),
+                              Expanded(
+                                  child: SizedBox(
+                                height: 25,
+                                child: TextFormField(
+                                  style: const TextStyle(fontSize: Primary_font_size.Text5, color: Colors.black),
+                                  decoration: const InputDecoration(
+                                    contentPadding: EdgeInsets.only(left: 5, right: 5),
+                                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                                    hintText: "Enter the GST number",
+                                    hintStyle: TextStyle(fontSize: Primary_font_size.Text4, fontStyle: FontStyle.italic, color: Color.fromARGB(255, 58, 58, 58)),
+                                    border: OutlineInputBorder(),
+                                    focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
+                                  ),
+                                ),
+                              )),
+                              const SizedBox(width: 20),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    BasicButton(
+                                        text: "Add product",
+                                        colors: const Color.fromARGB(202, 33, 149, 243),
+                                        onPressed: () {
+                                          pdfpopup_controller.addRow();
+                                        }),
+                                    if (pdfpopup_controller.pdfModel.value.checkboxValues.contains(true)) const SizedBox(width: 5),
+                                    if (pdfpopup_controller.pdfModel.value.checkboxValues.contains(true))
+                                      Container(
+                                        width: 80,
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(204, 244, 67, 54),
+                                          borderRadius: BorderRadius.circular(5),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 5, right: 5),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              pdfpopup_controller.deleteRow();
+                                            },
+                                            child: const Text(
+                                              "Delete",
+                                              style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text7),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              )
                             ],
                           ),
                           const SizedBox(height: 5),
@@ -55,11 +92,12 @@ mixin Pdfpopup {
                             height: pdfpopup_controller.pdfModel.value.textControllers.length > 3 ? 200 : pdfpopup_controller.pdfModel.value.textControllers.length * 40 + 40,
                             child: contentTable(pdfpopup_controller),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 12),
                           collage(),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 10),
                         ],
                       ),
+                      SizedBox(height: pdfpopup_controller.pdfModel.value.textControllers.length > 3 ? 5 : 165 - pdfpopup_controller.pdfModel.value.textControllers.length * 40),
                       footer(),
                     ],
                   ),
@@ -77,7 +115,7 @@ mixin Pdfpopup {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image.asset('assets/images/sporada.jpeg', height: 150),
+        Image.asset('assets/images/sporada.jpeg', height: 130),
         const Text("INVOICE", style: TextStyle(fontSize: Primary_font_size.SubHeading, fontWeight: FontWeight.bold)),
         SizedBox(
           child: Row(
@@ -127,13 +165,15 @@ mixin Pdfpopup {
                   const SizedBox(height: 10),
 
                   SizedBox(
-                    height: 20,
+                    // height: 20,
                     width: 80,
                     child: TextFormField(
+                      maxLines: null,
                       style: const TextStyle(fontSize: Primary_font_size.Text5, color: Colors.black),
                       controller: pdfpopup_controller.pdfModel.value.invoiceNo.value,
                       decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.only(left: 5, right: 5),
+                        isDense: true,
+                        contentPadding: EdgeInsets.all(7),
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
                         labelStyle: TextStyle(
                           fontSize: Primary_font_size.Text7,
@@ -956,26 +996,28 @@ mixin Pdfpopup {
   }
 
   Widget footer() {
-    return const Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
+        BasicButton(text: "Generate Invoice", colors: Primary_colors.Color3, onPressed: () {}),
+        const SizedBox(height: 5),
+        const Text(
           "SPORADA SECURE INDIA PRIVATE LIMITED",
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 2),
-        Text(
+        const SizedBox(height: 2),
+        const Text(
           "687/7, 3rd Floor, Sakthivel Towers, Trichy road, Ramanathapuram, Coimbatore- 641045",
           style: TextStyle(fontSize: Primary_font_size.Text7),
         ),
-        SizedBox(height: 0),
-        Text(
+        const SizedBox(height: 0),
+        const Text(
           "Telephone: +91-422-2312363, E-mail: sales@sporadasecure.com, Website: www.sporadasecure.com",
           style: TextStyle(fontSize: Primary_font_size.Text7),
         ),
-        SizedBox(height: 0),
-        Text("CIN: U30007TZ2020PTC03414 | GSTIN: 33ABECS0625B1Z0", style: TextStyle(fontSize: Primary_font_size.Text7)),
+        const SizedBox(height: 0),
+        const Text("CIN: U30007TZ2020PTC03414 | GSTIN: 33ABECS0625B1Z0", style: TextStyle(fontSize: Primary_font_size.Text7)),
       ],
     );
   }

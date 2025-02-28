@@ -790,22 +790,12 @@ class _Sales_ClientState extends State<Sales_Client> {
                                       padding: const EdgeInsets.only(top: 0),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(15),
-                                        child: Card(
-                                          shadowColor: Colors.transparent,
-                                          color: (salesController.salesModel.showcustomerprocess.value != null && salesController.salesModel.showcustomerprocess.value == index)
-                                              ? Primary_colors.Color3
-                                              : Primary_colors.Dark,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(15),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Primary_colors.Dark,
+                                            borderRadius: BorderRadius.circular(10),
                                           ),
-                                          elevation: 10,
                                           child: ExpansionTile(
-                                            collapsedShape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(10), // Rounded corners
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(10), // Rounded corners
-                                            ),
                                             collapsedIconColor: const Color.fromARGB(255, 135, 132, 132),
                                             iconColor: Colors.red,
                                             collapsedBackgroundColor: Primary_colors.Dark,

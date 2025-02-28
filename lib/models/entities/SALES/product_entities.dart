@@ -321,21 +321,14 @@ class DebitProduct {
 }
 
 class InvoiceProduct {
-  final int sno;
-  final String productName;
-  final int hsn;
-  final double gst;
-  final double price;
-  final int quantity;
+  int sno;
+  String productName;
+  int hsn;
+  double gst;
+  double price;
+  int quantity;
 
-  const InvoiceProduct({
-    required this.sno,
-    required this.productName,
-    required this.hsn,
-    required this.gst,
-    required this.price,
-    required this.quantity,
-  });
+  InvoiceProduct({required this.sno, required this.productName, required this.hsn, required this.gst, required this.price, required this.quantity});
 
   /// Calculates the total price for the product
   double get total => price * quantity;

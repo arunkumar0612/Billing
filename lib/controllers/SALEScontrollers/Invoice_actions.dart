@@ -185,12 +185,7 @@ class InvoiceController extends GetxController {
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: [
-        'png',
-        'jpg',
-        'jpeg',
-        'pdf'
-      ],
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf'],
     );
 
     if (result != null) {
@@ -385,14 +380,18 @@ class InvoiceController extends GetxController {
   void add_productSuggestion(List<dynamic> suggestionList) {
     for (var item in suggestionList) {
       invoiceModel.Invoice_productSuggestion.add(ProductSuggestion.fromJson(item));
-      print(invoiceModel.Invoice_productSuggestion[0].productName);
+      if (kDebugMode) {
+        print(invoiceModel.Invoice_productSuggestion[0].productName);
+      }
     }
   }
 
   void add_noteSuggestion(Map<String, dynamic> suggestionList) {
     for (var item in suggestionList['notes']) {
       invoiceModel.noteSuggestion.add(item);
-      print(invoiceModel.noteSuggestion[0]);
+      if (kDebugMode) {
+        print(invoiceModel.noteSuggestion[0]);
+      }
     }
   }
 
@@ -434,7 +433,18 @@ class InvoiceController extends GetxController {
   }
 
   bool postDatavalidation() {
-    return (invoiceModel.TitleController.value.text.isEmpty || invoiceModel.processID.value == null || invoiceModel.clientAddressNameController.value.text.isEmpty || invoiceModel.clientAddressController.value.text.isEmpty || invoiceModel.billingAddressNameController.value.text.isEmpty || invoiceModel.billingAddressController.value.text.isEmpty || invoiceModel.emailController.value.text.isEmpty || invoiceModel.phoneController.value.text.isEmpty || invoiceModel.gstNumController.value.text.isEmpty || invoiceModel.Invoice_products.isEmpty || invoiceModel.Invoice_noteList.isEmpty || invoiceModel.Invoice_no.value == null);
+    return (invoiceModel.TitleController.value.text.isEmpty ||
+        invoiceModel.processID.value == null ||
+        invoiceModel.clientAddressNameController.value.text.isEmpty ||
+        invoiceModel.clientAddressController.value.text.isEmpty ||
+        invoiceModel.billingAddressNameController.value.text.isEmpty ||
+        invoiceModel.billingAddressController.value.text.isEmpty ||
+        invoiceModel.emailController.value.text.isEmpty ||
+        invoiceModel.phoneController.value.text.isEmpty ||
+        invoiceModel.gstNumController.value.text.isEmpty ||
+        invoiceModel.Invoice_products.isEmpty ||
+        invoiceModel.Invoice_noteList.isEmpty ||
+        invoiceModel.Invoice_no.value == null);
   } // If any one is empty or null, then it returns true
 
   void resetData() {

@@ -1,9 +1,11 @@
 import 'package:animations/animations.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/PDFcraft_Controllers/PDFcraft_Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
@@ -11,17 +13,18 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart'
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
+import 'package:ssipl_billing/services/SALES/PDFcraft_services/PDFcraft_Invoice_services.dart';
 
 import 'package:ssipl_billing/services/SALES/sales_service.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
 import 'package:ssipl_billing/views/screens/SALES/Sales_chart.dart';
-import 'package:ssipl_billing/views/screens/SALES/pdfpopup.dart';
+import 'package:ssipl_billing/views/screens/SALES/PDFcraft/PDFcraft_invoicePDF.dart';
 import '../../../controllers/SALEScontrollers/Sales_actions.dart';
 // import 'package:cool_dropdown/models/cool_dropdown_item.dart';
 
-class Sales_Client extends StatefulWidget with SalesServices, Pdfpopup {
+class Sales_Client extends StatefulWidget with SalesServices {
   Sales_Client({super.key});
 
   @override
@@ -39,6 +42,9 @@ class _Sales_ClientState extends State<Sales_Client> {
   final RfqController rfqController = Get.find<RfqController>();
   final CreditController creditController = Get.find<CreditController>();
   final DebitController debitController = Get.find<DebitController>();
+  final PDFcraft_InvoiceController pdfpopup_controller = Get.find<PDFcraft_InvoiceController>();
+  var inst = PDFcraft_InvoicePDF();
+  var inst_PDFcraft_Services = PDFcraft_Services();
   @override
   void dispose() {
     clientreqController.clientReqModel.cntMulti.value.dispose();
@@ -532,10 +538,11 @@ class _Sales_ClientState extends State<Sales_Client> {
                                               image: 'assets/images/settings.png',
                                               label: 'Settings',
                                               color: Primary_colors.Dark,
-                                              onPressed: () {
-                                                widget.pdfpopup_controller.initializeTextControllers();
-                                                widget.pdfpopup_controller.initializeCheckboxes();
-                                                widget.showA4StyledPopup(context);
+                                              onPressed: () async {
+                                                pdfpopup_controller.initializeTextControllers();
+                                                pdfpopup_controller.initializeCheckboxes();
+                                                inst_PDFcraft_Services.assign_GSTtotals();
+                                                inst.showA4StyledPopup(context);
                                               },
                                             ),
                                           ),
@@ -791,6 +798,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(15),
                                         child: Card(
+                                          shadowColor: Colors.transparent,
                                           color: (salesController.salesModel.showcustomerprocess.value != null && salesController.salesModel.showcustomerprocess.value == index)
                                               ? Primary_colors.Color3
                                               : Primary_colors.Dark,
@@ -886,14 +894,22 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                             children: [
                                                               GestureDetector(
                                                                 child: Container(
+                                                                  height: 40,
+                                                                  width: 40,
                                                                   padding: const EdgeInsets.all(8),
                                                                   decoration: const BoxDecoration(
                                                                     shape: BoxShape.circle,
-                                                                    color: Color.fromARGB(157, 100, 110, 255),
+                                                                    color: Color.fromARGB(107, 199, 202, 249),
                                                                   ),
-                                                                  child: const Icon(
-                                                                    Icons.event,
-                                                                    color: Colors.white,
+                                                                  // child: const Icon(
+                                                                  //   Icons.event,
+                                                                  //   color: Colors.white,
+                                                                  // ),
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      (salesController.salesModel.processList[index].TimelineEvents.length - 1 - childIndex + 1).toString(),
+                                                                      style: const TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold),
+                                                                    ),
                                                                   ),
                                                                 ),
                                                                 onTap: () async {
@@ -905,7 +921,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                 Container(
                                                                   width: 2,
                                                                   height: 40,
-                                                                  color: const Color.fromARGB(150, 100, 110, 255),
+                                                                  color: const Color.fromARGB(107, 199, 202, 249),
                                                                 ),
                                                             ],
                                                           ),
@@ -993,7 +1009,9 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                                   widget.GenerateInvoice_dialougebox(
                                                                                       context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                   invoiceController.setProcessID(salesController.salesModel.processList[index].processid);
-                                                                                  print(invoiceController.invoiceModel.processID);
+                                                                                  if (kDebugMode) {
+                                                                                    print(invoiceController.invoiceModel.processID);
+                                                                                  }
                                                                                 }
                                                                               },
                                                                               child: const Text(
@@ -1010,7 +1028,9 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                                   widget.GenerateDelivery_challan_dialougebox(
                                                                                       context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                   dcController.setProcessID(salesController.salesModel.processList[index].processid);
-                                                                                  print(dcController.dcModel.processID);
+                                                                                  if (kDebugMode) {
+                                                                                    print(dcController.dcModel.processID);
+                                                                                  }
                                                                                 }
                                                                               },
                                                                               child: const Text(
@@ -1237,6 +1257,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
+                        // ignore: deprecated_member_use
                         color: Primary_colors.Color5.withOpacity(0.1),
                         shape: BoxShape.circle,
                       ),

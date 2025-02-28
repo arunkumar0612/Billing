@@ -397,14 +397,18 @@ class DcController extends GetxController {
   void add_productSuggestion(List<dynamic> suggestionList) {
     for (var item in suggestionList) {
       dcModel.Dc_productSuggestion.add(ProductSuggestion.fromJson(item));
-      print(dcModel.Dc_productSuggestion[0].productName);
+      if (kDebugMode) {
+        print(dcModel.Dc_productSuggestion[0].productName);
+      }
     }
   }
 
   void add_noteSuggestion(Map<String, dynamic> suggestionList) {
     for (var item in suggestionList['notes']) {
       dcModel.noteSuggestion.add(item);
-      print(dcModel.noteSuggestion[0]);
+      if (kDebugMode) {
+        print(dcModel.noteSuggestion[0]);
+      }
     }
   }
 

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
+
 import 'package:ssipl_billing/services/SALES/DC_services/DC_Product_services.dart';
-import 'package:ssipl_billing/views/components/button.dart';
+
 import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/views/components/button.dart';
 
 class DcProducts extends StatefulWidget with DcproductService {
   DcProducts({super.key});
@@ -211,7 +214,6 @@ class _DcProductsState extends State<DcProducts> {
                 itemCount: dcController.dcModel.Dc_products.length,
                 itemBuilder: (context, index) {
                   final product = dcController.dcModel.Dc_products[index];
-                  final isEvenRow = index % 2 == 0;
                   // final iera = site['InactiveDevices'] == '0';
                   // final offline_color = iera
                   //     ? const Color.fromARGB(255, 255, 255, 255)
@@ -222,7 +224,6 @@ class _DcProductsState extends State<DcProducts> {
                     children: [
                       buildProductRow(
                           product.productName, product.hsn.toString(), product.price.toString(), product.quantity.toString(), (product.price * product.quantity).toString(), backgroundColor, index),
-                      // const Text("dsfgdgdfg fgdfgdf df df df df df df df df df df df df df df df ggdfgdf fdgdfg dfgdfgdfg dfg df gdf gd "),
                     ],
                   );
                 },
@@ -231,12 +232,13 @@ class _DcProductsState extends State<DcProducts> {
           ),
         ),
         BasicButton(
-            text: "Submit",
-            colors: Colors.green,
-            onPressed: () {
-              widget.addto_Selectedproducts();
-              dcController.nextTab();
-            })
+          text: "Submit",
+          colors: Colors.green,
+          onPressed: () {
+            widget.addto_Selectedproducts();
+            dcController.nextTab();
+          },
+        ),
       ],
     );
   }

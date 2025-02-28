@@ -73,7 +73,23 @@ mixin PostServices {
       }
       File cachedPdf = quoteController.quoteModel.selectedPdf.value!;
       // savePdfToCache();
-      Post_Quotation salesData = Post_Quotation.fromJson(title: quoteController.quoteModel.TitleController.value.text, processid: quoteController.quoteModel.processID.value!, ClientAddressname: quoteController.quoteModel.clientAddressNameController.value.text, ClientAddress: quoteController.quoteModel.clientAddressController.value.text, billingAddressName: quoteController.quoteModel.billingAddressNameController.value.text, billingAddress: quoteController.quoteModel.billingAddressController.value.text, emailId: quoteController.quoteModel.emailController.value.text, phoneNo: quoteController.quoteModel.phoneController.value.text, gst: quoteController.quoteModel.gstController.value.text, product: quoteController.quoteModel.Quote_products, notes: quoteController.quoteModel.Quote_noteList, date: getCurrentDate(), quotationGenID: quoteController.quoteModel.Quote_no.value!, messageType: messageType, feedback: quoteController.quoteModel.feedbackController.value.text, ccEmail: quoteController.quoteModel.CCemailController.value.text);
+      Post_Quotation salesData = Post_Quotation.fromJson(
+          title: quoteController.quoteModel.TitleController.value.text,
+          processid: quoteController.quoteModel.processID.value!,
+          ClientAddressname: quoteController.quoteModel.clientAddressNameController.value.text,
+          ClientAddress: quoteController.quoteModel.clientAddressController.value.text,
+          billingAddressName: quoteController.quoteModel.billingAddressNameController.value.text,
+          billingAddress: quoteController.quoteModel.billingAddressController.value.text,
+          emailId: quoteController.quoteModel.emailController.value.text,
+          phoneNo: quoteController.quoteModel.phoneController.value.text,
+          gst: quoteController.quoteModel.gstController.value.text,
+          product: quoteController.quoteModel.Quote_products,
+          notes: quoteController.quoteModel.Quote_noteList,
+          date: getCurrentDate(),
+          quotationGenID: quoteController.quoteModel.Quote_no.value!,
+          messageType: messageType,
+          feedback: quoteController.quoteModel.feedbackController.value.text,
+          ccEmail: quoteController.quoteModel.CCemailController.value.text);
 
       await send_data(context, jsonEncode(salesData.toJson()), cachedPdf, eventtype);
     } catch (e) {
@@ -83,7 +99,8 @@ mixin PostServices {
 
   dynamic send_data(context, String jsonData, File file, String eventtype) async {
     try {
-      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, eventtype == "quotation" ? API.add_Quotation : API.add_RevisedQuotation);
+      Map<String, dynamic>? response =
+          await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, eventtype == "quotation" ? API.add_Quotation : API.add_RevisedQuotation);
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {

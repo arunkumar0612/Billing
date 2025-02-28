@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-class ManualProduct {
+import 'package:ssipl_billing/utils/helpers/support_functions.dart';
+
+class PDFcraft_InvoiceProduct {
   String sNo;
   String description;
   String hsn;
@@ -9,7 +11,7 @@ class ManualProduct {
   String quantity;
   String total;
 
-  ManualProduct({
+  PDFcraft_InvoiceProduct({
     required this.sNo,
     required this.description,
     required this.hsn,
@@ -18,10 +20,30 @@ class ManualProduct {
     required this.quantity,
     required this.total,
   });
+  String getIndex(int index) {
+    switch (index) {
+      case 0:
+        return sNo;
+      case 1:
+        return description;
+      case 2:
+        return hsn.toString();
+      case 3:
+        return gst.toString();
+      case 4:
+        return formatCurrency(double.parse(price));
+      case 5:
+        return quantity.toString();
+      case 6:
+        return formatCurrency(double.parse(total));
+      default:
+        return '';
+    }
+  }
 
   // Convert JSON (Map<String, dynamic>) to Product Object
-  factory ManualProduct.fromJson(Map<String, dynamic> json) {
-    return ManualProduct(
+  factory PDFcraft_InvoiceProduct.fromJson(Map<String, dynamic> json) {
+    return PDFcraft_InvoiceProduct(
       sNo: json['sNo'] ?? '',
       description: json['description'] ?? '',
       hsn: json['hsn'] ?? '',
@@ -46,10 +68,11 @@ class ManualProduct {
   }
 
   // Convert a List of Products to JSON
-  static String encode(List<ManualProduct> products) => json.encode(
+  static String encode(List<PDFcraft_InvoiceProduct> products) => json.encode(
         products.map<Map<String, dynamic>>((product) => product.toJson()).toList(),
       );
 
   // Decode a JSON string into a List of Products
-  static List<ManualProduct> decode(String productsJson) => (json.decode(productsJson) as List<dynamic>).map<ManualProduct>((item) => ManualProduct.fromJson(item)).toList();
+  static List<PDFcraft_InvoiceProduct> decode(String productsJson) =>
+      (json.decode(productsJson) as List<dynamic>).map<PDFcraft_InvoiceProduct>((item) => PDFcraft_InvoiceProduct.fromJson(item)).toList();
 }

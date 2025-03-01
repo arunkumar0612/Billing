@@ -5,7 +5,6 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/services/SALES/CustomPDF_services/CustomPDF_Invoice_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
-import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 
 class CustomPDF_InvoicePDF {
@@ -13,7 +12,6 @@ class CustomPDF_InvoicePDF {
   var inst = CustomPDF_Services();
   void showA4StyledPopup(BuildContext context) async {
     try {
-      pdfpopup_controller.add_Note();
       await showDialog(
         context: context,
         barrierDismissible: false, // Prevents closing the dialog by clicking outside
@@ -48,25 +46,64 @@ class CustomPDF_InvoicePDF {
                                     header(),
                                     addresses(),
                                     const SizedBox(height: 5),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
+                                    Stack(
                                       children: [
-                                        BasicButton(
-                                            text: "Add product",
-                                            colors: const Color.fromARGB(202, 33, 149, 243),
-                                            onPressed: () {
-                                              pdfpopup_controller.addRow();
-                                            }),
-                                        if (pdfpopup_controller.pdfModel.value.checkboxValues.contains(true)) const SizedBox(width: 5),
-                                        if (pdfpopup_controller.pdfModel.value.checkboxValues.contains(true))
-                                          BasicButton(
-                                              text: "Delete",
-                                              colors: const Color.fromARGB(204, 244, 67, 54),
-                                              onPressed: () {
-                                                pdfpopup_controller.deleteRow();
-                                              }),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: 35,
+                                              width: 200,
+                                              child: TextFormField(
+                                                style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
+                                                controller: pdfpopup_controller.pdfModel.value.clientName.value,
+                                                decoration: const InputDecoration(
+                                                    errorStyle: TextStyle(height: 0, fontSize: 0),
+                                                    contentPadding: EdgeInsets.only(left: 5, right: 5, top: 5),
+                                                    // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                                                    hintText: "07AAACL1234C1Z5",
+                                                    hintStyle: TextStyle(fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 136, 136, 136)),
+                                                    border: OutlineInputBorder(borderSide: BorderSide.none),
+                                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Primary_colors.Color3, width: 2)),
+                                                    prefixIcon: Padding(
+                                                      padding: EdgeInsets.only(top: 9, left: 5),
+                                                      child: Text("GSTIN  :  ", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                                                    )),
+                                                validator: (value) {
+                                                  if (value == null || value.isEmpty) {
+                                                    return '';
+                                                  }
+                                                  return null;
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            BasicButton(
+                                                text: "Add product",
+                                                colors: const Color.fromARGB(202, 33, 149, 243),
+                                                onPressed: () {
+                                                  pdfpopup_controller.addRow();
+                                                }),
+                                            if (pdfpopup_controller.pdfModel.value.checkboxValues.contains(true)) const SizedBox(width: 5),
+                                            if (pdfpopup_controller.pdfModel.value.checkboxValues.contains(true))
+                                              BasicButton(
+                                                  text: "Delete",
+                                                  colors: const Color.fromARGB(204, 244, 67, 54),
+                                                  onPressed: () async {
+                                                    pdfpopup_controller.deleteRow();
+                                                    await Future.delayed(const Duration(milliseconds: 20));
+                                                    inst.assign_GSTtotals();
+                                                  }),
+                                          ],
+                                        ),
                                       ],
                                     ),
+
+                                    // const SizedBox(height: 5),
                                     const SizedBox(height: 5),
                                     SizedBox(
                                       height: pdfpopup_controller.pdfModel.value.textControllers.length > 3 ? 200 : pdfpopup_controller.pdfModel.value.textControllers.length * 40 + 40,
@@ -143,7 +180,7 @@ class CustomPDF_InvoicePDF {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image.asset('assets/images/sporada.jpeg', height: 150),
+        Image.asset('assets/images/sporada.jpeg', height: 130),
         const Text("INVOICE", style: TextStyle(fontSize: Primary_font_size.SubHeading, fontWeight: FontWeight.bold)),
         SizedBox(
           child: Row(
@@ -173,14 +210,15 @@ class CustomPDF_InvoicePDF {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 20,
+                    // height: 20,
                     width: 80,
                     child: TextFormField(
                       style: const TextStyle(fontSize: Primary_font_size.Text5, color: Colors.black),
                       controller: pdfpopup_controller.pdfModel.value.date.value,
                       decoration: const InputDecoration(
                         errorStyle: TextStyle(fontSize: 0),
-                        contentPadding: EdgeInsets.only(left: 5, right: 5),
+                        isDense: true,
+                        contentPadding: EdgeInsets.all(7),
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
                         labelStyle: TextStyle(
                           fontSize: Primary_font_size.Text7,
@@ -200,14 +238,16 @@ class CustomPDF_InvoicePDF {
                   const SizedBox(height: 10),
 
                   SizedBox(
-                    height: 20,
+                    // height: 20,
                     width: 80,
                     child: TextFormField(
+                      maxLines: null,
                       style: const TextStyle(fontSize: Primary_font_size.Text5, color: Colors.black),
                       controller: pdfpopup_controller.pdfModel.value.manualinvoiceNo.value,
                       decoration: const InputDecoration(
                         errorStyle: TextStyle(fontSize: 0),
-                        contentPadding: EdgeInsets.only(left: 5, right: 5),
+                        isDense: true,
+                        contentPadding: EdgeInsets.all(7),
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
                         labelStyle: TextStyle(
                           fontSize: Primary_font_size.Text7,
@@ -1004,7 +1044,7 @@ class CustomPDF_InvoicePDF {
                     ),
                   ],
                 )),
-            SizedBox(height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 20 : 85),
+            SizedBox(height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 20 : 55),
             notes(),
           ],
         );
@@ -1074,14 +1114,8 @@ class CustomPDF_InvoicePDF {
                                         pdfpopup_controller.deleteNote(index);
                                       },
                                     ),
-                                    hintText: "Payment terms : 100% along with PO....",
+                                    hintText: "Please enter the notes....",
                                     hintStyle: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
-                                    // contentPadding: const EdgeInsets.all(0),
-                                    // border: const OutlineInputBorder(borderSide: BorderSide.none),
-                                    // focusedBorder: OutlineInputBorder(
-                                    //   borderSide: const BorderSide(color: Colors.blue, width: 1.5),
-                                    //   borderRadius: BorderRadius.circular(5),
-                                    // ),
                                     isDense: true,
                                   ),
                                   validator: (value) {
@@ -1112,11 +1146,6 @@ class CustomPDF_InvoicePDF {
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // const Text(
-        //   "SPORADA SECURE INDIA PRIVATE LIMITED",
-        //   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-        // ),
-        // const SizedBox(height: 2),
         const Expanded(
           child: Text(
             "This is a custom invoice generator designed to ensure accuracy and professionalism in your billing process. Please make sure that all details entered are valid and correct, as any discrepancies may affect the accuracy of your invoice and financial records.",
@@ -1124,109 +1153,90 @@ class CustomPDF_InvoicePDF {
           ),
         ),
         const SizedBox(width: 20),
-        // const Text(
-        //   "Telephone: +91-422-2312363, E-mail: sales@sporadasecure.com, Website: www.sporadasecure.com",
-        //   style: TextStyle(fontSize: Primary_font_size.Text7),
-        // ),
-        // const SizedBox(height: 0),
-        // const Text("CIN: U30007TZ2020PTC03414 | GSTIN: 33ABECS0625B1Z0", style: TextStyle(fontSize: Primary_font_size.Text7)),
-
-        Obx(() {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              pdfpopup_controller.pdfModel.value.isLoading.value
-                  ? SizedBox(
-                      width: 125,
-                      child: Stack(
-                        children: [
-                          LinearPercentIndicator(
-                            lineHeight: 27,
-                            // width: 105,
-                            percent: pdfpopup_controller.pdfModel.value.progress.value,
-                            barRadius: const Radius.circular(5),
-                            backgroundColor: const Color.fromARGB(255, 31, 38, 63),
-                            progressColor: Colors.blue,
-                            center: Text(
-                              "${(pdfpopup_controller.pdfModel.value.progress.value * 100).toInt()}%",
-                              style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 12),
-                            ),
-                          ),
-                          Positioned.fill(
-                            child: ShaderMask(
-                              blendMode: BlendMode.srcIn,
-                              shaderCallback: (Rect bounds) {
-                                return const LinearGradient(
-                                  colors: [
-                                    Colors.blue,
-                                    Colors.transparent,
-                                    Primary_colors.Dark,
-                                  ],
-                                  stops: [
-                                    0.0,
-                                    0.5,
-                                    1.0,
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ).createShader(bounds);
-                              },
-                              child: LinearPercentIndicator(
-                                lineHeight: 30,
-                                // width: 105,
-                                percent: pdfpopup_controller.pdfModel.value.progress.value,
-                                barRadius: const Radius.circular(5),
-                                backgroundColor: Primary_colors.Dark,
-                                progressColor: Colors.blue,
+        Obx(
+          () {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                pdfpopup_controller.pdfModel.value.isLoading.value
+                    ? SizedBox(
+                        width: 125,
+                        child: Stack(
+                          children: [
+                            LinearPercentIndicator(
+                              lineHeight: 27,
+                              // width: 105,
+                              percent: pdfpopup_controller.pdfModel.value.progress.value,
+                              barRadius: const Radius.circular(5),
+                              backgroundColor: const Color.fromARGB(255, 31, 38, 63),
+                              progressColor: Colors.blue,
+                              center: Text(
+                                "${(pdfpopup_controller.pdfModel.value.progress.value * 100).toInt()}%",
+                                style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 12),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : Container(
-                      width: 125,
-                      // height: 40,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: TextButton(
-                        onPressed: () async {
-                          if (pdfpopup_controller.pdfModel.value.allData_key.value.currentState?.validate() ?? false) {
-                            try {
-                              var inst = CustomPDF_Services();
-
-                              // if (invoiceController.postDatavalidation()) {
-                              //   Get.snackbar("Error", "Any of the required fields is Empty!");
-                              //   return;
-                              // }
-                              await Future.wait([
-                                pdfpopup_controller.startProgress(),
-                                inst.savePdfToCache(context),
-                              ]);
-                              // invoiceController.nextTab();
-                            } catch (e, stackTrace) {
-                              debugPrint("Error in Future.wait: $e");
-                              debugPrint(stackTrace.toString());
-                              Get.snackbar("Error", "Something went wrong. Please try again.");
+                            Positioned.fill(
+                              child: ShaderMask(
+                                blendMode: BlendMode.srcIn,
+                                shaderCallback: (Rect bounds) {
+                                  return const LinearGradient(
+                                    colors: [
+                                      Colors.blue,
+                                      Colors.transparent,
+                                      Primary_colors.Dark,
+                                    ],
+                                    stops: [
+                                      0.0,
+                                      0.5,
+                                      1.0,
+                                    ],
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ).createShader(bounds);
+                                },
+                                child: LinearPercentIndicator(
+                                  lineHeight: 30,
+                                  // width: 105,
+                                  percent: pdfpopup_controller.pdfModel.value.progress.value,
+                                  barRadius: const Radius.circular(5),
+                                  backgroundColor: Primary_colors.Dark,
+                                  progressColor: Colors.blue,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        width: 125,
+                        // height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: TextButton(
+                          onPressed: () async {
+                            if (pdfpopup_controller.pdfModel.value.allData_key.value.currentState?.validate() ?? false) {
+                              try {
+                                await Future.wait(
+                                  [
+                                    pdfpopup_controller.startProgress(),
+                                    inst.savePdfToCache(context),
+                                  ],
+                                );
+                              } catch (e, stackTrace) {
+                                debugPrint("Error in Future.wait: $e");
+                                debugPrint(stackTrace.toString());
+                                Get.snackbar("Error", "Something went wrong. Please try again.");
+                              }
                             }
-                          }
-                        },
-                        child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),
-                      )),
-            ],
-          );
-        })
-        // BasicButton(
-        //     text: "Generate",
-        //     colors: Primary_colors.Color3,
-        //     onPressed: () {
-        //       var inst = CustomPDF_Services();
-        //       inst.savePdfToCache(context);
-        //       // Navigator.pop(context);
-        //       // pdfpopup_controller.addRow();
-        //     }),
+                          },
+                          child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),
+                        )),
+              ],
+            );
+          },
+        ),
       ],
     );
   }

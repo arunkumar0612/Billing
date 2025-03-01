@@ -29,4 +29,5 @@ class API {
   static String sales_getNote_SUGG_List = "http://192.168.0.200:8081/sales/getnotes";
   static String sales_getsalesdata_API = "http://192.168.0.200:8081/sales/salesdata";
   static String sales_clientprofile_API = "http://192.168.0.200:8081/sales/clientprofile";
+  static String sales_approvedquotation_API = "http://192.168.0.200:8081/sales/approvedquotation";
 }

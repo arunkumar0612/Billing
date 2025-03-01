@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks, duplicate_ignore
+
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/DC_entities.dart';

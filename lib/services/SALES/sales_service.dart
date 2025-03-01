@@ -154,7 +154,7 @@ mixin SalesServices {
           insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-            height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
+            height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
             child: SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
           ),
         ),
@@ -243,6 +243,26 @@ mixin SalesServices {
     } catch (e) {
       Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
       return false;
+    }
+  }
+
+  void GetApproval(context, int customerid, int eventid) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid}, API.sales_approvedquotation_API);
+      if (response?['statusCode'] == 200) {
+        CMResponse value = CMResponse.fromJson(response ?? {});
+        if (value.code) {
+          GetProcessList(context, customerid);
+          Basic_SnackBar(context, "Approval Sent successfully");
+          // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Basic_dialog(context: context, showCancel: false, title: 'Approval Send add Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 

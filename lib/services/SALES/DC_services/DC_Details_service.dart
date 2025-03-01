@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
@@ -43,7 +44,9 @@ mixin DcdetailsService {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getProduct_SUGG_List);
 
-      print(response);
+      if (kDebugMode) {
+        print(response);
+      }
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
@@ -67,7 +70,9 @@ mixin DcdetailsService {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getNote_SUGG_List);
 
-      print(response);
+      if (kDebugMode) {
+        print(response);
+      }
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {

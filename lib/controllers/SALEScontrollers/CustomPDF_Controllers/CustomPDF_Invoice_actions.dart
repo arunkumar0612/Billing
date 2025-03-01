@@ -10,6 +10,13 @@ import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 
 class CustomPDF_InvoiceController extends GetxController {
   var pdfModel = CustomPDF_InvoiceModel().obs;
+  void intAll() {
+    initializeTextControllers();
+    initializeCheckboxes();
+    add_Note();
+    finalCalc();
+  }
+
   void initializeCheckboxes() {
     pdfModel.value.checkboxValues.assignAll(List.generate(pdfModel.value.manualInvoiceproducts.length, (index) => false));
   }
@@ -202,7 +209,7 @@ class CustomPDF_InvoiceController extends GetxController {
         pdfModel.value.checkboxValues.removeAt(i);
       }
     }
-
+    finalCalc();
     pdfModel.refresh(); // Ensure UI updates
   }
 

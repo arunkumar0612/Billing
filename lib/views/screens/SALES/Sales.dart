@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:animations/animations.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/foundation.dart';
@@ -33,7 +35,7 @@ class Sales_Client extends StatefulWidget with SalesServices {
 
 // enum Menu { preview, share, getLink, remove, download }
 
-class _Sales_ClientState extends State<Sales_Client> {
+class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMixin {
   final SalesController salesController = Get.find<SalesController>();
   final ClientreqController clientreqController = Get.find<ClientreqController>();
   final DcController dcController = Get.find<DcController>();
@@ -45,9 +47,11 @@ class _Sales_ClientState extends State<Sales_Client> {
   final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
   var inst = CustomPDF_InvoicePDF();
   var inst_CustomPDF_Services = CustomPDF_Services();
+
   @override
   void dispose() {
     clientreqController.clientReqModel.cntMulti.value.dispose();
+    salesController.salesModel.animationController.dispose();
     super.dispose();
   }
 
@@ -63,9 +67,20 @@ class _Sales_ClientState extends State<Sales_Client> {
     widget.GetProcesscustomerList(context);
     widget.GetProcessList(context, 0);
     widget.GetSalesData(context, salesController.salesModel.salesperiod.value);
+    salesController.salesModel.animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
   }
 
-// CircleAvatar(child: Text(item['name']![0])),
+  void _startAnimation() {
+    if (!salesController.salesModel.animationController.isAnimating) {
+      salesController.salesModel.animationController.forward(from: 0).then((_) {
+        widget.refresh(context);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -105,22 +120,34 @@ class _Sales_ClientState extends State<Sales_Client> {
                     Row(
                       children: [
                         GestureDetector(
-                          onTap: () {
-                            widget.refresh(context);
-                          },
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            padding: const EdgeInsets.all(0),
-                            child: ClipOval(
-                              child: Image.asset(
-                                'assets/images/reload.png',
-                                fit: BoxFit.cover, // Ensures the image covers the container
-                                width: 30, // Makes the image fill the container's width
-                                height: 30, // Makes the image fill the container's height
-                              ),
-                            ),
+                          onTap: _startAnimation,
+                          child: AnimatedBuilder(
+                            animation: salesController.salesModel.animationController,
+                            builder: (context, child) {
+                              return Transform.rotate(
+                                angle: -salesController.salesModel.animationController.value * 2 * pi, // Counterclockwise rotation
+                                child: Transform.scale(
+                                  scale: TweenSequence([
+                                    TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 1.2), weight: 50),
+                                    TweenSequenceItem(tween: Tween<double>(begin: 1.2, end: 1.0), weight: 50),
+                                  ]).animate(CurvedAnimation(parent: salesController.salesModel.animationController, curve: Curves.easeInOut)).value, // Zoom in and return to normal
+                                  child: Opacity(
+                                    opacity: TweenSequence([
+                                      TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.5), weight: 50),
+                                      TweenSequenceItem(tween: Tween<double>(begin: 0.5, end: 1.0), weight: 50),
+                                    ]).animate(CurvedAnimation(parent: salesController.salesModel.animationController, curve: Curves.easeInOut)).value, // Fade and return to normal
+                                    child: ClipOval(
+                                      child: Image.asset(
+                                        'assets/images/reload.png',
+                                        fit: BoxFit.cover,
+                                        width: 30,
+                                        height: 30,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -539,8 +566,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                               label: 'Settings',
                                               color: Primary_colors.Dark,
                                               onPressed: () async {
-                                                pdfpopup_controller.initializeTextControllers();
-                                                pdfpopup_controller.initializeCheckboxes();
+                                                pdfpopup_controller.intAll();
                                                 inst_CustomPDF_Services.assign_GSTtotals();
                                                 inst.showA4StyledPopup(context);
                                               },
@@ -797,22 +823,12 @@ class _Sales_ClientState extends State<Sales_Client> {
                                       padding: const EdgeInsets.only(top: 0),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(15),
-                                        child: Card(
-                                          shadowColor: Colors.transparent,
-                                          color: (salesController.salesModel.showcustomerprocess.value != null && salesController.salesModel.showcustomerprocess.value == index)
-                                              ? Primary_colors.Color3
-                                              : Primary_colors.Dark,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(15),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Primary_colors.Dark,
+                                            borderRadius: BorderRadius.circular(10),
                                           ),
-                                          elevation: 10,
                                           child: ExpansionTile(
-                                            collapsedShape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(10), // Rounded corners
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(10), // Rounded corners
-                                            ),
                                             collapsedIconColor: const Color.fromARGB(255, 135, 132, 132),
                                             iconColor: Colors.red,
                                             collapsedBackgroundColor: Primary_colors.Dark,
@@ -907,7 +923,8 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                   // ),
                                                                   child: Center(
                                                                     child: Text(
-                                                                      (salesController.salesModel.processList[index].TimelineEvents.length - 1 - childIndex + 1).toString(),
+                                                                      (childIndex + 1).toString(),
+                                                                      // (salesController.salesModel.processList[index].TimelineEvents.length - 1 - childIndex + 1).toString(),
                                                                       style: const TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold),
                                                                     ),
                                                                   ),
@@ -943,6 +960,46 @@ class _Sales_ClientState extends State<Sales_Client> {
                                                                               // items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
                                                                               style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
                                                                             ),
+                                                                            if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1)
+                                                                              Image.asset(
+                                                                                'assets/images/verified.png',
+                                                                                // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                                width: 20, // Makes the image fill the container's width
+                                                                                height: 20, // Makes the image fill the container's height
+                                                                              ),
+                                                                            if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 2)
+                                                                              Image.asset(
+                                                                                'assets/images/pending.png',
+                                                                                // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                                width: 20, // Makes the image fill the container's width
+                                                                                height: 20, // Makes the image fill the container's height
+                                                                              ),
+                                                                            if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 3)
+                                                                              Image.asset(
+                                                                                'assets/images/reject.png',
+                                                                                // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                                width: 20, // Makes the image fill the container's width
+                                                                                height: 20, // Makes the image fill the container's height
+                                                                              ),
+                                                                            if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true)
+                                                                              const SizedBox(width: 5),
+                                                                            if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true)
+                                                                              Container(
+                                                                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: const Color.fromARGB(255, 2, 128, 231)),
+                                                                                child: GestureDetector(
+                                                                                  child: const Padding(
+                                                                                    padding: EdgeInsets.only(left: 4, right: 4),
+                                                                                    child: Text(
+                                                                                      'Get Approval',
+                                                                                      style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text5),
+                                                                                    ),
+                                                                                  ),
+                                                                                  onTap: () {
+                                                                                    widget.GetApproval(context, salesController.salesModel.customerId.value!,
+                                                                                        salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                  },
+                                                                                ),
+                                                                              ),
                                                                           ],
                                                                         ),
                                                                       ),
@@ -1261,12 +1318,25 @@ class _Sales_ClientState extends State<Sales_Client> {
                         color: Primary_colors.Color5.withOpacity(0.1),
                         shape: BoxShape.circle,
                       ),
-                      child: ClipOval(
-                        child: Image.asset(
-                          'assets/images/download.jpg',
-                          fit: BoxFit.cover, // Ensures the image covers the container
-                          width: double.infinity, // Makes the image fill the container's width
-                          height: double.infinity, // Makes the image fill the container's height
+                      // child: ClipOval(
+                      //   child: Image.asset(
+                      //     'assets/images/download.jpg',
+                      //     fit: BoxFit.cover, // Ensures the image covers the container
+                      //     width: double.infinity, // Makes the image fill the container's width
+                      //     height: double.infinity, // Makes the image fill the container's height
+                      //   ),
+                      // ),
+                      child: CircleAvatar(
+                        backgroundColor: const Color.fromARGB(99, 100, 110, 255),
+                        child: Text(
+                          (salesController.salesModel.Clientprofile.value?.customername ?? "0").trim().isEmpty
+                              ? ''
+                              : (salesController.salesModel.Clientprofile.value?.customername ?? "0").contains(' ') // If there's a space, take first letter of both words
+                                  ? ((salesController.salesModel.Clientprofile.value?.customername ?? "0")[0].toUpperCase() +
+                                      (salesController.salesModel.Clientprofile.value?.customername ?? "0")[(salesController.salesModel.Clientprofile.value?.customername ?? "0").indexOf(' ') + 1]
+                                          .toUpperCase())
+                                  : (salesController.salesModel.Clientprofile.value?.customername ?? "0")[0].toUpperCase(), // If no space, take only the first letter
+                          style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Heading, fontWeight: FontWeight.w500),
                         ),
                       ),
                     ),

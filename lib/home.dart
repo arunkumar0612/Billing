@@ -75,13 +75,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   fontSize: Primary_font_size.Text7, // Decrease font size for unselected items
                 ),
                 unselectedIconColor: Primary_colors.Color1,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/bottom.jpg'), // ✅ Your image here
-                    fit: BoxFit.fill, // Covers the entire background
-                  ),
-                ),
+                // decoration: const BoxDecoration(
+                //   borderRadius: BorderRadius.all(Radius.circular(30)),
+                //   image: DecorationImage(
+                //     image: AssetImage('assets/images/bottom.jpg'), // ✅ Your image here
+                //     fit: BoxFit.fill, // Covers the entire background
+                //   ),
+                // ),
               ),
               // title: Container(
               //   height: 70,

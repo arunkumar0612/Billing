@@ -164,9 +164,7 @@ class PostDcState extends State<PostDc> with SingleTickerProviderStateMixin {
                                         children: [
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Text("No data available, please refresh the page!")
-                                            ],
+                                            children: [Text("No data available, please refresh the page!")],
                                           ),
                                         ],
                                       ),

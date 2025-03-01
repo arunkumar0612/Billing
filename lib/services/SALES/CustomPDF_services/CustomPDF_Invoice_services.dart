@@ -19,7 +19,7 @@ import 'package:ssipl_billing/models/entities/SALES/CustomPDF_entities/CustomPDF
 import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/helpers/returns.dart';
-import 'package:ssipl_billing/views/components/PDFcraft_templates/PDFcraft_Invoice_template.dart';
+import 'package:ssipl_billing/views/components/CustomPDF_templates/CustomPDF_Invoice_template.dart';
 import 'package:ssipl_billing/views/screens/SALES/CustomPDF/PostAll.dart';
 import '../../APIservices/invoker.dart';
 

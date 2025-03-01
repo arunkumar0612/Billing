@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/PDFcraft_Controllers/PDFcraft_Invoice_actions.dart';
-import 'package:ssipl_billing/services/SALES/PDFcraft_services/PDFcraft_Invoice_services.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
+import 'package:ssipl_billing/services/SALES/CustomPDF_services/CustomPDF_Invoice_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 
-class PDFcraft_InvoicePDF {
-  final PDFcraft_InvoiceController pdfpopup_controller = Get.find<PDFcraft_InvoiceController>();
-  var inst = PDFcraft_Services();
+class CustomPDF_InvoicePDF {
+  final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
+  var inst = CustomPDF_Services();
   void showA4StyledPopup(BuildContext context) async {
     try {
       pdfpopup_controller.add_Note();
@@ -191,7 +191,7 @@ class PDFcraft_InvoicePDF {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter Client Address';
+                          return '';
                         }
                         return null;
                       },
@@ -218,7 +218,7 @@ class PDFcraft_InvoicePDF {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter Client Address';
+                          return '';
                         }
                         return null;
                       },
@@ -282,7 +282,7 @@ class PDFcraft_InvoicePDF {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter Client Address';
+                              return '';
                             }
                             return null;
                           },
@@ -305,7 +305,7 @@ class PDFcraft_InvoicePDF {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter Client Address';
+                              return '';
                             }
                             return null;
                           },
@@ -363,7 +363,7 @@ class PDFcraft_InvoicePDF {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter Client Address';
+                              return '';
                             }
                             return null;
                           },
@@ -386,7 +386,7 @@ class PDFcraft_InvoicePDF {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter Client Address';
+                              return '';
                             }
                             return null;
                           },
@@ -403,7 +403,7 @@ class PDFcraft_InvoicePDF {
     );
   }
 
-  Widget contentTable(PDFcraft_InvoiceController controller) {
+  Widget contentTable(CustomPDF_InvoiceController controller) {
     const tableHeaders = ['✔', 'S.No', 'Description', 'HSN', 'GST', 'Price', 'Quantity', 'Total'];
 
     return Obx(
@@ -474,10 +474,10 @@ class PDFcraft_InvoicePDF {
                                   textAlign: isTotalField ? TextAlign.end : TextAlign.center,
                                   style: const TextStyle(fontSize: 12),
                                   onChanged: (value) {
-                                    inst.assign_GSTtotals();
                                     if (!isTotalField) {
                                       controller.updateCell(rowIndex, colIndex, value);
                                     }
+                                    inst.assign_GSTtotals();
                                   },
                                   readOnly: isTotalField,
                                   inputFormatters: isNumericField ? [FilteringTextInputFormatter.digitsOnly] : null,
@@ -588,7 +588,7 @@ class PDFcraft_InvoicePDF {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter Client Address';
+                          return '';
                         }
                         return null;
                       },
@@ -614,7 +614,7 @@ class PDFcraft_InvoicePDF {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter Client Address';
+                          return '';
                         }
                         return null;
                       },
@@ -641,7 +641,7 @@ class PDFcraft_InvoicePDF {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter Client Address';
+                          return '';
                         }
                         return null;
                       },
@@ -667,7 +667,7 @@ class PDFcraft_InvoicePDF {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter Client Address';
+                          return '';
                         }
                         return null;
                       },
@@ -727,7 +727,7 @@ class PDFcraft_InvoicePDF {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter Client Address';
+                              return '';
                             }
                             return null;
                           },
@@ -757,172 +757,210 @@ class PDFcraft_InvoicePDF {
   }
 
   Widget gstTable() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-            decoration: BoxDecoration(border: Border.all(color: const Color.fromARGB(255, 151, 150, 150))),
-            height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 125 : 90,
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 90,
-                          height: double.infinity,
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)),
-                            ),
-                          ),
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                textAlign: TextAlign.center,
-                                'Taxable Value',
-                                style: TextStyle(
-                                  fontSize: Primary_font_size.Text8,
+    return Obx(
+      () {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                decoration: BoxDecoration(border: Border.all(color: const Color.fromARGB(255, 151, 150, 150))),
+                height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 125 : 90,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 90,
+                              height: double.infinity,
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)),
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    'Taxable Value',
+                                    style: TextStyle(
+                                      fontSize: Primary_font_size.Text8,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    width: double.infinity,
-                                    decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                    child: const Text(
-                                      textAlign: TextAlign.center,
-                                      'CGST',
-                                      style: TextStyle(fontSize: Primary_font_size.Text8, overflow: TextOverflow.ellipsis),
-                                    ),
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)),
                                   ),
                                 ),
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Container(
-                                          height: double.infinity,
-                                          decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                          child: const Text(
-                                            textAlign: TextAlign.center,
-                                            '%',
-                                            style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                          ),
-                                        ),
-                                      ),
-                                      const Expanded(
-                                        flex: 2,
-                                        child: SizedBox(
-                                          width: double.infinity,
-                                          child: Text(
-                                            textAlign: TextAlign.center,
-                                            'amount',
-                                            style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                                // border: Border(right: BorderSide()),
-                                ),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    width: double.infinity,
-                                    decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                    child: const Text(
-                                      textAlign: TextAlign.center,
-                                      'SGST',
-                                      style: TextStyle(fontSize: Primary_font_size.Text8, overflow: TextOverflow.ellipsis),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Container(
-                                          height: double.infinity,
-                                          decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                          child: const Text(
-                                            textAlign: TextAlign.center,
-                                            '%',
-                                            style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                          ),
-                                        ),
-                                      ),
-                                      const Expanded(
-                                        flex: 2,
-                                        child: Text(
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                        child: const Text(
                                           textAlign: TextAlign.center,
-                                          'amount',
-                                          style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                          'CGST',
+                                          style: TextStyle(fontSize: Primary_font_size.Text8, overflow: TextOverflow.ellipsis),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: SizedBox(
-                    height: 200, // Set a fixed height (adjust as needed)
-                    child: ListView.builder(
-                      shrinkWrap: true, // Prevents infinite height issue
-                      itemCount: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length,
-                      itemBuilder: (context, index) {
-                        return SizedBox(
-                          height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 30 : 50, // Set a height for each row to prevent overflow
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 90,
-                                decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                child: Center(
-                                  child: Text(
-                                    pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toString(),
-                                    style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                  ),
+                                    ),
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Container(
+                                              height: double.infinity,
+                                              decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                              child: const Text(
+                                                textAlign: TextAlign.center,
+                                                '%',
+                                                style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                              ),
+                                            ),
+                                          ),
+                                          const Expanded(
+                                            flex: 2,
+                                            child: SizedBox(
+                                              width: double.infinity,
+                                              child: Text(
+                                                textAlign: TextAlign.center,
+                                                'amount',
+                                                style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Expanded(
-                                  flex: 3,
-                                  child: Container(
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                    // border: Border(right: BorderSide()),
+                                    ),
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                        child: const Text(
+                                          textAlign: TextAlign.center,
+                                          'SGST',
+                                          style: TextStyle(fontSize: Primary_font_size.Text8, overflow: TextOverflow.ellipsis),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Container(
+                                              height: double.infinity,
+                                              decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                              child: const Text(
+                                                textAlign: TextAlign.center,
+                                                '%',
+                                                style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                              ),
+                                            ),
+                                          ),
+                                          const Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                              textAlign: TextAlign.center,
+                                              'amount',
+                                              style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        height: 200, // Set a fixed height (adjust as needed)
+                        child: ListView.builder(
+                          shrinkWrap: true, // Prevents infinite height issue
+                          itemCount: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length,
+                          itemBuilder: (context, index) {
+                            return SizedBox(
+                              height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 30 : 40, // Set a height for each row to prevent overflow
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 90,
                                     decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                    child: Center(
+                                      child: Text(
+                                        pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toString(),
+                                        style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Container(
+                                        decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                        child: Column(
+                                          children: [
+                                            Expanded(
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                      decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                                      child: Center(
+                                                        child: Text(
+                                                          (pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2).toString(),
+                                                          style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: Center(
+                                                      child: Text(
+                                                        ((pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toInt() / 100) *
+                                                                (pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2))
+                                                            .toString(),
+                                                        style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                  Expanded(
+                                    flex: 3,
                                     child: Column(
                                       children: [
                                         Expanded(
@@ -956,55 +994,21 @@ class PDFcraft_InvoicePDF {
                                         ),
                                       ],
                                     ),
-                                  )),
-                              Expanded(
-                                flex: 3,
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                              child: Center(
-                                                child: Text(
-                                                  (pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2).toString(),
-                                                  style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 2,
-                                            child: Center(
-                                              child: Text(
-                                                ((pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toInt() / 100) *
-                                                        (pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2))
-                                                    .toString(),
-                                                style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        );
-                      },
+                            );
+                          },
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ],
-            )),
-        SizedBox(height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 20 : 55),
-        notes(),
-      ],
+                  ],
+                )),
+            SizedBox(height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 20 : 85),
+            notes(),
+          ],
+        );
+      },
     );
   }
 
@@ -1082,7 +1086,7 @@ class PDFcraft_InvoicePDF {
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter Client Address';
+                                      return '';
                                     }
                                     return null;
                                   },
@@ -1191,7 +1195,7 @@ class PDFcraft_InvoicePDF {
                         onPressed: () async {
                           if (pdfpopup_controller.pdfModel.value.allData_key.value.currentState?.validate() ?? false) {
                             try {
-                              var inst = PDFcraft_Services();
+                              var inst = CustomPDF_Services();
 
                               // if (invoiceController.postDatavalidation()) {
                               //   Get.snackbar("Error", "Any of the required fields is Empty!");
@@ -1218,7 +1222,7 @@ class PDFcraft_InvoicePDF {
         //     text: "Generate",
         //     colors: Primary_colors.Color3,
         //     onPressed: () {
-        //       var inst = PDFcraft_Services();
+        //       var inst = CustomPDF_Services();
         //       inst.savePdfToCache(context);
         //       // Navigator.pop(context);
         //       // pdfpopup_controller.addRow();

@@ -4,12 +4,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/models/constants/SALES_constants/PDFcraft_constants/PDFcraft_invoice_constants.dart';
-import 'package:ssipl_billing/models/entities/SALES/PDFcraft_entities/PDFcraft_Product_entities.dart';
+import 'package:ssipl_billing/models/constants/SALES_constants/CustomPDF_constants/CustomPDF_invoice_constants.dart';
+import 'package:ssipl_billing/models/entities/SALES/CustomPDF_entities/CustomPDF_Product_entities.dart';
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 
-class PDFcraft_InvoiceController extends GetxController {
-  var pdfModel = PDFcraft_InvoiceModel().obs;
+class CustomPDF_InvoiceController extends GetxController {
+  var pdfModel = CustomPDF_InvoiceModel().obs;
   void initializeCheckboxes() {
     pdfModel.value.checkboxValues.assignAll(List.generate(pdfModel.value.manualInvoiceproducts.length, (index) => false));
   }
@@ -211,7 +211,7 @@ class PDFcraft_InvoiceController extends GetxController {
       List.generate(7, (index) => TextEditingController()),
     );
 
-    pdfModel.value.manualInvoiceproducts.add(PDFcraft_InvoiceProduct(
+    pdfModel.value.manualInvoiceproducts.add(CustomPDF_InvoiceProduct(
       sNo: "",
       description: "",
       hsn: "",
@@ -248,8 +248,8 @@ class PDFcraft_InvoiceController extends GetxController {
     pdfModel.value.manualInvoice_gstTotals.clear();
 
     pdfModel.value.manualInvoiceproducts.assignAll([
-      PDFcraft_InvoiceProduct(sNo: "1", description: "Laptop", hsn: "8471", gst: "18", price: "1000", quantity: "2", total: "2000"),
-      PDFcraft_InvoiceProduct(sNo: "2", description: "Mouse", hsn: "8472", gst: "18", price: "50", quantity: "5", total: "250"),
+      CustomPDF_InvoiceProduct(sNo: "1", description: "Laptop", hsn: "8471", gst: "18", price: "1000", quantity: "2", total: "2000"),
+      CustomPDF_InvoiceProduct(sNo: "2", description: "Mouse", hsn: "8472", gst: "18", price: "50", quantity: "5", total: "250"),
     ]);
 
     pdfModel.value.notecontent.clear();

@@ -3,8 +3,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/controllers/SALEScontrollers/PDFcraft_Controllers/PDFcraft_Invoice_actions.dart';
-import 'package:ssipl_billing/models/entities/SALES/PDFcraft_entities/PDFcraft_Product_entities.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
+import 'package:ssipl_billing/models/entities/SALES/CustomPDF_entities/CustomPDF_Product_entities.dart';
 import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
 // import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
 
@@ -12,7 +12,7 @@ import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
 // import '../../../../models/entities/SALES/product_entities.dart';
 import '../../../../utils/helpers/support_functions.dart';
 
-Future<Uint8List> generate_PDFcraftInvoice(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, invoice_gstTotals) async {
+Future<Uint8List> generate_CustomPDFInvoice(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, invoice_gstTotals) async {
   final quotation = MaualInvoiceTemplate(
       products: products,
       GST: gst.toDouble(),
@@ -46,7 +46,7 @@ class MaualInvoiceTemplate {
       required this.invoice_gstTotals
       // required this.items,
       });
-  final PDFcraft_InvoiceController pdfpopup_controller = Get.find<PDFcraft_InvoiceController>();
+  final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
   List<InvoiceGSTtotals> invoice_gstTotals = [];
   String client_addr_name = "";
   String client_addr = "";
@@ -56,7 +56,7 @@ class MaualInvoiceTemplate {
   String title_text = "";
   String type = "";
 
-  final List<PDFcraft_InvoiceProduct> products;
+  final List<CustomPDF_InvoiceProduct> products;
   final double GST;
   final PdfColor baseColor;
   final PdfColor accentColor;

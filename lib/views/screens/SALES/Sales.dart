@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/PDFcraft_Controllers/PDFcraft_Invoice_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
@@ -13,14 +13,14 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart'
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
-import 'package:ssipl_billing/services/SALES/PDFcraft_services/PDFcraft_Invoice_services.dart';
+import 'package:ssipl_billing/services/SALES/CustomPDF_services/CustomPDF_Invoice_services.dart';
 
 import 'package:ssipl_billing/services/SALES/sales_service.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
 import 'package:ssipl_billing/views/screens/SALES/Sales_chart.dart';
-import 'package:ssipl_billing/views/screens/SALES/PDFcraft/PDFcraft_invoicePDF.dart';
+import 'package:ssipl_billing/views/screens/SALES/CustomPDF/CustomPDF_invoicePDF.dart';
 import '../../../controllers/SALEScontrollers/Sales_actions.dart';
 // import 'package:cool_dropdown/models/cool_dropdown_item.dart';
 
@@ -42,9 +42,9 @@ class _Sales_ClientState extends State<Sales_Client> {
   final RfqController rfqController = Get.find<RfqController>();
   final CreditController creditController = Get.find<CreditController>();
   final DebitController debitController = Get.find<DebitController>();
-  final PDFcraft_InvoiceController pdfpopup_controller = Get.find<PDFcraft_InvoiceController>();
-  var inst = PDFcraft_InvoicePDF();
-  var inst_PDFcraft_Services = PDFcraft_Services();
+  final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
+  var inst = CustomPDF_InvoicePDF();
+  var inst_CustomPDF_Services = CustomPDF_Services();
   @override
   void dispose() {
     clientreqController.clientReqModel.cntMulti.value.dispose();
@@ -541,7 +541,7 @@ class _Sales_ClientState extends State<Sales_Client> {
                                               onPressed: () async {
                                                 pdfpopup_controller.initializeTextControllers();
                                                 pdfpopup_controller.initializeCheckboxes();
-                                                inst_PDFcraft_Services.assign_GSTtotals();
+                                                inst_CustomPDF_Services.assign_GSTtotals();
                                                 inst.showA4StyledPopup(context);
                                               },
                                             ),

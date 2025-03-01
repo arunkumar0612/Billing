@@ -11,37 +11,28 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/PDFcraft_Controllers/PDFcraft_Invoice_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
-import 'package:ssipl_billing/models/entities/SALES/PDFcraft_entities/PDFcraft_Product_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/CustomPDF_entities/CustomPDF_Product_entities.dart';
 import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/helpers/returns.dart';
 import 'package:ssipl_billing/views/components/PDFcraft_templates/PDFcraft_Invoice_template.dart';
-import 'package:ssipl_billing/views/screens/SALES/PDFcraft/PostAll.dart';
-import '../../../controllers/SALEScontrollers/Sales_actions.dart';
+import 'package:ssipl_billing/views/screens/SALES/CustomPDF/PostAll.dart';
 import '../../APIservices/invoker.dart';
 
-class PDFcraft_Services {
+class CustomPDF_Services {
   final Invoker apiController = Get.find<Invoker>();
-  final DcController dcController = Get.find<DcController>();
   final InvoiceController invoiceController = Get.find<InvoiceController>();
-  final QuoteController quoteController = Get.find<QuoteController>();
-  final RfqController rfqController = Get.find<RfqController>();
-  final CreditController creditController = Get.find<CreditController>();
-  final DebitController debitController = Get.find<DebitController>();
-  final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
-  final SalesController salesController = Get.find<SalesController>();
-  final ClientreqController clientreqController = Get.find<ClientreqController>();
-  final PDFcraft_InvoiceController pdfpopup_controller = Get.find<PDFcraft_InvoiceController>();
+  final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
 
   void assign_GSTtotals() {
     pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.assignAll(
       pdfpopup_controller.pdfModel.value.manualInvoiceproducts
           .where((product) => product.gst.isNotEmpty && product.total.isNotEmpty) // Filter out empty values
-          .fold<Map<double, double>>({}, (Map<double, double> accumulator, PDFcraft_InvoiceProduct product) {
+          .fold<Map<double, double>>({}, (Map<double, double> accumulator, CustomPDF_InvoiceProduct product) {
             double gstValue = double.parse(product.gst);
             double totalValue = double.parse(product.total);
             accumulator[gstValue] = (accumulator[gstValue] ?? 0) + totalValue;
@@ -57,7 +48,7 @@ class PDFcraft_Services {
   }
 
   Future<void> savePdfToCache(context) async {
-    Uint8List pdfData = await generate_PDFcraftInvoice(
+    Uint8List pdfData = await generate_CustomPDFInvoice(
       PdfPageFormat.a4,
       pdfpopup_controller.pdfModel.value.manualInvoiceproducts,
       pdfpopup_controller.pdfModel.value.clientName.value.text,

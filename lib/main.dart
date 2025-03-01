@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/PDFcraft_Controllers/PDFcraft_Invoice_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Sales_actions.dart';
 import 'package:ssipl_billing/routes/app_routes.dart';
 import 'package:ssipl_billing/themes/style.dart';
@@ -42,7 +42,7 @@ Future<void> main() async {
   Get.lazyPut<CreditController>(() => CreditController());
   Get.lazyPut<DebitController>(() => DebitController());
   Get.lazyPut<DcController>(() => DcController());
-  Get.lazyPut<PDFcraft_InvoiceController>(() => PDFcraft_InvoiceController());
+  Get.lazyPut<CustomPDF_InvoiceController>(() => CustomPDF_InvoiceController());
   // Get.lazyPut<ViewsendController>(() => ViewsendController());
   if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux)) {
     await windowManager.ensureInitialized();

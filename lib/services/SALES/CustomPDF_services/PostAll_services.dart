@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/PDFcraft_Controllers/PDFcraft_Invoice_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'dart:io';
@@ -17,7 +17,7 @@ import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
 
 mixin PostServices {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
-  final PDFcraft_InvoiceController pdfpopup_controller = Get.find<PDFcraft_InvoiceController>();
+  final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
 
   final Invoker apiController = Get.find<Invoker>();
   void animation_control() async {

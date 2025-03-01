@@ -1,12 +1,10 @@
-// ignore_for_file: depend_on_referenced_packages
-
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/PDFcraft_Controllers/PDFcraft_Invoice_actions.dart';
-import 'package:ssipl_billing/services/SALES/PDFcraft_services/PostAll_services.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
+import 'package:ssipl_billing/services/SALES/CustomPDF_services/PostAll_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
 import 'package:ssipl_billing/views/components/button.dart';
@@ -14,9 +12,7 @@ import 'package:ssipl_billing/views/components/textfield.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:path/path.dart' as path;
 
-// ignore: must_be_immutable
 class PostInvoice extends StatefulWidget with PostServices {
-  // String type;
   PostInvoice({super.key});
 
   @override
@@ -25,15 +21,11 @@ class PostInvoice extends StatefulWidget with PostServices {
 
 class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderStateMixin {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
-  final PDFcraft_InvoiceController pdfpopup_controller = Get.find<PDFcraft_InvoiceController>();
+  final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
 
   @override
   void initState() {
     super.initState();
-
-    // pdfpopup_controller.pdfModel.value.genearatedPDF.value = File(widget.type);
-    // pdfpopup_controller.pdfModel.value .filePathController.value = TextEditingController(text:  pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path.toString());
-
     pdfpopup_controller.pdfModel.value.animationController = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
@@ -46,90 +38,11 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
       ),
     );
     widget.animation_control();
-    // update();
   }
-
-  // void _addclientRequest() async {
-  //   String? valueToToken = sessiontokenController.sessiontokenModel.sessiontoken.value;
-
-  //   final formData = {
-  //     "phoneno": "8248650039",
-  //     "mailto:emailid": "hariprasath.s@sporadasecure.com",
-  //     "pdfpath": "\\\\192.168.0.198\\backup\\Hari\\BM-blueprint.pdf",
-  //     "feedback": "Invoice for your request",
-  //     "documenttype": "Invoice"
-  //   };
-
-  //   final dataToEncrypt = jsonEncode(formData);
-  //   final encryptedData = AES.encryptWithAES(valueToToken.toString().substring(0, 16), dataToEncrypt);
-
-  //   final requestData = {
-  //     "STOKEN": valueToToken,
-  //     "querystring": encryptedData,
-  //   };
-
-  //   final response = await http.post(
-  //     Uri.parse(API.sales_add_client_requirement_API),
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     },
-  //     body: jsonEncode(requestData),
-  //   );
-  //   if (response.statusCode == 200) {
-  //     final responseData = jsonDecode(response.body);
-  //     final encryptedResponse = responseData['encryptedResponse'];
-  //     final decryptedResponse = AES.decryptWithAES(valueToToken.toString().substring(0, 16), encryptedResponse);
-  //     final decodedResponse = jsonDecode(decryptedResponse);
-  //     final Code = decodedResponse['code'];
-  //     final Message = decodedResponse['message'];
-
-  //     if (!Code) {
-  //       showDialog(
-  //         context: context,
-  //         builder: (BuildContext context) {
-  //           return AlertDialog(
-  //             title: const Text('Unable to Sent PDF'),
-  //             content: Text(Message),
-  //             actions: [
-  //               TextButton(
-  //                 onPressed: () {
-  //                   Navigator.of(context).pop();
-  //                 },
-  //                 child: const Text('OK'),
-  //               ),
-  //             ],
-  //           );
-  //         },
-  //       );
-  //     } else {
-  //       // Navigator.of(context).pop();
-  //       showDialog(
-  //         context: context,
-  //         builder: (context) => AlertDialog(
-  //           title: const Text('Success'),
-  //           content: const Text('PDF Sent.'),
-  //           actions: [
-  //             ElevatedButton(
-  //               onPressed: () {
-  //                 Navigator.of(context).pop();
-  //               },
-  //               child: const Text('OK'),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     }
-  //   } else {
-  //     if (kDebugMode) {
-  //       print('API Request Failed with Status Code: ${response.statusCode}');
-  //     }
-  //   }
-  // }
 
   @override
   void dispose() {
     pdfpopup_controller.pdfModel.value.animationController.dispose(); // Dispose of the animation controller
-    // pdfpopup_controller.pdfModel.value.filePathController.value.dispose(); // Dispose of the text controller
     super.dispose();
   }
 
@@ -174,10 +87,10 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                                     borderRadius: BorderRadius.circular(50),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: const Color.fromARGB(255, 184, 184, 184).withOpacity(0.8), // Shadow color
-                                        spreadRadius: 1, // Spread radius of the shadow
-                                        blurRadius: 5, // Blur radius of the shadow
-                                        offset: const Offset(0, 3), // Shadow position
+                                        color: const Color.fromARGB(255, 184, 184, 184).withOpacity(0.8),
+                                        spreadRadius: 1,
+                                        blurRadius: 5,
+                                        offset: const Offset(0, 3),
                                       ),
                                     ],
                                   ),
@@ -344,16 +257,12 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                                         color: Colors.black,
                                       ),
                                     ),
-
                                     enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                                    // labelText: text,
-                                    // label: Text(text ?? ''),
                                     labelStyle: const TextStyle(
                                       fontSize: Primary_font_size.Text7,
                                       color: Color.fromARGB(255, 167, 165, 165),
                                     ),
                                     border: const OutlineInputBorder(),
-
                                     suffixIcon: MouseRegion(
                                       cursor: SystemMouseCursors.click, // Change cursor to hand
                                       child: GestureDetector(
@@ -411,7 +320,6 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                               const SizedBox(
                                 width: 10,
                               ),
-
                               Expanded(
                                 child: SizedBox(
                                   height: 30,
@@ -428,25 +336,12 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                                           color: Colors.black,
                                         ),
                                       ),
-
                                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                                      // labelText: text,
-                                      // label: Text(text ?? ''),
                                       labelStyle: TextStyle(
                                         fontSize: Primary_font_size.Text7,
                                         color: Color.fromARGB(255, 167, 165, 165),
                                       ),
                                       border: OutlineInputBorder(),
-
-                                      // suffixIcon: GestureDetector(
-                                      //   onTap: () {
-                                      //     invoiceController.toggleCCemailvisibility(! pdfpopup_controller.pdfModel.value.CCemailToggle.value);
-                                      //   },
-                                      //   child: Icon(
-                                      //      pdfpopup_controller.pdfModel.value.CCemailToggle.value ? Icons.closed_caption_outlined : Icons.closed_caption_disabled_outlined,
-                                      //     color: Colors.blue,
-                                      //   ),
-                                      // ),
                                     ),
                                     validator: (value) {
                                       Validators.email_validator(value);
@@ -456,23 +351,6 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                                   ),
                                 ),
                               ),
-
-                              // Expanded(
-                              //   child: SizedBox(
-                              //     child: BasicTextfield(
-                              //       digitsOnly: false,
-                              //       width: 400,
-
-                              //       readonly: false,
-                              //       controller:  pdfpopup_controller.pdfModel.value.CCemailController.value,
-                              //       validator: (value) {
-                              //         Validators.email_validator(value);
-
-                              //         return null;
-                              //       },
-                              //     ),
-                              //   ),
-                              // ),
                             ],
                           ),
                       ],
@@ -487,16 +365,10 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                         const SizedBox(
                           width: 10,
                         ),
-                        // ElevatedButton(
-                        //     onPressed: () {
-                        //       _pickPdf();
-                        //     },
-                        //     child: const Text('choose file'))
                         Expanded(
                           child: SizedBox(
                             height: 60,
                             child: TextFormField(
-                              // initialValue: _genearatedPDF!.path,
                               showCursor: true,
                               readOnly: true,
                               style: const TextStyle(fontSize: 13, color: Primary_colors.Color1),
@@ -544,45 +416,6 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                         ),
                       ],
                     ),
-                    // Row(
-                    //   crossAxisAlignment: CrossAxisAlignment.center,
-                    //   children: [
-                    //     const Text(
-                    //       'Custome Note    :',
-                    //       style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 213, 211, 211), fontWeight: FontWeight.bold),
-                    //     ),
-                    //     const SizedBox(
-                    //       width: 10,
-                    //     ),
-                    //     Expanded(
-                    //       child: SizedBox(
-                    //         height: 40,
-                    //         child: TextFormField(
-                    //           style: const TextStyle(fontSize: 13, color: Colors.white),
-                    //           decoration: InputDecoration(
-                    //             contentPadding: const EdgeInsets.all(1),
-                    //             filled: true,
-                    //             fillColor: Primary_colors.Dark,
-                    //             focusedBorder: OutlineInputBorder(
-                    //               borderRadius: BorderRadius.circular(5),
-                    //               borderSide: const BorderSide(
-                    //                 color: Colors.black,
-                    //               ),
-                    //             ),
-                    //             enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: const BorderSide(color: Colors.black)),
-                    //             hintStyle: const TextStyle(
-                    //               fontSize: 13,
-                    //               color: Color.fromARGB(255, 167, 165, 165),
-                    //             ),
-                    //             hintText: 'Custome Notes',
-                    //             border: const OutlineInputBorder(),
-                    //             prefixIcon: const Icon(Icons.note_add, color: Colors.white),
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     )
-                    //   ],
-                    // ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -704,19 +537,6 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
               )),
             ],
           ),
-          // Align(
-          //   alignment: Alignment.bottomRight,
-          //   child: ElevatedButton(
-          //     onPressed: () {
-          //       if (formKey1.currentState?.validate() ?? false) {
-          //         _addclientRequest();
-          //       }
-          //     },
-          //     child: const Text('Send'),
-          //   ),
-          // )
-          //   ],
-          // ),
         );
       },
     );

@@ -7,8 +7,8 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_DC/generateDC.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/generateRFQ.dart';
@@ -30,7 +30,7 @@ mixin SalesServices {
   final DcController dcController = Get.find<DcController>();
   final InvoiceController invoiceController = Get.find<InvoiceController>();
   final QuoteController quoteController = Get.find<QuoteController>();
-  final RFQController rfqController = Get.find<RFQController>();
+  final RfqController rfqController = Get.find<RfqController>();
   final CreditController creditController = Get.find<CreditController>();
   final DebitController debitController = Get.find<DebitController>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
@@ -610,7 +610,7 @@ mixin SalesServices {
     // }
   }
 
-  dynamic GenerateRFQ_dialougebox(context) async {
+  dynamic GenerateRfq_dialougebox(context, eventID) async {
     await showDialog(
       context: context,
       barrierDismissible: false, // Prevents closing the dialog by clicking outside
@@ -621,10 +621,12 @@ mixin SalesServices {
           backgroundColor: Primary_colors.Dark,
           content: Stack(
             children: [
-              const SizedBox(
+              SizedBox(
                 height: 650,
                 width: 1300,
-                child: GenerateRFQ(),
+                child: GenerateRfq(
+                  eventID: eventID,
+                ),
               ),
               Positioned(
                 top: 3,
@@ -641,22 +643,25 @@ mixin SalesServices {
                   ),
                   onPressed: () async {
                     // Check if the data has any value
-                    // || ( rfqController.rfqModel.RFQ_gstTotals.isNotEmpty)
-                    if ((rfqController.rfqModel.RFQ_products.isNotEmpty) ||
-                        (rfqController.rfqModel.RFQ_noteList.isNotEmpty) ||
-                        (rfqController.rfqModel.RFQ_recommendationList.isNotEmpty) ||
-                        (rfqController.rfqModel.vendor_address_controller.value.text != "") ||
-                        (rfqController.rfqModel.vendor_email_controller.value.text != "") ||
-                        (rfqController.rfqModel.vendor_name_controller.value.text != "") ||
-                        (rfqController.rfqModel.vendor_phone_controller.value.text != "") ||
-                        (rfqController.rfqModel.RFQ_no.value != "") ||
-                        (rfqController.rfqModel.RFQ_table_heading.value != "")) {
+                    // || ( rfqController.rfqModel.Invoice_gstTotals.isNotEmpty)
+                    if ((rfqController.rfqModel.Rfq_products.isNotEmpty) ||
+                        (rfqController.rfqModel.Rfq_noteList.isNotEmpty) ||
+                        (rfqController.rfqModel.Rfq_recommendationList.isNotEmpty) ||
+                        // (rfqController.rfqModel.clientAddressNameController.value.text != "") ||
+                        (rfqController.rfqModel.clientAddressController.value.text != "") ||
+                        // (rfqController.rfqModel.billingAddressNameController.value.text != "") ||
+                        // (rfqController.rfqModel.billingAddressController.value.text != "") ||
+                        (rfqController.rfqModel.Rfq_no.value != "") ||
+                        (rfqController.rfqModel.TitleController.value.text != "") ||
+                        (rfqController.rfqModel.Rfq_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
                             title: const Text("Warning"),
                             content: const Text(
                               "The data may be lost. Do you want to proceed?",
@@ -670,7 +675,7 @@ mixin SalesServices {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  rfqController.clearAll();
+                                  rfqController.resetData();
                                   Navigator.of(context).pop(true); // Yes action
                                 },
                                 child: const Text("Yes"),
@@ -680,25 +685,20 @@ mixin SalesServices {
                         },
                       );
 
-                      // If user confirms (Yes), clear data and close the dialog
                       if (proceed == true) {
-                        Navigator.of(context).pop(); // Close the dialog
-                        // Clear all the data when dialog is closed
-                        rfqController.rfqModel.RFQ_products.clear();
-                        //  rfqController.rfqModel.RFQ_gstTotals.clear();
-                        rfqController.rfqModel.RFQ_noteList.clear();
-                        rfqController.rfqModel.RFQ_recommendationList.clear();
-                        //  rfqController.rfqModel.iRFQ_productDetails.clear();
-                        rfqController.rfqModel.vendor_address_controller.value.clear();
-                        rfqController.rfqModel.vendor_email_controller.value.clear();
-                        rfqController.rfqModel.vendor_name_controller.value.clear();
-                        rfqController.rfqModel.vendor_phone_controller.value.clear();
-                        rfqController.rfqModel.RFQ_no.value = "";
-
-                        rfqController.rfqModel.RFQ_table_heading.value = "";
+                        Navigator.of(context).pop();
+                        rfqController.rfqModel.Rfq_products.clear();
+                        rfqController.rfqModel.Rfq_noteList.clear();
+                        rfqController.rfqModel.Rfq_recommendationList.clear();
+                        // rfqController.rfqModel.clientAddressNameController.value.clear();
+                        rfqController.rfqModel.clientAddressController.value.clear();
+                        // rfqController.rfqModel.billingAddressNameController.value.clear();
+                        // rfqController.rfqModel.billingAddressController.value.clear();
+                        rfqController.rfqModel.Rfq_no.value = "";
+                        rfqController.rfqModel.TitleController.value.clear();
+                        rfqController.rfqModel.Rfq_table_heading.value = "";
                       }
                     } else {
-                      // If no data, just close the dialog
                       Navigator.of(context).pop();
                     }
                   },

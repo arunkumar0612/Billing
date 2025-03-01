@@ -11,7 +11,8 @@ class API {
   static String add_Dc = "http://192.168.0.200:8081/sales/adddeliverychallan";
 
   static String add_invoice = "http://192.168.0.200:8081/sales/addinvoice";
-
+  static String add_rfq = "http://192.168.0.200:8081/sales/addrfq";
+  static String fetch_vendorList = "http://192.168.0.200:8081/vendor/getvendor";
   static String sales_add_client_requirement_API = "http://192.168.0.200:8081/admin/sendmailwhatsapp";
   static String sales_detailsPreLoader_API = "http://192.168.0.200:8081/sales/detailspreloader";
   static String sales_getcustomerlist_API = "http://192.168.0.200:8081/sales/getcustomerlist";

@@ -7,6 +7,7 @@ import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 
 mixin DcproductService {
   final DcController dcController = Get.find<DcController>();
+
   void clearFields() {
     dcController.dcModel.productNameController.value.clear();
     dcController.dcModel.hsnController.value.clear();
@@ -17,7 +18,6 @@ mixin DcproductService {
 
   void addproduct(context) {
     if (dcController.dcModel.productKey.value.currentState?.validate() ?? false) {
-      // ignore: unrelated_type_equality_checks
       bool exists = dcController.dcModel.Dc_products.any((product) =>
           product.productName == dcController.dcModel.productNameController.value.text &&
           product.hsn == dcController.dcModel.hsnController.value.text &&
@@ -86,5 +86,21 @@ mixin DcproductService {
   void resetEditingState() {
     clearFields();
     dcController.addProductEditindex(null);
+  }
+
+  void addto_Selectedproducts() {
+    dcController.dcModel.selected_dcProducts.clear();
+    dcController.dcModel.product_feedback.value = null;
+    int pendingProducts = 0;
+    for (int i = 0; i < dcController.dcModel.checkboxValues.length; i++) {
+      if (dcController.dcModel.checkboxValues[i]) {
+        dcController.dcModel.selected_dcProducts.add(dcController.dcModel.Dc_products[i]);
+      } else {
+        pendingProducts += 1;
+      }
+    }
+    if (pendingProducts != 0) {
+      dcController.dcModel.product_feedback.value = "still $pendingProducts products needs to be deliverd!";
+    }
   }
 }

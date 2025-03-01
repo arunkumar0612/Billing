@@ -3,13 +3,17 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
-import 'package:ssipl_billing/models/entities/SALES/RFQ_entities.dart';
-import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
+import 'package:ssipl_billing/models/entities/SALES/CustomPDF_entities/CustomPDF_Product_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
+// import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
+
+// import '../../../../controllers/SALEScontrollers/Invoice_actions.dart';
+// import '../../../../models/entities/SALES/product_entities.dart';
 import '../../../../utils/helpers/support_functions.dart';
 
-Future<Uint8List> generate_Rfq(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, rfq_gstTotals) async {
-  final quotation = Quotation(
+Future<Uint8List> generate_CustomPDFInvoice(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, invoice_gstTotals) async {
+  final quotation = MaualInvoiceTemplate(
       products: products,
       GST: gst.toDouble(),
       baseColor: PdfColors.green500,
@@ -21,13 +25,13 @@ Future<Uint8List> generate_Rfq(PdfPageFormat pageFormat, products, client_addr_n
       estimate: estimate_num ?? "",
       title_text: title,
       type: '',
-      rfq_gstTotals: rfq_gstTotals);
+      invoice_gstTotals: invoice_gstTotals);
 
   return await quotation.buildPdf(pageFormat);
 }
 
-class Quotation {
-  Quotation(
+class MaualInvoiceTemplate {
+  MaualInvoiceTemplate(
       {required this.products,
       required this.GST,
       required this.baseColor,
@@ -39,11 +43,11 @@ class Quotation {
       required this.estimate,
       required this.title_text,
       required this.type,
-      required this.rfq_gstTotals
+      required this.invoice_gstTotals
       // required this.items,
       });
-  final RfqController rfqController = Get.find<RfqController>();
-  List<RfqGSTtotals> rfq_gstTotals = [];
+  final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
+  List<InvoiceGSTtotals> invoice_gstTotals = [];
   String client_addr_name = "";
   String client_addr = "";
   String bill_addr_name = "";
@@ -52,19 +56,19 @@ class Quotation {
   String title_text = "";
   String type = "";
 
-  final List<RFQProduct> products;
+  final List<CustomPDF_InvoiceProduct> products;
   final double GST;
   final PdfColor baseColor;
   final PdfColor accentColor;
   static const _darkColor = PdfColors.blueGrey800;
-  double get CGST_total => rfq_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
-  double get SGST_total => rfq_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
-  double get _total => products.map<double>((p) => p.total).reduce((a, b) => a + b);
+  double get CGST_total => invoice_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
+  double get SGST_total => invoice_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
+  double get _total => products.map<double>((p) => double.parse(p.total)).reduce((a, b) => a + b);
   double get _grandTotal => _total + CGST_total + SGST_total;
   dynamic profileImage;
 
   Future<Uint8List> buildPdf(PdfPageFormat pageFormat) async {
-    rfqController.update_rfqAmount(_grandTotal);
+    // invoiceController.update_invoiceAmount(_grandTotal);
 
     Helvetica = await loadFont_regular();
     Helvetica_bold = await loadFont_bold();
@@ -130,7 +134,7 @@ class Quotation {
                       children: [
                         regular('Date', 10),
                         pw.SizedBox(height: 5),
-                        regular('Rfq no', 10),
+                        regular('Invoice no', 10),
                       ],
                     ),
                     pw.Column(
@@ -505,7 +509,7 @@ class Quotation {
                     ],
                   ),
                   pw.ListView.builder(
-                    itemCount: rfq_gstTotals.length, // Number of items in the list
+                    itemCount: invoice_gstTotals.length, // Number of items in the list
                     itemBuilder: (context, index) {
                       return pw.Row(
                         children: [
@@ -518,7 +522,7 @@ class Quotation {
                             ),
                             width: 80,
                             height: 38,
-                            child: pw.Center(child: regular(formatzero(rfq_gstTotals[index].total), 10)),
+                            child: pw.Center(child: regular(formatzero(invoice_gstTotals[index].total), 10)),
                           ),
                           pw.Container(
                             height: 38,
@@ -532,7 +536,7 @@ class Quotation {
                                   ),
                                   width: 40, // Define width instead of Expanded
                                   child: pw.Center(
-                                    child: regular((rfq_gstTotals[index].gst / 2).toString(), 10),
+                                    child: regular((invoice_gstTotals[index].gst / 2).toString(), 10),
                                   ),
                                 ),
                                 pw.Container(
@@ -547,7 +551,7 @@ class Quotation {
                                   child: pw.Center(
                                     child: regular(
                                         formatzero(
-                                          ((rfq_gstTotals[index].total.toInt() / 100) * (rfq_gstTotals[index].gst / 2)),
+                                          ((invoice_gstTotals[index].total.toInt() / 100) * (invoice_gstTotals[index].gst / 2)),
                                         ),
                                         10),
                                   ),
@@ -566,14 +570,14 @@ class Quotation {
                                     ),
                                   ),
                                   width: 40, // Define width instead of Expanded
-                                  child: pw.Center(child: regular((rfq_gstTotals[index].gst / 2).toString(), 10)),
+                                  child: pw.Center(child: regular((invoice_gstTotals[index].gst / 2).toString(), 10)),
                                 ),
                                 pw.Container(
                                   width: 70, // Define width instead of Expanded
                                   decoration: const pw.BoxDecoration(
                                     border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700)),
                                   ),
-                                  child: pw.Center(child: regular(formatzero(((rfq_gstTotals[index].total.toInt() / 100) * (rfq_gstTotals[index].gst / 2))), 10)),
+                                  child: pw.Center(child: regular(formatzero(((invoice_gstTotals[index].total.toInt() / 100) * (invoice_gstTotals[index].gst / 2))), 10)),
                                 ),
                               ],
                             ),
@@ -667,7 +671,7 @@ class Quotation {
             child: bold("Note", 12),
             padding: const pw.EdgeInsets.only(left: 0, bottom: 10),
           ),
-          ...List.generate(rfqController.rfqModel.Rfq_noteList.length, (index) {
+          ...List.generate(pdfpopup_controller.pdfModel.value.notecontent.length, (index) {
             return pw.Padding(
               padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
               child: pw.Row(
@@ -677,7 +681,7 @@ class Quotation {
                   pw.SizedBox(width: 5),
                   pw.Expanded(
                     child: pw.Text(
-                      rfqController.rfqModel.Rfq_noteList[index],
+                      pdfpopup_controller.pdfModel.value.notecontent[index],
                       textAlign: pw.TextAlign.start,
                       style: pw.TextStyle(
                         font: Helvetica,
@@ -696,7 +700,7 @@ class Quotation {
             child: pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                regular("${rfqController.rfqModel.Rfq_noteList.length + 1}.", 10),
+                regular("${pdfpopup_controller.pdfModel.value.notecontent.length + 1}.", 10),
                 pw.SizedBox(width: 5),
                 pw.Expanded(
                   child: pw.Column(
@@ -741,40 +745,40 @@ class Quotation {
               ],
             ),
           ),
-          pw.Padding(
-            padding: const pw.EdgeInsets.only(left: 0, top: 5),
-            child: pw.Row(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                // regular("${rfq_noteList.length + 2}.", 10),
-                pw.SizedBox(width: 5),
-                pw.Expanded(
-                  child: pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    children: [
-                      bold(rfqController.rfqModel.Rfq_table_heading.value, 10),
-                      ...rfqController.rfqModel.Rfq_recommendationList.map((recommendation) {
-                        return pw.Padding(
-                          padding: const pw.EdgeInsets.only(left: 5, top: 5),
-                          child: pw.Row(
-                            children: [
-                              pw.Container(
-                                width: 120,
-                                child: regular(recommendation.key.toString(), 10),
-                              ),
-                              regular(":", 10),
-                              pw.SizedBox(width: 5),
-                              regular(recommendation.value.toString(), 10),
-                            ],
-                          ),
-                        );
-                      }),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // pw.Padding(
+          //   padding: const pw.EdgeInsets.only(left: 0, top: 5),
+          //   child: pw.Row(
+          //     crossAxisAlignment: pw.CrossAxisAlignment.start,
+          //     children: [
+          //       // regular("${invoice_noteList.length + 2}.", 10),
+          //       pw.SizedBox(width: 5),
+          //       pw.Expanded(
+          //         child: pw.Column(
+          //           crossAxisAlignment: pw.CrossAxisAlignment.start,
+          //           children: [
+          //             bold(invoiceController.invoiceModel.Invoice_table_heading.value, 10),
+          //             ...invoiceController.invoiceModel.Invoice_recommendationList.map((recommendation) {
+          //               return pw.Padding(
+          //                 padding: const pw.EdgeInsets.only(left: 5, top: 5),
+          //                 child: pw.Row(
+          //                   children: [
+          //                     pw.Container(
+          //                       width: 120,
+          //                       child: regular(recommendation.key.toString(), 10),
+          //                     ),
+          //                     regular(":", 10),
+          //                     pw.SizedBox(width: 5),
+          //                     regular(recommendation.value.toString(), 10),
+          //                   ],
+          //                 ),
+          //               );
+          //             }),
+          //           ],
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

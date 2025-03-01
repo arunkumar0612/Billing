@@ -6,6 +6,7 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
 import 'package:ssipl_billing/services/SALES/DC_services/DC_Product_services.dart';
 
 import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/views/components/button.dart';
 
 class DcProducts extends StatefulWidget with DcproductService {
   DcProducts({super.key});
@@ -77,6 +78,7 @@ class _DcProductsState extends State<DcProducts> {
 
   Widget buildProductlist() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         const SizedBox(height: 10),
         Container(
@@ -104,6 +106,7 @@ class _DcProductsState extends State<DcProducts> {
                               value: dcController.dcModel.selectall_status.value,
                               onChanged: (_) {
                                 dcController.togglProduct_selectAll(!dcController.dcModel.selectall_status.value);
+                                dcController.refactorSelection();
                               },
                             ),
                             const Text(
@@ -211,24 +214,30 @@ class _DcProductsState extends State<DcProducts> {
                 itemCount: dcController.dcModel.Dc_products.length,
                 itemBuilder: (context, index) {
                   final product = dcController.dcModel.Dc_products[index];
-                  final isEvenRow = index % 2 == 0;
                   // final iera = site['InactiveDevices'] == '0';
                   // final offline_color = iera
                   //     ? const Color.fromARGB(255, 255, 255, 255)
                   //     : Colors.red;
-                  final backgroundColor = isEvenRow ? const Color.fromARGB(211, 201, 200, 200) : const Color.fromARGB(255, 121, 117, 117);
+                  const backgroundColor = Color.fromARGB(211, 201, 200, 200);
 
                   return Column(
                     children: [
                       buildProductRow(
                           product.productName, product.hsn.toString(), product.price.toString(), product.quantity.toString(), (product.price * product.quantity).toString(), backgroundColor, index),
-                      const Text("dsfgdgdfg fgdfgdf df df df df df df df df df df df df df df df ggdfgdf fdgdfg dfgdfgdfg dfg df gdf gd "),
                     ],
                   );
                 },
               ),
             ),
           ),
+        ),
+        BasicButton(
+          text: "Submit",
+          colors: Colors.green,
+          onPressed: () {
+            widget.addto_Selectedproducts();
+            dcController.nextTab();
+          },
         ),
       ],
     );

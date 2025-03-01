@@ -85,55 +85,47 @@ class SalesChartState extends State<SalesChart> {
     });
   }
 
-  // List<PieChartSectionData> showingSections(int completed, int pending) {
-  //   final List<int> valueList = [completed, pending];
-  //   return List.generate(2, (i) {
-  //     final isTouched = i == touchedIndex;
-  //     final fontSize = isTouched ? 25.0 : 16.0;
-  //     final radius = isTouched ? 60.0 : 15.0;
-  //     const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-
-  //     return PieChartSectionData(
-  //       color: getColor(i),
-  //       value: valueList[i].toDouble(),
-  //       title: isTouched ? '${valueList[i]}' : '',
-  //       radius: radius,
-  //       titleStyle: TextStyle(
-  //         fontSize: fontSize,
-  //         fontWeight: FontWeight.bold,
-  //         color: Colors.white,
-  //         shadows: shadows,
-  //       ),
-  //     );
-  //   });
-  // }
   List<PieChartSectionData> showingSections(int completed, int pending) {
     if (completed == 0 && pending == 0) {
       return [
         PieChartSectionData(
-          color: Colors.grey,
-          value: 1,
+          color: Colors.grey, // Placeholder color
+          value: 1, // Set a small value to ensure it renders
           title: '',
           radius: 15.0,
+          titleStyle: const TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+          ),
         ),
       ];
     }
 
-    bool isEqual = completed == pending && completed > 0;
-    return [
-      PieChartSectionData(
-        color: isEqual ? Colors.grey : getColor(0),
-        value: isEqual ? 100 : completed.toDouble(),
-        title: isEqual ? 'Equal' : '',
-        radius: isEqual ? 60.0 : 15.0,
-      ),
-      PieChartSectionData(
-        color: isEqual ? Colors.grey : getColor(1),
-        value: isEqual ? 0 : pending.toDouble(), // Hide second section if equal
-        title: '',
-        radius: 15.0,
-      ),
-    ];
+    final List<int> valueList = [completed, pending];
+    return List.generate(
+      2,
+      (i) {
+        final isTouched = i == touchedIndex;
+        final fontSize = isTouched ? 25.0 : 16.0;
+        final radius = isTouched ? 60.0 : 15.0;
+        const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+
+        return PieChartSectionData(
+          color: getColor(i),
+          value: valueList[i].toDouble(),
+          title: isTouched ? '${valueList[i]}' : '',
+          radius: radius,
+          titleStyle: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            shadows: shadows,
+          ),
+        );
+      },
+    );
   }
 
   Color getColor(int index) {

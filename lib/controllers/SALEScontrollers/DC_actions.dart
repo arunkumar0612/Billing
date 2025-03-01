@@ -170,6 +170,16 @@ class DcController extends GetxController {
     dcModel.checkboxValues[index] = value;
   }
 
+  void refactorSelection() {
+    for (int i = 0; i < dcModel.checkboxValues.length; i++) {
+      if (dcModel.selectall_status.value) {
+        dcModel.checkboxValues[i] = true;
+      } else {
+        dcModel.checkboxValues[i] = false;
+      }
+    }
+  }
+
   // Update phone number text
   void updatePhoneNumber(String phoneNumber) {
     dcModel.phoneController.value.text = phoneNumber;
@@ -309,7 +319,7 @@ class DcController extends GetxController {
         return;
       }
 
-      dcModel.Dc_products.add(DcProduct(sno: (dcModel.Dc_products.length + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity));
+      dcModel.Dc_products.add(DcProduct(sno: (dcModel.Dc_products.length + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity, productid: 0));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -353,7 +363,7 @@ class DcController extends GetxController {
       }
 
       // Update the product details at the specified index
-      dcModel.Dc_products[editIndex] = DcProduct(sno: (editIndex + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity);
+      dcModel.Dc_products[editIndex] = DcProduct(sno: (editIndex + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity, productid: 0);
 
       // ProductDetail(
       //   productName: productName.trim(),

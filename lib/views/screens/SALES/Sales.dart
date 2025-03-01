@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
@@ -14,16 +15,18 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart'
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
+import 'package:ssipl_billing/services/SALES/CustomPDF_services/CustomPDF_Invoice_services.dart';
+
 import 'package:ssipl_billing/services/SALES/sales_service.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
 import 'package:ssipl_billing/views/screens/SALES/Sales_chart.dart';
-import 'package:ssipl_billing/views/screens/SALES/pdfpopup.dart';
+import 'package:ssipl_billing/views/screens/SALES/CustomPDF/CustomPDF_invoicePDF.dart';
 import '../../../controllers/SALEScontrollers/Sales_actions.dart';
 // import 'package:cool_dropdown/models/cool_dropdown_item.dart';
 
-class Sales_Client extends StatefulWidget with SalesServices, Pdfpopup {
+class Sales_Client extends StatefulWidget with SalesServices {
   Sales_Client({super.key});
 
   @override
@@ -38,14 +41,17 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
   final DcController dcController = Get.find<DcController>();
   final InvoiceController invoiceController = Get.find<InvoiceController>();
   final QuoteController quoteController = Get.find<QuoteController>();
-  final RFQController rfqController = Get.find<RFQController>();
+  final RfqController rfqController = Get.find<RfqController>();
   final CreditController creditController = Get.find<CreditController>();
   final DebitController debitController = Get.find<DebitController>();
-  late AnimationController _controller;
+  final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
+  var inst = CustomPDF_InvoicePDF();
+  var inst_CustomPDF_Services = CustomPDF_Services();
+
   @override
   void dispose() {
     clientreqController.clientReqModel.cntMulti.value.dispose();
-    _controller.dispose();
+    salesController.salesModel.animationController.dispose();
     super.dispose();
   }
 
@@ -61,21 +67,20 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
     widget.GetProcesscustomerList(context);
     widget.GetProcessList(context, 0);
     widget.GetSalesData(context, salesController.salesModel.salesperiod.value);
-    _controller = AnimationController(
+    salesController.salesModel.animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     );
   }
 
   void _startAnimation() {
-    if (!_controller.isAnimating) {
-      _controller.forward(from: 0).then((_) {
+    if (!salesController.salesModel.animationController.isAnimating) {
+      salesController.salesModel.animationController.forward(from: 0).then((_) {
         widget.refresh(context);
       });
     }
   }
 
-// CircleAvatar(child: Text(item['name']![0])),
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -117,20 +122,20 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                         GestureDetector(
                           onTap: _startAnimation,
                           child: AnimatedBuilder(
-                            animation: _controller,
+                            animation: salesController.salesModel.animationController,
                             builder: (context, child) {
                               return Transform.rotate(
-                                angle: -_controller.value * 2 * pi, // Counterclockwise rotation
+                                angle: -salesController.salesModel.animationController.value * 2 * pi, // Counterclockwise rotation
                                 child: Transform.scale(
                                   scale: TweenSequence([
                                     TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 1.2), weight: 50),
                                     TweenSequenceItem(tween: Tween<double>(begin: 1.2, end: 1.0), weight: 50),
-                                  ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut)).value, // Zoom in and return to normal
+                                  ]).animate(CurvedAnimation(parent: salesController.salesModel.animationController, curve: Curves.easeInOut)).value, // Zoom in and return to normal
                                   child: Opacity(
                                     opacity: TweenSequence([
                                       TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.5), weight: 50),
                                       TweenSequenceItem(tween: Tween<double>(begin: 0.5, end: 1.0), weight: 50),
-                                    ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut)).value, // Fade and return to normal
+                                    ]).animate(CurvedAnimation(parent: salesController.salesModel.animationController, curve: Curves.easeInOut)).value, // Fade and return to normal
                                     child: ClipOval(
                                       child: Image.asset(
                                         'assets/images/reload.png',
@@ -574,7 +579,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                 splashRadius: 20,
                                                 padding: const EdgeInsets.all(0),
                                                 icon: Image.asset(
-                                                  'assets/images/article.png',
+                                                  'assets/images/options.png',
                                                 ),
                                                 iconSize: 50,
                                                 shape: const RoundedRectangleBorder(
@@ -584,14 +589,14 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                 color: Colors.white,
                                                 elevation: 6,
                                                 offset: const Offset(170, 20),
-                                                onSelected: (String item) {
+                                                onSelected: (String item) async {
                                                   // Handle menu item selection
 
                                                   switch (item) {
                                                     case 'Invoice':
-                                                      widget.pdfpopup_controller.initializeTextControllers();
-                                                      widget.pdfpopup_controller.initializeCheckboxes();
-                                                      widget.showA4StyledPopup(context);
+                                                      pdfpopup_controller.intAll();
+                                                      inst_CustomPDF_Services.assign_GSTtotals();
+                                                      inst.showA4StyledPopup(context);
                                                       break;
                                                     case 'Option2':
                                                       if (kDebugMode) {
@@ -1131,8 +1136,15 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                           if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.rfq == true) &&
                                                                               (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                             TextButton(
-                                                                              onPressed: () {
-                                                                                widget.GenerateRFQ_dialougebox(context);
+                                                                              onPressed: () async {
+                                                                                bool success =
+                                                                                    await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                if (success) {
+                                                                                  widget.GenerateRfq_dialougebox(
+                                                                                      context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                  rfqController.setProcessID(salesController.salesModel.processList[index].processid);
+                                                                                  print(rfqController.rfqModel.processID);
+                                                                                }
                                                                               },
                                                                               child: const Text(
                                                                                 "Generate RFQ",

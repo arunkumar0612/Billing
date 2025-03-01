@@ -73,7 +73,24 @@ mixin PostServices {
       }
       File cachedPdf = dcController.dcModel.selectedPdf.value!;
       // savePdfToCache();
-      Post_Dc salesData = Post_Dc.fromJson(title: dcController.dcModel.TitleController.value.text, processid: dcController.dcModel.processID.value!, ClientAddressname: dcController.dcModel.clientAddressNameController.value.text, ClientAddress: dcController.dcModel.clientAddressController.value.text, billingAddressName: dcController.dcModel.billingAddressNameController.value.text, billingAddress: dcController.dcModel.billingAddressController.value.text, emailId: dcController.dcModel.emailController.value.text, phoneNo: dcController.dcModel.phoneController.value.text, gst: dcController.dcModel.gstNumController.value.text, product: dcController.dcModel.Dc_products, notes: dcController.dcModel.Dc_noteList, date: getCurrentDate(), dcGenID: dcController.dcModel.Dc_no.value!, messageType: messageType, feedback: dcController.dcModel.feedbackController.value.text, ccEmail: dcController.dcModel.CCemailController.value.text);
+      Post_Dc salesData = Post_Dc.fromJson(
+          title: dcController.dcModel.TitleController.value.text,
+          processid: dcController.dcModel.processID.value!,
+          ClientAddressname: dcController.dcModel.clientAddressNameController.value.text,
+          ClientAddress: dcController.dcModel.clientAddressController.value.text,
+          billingAddressName: dcController.dcModel.billingAddressNameController.value.text,
+          billingAddress: dcController.dcModel.billingAddressController.value.text,
+          emailId: dcController.dcModel.emailController.value.text,
+          phoneNo: dcController.dcModel.phoneController.value.text,
+          gst: dcController.dcModel.gstNumController.value.text,
+          product: dcController.dcModel.selected_dcProducts,
+          notes: dcController.dcModel.Dc_noteList,
+          date: getCurrentDate(),
+          dcGenID: dcController.dcModel.Dc_no.value!,
+          messageType: messageType,
+          feedback: dcController.dcModel.feedbackController.value.text,
+          ccEmail: dcController.dcModel.CCemailController.value.text,
+          productFeedback: dcController.dcModel.product_feedback.value);
 
       await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
     } catch (e) {

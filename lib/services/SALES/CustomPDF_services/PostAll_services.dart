@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,7 +6,6 @@ import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
-import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'dart:io';
 import 'package:ssipl_billing/models/constants/api.dart';
@@ -65,6 +63,34 @@ mixin PostServices {
     }
   }
 
+  Future<void> downloadPdf(String filename) async {
+    try {
+      final pdfFile = pdfpopup_controller.pdfModel.value.genearatedPDF.value;
+      if (pdfFile == null) {
+        if (kDebugMode) {
+          print("No PDF file found to download.");
+        }
+        return;
+      }
+
+      // Let the user pick a folder to save the file
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+
+      // Define the destination path
+      String savePath = "$selectedDirectory/$filename";
+
+      // Copy the PDF file to the selected directory
+      await pdfFile.copy(savePath);
+
+      if (kDebugMode) {
+        print("PDF downloaded successfully to: $savePath");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error downloading PDF: $e");
+      }
+    }
+  }
   // dynamic postData(context, int messageType) async {
   //   try {
   //     if (invoiceController.postDatavalidation()) {

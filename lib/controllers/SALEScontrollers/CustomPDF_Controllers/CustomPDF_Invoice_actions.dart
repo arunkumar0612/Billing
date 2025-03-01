@@ -180,10 +180,10 @@ class CustomPDF_InvoiceController extends GetxController {
 
     for (var product in pdfModel.value.manualInvoiceproducts) {
       double subTotal = double.tryParse(product.total) ?? 0.0;
-      double price = double.tryParse(product.price) ?? 0.0;
+      double price = double.tryParse(product.total) ?? 0.0;
       double gst = double.tryParse(product.gst) ?? 0.0;
-      double cgst = (gst / 100) * price / 2;
-      double sgst = (gst / 100) * price / 2;
+      double cgst = (price / 100) * gst / 2;
+      double sgst = (price / 100) * gst / 2;
 
       addedCGST += cgst;
       addedSGST += sgst;
@@ -246,6 +246,7 @@ class CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.filePathController.value.clear();
 
     pdfModel.value.subTotal.value.clear();
+    pdfModel.value.GSTnumber.value.clear();
     pdfModel.value.CGST.value.clear();
     pdfModel.value.SGST.value.clear();
     pdfModel.value.roundOff.value.clear();

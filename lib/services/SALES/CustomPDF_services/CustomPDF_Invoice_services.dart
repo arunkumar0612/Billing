@@ -1,20 +1,11 @@
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
-import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/CustomPDF_entities/CustomPDF_Product_entities.dart';
 import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
 import 'package:ssipl_billing/themes/style.dart';
@@ -50,6 +41,7 @@ class CustomPDF_Services {
   Future<void> savePdfToCache(context) async {
     Uint8List pdfData = await generate_CustomPDFInvoice(
       PdfPageFormat.a4,
+      pdfpopup_controller.pdfModel.value.date.value.text,
       pdfpopup_controller.pdfModel.value.manualInvoiceproducts,
       pdfpopup_controller.pdfModel.value.clientName.value.text,
       pdfpopup_controller.pdfModel.value.clientAddress.value.text,
@@ -57,7 +49,7 @@ class CustomPDF_Services {
       pdfpopup_controller.pdfModel.value.billingAddres.value.text,
       pdfpopup_controller.pdfModel.value.manualinvoiceNo.value.text,
       "",
-      9,
+      pdfpopup_controller.pdfModel.value.GSTnumber.value.text,
       pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals,
     );
 

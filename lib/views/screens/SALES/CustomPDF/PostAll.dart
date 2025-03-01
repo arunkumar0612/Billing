@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -78,33 +77,115 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                                       ],
                                     ),
                                   ),
-                            Align(
-                              alignment: AlignmentDirectional.bottomEnd,
-                              child: Padding(
-                                padding: const EdgeInsets.all(5),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: const Color.fromARGB(255, 184, 184, 184).withOpacity(0.8),
-                                        spreadRadius: 1,
-                                        blurRadius: 5,
-                                        offset: const Offset(0, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: IconButton(
-                                    splashColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    onPressed: () {
-                                      widget.printPdf();
-                                    },
-                                    icon: const Icon(Icons.print, color: Color.fromARGB(255, 58, 58, 58)),
-                                  ),
-                                ),
-                              ),
-                            )
+                            // Align(
+                            //   alignment: AlignmentDirectional.bottomEnd,
+                            //   child: Padding(
+                            //     padding: const EdgeInsets.all(5),
+                            //     child: Column(
+                            //       mainAxisAlignment: MainAxisAlignment.end,
+                            //       children: [
+                            //         // Container(
+                            //         //   decoration: BoxDecoration(
+                            //         //     borderRadius: BorderRadius.circular(50),
+                            //         //     // boxShadow: [
+                            //         //     //   BoxShadow(
+                            //         //     //     color: const Color.fromARGB(255, 184, 184, 184).withOpacity(0.8),
+                            //         //     //     spreadRadius: 1,
+                            //         //     //     blurRadius: 5,
+                            //         //     //     offset: const Offset(0, 3),
+                            //         //     //   ),
+                            //         //     // ],
+                            //         //   ),
+                            //         //   child: IconButton(
+                            //         //     splashColor: Colors.transparent,
+                            //         //     highlightColor: Colors.transparent,
+                            //         //     onPressed: () {
+                            //         //       widget.downloadPdf(path.basename(pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path ?? ""));
+                            //         //     },
+                            //         //     icon: const Icon(
+                            //         //       Icons.download_outlined,
+                            //         //       color: Colors.blue,
+                            //         //     ),
+                            //         //   ),
+                            //         // ),
+                            //         // const SizedBox(
+                            //         //   height: 10,
+                            //         // ),
+                            //         // Container(
+                            //         //   decoration: BoxDecoration(
+                            //         //     borderRadius: BorderRadius.circular(50),
+                            //         //     // boxShadow: [
+                            //         //     //   BoxShadow(
+                            //         //     //     color: const Color.fromARGB(255, 184, 184, 184).withOpacity(0.8),
+                            //         //     //     spreadRadius: 1,
+                            //         //     //     blurRadius: 5,
+                            //         //     //     offset: const Offset(0, 3),
+                            //         //     //   ),
+                            //         //     // ],
+                            //         //   ),
+                            //         //   child: IconButton(
+                            //         //     // splashColor: Colors.transparent,
+                            //         //     // highlightColor: Colors.transparent,
+                            //         //     onPressed: () {
+                            //         //       widget.printPdf();
+                            //         //     },
+                            //         //     icon: const Icon(
+                            //         //       Icons.print,
+                            //         //       color: Colors.redAccent,
+                            //         //     ),
+                            //         //   ),
+                            //         // ),
+
+                            //         GestureDetector(
+                            //           onTap: () {
+                            //             widget.printPdf();
+                            //           },
+                            //           child: Column(
+                            //             mainAxisSize: MainAxisSize.min,
+                            //             children: [
+                            //               Image.asset(height: 40, 'assets/images/printer.png'),
+                            //               const SizedBox(
+                            //                 height: 5,
+                            //               ),
+                            //               const Text(
+                            //                 "Print",
+                            //                 style: TextStyle(
+                            //                   fontSize: 14,
+                            //                   fontWeight: FontWeight.w500,
+                            //                   color: Color.fromARGB(255, 143, 143, 143),
+                            //                 ),
+                            //               ),
+                            //             ],
+                            //           ),
+                            //         ),
+                            //         const SizedBox(height: 20), // Space between buttons
+                            //         // Download Button
+                            //         GestureDetector(
+                            //           onTap: () {
+                            //             widget.downloadPdf(path.basename(pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path ?? ""));
+                            //           },
+                            //           child: Column(
+                            //             mainAxisSize: MainAxisSize.min,
+                            //             children: [
+                            //               Image.asset(height: 40, 'assets/images/pdfdownload.png'),
+                            //               const SizedBox(
+                            //                 height: 5,
+                            //               ),
+                            //               const Text(
+                            //                 "Download",
+                            //                 style: TextStyle(
+                            //                   fontSize: 14,
+                            //                   fontWeight: FontWeight.w500,
+                            //                   color: Color.fromARGB(255, 143, 143, 143),
+                            //                 ),
+                            //               ),
+                            //             ],
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // )
                           ],
                         ),
                         onDoubleTap: () {
@@ -521,16 +602,71 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                     const SizedBox(
                       height: 10,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: BasicButton(
-                              text: "Send",
-                              colors: Colors.blue,
-                              onPressed: () {
-                                // widget.postData(context, invoiceController.fetch_messageType());
-                              })),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                widget.printPdf();
+                              },
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image.asset(height: 40, 'assets/images/printer.png'),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  const Text(
+                                    "Print",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color.fromARGB(255, 143, 143, 143),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 30), // Space between buttons
+                            // Download Button
+                            GestureDetector(
+                              onTap: () {
+                                widget.downloadPdf(path.basename(pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path ?? ""));
+                              },
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image.asset(height: 40, 'assets/images/pdfdownload.png'),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  const Text(
+                                    "Download",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color.fromARGB(255, 143, 143, 143),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Align(
+                              alignment: Alignment.centerRight,
+                              child: BasicButton(
+                                  text: "Send",
+                                  colors: Colors.blue,
+                                  onPressed: () {
+                                    // widget.postData(context, invoiceController.fetch_messageType());
+                                  })),
+                        ),
+                      ],
                     )
                   ],
                 ),

@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
-import 'package:ssipl_billing/models/entities/SALES/RFQ_entities.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 
 mixin RfqproductService {

@@ -151,7 +151,7 @@ mixin RfqnotesService {
     );
 
     Directory tempDir = await getTemporaryDirectory();
-    String? sanitizedRfqNo = Returns.replace_Slash_hypen(rfqController.rfqModel.Rfq_no.value!);
+    String? sanitizedRfqNo = Returns.replace_Slash_hypen(rfqController.rfqModel.Rfq_no.value ?? "1234");
     String filePath = '${tempDir.path}/$sanitizedRfqNo.pdf';
     File file = File(filePath);
     await file.writeAsBytes(pdfData);

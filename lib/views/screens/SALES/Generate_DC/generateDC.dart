@@ -60,7 +60,7 @@ class _GenerateDcState extends State<GenerateDc> with SingleTickerProviderStateM
                 const Padding(
                   padding: EdgeInsets.all(15),
                   child: Text(
-                    "APPROVED QUOTATION",
+                    "INVOICE",
                     style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                   ),
                 ),

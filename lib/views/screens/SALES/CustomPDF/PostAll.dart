@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +11,7 @@ import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as path;
 
 class PostInvoice extends StatefulWidget with PostServices {

@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, deprecated_member_use
 
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -696,6 +696,7 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                               text: "Send",
                               colors: Colors.blue,
                               onPressed: () {
+                                print(invoiceController.invoiceModel.invoice_amount.value);
                                 widget.postData(context, invoiceController.fetch_messageType());
                               })),
                     )

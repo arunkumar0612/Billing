@@ -47,38 +47,39 @@ class CustomPDF_InvoicePDF {
                                     header(), const SizedBox(height: 15),
                                     addresses(),
                                     const SizedBox(height: 10),
-                                    Stack(
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              height: 35,
-                                              width: 200,
-                                              child: TextFormField(
-                                                style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
-                                                controller: pdfpopup_controller.pdfModel.value.GSTnumber.value,
-                                                decoration: const InputDecoration(
-                                                    errorStyle: TextStyle(height: 0, fontSize: 0),
-                                                    contentPadding: EdgeInsets.only(left: 5, right: 5, top: 5),
-                                                    // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                                                    hintText: "07AAACL1234C1Z5",
-                                                    hintStyle: TextStyle(fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 136, 136, 136)),
-                                                    // border: OutlineInputBorder(borderSide: BorderSide.none),
-                                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Primary_colors.Color3, width: 2)),
-                                                    prefixIcon: Padding(
-                                                      padding: EdgeInsets.only(top: 9, left: 5),
-                                                      child: Text("GSTIN  :  ", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                                                    )),
-                                                validator: (value) {
-                                                  if (value == null || value.isEmpty) {
-                                                    return '';
-                                                  }
-                                                  return null;
-                                                },
+                                        SizedBox(
+                                          height: 35,
+                                          width: 200,
+                                          child: TextFormField(
+                                            textAlign: TextAlign.start,
+                                            style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black, height: 2.3),
+                                            controller: pdfpopup_controller.pdfModel.value.GSTnumber.value,
+                                            decoration: const InputDecoration(
+                                              errorStyle: TextStyle(height: -1, fontSize: 0),
+                                              contentPadding: EdgeInsets.only(
+                                                left: 5,
+                                                right: 5,
+                                              ),
+                                              // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                                              hintText: "07AAACL1234C1Z5",
+                                              hintStyle: TextStyle(fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 136, 136, 136)),
+                                              // border: OutlineInputBorder(borderSide: BorderSide.none),
+                                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Primary_colors.Color3, width: 2)),
+                                              prefixIcon: Padding(
+                                                padding: EdgeInsets.only(left: 5, top: 11),
+                                                child: Text("GSTIN  :  ", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                                               ),
                                             ),
-                                          ],
+                                            validator: (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return '';
+                                              }
+                                              return null;
+                                            },
+                                          ),
                                         ),
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.end,
@@ -91,14 +92,34 @@ class CustomPDF_InvoicePDF {
                                                 }),
                                             if (pdfpopup_controller.pdfModel.value.checkboxValues.contains(true)) const SizedBox(width: 5),
                                             if (pdfpopup_controller.pdfModel.value.checkboxValues.contains(true))
-                                              BasicButton(
-                                                  text: "Delete",
-                                                  colors: const Color.fromARGB(204, 244, 67, 54),
-                                                  onPressed: () async {
-                                                    pdfpopup_controller.deleteRow();
-                                                    await Future.delayed(const Duration(milliseconds: 20));
-                                                    inst.assign_GSTtotals();
-                                                  }),
+                                              Container(
+                                                width: 75,
+                                                // height: 40,
+                                                decoration: BoxDecoration(
+                                                  color: const Color.fromARGB(204, 244, 67, 54),
+                                                  // gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [
+                                                  //   colors,
+                                                  //   colors,
+                                                  //   Primary_colors.Light,
+                                                  // ]),
+                                                  borderRadius: BorderRadius.circular(5),
+                                                ),
+
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(left: 5, right: 5),
+                                                  child: TextButton(
+                                                    onPressed: () async {
+                                                      pdfpopup_controller.deleteRow();
+                                                      await Future.delayed(const Duration(milliseconds: 20));
+                                                      inst.assign_GSTtotals();
+                                                    },
+                                                    child: const Text(
+                                                      "Delete",
+                                                      style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text7),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
                                           ],
                                         ),
                                       ],
@@ -181,35 +202,18 @@ class CustomPDF_InvoicePDF {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image.asset('assets/images/sporada.jpeg', height: 100),
+        Image.asset('assets/images/sporadaResized.jpeg', height: 100),
         const Text("INVOICE", style: TextStyle(fontSize: Primary_font_size.SubHeading, fontWeight: FontWeight.bold)),
         SizedBox(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("Date", style: TextStyle(fontSize: Primary_font_size.Text7)),
-                  SizedBox(height: 15),
-                  Text(
-                    "Invoice no",
-                    style: TextStyle(fontSize: Primary_font_size.Text7),
-                  ),
-                ],
-              ),
-              const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("  :  ", style: TextStyle(fontSize: Primary_font_size.Text7)),
-                  SizedBox(height: 15),
-                  Text("  :  ", style: TextStyle(fontSize: Primary_font_size.Text7)),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                  const Text("Date          ", style: TextStyle(fontSize: Primary_font_size.Text7)),
+                  const Text("  :  ", style: TextStyle(fontSize: Primary_font_size.Text7)),
                   SizedBox(
                     // height: 20,
                     width: 80,
@@ -217,7 +221,7 @@ class CustomPDF_InvoicePDF {
                       style: const TextStyle(fontSize: Primary_font_size.Text5, color: Colors.black),
                       controller: pdfpopup_controller.pdfModel.value.date.value,
                       decoration: const InputDecoration(
-                        errorStyle: TextStyle(fontSize: 0),
+                        errorStyle: TextStyle(height: -6, fontSize: 0),
                         isDense: true,
                         contentPadding: EdgeInsets.all(7),
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
@@ -236,8 +240,16 @@ class CustomPDF_InvoicePDF {
                       },
                     ),
                   ),
-                  const SizedBox(height: 10),
-
+                ],
+              ),
+              const SizedBox(height: 15),
+              Row(
+                children: [
+                  const Text(
+                    "Invoice no",
+                    style: TextStyle(fontSize: Primary_font_size.Text7),
+                  ),
+                  const Text("  :  ", style: TextStyle(fontSize: Primary_font_size.Text7)),
                   SizedBox(
                     // height: 20,
                     width: 80,
@@ -246,7 +258,7 @@ class CustomPDF_InvoicePDF {
                       style: const TextStyle(fontSize: Primary_font_size.Text5, color: Colors.black),
                       controller: pdfpopup_controller.pdfModel.value.manualinvoiceNo.value,
                       decoration: const InputDecoration(
-                        errorStyle: TextStyle(fontSize: 0),
+                        errorStyle: TextStyle(height: -6, fontSize: 0),
                         isDense: true,
                         contentPadding: EdgeInsets.all(7),
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
@@ -265,9 +277,8 @@ class CustomPDF_InvoicePDF {
                       },
                     ),
                   ),
-                  // Text("AA/SSIPL/250201", style: TextStyle(fontSize: Primary_font_size.Text7)),
                 ],
-              ),
+              )
             ],
           ),
         ),
@@ -313,7 +324,7 @@ class CustomPDF_InvoicePDF {
                           style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
                           controller: pdfpopup_controller.pdfModel.value.clientName.value,
                           decoration: const InputDecoration(
-                            errorStyle: TextStyle(height: 0, fontSize: 0),
+                            errorStyle: TextStyle(height: -6, fontSize: 0),
                             contentPadding: EdgeInsets.only(left: 5, right: 5),
                             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
                             hintText: "ABS Enterprises",
@@ -336,7 +347,7 @@ class CustomPDF_InvoicePDF {
                           style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
                           controller: pdfpopup_controller.pdfModel.value.clientAddress.value,
                           decoration: const InputDecoration(
-                            errorStyle: TextStyle(height: 0, fontSize: 0),
+                            errorStyle: TextStyle(height: -6, fontSize: 0),
                             contentPadding: EdgeInsets.only(left: 5, right: 5),
                             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
                             hintText: "123, Business Park Avenue, Sector 45, Downtown City, State - 560102, Country - USA",
@@ -394,7 +405,7 @@ class CustomPDF_InvoicePDF {
                           style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
                           controller: pdfpopup_controller.pdfModel.value.billingName.value,
                           decoration: const InputDecoration(
-                            errorStyle: TextStyle(height: 0, fontSize: 0),
+                            errorStyle: TextStyle(height: -6, fontSize: 0),
                             contentPadding: EdgeInsets.only(left: 5, right: 5),
                             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
                             hintText: "ABS Enterprises",
@@ -417,7 +428,7 @@ class CustomPDF_InvoicePDF {
                           style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
                           controller: pdfpopup_controller.pdfModel.value.billingAddres.value,
                           decoration: const InputDecoration(
-                            errorStyle: TextStyle(height: 0, fontSize: 0),
+                            errorStyle: TextStyle(height: -6, fontSize: 0),
                             contentPadding: EdgeInsets.only(left: 5, right: 5),
                             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
                             hintText: "123, Business Park Avenue, Sector 45, Downtown City, State - 560102, Country - USA",
@@ -524,7 +535,7 @@ class CustomPDF_InvoicePDF {
                                   inputFormatters: isNumericField ? [FilteringTextInputFormatter.digitsOnly] : null,
                                   keyboardType: isNumericField ? TextInputType.number : TextInputType.text,
                                   decoration: InputDecoration(
-                                    errorStyle: const TextStyle(height: 0, fontSize: 0),
+                                    errorStyle: const TextStyle(height: -1, fontSize: 0),
                                     hintText: tableHeaders[colIndex + 1],
                                     hintStyle: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.grey),
                                     contentPadding: const EdgeInsets.all(1),
@@ -949,7 +960,7 @@ class CustomPDF_InvoicePDF {
                           itemCount: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length,
                           itemBuilder: (context, index) {
                             return SizedBox(
-                              height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 30 : 40, // Set a height for each row to prevent overflow
+                              height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 30 : 44, // Set a height for each row to prevent overflow
                               child: Row(
                                 children: [
                                   Container(
@@ -1104,8 +1115,9 @@ class CustomPDF_InvoicePDF {
                                   },
                                   style: const TextStyle(fontSize: 12),
                                   decoration: InputDecoration(
+                                    // contentPadding: const EdgeInsets.all(0),
                                     errorStyle: const TextStyle(height: 0, fontSize: 0),
-                                    suffixIcon: GestureDetector(
+                                    suffix: GestureDetector(
                                       child: const Icon(
                                         Icons.delete,
                                         size: 14,

@@ -365,14 +365,18 @@ class RfqController extends GetxController {
   void add_productSuggestion(List<dynamic> suggestionList) {
     for (var item in suggestionList) {
       rfqModel.Rfq_productSuggestion.add(ProductSuggestion.fromJson(item));
-      print(rfqModel.Rfq_productSuggestion[0].productName);
+      if (kDebugMode) {
+        print(rfqModel.Rfq_productSuggestion[0].productName);
+      }
     }
   }
 
   void add_noteSuggestion(Map<String, dynamic> suggestionList) {
     for (var item in suggestionList['notes']) {
       rfqModel.noteSuggestion.add(item);
-      print(rfqModel.noteSuggestion[0]);
+      if (kDebugMode) {
+        print(rfqModel.noteSuggestion[0]);
+      }
     }
   }
 
@@ -417,9 +421,13 @@ class RfqController extends GetxController {
   void update_vendorList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
       rfqModel.vendorList.add(VendorList.fromJson(value, i));
+      if (kDebugMode) {
+        print(rfqModel.vendorList);
+      }
+    }
+    if (kDebugMode) {
       print(rfqModel.vendorList);
     }
-    print(rfqModel.vendorList);
   }
 
   void update_vendorCredentials_onSelect(VendorList selectedVendor) {
@@ -430,17 +438,18 @@ class RfqController extends GetxController {
 
   bool postDatavalidation() {
     return (rfqModel.TitleController.value.text.isEmpty ||
-        rfqModel.processID.value == null ||
-        // rfqModel.clientAddressNameController.value.text.isEmpty ||
-        rfqModel.AddressController.value.text.isEmpty ||
-        // rfqModel.billingAddressNameController.value.text.isEmpty ||
-        // rfqModel.billingAddressController.value.text.isEmpty ||
-        rfqModel.emailController.value.text.isEmpty ||
-        rfqModel.phoneController.value.text.isEmpty ||
-        // rfqModel.gstNumController.value.text.isEmpty ||
-        rfqModel.Rfq_products.isEmpty ||
-        rfqModel.Rfq_noteList.isEmpty ||
-        rfqModel.Rfq_no.value == null);
+            rfqModel.processID.value == null ||
+            // rfqModel.clientAddressNameController.value.text.isEmpty ||
+            rfqModel.AddressController.value.text.isEmpty ||
+            // rfqModel.billingAddressNameController.value.text.isEmpty ||
+            // rfqModel.billingAddressController.value.text.isEmpty ||
+            rfqModel.emailController.value.text.isEmpty ||
+            rfqModel.phoneController.value.text.isEmpty ||
+            // rfqModel.gstNumController.value.text.isEmpty ||
+            rfqModel.Rfq_products.isEmpty ||
+            rfqModel.Rfq_noteList.isEmpty
+        //      ||  rfqModel.Rfq_no.value == null
+        );
   } // If any one is empty or null, then it returns true
 
   void resetData() {

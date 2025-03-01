@@ -551,40 +551,41 @@ class Request_for_quote {
               ),
             );
           }),
-          pw.Padding(
-            padding: const pw.EdgeInsets.only(left: 0, top: 5),
-            child: pw.Row(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                regular("${rfqController.rfqModel.Rfq_noteList.length + 1}.", 10),
-                pw.SizedBox(width: 5),
-                pw.Expanded(
-                  child: pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    children: [
-                      bold(rfqController.rfqModel.Rfq_table_heading.value, 10),
-                      ...rfqController.rfqModel.Rfq_recommendationList.map((recommendation) {
-                        return pw.Padding(
-                          padding: const pw.EdgeInsets.only(left: 5, top: 5),
-                          child: pw.Row(
-                            children: [
-                              pw.Container(
-                                width: 120,
-                                child: regular(recommendation.key.toString(), 10),
-                              ),
-                              regular(":", 10),
-                              pw.SizedBox(width: 5),
-                              regular(recommendation.value.toString(), 10),
-                            ],
-                          ),
-                        );
-                      }),
-                    ],
+          if (rfqController.rfqModel.Rfq_recommendationList.isNotEmpty)
+            pw.Padding(
+              padding: const pw.EdgeInsets.only(left: 0, top: 5),
+              child: pw.Row(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  regular("${rfqController.rfqModel.Rfq_noteList.length + 1}.", 10),
+                  pw.SizedBox(width: 5),
+                  pw.Expanded(
+                    child: pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        bold(rfqController.rfqModel.Rfq_table_heading.value, 10),
+                        ...rfqController.rfqModel.Rfq_recommendationList.map((recommendation) {
+                          return pw.Padding(
+                            padding: const pw.EdgeInsets.only(left: 5, top: 5),
+                            child: pw.Row(
+                              children: [
+                                pw.Container(
+                                  width: 120,
+                                  child: regular(recommendation.key.toString(), 10),
+                                ),
+                                regular(":", 10),
+                                pw.SizedBox(width: 5),
+                                regular(recommendation.value.toString(), 10),
+                              ],
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
           pw.Padding(
             padding: const pw.EdgeInsets.only(left: 0, top: 5),
             child: pw.Row(

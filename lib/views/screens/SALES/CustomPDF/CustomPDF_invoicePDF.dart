@@ -5,6 +5,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/services/SALES/CustomPDF_services/CustomPDF_Invoice_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 
 class CustomPDF_InvoicePDF {
@@ -43,7 +44,7 @@ class CustomPDF_InvoicePDF {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    header(),
+                                    header(), const SizedBox(height: 15),
                                     addresses(),
                                     const SizedBox(height: 5),
                                     Stack(
@@ -56,14 +57,14 @@ class CustomPDF_InvoicePDF {
                                               width: 200,
                                               child: TextFormField(
                                                 style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
-                                                controller: pdfpopup_controller.pdfModel.value.clientName.value,
+                                                controller: pdfpopup_controller.pdfModel.value.GSTnumber.value,
                                                 decoration: const InputDecoration(
                                                     errorStyle: TextStyle(height: 0, fontSize: 0),
                                                     contentPadding: EdgeInsets.only(left: 5, right: 5, top: 5),
                                                     // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
                                                     hintText: "07AAACL1234C1Z5",
                                                     hintStyle: TextStyle(fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 136, 136, 136)),
-                                                    border: OutlineInputBorder(borderSide: BorderSide.none),
+                                                    // border: OutlineInputBorder(borderSide: BorderSide.none),
                                                     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Primary_colors.Color3, width: 2)),
                                                     prefixIcon: Padding(
                                                       padding: EdgeInsets.only(top: 9, left: 5),
@@ -180,7 +181,7 @@ class CustomPDF_InvoicePDF {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image.asset('assets/images/sporada.jpeg', height: 130),
+        Image.asset('assets/images/sporada.jpeg', height: 100),
         const Text("INVOICE", style: TextStyle(fontSize: Primary_font_size.SubHeading, fontWeight: FontWeight.bold)),
         SizedBox(
           child: Row(
@@ -976,7 +977,7 @@ class CustomPDF_InvoicePDF {
                                                       decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
                                                       child: Center(
                                                         child: Text(
-                                                          (pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2).toString(),
+                                                          formatzero(pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2).toString(),
                                                           style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                                         ),
                                                       ),
@@ -986,7 +987,7 @@ class CustomPDF_InvoicePDF {
                                                     flex: 2,
                                                     child: Center(
                                                       child: Text(
-                                                        ((pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toInt() / 100) *
+                                                        formatzero((pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toInt() / 100) *
                                                                 (pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2))
                                                             .toString(),
                                                         style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
@@ -1012,7 +1013,7 @@ class CustomPDF_InvoicePDF {
                                                   decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
                                                   child: Center(
                                                     child: Text(
-                                                      (pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2).toString(),
+                                                      formatzero(pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2).toString(),
                                                       style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                                     ),
                                                   ),
@@ -1022,7 +1023,7 @@ class CustomPDF_InvoicePDF {
                                                 flex: 2,
                                                 child: Center(
                                                   child: Text(
-                                                    ((pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toInt() / 100) *
+                                                    formatzero((pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toInt() / 100) *
                                                             (pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2))
                                                         .toString(),
                                                     style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),

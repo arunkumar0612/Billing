@@ -14,6 +14,7 @@ class CustomPDF_InvoiceModel {
   final billingAddres = TextEditingController().obs;
   final phoneNumber = TextEditingController().obs;
   final Email = TextEditingController().obs;
+  final GSTnumber = TextEditingController().obs;
   final feedback = TextEditingController().obs;
   final filePathController = TextEditingController().obs;
   final subTotal = TextEditingController().obs;

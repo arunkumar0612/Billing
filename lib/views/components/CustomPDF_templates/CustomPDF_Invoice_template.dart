@@ -6,23 +6,20 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/CustomPDF_entities/CustomPDF_Product_entities.dart';
 import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
-// import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
-
-// import '../../../../controllers/SALEScontrollers/Invoice_actions.dart';
-// import '../../../../models/entities/SALES/product_entities.dart';
 import '../../../../utils/helpers/support_functions.dart';
 
-Future<Uint8List> generate_CustomPDFInvoice(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, invoice_gstTotals) async {
+Future<Uint8List> generate_CustomPDFInvoice(PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, invoice_num, title, gst, invoice_gstTotals) async {
   final quotation = MaualInvoiceTemplate(
+      date: date,
       products: products,
-      GST: gst.toDouble(),
+      GST: gst,
       baseColor: PdfColors.green500,
       accentColor: PdfColors.blueGrey900,
       client_addr_name: client_addr_name,
       client_addr: client_addr,
       bill_addr_name: bill_addr_name,
       bill_addr: bill_addr,
-      estimate: estimate_num ?? "",
+      invoiceNo: invoice_num ?? "",
       title_text: title,
       type: '',
       invoice_gstTotals: invoice_gstTotals);
@@ -32,7 +29,8 @@ Future<Uint8List> generate_CustomPDFInvoice(PdfPageFormat pageFormat, products, 
 
 class MaualInvoiceTemplate {
   MaualInvoiceTemplate(
-      {required this.products,
+      {required this.date,
+      required this.products,
       required this.GST,
       required this.baseColor,
       required this.accentColor,
@@ -40,7 +38,7 @@ class MaualInvoiceTemplate {
       required this.client_addr,
       required this.bill_addr_name,
       required this.bill_addr,
-      required this.estimate,
+      required this.invoiceNo,
       required this.title_text,
       required this.type,
       required this.invoice_gstTotals
@@ -48,16 +46,17 @@ class MaualInvoiceTemplate {
       });
   final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
   List<InvoiceGSTtotals> invoice_gstTotals = [];
+  String date = "";
   String client_addr_name = "";
   String client_addr = "";
   String bill_addr_name = "";
   String bill_addr = "";
-  String estimate = "";
+  String invoiceNo = "";
   String title_text = "";
   String type = "";
 
   final List<CustomPDF_InvoiceProduct> products;
-  final double GST;
+  final String GST;
   final PdfColor baseColor;
   final PdfColor accentColor;
   static const _darkColor = PdfColors.blueGrey800;
@@ -153,7 +152,7 @@ class MaualInvoiceTemplate {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("Feb 05, 2025", 10),
+                            child: regular(date, 10),
                             // formatDate(DateTime.now()), 10
                           ),
                         ),
@@ -161,7 +160,7 @@ class MaualInvoiceTemplate {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("AA/INST/250201", 10),
+                            child: regular(invoiceNo, 10),
                           ),
                         ),
                       ],
@@ -331,7 +330,7 @@ class MaualInvoiceTemplate {
   }
 
   pw.Widget title(pw.Context context) {
-    return pw.Center(child: bold(title_text, 12));
+    return pw.Center(child: bold("GSTIN : $GST", 12));
   }
 
   pw.Widget _contentTable(pw.Context context) {

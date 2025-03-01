@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
-import 'package:ssipl_billing/services/SALES/DC_services/DcPost_services.dart';
+import 'package:ssipl_billing/services/SALES/RFQ_services/RFQ_Post_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
 import 'package:ssipl_billing/views/components/button.dart';

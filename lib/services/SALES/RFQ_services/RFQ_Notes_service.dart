@@ -140,17 +140,14 @@ mixin RfqnotesService {
   // }
 
   Future<void> savePdfToCache() async {
-    Uint8List pdfData = await generate_Rfq(
+    Uint8List pdfData = await generate_RFQ(
       PdfPageFormat.a4,
       rfqController.rfqModel.Rfq_products,
       "",
-      rfqController.rfqModel.clientAddressController.value.text,
       "",
       "",
-      rfqController.rfqModel.Rfq_no.value,
-      rfqController.rfqModel.TitleController.value.text,
-      9,
-      rfqController.rfqModel.Rfq_gstTotals,
+      "",
+      "",
     );
 
     Directory tempDir = await getTemporaryDirectory();

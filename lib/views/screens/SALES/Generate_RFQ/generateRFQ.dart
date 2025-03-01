@@ -129,7 +129,7 @@ class _GenerateRfqState extends State<GenerateRfq> with SingleTickerProviderStat
                           controller: rfqController.rfqModel.tabController.value,
                           indicator: const BoxDecoration(),
                           tabs: const [
-                            Tab(text: "DETdddAILS"),
+                            Tab(text: "DETAILS"),
                             Tab(text: "PRODUCT"),
                             Tab(text: "NOTE"),
                             Tab(text: "POST"),

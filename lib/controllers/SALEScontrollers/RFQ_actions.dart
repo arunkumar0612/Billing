@@ -32,20 +32,8 @@ class RfqController extends GetxController {
     rfqModel.productNameController.value.text = productName;
   }
 
-  void updateHSN(int hsn) {
-    rfqModel.hsnController.value.text = hsn.toString();
-  }
-
-  void updatePrice(double price) {
-    rfqModel.priceController.value.text = price.toString();
-  }
-
   void updateQuantity(int quantity) {
     rfqModel.quantityController.value.text = quantity.toString();
-  }
-
-  void updateGST(double gst) {
-    rfqModel.gstController.value.text = gst.toString();
   }
 
   void updateNoteEditindex(int? index) {
@@ -72,16 +60,16 @@ class RfqController extends GetxController {
     rfqModel.Rfq_no.value = text;
   }
 
-  void updateGSTnumber(String text) {
-    rfqModel.gstNumController.value.text = text;
-  }
+  // void updateGSTnumber(String text) {
+  //   rfqModel.gstNumController.value.text = text;
+  // }
 
   // void updateClientAddressName(String text) {
   //   rfqModel.clientAddressNameController.value.text = text;
   // }
 
   void updateClientAddress(String text) {
-    rfqModel.clientAddressController.value.text = text;
+    rfqModel.AddressController.value.text = text;
   }
 
   // void updateBillingAddressName(String text) {
@@ -286,13 +274,10 @@ class RfqController extends GetxController {
   void addProduct({
     required BuildContext context,
     required String productName,
-    required String hsn,
-    required double price,
     required int quantity,
-    required double gst,
   }) {
     try {
-      if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
+      if (productName.trim().isEmpty || quantity <= 0) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
@@ -302,7 +287,7 @@ class RfqController extends GetxController {
         return;
       }
 
-      rfqModel.Rfq_products.add(RFQProduct(sno: (rfqModel.Rfq_products.length + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity));
+      rfqModel.Rfq_products.add(RFQProduct(sno: (rfqModel.Rfq_products.length + 1), productName: productName, quantity: quantity));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -317,14 +302,14 @@ class RfqController extends GetxController {
     required BuildContext context,
     required int editIndex,
     required String productName,
-    required String hsn,
-    required double price,
+    // required String hsn,
+    // required double price,
     required int quantity,
-    required double gst,
+    // required double gst,
   }) {
     try {
       // Validate input fields
-      if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
+      if (productName.trim().isEmpty || quantity <= 0) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
@@ -346,7 +331,7 @@ class RfqController extends GetxController {
       }
 
       // Update the product details at the specified index
-      rfqModel.Rfq_products[editIndex] = RFQProduct(sno: (editIndex + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity);
+      rfqModel.Rfq_products[editIndex] = RFQProduct(sno: (editIndex + 1), productName: productName, quantity: quantity);
 
       // ProductDetail(
       //   productName: productName.trim(),
@@ -437,16 +422,22 @@ class RfqController extends GetxController {
     print(rfqModel.vendorList);
   }
 
+  void update_vendorCredentials_onSelect(VendorList selectedVendor) {
+    rfqModel.AddressController.value.text = selectedVendor.vendorAddress;
+    rfqModel.emailController.value.text = selectedVendor.vendorMail;
+    rfqModel.phoneController.value.text = selectedVendor.vendorPhoneNo;
+  }
+
   bool postDatavalidation() {
     return (rfqModel.TitleController.value.text.isEmpty ||
         rfqModel.processID.value == null ||
         // rfqModel.clientAddressNameController.value.text.isEmpty ||
-        rfqModel.clientAddressController.value.text.isEmpty ||
+        rfqModel.AddressController.value.text.isEmpty ||
         // rfqModel.billingAddressNameController.value.text.isEmpty ||
         // rfqModel.billingAddressController.value.text.isEmpty ||
         rfqModel.emailController.value.text.isEmpty ||
         rfqModel.phoneController.value.text.isEmpty ||
-        rfqModel.gstNumController.value.text.isEmpty ||
+        // rfqModel.gstNumController.value.text.isEmpty ||
         rfqModel.Rfq_products.isEmpty ||
         rfqModel.Rfq_noteList.isEmpty ||
         rfqModel.Rfq_no.value == null);
@@ -456,7 +447,7 @@ class RfqController extends GetxController {
     rfqModel.tabController.value = null;
     rfqModel.processID.value = null;
     rfqModel.Rfq_no.value = null;
-    rfqModel.gstNumController.value.text = "";
+    // rfqModel.gstNumController.value.text = "";
     rfqModel.Rfq_table_heading.value = "";
 
     rfqModel.phoneController.value.text = "";
@@ -466,19 +457,19 @@ class RfqController extends GetxController {
     // Reset details
     rfqModel.TitleController.value.text = "";
     // rfqModel.clientAddressNameController.value.text = "";
-    rfqModel.clientAddressController.value.text = "";
+    rfqModel.AddressController.value.text = "";
     // rfqModel.billingAddressNameController.value.text = "";
     // rfqModel.billingAddressController.value.text = "";
 
     // Reset product details
     rfqModel.product_editIndex.value = null;
     rfqModel.productNameController.value.text = "";
-    rfqModel.hsnController.value.text = "";
-    rfqModel.priceController.value.text = "";
+    // rfqModel.hsnController.value.text = "";
+    // rfqModel.priceController.value.text = "";
     rfqModel.quantityController.value.text = "";
-    rfqModel.gstController.value.text = "";
+    // rfqModel.gstController.value.text = "";
     rfqModel.Rfq_products.clear();
-    rfqModel.Rfq_gstTotals.clear();
+    // rfqModel.Rfq_gstTotals.clear();
     rfqModel.Rfq_productSuggestion.clear();
 
     // Reset notes

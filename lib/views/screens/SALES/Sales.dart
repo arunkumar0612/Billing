@@ -971,7 +971,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                   Expanded(
                                                     flex: 4,
                                                     child: Padding(
-                                                      padding: EdgeInsets.only(left: 5),
+                                                      padding: const EdgeInsets.only(left: 5),
                                                       child: Text(
                                                         salesController.salesModel.processList[index].age_in_days.toString(),
                                                         // items[showcustomerprocess]['process'][index]['daycounts'],
@@ -1071,7 +1071,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                               ),
                                                                             if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true) &&
                                                                                 (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1) &&
-                                                                                (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1))
+                                                                                (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 0))
                                                                               Padding(
                                                                                 padding: const EdgeInsets.only(left: 5),
                                                                                 child: Container(

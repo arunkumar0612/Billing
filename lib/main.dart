@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/controllers/PDFpopup_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Sales_actions.dart';
+import 'package:ssipl_billing/routes/app_routes.dart';
 import 'package:ssipl_billing/themes/style.dart';
 // import 'package:ssipl_billing/controllers/viewSend_actions.dart';
 import 'package:window_manager/window_manager.dart';
@@ -14,7 +15,6 @@ import 'controllers/IAM_actions.dart';
 import 'controllers/SALEScontrollers/Invoice_actions.dart';
 import 'controllers/SALEScontrollers/Quote_actions.dart';
 import 'controllers/SALEScontrollers/RFQ_actions.dart';
-import 'routes/app_routes.dart';
 import 'services/APIservices/invoker.dart';
 
 Future<void> main() async {
@@ -38,11 +38,11 @@ Future<void> main() async {
   Get.lazyPut<ClientreqController>(() => ClientreqController());
   Get.lazyPut<InvoiceController>(() => InvoiceController());
   Get.lazyPut<QuoteController>(() => QuoteController());
-  Get.lazyPut<RFQController>(() => RFQController());
+  Get.lazyPut<RfqController>(() => RfqController());
   Get.lazyPut<CreditController>(() => CreditController());
   Get.lazyPut<DebitController>(() => DebitController());
   Get.lazyPut<DcController>(() => DcController());
-  Get.lazyPut<PDFpopupController>(() => PDFpopupController());
+  Get.lazyPut<CustomPDF_InvoiceController>(() => CustomPDF_InvoiceController());
   // Get.lazyPut<ViewsendController>(() => ViewsendController());
   if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux)) {
     await windowManager.ensureInitialized();
@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: false,
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Primary_colors.Color3,
-          selectionColor: Color.fromARGB(255, 76, 77, 76),
+          selectionColor: Color.fromARGB(255, 130, 223, 230),
         ),
         scrollbarTheme: ScrollbarThemeData(
           trackColor: WidgetStateProperty.all(

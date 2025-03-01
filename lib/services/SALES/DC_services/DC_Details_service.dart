@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
@@ -18,13 +19,9 @@ mixin DcdetailsService {
 
   void get_requiredData(context, int eventID, String eventType) async {
     try {
-      Map<String, dynamic> body = {
-        "eventid": eventID,
-        "eventtype": eventType
-      };
+      Map<String, dynamic> body = {"eventid": eventID, "eventtype": eventType};
       Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.sales_detailsPreLoader_API);
 
-      print(response);
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
@@ -47,7 +44,9 @@ mixin DcdetailsService {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getProduct_SUGG_List);
 
-      print(response);
+      if (kDebugMode) {
+        print(response);
+      }
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
@@ -71,7 +70,9 @@ mixin DcdetailsService {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getNote_SUGG_List);
 
-      print(response);
+      if (kDebugMode) {
+        print(response);
+      }
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {

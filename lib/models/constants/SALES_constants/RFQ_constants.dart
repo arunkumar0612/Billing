@@ -1,49 +1,93 @@
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/models/entities/SALES/RFQ_entities.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
-import '../../entities/SALES/RFQ_entities.dart';
 
-class RFQModel {
+class RfqModel extends GetxController with GetSingleTickerProviderStateMixin {
   final Rxn<TabController> tabController = Rxn<TabController>();
+  var processID = Rxn<int>();
+  var Rfq_no = Rxn<String>();
+  // var gst_no = Rxn<String>();
+  var Rfq_table_heading = "".obs;
+  var rfq_amount = Rxn<double>();
 
-  var RFQ_no = "".obs;
+  // DETAILS
+  final TitleController = TextEditingController().obs;
+  // final clientAddressNameController = TextEditingController().obs;
+  final clientAddressController = TextEditingController().obs;
+  final gstNumController = TextEditingController().obs;
 
-//######################################################################################################################################
-//DETAILS
-  final vendor_address_controller = TextEditingController().obs;
-  final vendor_phone_controller = TextEditingController().obs;
-  final vendor_email_controller = TextEditingController().obs;
-  var vendor_name_controller = TextEditingController().obs;
+  // final billingAddressNameController = TextEditingController().obs;
+  // final billingAddressController = TextEditingController().obs;
   final detailsKey = GlobalKey<FormState>().obs;
-//######################################################################################################################################
-//PRODUCTS
+  var vendorList = <VendorList>[].obs;
+
+  // PRODUCTS
   final productKey = GlobalKey<FormState>().obs;
   final product_editIndex = Rxn<int>();
   final productNameController = TextEditingController().obs;
+  final hsnController = TextEditingController().obs;
+  final priceController = TextEditingController().obs;
   final quantityController = TextEditingController().obs;
-  var RFQ_products = <RFQProduct>[].obs;
-//######################################################################################################################################
-//NOTES
+  final gstController = TextEditingController().obs;
+  var Rfq_products = <RFQProduct>[].obs;
+  var Rfq_productSuggestion = <ProductSuggestion>[].obs;
+  var Rfq_gstTotals = <RfqGSTtotals>[].obs;
+
+  // NOTES
   final noteformKey = GlobalKey<FormState>().obs;
-  // var notelength = 0.obs;
-  // var Rec_Length = 0.obs;
+  var progress = 0.0.obs;
+  var isLoading = false.obs;
   var note_editIndex = Rxn<int>();
   final notecontentController = TextEditingController().obs;
   var recommendation_editIndex = Rxn<int>();
   final recommendationHeadingController = TextEditingController().obs;
   final recommendationKeyController = TextEditingController().obs;
   final recommendationValueController = TextEditingController().obs;
-  var RFQ_table_heading = "".obs;
-  var RFQ_noteList = <Note>[].obs;
-  var RFQ_recommendationList = <Recommendation>[].obs;
-  // var selectedheadingType = Rxn<String>();
-  final notecontent = <String>[
-    'Delivery within 30 working days from the date of issuing the PO.',
-    'Payment terms : 100% along with PO.',
-    'Client needs to provide Ethernet cable and UPS power supply to the point where the device is proposed to install.',
-  ].obs;
-  // final noteType = [
-  //   'With Heading',
-  //   'Without Heading',
-  // ].obs;
+  var Rfq_noteList = [].obs;
+  var Rfq_recommendationList = <Recommendation>[].obs;
+  final noteSuggestion = <String>[].obs;
+
+  // POST
+  late AnimationController animationController;
+  late Animation<double> animation;
+
+  var pickedFile = Rxn<FilePickerResult>();
+  var selectedPdf = Rxn<File>();
+  var ispdfLoading = false.obs;
+  var whatsapp_selectionStatus = true.obs;
+  var gmail_selectionStatus = true.obs;
+  final phoneController = TextEditingController().obs;
+  final emailController = TextEditingController().obs;
+  final CCemailController = TextEditingController().obs;
+  var feedbackController = TextEditingController().obs;
+  var filePathController = TextEditingController().obs;
+  var CCemailToggle = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    // Initialize AnimationController
+    animationController = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this, // Now 'this' is a valid TickerProvider
+    )..repeat(reverse: true);
+
+    // Initialize Animation
+    animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: Curves.linear,
+      ),
+    );
+  }
+
+  @override
+  void onClose() {
+    animationController.dispose();
+    super.onClose();
+  }
 }

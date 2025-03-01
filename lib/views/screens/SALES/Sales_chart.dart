@@ -86,26 +86,46 @@ class SalesChartState extends State<SalesChart> {
   }
 
   List<PieChartSectionData> showingSections(int completed, int pending) {
-    final List<int> valueList = [completed, pending];
-    return List.generate(2, (i) {
-      final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 15.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-
-      return PieChartSectionData(
-        color: getColor(i),
-        value: valueList[i].toDouble(),
-        title: isTouched ? '${valueList[i]}' : '',
-        radius: radius,
-        titleStyle: TextStyle(
-          fontSize: fontSize,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-          shadows: shadows,
+    if (completed == 0 && pending == 0) {
+      return [
+        PieChartSectionData(
+          color: Colors.grey, // Placeholder color
+          value: 1, // Set a small value to ensure it renders
+          title: '',
+          radius: 15.0,
+          titleStyle: const TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+          ),
         ),
-      );
-    });
+      ];
+    }
+
+    final List<int> valueList = [completed, pending];
+    return List.generate(
+      2,
+      (i) {
+        final isTouched = i == touchedIndex;
+        final fontSize = isTouched ? 25.0 : 16.0;
+        final radius = isTouched ? 60.0 : 15.0;
+        const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+
+        return PieChartSectionData(
+          color: getColor(i),
+          value: valueList[i].toDouble(),
+          title: isTouched ? '${valueList[i]}' : '',
+          radius: radius,
+          titleStyle: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            shadows: shadows,
+          ),
+        );
+      },
+    );
   }
 
   Color getColor(int index) {

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:ssipl_billing/views/screens/BILLING/LEDGER/ViewLedger.dart';
 import 'package:ssipl_billing/themes/style.dart';
@@ -300,10 +302,7 @@ class _pettyCaseState extends State<pettyCase> {
           height: 40,
           decoration: BoxDecoration(
             gradient: const LinearGradient(
-              colors: [
-                Primary_colors.Color3,
-                Primary_colors.Color3
-              ], // Example gradient colors
+              colors: [Primary_colors.Color3, Primary_colors.Color3], // Example gradient colors
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

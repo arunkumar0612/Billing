@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, deprecated_member_use
 
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -148,67 +148,60 @@ class PostDcState extends State<PostDc> with SingleTickerProviderStateMixin {
               ),
               dcController.dcModel.ispdfLoading.value
                   ? Expanded(
-                      child: Container(
-                        // decoration: BoxDecoration(
-                        //   border: Border.all(width: 3, color: const Color.fromARGB(255, 255, 182, 149)),
-                        // ),
-                        child: GestureDetector(
-                          child: Stack(
-                            children: [
-                              dcController.dcModel.selectedPdf.value != null
-                                  ? SfPdfViewer.file(dcController.dcModel.selectedPdf.value!)
-                                  : Container(
-                                      color: Colors.white,
-                                      child: const Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Text("No data available, please refresh the page!")
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                              Align(
-                                alignment: AlignmentDirectional.bottomEnd,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: const Color.fromARGB(255, 184, 184, 184).withOpacity(0.8), // Shadow color
-                                          spreadRadius: 1, // Spread radius of the shadow
-                                          blurRadius: 5, // Blur radius of the shadow
-                                          offset: const Offset(0, 3), // Shadow position
+                      child: GestureDetector(
+                        child: Stack(
+                          children: [
+                            dcController.dcModel.selectedPdf.value != null
+                                ? SfPdfViewer.file(dcController.dcModel.selectedPdf.value!)
+                                : Container(
+                                    color: Colors.white,
+                                    child: const Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [Text("No data available, please refresh the page!")],
                                         ),
                                       ],
                                     ),
-                                    child: IconButton(
-                                      splashColor: Colors.transparent,
-                                      highlightColor: Colors.transparent,
-                                      onPressed: () {
-                                        widget.printPdf();
-                                      },
-                                      icon: const Icon(Icons.print, color: Color.fromARGB(255, 58, 58, 58)),
-                                    ),
+                                  ),
+                            Align(
+                              alignment: AlignmentDirectional.bottomEnd,
+                              child: Padding(
+                                padding: const EdgeInsets.all(5),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color.fromARGB(255, 184, 184, 184).withOpacity(0.8), // Shadow color
+                                        spreadRadius: 1, // Spread radius of the shadow
+                                        blurRadius: 5, // Blur radius of the shadow
+                                        offset: const Offset(0, 3), // Shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: IconButton(
+                                    splashColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onPressed: () {
+                                      widget.printPdf();
+                                    },
+                                    icon: const Icon(Icons.print, color: Color.fromARGB(255, 58, 58, 58)),
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
-                          onDoubleTap: () {
-                            if (dcController.dcModel.selectedPdf.value != null) {
-                              widget.showReadablePdf(context);
-                            } else {
-                              Get.snackbar("No data", "Maximizing is restricted!");
-                              Get.smartManagement;
-                            }
-                          },
+                              ),
+                            )
+                          ],
                         ),
+                        onDoubleTap: () {
+                          if (dcController.dcModel.selectedPdf.value != null) {
+                            widget.showReadablePdf(context);
+                          } else {
+                            Get.snackbar("No data", "Maximizing is restricted!");
+                            Get.smartManagement;
+                          }
+                        },
                       ),
                     )
                   : Expanded(
@@ -324,6 +317,7 @@ class PostDcState extends State<PostDc> with SingleTickerProviderStateMixin {
                         ),
                       ],
                     ),
+                    // ignore: avoid_unnecessary_containers
                     Container(
                       child: Column(
                         children: [

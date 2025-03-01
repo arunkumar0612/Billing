@@ -1,34 +1,36 @@
-import 'dart:io';
+// ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/Sales_actions.dart';
 import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/RFQ_details.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/RFQ_note.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/RFQ_products.dart';
+import 'package:ssipl_billing/views/screens/SALES/Generate_RFQ/post_RFQ.dart';
+
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import '../../../../controllers/SALEScontrollers/RFQ_actions.dart';
-import 'RFQ_details.dart';
-import 'RFQ_note.dart';
-import 'RFQ_products.dart';
 
-class GenerateRFQ extends StatefulWidget {
-  const GenerateRFQ({super.key});
-
+class GenerateRfq extends StatefulWidget {
+  GenerateRfq({super.key, required this.eventID});
+  int eventID;
   @override
-  _GenerateRFQState createState() => _GenerateRFQState();
+  _GenerateRfqState createState() => _GenerateRfqState();
 }
 
-class _GenerateRFQState extends State<GenerateRFQ> with SingleTickerProviderStateMixin {
-  final File _selectedPdf = File('E://RFQ.pdf');
-  final RFQController rfqController = Get.find<RFQController>();
-
+class _GenerateRfqState extends State<GenerateRfq> with SingleTickerProviderStateMixin {
+  final RfqController rfqController = Get.find<RfqController>();
+  final SalesController salesController = Get.find<SalesController>();
   @override
   void initState() {
     super.initState();
-    // GenerateRFQ._tabController = ;
-    rfqController.initializeTabController(TabController(length: 3, vsync: this));
+    // GenerateRfq._tabController = ;
+    rfqController.initializeTabController(TabController(length: 4, vsync: this));
   }
 
   @override
   void dispose() {
-    // GenerateRFQ._tabController.dispose();
+    // GenerateRfq._tabController.dispose();
     rfqController.rfqModel.tabController.value?.dispose();
     super.dispose();
   }
@@ -41,7 +43,7 @@ class _GenerateRFQState extends State<GenerateRFQ> with SingleTickerProviderStat
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
           height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
-          child: SfPdfViewer.file(_selectedPdf),
+          child: SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
         ),
       ),
     );
@@ -58,17 +60,20 @@ class _GenerateRFQState extends State<GenerateRFQ> with SingleTickerProviderStat
                 const Padding(
                   padding: EdgeInsets.all(15),
                   child: Text(
-                    "Client Requirement",
+                    "APPROVED QUOTATION",
                     style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                   ),
                 ),
                 Expanded(
                   child: SizedBox(
                     width: 420,
+                    // decoration: BoxDecoration(
+                    //   border: Border.all(width: 3, color: const Color.fromARGB(255, 161, 232, 250)),
+                    // ),
                     child: GestureDetector(
                       child: Stack(
                         children: [
-                          SfPdfViewer.file(_selectedPdf),
+                          if (salesController.salesModel.pdfFile.value != null) SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
                           Align(
                             alignment: AlignmentDirectional.bottomEnd,
                             child: Padding(
@@ -92,7 +97,18 @@ class _GenerateRFQState extends State<GenerateRFQ> with SingleTickerProviderStat
             ),
             Expanded(
                 child: Container(
-              color: Primary_colors.Light,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: const LinearGradient(
+                  colors: [
+                    // Primary_colors.Dark,
+                    Color.fromARGB(255, 4, 6, 10), // Slightly lighter blue-grey
+                    Primary_colors.Light, // Dark purple/blue
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.centerRight,
+                ),
+              ),
               child: Column(
                 children: [
                   Container(
@@ -113,9 +129,10 @@ class _GenerateRFQState extends State<GenerateRFQ> with SingleTickerProviderStat
                           controller: rfqController.rfqModel.tabController.value,
                           indicator: const BoxDecoration(),
                           tabs: const [
-                            Tab(text: "Details"),
-                            Tab(text: "Product"),
-                            Tab(text: "Note"),
+                            Tab(text: "DETdddAILS"),
+                            Tab(text: "PRODUCT"),
+                            Tab(text: "NOTE"),
+                            Tab(text: "POST"),
                           ],
                         ),
                       ),
@@ -125,28 +142,17 @@ class _GenerateRFQState extends State<GenerateRFQ> with SingleTickerProviderStat
                     child: TabBarView(
                       controller: rfqController.rfqModel.tabController.value,
                       children: [
-                        RFQDetails(),
-                        Container(
-                          color: Primary_colors.Light,
-                          child: RFQProducts(),
+                        RfqDetails(
+                          eventID: widget.eventID,
                         ),
-                        RFQNote(),
+                        RfqProducts(),
+                        RfqNote(),
+                        PostRfq(type: 'E:/${(rfqController.rfqModel.Rfq_no.value ?? "default_filename").replaceAll("/", "-")}.pdf'
+                            // Pass the expected file path
+                            ),
                       ],
                     ),
                   ),
-                  // const Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: [
-                  //     ElevatedButton(
-                  //       onPressed: GenerateRFQ.backTab,
-                  //       child: Text("Back"),
-                  //     ),
-                  //     ElevatedButton(
-                  //       onPressed: GenerateRFQ.nextTab,
-                  //       child: Text("Next"),
-                  //     ),
-                  //   ],
-                  // ),
                 ],
               ),
             ))

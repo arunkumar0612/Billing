@@ -687,11 +687,7 @@ class _BillingState extends State<Billing> {
               )),
               Expanded(
                 flex: 3,
-                child: Container(
-                    width: 414,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10), color: Primary_colors.Dark),
-                    child: const FilterScreen()),
+                child: Container(width: 414, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Primary_colors.Dark), child: const FilterScreen()),
               ),
             ],
           ),
@@ -761,21 +757,17 @@ class _BillingState extends State<Billing> {
                                                   child: Padding(
                                                     padding: const EdgeInsets.all(16),
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.spaceBetween,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       children: [
                                                         Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment.spaceEvenly,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment.start,
+                                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             const Text(
                                                               'TOTAL',
                                                               style: TextStyle(
-                                                                color: Color.fromARGB(
-                                                                    255, 186, 185, 185),
+                                                                color: Color.fromARGB(255, 186, 185, 185),
                                                                 fontSize: 12,
                                                                 fontWeight: FontWeight.w500,
                                                               ),
@@ -790,36 +782,27 @@ class _BillingState extends State<Billing> {
                                                             ),
                                                             Container(
                                                               decoration: BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius.circular(10),
-                                                                color: const Color.fromARGB(
-                                                                    255, 202, 227, 253),
+                                                                borderRadius: BorderRadius.circular(10),
+                                                                color: const Color.fromARGB(255, 202, 227, 253),
                                                               ),
                                                               child: const Padding(
                                                                 padding: EdgeInsets.all(4),
                                                                 child: Text(
                                                                   '210 invoices',
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          Primary_font_size.Text5,
-                                                                      color: Color.fromARGB(
-                                                                          255, 15, 139, 234)),
+                                                                  style: TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 15, 139, 234)),
                                                                 ),
                                                               ),
                                                             )
                                                           ],
                                                         ),
                                                         Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment.spaceEvenly,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment.start,
+                                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             const Text(
                                                               'PAID',
                                                               style: TextStyle(
-                                                                color: Color.fromARGB(
-                                                                    255, 186, 185, 185),
+                                                                color: Color.fromARGB(255, 186, 185, 185),
                                                                 fontSize: 12,
                                                                 fontWeight: FontWeight.w500,
                                                               ),
@@ -834,35 +817,27 @@ class _BillingState extends State<Billing> {
                                                             ),
                                                             Container(
                                                               decoration: BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius.circular(10),
-                                                                color: const Color.fromARGB(
-                                                                    255, 202, 253, 223),
+                                                                borderRadius: BorderRadius.circular(10),
+                                                                color: const Color.fromARGB(255, 202, 253, 223),
                                                               ),
                                                               child: const Padding(
                                                                 padding: EdgeInsets.all(4),
                                                                 child: Text(
                                                                   '210 invoices',
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          Primary_font_size.Text5,
-                                                                      color: Colors.green),
+                                                                  style: TextStyle(fontSize: Primary_font_size.Text5, color: Colors.green),
                                                                 ),
                                                               ),
                                                             )
                                                           ],
                                                         ),
                                                         Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment.spaceEvenly,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment.start,
+                                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             const Text(
                                                               'UNPAID',
                                                               style: TextStyle(
-                                                                color: Color.fromARGB(
-                                                                    255, 186, 185, 185),
+                                                                color: Color.fromARGB(255, 186, 185, 185),
                                                                 fontSize: 12,
                                                                 fontWeight: FontWeight.w500,
                                                               ),
@@ -877,20 +852,14 @@ class _BillingState extends State<Billing> {
                                                             ),
                                                             Container(
                                                               decoration: BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius.circular(10),
-                                                                color: const Color.fromARGB(
-                                                                    255, 253, 206, 202),
+                                                                borderRadius: BorderRadius.circular(10),
+                                                                color: const Color.fromARGB(255, 253, 206, 202),
                                                               ),
                                                               child: const Padding(
                                                                 padding: EdgeInsets.all(4),
                                                                 child: Text(
                                                                   '110 invoices',
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          Primary_font_size.Text5,
-                                                                      color: Color.fromARGB(
-                                                                          255, 234, 29, 15)),
+                                                                  style: TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 234, 29, 15)),
                                                                 ),
                                                               ),
                                                             )
@@ -943,8 +912,7 @@ class _BillingState extends State<Billing> {
                                           // ],
                                           color: Primary_colors.Light),
                                       child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 20, horizontal: 16),
+                                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -959,15 +927,10 @@ class _BillingState extends State<Billing> {
                                                     color: Primary_colors.Color4,
                                                     onPressed: () {
                                                       Navigator.of(context).push(
-                                                        _createCustomPageRoute(
-                                                            () => const ViewLedger()),
+                                                        _createCustomPageRoute(() => const ViewLedger()),
                                                       );
                                                     }),
-                                                _buildIconWithLabel(
-                                                    icon: Icons.receipt_long_outlined,
-                                                    label: 'View Transaction',
-                                                    color: Primary_colors.Color5,
-                                                    onPressed: () {}),
+                                                _buildIconWithLabel(icon: Icons.receipt_long_outlined, label: 'View Transaction', color: Primary_colors.Color5, onPressed: () {}),
                                               ],
                                             ),
                                             const SizedBox(height: 20),
@@ -975,16 +938,8 @@ class _BillingState extends State<Billing> {
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                                               children: [
-                                                _buildIconWithLabel(
-                                                    icon: Icons.info_outline,
-                                                    label: 'View Details',
-                                                    color: Primary_colors.Color6,
-                                                    onPressed: () {}),
-                                                _buildIconWithLabel(
-                                                    icon: Icons.person_outline,
-                                                    label: 'View Customer',
-                                                    color: Primary_colors.Color8,
-                                                    onPressed: () {}),
+                                                _buildIconWithLabel(icon: Icons.info_outline, label: 'View Details', color: Primary_colors.Color6, onPressed: () {}),
+                                                _buildIconWithLabel(icon: Icons.person_outline, label: 'View Customer', color: Primary_colors.Color8, onPressed: () {}),
                                               ],
                                             ),
                                           ],
@@ -1013,9 +968,7 @@ class _BillingState extends State<Billing> {
                                     // ),
                                     Expanded(
                                       child: Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(16),
-                                            color: Primary_colors.Light
+                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Primary_colors.Light
                                             // gradient: const LinearGradient(
                                             //   colors: [Primary_colors.Light, Color.fromARGB(255, 40, 39, 59), Primary_colors.Light],
                                             //   begin: Alignment.topLeft,
@@ -1029,8 +982,7 @@ class _BillingState extends State<Billing> {
                                             //   ),
                                             // ],
                                             ),
-                                        child: const Padding(
-                                            padding: EdgeInsets.all(16), child: Pie_chart()),
+                                        child: const Padding(padding: EdgeInsets.all(16), child: Pie_chart()),
                                       ),
                                     )
                                   ],
@@ -1067,13 +1019,9 @@ class _BillingState extends State<Billing> {
                                       contentPadding: const EdgeInsets.all(1),
                                       filled: true,
                                       fillColor: Primary_colors.Light,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: const BorderSide(color: Colors.transparent)),
+                                      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Colors.transparent)),
                                       // enabledBorder: InputBorder.none, // Removes the enabled border
-                                      enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: const BorderSide(color: Colors.transparent)),
+                                      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Colors.transparent)),
                                       hintStyle: const TextStyle(
                                         fontSize: Primary_font_size.Text7,
                                         color: Color.fromARGB(255, 167, 165, 165),
@@ -1095,9 +1043,7 @@ class _BillingState extends State<Billing> {
                                   child: DropdownButtonFormField<String>(
                                     style: const TextStyle(fontSize: 13, color: Colors.white),
                                     decoration: InputDecoration(
-                                        contentPadding: const EdgeInsets.symmetric(
-                                            vertical: 10,
-                                            horizontal: 10), // Adjust padding to center the hint
+                                        contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10), // Adjust padding to center the hint
                                         filled: true,
                                         fillColor: Primary_colors.Light,
                                         focusedBorder: OutlineInputBorder(
@@ -1116,20 +1062,16 @@ class _BillingState extends State<Billing> {
                                         // alignLabelWithHint: true, // Helps to align hint text
                                         label: const Text(
                                           'Select type',
-                                          style: TextStyle(
-                                              color: Color.fromARGB(255, 162, 162, 162),
-                                              fontSize: Primary_font_size.Text7),
+                                          style: TextStyle(color: Color.fromARGB(255, 162, 162, 162), fontSize: Primary_font_size.Text7),
                                         )),
                                     dropdownColor: Primary_colors.Dark,
                                     value: Selected_billingtype, // Bind your selected value here
                                     onChanged: (String? newValue) {
                                       setState(() {
-                                        Selected_billingtype =
-                                            newValue; // Update the selected value
+                                        Selected_billingtype = newValue; // Update the selected value
                                       });
                                     },
-                                    items: billing_type
-                                        .map<DropdownMenuItem<String>>((String customer) {
+                                    items: billing_type.map<DropdownMenuItem<String>>((String customer) {
                                       return DropdownMenuItem<String>(
                                         value: customer,
                                         child: Text(customer),
@@ -1159,8 +1101,7 @@ class _BillingState extends State<Billing> {
                       const SizedBox(height: 15),
                       Expanded(
                         child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10), color: Primary_colors.Light),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Primary_colors.Light),
                           padding: const EdgeInsets.all(10),
                           child: Column(
                             children: [
@@ -1168,15 +1109,11 @@ class _BillingState extends State<Billing> {
                                 height: 40,
                                 decoration: BoxDecoration(
                                   gradient: const LinearGradient(
-                                    colors: [
-                                      Primary_colors.Color3,
-                                      Primary_colors.Color3
-                                    ], // Example gradient colors
+                                    colors: [Primary_colors.Color3, Primary_colors.Color3], // Example gradient colors
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                   ),
-                                  borderRadius: BorderRadius.circular(
-                                      10), // Ensure border radius for smooth corners
+                                  borderRadius: BorderRadius.circular(10), // Ensure border radius for smooth corners
                                 ),
                                 child: const Padding(
                                   padding: EdgeInsets.all(10),
@@ -1186,80 +1123,56 @@ class _BillingState extends State<Billing> {
                                         flex: 2,
                                         child: Text(
                                           'Invoice ID',
-                                          style: TextStyle(
-                                              color: Primary_colors.Color1,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: Primary_font_size.Text7),
+                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                                         ),
                                       ),
                                       Expanded(
                                         flex: 4,
                                         child: Text(
                                           'Client Name',
-                                          style: TextStyle(
-                                              color: Primary_colors.Color1,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: Primary_font_size.Text7),
+                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                                         ),
                                       ),
                                       Expanded(
                                         flex: 2,
                                         child: Text(
                                           'Type',
-                                          style: TextStyle(
-                                              color: Primary_colors.Color1,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: Primary_font_size.Text7),
+                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                                         ),
                                       ),
                                       Expanded(
                                         flex: 4,
                                         child: Text(
                                           'Product',
-                                          style: TextStyle(
-                                              color: Primary_colors.Color1,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: Primary_font_size.Text7),
+                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                                         ),
                                       ),
                                       Expanded(
                                         flex: 2,
                                         child: Text(
                                           'Date',
-                                          style: TextStyle(
-                                              color: Primary_colors.Color1,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: Primary_font_size.Text7),
+                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                                         ),
                                       ),
                                       Expanded(
                                         flex: 2,
                                         child: Text(
                                           'Amount',
-                                          style: TextStyle(
-                                              color: Primary_colors.Color1,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: Primary_font_size.Text7),
+                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                                         ),
                                       ),
                                       Expanded(
                                         flex: 2,
                                         child: Text(
                                           'Status',
-                                          style: TextStyle(
-                                              color: Primary_colors.Color1,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: Primary_font_size.Text7),
+                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                                         ),
                                       ),
                                       Expanded(
                                         flex: 2,
                                         child: Text(
                                           '',
-                                          style: TextStyle(
-                                              color: Primary_colors.Color1,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: Primary_font_size.Text7),
+                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                                         ),
                                       )
                                     ],
@@ -1350,8 +1263,7 @@ class _BillingState extends State<Billing> {
                       flex: 2,
                       child: Text(
                         invoice_list[index]['invoice_id'],
-                        style: const TextStyle(
-                            color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
@@ -1362,6 +1274,7 @@ class _BillingState extends State<Billing> {
                               width: 35,
                               height: 35,
                               decoration: BoxDecoration(
+                                // ignore: deprecated_member_use
                                 color: Primary_colors.Color5.withOpacity(0.1),
                                 shape: BoxShape.circle,
                               ),
@@ -1369,18 +1282,15 @@ class _BillingState extends State<Billing> {
                                 child: Image.asset(
                                   invoice_list[index]['image'],
                                   fit: BoxFit.cover, // Ensures the image covers the container
-                                  width:
-                                      double.infinity, // Makes the image fill the container's width
-                                  height: double
-                                      .infinity, // Makes the image fill the container's height
+                                  width: double.infinity, // Makes the image fill the container's width
+                                  height: double.infinity, // Makes the image fill the container's height
                                 ),
                               ),
                             ),
                             const SizedBox(width: 5),
                             Text(
                               invoice_list[index]['clientname'],
-                              style: const TextStyle(
-                                  color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                              style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                             ),
                           ],
                         )),
@@ -1388,32 +1298,28 @@ class _BillingState extends State<Billing> {
                       flex: 2,
                       child: Text(
                         invoice_list[index]['type'],
-                        style: const TextStyle(
-                            color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
                       flex: 4,
                       child: Text(
                         invoice_list[index]['product'],
-                        style: const TextStyle(
-                            color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
                       flex: 2,
                       child: Text(
                         invoice_list[index]['date'],
-                        style: const TextStyle(
-                            color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
                       flex: 2,
                       child: Text(
                         invoice_list[index]['amount'],
-                        style: const TextStyle(
-                            color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
@@ -1425,17 +1331,13 @@ class _BillingState extends State<Billing> {
                               width: 60,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: invoice_list[index]['Status'] == 'Paid'
-                                    ? const Color.fromARGB(193, 222, 244, 223)
-                                    : const Color.fromARGB(208, 244, 214, 212),
+                                color: invoice_list[index]['Status'] == 'Paid' ? const Color.fromARGB(193, 222, 244, 223) : const Color.fromARGB(208, 244, 214, 212),
                               ),
                               child: Center(
                                 child: Text(
                                   invoice_list[index]['Status'],
                                   style: TextStyle(
-                                      color: invoice_list[index]['Status'] == 'Paid'
-                                          ? const Color.fromARGB(255, 0, 122, 4)
-                                          : Colors.red,
+                                      color: invoice_list[index]['Status'] == 'Paid' ? const Color.fromARGB(255, 0, 122, 4) : Colors.red,
                                       fontSize: Primary_font_size.Text5,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -1482,8 +1384,7 @@ class _BillingState extends State<Billing> {
                       flex: 2,
                       child: Text(
                         paidInvoices[index]['invoice_id'],
-                        style: const TextStyle(
-                            color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
@@ -1494,6 +1395,7 @@ class _BillingState extends State<Billing> {
                             width: 35,
                             height: 35,
                             decoration: BoxDecoration(
+                              // ignore: deprecated_member_use
                               color: Primary_colors.Color5.withOpacity(0.1),
                               shape: BoxShape.circle,
                             ),
@@ -1509,8 +1411,7 @@ class _BillingState extends State<Billing> {
                           const SizedBox(width: 5),
                           Text(
                             paidInvoices[index]['clientname'],
-                            style: const TextStyle(
-                                color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                            style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                           ),
                         ],
                       ),
@@ -1519,32 +1420,28 @@ class _BillingState extends State<Billing> {
                       flex: 2,
                       child: Text(
                         paidInvoices[index]['type'],
-                        style: const TextStyle(
-                            color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
                       flex: 4,
                       child: Text(
                         paidInvoices[index]['product'],
-                        style: const TextStyle(
-                            color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
                       flex: 2,
                       child: Text(
                         paidInvoices[index]['date'],
-                        style: const TextStyle(
-                            color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
                       flex: 2,
                       child: Text(
                         paidInvoices[index]['amount'],
-                        style: const TextStyle(
-                            color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
@@ -1595,8 +1492,7 @@ class _BillingState extends State<Billing> {
       itemCount: invoice_list.where((invoice) => invoice['Status'] == 'Pending').length,
       itemBuilder: (context, index) {
         // Filter the list to include only 'Paid' invoices
-        final paidInvoices =
-            invoice_list.where((invoice) => invoice['Status'] == 'Pending').toList();
+        final paidInvoices = invoice_list.where((invoice) => invoice['Status'] == 'Pending').toList();
 
         return Padding(
           padding: const EdgeInsets.only(top: 10),
@@ -1615,8 +1511,7 @@ class _BillingState extends State<Billing> {
                       flex: 2,
                       child: Text(
                         paidInvoices[index]['invoice_id'],
-                        style: const TextStyle(
-                            color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
@@ -1627,6 +1522,7 @@ class _BillingState extends State<Billing> {
                             width: 35,
                             height: 35,
                             decoration: BoxDecoration(
+                              // ignore: deprecated_member_use
                               color: Primary_colors.Color5.withOpacity(0.1),
                               shape: BoxShape.circle,
                             ),
@@ -1642,8 +1538,7 @@ class _BillingState extends State<Billing> {
                           const SizedBox(width: 5),
                           Text(
                             paidInvoices[index]['clientname'],
-                            style: const TextStyle(
-                                color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                            style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                           ),
                         ],
                       ),
@@ -1652,32 +1547,28 @@ class _BillingState extends State<Billing> {
                       flex: 2,
                       child: Text(
                         paidInvoices[index]['type'],
-                        style: const TextStyle(
-                            color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
                       flex: 4,
                       child: Text(
                         paidInvoices[index]['product'],
-                        style: const TextStyle(
-                            color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
                       flex: 2,
                       child: Text(
                         paidInvoices[index]['date'],
-                        style: const TextStyle(
-                            color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
                       flex: 2,
                       child: Text(
                         paidInvoices[index]['amount'],
-                        style: const TextStyle(
-                            color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(

@@ -71,6 +71,7 @@ void Basic_SnackBar(BuildContext context, String message) {
     leftBarIndicatorColor: Primary_colors.Color1,
     boxShadows: [
       BoxShadow(
+        // ignore: deprecated_member_use
         color: Primary_colors.Color3.withOpacity(0.3),
         blurRadius: 10,
         spreadRadius: 2,

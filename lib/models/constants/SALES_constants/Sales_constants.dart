@@ -1,9 +1,10 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/SALES/Sales_entities.dart';
 
-class SalesModel {
+class SalesModel extends GetxController with GetSingleTickerProviderStateMixin {
   var customerList = <Customer>[].obs;
   var processcustomerList = <Processcustomer>[].obs;
   var processList = <Process>[].obs;
@@ -18,4 +19,5 @@ class SalesModel {
   Rxn<Salesdata> salesdata = Rxn<Salesdata>(); // Nullable
   var salesperiod = 'monthly'.obs;
   Rxn<Clientprofiledata> Clientprofile = Rxn<Clientprofiledata>(); // Nullable
+  late AnimationController animationController;
 }

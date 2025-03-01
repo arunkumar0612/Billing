@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks, duplicate_ignore
+
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/DC_entities.dart';
@@ -5,6 +7,7 @@ import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 
 mixin DcproductService {
   final DcController dcController = Get.find<DcController>();
+
   void clearFields() {
     dcController.dcModel.productNameController.value.clear();
     dcController.dcModel.hsnController.value.clear();
@@ -15,13 +18,22 @@ mixin DcproductService {
 
   void addproduct(context) {
     if (dcController.dcModel.productKey.value.currentState?.validate() ?? false) {
-      bool exists = dcController.dcModel.Dc_products.any((product) => product.productName == dcController.dcModel.productNameController.value.text && product.hsn == dcController.dcModel.hsnController.value.text && product.quantity == int.parse(dcController.dcModel.quantityController.value.text));
+      bool exists = dcController.dcModel.Dc_products.any((product) =>
+          product.productName == dcController.dcModel.productNameController.value.text &&
+          product.hsn == dcController.dcModel.hsnController.value.text &&
+          product.quantity == int.parse(dcController.dcModel.quantityController.value.text));
 
       if (exists) {
         Get.snackbar("Product", "This product already exists.");
         return;
       }
-      dcController.addProduct(context: context, productName: dcController.dcModel.productNameController.value.text, hsn: dcController.dcModel.hsnController.value.text, price: double.parse(dcController.dcModel.priceController.value.text), quantity: int.parse(dcController.dcModel.quantityController.value.text), gst: double.parse(dcController.dcModel.gstController.value.text));
+      dcController.addProduct(
+          context: context,
+          productName: dcController.dcModel.productNameController.value.text,
+          hsn: dcController.dcModel.hsnController.value.text,
+          price: double.parse(dcController.dcModel.priceController.value.text),
+          quantity: int.parse(dcController.dcModel.quantityController.value.text),
+          gst: double.parse(dcController.dcModel.gstController.value.text));
 
       clearFields();
     }
@@ -74,5 +86,21 @@ mixin DcproductService {
   void resetEditingState() {
     clearFields();
     dcController.addProductEditindex(null);
+  }
+
+  void addto_Selectedproducts() {
+    dcController.dcModel.selected_dcProducts.clear();
+    dcController.dcModel.product_feedback.value = null;
+    int pendingProducts = 0;
+    for (int i = 0; i < dcController.dcModel.checkboxValues.length; i++) {
+      if (dcController.dcModel.checkboxValues[i]) {
+        dcController.dcModel.selected_dcProducts.add(dcController.dcModel.Dc_products[i]);
+      } else {
+        pendingProducts += 1;
+      }
+    }
+    if (pendingProducts != 0) {
+      dcController.dcModel.product_feedback.value = "still $pendingProducts products needs to be deliverd!";
+    }
   }
 }

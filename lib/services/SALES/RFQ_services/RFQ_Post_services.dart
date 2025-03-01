@@ -1,0 +1,120 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pdf/pdf.dart';
+import 'package:printing/printing.dart';
+import 'package:ssipl_billing/controllers/IAM_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
+import 'package:ssipl_billing/models/entities/SALES/RFQ_entities.dart';
+import 'package:ssipl_billing/utils/helpers/support_functions.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'dart:io';
+import 'package:ssipl_billing/models/constants/api.dart';
+import 'package:ssipl_billing/models/entities/Response_entities.dart';
+import 'package:ssipl_billing/services/APIservices/invoker.dart';
+import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
+
+mixin PostServices {
+  final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
+  final RfqController rfqController = Get.find<RfqController>();
+  final Invoker apiController = Get.find<Invoker>();
+  void animation_control() async {
+    // await Future.delayed(const Duration(milliseconds: 200));
+    rfqController.setpdfLoading(false);
+
+    await Future.wait([
+      // widget.savePdfToCache(),
+      Future.delayed(const Duration(seconds: 4))
+    ]);
+
+    rfqController.setpdfLoading(true);
+  }
+
+  void showReadablePdf(context) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+          height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
+          child: SfPdfViewer.file(rfqController.rfqModel.selectedPdf.value!),
+        ),
+      ),
+    );
+  }
+
+  Future<void> printPdf() async {
+    if (kDebugMode) {
+      print('Selected PDF Path: ${rfqController.rfqModel.selectedPdf.value}');
+    }
+
+    try {
+      await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async {
+          final pdfBytes = await rfqController.rfqModel.selectedPdf.value!.readAsBytes();
+          return pdfBytes;
+        },
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error printing PDF: $e');
+      }
+    }
+  }
+
+  dynamic postData(context, int messageType) async {
+    try {
+      if (rfqController.postDatavalidation()) {
+        await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
+        return;
+      }
+      File cachedPdf = rfqController.rfqModel.selectedPdf.value!;
+      // savePdfToCache();
+      Post_Rfq salesData = Post_Rfq.fromJson(
+          title: rfqController.rfqModel.TitleController.value.text,
+          processid: rfqController.rfqModel.processID.value!,
+          ClientAddressname: "",
+          ClientAddress: rfqController.rfqModel.clientAddressController.value.text,
+          billingAddressName: "",
+          billingAddress: "",
+          emailId: rfqController.rfqModel.emailController.value.text,
+          phoneNo: rfqController.rfqModel.phoneController.value.text,
+          gst: rfqController.rfqModel.gstController.value.text,
+          product: rfqController.rfqModel.Rfq_products,
+          notes: rfqController.rfqModel.Rfq_noteList,
+          date: getCurrentDate(),
+          rfqGenID: rfqController.rfqModel.Rfq_no.value!,
+          messageType: messageType,
+          feedback: rfqController.rfqModel.feedbackController.value.text,
+          ccEmail: rfqController.rfqModel.CCemailController.value.text,
+          total_amount: rfqController.rfqModel.rfq_amount.value!);
+
+      await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
+    } catch (e) {
+      await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {}, showCancel: false);
+    }
+  }
+
+  dynamic send_data(context, String jsonData, File file) async {
+    try {
+      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.add_rfq);
+      if (response['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response);
+        if (value.code) {
+          await Basic_dialog(context: context, title: "Rfq", content: value.message!, onOk: () {}, showCancel: false);
+          // Navigator.of(context).pop(true);
+          // rfqController.resetData();
+        } else {
+          await Basic_dialog(context: context, title: 'Processing Rfq', content: value.message ?? "", onOk: () {}, showCancel: false);
+        }
+      } else {
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+      }
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+    }
+  }
+}

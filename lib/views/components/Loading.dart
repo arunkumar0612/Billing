@@ -12,6 +12,11 @@ void showLoading(BuildContext context, Future<dynamic> Function() apiCall) {
       final navigator = Navigator.of(context);
 
       // Start the API call and close the dialog when done
+      // Future.wait([
+      //   apiCall(),
+      //   Future.delayed(const Duration(seconds: 2)), // Ensures at least 2 sec delay
+      // ])
+
       apiCall().then((_) {
         if (navigator.mounted) {
           navigator.pop(); // Close loader when API call completes

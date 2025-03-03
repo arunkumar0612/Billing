@@ -692,16 +692,32 @@ class PostDcState extends State<PostDc> with SingleTickerProviderStateMixin {
                     const SizedBox(
                       height: 10,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: BasicButton(
-                              text: "Send",
-                              colors: Colors.blue,
-                              onPressed: () {
-                                showLoading(context, () => widget.postData(context, dcController.fetch_messageType()));
-                              })),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Align(
+                              alignment: Alignment.centerRight,
+                              child: BasicButton(
+                                  text: "Back",
+                                  colors: Colors.red,
+                                  onPressed: () {
+                                    dcController.backTab();
+                                  })),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Align(
+                              alignment: Alignment.centerRight,
+                              child: BasicButton(
+                                  text: "Send",
+                                  colors: Colors.blue,
+                                  onPressed: () {
+                                    showLoading(context, () => widget.postData(context, dcController.fetch_messageType()));
+                                  })),
+                        ),
+                      ],
                     )
                   ],
                 ),

@@ -689,17 +689,33 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                     const SizedBox(
                       height: 10,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: BasicButton(
-                              text: "Send",
-                              colors: Colors.blue,
-                              onPressed: () {
-                                print(invoiceController.invoiceModel.invoice_amount.value);
-                                showLoading(context, () => widget.postData(context, invoiceController.fetch_messageType()));
-                              })),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Align(
+                              alignment: Alignment.centerRight,
+                              child: BasicButton(
+                                  text: "Back",
+                                  colors: Colors.red,
+                                  onPressed: () {
+                                    invoiceController.backTab();
+                                  })),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Align(
+                              alignment: Alignment.centerRight,
+                              child: BasicButton(
+                                  text: "Send",
+                                  colors: Colors.blue,
+                                  onPressed: () {
+                                    print(invoiceController.invoiceModel.invoice_amount.value);
+                                    showLoading(context, () => widget.postData(context, invoiceController.fetch_messageType()));
+                                  })),
+                        )
+                      ],
                     )
                   ],
                 ),

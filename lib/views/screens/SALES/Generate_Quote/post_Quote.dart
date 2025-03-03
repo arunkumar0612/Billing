@@ -689,16 +689,32 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                     const SizedBox(
                       height: 10,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: BasicButton(
-                              text: "Send",
-                              colors: Colors.blue,
-                              onPressed: () {
-                                showLoading(context, () => widget.postData(context, quoteController.fetch_messageType(), widget.eventtype));
-                              })),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Align(
+                              alignment: Alignment.centerRight,
+                              child: BasicButton(
+                                  text: "Back",
+                                  colors: Colors.red,
+                                  onPressed: () {
+                                    quoteController.backTab();
+                                  })),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Align(
+                              alignment: Alignment.centerRight,
+                              child: BasicButton(
+                                  text: "Send",
+                                  colors: Colors.blue,
+                                  onPressed: () {
+                                    showLoading(context, () => widget.postData(context, quoteController.fetch_messageType(), widget.eventtype));
+                                  })),
+                        )
+                      ],
                     )
                   ],
                 ),

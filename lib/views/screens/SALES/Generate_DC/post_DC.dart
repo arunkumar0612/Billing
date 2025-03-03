@@ -8,6 +8,7 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
 import 'package:ssipl_billing/services/SALES/DC_services/DcPost_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
+import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -699,7 +700,7 @@ class PostDcState extends State<PostDc> with SingleTickerProviderStateMixin {
                               text: "Send",
                               colors: Colors.blue,
                               onPressed: () {
-                                widget.postData(context, dcController.fetch_messageType());
+                                showLoading(context, () => widget.postData(context, dcController.fetch_messageType()));
                               })),
                     )
                   ],

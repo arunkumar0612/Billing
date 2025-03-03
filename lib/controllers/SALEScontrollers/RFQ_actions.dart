@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
+import 'package:ssipl_billing/views/components/Loading.dart';
 import '../../models/constants/SALES_constants/Rfq_constants.dart';
 import '../../models/entities/SALES/RFQ_entities.dart';
 import '../../models/entities/SALES/product_entities.dart';
@@ -68,7 +69,7 @@ class RfqController extends GetxController {
   //   rfqModel.clientAddressNameController.value.text = text;
   // }
 
-  void updateClientAddress(String text) {
+  void updateAddress(String text) {
     rfqModel.AddressController.value.text = text;
   }
 
@@ -164,10 +165,6 @@ class RfqController extends GetxController {
   // Update file path text
   void updateFilePath(String filePath) {
     rfqModel.filePathController.value.text = filePath;
-  }
-
-  void update_rfqAmount(double amount) {
-    rfqModel.rfq_amount.value = amount;
   }
 
   Future<void> pickFile(BuildContext context) async {
@@ -398,27 +395,28 @@ class RfqController extends GetxController {
     rfqModel.Rfq_products.removeAt(index);
   }
 
-  // void update_requiredData(CMDmResponse value) {
-  //   RequiredData instance = RequiredData.fromJson(value);
-  //   rfqModel.Rfq_no.value = instance.eventnumber;
-  //   updateRfqnumber(instance.eventnumber);
-  //   updateTitle(instance.title!);
-  //   updateEmail(instance.emailId!);
-  //   updateGSTnumber(instance.gst!);
-  //   updatePhone(instance.phoneNo!);
-  //   // updateClientAddressName(instance.name!);
-  //   updateClientAddress(instance.address!);
-  //   // updateBillingAddressName(instance.billingAddressName!);
-  //   // updateBillingAddress(instance.billingAddress!);
-  //   updateProducts(instance.product);
-  //   // for(int i=0;i<instance.product.length;i++){
-  //   //    rfqController.addProduct(context: context, productName: rfqController.rfqModel.productNameController.value.text, hsn: rfqController.rfqModel.hsnController.value.text, price: double.parse(rfqController.rfqModel.priceController.value.text), quantity: int.parse(rfqController.rfqModel.quantityController.value.text), gst: double.parse(rfqController.rfqModel.gstController.value.text));
+  void update_requiredData(CMDmResponse value) {
+    RequiredData instance = RequiredData.fromJson(value);
+    rfqModel.Rfq_no.value = instance.eventnumber;
+    // updateRfqnumber(instance.eventnumber);
+    // updateTitle(instance.title!);
+    // updateEmail(instance.emailId!);
+    // updateGSTnumber(instance.gst!);
+    // updatePhone(instance.phoneNo!);
+    // // updateClientAddressName(instance.name!);
+    // updateClientAddress(instance.address!);
+    // // updateBillingAddressName(instance.billingAddressName!);
+    // // updateBillingAddress(instance.billingAddress!);
+    // updateProducts(instance.product);
+    // // for(int i=0;i<instance.product.length;i++){
+    // //    rfqController.addProduct(context: context, productName: rfqController.rfqModel.productNameController.value.text, hsn: rfqController.rfqModel.hsnController.value.text, price: double.parse(rfqController.rfqModel.priceController.value.text), quantity: int.parse(rfqController.rfqModel.quantityController.value.text), gst: double.parse(rfqController.rfqModel.gstController.value.text));
 
-  //   // }
-  // }
+    // // }
+  }
 
   void on_vendorSelected() {}
   void update_vendorList(CMDlResponse value) {
+    rfqModel.vendorList.clear();
     for (int i = 0; i < value.data.length; i++) {
       rfqModel.vendorList.add(VendorList.fromJson(value, i));
       if (kDebugMode) {
@@ -431,6 +429,8 @@ class RfqController extends GetxController {
   }
 
   void update_vendorCredentials_onSelect(VendorList selectedVendor) {
+    rfqModel.vendorName.value = selectedVendor.vendorName;
+    rfqModel.vendorID.value = selectedVendor.vendorID;
     rfqModel.AddressController.value.text = selectedVendor.vendorAddress;
     rfqModel.emailController.value.text = selectedVendor.vendorMail;
     rfqModel.phoneController.value.text = selectedVendor.vendorPhoneNo;
@@ -439,6 +439,8 @@ class RfqController extends GetxController {
   bool postDatavalidation() {
     return (rfqModel.TitleController.value.text.isEmpty ||
             rfqModel.processID.value == null ||
+            rfqModel.vendorID.value == null ||
+            rfqModel.vendorName.value == null ||
             // rfqModel.clientAddressNameController.value.text.isEmpty ||
             rfqModel.AddressController.value.text.isEmpty ||
             // rfqModel.billingAddressNameController.value.text.isEmpty ||
@@ -456,6 +458,8 @@ class RfqController extends GetxController {
     rfqModel.tabController.value = null;
     rfqModel.processID.value = null;
     rfqModel.Rfq_no.value = null;
+    rfqModel.vendorID.value = null;
+    rfqModel.vendorName.value = null;
     // rfqModel.gstNumController.value.text = "";
     rfqModel.Rfq_table_heading.value = "";
 

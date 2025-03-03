@@ -21,6 +21,7 @@ import 'package:ssipl_billing/services/SALES/sales_service.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
+import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/screens/SALES/Sales_chart.dart';
 import 'package:ssipl_billing/views/screens/SALES/CustomPDF/CustomPDF_invoicePDF.dart';
 import '../../../controllers/SALEScontrollers/Sales_actions.dart';
@@ -1002,14 +1003,71 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                   width: 40,
                                                                   padding: const EdgeInsets.all(8),
                                                                   decoration: BoxDecoration(
+                                                                    gradient: LinearGradient(
+                                                                      begin: Alignment.topLeft,
+                                                                      end: Alignment.bottomRight,
+                                                                      colors: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
+                                                                          ? [
+                                                                              const Color.fromARGB(78, 0, 0, 0),
+                                                                              const Color.fromARGB(36, 231, 139, 33),
+                                                                            ]
+                                                                          : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Invoice"
+                                                                              ? [
+                                                                                  const Color.fromARGB(66, 0, 0, 0),
+                                                                                  const Color.fromARGB(24, 118, 253, 129),
+                                                                                ]
+                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
+                                                                                  ? [
+                                                                                      const Color.fromARGB(78, 0, 0, 0),
+                                                                                      const Color.fromARGB(38, 223, 55, 55),
+                                                                                    ]
+                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
+                                                                                      ? [
+                                                                                          const Color.fromARGB(78, 0, 0, 0),
+                                                                                          const Color.fromARGB(24, 118, 253, 129),
+                                                                                        ]
+                                                                                      : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
+                                                                                          ? [
+                                                                                              const Color.fromARGB(78, 0, 0, 0),
+                                                                                              const Color.fromARGB(43, 0, 76, 240),
+                                                                                            ]
+                                                                                          : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
+                                                                                                  "Request for Quotation"
+                                                                                              ? [
+                                                                                                  const Color.fromARGB(78, 0, 0, 0),
+                                                                                                  const Color.fromARGB(43, 114, 114, 114),
+                                                                                                ]
+                                                                                              : [Colors.white],
+                                                                    ),
+                                                                    border: Border.all(
+                                                                      color: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
+                                                                          ? const Color.fromARGB(255, 243, 131, 56)
+                                                                          : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
+                                                                              ? Colors.green
+                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Invoice"
+                                                                                  ? Colors.green
+                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
+                                                                                      ? Colors.red
+                                                                                      : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
+                                                                                          ? Colors.blue
+                                                                                          : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
+                                                                                                  "Request for Quotation"
+                                                                                              ? Colors.grey
+                                                                                              : Colors.white,
+                                                                      width: 2,
+                                                                    ),
                                                                     shape: BoxShape.circle,
-                                                                    color: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
-                                                                        ? const Color.fromARGB(223, 37, 39, 1)
-                                                                        : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Invoice"
-                                                                            ? const Color.fromARGB(0, 255, 255, 255)
-                                                                            : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
-                                                                                ? const Color.fromARGB(0, 218, 162, 255)
-                                                                                : const Color.fromARGB(0, 236, 145, 118),
+                                                                    // color: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
+                                                                    //     ? const Color.fromARGB(36, 231, 139, 33)
+                                                                    //     : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Invoice"
+                                                                    //         ? const Color.fromARGB(24, 118, 253, 129)
+                                                                    //         : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
+                                                                    //             ? const Color.fromARGB(38, 223, 55, 55)
+                                                                    //             : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
+                                                                    //                 ? const Color.fromARGB(24, 118, 253, 129)
+                                                                    //                 : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
+                                                                    //                     ? const Color.fromARGB(43, 0, 76, 240)
+                                                                    //                     : Colors.white,
                                                                   ),
                                                                   // child: const Icon(
                                                                   //   Icons.event,
@@ -1023,7 +1081,14 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                               ? 'assets/images/invoice.png'
                                                                               : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
                                                                                   ? 'assets/images/dc.png'
-                                                                                  : 'assets/images/Estimate.png',
+                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
+                                                                                      ? 'assets/images/Estimate.png'
+                                                                                      : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
+                                                                                          ? 'assets/images/revision.png'
+                                                                                          : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
+                                                                                                  "Request for Quotation"
+                                                                                              ? 'assets/images/rfq.png'
+                                                                                              : 'assets/images/Estimate.png',
                                                                       fit: BoxFit.fill,
                                                                       width: 30,
                                                                       height: 30,

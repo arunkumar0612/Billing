@@ -8,6 +8,7 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
 import 'package:ssipl_billing/services/SALES/Quotation_services/QuotePost_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
+import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -696,7 +697,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                               text: "Send",
                               colors: Colors.blue,
                               onPressed: () {
-                                widget.postData(context, quoteController.fetch_messageType(), widget.eventtype);
+                                showLoading(context, () => widget.postData(context, quoteController.fetch_messageType(), widget.eventtype));
                               })),
                     )
                   ],

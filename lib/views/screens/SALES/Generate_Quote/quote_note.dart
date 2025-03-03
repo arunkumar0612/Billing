@@ -178,7 +178,8 @@ class _QuoteNoteState extends State<QuoteNote> {
                                       color: Colors.black,
                                     ),
                                   ),
-                                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)), borderSide: BorderSide(color: Colors.black)),
+                                  enabledBorder:
+                                      OutlineInputBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)), borderSide: BorderSide(color: Colors.black)),
                                   border: OutlineInputBorder(),
                                   hintStyle: TextStyle(
                                     fontSize: 13,

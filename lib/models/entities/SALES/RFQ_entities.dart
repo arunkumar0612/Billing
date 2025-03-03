@@ -66,41 +66,42 @@ class RfqGSTtotals {
 
 class RequiredData {
   final String eventnumber;
-  final String? title;
-  final String? name;
-  final String? emailId;
-  final String? phoneNo;
-  final String? address;
-  final String? gst;
-  final String? billingAddressName;
-  final String? billingAddress;
-  final List<RFQProduct> product;
-  RequiredData(
-      {required this.eventnumber,
-      required this.title,
-      required this.name,
-      required this.emailId,
-      required this.phoneNo,
-      required this.address,
-      required this.gst,
-      required this.billingAddressName,
-      required this.billingAddress,
-      required this.product});
+  // final String? title;
+  // final String? name;
+  // final String? emailId;
+  // final String? phoneNo;
+  // final String? address;
+  // final String? gst;
+  // final String? billingAddressName;
+  // final String? billingAddress;
+  // final List<RFQProduct> product;
+  RequiredData({
+    required this.eventnumber,
+    // required this.title,
+    // required this.name,
+    // required this.emailId,
+    // required this.phoneNo,
+    // required this.address,
+    // required this.gst,
+    // required this.billingAddressName,
+    // required this.billingAddress,
+    // required this.product
+  });
 
   factory RequiredData.fromJson(CMDmResponse json) {
     return RequiredData(
       eventnumber: json.data['eventnumber'] as String,
-      title: json.data['title'] as String,
-      name: json.data['client_addressname'] as String,
-      emailId: json.data['emailid'] as String,
-      phoneNo: json.data['contact_number'] as String,
-      address: json.data['client_address'] as String,
-      gst: json.data['gstnumber'] as String,
-      billingAddressName: json.data['billingaddress_name'] as String,
-      billingAddress: json.data['billing_address'] as String,
-      product: (json.data['product'] as List<dynamic>)
-          .map((e) => RFQProduct.fromJson(e)) // ✅ Convert each item to RfqProduct
-          .toList(),
+      // title: json.data['title'] as String,
+      // name: json.data['client_addressname'] as String,
+      // emailId: json.data['emailid'] as String,
+      // phoneNo: json.data['contact_number'] as String,
+      // address: json.data['client_address'] as String,
+      // gst: json.data['gstnumber'] as String,
+      // billingAddressName: json.data['billingaddress_name'] as String,
+      // billingAddress: json.data['billing_address'] as String,
+      // product: (json.data['product'] as List<dynamic>)
+      //     .map((e) => RFQProduct.fromJson(e)) // ✅ Convert each item to RfqProduct
+      //     .toList(),
     );
   }
   Map<String, dynamic> toJson() {
@@ -113,8 +114,9 @@ class RequiredData {
 class Post_Rfq {
   String? title;
   int? processid;
-  String? ClientAddressname;
-  String? ClientAddress;
+  int? vendorID;
+  String? vendorName;
+  String? vendorAddress;
   String? emailId;
   String? phoneNo;
   String? gst;
@@ -127,15 +129,13 @@ class Post_Rfq {
   int? messageType;
   String? feedback;
   String? ccEmail;
-  double? total_amount;
 
   Post_Rfq({
     required this.title,
     required this.processid,
-    required this.ClientAddressname,
-    required this.ClientAddress,
-    required this.billingAddressName,
-    required this.billingAddress,
+    required this.vendorID,
+    required this.vendorName,
+    required this.vendorAddress,
     required this.emailId,
     required this.phoneNo,
     // required this.gst,
@@ -146,16 +146,14 @@ class Post_Rfq {
     required this.messageType,
     required this.feedback,
     required this.ccEmail,
-    required this.total_amount,
   });
 
   factory Post_Rfq.fromJson({
     required String title,
     required int processid,
-    required String ClientAddressname,
-    required String ClientAddress,
-    required String billingAddressName,
-    required String billingAddress,
+    required int vendorID,
+    required String vendorName,
+    required String vendorAddress,
     required String emailId,
     required String phoneNo,
     // required String gst,
@@ -166,47 +164,45 @@ class Post_Rfq {
     required int messageType,
     required String feedback,
     required String ccEmail,
-    required double total_amount,
   }) {
     return Post_Rfq(
-        title: title,
-        processid: processid,
-        ClientAddressname: ClientAddressname,
-        ClientAddress: ClientAddress,
-        billingAddressName: billingAddressName,
-        billingAddress: billingAddress,
-        emailId: emailId,
-        phoneNo: phoneNo,
-        // gst: gst,
-        product: product,
-        notes: notes,
-        date: date,
-        rfqGenID: rfqGenID,
-        messageType: messageType,
-        feedback: feedback,
-        ccEmail: ccEmail,
-        total_amount: total_amount);
+      title: title,
+      processid: processid,
+      vendorID: vendorID,
+      vendorName: vendorName,
+      vendorAddress: vendorAddress,
+
+      emailId: emailId,
+      phoneNo: phoneNo,
+      // gst: gst,
+      product: product,
+      notes: notes,
+      date: date,
+      rfqGenID: rfqGenID,
+      messageType: messageType,
+      feedback: feedback,
+      ccEmail: ccEmail,
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "title": title,
+      "vendorname": vendorName,
+      "vendorid": vendorID,
       "processid": processid,
-      "clientaddressname": ClientAddressname,
-      "clientaddress": ClientAddress,
-      "billingaddressname": billingAddressName,
-      "billingaddress": billingAddress,
+      "vendoraddress": vendorAddress,
+      "product": product?.map((item) => item.toJson()).toList(),
+      "notes": notes,
+      "messagetype": messageType,
+      "feedback": feedback,
+      "title": title,
+
       "emailid": emailId,
       "phoneno": phoneNo,
       // "gst_number": gst,
-      "product": product?.map((item) => item.toJson()).toList(),
-      "notes": notes,
       "date": date,
       "rfqgenid": rfqGenID,
-      "messagetype": messageType,
-      "feedback": feedback,
       "ccemail": ccEmail,
-      "rfq_amount": total_amount
     };
   }
 }
@@ -246,6 +242,7 @@ class ProductSuggestion {
 }
 
 class VendorList {
+  int vendorID;
   String vendorName;
   String vendorMail;
   String vendorPhoneNo;
@@ -254,6 +251,7 @@ class VendorList {
   String? logoPath;
 
   VendorList({
+    required this.vendorID,
     required this.vendorName,
     required this.vendorMail,
     required this.vendorPhoneNo,
@@ -264,6 +262,7 @@ class VendorList {
 
   factory VendorList.fromJson(CMDlResponse json, i) {
     return VendorList(
+      vendorID: json.data[i]['vendor_id'],
       vendorName: json.data[i]['vendor_name'],
       vendorMail: json.data[i]['vendor_mail'],
       vendorPhoneNo: json.data[i]['vendor_phoneno'],
@@ -275,6 +274,7 @@ class VendorList {
 
   Map<String, dynamic> toJson() {
     return {
+      'vendor_id': vendorID,
       'vendor_name': vendorName,
       'vendor_mail': vendorMail,
       'vendor_phoneno': vendorPhoneNo,

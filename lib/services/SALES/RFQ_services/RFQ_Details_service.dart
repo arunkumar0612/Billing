@@ -17,6 +17,28 @@ mixin RfqdetailsService {
     }
   }
 
+  void get_requiredData(context, String eventtype, int eventID) async {
+    try {
+      Map<String, dynamic> body = {"eventid": eventID, "eventtype": eventtype};
+      Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.sales_detailsPreLoader_API);
+      if (response?['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        if (value.code) {
+          // await Basic_dialog(context: context,showCancel: false, title: 'Enquiry - ID', content: value.message!, onOk: () {});
+          rfqController.update_requiredData(value);
+          // print(clientreqController.clientReqModel.Enq_ID.value);
+          // salesController.addToCustomerList(value);
+        } else {
+          await Basic_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {}, showCancel: false);
+        }
+      } else {
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
+
   void get_noteSuggestionList(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getNote_SUGG_List);

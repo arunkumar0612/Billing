@@ -8,6 +8,7 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart'
 import 'package:ssipl_billing/services/SALES/Invoice_services/Invoicepost_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
+import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -697,7 +698,7 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                               colors: Colors.blue,
                               onPressed: () {
                                 print(invoiceController.invoiceModel.invoice_amount.value);
-                                widget.postData(context, invoiceController.fetch_messageType());
+                                showLoading(context, () => widget.postData(context, invoiceController.fetch_messageType()));
                               })),
                     )
                   ],

@@ -74,23 +74,22 @@ mixin PostServices {
       File cachedPdf = rfqController.rfqModel.selectedPdf.value!;
       // savePdfToCache();
       Post_Rfq salesData = Post_Rfq.fromJson(
-          title: rfqController.rfqModel.TitleController.value.text,
-          processid: rfqController.rfqModel.processID.value!,
-          ClientAddressname: "",
-          ClientAddress: rfqController.rfqModel.AddressController.value.text,
-          billingAddressName: "",
-          billingAddress: "",
-          emailId: rfqController.rfqModel.emailController.value.text,
-          phoneNo: rfqController.rfqModel.phoneController.value.text,
-          // gst: rfqController.rfqModel.gstController.value.text,
-          product: rfqController.rfqModel.Rfq_products,
-          notes: rfqController.rfqModel.Rfq_noteList,
-          date: getCurrentDate(),
-          rfqGenID: rfqController.rfqModel.Rfq_no.value!,
-          messageType: messageType,
-          feedback: rfqController.rfqModel.feedbackController.value.text,
-          ccEmail: rfqController.rfqModel.CCemailController.value.text,
-          total_amount: rfqController.rfqModel.rfq_amount.value!);
+        title: rfqController.rfqModel.TitleController.value.text,
+        processid: rfqController.rfqModel.processID.value!,
+        vendorID: rfqController.rfqModel.vendorID.value!,
+        vendorName: rfqController.rfqModel.vendorName.value!,
+        vendorAddress: rfqController.rfqModel.AddressController.value.text,
+        emailId: rfqController.rfqModel.emailController.value.text,
+        phoneNo: rfqController.rfqModel.phoneController.value.text,
+        // gst: rfqController.rfqModel.gstController.value.text,
+        product: rfqController.rfqModel.Rfq_products,
+        notes: rfqController.rfqModel.Rfq_noteList,
+        date: getCurrentDate(),
+        rfqGenID: rfqController.rfqModel.Rfq_no.value!,
+        messageType: messageType,
+        feedback: rfqController.rfqModel.feedbackController.value.text,
+        ccEmail: rfqController.rfqModel.CCemailController.value.text,
+      );
 
       await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
     } catch (e) {

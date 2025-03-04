@@ -600,7 +600,27 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                       break;
                                                     case 'Option2':
                                                       if (kDebugMode) {
-                                                        print('Option2');
+                                                        // print('Option2');
+
+                                                        showModalBottomSheet(
+                                                          barrierColor: const Color.fromARGB(244, 11, 15, 26),
+                                                          enableDrag: true,
+                                                          backgroundColor: Colors.transparent,
+                                                          context: context,
+                                                          shape: const RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.vertical(
+                                                              top: Radius.circular(20),
+                                                            ),
+                                                          ),
+                                                          builder: (BuildContext context) {
+                                                            return SizedBox(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.only(left: 70, right: 70),
+                                                                child: _manualcreation_list(),
+                                                              ),
+                                                            );
+                                                          },
+                                                        );
                                                       }
                                                       break;
                                                     case 'Option':
@@ -905,7 +925,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                   itemCount: salesController.salesModel.processList.length,
                                   itemBuilder: (context, index) {
                                     return Padding(
-                                      padding: const EdgeInsets.only(top: 0),
+                                      padding: const EdgeInsets.only(top: 10),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(15),
                                         child: Container(
@@ -1019,7 +1039,10 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                 ),
                                                                 onTap: () async {
                                                                   bool success = await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                  if (success) widget.showPDF(context);
+                                                                  if (success) {
+                                                                    widget.showPDF(context,
+                                                                        "${salesController.salesModel.processList[index].customer_name}${salesController.salesModel.processList[index].title}${salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname}");
+                                                                  }
                                                                 },
                                                               ),
                                                               if (childIndex != salesController.salesModel.processList[index].TimelineEvents.length - 1)
@@ -1143,7 +1166,9 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                   widget.GenerateRfq_dialougebox(
                                                                                       context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                   rfqController.setProcessID(salesController.salesModel.processList[index].processid);
-                                                                                  print(rfqController.rfqModel.processID);
+                                                                                  if (kDebugMode) {
+                                                                                    print(rfqController.rfqModel.processID);
+                                                                                  }
                                                                                 }
                                                                               },
                                                                               child: const Text(
@@ -2094,5 +2119,388 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
         ],
       ),
     );
+  }
+
+  final List<Map<String, dynamic>> documentlist = [
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+  ];
+  bool select = false;
+  Widget _manualcreation_list() {
+    return Container(
+        decoration: const BoxDecoration(
+          // color: Primary_colors.Color3,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              SizedBox(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Manual Document List',
+                      style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text12),
+                    ),
+                    SizedBox(
+                      width: 400,
+                      height: 40,
+                      child: TextFormField(
+                        style: const TextStyle(fontSize: 13, color: Colors.white),
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(1),
+                          filled: true,
+                          fillColor: const Color.fromARGB(0, 255, 255, 255),
+                          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Color.fromARGB(123, 255, 255, 255))),
+                          // enabledBorder: InputBorder.none, // Removes the enabled border
+                          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Color.fromARGB(104, 255, 255, 255))),
+                          hintStyle: const TextStyle(
+                            fontSize: Primary_font_size.Text7,
+                            color: Primary_colors.Color1,
+                          ),
+                          hintText: 'Search',
+                          prefixIcon: const Icon(Icons.search, color: Primary_colors.Color1),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 30,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Primary_colors.Color3),
+                child: const Padding(
+                  padding: EdgeInsets.all(5),
+                  child: Row(
+                    children: [
+                      // Checkbox(
+                      //   value: select,
+                      //   onChanged: (bool? value) {
+                      //     setState(() {
+                      //       value = value == true ? false : true;
+                      //     });
+                      //   },
+                      //   activeColor: Primary_colors.Color4, // More vibrant color
+                      //   checkColor: Colors.white, // White checkmark for contrast
+                      //   side: const BorderSide(color: Primary_colors.Color1, width: 2), // Styled border
+                      //   shape: RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.circular(4), // Soft rounded corners
+                      //   ),
+                      // ),
+                      // const SizedBox(width: 10),
+                      Expanded(
+                        flex: 3,
+                        child: Text(
+                          'Client Name',
+                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Text(
+                          'Title',
+                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          'Type',
+                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          'Date',
+                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          'Days',
+                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          'PDF',
+                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Container(
+              //   height: 2,
+              //   color: Primary_colors.Color1,
+              // ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: documentlist.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      decoration: const BoxDecoration(border: Border(bottom: BorderSide(width: 0.5, color: Color.fromARGB(255, 195, 193, 193)))),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 5),
+                        child: Row(
+                          children: [
+                            // Checkbox(
+                            //   value: select,
+                            //   onChanged: (bool? value) {
+                            //     setState(() {
+                            //       value = value == true ? false : true;
+                            //     });
+                            //   },
+                            //   activeColor: Primary_colors.Color4, // More vibrant color
+                            //   checkColor: Colors.white, // White checkmark for contrast
+                            //   side: const BorderSide(color: Primary_colors.Color1, width: 2), // Styled border
+                            //   shape: RoundedRectangleBorder(
+                            //     borderRadius: BorderRadius.circular(4), // Soft rounded corners
+                            //   ),
+                            // ),
+                            // const SizedBox(width: 10),
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                documentlist[index]['clientname'],
+                                style: const TextStyle(
+                                  color: Primary_colors.Color1,
+                                  fontSize: Primary_font_size.Text8,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                documentlist[index]['title'],
+                                style: const TextStyle(
+                                  color: Primary_colors.Color1,
+                                  fontSize: Primary_font_size.Text8,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                documentlist[index]['type'],
+                                style: const TextStyle(
+                                  color: Primary_colors.Color1,
+                                  fontSize: Primary_font_size.Text8,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                documentlist[index]['date'],
+                                style: const TextStyle(
+                                  color: Primary_colors.Color1,
+                                  fontSize: Primary_font_size.Text8,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                documentlist[index]['days'],
+                                style: const TextStyle(
+                                  color: Primary_colors.Color1,
+                                  fontSize: Primary_font_size.Text8,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    // widget.showPDF(context, 'weqwer');
+                                  },
+                                  child: Image.asset(height: 40, 'assets/images/pdfdownload.png'),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              )
+            ],
+          ),
+        ));
   }
 }

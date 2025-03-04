@@ -960,7 +960,7 @@ class CustomPDF_InvoicePDF {
                           itemCount: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length,
                           itemBuilder: (context, index) {
                             return SizedBox(
-                              height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 30 : 40, // Set a height for each row to prevent overflow
+                              height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 30 : 44, // Set a height for each row to prevent overflow
                               child: Row(
                                 children: [
                                   Container(

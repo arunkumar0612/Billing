@@ -696,6 +696,7 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                               text: "Send",
                               colors: Colors.blue,
                               onPressed: () {
+                                print(invoiceController.invoiceModel.invoice_amount.value);
                                 widget.postData(context, invoiceController.fetch_messageType());
                               })),
                     )

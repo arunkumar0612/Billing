@@ -144,22 +144,13 @@ class QuoteProduct {
 class RFQProduct {
   final int sno;
   final String productName;
-  final int hsn;
-  final double gst;
-  final double price;
   final int quantity;
 
   const RFQProduct({
     required this.sno,
     required this.productName,
-    required this.hsn,
-    required this.gst,
-    required this.price,
     required this.quantity,
   });
-
-  /// Calculates the total price for the product
-  double get total => price * quantity;
 
   /// Returns specific values based on the given index
   String getIndex(int index) {
@@ -169,15 +160,7 @@ class RFQProduct {
       case 1:
         return productName;
       case 2:
-        return hsn.toString();
-      case 3:
-        return gst.toString();
-      case 4:
-        return formatCurrency(price);
-      case 5:
         return quantity.toString();
-      case 6:
-        return formatCurrency(total);
       default:
         return '';
     }
@@ -188,11 +171,7 @@ class RFQProduct {
     return {
       'productsno': sno,
       'productname': productName,
-      'producthsn': hsn,
-      'productgst': gst,
-      'productprice': price,
       'productquantity': quantity,
-      'producttotal': total,
     };
   }
 
@@ -201,9 +180,6 @@ class RFQProduct {
     return RFQProduct(
       sno: json['productsno'] as int,
       productName: json['productname'] as String,
-      hsn: json['producthsn'] as int,
-      gst: (json['productgst'] as num).toDouble(),
-      price: (json['productprice'] as num).toDouble(),
       quantity: json['productquantity'] as int,
     );
   }

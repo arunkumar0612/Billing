@@ -715,7 +715,7 @@ mixin SalesServices {
                         (rfqController.rfqModel.Rfq_noteList.isNotEmpty) ||
                         (rfqController.rfqModel.Rfq_recommendationList.isNotEmpty) ||
                         // (rfqController.rfqModel.clientAddressNameController.value.text != "") ||
-                        (rfqController.rfqModel.clientAddressController.value.text != "") ||
+                        (rfqController.rfqModel.AddressController.value.text != "") ||
                         // (rfqController.rfqModel.billingAddressNameController.value.text != "") ||
                         // (rfqController.rfqModel.billingAddressController.value.text != "") ||
                         (rfqController.rfqModel.Rfq_no.value != "") ||
@@ -758,7 +758,7 @@ mixin SalesServices {
                         rfqController.rfqModel.Rfq_noteList.clear();
                         rfqController.rfqModel.Rfq_recommendationList.clear();
                         // rfqController.rfqModel.clientAddressNameController.value.clear();
-                        rfqController.rfqModel.clientAddressController.value.clear();
+                        rfqController.rfqModel.AddressController.value.clear();
                         // rfqController.rfqModel.billingAddressNameController.value.clear();
                         // rfqController.rfqModel.billingAddressController.value.clear();
                         rfqController.rfqModel.Rfq_no.value = "";

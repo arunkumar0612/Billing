@@ -300,35 +300,35 @@ class DcController extends GetxController {
     }
   }
 
-  void addProduct({
-    required BuildContext context,
-    required String productName,
-    required String hsn,
-    required double price,
-    required int quantity,
-    required double gst,
-  }) {
-    try {
-      if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Please provide valid product details.'),
-          ),
-        );
-        return;
-      }
+  // void addProduct({
+  //   required BuildContext context,
+  //   required String productName,
+  //   required String hsn,
+  //   required double price,
+  //   required int quantity,
+  //   required double gst,
+  // }) {
+  //   try {
+  //     if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(
+  //           backgroundColor: Colors.red,
+  //           content: Text('Please provide valid product details.'),
+  //         ),
+  //       );
+  //       return;
+  //     }
 
-      dcModel.Dc_products.add(DcProduct(sno: (dcModel.Dc_products.length + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity, productid: 0));
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('An error occurred while adding the product.'),
-        ),
-      );
-    }
-  }
+  //     dcModel.Dc_products.add(DcProduct(sno: (dcModel.Dc_products.length + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity, productid: 0));
+  //   } catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         backgroundColor: Colors.red,
+  //         content: Text('An error occurred while adding the product.'),
+  //       ),
+  //     );
+  //   }
+  // }
 
   void updateProduct({
     required BuildContext context,

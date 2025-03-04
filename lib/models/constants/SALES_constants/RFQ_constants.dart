@@ -16,8 +16,8 @@ class RfqModel extends GetxController with GetSingleTickerProviderStateMixin {
   // DETAILS
   final TitleController = TextEditingController().obs;
   // final clientAddressNameController = TextEditingController().obs;
-  final clientAddressController = TextEditingController().obs;
-  final gstNumController = TextEditingController().obs;
+  final AddressController = TextEditingController().obs;
+  // final gstNumController = TextEditingController().obs;
 
   // final billingAddressNameController = TextEditingController().obs;
   // final billingAddressController = TextEditingController().obs;
@@ -28,13 +28,13 @@ class RfqModel extends GetxController with GetSingleTickerProviderStateMixin {
   final productKey = GlobalKey<FormState>().obs;
   final product_editIndex = Rxn<int>();
   final productNameController = TextEditingController().obs;
-  final hsnController = TextEditingController().obs;
-  final priceController = TextEditingController().obs;
+  // final hsnController = TextEditingController().obs;
+  // final priceController = TextEditingController().obs;
   final quantityController = TextEditingController().obs;
-  final gstController = TextEditingController().obs;
+  // final gstController = TextEditingController().obs;
   var Rfq_products = <RFQProduct>[].obs;
   var Rfq_productSuggestion = <ProductSuggestion>[].obs;
-  var Rfq_gstTotals = <RfqGSTtotals>[].obs;
+  // var Rfq_gstTotals = <RfqGSTtotals>[].obs;
 
   // NOTES
   final noteformKey = GlobalKey<FormState>().obs;

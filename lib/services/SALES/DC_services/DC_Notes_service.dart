@@ -41,7 +41,10 @@ mixin DcnotesService {
   }
 
   void updatetable() {
-    dcController.updateRecommendation(index: dcController.dcModel.recommendation_editIndex.value!, key: dcController.dcModel.recommendationKeyController.value.text.toString(), value: dcController.dcModel.recommendationValueController.value.text.toString());
+    dcController.updateRecommendation(
+        index: dcController.dcModel.recommendation_editIndex.value!,
+        key: dcController.dcModel.recommendationKeyController.value.text.toString(),
+        value: dcController.dcModel.recommendationValueController.value.text.toString());
     cleartable_Fields();
     dcController.updateRecommendationEditindex(null);
   }
@@ -140,7 +143,7 @@ mixin DcnotesService {
   Future<void> savePdfToCache() async {
     Uint8List pdfData = await generate_Dc(
       PdfPageFormat.a4,
-      dcController.dcModel.Dc_products,
+      dcController.dcModel.selected_dcProducts,
       dcController.dcModel.clientAddressNameController.value.text,
       dcController.dcModel.clientAddressController.value.text,
       dcController.dcModel.billingAddressNameController.value.text,

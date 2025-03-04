@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
+import 'package:ssipl_billing/models/entities/SALES/RFQ_entities.dart';
 import 'package:ssipl_billing/services/SALES/RFQ_services/RFQ_Details_service.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
@@ -40,7 +41,7 @@ class _RfqDetailsState extends State<RfqDetails> {
                   key: rfqController.rfqModel.detailsKey.value,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -63,61 +64,62 @@ class _RfqDetailsState extends State<RfqDetails> {
                           const SizedBox(height: 25),
                           ConstrainedBox(
                             constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
-                            child: DropdownButtonFormField<String>(
+                            child: DropdownButtonFormField<VendorList>(
                               isExpanded: true,
                               dropdownColor: Primary_colors.Dark,
                               decoration: const InputDecoration(
-                                  label: Text(
-                                    'Select Vendor',
-                                    style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176)),
-                                  ),
-                                  // hintText: 'Customer Type',hintStyle: TextStyle(),
-                                  contentPadding: EdgeInsets.all(13),
-                                  labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
-                                  filled: true,
-                                  fillColor: Primary_colors.Dark,
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.people,
-                                    color: Colors.white,
-                                  )),
-                              // value: rfqController.rfqModel.vendorList .value == "" ? null : clientreqController.clientReqModel.Org_Controller.value,
+                                label: Text(
+                                  'Select Vendor',
+                                  style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176)),
+                                ),
+                                contentPadding: EdgeInsets.all(13),
+                                labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
+                                filled: true,
+                                fillColor: Primary_colors.Dark,
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(),
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.people,
+                                  color: Colors.white,
+                                ),
+                              ),
                               items: rfqController.rfqModel.vendorList.map((vendor) {
-                                return DropdownMenuItem<String>(
-                                  value: vendor.vendorName,
+                                return DropdownMenuItem<VendorList>(
+                                  value: vendor, // Store the full vendor object
                                   child: Text(
-                                    vendor.vendorName,
+                                    vendor.vendorName, // Display vendor name
                                     style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1, overflow: TextOverflow.ellipsis),
                                   ),
                                 );
                               }).toList(),
-                              onChanged: (String? newValue) {
-                                // clientreqController.updateOrgName(newValue!);
-                                // widget.on_Orgselected(context, newValue);
+                              onChanged: (VendorList? selectedVendor) {
+                                if (selectedVendor != null) {
+                                  rfqController.update_vendorCredentials_onSelect(selectedVendor);
+                                }
                               },
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Select customer type';
+                                if (value == null) {
+                                  return 'Please select a vendor';
                                 }
                                 return null;
                               },
                             ),
                           ),
+
                           const SizedBox(height: 25),
                           BasicTextfield(
                             digitsOnly: false,
                             width: 400,
                             readonly: false,
                             text: 'Client Address ',
-                            controller: rfqController.rfqModel.clientAddressController.value,
+                            controller: rfqController.rfqModel.AddressController.value,
                             icon: Icons.location_history_outlined,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -126,56 +128,21 @@ class _RfqDetailsState extends State<RfqDetails> {
                               return null;
                             },
                           ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // const SizedBox(height: 10),
-                          // BasicTextfield(
-                          //   digitsOnly: false,
-                          //   width: 400,
-                          //   readonly: false,
-                          //   text: 'Billing Address name',
-                          //   controller: rfqController.rfqModel.billingAddressNameController.value,
-                          //   icon: Icons.price_change,
-                          //   validator: (value) {
-                          //     if (value == null || value.isEmpty) {
-                          //       return 'Please enter Billing Address name';
-                          //     }
-                          //     return null;
-                          //   },
-                          // ),
                           // const SizedBox(height: 25),
                           // BasicTextfield(
                           //   digitsOnly: false,
                           //   width: 400,
                           //   readonly: false,
-                          //   text: 'Billing Address',
-                          //   controller: rfqController.rfqModel.billingAddressController.value,
+                          //   text: 'GST number',
+                          //   controller: rfqController.rfqModel.gstNumController.value,
                           //   icon: Icons.price_change,
                           //   validator: (value) {
                           //     if (value == null || value.isEmpty) {
-                          //       return 'Please enter Billing Address';
+                          //       return 'Please enter GST number';
                           //     }
                           //     return null;
                           //   },
                           // ),
-                          const SizedBox(height: 25),
-                          BasicTextfield(
-                            digitsOnly: false,
-                            width: 400,
-                            readonly: false,
-                            text: 'GST number',
-                            controller: rfqController.rfqModel.gstNumController.value,
-                            icon: Icons.price_change,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter GST number';
-                              }
-                              return null;
-                            },
-                          ),
                           const SizedBox(height: 30),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,

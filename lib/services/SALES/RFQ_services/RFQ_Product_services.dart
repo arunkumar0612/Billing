@@ -1,16 +1,15 @@
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
-import 'package:ssipl_billing/models/entities/SALES/RFQ_entities.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 
 mixin RfqproductService {
   final RfqController rfqController = Get.find<RfqController>();
   void clearFields() {
     rfqController.rfqModel.productNameController.value.clear();
-    rfqController.rfqModel.hsnController.value.clear();
-    rfqController.rfqModel.priceController.value.clear();
+    // rfqController.rfqModel.hsnController.value.clear();
+    // rfqController.rfqModel.priceController.value.clear();
     rfqController.rfqModel.quantityController.value.clear();
-    rfqController.rfqModel.gstController.value.clear();
+    // rfqController.rfqModel.gstController.value.clear();
   }
 
   void addproduct(context) {
@@ -19,7 +18,7 @@ mixin RfqproductService {
       bool exists = rfqController.rfqModel.Rfq_products.any((product) =>
           product.productName == rfqController.rfqModel.productNameController.value.text &&
           // ignore: unrelated_type_equality_checks
-          product.hsn == rfqController.rfqModel.hsnController.value.text &&
+          // product.hsn == rfqController.rfqModel.hsnController.value.text &&
           product.quantity == int.parse(rfqController.rfqModel.quantityController.value.text));
 
       if (exists) {
@@ -27,32 +26,33 @@ mixin RfqproductService {
         return;
       }
       rfqController.addProduct(
-          context: context,
-          productName: rfqController.rfqModel.productNameController.value.text,
-          hsn: rfqController.rfqModel.hsnController.value.text,
-          price: double.parse(rfqController.rfqModel.priceController.value.text),
-          quantity: int.parse(rfqController.rfqModel.quantityController.value.text),
-          gst: double.parse(rfqController.rfqModel.gstController.value.text));
+        context: context,
+        productName: rfqController.rfqModel.productNameController.value.text,
+        // hsn: rfqController.rfqModel.hsnController.value.text,
+        // price: double.parse(rfqController.rfqModel.priceController.value.text),
+        quantity: int.parse(rfqController.rfqModel.quantityController.value.text),
+        // gst: double.parse(rfqController.rfqModel.gstController.value.text)
+      );
 
       clearFields();
     }
   }
 
-  void onSubmit() {
-    rfqController.rfqModel.Rfq_gstTotals.assignAll(
-      rfqController.rfqModel.Rfq_products
-          .fold<Map<double, double>>({}, (Map<double, double> accumulator, RFQProduct product) {
-            accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
-            return accumulator;
-          })
-          .entries
-          .map((entry) => RfqGSTtotals(
-                gst: entry.key, // Convert key to String
-                total: entry.value, // Convert value to String
-              ))
-          .toList(),
-    );
-  }
+  // void onSubmit() {
+  //   rfqController.rfqModel.Rfq_gstTotals.assignAll(
+  //     rfqController.rfqModel.Rfq_products
+  //         .fold<Map<double, double>>({}, (Map<double, double> accumulator, RFQProduct product) {
+  //           accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
+  //           return accumulator;
+  //         })
+  //         .entries
+  //         .map((entry) => RfqGSTtotals(
+  //               gst: entry.key, // Convert key to String
+  //               total: entry.value, // Convert value to String
+  //             ))
+  //         .toList(),
+  //   );
+  // }
 
   void updateproduct(context) {
     if (rfqController.rfqModel.productKey.value.currentState?.validate() ?? false) {
@@ -60,10 +60,10 @@ mixin RfqproductService {
         context: context,
         editIndex: rfqController.rfqModel.product_editIndex.value!, // The index of the product to be updated
         productName: rfqController.rfqModel.productNameController.value.text,
-        hsn: rfqController.rfqModel.hsnController.value.text,
-        price: double.parse(rfqController.rfqModel.priceController.value.text),
+        // hsn: rfqController.rfqModel.hsnController.value.text,
+        // price: double.parse(rfqController.rfqModel.priceController.value.text),
         quantity: int.parse(rfqController.rfqModel.quantityController.value.text),
-        gst: double.parse(rfqController.rfqModel.gstController.value.text),
+        // gst: double.parse(rfqController.rfqModel.gstController.value.text),
       );
 
       clearFields();
@@ -75,10 +75,10 @@ mixin RfqproductService {
     RFQProduct product = rfqController.rfqModel.Rfq_products[index];
 
     rfqController.updateProductName(product.productName);
-    rfqController.updateHSN(product.hsn);
-    rfqController.updatePrice(product.price);
+    // rfqController.updateHSN(product.hsn);
+    // rfqController.updatePrice(product.price);
     rfqController.updateQuantity(product.quantity);
-    rfqController.updateGST(product.gst);
+    // rfqController.updateGST(product.gst);
     rfqController.addProductEditindex(index);
   }
 
@@ -87,9 +87,9 @@ mixin RfqproductService {
     rfqController.addProductEditindex(null);
   }
 
-  void set_ProductValues(ProductSuggestion value) {
-    rfqController.updateHSN(int.parse(value.productHsn));
-    rfqController.updateGST(value.productGst);
-    rfqController.updatePrice(value.productPrice);
-  }
+  // void set_ProductValues(ProductSuggestion value) {
+  //   rfqController.updateHSN(int.parse(value.productHsn));
+  //   rfqController.updateGST(value.productGst);
+  //   rfqController.updatePrice(value.productPrice);
+  // }
 }

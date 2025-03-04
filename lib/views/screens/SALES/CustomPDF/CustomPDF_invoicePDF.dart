@@ -202,7 +202,7 @@ class CustomPDF_InvoicePDF {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image.asset('assets/images/sporada.jpeg', height: 100),
+        Image.asset('assets/images/sporadaResized.jpeg', height: 100),
         const Text("INVOICE", style: TextStyle(fontSize: Primary_font_size.SubHeading, fontWeight: FontWeight.bold)),
         SizedBox(
           child: Column(

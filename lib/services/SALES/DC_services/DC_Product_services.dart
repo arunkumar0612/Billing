@@ -16,28 +16,28 @@ mixin DcproductService {
     dcController.dcModel.gstController.value.clear();
   }
 
-  void addproduct(context) {
-    if (dcController.dcModel.productKey.value.currentState?.validate() ?? false) {
-      bool exists = dcController.dcModel.Dc_products.any((product) =>
-          product.productName == dcController.dcModel.productNameController.value.text &&
-          product.hsn == dcController.dcModel.hsnController.value.text &&
-          product.quantity == int.parse(dcController.dcModel.quantityController.value.text));
+  // void addproduct(context) {
+  //   if (dcController.dcModel.productKey.value.currentState?.validate() ?? false) {
+  //     bool exists = dcController.dcModel.Dc_products.any((product) =>
+  //         product.productName == dcController.dcModel.productNameController.value.text &&
+  //         product.hsn == dcController.dcModel.hsnController.value.text &&
+  //         product.quantity == int.parse(dcController.dcModel.quantityController.value.text));
 
-      if (exists) {
-        Get.snackbar("Product", "This product already exists.");
-        return;
-      }
-      dcController.addProduct(
-          context: context,
-          productName: dcController.dcModel.productNameController.value.text,
-          hsn: dcController.dcModel.hsnController.value.text,
-          price: double.parse(dcController.dcModel.priceController.value.text),
-          quantity: int.parse(dcController.dcModel.quantityController.value.text),
-          gst: double.parse(dcController.dcModel.gstController.value.text));
+  //     if (exists) {
+  //       Get.snackbar("Product", "This product already exists.");
+  //       return;
+  //     }
+  //     dcController.addProduct(
+  //         context: context,
+  //         productName: dcController.dcModel.productNameController.value.text,
+  //         hsn: dcController.dcModel.hsnController.value.text,
+  //         price: double.parse(dcController.dcModel.priceController.value.text),
+  //         quantity: int.parse(dcController.dcModel.quantityController.value.text),
+  //         gst: double.parse(dcController.dcModel.gstController.value.text));
 
-      clearFields();
-    }
-  }
+  //     clearFields();
+  //   }
+  // }
 
   void onSubmit() {
     dcController.dcModel.Dc_gstTotals.assignAll(

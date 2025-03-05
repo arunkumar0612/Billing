@@ -27,24 +27,8 @@ class DcController extends GetxController {
     }
   }
 
-  void updateProductName(String productName) {
-    dcModel.productNameController.value.text = productName;
-  }
-
-  void updateHSN(int hsn) {
-    dcModel.hsnController.value.text = hsn.toString();
-  }
-
-  void updatePrice(double price) {
-    dcModel.priceController.value.text = price.toString();
-  }
-
-  void updateQuantity(int quantity) {
-    dcModel.quantityController.value.text = quantity.toString();
-  }
-
-  void updateGST(double gst) {
-    dcModel.gstController.value.text = gst.toString();
+  void removeFromProductList(index) {
+    dcModel.Dc_products.removeAt(index);
   }
 
   void updateNoteEditindex(int? index) {
@@ -131,9 +115,9 @@ class DcController extends GetxController {
     dcModel.noteSuggestion.add(note);
   }
 
-  void addProductEditindex(int? index) {
-    dcModel.product_editIndex.value = index;
-  }
+  // void addProductEditindex(int? index) {
+  //   dcModel.product_editIndex.value = index;
+  // }
 
   void setProcessID(int processid) {
     dcModel.processID.value = processid;
@@ -300,8 +284,9 @@ class DcController extends GetxController {
     }
   }
 
-  // void addProduct({
+  // void updateProduct({
   //   required BuildContext context,
+  //   required int editIndex,
   //   required String productName,
   //   required String hsn,
   //   required double price,
@@ -309,6 +294,7 @@ class DcController extends GetxController {
   //   required double gst,
   // }) {
   //   try {
+  //     // Validate input fields
   //     if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
   //       ScaffoldMessenger.of(context).showSnackBar(
   //         const SnackBar(
@@ -319,89 +305,48 @@ class DcController extends GetxController {
   //       return;
   //     }
 
-  //     dcModel.Dc_products.add(DcProduct(sno: (dcModel.Dc_products.length + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity, productid: 0));
+  //     // Check if the editIndex is valid
+  //     if (editIndex < 0 || editIndex >= dcModel.Dc_products.length) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(
+  //           backgroundColor: Colors.red,
+  //           content: Text('Invalid product index.'),
+  //         ),
+  //       );
+  //       return;
+  //     }
+
+  //     // Update the product details at the specified index
+  //     dcModel.Dc_products[editIndex] = DcProduct(sno: (editIndex + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity, productid: 0);
+
+  //     // ProductDetail(
+  //     //   productName: productName.trim(),
+  //     //   hsn: hsn.trim(),
+  //     //   price: price,
+  //     //   quantity: quantity,
+  //     //   gst: gst,
+  //     // );
+
+  //     // Notify success
+  //     // ScaffoldMessenger.of(context).showSnackBar(
+  //     //   const SnackBar(
+  //     //     backgroundColor: Colors.green,
+  //     //     content: Text('Product updated successfully.'),
+  //     //   ),
+  //     // );
+
+  //     // Optional: Update UI or state if needed
+  //     // .updateProductDetails(dcController.dcModel.Dc_productDetails);
   //   } catch (e) {
+  //     // Handle unexpected errors
   //     ScaffoldMessenger.of(context).showSnackBar(
   //       const SnackBar(
   //         backgroundColor: Colors.red,
-  //         content: Text('An error occurred while adding the product.'),
+  //         content: Text('An error occurred while updating the product.'),
   //       ),
   //     );
   //   }
   // }
-
-  void updateProduct({
-    required BuildContext context,
-    required int editIndex,
-    required String productName,
-    required String hsn,
-    required double price,
-    required int quantity,
-    required double gst,
-  }) {
-    try {
-      // Validate input fields
-      if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Please provide valid product details.'),
-          ),
-        );
-        return;
-      }
-
-      // Check if the editIndex is valid
-      if (editIndex < 0 || editIndex >= dcModel.Dc_products.length) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Invalid product index.'),
-          ),
-        );
-        return;
-      }
-
-      // Update the product details at the specified index
-      dcModel.Dc_products[editIndex] = DcProduct(sno: (editIndex + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity, productid: 0);
-
-      // ProductDetail(
-      //   productName: productName.trim(),
-      //   hsn: hsn.trim(),
-      //   price: price,
-      //   quantity: quantity,
-      //   gst: gst,
-      // );
-
-      // Notify success
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(
-      //     backgroundColor: Colors.green,
-      //     content: Text('Product updated successfully.'),
-      //   ),
-      // );
-
-      // Optional: Update UI or state if needed
-      // .updateProductDetails(dcController.dcModel.Dc_productDetails);
-    } catch (e) {
-      // Handle unexpected errors
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('An error occurred while updating the product.'),
-        ),
-      );
-    }
-  }
-
-  void add_productSuggestion(List<dynamic> suggestionList) {
-    for (var item in suggestionList) {
-      dcModel.Dc_productSuggestion.add(ProductSuggestion.fromJson(item));
-      if (kDebugMode) {
-        print(dcModel.Dc_productSuggestion[0].productName);
-      }
-    }
-  }
 
   void add_noteSuggestion(Map<String, dynamic> suggestionList) {
     for (var item in suggestionList['notes']) {
@@ -409,15 +354,6 @@ class DcController extends GetxController {
       if (kDebugMode) {
         print(dcModel.noteSuggestion[0]);
       }
-    }
-  }
-
-  // Update products list
-  void updateProducts(List<DcProduct> products) {
-    dcModel.Dc_products.value = products;
-    dcModel.checkboxValues.clear();
-    for (int i = 0; i < products.length; i++) {
-      dcModel.checkboxValues.add(false);
     }
   }
 
@@ -430,13 +366,82 @@ class DcController extends GetxController {
     dcModel.Dc_recommendationList.isEmpty ? dcModel.recommendationHeadingController.value.clear() : null;
   }
 
-  void removeFromProductList(index) {
-    dcModel.Dc_products.removeAt(index);
+  void initializeTextControllers() {
+    dcModel.textControllers.clear();
+    for (int i = 0; i < dcModel.Dc_products.length; i++) {
+      DcProduct product = dcModel.Dc_products[i];
+      dcModel.textControllers.add(TextEditingController(text: product.quantity.toString()));
+    }
+  }
+
+  void initializeQuantities(List<DcProduct> productList) {
+    dcModel.quantities.assignAll(productList.map((product) => product.quantity.obs).toList());
+  }
+
+  void initializeFocusNodes(int count) {
+    dcModel.focusNodes.assignAll(List.generate(count, (_) => FocusNode().obs));
+    dcModel.isFocused.assignAll(List.generate(count, (_) => false));
+
+    for (int i = 0; i < count; i++) {
+      dcModel.focusNodes[i].value.addListener(() {
+        dcModel.isFocused[i] = dcModel.focusNodes[i].value.hasFocus;
+      });
+    }
+  }
+
+  void incrementQTY(int index, int maxValue) {
+    if (dcModel.quantities[index].value < maxValue) {
+      dcModel.quantities[index].value++;
+      dcModel.textControllers[index].text = dcModel.quantities[index].value.toString();
+    }
+  }
+
+  void decrementQTY(int index) {
+    if (dcModel.quantities[index].value > 1) {
+      dcModel.quantities[index].value--;
+      dcModel.textControllers[index].text = dcModel.quantities[index].value.toString();
+    }
+  }
+
+  void updateProducts(List<DcProduct> products) {
+    dcModel.Dc_products.value = products;
+    dcModel.checkboxValues.clear();
+    for (int i = 0; i < products.length; i++) {
+      dcModel.checkboxValues.add(false);
+    }
+  }
+
+  void setQtyvalue(String value, String maxQty, int index) {
+    if (value.isEmpty) return; // Prevent processing empty values
+
+    int convertedValue = int.tryParse(value) ?? 1;
+    int convertedMaxQty = int.tryParse(maxQty) ?? 1;
+    int minQty = 1;
+
+    if (convertedValue >= convertedMaxQty) {
+      convertedValue = convertedMaxQty;
+    } else if (convertedValue <= minQty) {
+      convertedValue = minQty;
+    }
+
+    // Preserve Cursor Position
+    TextEditingController controller = dcModel.textControllers[index];
+    int cursorPosition = controller.selection.baseOffset; // Get current cursor position
+
+    controller.text = convertedValue.toString();
+
+    // Restore Cursor Position
+    controller.selection = TextSelection.fromPosition(
+      TextPosition(offset: controller.text.length),
+    );
+
+    dcModel.quantities[index].value = convertedValue;
   }
 
   void update_requiredData(CMDmResponse value) {
     RequiredData instance = RequiredData.fromJson(value);
     dcModel.Dc_no.value = instance.eventnumber;
+    updateProducts(instance.product);
     updateDcnumber(instance.eventnumber);
     updateTitle(instance.title!);
     updateEmail(instance.emailId!);
@@ -446,7 +451,9 @@ class DcController extends GetxController {
     updateClientAddress(instance.address!);
     updateBillingAddressName(instance.billingAddressName!);
     updateBillingAddress(instance.billingAddress!);
-    updateProducts(instance.product);
+    initializeTextControllers();
+    initializeQuantities(instance.product);
+    initializeFocusNodes(instance.product.length);
     // for(int i=0;i<instance.product.length;i++){
     //    dcController.addProduct(context: context, productName: dcController.dcModel.productNameController.value.text, hsn: dcController.dcModel.hsnController.value.text, price: double.parse(dcController.dcModel.priceController.value.text), quantity: int.parse(dcController.dcModel.quantityController.value.text), gst: double.parse(dcController.dcModel.gstController.value.text));
 
@@ -485,17 +492,7 @@ class DcController extends GetxController {
     dcModel.clientAddressController.value.text = "";
     dcModel.billingAddressNameController.value.text = "";
     dcModel.billingAddressController.value.text = "";
-
-    // Reset product details
-    dcModel.product_editIndex.value = null;
-    dcModel.productNameController.value.text = "";
-    dcModel.hsnController.value.text = "";
-    dcModel.priceController.value.text = "";
-    dcModel.quantityController.value.text = "";
-    dcModel.gstController.value.text = "";
-    dcModel.Dc_products.clear();
     dcModel.Dc_gstTotals.clear();
-    dcModel.Dc_productSuggestion.clear();
 
     // Reset notes
     dcModel.note_editIndex.value = null;

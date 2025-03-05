@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
@@ -18,63 +19,63 @@ class DcProducts extends StatefulWidget with DcproductService {
 class _DcProductsState extends State<DcProducts> {
   final DcController dcController = Get.find<DcController>();
 
-  Widget Dc_productDetailss() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        for (int i = 0; i < dcController.dcModel.Dc_products.length; i++)
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  widget.editproduct(i);
-                },
-                child: Container(
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: Primary_colors.Light),
-                  height: 40,
-                  width: 300,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 230,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              overflow: TextOverflow.ellipsis,
-                              '${i + 1}. ${dcController.dcModel.Dc_products[i].productName}', // Display camera type from map
-                              style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                dcController.removeFromProductList(i);
-                              },
-                              icon: const Icon(
-                                Icons.close,
-                                size: 20,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
-            ],
-          ),
-      ],
-    );
-  }
+  // Widget Dc_productDetailss() {
+  //   return Column(
+  //     mainAxisAlignment: MainAxisAlignment.start,
+  //     crossAxisAlignment: CrossAxisAlignment.center,
+  //     children: [
+  //       for (int i = 0; i < dcController.dcModel.Dc_products.length; i++)
+  //         Column(
+  //           mainAxisAlignment: MainAxisAlignment.start,
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             GestureDetector(
+  //               onTap: () {
+  //                 widget.editproduct(i);
+  //               },
+  //               child: Container(
+  //                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: Primary_colors.Light),
+  //                 height: 40,
+  //                 width: 300,
+  //                 child: Center(
+  //                   child: Row(
+  //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                     children: [
+  //                       SizedBox(
+  //                         width: 230,
+  //                         child: Padding(
+  //                           padding: const EdgeInsets.only(left: 10),
+  //                           child: Text(
+  //                             overflow: TextOverflow.ellipsis,
+  //                             '${i + 1}. ${dcController.dcModel.Dc_products[i].productName}', // Display camera type from map
+  //                             style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+  //                           ),
+  //                         ),
+  //                       ),
+  //                       Row(
+  //                         children: [
+  //                           IconButton(
+  //                             onPressed: () {
+  //                               dcController.removeFromProductList(i);
+  //                             },
+  //                             icon: const Icon(
+  //                               Icons.close,
+  //                               size: 20,
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //             const SizedBox(height: 15),
+  //           ],
+  //         ),
+  //     ],
+  //   );
+  // }
 
   Widget buildProductlist() {
     return Column(
@@ -218,7 +219,7 @@ class _DcProductsState extends State<DcProducts> {
                   // final offline_color = iera
                   //     ? const Color.fromARGB(255, 255, 255, 255)
                   //     : Colors.red;
-                  const backgroundColor = Color.fromARGB(211, 201, 200, 200);
+                  const backgroundColor = Color.fromARGB(255, 255, 255, 255);
 
                   return Column(
                     children: [
@@ -251,7 +252,7 @@ class _DcProductsState extends State<DcProducts> {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              color: const Color.fromARGB(255, 70, 69, 69),
+              color: Primary_colors.Dark,
             ),
             padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
             child: Row(
@@ -325,12 +326,59 @@ class _DcProductsState extends State<DcProducts> {
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.only(),
-                      child: Text(
-                        quantity,
-                        style: TextStyle(
-                          color: backgroundColor,
-                          fontSize: 13,
-                        ),
+                      child: SizedBox(
+                        height: 50,
+                        child: Obx(() {
+                          return TextFormField(
+                            style: const TextStyle(color: Colors.blue, fontSize: 13),
+                            controller: dcController.dcModel.textControllers[index],
+                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                            keyboardType: TextInputType.number,
+                            focusNode: dcController.dcModel.focusNodes[index].value, // Attach focus node
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(
+                              border: const OutlineInputBorder(borderSide: BorderSide.none),
+                              suffixIcon: Obx(() {
+                                return dcController.dcModel.isFocused[index]
+                                    ? Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          MouseRegion(
+                                            cursor: dcController.dcModel.quantities[index].value >= int.parse(quantity) ? SystemMouseCursors.forbidden : SystemMouseCursors.click,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                dcController.incrementQTY(index, int.parse(quantity));
+                                              },
+                                              child: Icon(
+                                                Icons.arrow_drop_up,
+                                                color: dcController.dcModel.quantities[index].value >= int.parse(quantity) ? Colors.grey : Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          MouseRegion(
+                                            cursor: dcController.dcModel.quantities[index].value > 1 ? SystemMouseCursors.click : SystemMouseCursors.forbidden,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                dcController.decrementQTY(index);
+                                              },
+                                              child: Icon(
+                                                Icons.arrow_drop_down,
+                                                color: dcController.dcModel.quantities[index].value > 1 ? Colors.white : Colors.grey,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : const SizedBox(); // Hide arrows when not focused
+                              }),
+                            ),
+                            onChanged: (value) {
+                              if (value.isNotEmpty) {
+                                dcController.setQtyvalue(value, quantity, index);
+                              }
+                            },
+                          );
+                        }),
                       ),
                     ),
                   ),

@@ -1,0 +1,17 @@
+1. Stop sending serial number with products, generate your own
+2. Create notification Reciever
+3. Create - Custom PDF - Qote and DC
+4. Invoice generation -it should be in viewable format and it should pre-load the approved pdf values
+5. DC products tab -  a). products must be selectable and in quantity there should be up and down arrow as well as the field should be typeable with respect to max qunatity
+                      b). If products are left and quantities are changed - need an imaginery way to show the leftover products while submitting
+6. Sales page obx change- check page reaction and  change any data by external trigger and check reaction of the page (flicker)
+7. Custom pdf api required
+8. Monthly timeline pending - MARCH
+9. GST, client name, email, address validation
+10. GST - check for SGST,CGST or IGST and change the pdf format and change api accordingly               
+11. implement product dropdown for all product pages available   
+12. Change name - Add client, add Enquiry
+13. pie-chart color change
+14. When RFQ is clicked and if there's a vendor process coresponding to the current sales process present- it should redirect to that page and expand that process particularly
+15. All text field icons to be changed correctly
+16. 

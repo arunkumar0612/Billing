@@ -610,12 +610,12 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                           inst_CustomPDF_Services.assign_GSTtotals();
                                                           inst.showA4StyledPopup(context);
                                                           break;
-                                                        case 'Option2':
+                                                        case 'Quotation':
                                                           if (kDebugMode) {
                                                             print('Option2');
                                                           }
                                                           break;
-                                                        case 'Option':
+                                                        case 'Delivery Challan':
                                                           if (kDebugMode) {
                                                             print('Option3');
                                                           }
@@ -640,17 +640,17 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                           ),
                                                         ),
                                                         const PopupMenuItem<String>(
-                                                          value: 'Option2',
+                                                          value: 'Quotation',
                                                           child: ListTile(
                                                             leading: Icon(Icons.edit_outlined, color: Colors.green),
-                                                            title: Text('Option2', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                                            title: Text('Quotation', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
                                                           ),
                                                         ),
                                                         const PopupMenuItem<String>(
-                                                          value: 'Option3',
+                                                          value: 'Delivery Challan',
                                                           child: ListTile(
                                                             leading: Icon(Icons.delete_outline, color: Colors.redAccent),
-                                                            title: Text('Option3', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                                            title: Text('Delivery Challan', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
                                                           ),
                                                         ),
                                                       ];

@@ -397,7 +397,8 @@ class RfqController extends GetxController {
 
   void update_requiredData(CMDmResponse value) {
     RequiredData instance = RequiredData.fromJson(value);
-    rfqModel.Rfq_no.value = instance.eventnumber;
+    updateRfqnumber(instance.eventnumber);
+
     // updateRfqnumber(instance.eventnumber);
     // updateTitle(instance.title!);
     // updateEmail(instance.emailId!);

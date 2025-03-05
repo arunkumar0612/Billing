@@ -21,7 +21,6 @@ class _DcDetailsState extends State<DcDetails> {
   @override
   void initState() {
     widget.get_requiredData(context, widget.eventID, "deliverychallan");
-    widget.get_productSuggestionList(context);
     widget.get_noteSuggestionList(context);
     super.initState();
   }

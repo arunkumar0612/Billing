@@ -169,11 +169,7 @@ class ClientreqController extends GetxController {
   Future<bool> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: [
-        'png',
-        'jpg',
-        'jpeg'
-      ],
+      allowedExtensions: ['png', 'jpg', 'jpeg'],
     );
 
     if (result != null) {
@@ -401,11 +397,48 @@ class ClientreqController extends GetxController {
   }
 
   bool anyHavedata() {
-    return (clientReqModel.MOR_uploadedPath.value != null || clientReqModel.customer_id.value != 0 || clientReqModel.clientNameController.value.text.isNotEmpty || clientReqModel.titleController.value.text.isNotEmpty || clientReqModel.clientAddressController.value.text.isNotEmpty || clientReqModel.billingAddressNameController.value.text.isNotEmpty || clientReqModel.billingAddressController.value.text.isNotEmpty || clientReqModel.morController.value.text.isNotEmpty || clientReqModel.phoneController.value.text.isNotEmpty || clientReqModel.emailController.value.text.isNotEmpty || clientReqModel.gstController.value.text.isNotEmpty || clientReqModel.Org_Controller.value != null || clientReqModel.Company_Controller.value != null || clientReqModel.Branch_Controller.value != null || clientReqModel.pickedFile.value != null || clientReqModel.morFile.value != null || clientReqModel.organizationList.isNotEmpty || clientReqModel.CompanyList.isNotEmpty || clientReqModel.BranchFullList.isNotEmpty || clientReqModel.BranchList_valueModel.isNotEmpty || clientReqModel.selected_branchList.isNotEmpty || clientReqModel.productNameController.value.text.isNotEmpty || clientReqModel.quantityController.value.text.isNotEmpty || clientReqModel.clientReqProductDetails.isNotEmpty || clientReqModel.Rec_HeadingController.value.text.isNotEmpty || clientReqModel.Rec_KeyController.value.text.isNotEmpty || clientReqModel.Rec_ValueController.value.text.isNotEmpty || clientReqModel.clientReqNoteList.isNotEmpty || clientReqModel.clientReqRecommendationList.isNotEmpty);
+    return (clientReqModel.MOR_uploadedPath.value != null ||
+        clientReqModel.customer_id.value != 0 ||
+        clientReqModel.clientNameController.value.text.isNotEmpty ||
+        clientReqModel.titleController.value.text.isNotEmpty ||
+        clientReqModel.clientAddressController.value.text.isNotEmpty ||
+        clientReqModel.billingAddressNameController.value.text.isNotEmpty ||
+        clientReqModel.billingAddressController.value.text.isNotEmpty ||
+        clientReqModel.morController.value.text.isNotEmpty ||
+        clientReqModel.phoneController.value.text.isNotEmpty ||
+        clientReqModel.emailController.value.text.isNotEmpty ||
+        clientReqModel.gstController.value.text.isNotEmpty ||
+        clientReqModel.Org_Controller.value != null ||
+        clientReqModel.Company_Controller.value != null ||
+        clientReqModel.Branch_Controller.value != null ||
+        clientReqModel.pickedFile.value != null ||
+        clientReqModel.morFile.value != null ||
+        clientReqModel.organizationList.isNotEmpty ||
+        clientReqModel.CompanyList.isNotEmpty ||
+        clientReqModel.BranchFullList.isNotEmpty ||
+        clientReqModel.BranchList_valueModel.isNotEmpty ||
+        clientReqModel.selected_branchList.isNotEmpty ||
+        clientReqModel.productNameController.value.text.isNotEmpty ||
+        clientReqModel.quantityController.value.text.isNotEmpty ||
+        clientReqModel.clientReqProductDetails.isNotEmpty ||
+        clientReqModel.Rec_HeadingController.value.text.isNotEmpty ||
+        clientReqModel.Rec_KeyController.value.text.isNotEmpty ||
+        clientReqModel.Rec_ValueController.value.text.isNotEmpty ||
+        clientReqModel.clientReqNoteList.isNotEmpty ||
+        clientReqModel.clientReqRecommendationList.isNotEmpty);
   }
 
   bool postDatavalidation() {
-    return (clientReqModel.titleController.value.text.isEmpty || clientReqModel.clientNameController.value.text.isEmpty || clientReqModel.emailController.value.text.isEmpty || clientReqModel.phoneController.value.text.isEmpty || clientReqModel.clientAddressController.value.text.isEmpty || clientReqModel.gstController.value.text.isEmpty || clientReqModel.billingAddressNameController.value.text.isEmpty || clientReqModel.billingAddressController.value.text.isEmpty || clientReqModel.morController.value.text.isEmpty || clientReqModel.MOR_uploadedPath.value == null);
+    return (clientReqModel.titleController.value.text.isEmpty ||
+        clientReqModel.clientNameController.value.text.isEmpty ||
+        clientReqModel.emailController.value.text.isEmpty ||
+        clientReqModel.phoneController.value.text.isEmpty ||
+        clientReqModel.clientAddressController.value.text.isEmpty ||
+        clientReqModel.gstController.value.text.isEmpty ||
+        clientReqModel.billingAddressNameController.value.text.isEmpty ||
+        clientReqModel.billingAddressController.value.text.isEmpty ||
+        clientReqModel.morController.value.text.isEmpty ||
+        clientReqModel.MOR_uploadedPath.value == null);
   }
 
   bool anyDontHavedata() {

@@ -8,13 +8,13 @@ import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 mixin DcproductService {
   final DcController dcController = Get.find<DcController>();
 
-  void clearFields() {
-    dcController.dcModel.productNameController.value.clear();
-    dcController.dcModel.hsnController.value.clear();
-    dcController.dcModel.priceController.value.clear();
-    dcController.dcModel.quantityController.value.clear();
-    dcController.dcModel.gstController.value.clear();
-  }
+  // void clearFields() {
+  //   dcController.dcModel.productNameController.value.clear();
+  //   dcController.dcModel.hsnController.value.clear();
+  //   dcController.dcModel.priceController.value.clear();
+  //   dcController.dcModel.quantityController.value.clear();
+  //   dcController.dcModel.gstController.value.clear();
+  // }
 
   // void addproduct(context) {
   //   if (dcController.dcModel.productKey.value.currentState?.validate() ?? false) {
@@ -55,38 +55,38 @@ mixin DcproductService {
     );
   }
 
-  void updateproduct(context) {
-    if (dcController.dcModel.productKey.value.currentState?.validate() ?? false) {
-      dcController.updateProduct(
-        context: context,
-        editIndex: dcController.dcModel.product_editIndex.value!, // The index of the product to be updated
-        productName: dcController.dcModel.productNameController.value.text,
-        hsn: dcController.dcModel.hsnController.value.text,
-        price: double.parse(dcController.dcModel.priceController.value.text),
-        quantity: int.parse(dcController.dcModel.quantityController.value.text),
-        gst: double.parse(dcController.dcModel.gstController.value.text),
-      );
+  // void updateproduct(context) {
+  //   if (dcController.dcModel.productKey.value.currentState?.validate() ?? false) {
+  //     dcController.updateProduct(
+  //       context: context,
+  //       editIndex: dcController.dcModel.product_editIndex.value!, // The index of the product to be updated
+  //       productName: dcController.dcModel.productNameController.value.text,
+  //       hsn: dcController.dcModel.hsnController.value.text,
+  //       price: double.parse(dcController.dcModel.priceController.value.text),
+  //       quantity: int.parse(dcController.dcModel.quantityController.value.text),
+  //       gst: double.parse(dcController.dcModel.gstController.value.text),
+  //     );
 
-      clearFields();
-      dcController.addProductEditindex(null);
-    }
-  }
+  //     clearFields();
+  //     dcController.addProductEditindex(null);
+  //   }
+  // }
 
-  void editproduct(int index) {
-    DcProduct product = dcController.dcModel.Dc_products[index];
+  // void editproduct(int index) {
+  //   DcProduct product = dcController.dcModel.Dc_products[index];
 
-    dcController.updateProductName(product.productName);
-    dcController.updateHSN(product.hsn);
-    dcController.updatePrice(product.price);
-    dcController.updateQuantity(product.quantity);
-    dcController.updateGST(product.gst);
-    dcController.addProductEditindex(index);
-  }
+  //   dcController.updateProductName(product.productName);
+  //   dcController.updateHSN(product.hsn);
+  //   dcController.updatePrice(product.price);
+  //   dcController.updateQuantity(product.quantity);
+  //   dcController.updateGST(product.gst);
+  //   dcController.addProductEditindex(index);
+  // }
 
-  void resetEditingState() {
-    clearFields();
-    dcController.addProductEditindex(null);
-  }
+  // void resetEditingState() {
+  //   clearFields();
+  //   dcController.addProductEditindex(null);
+  // }
 
   void addto_Selectedproducts() {
     dcController.dcModel.selected_dcProducts.clear();

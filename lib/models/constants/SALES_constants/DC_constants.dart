@@ -23,21 +23,25 @@ class DcModel extends GetxController with GetSingleTickerProviderStateMixin {
   final detailsKey = GlobalKey<FormState>().obs;
 
   // PRODUCTS
-  final productKey = GlobalKey<FormState>().obs;
-  final product_editIndex = Rxn<int>();
-  final productNameController = TextEditingController().obs;
-  final hsnController = TextEditingController().obs;
-  final priceController = TextEditingController().obs;
-  final quantityController = TextEditingController().obs;
-  final gstController = TextEditingController().obs;
+  // final productKey = GlobalKey<FormState>().obs;
+  // final product_editIndex = Rxn<int>();
+  // final productNameController = TextEditingController().obs;
+  // final hsnController = TextEditingController().obs;
+  // final priceController = TextEditingController().obs;
+  // final quantityController = TextEditingController().obs;
+  // final gstController = TextEditingController().obs;
   var Dc_products = <DcProduct>[].obs;
   var selected_dcProducts = <DcProduct>[].obs;
-  var Dc_productSuggestion = <ProductSuggestion>[].obs;
+  // var Dc_productSuggestion = <ProductSuggestion>[].obs;
   var Dc_gstTotals = <DcGSTtotals>[].obs;
   var checkboxValues = <bool>[].obs;
   var selectall_status = false.obs;
   var product_feedback = Rxn<String>();
-
+  final productNameController = TextEditingController().obs;
+  var textControllers = <TextEditingController>[].obs;
+  var quantities = <RxInt>[].obs;
+  var focusNodes = <Rx<FocusNode>>[].obs;
+  var isFocused = <bool>[].obs;
   // NOTES
   final noteformKey = GlobalKey<FormState>().obs;
   var progress = 0.0.obs;

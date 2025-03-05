@@ -40,32 +40,6 @@ mixin DcdetailsService {
     }
   }
 
-  void get_productSuggestionList(context) async {
-    try {
-      Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getProduct_SUGG_List);
-
-      if (kDebugMode) {
-        print(response);
-      }
-      if (response?['statusCode'] == 200) {
-        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
-        if (value.code) {
-          dcController.add_productSuggestion(value.data);
-          // await Basic_dialog(context: context, title: 'Enquiry - ID', content: value.message!, onOk: () {});
-          // dcController.update_requiredData(value);
-          // print(clientreqController.clientReqModel.Enq_ID.value);
-          // salesController.addToCustomerList(value);
-        } else {
-          await Basic_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {}, showCancel: false);
-        }
-      } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
-      }
-    } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
-    }
-  }
-
   void get_noteSuggestionList(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getNote_SUGG_List);

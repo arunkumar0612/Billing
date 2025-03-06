@@ -55,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // ),
               controller: sideMenu,
               style: SideMenuStyle(
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
                 showTooltip: true,
                 openSideMenuWidth: 200,
                 // compactSideMenuWidth: 50,

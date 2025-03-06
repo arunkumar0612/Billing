@@ -66,7 +66,7 @@ mixin SalesServices {
     }
   }
 
-  void GetProcesscustomerList(context) async {
+  Future<void> GetProcesscustomerList(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getprocesscustomer_API);
       if (response?['statusCode'] == 200) {
@@ -88,7 +88,7 @@ mixin SalesServices {
     }
   }
 
-  void GetProcessList(context, int customerid) async {
+  Future<void> GetProcessList(context, int customerid) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"customerid": customerid, "listtype": salesController.salesModel.type.value}, API.sales_getprocesslist_API);
       if (response?['statusCode'] == 200) {
@@ -1148,12 +1148,12 @@ mixin SalesServices {
     }
   }
 
-  void refresh(context) {
+  Future<void> refresh(context) async {
     salesController.resetData();
     salesController.updateshowcustomerprocess(null);
     salesController.updatecustomerId(0);
-    GetProcesscustomerList(context);
-    GetProcessList(context, 0);
-    GetSalesData(context, salesController.salesModel.salesperiod.value);
+    await GetProcesscustomerList(context);
+    await GetProcessList(context, 0);
+    await GetSalesData(context, salesController.salesModel.salesperiod.value);
   }
 }

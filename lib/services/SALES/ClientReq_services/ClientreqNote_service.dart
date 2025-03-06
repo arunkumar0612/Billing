@@ -43,7 +43,10 @@ mixin ClientreqNoteService {
   }
 
   void updatetable() {
-    clientreqController.updateRecommendation(index: clientreqController.clientReqModel.Rec_EditIndex.value!, key: clientreqController.clientReqModel.Rec_KeyController.value.text.toString(), value: clientreqController.clientReqModel.Rec_ValueController.value.text.toString());
+    clientreqController.updateRecommendation(
+        index: clientreqController.clientReqModel.Rec_EditIndex.value!,
+        key: clientreqController.clientReqModel.Rec_KeyController.value.text.toString(),
+        value: clientreqController.clientReqModel.Rec_ValueController.value.text.toString());
     cleartable_Fields();
     clientreqController.updateRecommendationEditindex(null);
   }
@@ -120,7 +123,23 @@ mixin ClientreqNoteService {
         return;
       }
       File cachedPdf = await savePdfToCache();
-      Post_ClientRequirement salesData = Post_ClientRequirement.fromJson(clientreqController.clientReqModel.titleController.value.text, clientreqController.clientReqModel.clientNameController.value.text, clientreqController.clientReqModel.emailController.value.text, clientreqController.clientReqModel.phoneController.value.text, clientreqController.clientReqModel.clientAddressController.value.text, clientreqController.clientReqModel.gstController.value.text, clientreqController.clientReqModel.billingAddressNameController.value.text, clientreqController.clientReqModel.billingAddressController.value.text, clientreqController.clientReqModel.morController.value.text, clientreqController.clientReqModel.MOR_uploadedPath.value!, clientreqController.clientReqModel.clientReqProductDetails, clientreqController.clientReqModel.clientReqNoteList, getCurrentDate(), clientreqController.clientReqModel.customer_id.value, clientreqController.clientReqModel.selected_branchList, customer_type == "Enquiry" ? 1 : 2);
+      Post_ClientRequirement salesData = Post_ClientRequirement.fromJson(
+          clientreqController.clientReqModel.titleController.value.text,
+          clientreqController.clientReqModel.clientNameController.value.text,
+          clientreqController.clientReqModel.emailController.value.text,
+          clientreqController.clientReqModel.phoneController.value.text,
+          clientreqController.clientReqModel.clientAddressController.value.text,
+          clientreqController.clientReqModel.gstController.value.text,
+          clientreqController.clientReqModel.billingAddressNameController.value.text,
+          clientreqController.clientReqModel.billingAddressController.value.text,
+          clientreqController.clientReqModel.morController.value.text,
+          clientreqController.clientReqModel.MOR_uploadedPath.value!,
+          clientreqController.clientReqModel.clientReqProductDetails,
+          clientreqController.clientReqModel.clientReqNoteList,
+          getCurrentDate(),
+          clientreqController.clientReqModel.customer_id.value,
+          clientreqController.clientReqModel.selected_branchList,
+          customer_type == "Enquiry" ? 1 : 2);
 
       await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
     } catch (e) {

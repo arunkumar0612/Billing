@@ -65,7 +65,7 @@ class SalesController extends GetxController {
   }
 
   void search(String query) {
-    salesModel.searchQuery.value = query;
+    // salesModel.searchQuery.value = query;
 
     if (query.isEmpty) {
       salesModel.processList.assignAll(salesfilteredModel.processList);
@@ -109,7 +109,7 @@ class SalesController extends GetxController {
     salesModel.isAllSelected.value = false;
     salesModel.type.value = 0;
     salesModel.isprofilepage.value = false;
-    salesModel.searchQuery.value = '';
+    salesModel.searchQuery.value.text = '';
     salesModel.salesdata.value = null;
     salesModel.salesperiod.value = 'monthly';
     salesModel.Clientprofile.value = null;

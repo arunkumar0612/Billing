@@ -6,7 +6,6 @@ import 'package:ssipl_billing/models/entities/SALES/RFQ_entities.dart';
 import 'package:ssipl_billing/services/SALES/RFQ_services/RFQ_Product_services.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
-import 'package:ssipl_billing/views/components/textfield.dart';
 
 class RfqProducts extends StatefulWidget with RfqproductService {
   RfqProducts({super.key});

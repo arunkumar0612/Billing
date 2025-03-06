@@ -8,10 +8,12 @@ import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 class RfqModel extends GetxController with GetSingleTickerProviderStateMixin {
   final Rxn<TabController> tabController = Rxn<TabController>();
   var processID = Rxn<int>();
+  var vendorID = Rxn<int>();
+  var vendorName = Rxn<String>();
   var Rfq_no = Rxn<String>();
   // var gst_no = Rxn<String>();
   var Rfq_table_heading = "".obs;
-  var rfq_amount = Rxn<double>();
+  // var rfq_amount = Rxn<double>();
 
   // DETAILS
   final TitleController = TextEditingController().obs;

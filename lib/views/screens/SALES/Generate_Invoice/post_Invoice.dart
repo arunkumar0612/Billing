@@ -8,6 +8,7 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart'
 import 'package:ssipl_billing/services/SALES/Invoice_services/Invoicepost_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
+import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -688,17 +689,33 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                     const SizedBox(
                       height: 10,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: BasicButton(
-                              text: "Send",
-                              colors: Colors.blue,
-                              onPressed: () {
-                                print(invoiceController.invoiceModel.invoice_amount.value);
-                                widget.postData(context, invoiceController.fetch_messageType());
-                              })),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Align(
+                              alignment: Alignment.centerRight,
+                              child: BasicButton(
+                                  text: "Back",
+                                  colors: Colors.red,
+                                  onPressed: () {
+                                    invoiceController.backTab();
+                                  })),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Align(
+                              alignment: Alignment.centerRight,
+                              child: BasicButton(
+                                  text: "Send",
+                                  colors: Colors.blue,
+                                  onPressed: () {
+                                    print(invoiceController.invoiceModel.invoice_amount.value);
+                                    showLoading(context, () => widget.postData(context, invoiceController.fetch_messageType()));
+                                  })),
+                        )
+                      ],
                     )
                   ],
                 ),

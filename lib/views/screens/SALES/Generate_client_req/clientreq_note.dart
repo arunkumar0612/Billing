@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
@@ -178,7 +179,8 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                       color: Colors.black,
                                     ),
                                   ),
-                                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)), borderSide: BorderSide(color: Colors.black)),
+                                  enabledBorder:
+                                      OutlineInputBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)), borderSide: BorderSide(color: Colors.black)),
                                   border: OutlineInputBorder(),
                                   hintStyle: TextStyle(
                                     fontSize: 13,
@@ -445,7 +447,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                 colors: Colors.green,
                                 text: 'Submit',
                                 onPressed: () async {
-                                  await widget.postData(context, widget.customer_type);
+                                  showLoading(context, () => widget.postData(context, widget.customer_type));
                                 },
                               ),
                           ],

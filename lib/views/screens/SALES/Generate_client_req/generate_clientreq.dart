@@ -103,7 +103,9 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
                         children: [
                           widget.value == "Enquiry" ? enquryDetails() : customerDetails(),
                           clientreqProducts(),
-                          ClientreqNote(customer_type: widget.value),
+                          SingleChildScrollView(
+                            child: ClientreqNote(customer_type: widget.value),
+                          )
                         ],
                       ),
                     ),

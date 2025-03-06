@@ -8,6 +8,7 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/services/SALES/RFQ_services/RFQ_Post_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
+import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -688,16 +689,32 @@ class PostRfqState extends State<PostRfq> with SingleTickerProviderStateMixin {
                     const SizedBox(
                       height: 10,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: BasicButton(
-                              text: "Send",
-                              colors: Colors.blue,
-                              onPressed: () {
-                                widget.postData(context, rfqController.fetch_messageType());
-                              })),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Align(
+                              alignment: Alignment.centerRight,
+                              child: BasicButton(
+                                  text: "Back",
+                                  colors: Colors.red,
+                                  onPressed: () {
+                                    rfqController.backTab();
+                                  })),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Align(
+                              alignment: Alignment.centerRight,
+                              child: BasicButton(
+                                  text: "Send",
+                                  colors: Colors.blue,
+                                  onPressed: () {
+                                    showLoading(context, () => widget.postData(context, rfqController.fetch_messageType()));
+                                  })),
+                        )
+                      ],
                     )
                   ],
                 ),

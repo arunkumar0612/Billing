@@ -9,6 +9,7 @@ class API {
   static String add_Quotation = "http://192.168.0.200:8081/sales/addquotation";
   static String add_RevisedQuotation = "http://192.168.0.200:8081/sales/addrevisedquotation";
   static String add_Dc = "http://192.168.0.200:8081/sales/adddeliverychallan";
+  static String add_RFQ = "http://192.168.0.200:8081/sales/addrfq";
 
   static String add_invoice = "http://192.168.0.200:8081/sales/addinvoice";
   static String add_rfq = "http://192.168.0.200:8081/sales/addrfq";

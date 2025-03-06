@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
@@ -6,7 +5,7 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/Sales_actions.dart';
 import 'package:ssipl_billing/routes/app_routes.dart';
 import 'package:ssipl_billing/themes/style.dart';
 // import 'package:ssipl_billing/controllers/viewSend_actions.dart';
-import 'package:window_manager/window_manager.dart';
+// import 'package:window_manager/window_manager.dart';
 import 'controllers/SALEScontrollers/ClientReq_actions.dart';
 import 'controllers/SALEScontrollers/Credit_actions.dart';
 import 'controllers/SALEScontrollers/DC_actions.dart';
@@ -44,23 +43,23 @@ Future<void> main() async {
   Get.lazyPut<DcController>(() => DcController());
   Get.lazyPut<CustomPDF_InvoiceController>(() => CustomPDF_InvoiceController());
   // Get.lazyPut<ViewsendController>(() => ViewsendController());
-  if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux)) {
-    await windowManager.ensureInitialized();
-    WindowOptions windowOptions = const WindowOptions(
-      minimumSize: Size(1200, 700),
-      center: true,
-      backgroundColor: Colors.transparent,
-      title: 'ERP system',
-    );
-    await windowManager.waitUntilReadyToShow(
-      windowOptions,
-      () async {
-        await windowManager.show();
-        await windowManager.focus();
-        await windowManager.maximize();
-      },
-    );
-  }
+  // if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux)) {
+  //   await windowManager.ensureInitialized();
+  //   WindowOptions windowOptions = const WindowOptions(
+  //     minimumSize: Size(1200, 700),
+  //     center: true,
+  //     backgroundColor: Colors.transparent,
+  //     title: 'ERP system',
+  //   );
+  //   await windowManager.waitUntilReadyToShow(
+  //     windowOptions,
+  //     () async {
+  //       await windowManager.show();
+  //       await windowManager.focus();
+  //       await windowManager.maximize();
+  //     },
+  //   );
+  // }
   runApp(const MyApp());
 }
 

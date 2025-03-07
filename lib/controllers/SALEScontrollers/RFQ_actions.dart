@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
-import 'package:ssipl_billing/views/components/Loading.dart';
+
 import '../../models/constants/SALES_constants/Rfq_constants.dart';
 import '../../models/entities/SALES/RFQ_entities.dart';
 import '../../models/entities/SALES/product_entities.dart';

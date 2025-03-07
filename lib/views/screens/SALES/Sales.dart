@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:animations/animations.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/foundation.dart';
@@ -98,81 +97,82 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return Scaffold(
-        backgroundColor: Primary_colors.Dark,
-        body: Center(
-          child: SizedBox(
-            // width: 1500,
-            child: Column(
-              children: [
-                // const SizedBox(height: 185, child: cardview()),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        ShaderMask(
-                          shaderCallback: (bounds) => const LinearGradient(
-                            colors: [Primary_colors.Color3, Primary_colors.Color4], // Example gradient
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ).createShader(bounds),
-                          child: const Icon(
-                            Icons.trending_up,
-                            size: 25.0,
-                          ),
+    return Scaffold(
+      backgroundColor: Primary_colors.Dark,
+      body: Center(
+        child: SizedBox(
+          // width: 1500,
+          child: Column(
+            children: [
+              // const SizedBox(height: 185, child: cardview()),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      ShaderMask(
+                        shaderCallback: (bounds) => const LinearGradient(
+                          colors: [Primary_colors.Color3, Primary_colors.Color4], // Example gradient
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ).createShader(bounds),
+                        child: const Icon(
+                          Icons.trending_up,
+                          size: 25.0,
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const Text(
-                          'Sales',
-                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text13),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: _startAnimation,
-                          child: AnimatedBuilder(
-                            animation: salesController.salesModel.animationController,
-                            builder: (context, child) {
-                              return Transform.rotate(
-                                angle: -salesController.salesModel.animationController.value * 2 * pi, // Counterclockwise rotation
-                                child: Transform.scale(
-                                  scale: TweenSequence([
-                                    TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 1.2), weight: 50),
-                                    TweenSequenceItem(tween: Tween<double>(begin: 1.2, end: 1.0), weight: 50),
-                                  ]).animate(CurvedAnimation(parent: salesController.salesModel.animationController, curve: Curves.easeInOut)).value, // Zoom in and return to normal
-                                  child: Opacity(
-                                    opacity: TweenSequence([
-                                      TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.5), weight: 50),
-                                      TweenSequenceItem(tween: Tween<double>(begin: 0.5, end: 1.0), weight: 50),
-                                    ]).animate(CurvedAnimation(parent: salesController.salesModel.animationController, curve: Curves.easeInOut)).value, // Fade and return to normal
-                                    child: ClipOval(
-                                      child: Image.asset(
-                                        'assets/images/reload.png',
-                                        fit: BoxFit.cover,
-                                        width: 30,
-                                        height: 30,
-                                      ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        'Sales',
+                        style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text13),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: _startAnimation,
+                        child: AnimatedBuilder(
+                          animation: salesController.salesModel.animationController,
+                          builder: (context, child) {
+                            return Transform.rotate(
+                              angle: -salesController.salesModel.animationController.value * 2 * pi, // Counterclockwise rotation
+                              child: Transform.scale(
+                                scale: TweenSequence([
+                                  TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 1.2), weight: 50),
+                                  TweenSequenceItem(tween: Tween<double>(begin: 1.2, end: 1.0), weight: 50),
+                                ]).animate(CurvedAnimation(parent: salesController.salesModel.animationController, curve: Curves.easeInOut)).value, // Zoom in and return to normal
+                                child: Opacity(
+                                  opacity: TweenSequence([
+                                    TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.5), weight: 50),
+                                    TweenSequenceItem(tween: Tween<double>(begin: 0.5, end: 1.0), weight: 50),
+                                  ]).animate(CurvedAnimation(parent: salesController.salesModel.animationController, curve: Curves.easeInOut)).value, // Fade and return to normal
+                                  child: ClipOval(
+                                    child: Image.asset(
+                                      'assets/images/reload.png',
+                                      fit: BoxFit.cover,
+                                      width: 30,
+                                      height: 30,
                                     ),
                                   ),
                                 ),
-                              );
-                            },
-                          ),
+                              ),
+                            );
+                          },
                         ),
-                        const SizedBox(width: 10),
-                        SizedBox(
+                      ),
+                      const SizedBox(width: 10),
+                      Obx(
+                        () => SizedBox(
                           width: 400,
                           height: 40,
                           child: Stack(
                             alignment: Alignment.centerLeft,
                             children: [
                               TextFormField(
+                                controller: salesController.salesModel.searchQuery.value,
                                 onChanged: salesController.search,
                                 style: const TextStyle(fontSize: 13, color: Colors.white),
                                 decoration: const InputDecoration(
@@ -196,7 +196,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                   ),
                                 ),
                               ),
-                              if (salesController.salesModel.searchQuery.isEmpty)
+                              if (salesController.salesModel.searchQuery.value.text.isEmpty)
                                 Positioned(
                                   left: 40, // Adjust positioning as needed
                                   child: IgnorePointer(
@@ -246,56 +246,58 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                             ],
                           ),
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 235,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                elevation: 10,
-                                color: Primary_colors.Light,
-                                // decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Primary_colors.Light),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Padding(
-                                            padding: EdgeInsets.only(left: 15),
-                                            child: Text(
-                                              'SALES DATA',
-                                              style: TextStyle(letterSpacing: 1, wordSpacing: 3, color: Primary_colors.Color3, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
-                                            ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 235,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              elevation: 10,
+                              color: Primary_colors.Light,
+                              // decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Primary_colors.Light),
+                              child: Padding(
+                                padding: const EdgeInsets.all(0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.only(left: 15),
+                                          child: Text(
+                                            'SALES DATA',
+                                            style: TextStyle(letterSpacing: 1, wordSpacing: 3, color: Primary_colors.Color3, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(right: 10),
-                                            child: SizedBox(
-                                              width: 200,
-                                              height: 35,
-                                              child: DropdownButtonFormField<String>(
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 10),
+                                          child: SizedBox(
+                                            width: 200,
+                                            height: 35,
+                                            child: Obx(
+                                              () => DropdownButtonFormField<String>(
                                                 value: salesController.salesModel.salesperiod.value == 'monthly' ? "Monthly view" : "Yearly view", // Use the state variable for the selected value
                                                 items: [
                                                   "Monthly view",
@@ -340,47 +342,49 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                 dropdownColor: Primary_colors.Dark,
                                               ),
                                             ),
-                                          )
-                                        ],
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(16),
-                                            // gradient: const LinearGradient(
-                                            //   colors: [Primary_colors.Light, Color.fromARGB(255, 40, 39, 59), Primary_colors.Light],
-                                            //   begin: Alignment.topLeft,
-                                            //   end: Alignment.bottomRight,
-                                            // ),
-                                            // boxShadow: const [
-                                            //   BoxShadow(
-                                            //     color: Colors.black12,
-                                            //     offset: Offset(0, 10),
-                                            //     blurRadius: 20,
-                                            //   ),
-                                            // ],
                                           ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(16),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets.only(left: 10),
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children: [
-                                                      const Text(
-                                                        'TOTAL',
-                                                        style: TextStyle(
-                                                          color: Color.fromARGB(255, 186, 185, 185),
-                                                          fontSize: 12,
-                                                          fontWeight: FontWeight.w500,
-                                                        ),
+                                        )
+                                      ],
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(16),
+                                          // gradient: const LinearGradient(
+                                          //   colors: [Primary_colors.Light, Color.fromARGB(255, 40, 39, 59), Primary_colors.Light],
+                                          //   begin: Alignment.topLeft,
+                                          //   end: Alignment.bottomRight,
+                                          // ),
+                                          // boxShadow: const [
+                                          //   BoxShadow(
+                                          //     color: Colors.black12,
+                                          //     offset: Offset(0, 10),
+                                          //     blurRadius: 20,
+                                          //   ),
+                                          // ],
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    const Text(
+                                                      'TOTAL',
+                                                      style: TextStyle(
+                                                        color: Color.fromARGB(255, 186, 185, 185),
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.w500,
                                                       ),
-                                                      Text(
+                                                    ),
+                                                    Obx(
+                                                      () => Text(
                                                         widget.formatNumber(int.tryParse(salesController.salesModel.salesdata.value?.totalamount ?? "0") ?? 0),
                                                         style: const TextStyle(
                                                           color: Primary_colors.Color1,
@@ -388,14 +392,16 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                           fontWeight: FontWeight.bold,
                                                         ),
                                                       ),
-                                                      Container(
-                                                        decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.circular(10),
-                                                          color: const Color.fromARGB(255, 202, 227, 253),
-                                                        ),
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.all(4),
-                                                          child: Text(
+                                                    ),
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(10),
+                                                        color: const Color.fromARGB(255, 202, 227, 253),
+                                                      ),
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(4),
+                                                        child: Obx(
+                                                          () => Text(
                                                             // '210 invoices',
 
                                                             "${salesController.salesModel.salesdata.value?.totalinvoices.toString() ?? "0"} ${((salesController.salesModel.salesdata.value?.totalinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
@@ -403,23 +409,25 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                 fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 1, 53, 92), letterSpacing: 1, fontWeight: FontWeight.bold),
                                                           ),
                                                         ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                                Column(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  children: [
-                                                    const Text(
-                                                      'RECEIVED',
-                                                      style: TextStyle(
-                                                        color: Color.fromARGB(255, 186, 185, 185),
-                                                        fontSize: 12,
-                                                        fontWeight: FontWeight.w500,
                                                       ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Column(
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  const Text(
+                                                    'RECEIVED',
+                                                    style: TextStyle(
+                                                      color: Color.fromARGB(255, 186, 185, 185),
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w500,
                                                     ),
-                                                    Text(
+                                                  ),
+                                                  Obx(
+                                                    () => Text(
                                                       // "₹ 18,6232",
                                                       widget.formatNumber(int.tryParse(salesController.salesModel.salesdata.value?.paidamount ?? "0") ?? 0),
 
@@ -429,38 +437,42 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                         fontWeight: FontWeight.bold,
                                                       ),
                                                     ),
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(10),
-                                                        color: const Color.fromARGB(255, 202, 253, 223),
-                                                      ),
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(4),
-                                                        child: Text(
+                                                  ),
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      color: const Color.fromARGB(255, 202, 253, 223),
+                                                    ),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(4),
+                                                      child: Obx(
+                                                        () => Text(
                                                           // '210 invoices',
                                                           "${salesController.salesModel.salesdata.value?.paidinvoices.toString() ?? "0"} ${((salesController.salesModel.salesdata.value?.paidinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
                                                           style:
                                                               const TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 2, 87, 4), letterSpacing: 1, fontWeight: FontWeight.bold),
                                                         ),
                                                       ),
-                                                    )
-                                                  ],
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(right: 10),
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children: [
-                                                      const Text(
-                                                        'PENDING',
-                                                        style: TextStyle(
-                                                          color: Color.fromARGB(255, 186, 185, 185),
-                                                          fontSize: 12,
-                                                          fontWeight: FontWeight.w500,
-                                                        ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(right: 10),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    const Text(
+                                                      'PENDING',
+                                                      style: TextStyle(
+                                                        color: Color.fromARGB(255, 186, 185, 185),
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.w500,
                                                       ),
-                                                      Text(
+                                                    ),
+                                                    Obx(
+                                                      () => Text(
                                                         // "₹ 6,232",
                                                         widget.formatNumber(int.tryParse(salesController.salesModel.salesdata.value?.unpaidamount ?? "0") ?? 0),
 
@@ -470,134 +482,137 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                           fontWeight: FontWeight.bold,
                                                         ),
                                                       ),
-                                                      Container(
-                                                        decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.circular(10),
-                                                          color: const Color.fromARGB(255, 253, 206, 202),
-                                                        ),
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.all(4),
-                                                          child: Text(
+                                                    ),
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(10),
+                                                        color: const Color.fromARGB(255, 253, 206, 202),
+                                                      ),
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(4),
+                                                        child: Obx(
+                                                          () => Text(
                                                             // '110 invoices',
                                                             "${salesController.salesModel.salesdata.value?.unpaidinvoices.toString() ?? "0"} ${((salesController.salesModel.salesdata.value?.unpaidinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
                                                             style: const TextStyle(
                                                                 fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 118, 9, 1), fontWeight: FontWeight.bold, letterSpacing: 1),
                                                           ),
                                                         ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            ],
                                           ),
                                         ),
-                                      )
-                                    ],
-                                  ),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            Expanded(
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                elevation: 10,
-                                color: Primary_colors.Light,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      // First row of icons and labels
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Expanded(
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              elevation: 10,
+                              color: Primary_colors.Light,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    // First row of icons and labels
 
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: MouseRegion(
-                                              cursor: SystemMouseCursors.click,
-                                              child: _buildIconWithLabel(
-                                                image: 'assets/images/addcustomer.png',
-                                                label: 'Add Customer',
-                                                color: Primary_colors.Color4,
-                                                onPressed: () {
-                                                  widget.Generate_client_reqirement_dialougebox('Customer', context);
-                                                },
-                                              ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: MouseRegion(
+                                            cursor: SystemMouseCursors.click,
+                                            child: _buildIconWithLabel(
+                                              image: 'assets/images/addcustomer.png',
+                                              label: 'Add Customer',
+                                              color: Primary_colors.Color4,
+                                              onPressed: () {
+                                                widget.Generate_client_reqirement_dialougebox('Customer', context);
+                                              },
                                             ),
                                           ),
-                                          Expanded(
-                                            child: MouseRegion(
-                                              cursor: SystemMouseCursors.click,
-                                              child: _buildIconWithLabel(
-                                                  image: 'assets/images/addenquiry.png',
-                                                  label: 'Add Enquiry',
-                                                  color: Primary_colors.Color5,
-                                                  onPressed: () {
-                                                    widget.Generate_client_reqirement_dialougebox('Enquiry', context);
-                                                  }),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      const SizedBox(height: 20),
-                                      // Second row of icons and labels
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Obx(
-                                              () => AnimatedSwitcher(
-                                                duration: const Duration(milliseconds: 300), // Animation duration
-                                                transitionBuilder: (Widget child, Animation<double> animation) {
-                                                  return FadeTransition(
-                                                    opacity: animation,
-                                                    child: SlideTransition(
-                                                      position: animation.drive(
-                                                        Tween<Offset>(
-                                                          begin: const Offset(1.0, 0.0), // Slide in from right
-                                                          end: Offset.zero,
-                                                        ).chain(CurveTween(curve: Curves.easeInOut)),
-                                                      ),
-                                                      child: child,
+                                        ),
+                                        Expanded(
+                                          child: MouseRegion(
+                                            cursor: SystemMouseCursors.click,
+                                            child: _buildIconWithLabel(
+                                                image: 'assets/images/addenquiry.png',
+                                                label: 'Add Enquiry',
+                                                color: Primary_colors.Color5,
+                                                onPressed: () {
+                                                  widget.Generate_client_reqirement_dialougebox('Enquiry', context);
+                                                }),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(height: 20),
+                                    // Second row of icons and labels
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Obx(
+                                            () => AnimatedSwitcher(
+                                              duration: const Duration(milliseconds: 300), // Animation duration
+                                              transitionBuilder: (Widget child, Animation<double> animation) {
+                                                return FadeTransition(
+                                                  opacity: animation,
+                                                  child: SlideTransition(
+                                                    position: animation.drive(
+                                                      Tween<Offset>(
+                                                        begin: const Offset(1.0, 0.0), // Slide in from right
+                                                        end: Offset.zero,
+                                                      ).chain(CurveTween(curve: Curves.easeInOut)),
                                                     ),
-                                                  );
-                                                },
-                                                child: MouseRegion(
-                                                  cursor: SystemMouseCursors.click,
-                                                  child: _buildIconWithLabel(
-                                                    // key: ValueKey(salesController.salesModel.type.value), // Ensures re-build
-                                                    image: salesController.salesModel.type.value == 0 ? 'assets/images/viewarchivelist.png' : 'assets/images/mainlist.png',
-                                                    label: salesController.salesModel.type.value == 0 ? 'Archive List' : 'Main List',
-                                                    color: Primary_colors.Color8,
-                                                    onPressed: () {
-                                                      salesController.salesModel.selectedIndices.clear();
-                                                      salesController.updatetype(salesController.salesModel.type.value == 0 ? 1 : 0);
-                                                      widget.GetProcessList(context, salesController.salesModel.customerId.value!);
-                                                    },
+                                                    child: child,
                                                   ),
+                                                );
+                                              },
+                                              child: MouseRegion(
+                                                cursor: SystemMouseCursors.click,
+                                                child: _buildIconWithLabel(
+                                                  // key: ValueKey(salesController.salesModel.type.value), // Ensures re-build
+                                                  image: salesController.salesModel.type.value == 0 ? 'assets/images/viewarchivelist.png' : 'assets/images/mainlist.png',
+                                                  label: salesController.salesModel.type.value == 0 ? 'Archive List' : 'Main List',
+                                                  color: Primary_colors.Color8,
+                                                  onPressed: () {
+                                                    salesController.salesModel.selectedIndices.clear();
+                                                    salesController.updatetype(salesController.salesModel.type.value == 0 ? 1 : 0);
+                                                    widget.GetProcessList(context, salesController.salesModel.customerId.value!);
+                                                  },
                                                 ),
                                               ),
                                             ),
                                           ),
-                                          // Expanded(
-                                          //   child: _buildIconWithLabel(
-                                          //     image: 'assets/images/article.png',
-                                          //     label: 'Options',
-                                          //     color: Primary_colors.Dark,
-                                          //     onPressed: () {
-                                          //       widget.custom_Invoice_controller.initializeTextControllers();
-                                          //       widget.custom_Invoice_controller.initializeCheckboxes();
-                                          //       widget.showA4StyledPopup(context);
-                                          //     },
-                                          //   ),
-                                          // ),
-                                          Expanded(
-                                              child: Column(
+                                        ),
+                                        // Expanded(
+                                        //   child: _buildIconWithLabel(
+                                        //     image: 'assets/images/article.png',
+                                        //     label: 'Options',
+                                        //     color: Primary_colors.Dark,
+                                        //     onPressed: () {
+                                        //       widget.custom_Invoice_controller.initializeTextControllers();
+                                        //       widget.custom_Invoice_controller.initializeCheckboxes();
+                                        //       widget.showA4StyledPopup(context);
+                                        //     },
+                                        //   ),
+                                        // ),
+                                        Expanded(
+                                          child: Column(
                                             children: [
                                               MouseRegion(
                                                   cursor: SystemMouseCursors.click,
@@ -634,6 +649,9 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                           // dc_CustomPDF_Services.assign_GSTtotals();
                                                           inst_dcDesign.showA4StyledPopup(context);
                                                           break;
+                                                        case 'Custom PDF List':
+                                                          _manualcreation_list();
+                                                          break;
                                                       }
                                                     },
                                                     itemBuilder: (BuildContext context) {
@@ -643,9 +661,11 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                         PopupMenuItem<String>(
                                                           value: "Invoice",
                                                           child: ListTile(
-                                                            leading: Icon(
-                                                              salesController.salesModel.type.value != 0 ? Icons.unarchive_outlined : Icons.archive_outlined,
-                                                              color: Colors.blueAccent,
+                                                            leading: Obx(
+                                                              () => Icon(
+                                                                salesController.salesModel.type.value != 0 ? Icons.unarchive_outlined : Icons.archive_outlined,
+                                                                color: Colors.blueAccent,
+                                                              ),
                                                             ),
                                                             title: const Text(
                                                               'Invoice',
@@ -667,6 +687,13 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                             title: Text('Delivery Challan', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
                                                           ),
                                                         ),
+                                                        const PopupMenuItem<String>(
+                                                          value: 'Custom PDF List',
+                                                          child: ListTile(
+                                                            leading: Icon(Icons.menu_rounded, color: Colors.blue),
+                                                            title: Text('Custom PDF List', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                                          ),
+                                                        ),
                                                       ];
                                                     },
                                                   )),
@@ -682,63 +709,65 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                 ),
                                               ),
                                             ],
-                                          ))
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
+                            ),
 
-                              // Reusable function to build icon with label for consistency
-                            )
+                            // Reusable function to build icon with label for consistency
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 15),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(0),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                elevation: 10,
+                                color: Primary_colors.Light,
+                                child: const Padding(padding: EdgeInsets.all(16), child: SalesChart()),
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                      const SizedBox(width: 15),
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(0),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  elevation: 10,
-                                  color: Primary_colors.Light,
-                                  child: const Padding(padding: EdgeInsets.all(16), child: SalesChart()),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-                const SizedBox(height: 15),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Container(
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Primary_colors.Light),
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 5),
-                              SizedBox(
-                                height: 25,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 15),
-                                      child: Text(
+              ),
+              const SizedBox(height: 15),
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Primary_colors.Light),
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 5),
+                            SizedBox(
+                              height: 25,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 15),
+                                    child: Obx(
+                                      () => Text(
                                         salesController.salesModel.type.value == 0 ? 'ACTIVE PROCESS LIST' : "ARCHIVED PROCESS LIST",
                                         style: TextStyle(
                                             letterSpacing: 1,
@@ -748,133 +777,135 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
-                                    Row(
-                                      children: [
-                                        if (salesController.salesModel.selectedIndices.isNotEmpty)
-                                          PopupMenuButton<String>(
-                                            splashRadius: 20,
-                                            padding: const EdgeInsets.all(0),
-                                            icon: const Icon(Icons.menu),
-                                            shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                                              // side: const BorderSide(color: Primary_colors.Color3, width: 2),
-                                            ),
-                                            color: Colors.white,
-                                            elevation: 6,
-                                            offset: const Offset(-10, 30),
-                                            onSelected: (String item) {
-                                              // Handle menu item selection
-
-                                              switch (item) {
-                                                case 'Archive':
-                                                  Basic_dialog(
-                                                    context: context,
-                                                    title: 'Confirmation',
-                                                    content: 'Are you sure you want to Archive this process?',
-                                                    showCancel: true,
-                                                    onOk: () {
-                                                      widget.ArchiveProcesscontrol(
-                                                        context,
-                                                        salesController.salesModel.selectedIndices.map((index) => salesController.salesModel.processList[index].processid).toList(),
-                                                        1, // 1 for Archive, 0 for Unarchive
-                                                      );
-                                                    },
-                                                  );
-                                                  break;
-                                                case 'Unarchive':
-                                                  Basic_dialog(
-                                                    context: context,
-                                                    title: 'Confirmation',
-                                                    content: 'Are you sure you want to Unarchive this process?',
-                                                    showCancel: true,
-                                                    onOk: () {
-                                                      widget.ArchiveProcesscontrol(
-                                                        context,
-                                                        salesController.salesModel.selectedIndices.map((index) => salesController.salesModel.processList[index].processid).toList(),
-                                                        0, // 1 for Archive, 0 for Unarchive
-                                                      );
-                                                    },
-                                                  );
-                                                  break;
-                                                case 'Modify':
-                                                  Basic_dialog(
-                                                    context: context,
-                                                    title: 'Error',
-                                                    content: 'Unable to modify the process',
-                                                    showCancel: true,
-                                                  );
-                                                  break;
-                                                case 'Delete':
-                                                  Basic_dialog(
-                                                    context: context,
-                                                    title: 'Confirmation',
-                                                    content: 'Are you sure you want to delete this process?',
-                                                    showCancel: true,
-                                                    onOk: () {
-                                                      widget.DeleteProcess(
-                                                        context,
-                                                        salesController.salesModel.selectedIndices.map((index) => salesController.salesModel.processList[index].processid).toList(),
-                                                      );
-                                                    },
-                                                  );
-                                                  break;
-                                              }
-                                            },
-                                            itemBuilder: (BuildContext context) {
-                                              // Determine the label for the archive/unarchive action
-
-                                              return [
-                                                PopupMenuItem<String>(
-                                                  value: salesController.salesModel.type.value != 0 ? 'Unarchive' : 'Archive',
-                                                  child: ListTile(
-                                                    leading: Icon(
-                                                      salesController.salesModel.type.value != 0 ? Icons.unarchive_outlined : Icons.archive_outlined,
-                                                      color: Colors.blueAccent,
-                                                    ),
-                                                    title: Text(
-                                                      salesController.salesModel.type.value != 0 ? 'Unarchive' : 'Archive',
-                                                      style: const TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
-                                                    ),
-                                                  ),
-                                                ),
-                                                const PopupMenuItem<String>(
-                                                  value: 'Modify',
-                                                  child: ListTile(
-                                                    leading: Icon(Icons.edit_outlined, color: Colors.green),
-                                                    title: Text('Modify', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
-                                                  ),
-                                                ),
-                                                const PopupMenuItem<String>(
-                                                  value: 'Delete',
-                                                  child: ListTile(
-                                                    leading: Icon(Icons.delete_outline, color: Colors.redAccent),
-                                                    title: Text('Delete', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
-                                                  ),
-                                                ),
-                                              ];
-                                            },
-                                          ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Container(
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [Primary_colors.Color3, Primary_colors.Color3], // Example gradient colors
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
                                   ),
-                                  borderRadius: BorderRadius.circular(15), // Ensure border radius for smooth corners
+                                  Obx(() => Row(
+                                        children: [
+                                          if (salesController.salesModel.selectedIndices.isNotEmpty)
+                                            PopupMenuButton<String>(
+                                              splashRadius: 20,
+                                              padding: const EdgeInsets.all(0),
+                                              icon: const Icon(Icons.menu),
+                                              shape: const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                                // side: const BorderSide(color: Primary_colors.Color3, width: 2),
+                                              ),
+                                              color: Colors.white,
+                                              elevation: 6,
+                                              offset: const Offset(-10, 30),
+                                              onSelected: (String item) {
+                                                // Handle menu item selection
+
+                                                switch (item) {
+                                                  case 'Archive':
+                                                    Basic_dialog(
+                                                      context: context,
+                                                      title: 'Confirmation',
+                                                      content: 'Are you sure you want to Archive this process?',
+                                                      showCancel: true,
+                                                      onOk: () {
+                                                        widget.ArchiveProcesscontrol(
+                                                          context,
+                                                          salesController.salesModel.selectedIndices.map((index) => salesController.salesModel.processList[index].processid).toList(),
+                                                          1, // 1 for Archive, 0 for Unarchive
+                                                        );
+                                                      },
+                                                    );
+                                                    break;
+                                                  case 'Unarchive':
+                                                    Basic_dialog(
+                                                      context: context,
+                                                      title: 'Confirmation',
+                                                      content: 'Are you sure you want to Unarchive this process?',
+                                                      showCancel: true,
+                                                      onOk: () {
+                                                        widget.ArchiveProcesscontrol(
+                                                          context,
+                                                          salesController.salesModel.selectedIndices.map((index) => salesController.salesModel.processList[index].processid).toList(),
+                                                          0, // 1 for Archive, 0 for Unarchive
+                                                        );
+                                                      },
+                                                    );
+                                                    break;
+                                                  case 'Modify':
+                                                    Basic_dialog(
+                                                      context: context,
+                                                      title: 'Error',
+                                                      content: 'Unable to modify the process',
+                                                      showCancel: true,
+                                                    );
+                                                    break;
+                                                  case 'Delete':
+                                                    Basic_dialog(
+                                                      context: context,
+                                                      title: 'Confirmation',
+                                                      content: 'Are you sure you want to delete this process?',
+                                                      showCancel: true,
+                                                      onOk: () {
+                                                        widget.DeleteProcess(
+                                                          context,
+                                                          salesController.salesModel.selectedIndices.map((index) => salesController.salesModel.processList[index].processid).toList(),
+                                                        );
+                                                      },
+                                                    );
+                                                    break;
+                                                }
+                                              },
+                                              itemBuilder: (BuildContext context) {
+                                                // Determine the label for the archive/unarchive action
+
+                                                return [
+                                                  PopupMenuItem<String>(
+                                                    value: salesController.salesModel.type.value != 0 ? 'Unarchive' : 'Archive',
+                                                    child: ListTile(
+                                                      leading: Icon(
+                                                        salesController.salesModel.type.value != 0 ? Icons.unarchive_outlined : Icons.archive_outlined,
+                                                        color: Colors.blueAccent,
+                                                      ),
+                                                      title: Text(
+                                                        salesController.salesModel.type.value != 0 ? 'Unarchive' : 'Archive',
+                                                        style: const TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const PopupMenuItem<String>(
+                                                    value: 'Modify',
+                                                    child: ListTile(
+                                                      leading: Icon(Icons.edit_outlined, color: Colors.green),
+                                                      title: Text('Modify', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                                    ),
+                                                  ),
+                                                  const PopupMenuItem<String>(
+                                                    value: 'Delete',
+                                                    child: ListTile(
+                                                      leading: Icon(Icons.delete_outline, color: Colors.redAccent),
+                                                      title: Text('Delete', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                                    ),
+                                                  ),
+                                                ];
+                                              },
+                                            ),
+                                        ],
+                                      )),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Container(
+                              height: 40,
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [Primary_colors.Color3, Primary_colors.Color3], // Example gradient colors
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 15, right: 47),
-                                  child: Row(
-                                    children: [
-                                      Checkbox(
+                                borderRadius: BorderRadius.circular(15), // Ensure border radius for smooth corners
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 15, right: 47),
+                                child: Row(
+                                  children: [
+                                    Obx(
+                                      () => Checkbox(
                                         value: salesController.salesModel.isAllSelected.value,
                                         onChanged: (bool? value) {
                                           salesController.salesModel.isAllSelected.value = value ?? false;
@@ -891,41 +922,43 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                           borderRadius: BorderRadius.circular(4), // Soft rounded corners
                                         ),
                                       ),
-                                      const SizedBox(width: 20),
-                                      const Expanded(
-                                        flex: 4,
-                                        child: Text(
-                                          'Process ID',
-                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                                        ),
+                                    ),
+                                    const SizedBox(width: 20),
+                                    const Expanded(
+                                      flex: 4,
+                                      child: Text(
+                                        'Process ID',
+                                        style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                                       ),
-                                      const Expanded(
-                                        flex: 15,
-                                        child: Text(
-                                          'Process Title',
-                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                                        ),
+                                    ),
+                                    const Expanded(
+                                      flex: 15,
+                                      child: Text(
+                                        'Process Title',
+                                        style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                                       ),
-                                      const Expanded(
-                                        flex: 4,
-                                        child: Text(
-                                          'Date',
-                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                                        ),
+                                    ),
+                                    const Expanded(
+                                      flex: 4,
+                                      child: Text(
+                                        'Date',
+                                        style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                                       ),
-                                      const Expanded(
-                                        flex: 4,
-                                        child: Text(
-                                          'Days',
-                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                                        ),
+                                    ),
+                                    const Expanded(
+                                      flex: 4,
+                                      child: Text(
+                                        'Days',
+                                        style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              const SizedBox(height: 10),
-                              Expanded(
+                            ),
+                            const SizedBox(height: 10),
+                            Obx(
+                              () => Expanded(
                                 // child: Container(),
                                 child: ListView.builder(
                                   itemCount: salesController.salesModel.processList.length,
@@ -1130,7 +1163,10 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                   ),
                                                                   onTap: () async {
                                                                     bool success = await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                    if (success) widget.showPDF(context);
+                                                                    if (success) {
+                                                                      widget.showPDF(context,
+                                                                          "${salesController.salesModel.processList[index].customer_name}${salesController.salesModel.processList[index].title}${salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname}");
+                                                                    }
                                                                   },
                                                                 ),
                                                               ),
@@ -1138,7 +1174,19 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                 Container(
                                                                   width: 2,
                                                                   height: 40,
-                                                                  color: const Color.fromARGB(107, 199, 202, 249),
+                                                                  color: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
+                                                                      ? const Color.fromARGB(255, 243, 131, 56)
+                                                                      : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
+                                                                          ? Colors.green
+                                                                          : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Invoice"
+                                                                              ? Colors.green
+                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
+                                                                                  ? Colors.red
+                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
+                                                                                      ? Colors.blue
+                                                                                      : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Request for Quotation"
+                                                                                          ? const Color.fromARGB(255, 255, 191, 119)
+                                                                                          : Colors.white,
                                                                 ),
                                                             ],
                                                           ),
@@ -1260,7 +1308,9 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                   widget.GenerateRfq_dialougebox(
                                                                                       context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                   rfqController.setProcessID(salesController.salesModel.processList[index].processid);
-                                                                                  print(rfqController.rfqModel.processID);
+                                                                                  if (kDebugMode) {
+                                                                                    print(rfqController.rfqModel.processID);
+                                                                                  }
                                                                                 }
                                                                               },
                                                                               child: const Text(
@@ -1400,14 +1450,16 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                   },
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        flex: 1,
-                        child: PageTransitionSwitcher(
+                    ),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      flex: 1,
+                      child: Obx(
+                        () => PageTransitionSwitcher(
                           duration: const Duration(milliseconds: 300),
                           reverse: !salesController.salesModel.isprofilepage.value, // Reverse animation when toggling back
                           transitionBuilder: (
@@ -1446,18 +1498,19 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                         ),
                                         const SizedBox(height: 10),
                                         Expanded(
-                                            child: Container(
-                                          color: Colors.transparent,
-                                          key: const ValueKey(1),
-                                          child: ListView.builder(
-                                            itemCount: salesController.salesModel.processcustomerList.length,
-                                            itemBuilder: (context, index) {
-                                              final customername = salesController.salesModel.processcustomerList[index].customerName;
-                                              final customerid = salesController.salesModel.processcustomerList[index].customerId;
-                                              return _buildSales_ClientCard(customername, customerid, index);
-                                            },
+                                          child: Container(
+                                            color: Colors.transparent,
+                                            key: const ValueKey(1),
+                                            child: ListView.builder(
+                                              itemCount: salesController.salesModel.processcustomerList.length,
+                                              itemBuilder: (context, index) {
+                                                final customername = salesController.salesModel.processcustomerList[index].customerName;
+                                                final customerid = salesController.salesModel.processcustomerList[index].customerId;
+                                                return _buildSales_ClientCard(customername, customerid, index);
+                                              },
+                                            ),
                                           ),
-                                        ))
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -1507,15 +1560,15 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                 ),
                         ),
                       ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 
   Widget _profile_page() {
@@ -2134,8 +2187,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
               trailing: GestureDetector(
                 child: Container(
                   decoration: const BoxDecoration(
-                    color: Colors.transparent,
-                    shape: BoxShape.circle,
+                    color: Color.fromARGB(0, 233, 4, 4),
+                    // shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.info_rounded,
@@ -2219,5 +2272,388 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
         ],
       ),
     );
+  }
+
+  final List<Map<String, dynamic>> documentlist = [
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+    {
+      "clientname": "Khivraj Groups",
+      "title": "Camera materials",
+      "type": "Invoice",
+      "date": "10 mar 2024",
+      "days": "5 days",
+    },
+  ];
+  // bool select = false;
+  Widget _manualcreation_list() {
+    return Container(
+        decoration: const BoxDecoration(
+          // color: Primary_colors.Color3,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              SizedBox(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Manual Document List',
+                      style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text12),
+                    ),
+                    SizedBox(
+                      width: 400,
+                      height: 40,
+                      child: TextFormField(
+                        style: const TextStyle(fontSize: 13, color: Colors.white),
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(1),
+                          filled: true,
+                          fillColor: const Color.fromARGB(0, 255, 255, 255),
+                          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Color.fromARGB(123, 255, 255, 255))),
+                          // enabledBorder: InputBorder.none, // Removes the enabled border
+                          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Color.fromARGB(104, 255, 255, 255))),
+                          hintStyle: const TextStyle(
+                            fontSize: Primary_font_size.Text7,
+                            color: Primary_colors.Color1,
+                          ),
+                          hintText: 'Search',
+                          prefixIcon: const Icon(Icons.search, color: Primary_colors.Color1),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 30,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Primary_colors.Color3),
+                child: const Padding(
+                  padding: EdgeInsets.all(5),
+                  child: Row(
+                    children: [
+                      // Checkbox(
+                      //   value: select,
+                      //   onChanged: (bool? value) {
+                      //     setState(() {
+                      //       value = value == true ? false : true;
+                      //     });
+                      //   },
+                      //   activeColor: Primary_colors.Color4, // More vibrant color
+                      //   checkColor: Colors.white, // White checkmark for contrast
+                      //   side: const BorderSide(color: Primary_colors.Color1, width: 2), // Styled border
+                      //   shape: RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.circular(4), // Soft rounded corners
+                      //   ),
+                      // ),
+                      // const SizedBox(width: 10),
+                      Expanded(
+                        flex: 3,
+                        child: Text(
+                          'Client Name',
+                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Text(
+                          'Title',
+                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          'Type',
+                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          'Date',
+                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          'Days',
+                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          'PDF',
+                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Container(
+              //   height: 2,
+              //   color: Primary_colors.Color1,
+              // ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: documentlist.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      decoration: const BoxDecoration(border: Border(bottom: BorderSide(width: 0.5, color: Color.fromARGB(255, 195, 193, 193)))),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 5),
+                        child: Row(
+                          children: [
+                            // Checkbox(
+                            //   value: select,
+                            //   onChanged: (bool? value) {
+                            //     setState(() {
+                            //       value = value == true ? false : true;
+                            //     });
+                            //   },
+                            //   activeColor: Primary_colors.Color4, // More vibrant color
+                            //   checkColor: Colors.white, // White checkmark for contrast
+                            //   side: const BorderSide(color: Primary_colors.Color1, width: 2), // Styled border
+                            //   shape: RoundedRectangleBorder(
+                            //     borderRadius: BorderRadius.circular(4), // Soft rounded corners
+                            //   ),
+                            // ),
+                            // const SizedBox(width: 10),
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                documentlist[index]['clientname'],
+                                style: const TextStyle(
+                                  color: Primary_colors.Color1,
+                                  fontSize: Primary_font_size.Text8,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                documentlist[index]['title'],
+                                style: const TextStyle(
+                                  color: Primary_colors.Color1,
+                                  fontSize: Primary_font_size.Text8,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                documentlist[index]['type'],
+                                style: const TextStyle(
+                                  color: Primary_colors.Color1,
+                                  fontSize: Primary_font_size.Text8,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                documentlist[index]['date'],
+                                style: const TextStyle(
+                                  color: Primary_colors.Color1,
+                                  fontSize: Primary_font_size.Text8,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                documentlist[index]['days'],
+                                style: const TextStyle(
+                                  color: Primary_colors.Color1,
+                                  fontSize: Primary_font_size.Text8,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    // widget.showPDF(context, 'weqwer');
+                                  },
+                                  child: Image.asset(height: 40, 'assets/images/pdfdownload.png'),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              )
+            ],
+          ),
+        ));
   }
 }

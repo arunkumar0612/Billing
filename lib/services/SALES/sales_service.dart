@@ -1,3 +1,6 @@
+// ignore_for_file: depend_on_referenced_packages
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,6 +27,7 @@ import '../../views/screens/SALES/Generate_client_req/generate_clientreq.dart';
 import '../../views/screens/SALES/Generate_creditNote/generateCredit.dart';
 import '../APIservices/invoker.dart';
 // import 'package:ssipl_billing/view_send_pdf.dart';
+import 'package:path/path.dart' as path;
 
 mixin SalesServices {
   final Invoker apiController = Get.find<Invoker>();
@@ -146,18 +150,81 @@ mixin SalesServices {
     }
   }
 
-  void showPDF(context) async {
+  void showPDF(context, String filename) async {
     if (salesController.salesModel.pdfFile.value != null) {
       await showDialog(
         context: context,
         builder: (context) => Dialog(
           insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
           child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-            height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
-            child: SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
-          ),
+              width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+              height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
+              child: Stack(
+                children: [
+                  SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
+                  Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: IconButton(
+                          onPressed: () {
+                            downloadPdf(
+                                context,
+                                path
+                                    .basename(filename)
+                                    .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
+                                    .replaceAll(" ", ""));
+                          },
+                          icon: const Icon(
+                            Icons.download,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ))
+                ],
+              )),
         ),
+      );
+    }
+  }
+
+  Future<void> downloadPdf(BuildContext context, String filename) async {
+    try {
+      final pdfFile = salesController.salesModel.pdfFile.value;
+
+      if (pdfFile == null) {
+        if (kDebugMode) {
+          print("No PDF file found to download.");
+        }
+        return;
+      }
+
+      // Let the user pick a folder to save the file
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+
+      // Check if the user canceled folder selection
+      if (selectedDirectory == null) {
+        Basic_dialog(
+          context: context,
+          title: "Error",
+          content: "Cannot find the path. Please select a folder to save the PDF.",
+          showCancel: false,
+        );
+        return;
+      }
+
+      // Define the destination path
+      String savePath = "$selectedDirectory/$filename.pdf";
+
+      // Copy the PDF file to the selected directory
+      await pdfFile.copy(savePath);
+      Basic_SnackBar(context, "PDF downloaded successfully to: $savePath");
+    } catch (e) {
+      Basic_dialog(
+        context: context,
+        title: "Error",
+        content: "Error downloading PDF: $e",
+        showCancel: false,
       );
     }
   }

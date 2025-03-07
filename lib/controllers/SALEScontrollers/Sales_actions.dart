@@ -65,7 +65,7 @@ class SalesController extends GetxController {
   }
 
   void search(String query) {
-    salesModel.searchQuery.value = query;
+    // salesModel.searchQuery.value = query;
 
     if (query.isEmpty) {
       salesModel.processList.assignAll(salesfilteredModel.processList);

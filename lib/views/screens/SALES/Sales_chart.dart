@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/themes/style.dart';
+// import 'package:ssipl_billing/themes/style.dart';
 
 import '../../../controllers/SALEScontrollers/Sales_actions.dart';
 
@@ -67,13 +67,13 @@ class SalesChartState extends State<SalesChart> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Indicator(
-                color: Primary_colors.Color5,
+                color: const Color.fromARGB(255, 128, 240, 209),
                 text: 'Completed',
                 isSquare: true,
               ),
               SizedBox(height: 10),
               Indicator(
-                color: Primary_colors.Color8,
+                color: const Color.fromARGB(255, 251, 123, 155),
                 text: 'Pending',
                 isSquare: true,
               ),
@@ -131,9 +131,9 @@ class SalesChartState extends State<SalesChart> {
   Color getColor(int index) {
     switch (index) {
       case 0:
-        return Primary_colors.Color5; // Completed
+        return const Color.fromARGB(255, 128, 240, 209); // Completed
       case 1:
-        return Primary_colors.Color8; // Pending
+        return const Color.fromARGB(255, 251, 123, 155); // Pending
       default:
         return Colors.grey;
     }

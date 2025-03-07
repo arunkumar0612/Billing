@@ -15,7 +15,8 @@ class SalesModel extends GetxController with GetSingleTickerProviderStateMixin {
   final RxBool isAllSelected = false.obs;
   final type = 0.obs;
   final RxBool isprofilepage = false.obs;
-  var searchQuery = ''.obs;
+  // var searchQuery = ''.obs;
+  final searchQuery = TextEditingController().obs;
   Rxn<Salesdata> salesdata = Rxn<Salesdata>(); // Nullable
   var salesperiod = 'monthly'.obs;
   Rxn<Clientprofiledata> Clientprofile = Rxn<Clientprofiledata>(); // Nullable

@@ -7,23 +7,28 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Quote_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
-import 'package:ssipl_billing/services/SALES/CustomPDF_services/CustomPDF_Invoice_services.dart';
+import 'package:ssipl_billing/services/SALES/CustomPDF_services/DC/CustomPDF_DC_services.dart';
+import 'package:ssipl_billing/services/SALES/CustomPDF_services/Invoice/CustomPDF_Invoice_services.dart';
+import 'package:ssipl_billing/services/SALES/CustomPDF_services/Quote/CustomPDF_Quote_services.dart';
 
 import 'package:ssipl_billing/services/SALES/sales_service.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
-import 'package:ssipl_billing/views/components/Loading.dart';
+import 'package:ssipl_billing/views/screens/SALES/CustomPDF/DC/CustomPDF_DC_design.dart';
+import 'package:ssipl_billing/views/screens/SALES/CustomPDF/Quote/CustomPDF_Quote_design.dart';
 import 'package:ssipl_billing/views/screens/SALES/Sales_chart.dart';
-import 'package:ssipl_billing/views/screens/SALES/CustomPDF/CustomPDF_invoicePDF.dart';
+import 'package:ssipl_billing/views/screens/SALES/CustomPDF/Invoice/CustomPDF_invoice_design.dart';
 import '../../../controllers/SALEScontrollers/Sales_actions.dart';
 // import 'package:cool_dropdown/models/cool_dropdown_item.dart';
 
@@ -45,9 +50,18 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
   final RfqController rfqController = Get.find<RfqController>();
   final CreditController creditController = Get.find<CreditController>();
   final DebitController debitController = Get.find<DebitController>();
-  final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
-  var inst = CustomPDF_InvoicePDF();
-  var inst_CustomPDF_Services = CustomPDF_Services();
+  final CustomPDF_InvoiceController custom_Invoice_controller = Get.find<CustomPDF_InvoiceController>();
+  final CustomPDF_DcController custom_Dc_controller = Get.find<CustomPDF_DcController>();
+
+  final CustomPDF_QuoteController custom_Quote_controller = Get.find<CustomPDF_QuoteController>();
+
+  var inst_invoiceDesign = CustomPDF_InvoicePDF();
+  var inst_quoteDesign = CustomPDF_QuotePDF();
+  var inst_dcDesign = CustomPDF_DcPDF();
+
+  var invoice_CustomPDF_Services = Custom_Invoice_Services();
+  var quote_CustomPDF_Services = Custom_Quote_Services();
+  var dc_CustomPDF_Services = Custom_Dc_Services();
 
   @override
   void dispose() {
@@ -576,8 +590,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                           //     label: 'Options',
                                           //     color: Primary_colors.Dark,
                                           //     onPressed: () {
-                                          //       widget.pdfpopup_controller.initializeTextControllers();
-                                          //       widget.pdfpopup_controller.initializeCheckboxes();
+                                          //       widget.custom_Invoice_controller.initializeTextControllers();
+                                          //       widget.custom_Invoice_controller.initializeCheckboxes();
                                           //       widget.showA4StyledPopup(context);
                                           //     },
                                           //   ),
@@ -606,19 +620,19 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
 
                                                       switch (item) {
                                                         case 'Invoice':
-                                                          pdfpopup_controller.intAll();
-                                                          inst_CustomPDF_Services.assign_GSTtotals();
-                                                          inst.showA4StyledPopup(context);
+                                                          custom_Invoice_controller.intAll();
+                                                          invoice_CustomPDF_Services.assign_GSTtotals();
+                                                          inst_invoiceDesign.showA4StyledPopup(context);
                                                           break;
                                                         case 'Quotation':
-                                                          if (kDebugMode) {
-                                                            print('Option2');
-                                                          }
+                                                          custom_Quote_controller.intAll();
+                                                          quote_CustomPDF_Services.assign_GSTtotals();
+                                                          inst_quoteDesign.showA4StyledPopup(context);
                                                           break;
                                                         case 'Delivery Challan':
-                                                          if (kDebugMode) {
-                                                            print('Option3');
-                                                          }
+                                                          custom_Dc_controller.intAll();
+                                                          // dc_CustomPDF_Services.assign_GSTtotals();
+                                                          inst_dcDesign.showA4StyledPopup(context);
                                                           break;
                                                       }
                                                     },

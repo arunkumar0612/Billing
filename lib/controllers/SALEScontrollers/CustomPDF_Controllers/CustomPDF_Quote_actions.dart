@@ -4,12 +4,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/models/constants/SALES_constants/CustomPDF_constants/CustomPDF_invoice_constants.dart';
+import 'package:ssipl_billing/models/constants/SALES_constants/CustomPDF_constants/CustomPDF_quote_constants.dart';
 import 'package:ssipl_billing/models/entities/SALES/CustomPDF_entities/CustomPDF_Product_entities.dart';
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 
-class CustomPDF_InvoiceController extends GetxController {
-  var pdfModel = CustomPDF_InvoiceModel().obs;
+class CustomPDF_QuoteController extends GetxController {
+  var pdfModel = CustomPDF_QuoteModel().obs;
   void intAll() {
     initializeTextControllers();
     initializeCheckboxes();
@@ -22,7 +22,7 @@ class CustomPDF_InvoiceController extends GetxController {
   }
 
   void initializeCheckboxes() {
-    pdfModel.value.checkboxValues.assignAll(List.generate(pdfModel.value.manualInvoiceproducts.length, (index) => false));
+    pdfModel.value.checkboxValues.assignAll(List.generate(pdfModel.value.manualQuoteproducts.length, (index) => false));
   }
 
   void validate() {
@@ -71,10 +71,10 @@ class CustomPDF_InvoiceController extends GetxController {
             ],
           ),
         );
-        // invoiceModel.pickedFile.value = null;
+        // quoteModel.pickedFile.value = null;
         pdfModel.value.genearatedPDF.value = null;
       } else {
-        // invoiceModel.pickedFile.value = result;
+        // quoteModel.pickedFile.value = result;
         pdfModel.value.genearatedPDF.value = file;
 
         if (kDebugMode) {
@@ -103,7 +103,7 @@ class CustomPDF_InvoiceController extends GetxController {
 
   void initializeTextControllers() {
     pdfModel.value.textControllers.assignAll(
-      pdfModel.value.manualInvoiceproducts.map((product) {
+      pdfModel.value.manualQuoteproducts.map((product) {
         return [
           TextEditingController(text: product.sNo),
           TextEditingController(text: product.description),
@@ -136,7 +136,7 @@ class CustomPDF_InvoiceController extends GetxController {
   }
 
   void updateCell(int rowIndex, int colIndex, String value) {
-    final product = pdfModel.value.manualInvoiceproducts[rowIndex];
+    final product = pdfModel.value.manualQuoteproducts[rowIndex];
 
     // Allow only numeric values for specific columns
     if ([0, 2, 3, 4, 5].contains(colIndex) && !RegExp(r'^[0-9]*$').hasMatch(value)) {
@@ -172,7 +172,7 @@ class CustomPDF_InvoiceController extends GetxController {
   }
 
   void calculateTotal(int rowIndex) {
-    final product = pdfModel.value.manualInvoiceproducts[rowIndex];
+    final product = pdfModel.value.manualQuoteproducts[rowIndex];
 
     double price = double.tryParse(product.price) ?? 0;
     double quantity = double.tryParse(product.quantity) ?? 0;
@@ -190,7 +190,7 @@ class CustomPDF_InvoiceController extends GetxController {
     double addedSGST = 0.0;
     double addedRoundoff = 0.0;
 
-    for (var product in pdfModel.value.manualInvoiceproducts) {
+    for (var product in pdfModel.value.manualQuoteproducts) {
       double subTotal = double.tryParse(product.total) ?? 0.0;
       double price = double.tryParse(product.total) ?? 0.0;
       double gst = double.tryParse(product.gst) ?? 0.0;
@@ -216,7 +216,7 @@ class CustomPDF_InvoiceController extends GetxController {
   void deleteRow() {
     for (int i = pdfModel.value.checkboxValues.length - 1; i >= 0; i--) {
       if (pdfModel.value.checkboxValues[i]) {
-        pdfModel.value.manualInvoiceproducts.removeAt(i);
+        pdfModel.value.manualQuoteproducts.removeAt(i);
         pdfModel.value.textControllers.removeAt(i);
         pdfModel.value.checkboxValues.removeAt(i);
       }
@@ -230,7 +230,7 @@ class CustomPDF_InvoiceController extends GetxController {
       List.generate(7, (index) => TextEditingController()),
     );
 
-    pdfModel.value.manualInvoiceproducts.add(CustomPDF_InvoiceProduct(
+    pdfModel.value.manualQuoteproducts.add(CustomPDF_QuoteProduct(
       sNo: "",
       description: "",
       hsn: "",
@@ -247,7 +247,7 @@ class CustomPDF_InvoiceController extends GetxController {
 
   void resetData() {
     pdfModel.value.date.value.clear();
-    pdfModel.value.manualinvoiceNo.value.clear();
+    pdfModel.value.manualquoteNo.value.clear();
     pdfModel.value.clientName.value.clear();
     pdfModel.value.clientAddress.value.clear();
     pdfModel.value.billingName.value.clear();
@@ -265,11 +265,11 @@ class CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.Total.value.clear();
     pdfModel.value.roundoffDiff.value = null;
 
-    pdfModel.value.manualInvoice_gstTotals.clear();
+    pdfModel.value.manualQuote_gstTotals.clear();
 
-    pdfModel.value.manualInvoiceproducts.assignAll([
-      CustomPDF_InvoiceProduct(sNo: "1", description: "Laptop", hsn: "8471", gst: "18", price: "1000", quantity: "2", total: "2000"),
-      CustomPDF_InvoiceProduct(sNo: "2", description: "Mouse", hsn: "8472", gst: "18", price: "50", quantity: "5", total: "250"),
+    pdfModel.value.manualQuoteproducts.assignAll([
+      CustomPDF_QuoteProduct(sNo: "1", description: "Laptop", hsn: "8471", gst: "18", price: "1000", quantity: "2", total: "2000"),
+      CustomPDF_QuoteProduct(sNo: "2", description: "Mouse", hsn: "8472", gst: "18", price: "50", quantity: "5", total: "250"),
     ]);
 
     pdfModel.value.notecontent.clear();

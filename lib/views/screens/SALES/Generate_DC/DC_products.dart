@@ -183,22 +183,22 @@ class _DcProductsState extends State<DcProducts> {
                     ),
                   ),
                 ),
-                const Expanded(
-                  flex: 1,
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(),
-                      child: Text(
-                        'Total price',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                // const Expanded(
+                //   flex: 1,
+                //   child: Center(
+                //     child: Padding(
+                //       padding: EdgeInsets.only(),
+                //       child: Text(
+                //         'Total price',
+                //         style: TextStyle(
+                //           color: Colors.white,
+                //           fontSize: 13,
+                //           fontWeight: FontWeight.bold,
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -232,13 +232,26 @@ class _DcProductsState extends State<DcProducts> {
             ),
           ),
         ),
-        BasicButton(
-          text: "Submit",
-          colors: Colors.green,
-          onPressed: () {
-            widget.addto_Selectedproducts();
-            dcController.nextTab();
-          },
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            BasicButton(
+              colors: Colors.red,
+              text: 'Back',
+              onPressed: () {
+                dcController.backTab();
+              },
+            ),
+            const SizedBox(width: 20),
+            BasicButton(
+              text: "Submit",
+              colors: Colors.green,
+              onPressed: () {
+                widget.addto_Selectedproducts();
+                dcController.nextTab();
+              },
+            ),
+          ],
         ),
       ],
     );
@@ -266,6 +279,7 @@ class _DcProductsState extends State<DcProducts> {
                       Padding(
                         padding: const EdgeInsets.only(left: 20),
                         child: Checkbox(
+                          side: const BorderSide(color: Color.fromARGB(255, 255, 255, 255), width: 2),
                           activeColor: Colors.green,
                           value: dcController.dcModel.checkboxValues[index],
                           onChanged: (bool? newValue) {
@@ -330,6 +344,7 @@ class _DcProductsState extends State<DcProducts> {
                         height: 50,
                         child: Obx(() {
                           return TextFormField(
+                            readOnly: true,
                             style: const TextStyle(color: Colors.blue, fontSize: 13),
                             controller: dcController.dcModel.textControllers[index],
                             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -383,21 +398,21 @@ class _DcProductsState extends State<DcProducts> {
                     ),
                   ),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(),
-                      child: Text(
-                        totalPrice,
-                        style: TextStyle(
-                          color: backgroundColor,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                // Expanded(
+                //   flex: 1,
+                //   child: Center(
+                //     child: Padding(
+                //       padding: const EdgeInsets.only(),
+                //       child: Text(
+                //         totalPrice,
+                //         style: TextStyle(
+                //           color: backgroundColor,
+                //           fontSize: 13,
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

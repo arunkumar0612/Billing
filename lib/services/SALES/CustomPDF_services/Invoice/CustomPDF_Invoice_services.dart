@@ -11,10 +11,10 @@ import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/helpers/returns.dart';
 import 'package:ssipl_billing/views/components/CustomPDF_templates/CustomPDF_Invoice_template.dart';
-import 'package:ssipl_billing/views/screens/SALES/CustomPDF/PostAll.dart';
-import '../../APIservices/invoker.dart';
+import 'package:ssipl_billing/views/screens/SALES/CustomPDF/Invoice/Invoice_PostAll.dart';
+import '../../../APIservices/invoker.dart';
 
-class CustomPDF_Services {
+class Custom_Invoice_Services {
   final Invoker apiController = Get.find<Invoker>();
   final InvoiceController invoiceController = Get.find<InvoiceController>();
   final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();

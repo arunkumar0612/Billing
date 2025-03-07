@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Sales_actions.dart';
+import 'package:ssipl_billing/services/SALES/DC_services/DC_Details_service.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_details.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_note.dart';
@@ -11,7 +12,7 @@ import 'package:ssipl_billing/views/screens/SALES/Generate_DC/DC_products.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_DC/post_DC.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-class GenerateDc extends StatefulWidget {
+class GenerateDc extends StatefulWidget with DcdetailsService {
   GenerateDc({super.key, required this.eventID});
   int eventID;
   @override
@@ -23,6 +24,8 @@ class _GenerateDcState extends State<GenerateDc> with SingleTickerProviderStateM
   final SalesController salesController = Get.find<SalesController>();
   @override
   void initState() {
+    widget.get_requiredData(context, widget.eventID, "deliverychallan");
+    widget.get_noteSuggestionList(context);
     super.initState();
     // GenerateDc._tabController = ;
     dcController.initializeTabController(TabController(length: 4, vsync: this));

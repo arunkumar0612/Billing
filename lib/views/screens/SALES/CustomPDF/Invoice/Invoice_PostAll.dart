@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
-import 'package:ssipl_billing/services/SALES/CustomPDF_services/PostAll_services.dart';
+import 'package:ssipl_billing/services/SALES/CustomPDF_services/Invoice/PostAll_Invoice_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
+import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -28,6 +29,7 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
   @override
   void initState() {
     super.initState();
+    pdfpopup_controller.pdfModel.value.filePathController.value = TextEditingController(text: pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path.toString());
     pdfpopup_controller.pdfModel.value.animationController = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
@@ -666,7 +668,7 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                                   text: "Send",
                                   colors: Colors.blue,
                                   onPressed: () {
-                                    //showLoading(context, () => widget.postData(context, invoiceController.fetch_messageType());
+                                    widget.postData(context, pdfpopup_controller.fetch_messageType());
                                   })),
                         ),
                       ],

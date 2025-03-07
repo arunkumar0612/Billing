@@ -1,28 +1,30 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/models/constants/SALES_constants/CustomPDF_constants/CustomPDF_invoice_constants.dart';
+import 'package:ssipl_billing/models/constants/SALES_constants/CustomPDF_constants/CustomPDF_dc_constants.dart';
 import 'package:ssipl_billing/models/entities/SALES/CustomPDF_entities/CustomPDF_Product_entities.dart';
-import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 
-class CustomPDF_InvoiceController extends GetxController {
-  var pdfModel = CustomPDF_InvoiceModel().obs;
+class CustomPDF_DcController extends GetxController {
+  var pdfModel = CustomPDF_DcModel().obs;
   void intAll() {
     initializeTextControllers();
     initializeCheckboxes();
     add_Note();
-    finalCalc();
+    // finalCalc();
   }
 
-  void update_totalAmount(double amount) {
-    pdfModel.value.Total_amount.value = amount;
+  int fetch_messageType() {
+    if (pdfModel.value.whatsapp_selectionStatus.value && pdfModel.value.gmail_selectionStatus.value) return 3;
+    if (pdfModel.value.whatsapp_selectionStatus.value) return 1;
+    if (pdfModel.value.gmail_selectionStatus.value) return 2;
+
+    return 0;
   }
 
   void initializeCheckboxes() {
-    pdfModel.value.checkboxValues.assignAll(List.generate(pdfModel.value.manualInvoiceproducts.length, (index) => false));
+    pdfModel.value.checkboxValues.assignAll(List.generate(pdfModel.value.manualDcproducts.length, (index) => false));
   }
 
   void validate() {
@@ -71,10 +73,10 @@ class CustomPDF_InvoiceController extends GetxController {
             ],
           ),
         );
-        // invoiceModel.pickedFile.value = null;
+        // dcModel.pickedFile.value = null;
         pdfModel.value.genearatedPDF.value = null;
       } else {
-        // invoiceModel.pickedFile.value = result;
+        // dcModel.pickedFile.value = result;
         pdfModel.value.genearatedPDF.value = file;
 
         if (kDebugMode) {
@@ -103,26 +105,18 @@ class CustomPDF_InvoiceController extends GetxController {
 
   void initializeTextControllers() {
     pdfModel.value.textControllers.assignAll(
-      pdfModel.value.manualInvoiceproducts.map((product) {
+      pdfModel.value.manualDcproducts.map((product) {
         return [
           TextEditingController(text: product.sNo),
           TextEditingController(text: product.description),
           TextEditingController(text: product.hsn),
-          TextEditingController(text: product.gst),
-          TextEditingController(text: product.price),
+          // TextEditingController(text: product.gst),
+          // TextEditingController(text: product.price),
           TextEditingController(text: product.quantity),
-          TextEditingController(text: product.total), // Total is read-only
+          // TextEditingController(text: product.total), // Total is read-only
         ];
       }).toList(),
     );
-  }
-
-  int fetch_messageType() {
-    if (pdfModel.value.whatsapp_selectionStatus.value && pdfModel.value.gmail_selectionStatus.value) return 3;
-    if (pdfModel.value.whatsapp_selectionStatus.value) return 1;
-    if (pdfModel.value.gmail_selectionStatus.value) return 2;
-
-    return 0;
   }
 
   void update_noteCotent(value, index) {
@@ -136,7 +130,7 @@ class CustomPDF_InvoiceController extends GetxController {
   }
 
   void updateCell(int rowIndex, int colIndex, String value) {
-    final product = pdfModel.value.manualInvoiceproducts[rowIndex];
+    final product = pdfModel.value.manualDcproducts[rowIndex];
 
     // Allow only numeric values for specific columns
     if ([0, 2, 3, 4, 5].contains(colIndex) && !RegExp(r'^[0-9]*$').hasMatch(value)) {
@@ -154,74 +148,75 @@ class CustomPDF_InvoiceController extends GetxController {
         product.hsn = value;
         break;
       case 3:
-        product.gst = value;
-        break;
-      case 4:
-        product.price = value;
-        break;
-      case 5:
         product.quantity = value;
+        // product.gst = value;
         break;
+      // case 4:
+      //   product.price = value;
+      //   break;
+      // case 5:
+      //   product.quantity = value;
+      // break;
     }
 
-    if (colIndex == 4 || colIndex == 5) {
-      calculateTotal(rowIndex);
-    }
+    // if (colIndex == 4 || colIndex == 5) {
+    //   calculateTotal(rowIndex);
+    // }
 
     pdfModel.refresh();
   }
 
-  void calculateTotal(int rowIndex) {
-    final product = pdfModel.value.manualInvoiceproducts[rowIndex];
+  // void calculateTotal(int rowIndex) {
+  //   final product = pdfModel.value.manualDcproducts[rowIndex];
 
-    double price = double.tryParse(product.price) ?? 0;
-    double quantity = double.tryParse(product.quantity) ?? 0;
-    String newTotal = (price * quantity).toString();
+  //   // double price = double.tryParse(product.price) ?? 0;
+  //   double quantity = double.tryParse(product.quantity) ?? 0;
+  //   // String newTotal = (price * quantity).toString();
 
-    product.total = newTotal;
-    pdfModel.value.textControllers[rowIndex][6].text = newTotal;
-    finalCalc();
-    pdfModel.refresh();
-  }
+  //   // product.total = newTotal;
+  //   // pdfModel.value.textControllers[rowIndex][6].text = newTotal;
+  //   // finalCalc();
+  //   pdfModel.refresh();
+  // }
 
-  void finalCalc() {
-    double addedSubTotal = 0.0;
-    double addedCGST = 0.0;
-    double addedSGST = 0.0;
-    double addedRoundoff = 0.0;
+  // void finalCalc() {
+  //   double addedSubTotal = 0.0;
+  //   double addedCGST = 0.0;
+  //   double addedSGST = 0.0;
+  //   double addedRoundoff = 0.0;
 
-    for (var product in pdfModel.value.manualInvoiceproducts) {
-      double subTotal = double.tryParse(product.total) ?? 0.0;
-      double price = double.tryParse(product.total) ?? 0.0;
-      double gst = double.tryParse(product.gst) ?? 0.0;
-      double cgst = (price / 100) * gst / 2;
-      double sgst = (price / 100) * gst / 2;
+  //   for (var product in pdfModel.value.manualDcproducts) {
+  //     // double subTotal = double.tryParse(product.total) ?? 0.0;
+  //     // double price = double.tryParse(product.total) ?? 0.0;
+  //     // double gst = double.tryParse(product.gst) ?? 0.0;
+  //     double cgst = (price / 100) * gst / 2;
+  //     double sgst = (price / 100) * gst / 2;
 
-      addedCGST += cgst;
-      addedSGST += sgst;
-      addedSubTotal += subTotal;
-    }
-    addedRoundoff = addedSubTotal + addedCGST + addedSGST;
+  //     addedCGST += cgst;
+  //     addedSGST += sgst;
+  //     addedSubTotal += subTotal;
+  //   }
+  //   addedRoundoff = addedSubTotal + addedCGST + addedSGST;
 
-    pdfModel.value.subTotal.value.text = addedSubTotal.toStringAsFixed(2);
-    pdfModel.value.CGST.value.text = addedCGST.toStringAsFixed(2);
-    pdfModel.value.SGST.value.text = addedSGST.toStringAsFixed(2);
-    pdfModel.value.roundOff.value.text = formatCurrencyRoundedPaisa(addedRoundoff);
-    pdfModel.value.roundoffDiff.value = calculateFormattedDifference(addedRoundoff);
-    pdfModel.value.Total.value.text = formatCurrencyRoundedPaisa(addedRoundoff);
+  //   pdfModel.value.subTotal.value.text = addedSubTotal.toStringAsFixed(2);
+  //   pdfModel.value.CGST.value.text = addedCGST.toStringAsFixed(2);
+  //   pdfModel.value.SGST.value.text = addedSGST.toStringAsFixed(2);
+  //   pdfModel.value.roundOff.value.text = formatCurrencyRoundedPaisa(addedRoundoff);
+  //   pdfModel.value.roundoffDiff.value = calculateFormattedDifference(addedRoundoff);
+  //   pdfModel.value.Total.value.text = formatCurrencyRoundedPaisa(addedRoundoff);
 
-    pdfModel.refresh();
-  }
+  //   pdfModel.refresh();
+  // }
 
   void deleteRow() {
     for (int i = pdfModel.value.checkboxValues.length - 1; i >= 0; i--) {
       if (pdfModel.value.checkboxValues[i]) {
-        pdfModel.value.manualInvoiceproducts.removeAt(i);
+        pdfModel.value.manualDcproducts.removeAt(i);
         pdfModel.value.textControllers.removeAt(i);
         pdfModel.value.checkboxValues.removeAt(i);
       }
     }
-    finalCalc();
+    // finalCalc();
     pdfModel.refresh(); // Ensure UI updates
   }
 
@@ -230,14 +225,14 @@ class CustomPDF_InvoiceController extends GetxController {
       List.generate(7, (index) => TextEditingController()),
     );
 
-    pdfModel.value.manualInvoiceproducts.add(CustomPDF_InvoiceProduct(
+    pdfModel.value.manualDcproducts.add(CustomPDF_DcProduct(
       sNo: "",
       description: "",
       hsn: "",
-      gst: "",
-      price: "",
+      // gst: "",
+      // price: "",
       quantity: "",
-      total: "0.0",
+      // total: "0.0",
     ));
 
     pdfModel.value.checkboxValues.add(false);
@@ -247,7 +242,7 @@ class CustomPDF_InvoiceController extends GetxController {
 
   void resetData() {
     pdfModel.value.date.value.clear();
-    pdfModel.value.manualinvoiceNo.value.clear();
+    pdfModel.value.manualdcNo.value.clear();
     pdfModel.value.clientName.value.clear();
     pdfModel.value.clientAddress.value.clear();
     pdfModel.value.billingName.value.clear();
@@ -257,19 +252,20 @@ class CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.feedback.value.clear();
     pdfModel.value.filePathController.value.clear();
 
-    pdfModel.value.subTotal.value.clear();
     pdfModel.value.GSTnumber.value.clear();
-    pdfModel.value.CGST.value.clear();
-    pdfModel.value.SGST.value.clear();
-    pdfModel.value.roundOff.value.clear();
-    pdfModel.value.Total.value.clear();
-    pdfModel.value.roundoffDiff.value = null;
-
-    pdfModel.value.manualInvoice_gstTotals.clear();
-
-    pdfModel.value.manualInvoiceproducts.assignAll([
-      CustomPDF_InvoiceProduct(sNo: "1", description: "Laptop", hsn: "8471", gst: "18", price: "1000", quantity: "2", total: "2000"),
-      CustomPDF_InvoiceProduct(sNo: "2", description: "Mouse", hsn: "8472", gst: "18", price: "50", quantity: "5", total: "250"),
+    pdfModel.value.manualDcproducts.assignAll([
+      CustomPDF_DcProduct(
+        sNo: "1",
+        description: "Laptop",
+        hsn: "8471",
+        quantity: "2",
+      ),
+      CustomPDF_DcProduct(
+        sNo: "2",
+        description: "Mouse",
+        hsn: "8472",
+        quantity: "5",
+      ),
     ]);
 
     pdfModel.value.notecontent.clear();

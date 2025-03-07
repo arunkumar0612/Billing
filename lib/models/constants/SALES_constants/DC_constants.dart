@@ -9,7 +9,6 @@ class DcModel extends GetxController with GetSingleTickerProviderStateMixin {
   final Rxn<TabController> tabController = Rxn<TabController>();
   var processID = Rxn<int>();
   var Dc_no = Rxn<String>();
-  // var gst_no = Rxn<String>();
   var Dc_table_heading = "".obs;
   final gstNumController = TextEditingController().obs;
   var dc_amount = Rxn<double>();
@@ -23,16 +22,9 @@ class DcModel extends GetxController with GetSingleTickerProviderStateMixin {
   final detailsKey = GlobalKey<FormState>().obs;
 
   // PRODUCTS
-  // final productKey = GlobalKey<FormState>().obs;
-  // final product_editIndex = Rxn<int>();
-  // final productNameController = TextEditingController().obs;
-  // final hsnController = TextEditingController().obs;
-  // final priceController = TextEditingController().obs;
-  // final quantityController = TextEditingController().obs;
-  // final gstController = TextEditingController().obs;
   var Dc_products = <DcProduct>[].obs;
   var selected_dcProducts = <DcProduct>[].obs;
-  // var Dc_productSuggestion = <ProductSuggestion>[].obs;
+  var pending_dcProducts = <DcProduct>[].obs;
   var Dc_gstTotals = <DcGSTtotals>[].obs;
   var checkboxValues = <bool>[].obs;
   var selectall_status = false.obs;

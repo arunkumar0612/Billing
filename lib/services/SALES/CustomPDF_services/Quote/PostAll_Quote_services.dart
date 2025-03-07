@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +7,9 @@ import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Quote_actions.dart';
+import 'package:ssipl_billing/models/entities/SALES/CustomPDF_entities/CustomPDF_Product_entities.dart';
+import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'dart:io';
 import 'package:ssipl_billing/models/constants/api.dart';
@@ -15,7 +19,7 @@ import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
 
 mixin PostServices {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
-  final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
+  final CustomPDF_QuoteController pdfpopup_controller = Get.find<CustomPDF_QuoteController>();
 
   final Invoker apiController = Get.find<Invoker>();
   void animation_control() async {
@@ -91,50 +95,49 @@ mixin PostServices {
       }
     }
   }
-  // dynamic postData(context, int messageType) async {
-  //   try {
-  //     if (invoiceController.postDatavalidation()) {
-  //       await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
-  //       return;
-  //     }
-  //     File cachedPdf = invoiceController.invoiceModel.selectedPdf.value!;
-  //     // savePdfToCache();
-  //     Post_Invoice salesData = Post_Invoice.fromJson(
-  //         title: invoiceController.invoiceModel.TitleController.value.text,
-  //         processid: invoiceController.invoiceModel.processID.value!,
-  //         ClientAddressname: invoiceController.invoiceModel.clientAddressNameController.value.text,
-  //         ClientAddress: invoiceController.invoiceModel.clientAddressController.value.text,
-  //         billingAddressName: invoiceController.invoiceModel.billingAddressNameController.value.text,
-  //         billingAddress: invoiceController.invoiceModel.billingAddressController.value.text,
-  //         emailId: invoiceController.invoiceModel.emailController.value.text,
-  //         phoneNo: invoiceController.invoiceModel.phoneController.value.text,
-  //         gst: invoiceController.invoiceModel.gstController.value.text,
-  //         product: invoiceController.invoiceModel.Invoice_products,
-  //         notes: invoiceController.invoiceModel.Invoice_noteList,
-  //         date: getCurrentDate(),
-  //         invoiceGenID: invoiceController.invoiceModel.Invoice_no.value!,
-  //         messageType: messageType,
-  //         feedback: invoiceController.invoiceModel.feedbackController.value.text,
-  //         ccEmail: invoiceController.invoiceModel.CCemailController.value.text,
-  //         total_amount: invoiceController.invoiceModel.invoice_amount.value!);
 
-  //     await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
-  //   } catch (e) {
-  //     await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {}, showCancel: false);
-  //   }
-  // }
+  dynamic postData(context, int messageType) async {
+    try {
+      // if ( pdfpopup_controller.postDatavalidation()) {
+      //   await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
+      //   return;
+      // }
+      File cachedPdf = pdfpopup_controller.pdfModel.value.genearatedPDF.value!;
+      // savePdfToCache();
+      Post_CustomQuote salesData = Post_CustomQuote.fromJson(
+          ClientAddressname: pdfpopup_controller.pdfModel.value.clientName.value.text,
+          ClientAddress: pdfpopup_controller.pdfModel.value.clientAddress.value.text,
+          billingAddressName: pdfpopup_controller.pdfModel.value.billingName.value.text,
+          billingAddress: pdfpopup_controller.pdfModel.value.billingAddres.value.text,
+          emailId: pdfpopup_controller.pdfModel.value.Email.value.text,
+          phoneNo: pdfpopup_controller.pdfModel.value.phoneNumber.value.text,
+          gst: pdfpopup_controller.pdfModel.value.GSTnumber.value.text,
+          // product: pdfpopup_controller.pdfModel.value.Quote_products,
+          // notes: pdfpopup_controller.pdfModel.value.Quote_noteList,
+          date: getCurrentDate(),
+          QuoteGenID: pdfpopup_controller.pdfModel.value.manualquoteNo.value.text,
+          messageType: messageType,
+          feedback: pdfpopup_controller.pdfModel.value.feedback.value.text,
+          ccEmail: pdfpopup_controller.pdfModel.value.CCemailController.value.text,
+          total_amount: pdfpopup_controller.pdfModel.value.Total_amount.value);
+
+      await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
+    } catch (e) {
+      await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {}, showCancel: false);
+    }
+  }
 
   dynamic send_data(context, String jsonData, File file) async {
     try {
-      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.add_invoice);
+      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.add_customQuote);
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
-          await Basic_dialog(context: context, title: "Invoice", content: value.message!, onOk: () {}, showCancel: false);
+          await Basic_dialog(context: context, title: "Quote", content: value.message!, onOk: () {}, showCancel: false);
           // Navigator.of(context).pop(true);
-          // invoiceController.resetData();
+          // QuoteController.resetData();
         } else {
-          await Basic_dialog(context: context, title: 'Processing Invoice', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Basic_dialog(context: context, title: 'Processing Quote', content: value.message ?? "", onOk: () {}, showCancel: false);
         }
       } else {
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);

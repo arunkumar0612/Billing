@@ -11,6 +11,10 @@ class API {
   static String add_Dc = "http://192.168.0.200:8081/sales/adddeliverychallan";
   static String add_RFQ = "http://192.168.0.200:8081/sales/addrfq";
 
+  static String add_customInvoice = "http://192.168.0.200:8081/sales/addcustominvoice";
+  static String add_customQuote = "http://192.168.0.200:8081/sales/addcustomquotation";
+  static String add_customDc = "http://192.168.0.200:8081/sales/addcustomdc";
+
   static String add_invoice = "http://192.168.0.200:8081/sales/addinvoice";
   static String add_rfq = "http://192.168.0.200:8081/sales/addrfq";
   static String fetch_vendorList = "http://192.168.0.200:8081/vendor/getvendor";

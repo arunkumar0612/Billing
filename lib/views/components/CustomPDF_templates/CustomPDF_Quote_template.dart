@@ -3,13 +3,13 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Quote_actions.dart';
 import 'package:ssipl_billing/models/entities/SALES/CustomPDF_entities/CustomPDF_Product_entities.dart';
-import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/Quote_entities.dart';
 import '../../../../utils/helpers/support_functions.dart';
 
-Future<Uint8List> generate_CustomPDFInvoice(PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, invoice_num, title, gst, invoice_gstTotals) async {
-  final invoice = MaualInvoiceTemplate(
+Future<Uint8List> generate_CustomPDFQuote(PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, quote_gstTotals) async {
+  final quotation = Quotation(
       date: date,
       products: products,
       GST: gst,
@@ -19,16 +19,16 @@ Future<Uint8List> generate_CustomPDFInvoice(PdfPageFormat pageFormat, date, prod
       client_addr: client_addr,
       bill_addr_name: bill_addr_name,
       bill_addr: bill_addr,
-      invoiceNo: invoice_num ?? "",
+      estimate: estimate_num ?? "",
       title_text: title,
       type: '',
-      invoice_gstTotals: invoice_gstTotals);
+      quote_gstTotals: quote_gstTotals);
 
-  return await invoice.buildPdf(pageFormat);
+  return await quotation.buildPdf(pageFormat);
 }
 
-class MaualInvoiceTemplate {
-  MaualInvoiceTemplate(
+class Quotation {
+  Quotation(
       {required this.date,
       required this.products,
       required this.GST,
@@ -38,37 +38,36 @@ class MaualInvoiceTemplate {
       required this.client_addr,
       required this.bill_addr_name,
       required this.bill_addr,
-      required this.invoiceNo,
+      required this.estimate,
       required this.title_text,
       required this.type,
-      required this.invoice_gstTotals
+      required this.quote_gstTotals
       // required this.items,
       });
-  final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
-  List<InvoiceGSTtotals> invoice_gstTotals = [];
+  final CustomPDF_QuoteController quoteController = Get.find<CustomPDF_QuoteController>();
+  List<QuoteGSTtotals> quote_gstTotals = [];
   String date = "";
   String client_addr_name = "";
   String client_addr = "";
   String bill_addr_name = "";
   String bill_addr = "";
-  String invoiceNo = "";
+  String estimate = "";
   String title_text = "";
   String type = "";
 
-  final List<CustomPDF_InvoiceProduct> products;
+  final List<CustomPDF_QuoteProduct> products;
   final String GST;
   final PdfColor baseColor;
   final PdfColor accentColor;
   static const _darkColor = PdfColors.blueGrey800;
-  double get CGST_total => invoice_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
-  double get SGST_total => invoice_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
+  double get CGST_total => quote_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
+  double get SGST_total => quote_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
   double get _total => products.map<double>((p) => double.parse(p.total)).reduce((a, b) => a + b);
   double get _grandTotal => _total + CGST_total + SGST_total;
   dynamic profileImage;
 
   Future<Uint8List> buildPdf(PdfPageFormat pageFormat) async {
-    pdfpopup_controller.update_totalAmount(_grandTotal);
-
+    quoteController.update_totalAmount(_grandTotal);
     Helvetica = await loadFont_regular();
     Helvetica_bold = await loadFont_bold();
     final doc = pw.Document();
@@ -116,7 +115,7 @@ class MaualInvoiceTemplate {
                 child: pw.Image(profileImage),
               ),
               pw.Text(
-                'INVOICE',
+                'QUOTATION',
                 style: pw.TextStyle(
                   font: Helvetica_bold,
                   fontSize: 15,
@@ -133,7 +132,7 @@ class MaualInvoiceTemplate {
                       children: [
                         regular('Date', 10),
                         pw.SizedBox(height: 5),
-                        regular('Invoice no', 10),
+                        regular('Estimate no', 10),
                       ],
                     ),
                     pw.Column(
@@ -152,15 +151,14 @@ class MaualInvoiceTemplate {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular(date, 10),
-                            // formatDate(DateTime.now()), 10
+                            child: regular(formatDate(DateTime.now()), 10),
                           ),
                         ),
                         pw.SizedBox(height: 5),
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular(invoiceNo, 10),
+                            child: regular("SSIPL/INST/250202", 10),
                           ),
                         ),
                       ],
@@ -330,7 +328,7 @@ class MaualInvoiceTemplate {
   }
 
   pw.Widget title(pw.Context context) {
-    return pw.Center(child: bold("GSTIN : $GST", 12));
+    return pw.Center(child: bold(GST, 12));
   }
 
   pw.Widget _contentTable(pw.Context context) {
@@ -348,7 +346,7 @@ class MaualInvoiceTemplate {
       cellAlignments: {
         0: pw.Alignment.centerLeft,
         1: pw.Alignment.centerLeft,
-        2: pw.Alignment.center,
+        2: pw.Alignment.centerLeft,
         3: pw.Alignment.center,
         4: pw.Alignment.centerRight,
         5: pw.Alignment.center,
@@ -508,7 +506,7 @@ class MaualInvoiceTemplate {
                     ],
                   ),
                   pw.ListView.builder(
-                    itemCount: invoice_gstTotals.length, // Number of items in the list
+                    itemCount: quote_gstTotals.length, // Number of items in the list
                     itemBuilder: (context, index) {
                       return pw.Row(
                         children: [
@@ -521,7 +519,7 @@ class MaualInvoiceTemplate {
                             ),
                             width: 80,
                             height: 38,
-                            child: pw.Center(child: regular(formatzero(invoice_gstTotals[index].total), 10)),
+                            child: pw.Center(child: regular(formatzero(quote_gstTotals[index].total), 10)),
                           ),
                           pw.Container(
                             height: 38,
@@ -535,7 +533,7 @@ class MaualInvoiceTemplate {
                                   ),
                                   width: 40, // Define width instead of Expanded
                                   child: pw.Center(
-                                    child: regular((invoice_gstTotals[index].gst / 2).toString(), 10),
+                                    child: regular((quote_gstTotals[index].gst / 2).toString(), 10),
                                   ),
                                 ),
                                 pw.Container(
@@ -550,7 +548,7 @@ class MaualInvoiceTemplate {
                                   child: pw.Center(
                                     child: regular(
                                         formatzero(
-                                          ((invoice_gstTotals[index].total.toInt() / 100) * (invoice_gstTotals[index].gst / 2)),
+                                          ((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst / 2)),
                                         ),
                                         10),
                                   ),
@@ -569,14 +567,14 @@ class MaualInvoiceTemplate {
                                     ),
                                   ),
                                   width: 40, // Define width instead of Expanded
-                                  child: pw.Center(child: regular((invoice_gstTotals[index].gst / 2).toString(), 10)),
+                                  child: pw.Center(child: regular((quote_gstTotals[index].gst / 2).toString(), 10)),
                                 ),
                                 pw.Container(
                                   width: 70, // Define width instead of Expanded
                                   decoration: const pw.BoxDecoration(
                                     border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700)),
                                   ),
-                                  child: pw.Center(child: regular(formatzero(((invoice_gstTotals[index].total.toInt() / 100) * (invoice_gstTotals[index].gst / 2))), 10)),
+                                  child: pw.Center(child: regular(formatzero(((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst / 2))), 10)),
                                 ),
                               ],
                             ),
@@ -607,7 +605,19 @@ class MaualInvoiceTemplate {
     );
   }
 
+// Define a function to format currency to two decimal places
+  String formatCurrency(double value) {
+    return value.toStringAsFixed(2);
+  }
+
+// Display the result
+// Text('Round off : ${formatCurrency(roundOffDifference)}', style: TextStyle(fontSize: 10)),
+
   pw.Widget final_amount(pw.Context context) {
+    // Calculate the rounded difference
+    // double roundedTotal = double.parse(formatCurrency(_grandTotal));
+    // double nearestInteger = _grandTotal.roundToDouble();
+    // double roundOffDifference = roundedTotal - nearestInteger;
     return pw.Container(
       width: 185, // Define width to ensure bounded constraints
       child: pw.Column(
@@ -670,7 +680,7 @@ class MaualInvoiceTemplate {
             child: bold("Note", 12),
             padding: const pw.EdgeInsets.only(left: 0, bottom: 10),
           ),
-          ...List.generate(pdfpopup_controller.pdfModel.value.notecontent.length, (index) {
+          ...List.generate(quoteController.pdfModel.value.notecontent.length, (index) {
             return pw.Padding(
               padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
               child: pw.Row(
@@ -680,7 +690,7 @@ class MaualInvoiceTemplate {
                   pw.SizedBox(width: 5),
                   pw.Expanded(
                     child: pw.Text(
-                      pdfpopup_controller.pdfModel.value.notecontent[index],
+                      quoteController.pdfModel.value.notecontent[index],
                       textAlign: pw.TextAlign.start,
                       style: pw.TextStyle(
                         font: Helvetica,
@@ -699,7 +709,7 @@ class MaualInvoiceTemplate {
             child: pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                regular("${pdfpopup_controller.pdfModel.value.notecontent.length + 1}.", 10),
+                regular("${quoteController.pdfModel.value.notecontent.length + 1}.", 10),
                 pw.SizedBox(width: 5),
                 pw.Expanded(
                   child: pw.Column(
@@ -727,7 +737,7 @@ class MaualInvoiceTemplate {
                         children: [
                           regular("Bank name:", 10),
                           pw.SizedBox(width: 5),
-                          regular(": IndusInd Bank Limited", 10),
+                          regular("IndusInd Bank Limited", 10),
                         ],
                       ),
                       pw.SizedBox(height: 5),
@@ -738,46 +748,55 @@ class MaualInvoiceTemplate {
                           regular("R.S. Puram, Coimbatore.", 10),
                         ],
                       ),
+                      pw.SizedBox(height: 5),
+                      pw.Row(
+                        children: [
+                          regular("UPI Id:", 10),
+                          pw.SizedBox(width: 5),
+                          regular("sporadasecure@indus", 10),
+                        ],
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          // pw.Padding(
-          //   padding: const pw.EdgeInsets.only(left: 0, top: 5),
-          //   child: pw.Row(
-          //     crossAxisAlignment: pw.CrossAxisAlignment.start,
-          //     children: [
-          //       // regular("${invoice_noteList.length + 2}.", 10),
-          //       pw.SizedBox(width: 5),
-          //       pw.Expanded(
-          //         child: pw.Column(
-          //           crossAxisAlignment: pw.CrossAxisAlignment.start,
-          //           children: [
-          //             bold(invoiceController.invoiceModel.Invoice_table_heading.value, 10),
-          //             ...invoiceController.invoiceModel.Invoice_recommendationList.map((recommendation) {
-          //               return pw.Padding(
-          //                 padding: const pw.EdgeInsets.only(left: 5, top: 5),
-          //                 child: pw.Row(
-          //                   children: [
-          //                     pw.Container(
-          //                       width: 120,
-          //                       child: regular(recommendation.key.toString(), 10),
-          //                     ),
-          //                     regular(":", 10),
-          //                     pw.SizedBox(width: 5),
-          //                     regular(recommendation.value.toString(), 10),
-          //                   ],
-          //                 ),
-          //               );
-          //             }),
-          //           ],
+          // if (quoteController.pdfModel.value. .isNotEmpty)
+          //   pw.Padding(
+          //     padding: const pw.EdgeInsets.only(left: 0, top: 5),
+          //     child: pw.Row(
+          //       crossAxisAlignment: pw.CrossAxisAlignment.start,
+          //       children: [
+          //         regular("${quoteController.quoteModel.Quote_noteList.length + 2}.", 10),
+          //         pw.SizedBox(width: 5),
+          //         pw.Expanded(
+          //           child: pw.Column(
+          //             crossAxisAlignment: pw.CrossAxisAlignment.start,
+          //             children: [
+          //               bold(quoteController.quoteModel.Quote_table_heading.value, 10),
+          //               ...quoteController.quoteModel.Quote_recommendationList.map((recommendation) {
+          //                 return pw.Padding(
+          //                   padding: const pw.EdgeInsets.only(left: 5, top: 5),
+          //                   child: pw.Row(
+          //                     children: [
+          //                       pw.Container(
+          //                         width: 120,
+          //                         child: regular(recommendation.key.toString(), 10),
+          //                       ),
+          //                       regular(":", 10),
+          //                       pw.SizedBox(width: 5),
+          //                       regular(recommendation.value.toString(), 10),
+          //                     ],
+          //                   ),
+          //                 );
+          //               }),
+          //             ],
+          //           ),
           //         ),
-          //       ),
-          //     ],
+          //       ],
+          //     ),
           //   ),
-          // ),
         ],
       ),
     );

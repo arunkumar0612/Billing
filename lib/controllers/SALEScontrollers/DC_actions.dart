@@ -412,7 +412,7 @@ class DcController extends GetxController {
   }
 
   void setQtyvalue(String value, String maxQty, int index) {
-    if (value.isEmpty) return; // Prevent processing empty values
+    // if (value.isEmpty) value=0; // Prevent processing empty values
 
     int convertedValue = int.tryParse(value) ?? 1;
     int convertedMaxQty = int.tryParse(maxQty) ?? 1;
@@ -426,7 +426,7 @@ class DcController extends GetxController {
 
     // Preserve Cursor Position
     TextEditingController controller = dcModel.textControllers[index];
-    int cursorPosition = controller.selection.baseOffset; // Get current cursor position
+    // int cursorPosition = controller.selection.baseOffset; // Get current cursor position
 
     controller.text = convertedValue.toString();
 
@@ -479,30 +479,57 @@ class DcController extends GetxController {
     dcModel.tabController.value = null;
     dcModel.processID.value = null;
     dcModel.Dc_no.value = null;
-    dcModel.gstNumController.value.text = "";
     dcModel.Dc_table_heading.value = "";
 
-    dcModel.phoneController.value.text = "";
-    dcModel.emailController.value.text = "";
-    dcModel.CCemailToggle.value = false;
-    dcModel.CCemailController.value.clear();
+    dcModel.gstNumController.value.clear();
+    dcModel.dc_amount.value = null;
+
     // Reset details
-    dcModel.TitleController.value.text = "";
-    dcModel.clientAddressNameController.value.text = "";
-    dcModel.clientAddressController.value.text = "";
-    dcModel.billingAddressNameController.value.text = "";
-    dcModel.billingAddressController.value.text = "";
+    dcModel.TitleController.value.clear();
+    dcModel.clientAddressNameController.value.clear();
+    dcModel.clientAddressController.value.clear();
+    dcModel.billingAddressNameController.value.clear();
+    dcModel.billingAddressController.value.clear();
+    dcModel.detailsKey.value = GlobalKey<FormState>();
+
+    // Reset products
+    dcModel.Dc_products.clear();
+    dcModel.selected_dcProducts.clear();
     dcModel.Dc_gstTotals.clear();
+    dcModel.checkboxValues.clear();
+    dcModel.selectall_status.value = false;
+    dcModel.product_feedback.value = null;
+    dcModel.productNameController.value.clear();
+    dcModel.textControllers.clear();
+    dcModel.quantities.clear();
+    dcModel.focusNodes.clear();
+    dcModel.isFocused.clear();
 
     // Reset notes
+    dcModel.noteformKey.value = GlobalKey<FormState>();
+    dcModel.progress.value = 0.0;
+    dcModel.isLoading.value = false;
     dcModel.note_editIndex.value = null;
-    dcModel.notecontentController.value.text = "";
+    dcModel.notecontentController.value.clear();
     dcModel.recommendation_editIndex.value = null;
-    dcModel.recommendationHeadingController.value.text = "";
-    dcModel.recommendationKeyController.value.text = "";
-    dcModel.recommendationValueController.value.text = "";
+    dcModel.recommendationHeadingController.value.clear();
+    dcModel.recommendationKeyController.value.clear();
+    dcModel.recommendationValueController.value.clear();
     dcModel.Dc_noteList.clear();
     dcModel.Dc_recommendationList.clear();
     dcModel.noteSuggestion.clear();
+
+    // Reset post-related data
+    dcModel.pickedFile.value = null;
+    dcModel.selectedPdf.value = null;
+    dcModel.ispdfLoading.value = false;
+    dcModel.whatsapp_selectionStatus.value = true;
+    dcModel.gmail_selectionStatus.value = true;
+    dcModel.phoneController.value.clear();
+    dcModel.emailController.value.clear();
+    dcModel.CCemailController.value.clear();
+    dcModel.feedbackController.value.clear();
+    dcModel.filePathController.value.clear();
+    dcModel.CCemailToggle.value = false;
   }
 }

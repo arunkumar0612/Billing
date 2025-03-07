@@ -16,6 +16,11 @@ void showLoading(BuildContext context, Future<dynamic> Function() apiCall) {
       //   apiCall(),
       //   Future.delayed(const Duration(seconds: 2)), // Ensures at least 2 sec delay
       // ])
+      Future.delayed(const Duration(seconds: 15), () {
+        if (navigator.mounted) {
+          navigator.pop(); // Close the loader if it's still open
+        }
+      });
 
       apiCall().then((_) {
         if (navigator.mounted) {

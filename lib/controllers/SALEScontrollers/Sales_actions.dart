@@ -99,20 +99,20 @@ class SalesController extends GetxController {
   }
 
   void resetData() {
-    salesModel.customerList.clear();
-    salesModel.processList.clear();
-    salesModel.processcustomerList.clear();
-    salesModel.showcustomerprocess.value = null;
-    salesModel.customerId.value = null;
-    salesModel.pdfFile.value = null;
-    salesModel.selectedIndices.clear();
-    salesModel.isAllSelected.value = false;
-    salesModel.type.value = 0;
-    salesModel.isprofilepage.value = false;
-    salesModel.searchQuery.value = '';
-    salesModel.salesdata.value = null;
-    salesModel.salesperiod.value = 'monthly';
-    salesModel.Clientprofile.value = null;
+    // salesModel.customerList.clear();
+    // salesModel.processList.clear();
+    // salesModel.processcustomerList.clear();
+    // salesModel.showcustomerprocess.value = null;
+    // salesModel.customerId.value = null;
+    // salesModel.pdfFile.value = null;
+    // salesModel.selectedIndices.clear();
+    // salesModel.isAllSelected.value = false;
+    // salesModel.type.value = 0;
+    // salesModel.isprofilepage.value = false;
+    // salesModel.searchQuery.value = '';
+    // salesModel.salesdata.value = null;
+    // salesModel.salesperiod.value = 'monthly';
+    // salesModel.Clientprofile.value = null;
   }
 }
 //  customername.replaceAll(RegExp(r'[^A-Z]'), '').length>=2?customername.replaceAll(RegExp(r'[^A-Z]'), '').substring(0, 2):customername.replaceAll(RegExp(r'[^A-Z]'), '').length==1?customername.replaceAll(RegExp(r'[^A-Z]'), ''):customername.isNotEmpty?customername[0].toUpperCase():"?",

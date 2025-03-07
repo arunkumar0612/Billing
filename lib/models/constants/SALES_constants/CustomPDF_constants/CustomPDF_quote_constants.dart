@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/SALES/CustomPDF_entities/CustomPDF_Product_entities.dart';
-import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/Quote_entities.dart';
 
-class CustomPDF_InvoiceModel {
+class CustomPDF_QuoteModel {
   final date = TextEditingController().obs;
-  final manualinvoiceNo = TextEditingController().obs;
+  final manualquoteNo = TextEditingController().obs;
   final clientName = TextEditingController().obs;
   final clientAddress = TextEditingController().obs;
   final billingName = TextEditingController().obs;
@@ -28,10 +28,10 @@ class CustomPDF_InvoiceModel {
 
   var roundoffDiff = Rxn<String>();
   var textControllers = <List<TextEditingController>>[].obs;
-  var manualInvoice_gstTotals = <InvoiceGSTtotals>[].obs;
-  var manualInvoiceproducts = <CustomPDF_InvoiceProduct>[
-    CustomPDF_InvoiceProduct(sNo: "1", description: "Laptop", hsn: "8471", gst: "18", price: "1000", quantity: "2", total: "2000"),
-    CustomPDF_InvoiceProduct(sNo: "2", description: "Mouse", hsn: "8472", gst: "18", price: "50", quantity: "5", total: "250"),
+  var manualQuote_gstTotals = <QuoteGSTtotals>[].obs;
+  var manualQuoteproducts = <CustomPDF_QuoteProduct>[
+    CustomPDF_QuoteProduct(sNo: "1", description: "Laptop", hsn: "8471", gst: "18", price: "1000", quantity: "2", total: "2000"),
+    CustomPDF_QuoteProduct(sNo: "2", description: "Mouse", hsn: "8472", gst: "18", price: "50", quantity: "5", total: "250"),
   ].obs;
 
   final notecontent = <String>[].obs;

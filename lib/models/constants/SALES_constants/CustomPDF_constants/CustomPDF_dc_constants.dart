@@ -3,11 +3,10 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/SALES/CustomPDF_entities/CustomPDF_Product_entities.dart';
-import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
 
-class CustomPDF_InvoiceModel {
+class CustomPDF_DcModel {
   final date = TextEditingController().obs;
-  final manualinvoiceNo = TextEditingController().obs;
+  final manualdcNo = TextEditingController().obs;
   final clientName = TextEditingController().obs;
   final clientAddress = TextEditingController().obs;
   final billingName = TextEditingController().obs;
@@ -17,21 +16,25 @@ class CustomPDF_InvoiceModel {
   final GSTnumber = TextEditingController().obs;
   final feedback = TextEditingController().obs;
   final filePathController = TextEditingController().obs;
-  final subTotal = TextEditingController().obs;
-  final CGST = TextEditingController().obs;
-  final SGST = TextEditingController().obs;
-  final roundOff = TextEditingController().obs;
-  final Total = TextEditingController().obs;
-  var Total_amount = 0.0.obs;
+
   final CCemailController = TextEditingController().obs;
   var noteControllers = <TextEditingController>[].obs;
 
-  var roundoffDiff = Rxn<String>();
   var textControllers = <List<TextEditingController>>[].obs;
-  var manualInvoice_gstTotals = <InvoiceGSTtotals>[].obs;
-  var manualInvoiceproducts = <CustomPDF_InvoiceProduct>[
-    CustomPDF_InvoiceProduct(sNo: "1", description: "Laptop", hsn: "8471", gst: "18", price: "1000", quantity: "2", total: "2000"),
-    CustomPDF_InvoiceProduct(sNo: "2", description: "Mouse", hsn: "8472", gst: "18", price: "50", quantity: "5", total: "250"),
+
+  var manualDcproducts = <CustomPDF_DcProduct>[
+    CustomPDF_DcProduct(
+      sNo: "1",
+      description: "Laptop",
+      hsn: "8471",
+      quantity: "2",
+    ),
+    CustomPDF_DcProduct(
+      sNo: "2",
+      description: "Mouse",
+      hsn: "8472",
+      quantity: "5",
+    ),
   ].obs;
 
   final notecontent = <String>[].obs;

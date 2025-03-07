@@ -3,15 +3,16 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
-import 'package:ssipl_billing/models/entities/SALES/DC_entities.dart';
-import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
+import 'package:ssipl_billing/models/entities/SALES/CustomPDF_entities/CustomPDF_Product_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/Dc_entities.dart';
 import '../../../../utils/helpers/support_functions.dart';
 
-Future<Uint8List> generate_Dc(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, dc_gstTotals) async {
-  final quotation = Quotation(
+Future<Uint8List> generate_CustomPDFDc(PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst) async {
+  final dc = Quotation(
+      date: date,
       products: products,
-      GST: gst.toDouble(),
+      GST: gst,
       baseColor: PdfColors.green500,
       accentColor: PdfColors.blueGrey900,
       client_addr_name: client_addr_name,
@@ -20,30 +21,31 @@ Future<Uint8List> generate_Dc(PdfPageFormat pageFormat, products, client_addr_na
       bill_addr: bill_addr,
       estimate: estimate_num ?? "",
       title_text: title,
-      type: '',
-      dc_gstTotals: dc_gstTotals);
+      type: '');
 
-  return await quotation.buildPdf(pageFormat);
+  return await dc.buildPdf(pageFormat);
 }
 
 class Quotation {
-  Quotation(
-      {required this.products,
-      required this.GST,
-      required this.baseColor,
-      required this.accentColor,
-      required this.client_addr_name,
-      required this.client_addr,
-      required this.bill_addr_name,
-      required this.bill_addr,
-      required this.estimate,
-      required this.title_text,
-      required this.type,
-      required this.dc_gstTotals
-      // required this.items,
-      });
-  final DcController dcController = Get.find<DcController>();
-  List<DcGSTtotals> dc_gstTotals = [];
+  Quotation({
+    required this.date,
+    required this.products,
+    required this.GST,
+    required this.baseColor,
+    required this.accentColor,
+    required this.client_addr_name,
+    required this.client_addr,
+    required this.bill_addr_name,
+    required this.bill_addr,
+    required this.estimate,
+    required this.title_text,
+    required this.type,
+
+    // required this.items,
+  });
+  final CustomPDF_DcController dcController = Get.find<CustomPDF_DcController>();
+
+  String date = "";
   String client_addr_name = "";
   String client_addr = "";
   String bill_addr_name = "";
@@ -52,15 +54,12 @@ class Quotation {
   String title_text = "";
   String type = "";
 
-  final List<DcProduct> products;
-  final double GST;
+  final List<CustomPDF_DcProduct> products;
+  final String GST;
   final PdfColor baseColor;
   final PdfColor accentColor;
   static const _darkColor = PdfColors.blueGrey800;
-  double get CGST_total => dc_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
-  double get SGST_total => dc_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
-  // double get _total => products.map<double>((p) => p.total).reduce((a, b) => a + b);
-  // double get _grandTotal => _total + CGST_total + SGST_total;
+
   dynamic profileImage;
 
   Future<Uint8List> buildPdf(PdfPageFormat pageFormat) async {
@@ -335,7 +334,7 @@ class Quotation {
   }
 
   pw.Widget title(pw.Context context) {
-    return pw.Center(child: bold(title_text, 12));
+    return pw.Center(child: bold(GST, 12));
   }
 
   pw.Widget _contentTable(pw.Context context) {
@@ -413,7 +412,7 @@ class Quotation {
                 child: bold("Note", 12),
                 padding: const pw.EdgeInsets.only(left: 0, bottom: 10),
               ),
-              ...List.generate(dcController.dcModel.Dc_noteList.length, (index) {
+              ...List.generate(dcController.pdfModel.value.notecontent.length, (index) {
                 return pw.Padding(
                   padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
                   child: pw.Row(
@@ -423,7 +422,7 @@ class Quotation {
                       pw.SizedBox(width: 5),
                       pw.Expanded(
                         child: pw.Text(
-                          dcController.dcModel.Dc_noteList[index],
+                          dcController.pdfModel.value.notecontent[index],
                           textAlign: pw.TextAlign.start,
                           style: pw.TextStyle(
                             font: Helvetica,
@@ -487,40 +486,40 @@ class Quotation {
                   ],
                 ),
               ),
-              pw.Padding(
-                padding: const pw.EdgeInsets.only(left: 0, top: 5),
-                child: pw.Row(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    // regular("${Delivery_challan_noteList.length + 2}.", 10),
-                    pw.SizedBox(width: 5),
-                    pw.Expanded(
-                      child: pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: [
-                          bold(dcController.dcModel.recommendationHeadingController.value.text, 10),
-                          ...dcController.dcModel.Dc_recommendationList.map((recommendation) {
-                            return pw.Padding(
-                              padding: const pw.EdgeInsets.only(left: 5, top: 5),
-                              child: pw.Row(
-                                children: [
-                                  pw.Container(
-                                    width: 120,
-                                    child: regular(recommendation.key.toString(), 10),
-                                  ),
-                                  regular(":", 10),
-                                  pw.SizedBox(width: 5),
-                                  regular(recommendation.value.toString(), 10),
-                                ],
-                              ),
-                            );
-                          }),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // pw.Padding(
+              //   padding: const pw.EdgeInsets.only(left: 0, top: 5),
+              //   child: pw.Row(
+              //     crossAxisAlignment: pw.CrossAxisAlignment.start,
+              //     children: [
+              //       // regular("${Delivery_challan_noteList.length + 2}.", 10),
+              //       pw.SizedBox(width: 5),
+              //       pw.Expanded(
+              //         child: pw.Column(
+              //           crossAxisAlignment: pw.CrossAxisAlignment.start,
+              //           children: [
+              //             bold(dcController.pdfModel.value.recommendationHeadingController.value.text, 10),
+              //             ...dcController.pdfModel.value.Dc_recommendationList.map((recommendation) {
+              //               return pw.Padding(
+              //                 padding: const pw.EdgeInsets.only(left: 5, top: 5),
+              //                 child: pw.Row(
+              //                   children: [
+              //                     pw.Container(
+              //                       width: 120,
+              //                       child: regular(recommendation.key.toString(), 10),
+              //                     ),
+              //                     regular(":", 10),
+              //                     pw.SizedBox(width: 5),
+              //                     regular(recommendation.value.toString(), 10),
+              //                   ],
+              //                 ),
+              //               );
+              //             }),
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),

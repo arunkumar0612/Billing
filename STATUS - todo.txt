@@ -2,8 +2,7 @@
 2. Create notification Reciever
 3. Create - Custom PDF - Qote and DC
 4. Invoice generation -it should be in viewable format and it should pre-load the approved pdf values
-5. DC products tab -  a). products must be selectable and in quantity there should be up and down arrow as well as the field should be typeable with respect to max qunatity
-                      b). If products are left and quantities are changed - need an imaginery way to show the leftover products while submitting
+
 6. Sales page obx change- check page reaction and  change any data by external trigger and check reaction of the page (flicker)
 7. Custom pdf api required
 8. Monthly timeline pending - MARCH

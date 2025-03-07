@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
-import 'package:ssipl_billing/services/SALES/CustomPDF_services/CustomPDF_Invoice_services.dart';
+import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Quote_actions.dart';
+import 'package:ssipl_billing/services/SALES/CustomPDF_services/Quote/CustomPDF_Quote_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 
-class CustomPDF_InvoicePDF {
-  final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
-  var inst = CustomPDF_Services();
+class CustomPDF_QuotePDF {
+  final CustomPDF_QuoteController pdfpopup_controller = Get.find<CustomPDF_QuoteController>();
+  var inst = Custom_Quote_Services();
   void showA4StyledPopup(BuildContext context) async {
     try {
       await showDialog(
@@ -203,7 +203,7 @@ class CustomPDF_InvoicePDF {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Image.asset('assets/images/sporadaResized.jpeg', height: 100),
-        const Text("INVOICE", style: TextStyle(fontSize: Primary_font_size.SubHeading, fontWeight: FontWeight.bold)),
+        const Text("QUOTATION", style: TextStyle(fontSize: Primary_font_size.SubHeading, fontWeight: FontWeight.bold)),
         SizedBox(
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.start,
@@ -246,7 +246,7 @@ class CustomPDF_InvoicePDF {
               Row(
                 children: [
                   const Text(
-                    "Invoice no",
+                    "Quote no",
                     style: TextStyle(fontSize: Primary_font_size.Text7),
                   ),
                   const Text("  :  ", style: TextStyle(fontSize: Primary_font_size.Text7)),
@@ -256,7 +256,7 @@ class CustomPDF_InvoicePDF {
                     child: TextFormField(
                       maxLines: null,
                       style: const TextStyle(fontSize: Primary_font_size.Text5, color: Colors.black),
-                      controller: pdfpopup_controller.pdfModel.value.manualinvoiceNo.value,
+                      controller: pdfpopup_controller.pdfModel.value.manualquoteNo.value,
                       decoration: const InputDecoration(
                         errorStyle: TextStyle(height: -6, fontSize: 0),
                         isDense: true,
@@ -455,7 +455,7 @@ class CustomPDF_InvoicePDF {
     );
   }
 
-  Widget contentTable(CustomPDF_InvoiceController controller) {
+  Widget contentTable(CustomPDF_QuoteController controller) {
     const tableHeaders = ['✔', 'S.No', 'Description', 'HSN', 'GST', 'Price', 'Quantity', 'Total'];
 
     return Obx(
@@ -816,7 +816,7 @@ class CustomPDF_InvoicePDF {
           children: [
             Container(
                 decoration: BoxDecoration(border: Border.all(color: const Color.fromARGB(255, 151, 150, 150))),
-                height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 125 : 90,
+                height: pdfpopup_controller.pdfModel.value.manualQuote_gstTotals.length > 1 ? 125 : 90,
                 child: Column(
                   children: [
                     Expanded(
@@ -957,10 +957,10 @@ class CustomPDF_InvoicePDF {
                         height: 200, // Set a fixed height (adjust as needed)
                         child: ListView.builder(
                           shrinkWrap: true, // Prevents infinite height issue
-                          itemCount: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length,
+                          itemCount: pdfpopup_controller.pdfModel.value.manualQuote_gstTotals.length,
                           itemBuilder: (context, index) {
                             return SizedBox(
-                              height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 30 : 44, // Set a height for each row to prevent overflow
+                              height: pdfpopup_controller.pdfModel.value.manualQuote_gstTotals.length > 1 ? 30 : 44, // Set a height for each row to prevent overflow
                               child: Row(
                                 children: [
                                   Container(
@@ -968,7 +968,7 @@ class CustomPDF_InvoicePDF {
                                     decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
                                     child: Center(
                                       child: Text(
-                                        pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toString(),
+                                        pdfpopup_controller.pdfModel.value.manualQuote_gstTotals[index].total.toString(),
                                         style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                       ),
                                     ),
@@ -988,7 +988,7 @@ class CustomPDF_InvoicePDF {
                                                       decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
                                                       child: Center(
                                                         child: Text(
-                                                          formatzero(pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2).toString(),
+                                                          formatzero(pdfpopup_controller.pdfModel.value.manualQuote_gstTotals[index].gst / 2).toString(),
                                                           style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                                         ),
                                                       ),
@@ -998,8 +998,8 @@ class CustomPDF_InvoicePDF {
                                                     flex: 2,
                                                     child: Center(
                                                       child: Text(
-                                                        formatzero((pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toInt() / 100) *
-                                                                (pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2))
+                                                        formatzero((pdfpopup_controller.pdfModel.value.manualQuote_gstTotals[index].total.toInt() / 100) *
+                                                                (pdfpopup_controller.pdfModel.value.manualQuote_gstTotals[index].gst / 2))
                                                             .toString(),
                                                         style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                                       ),
@@ -1024,7 +1024,7 @@ class CustomPDF_InvoicePDF {
                                                   decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
                                                   child: Center(
                                                     child: Text(
-                                                      formatzero(pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2).toString(),
+                                                      formatzero(pdfpopup_controller.pdfModel.value.manualQuote_gstTotals[index].gst / 2).toString(),
                                                       style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                                     ),
                                                   ),
@@ -1034,8 +1034,8 @@ class CustomPDF_InvoicePDF {
                                                 flex: 2,
                                                 child: Center(
                                                   child: Text(
-                                                    formatzero((pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toInt() / 100) *
-                                                            (pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2))
+                                                    formatzero((pdfpopup_controller.pdfModel.value.manualQuote_gstTotals[index].total.toInt() / 100) *
+                                                            (pdfpopup_controller.pdfModel.value.manualQuote_gstTotals[index].gst / 2))
                                                         .toString(),
                                                     style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                                   ),
@@ -1056,7 +1056,7 @@ class CustomPDF_InvoicePDF {
                     ),
                   ],
                 )),
-            SizedBox(height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 20 : 55),
+            SizedBox(height: pdfpopup_controller.pdfModel.value.manualQuote_gstTotals.length > 1 ? 20 : 55),
             notes(),
           ],
         );
@@ -1161,7 +1161,7 @@ class CustomPDF_InvoicePDF {
       children: [
         const Expanded(
           child: Text(
-            "This is a custom invoice generator designed to ensure accuracy and professionalism in your billing process. Please make sure that all details entered are valid and correct, as any discrepancies may affect the accuracy of your invoice and financial records.",
+            "This is a custom quote generator designed to ensure accuracy and professionalism in your billing process. Please make sure that all details entered are valid and correct, as any discrepancies may affect the accuracy of your quote and financial records.",
             style: TextStyle(fontSize: Primary_font_size.Text7),
           ),
         ),

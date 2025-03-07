@@ -6,15 +6,16 @@ class DcProduct {
   final int hsn;
   final double gst;
   final double price;
-  final int quantity;
+  int quantity; // Remove final to make it mutable
   final int productid;
-  const DcProduct({
+
+  DcProduct({
     required this.sno,
     required this.productName,
     required this.hsn,
     required this.gst,
     required this.price,
-    required this.quantity,
+    required this.quantity, // Now mutable
     required this.productid,
   });
 

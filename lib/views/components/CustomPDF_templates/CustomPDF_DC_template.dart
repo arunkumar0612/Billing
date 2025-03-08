@@ -127,7 +127,7 @@ class Quotation {
                       children: [
                         regular('Date', 10),
                         pw.SizedBox(height: 5),
-                        regular('Invoice ref', 10),
+                        regular('PO ref', 10),
                         pw.SizedBox(height: 5),
                         regular('DC no', 10),
                       ],
@@ -157,14 +157,14 @@ class Quotation {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("AA/INST/241101", 10),
+                            child: regular("TAA/TRY/AB80/2024", 10),
                           ),
                         ),
                         pw.SizedBox(height: 5),
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("DCAA/INST/241101", 10),
+                            child: regular("SSIPL/250301", 10),
                           ),
                         ),
                       ],

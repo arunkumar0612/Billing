@@ -241,50 +241,50 @@ class CustomPDF_DcController extends GetxController {
   }
 
   void resetData() {
-    pdfModel.value.date.value.clear();
-    pdfModel.value.manualdcNo.value.clear();
-    pdfModel.value.clientName.value.clear();
-    pdfModel.value.clientAddress.value.clear();
-    pdfModel.value.billingName.value.clear();
-    pdfModel.value.billingAddres.value.clear();
-    pdfModel.value.phoneNumber.value.clear();
-    pdfModel.value.Email.value.clear();
-    pdfModel.value.feedback.value.clear();
-    pdfModel.value.filePathController.value.clear();
+    // pdfModel.value.date.value.clear();
+    // pdfModel.value.manualdcNo.value.clear();
+    // pdfModel.value.clientName.value.clear();
+    // pdfModel.value.clientAddress.value.clear();
+    // pdfModel.value.billingName.value.clear();
+    // pdfModel.value.billingAddres.value.clear();
+    // pdfModel.value.phoneNumber.value.clear();
+    // pdfModel.value.Email.value.clear();
+    // pdfModel.value.feedback.value.clear();
+    // pdfModel.value.filePathController.value.clear();
 
-    pdfModel.value.GSTnumber.value.clear();
-    pdfModel.value.manualDcproducts.assignAll([
-      CustomPDF_DcProduct(
-        sNo: "1",
-        description: "Laptop",
-        hsn: "8471",
-        quantity: "2",
-      ),
-      CustomPDF_DcProduct(
-        sNo: "2",
-        description: "Mouse",
-        hsn: "8472",
-        quantity: "5",
-      ),
-    ]);
+    // pdfModel.value.GSTnumber.value.clear();
+    // pdfModel.value.manualDcproducts.assignAll([
+    //   CustomPDF_DcProduct(
+    //     sNo: "1",
+    //     description: "Laptop",
+    //     hsn: "8471",
+    //     quantity: "2",
+    //   ),
+    //   CustomPDF_DcProduct(
+    //     sNo: "2",
+    //     description: "Mouse",
+    //     hsn: "8472",
+    //     quantity: "5",
+    //   ),
+    // ]);
 
-    pdfModel.value.notecontent.clear();
-    pdfModel.value.checkboxValues.clear();
-    pdfModel.value.textControllers.clear();
-    pdfModel.value.genearatedPDF.value = null;
+    // pdfModel.value.notecontent.clear();
+    // pdfModel.value.checkboxValues.clear();
+    // pdfModel.value.textControllers.clear();
+    // pdfModel.value.genearatedPDF.value = null;
 
-    for (var controller in pdfModel.value.noteControllers) {
-      controller.clear();
-    }
-    pdfModel.value.noteControllers.clear();
+    // for (var controller in pdfModel.value.noteControllers) {
+    //   controller.clear();
+    // }
+    // pdfModel.value.noteControllers.clear();
 
-    pdfModel.value.whatsapp_selectionStatus.value = true;
-    pdfModel.value.gmail_selectionStatus.value = true;
-    pdfModel.value.CCemailController.value.clear();
-    pdfModel.value.progress.value = 0.0;
-    pdfModel.value.isLoading.value = false;
-    pdfModel.value.CCemailToggle.value = false;
+    // pdfModel.value.whatsapp_selectionStatus.value = true;
+    // pdfModel.value.gmail_selectionStatus.value = true;
+    // pdfModel.value.CCemailController.value.clear();
+    // pdfModel.value.progress.value = 0.0;
+    // pdfModel.value.isLoading.value = false;
+    // pdfModel.value.CCemailToggle.value = false;
 
-    pdfModel.value.allData_key.value = GlobalKey<FormState>();
+    // pdfModel.value.allData_key.value = GlobalKey<FormState>();
   }
 }

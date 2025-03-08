@@ -33,7 +33,7 @@ import '../../../controllers/SALEScontrollers/Sales_actions.dart';
 
 class Sales_Client extends StatefulWidget with SalesServices {
   Sales_Client({super.key});
-
+// Toyota showroom and service, 100 chennai - trichy highway, Trichy - 620005s
   @override
   _Sales_ClientState createState() => _Sales_ClientState();
 }
@@ -650,7 +650,14 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                           inst_dcDesign.showA4StyledPopup(context);
                                                           break;
                                                         case 'Custom PDF List':
-                                                          _manualcreation_list();
+                                                          widget.GetCustomPDFLsit(context);
+                                                          showModalTopSheet(
+                                                            context: context,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(20),
+                                                              child: _manualcreation_list(), // Your widget inside the top sheet
+                                                            ),
+                                                          );
                                                           break;
                                                       }
                                                     },
@@ -2656,4 +2663,46 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
           ),
         ));
   }
+}
+
+void showModalTopSheet({
+  required BuildContext context,
+  required Widget child,
+  Color barrierColor = const Color.fromARGB(244, 11, 15, 26),
+}) {
+  showGeneralDialog(
+    context: context,
+    barrierDismissible: true,
+    barrierLabel: "Dismiss",
+    barrierColor: barrierColor,
+    transitionDuration: const Duration(milliseconds: 300),
+    pageBuilder: (_, __, ___) {
+      return Align(
+        alignment: Alignment.topCenter,
+        child: Material(
+          color: Colors.transparent,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 50), // Adjust top padding
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8, // Width
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: child,
+            ),
+          ),
+        ),
+      );
+    },
+    transitionBuilder: (context, animation, secondaryAnimation, child) {
+      return SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(0, -1), // Start from the top
+          end: Offset.zero,
+        ).animate(animation),
+        child: child,
+      );
+    },
+  );
 }

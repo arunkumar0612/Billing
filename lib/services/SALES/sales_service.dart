@@ -41,6 +41,24 @@ mixin SalesServices {
   final SalesController salesController = Get.find<SalesController>();
   final ClientreqController clientreqController = Get.find<ClientreqController>();
 
+  Future<void> GetCustomPDFLsit(context) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_custompdf);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          print(value);
+        } else {
+          await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
+
   void GetCustomerList(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getcustomerlist_API);

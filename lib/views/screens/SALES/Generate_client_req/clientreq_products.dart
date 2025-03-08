@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/models/entities/SALES/Sales_entities.dart';
 import 'package:ssipl_billing/services/SALES/ClientReq_services/ClientreqProduct_service.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
@@ -92,18 +93,52 @@ class _clientreqProductsState extends State<clientreqProducts> {
                       child: Column(
                         children: [
                           const SizedBox(height: 25),
-                          BasicTextfield(
-                            digitsOnly: false,
-                            width: 400,
-                            readonly: false,
-                            text: 'Product Name',
-                            controller: clientreqController.clientReqModel.productNameController.value,
-                            icon: Icons.production_quantity_limits,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Product name';
-                              }
-                              return null;
+                          Obx(
+                            () {
+                              return DropdownMenu<ProductSuggestion>(
+                                trailingIcon: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Color.fromARGB(255, 122, 121, 121),
+                                ),
+                                label: const Text(
+                                  "Product",
+                                  style: TextStyle(color: Color.fromARGB(255, 167, 165, 165), fontSize: Primary_font_size.Text7),
+                                ),
+                                textStyle: const TextStyle(color: Primary_colors.Color1),
+                                width: 400,
+                                inputDecorationTheme: const InputDecorationTheme(
+                                  contentPadding: EdgeInsets.only(left: 10, right: 5),
+                                  filled: true,
+                                  fillColor: Primary_colors.Dark,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
+                                    borderSide: BorderSide(color: Colors.black),
+                                  ),
+                                  border: OutlineInputBorder(),
+                                  hintStyle: TextStyle(
+                                    fontSize: 13,
+                                    color: Color.fromARGB(255, 167, 165, 165),
+                                  ),
+                                ),
+                                controller: clientreqController.clientReqModel.productNameController.value,
+                                dropdownMenuEntries: clientreqController.clientReqModel.clientReq_productSuggestion.map<DropdownMenuEntry<ProductSuggestion>>((ProductSuggestion suggestion) {
+                                  return DropdownMenuEntry<ProductSuggestion>(
+                                    value: suggestion, // Passing the entire object
+                                    label: suggestion.productName, // Display product name in dropdown
+                                  );
+                                }).toList(),
+                                onSelected: (ProductSuggestion? selectedSuggestion) {
+                                  // if (selectedSuggestion != null) {
+                                  //   widget.set_ProductValues(selectedSuggestion);
+                                  // }
+                                },
+                              );
                             },
                           ),
                           const SizedBox(height: 25),
@@ -130,7 +165,9 @@ class _clientreqProductsState extends State<clientreqProducts> {
                                 colors: Colors.red,
                                 text: clientreqController.clientReqModel.product_editIndex.value == null ? 'Back' : 'Cancle',
                                 onPressed: () {
-                                  clientreqController.clientReqModel.product_editIndex.value == null ? clientreqController.backTab() : widget.resetEditingState(); // Reset editing state when going back
+                                  clientreqController.clientReqModel.product_editIndex.value == null
+                                      ? clientreqController.backTab()
+                                      : widget.resetEditingState(); // Reset editing state when going back
                                 },
                               ),
                               const SizedBox(width: 30),

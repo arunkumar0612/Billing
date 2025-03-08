@@ -52,10 +52,6 @@ mixin InvoicedetailsService {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           invoiceController.add_productSuggestion(value.data);
-          // await Basic_dialog(context: context, title: 'Enquiry - ID', content: value.message!, onOk: () {});
-          // invoiceController.update_requiredData(value);
-          // print(clientreqController.clientReqModel.Enq_ID.value);
-          // salesController.addToCustomerList(value);
         } else {
           await Basic_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {}, showCancel: false);
         }

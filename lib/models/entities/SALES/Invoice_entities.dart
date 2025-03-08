@@ -75,7 +75,17 @@ class RequiredData {
   final String? billingAddressName;
   final String? billingAddress;
   final List<InvoiceProduct> product;
-  RequiredData({required this.eventnumber, required this.title, required this.name, required this.emailId, required this.phoneNo, required this.address, required this.gst, required this.billingAddressName, required this.billingAddress, required this.product});
+  RequiredData(
+      {required this.eventnumber,
+      required this.title,
+      required this.name,
+      required this.emailId,
+      required this.phoneNo,
+      required this.address,
+      required this.gst,
+      required this.billingAddressName,
+      required this.billingAddress,
+      required this.product});
 
   factory RequiredData.fromJson(CMDmResponse json) {
     return RequiredData(
@@ -158,7 +168,24 @@ class Post_Invoice {
     required String ccEmail,
     required double total_amount,
   }) {
-    return Post_Invoice(title: title, processid: processid, ClientAddressname: ClientAddressname, ClientAddress: ClientAddress, billingAddressName: billingAddressName, billingAddress: billingAddress, emailId: emailId, phoneNo: phoneNo, gst: gst, product: product, notes: notes, date: date, invoiceGenID: invoiceGenID, messageType: messageType, feedback: feedback, ccEmail: ccEmail, total_amount: total_amount);
+    return Post_Invoice(
+        title: title,
+        processid: processid,
+        ClientAddressname: ClientAddressname,
+        ClientAddress: ClientAddress,
+        billingAddressName: billingAddressName,
+        billingAddress: billingAddress,
+        emailId: emailId,
+        phoneNo: phoneNo,
+        gst: gst,
+        product: product,
+        notes: notes,
+        date: date,
+        invoiceGenID: invoiceGenID,
+        messageType: messageType,
+        feedback: feedback,
+        ccEmail: ccEmail,
+        total_amount: total_amount);
   }
 
   Map<String, dynamic> toJson() {
@@ -180,40 +207,6 @@ class Post_Invoice {
       "feedback": feedback,
       "ccemail": ccEmail,
       "invoice_amount": total_amount
-    };
-  }
-}
-
-class ProductSuggestion {
-  final String productName;
-  final String productHsn;
-  final double productPrice;
-  final double productGst;
-
-  ProductSuggestion({
-    required this.productName,
-    required this.productHsn,
-    required this.productPrice,
-    required this.productGst,
-  });
-
-  /// Factory method to convert JSON to Product object
-  factory ProductSuggestion.fromJson(Map<String, dynamic> json) {
-    return ProductSuggestion(
-      productName: json['product_name'] as String,
-      productHsn: json['product_hsn'].toString(), // Ensure String type
-      productPrice: (json['product_price'] as num).toDouble(),
-      productGst: (json['product_gst'] as num).toDouble(),
-    );
-  }
-
-  /// Method to convert Product object to JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'product_name': productName,
-      'product_hsn': productHsn,
-      'product_price': productPrice,
-      'product_gst': productGst,
     };
   }
 }

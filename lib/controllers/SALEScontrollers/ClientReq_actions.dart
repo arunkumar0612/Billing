@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/constants/SALES_constants/ClientReq_constants.dart';
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/Sales_entities.dart';
 import '../../models/entities/SALES/ClientReq_entities.dart';
 import '../../models/entities/SALES/product_entities.dart';
 
@@ -25,6 +26,12 @@ class ClientreqController extends GetxController {
   void backTab() {
     if (clientReqModel.tabController.value!.index > 0) {
       clientReqModel.tabController.value!.animateTo(clientReqModel.tabController.value!.index - 1);
+    }
+  }
+
+  void add_productSuggestion(List<dynamic> suggestionList) {
+    for (var item in suggestionList) {
+      clientReqModel.clientReq_productSuggestion.add(ProductSuggestion.fromJson(item));
     }
   }
 

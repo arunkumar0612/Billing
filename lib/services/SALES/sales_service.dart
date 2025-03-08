@@ -1,16 +1,18 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/screens/SALES/Generate_DC/generateDC.dart';
@@ -20,11 +22,9 @@ import '../../controllers/SALEScontrollers/Sales_actions.dart';
 import '../../models/constants/api.dart';
 import '../../models/entities/Response_entities.dart';
 import '../../views/components/Basic_DialogBox.dart';
-import '../../views/screens/SALES/Generate_DebitNote/generateDebit.dart';
 import '../../views/screens/SALES/Generate_Invoice/generateInvoice.dart';
 import '../../views/screens/SALES/Generate_Quote/generateQuote.dart';
 import '../../views/screens/SALES/Generate_client_req/generate_clientreq.dart';
-import '../../views/screens/SALES/Generate_creditNote/generateCredit.dart';
 import '../APIservices/invoker.dart';
 // import 'package:ssipl_billing/view_send_pdf.dart';
 import 'package:path/path.dart' as path;
@@ -35,28 +35,30 @@ mixin SalesServices {
   final InvoiceController invoiceController = Get.find<InvoiceController>();
   final QuoteController quoteController = Get.find<QuoteController>();
   final RfqController rfqController = Get.find<RfqController>();
-  final CreditController creditController = Get.find<CreditController>();
-  final DebitController debitController = Get.find<DebitController>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final SalesController salesController = Get.find<SalesController>();
   final ClientreqController clientreqController = Get.find<ClientreqController>();
 
-  Future<void> GetCustomPDFLsit(context) async {
+  Future<bool> GetCustomPDFLsit(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_custompdf);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          print(value);
+          salesController.addToCustompdfList(value);
+          return true;
         } else {
           await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
+        return false;
       } else {
         Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        return false;
       }
     } catch (e) {
       Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
+    return false;
   }
 
   void GetCustomerList(context) async {
@@ -191,7 +193,8 @@ mixin SalesServices {
                                 path
                                     .basename(filename)
                                     .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
-                                    .replaceAll(" ", ""));
+                                    .replaceAll(" ", ""),
+                                salesController.salesModel.pdfFile.value);
                           },
                           icon: const Icon(
                             Icons.download,
@@ -206,9 +209,16 @@ mixin SalesServices {
     }
   }
 
-  Future<void> downloadPdf(BuildContext context, String filename) async {
+  Future<File> savePdfToTemp(Uint8List pdfData) async {
+    final tempDir = await getTemporaryDirectory();
+    final tempFile = File('${tempDir.path}/temp_pdf.pdf');
+    await tempFile.writeAsBytes(pdfData, flush: true);
+    return tempFile;
+  }
+
+  Future<void> downloadPdf(BuildContext context, String filename, File? pdfFile) async {
     try {
-      final pdfFile = salesController.salesModel.pdfFile.value;
+      // final pdfFile = salesController.salesModel.pdfFile.value;
 
       if (pdfFile == null) {
         if (kDebugMode) {
@@ -919,241 +929,6 @@ mixin SalesServices {
     );
   }
 
-  dynamic GenerateDebit_dialougebox(context) async {
-    await showDialog(
-      context: context,
-      barrierDismissible: false, // Prevents closing the dialog by clicking outside
-      builder: (context) {
-        return AlertDialog(
-          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          backgroundColor: Primary_colors.Dark,
-          content: Stack(
-            children: [
-              const SizedBox(
-                height: 650,
-                width: 1300,
-                child: GenerateDebit(),
-              ),
-              Positioned(
-                top: 3,
-                right: 0,
-                child: IconButton(
-                  icon: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: const Color.fromARGB(255, 219, 216, 216),
-                    ),
-                    height: 30,
-                    width: 30,
-                    child: const Icon(Icons.close, color: Colors.red),
-                  ),
-                  onPressed: () async {
-                    // Check if the data has any value
-                    // || ( debitController.debitModel.Debit_gstTotals.isNotEmpty)
-                    if ((debitController.debitModel.Debit_products.isNotEmpty) ||
-                        (debitController.debitModel.Debit_noteList.isNotEmpty) ||
-                        (debitController.debitModel.Debit_recommendationList.isNotEmpty) ||
-                        (debitController.debitModel.clientAddressNameController.value.text != "") ||
-                        (debitController.debitModel.clientAddressController.value.text != "") ||
-                        (debitController.debitModel.billingAddressNameController.value.text != "") ||
-                        (debitController.debitModel.billingAddressController.value.text != "") ||
-                        (debitController.debitModel.Debit_no.value != "") ||
-                        (debitController.debitModel.Debit_table_heading.value != "")) {
-                      // Show confirmation dialog
-                      bool? proceed = await showDialog<bool>(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                            title: const Text("Warning"),
-                            content: const Text(
-                              "The data may be lost. Do you want to proceed?",
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(false); // No action
-                                },
-                                child: const Text("No"),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  debitController.clearAll();
-                                  Navigator.of(context).pop(true); // Yes action
-                                },
-                                child: const Text("Yes"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-
-                      if (proceed == true) {
-                        Navigator.of(context).pop(); // Close the dialog
-                        debitController.debitModel.Debit_products.clear();
-                        debitController.debitModel.Debit_noteList.clear();
-                        debitController.debitModel.Debit_recommendationList.clear();
-                        debitController.debitModel.Debit_no.value = "";
-                        debitController.debitModel.Debit_table_heading.value = "";
-                      }
-                    } else {
-                      // If no data, just close the dialog
-                      Navigator.of(context).pop();
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  dynamic generate_debit(context) async {
-    // bool confirmed = await GenerateDebit_dialougebox();
-
-    // if (confirmed) {
-    // Proceed only if the dialog was confirmed
-    // Future.delayed(const Duration(seconds: 4), () {
-    //   Generate_popup.callback();
-    // });
-
-    // showDialog(
-    //   context: context,
-    //   builder: (context) {
-    //     return AlertDialog(
-    //         backgroundColor: Primary_colors.Light,
-    //         content: Generate_popup(
-    //           type: 'E://Debit.pdf',
-    //         ));
-    //   },
-    // );
-    // }
-  }
-
-  dynamic GenerateCredit_dialougebox(context) async {
-    await showDialog(
-      context: context,
-      barrierDismissible: false, // Prevents closing the dialog by clicking outside
-      builder: (context) {
-        return AlertDialog(
-          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          backgroundColor: Primary_colors.Dark,
-          content: Stack(
-            children: [
-              const SizedBox(
-                height: 650,
-                width: 1300,
-                child: GenerateCredit(),
-              ),
-              Positioned(
-                top: 3,
-                right: 0,
-                child: IconButton(
-                  icon: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: const Color.fromARGB(255, 219, 216, 216),
-                    ),
-                    height: 30,
-                    width: 30,
-                    child: const Icon(Icons.close, color: Colors.red),
-                  ),
-                  onPressed: () async {
-                    // Check if the data has any value
-                    // || ( creditController.creditModel.Credit_gstTotals.isNotEmpty)
-                    if ((creditController.creditModel.Credit_products.isNotEmpty) ||
-                        (creditController.creditModel.Credit_noteList.isNotEmpty) ||
-                        (creditController.creditModel.Credit_recommendationList.isNotEmpty) ||
-                        (creditController.creditModel.clientAddressNameController.value.text != "") ||
-                        (creditController.creditModel.clientAddressController.value.text != "") ||
-                        (creditController.creditModel.billingAddressNameController.value.text != "") ||
-                        (creditController.creditModel.billingAddressController.value.text != "") ||
-                        (creditController.creditModel.Credit_no.value != "") ||
-                        (creditController.creditModel.Credit_table_heading.value != "")) {
-                      // Show confirmation dialog
-                      bool? proceed = await showDialog<bool>(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                            title: const Text("Warning"),
-                            content: const Text(
-                              "The data may be lost. Do you want to proceed?",
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(false); // No action
-                                },
-                                child: const Text("No"),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  creditController.clearAll();
-                                  Navigator.of(context).pop(true); // Yes action
-                                },
-                                child: const Text("Yes"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-
-                      // If user confirms (Yes), clear data and close the dialog
-                      if (proceed == true) {
-                        Navigator.of(context).pop(); // Close the dialog
-                        // Clear all the data when dialog is closed
-                        creditController.creditModel.Credit_products.clear();
-                        //  creditController.creditModel.Credit_gstTotals.clear();
-                        creditController.creditModel.Credit_noteList.clear();
-                        creditController.creditModel.Credit_recommendationList.clear();
-                        //  creditController.creditModel.iCredit_productDetails.clear();
-                        creditController.creditModel.clientAddressNameController.value.clear();
-                        creditController.creditModel.clientAddressController.value.clear();
-                        creditController.creditModel.billingAddressNameController.value.clear();
-                        creditController.creditModel.billingAddressController.value.clear();
-                        creditController.creditModel.Credit_no.value = "";
-                        creditController.creditModel.Credit_table_heading.value = "";
-                      }
-                    } else {
-                      // If no data, just close the dialog
-                      Navigator.of(context).pop();
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  dynamic generate_credit(context) async {
-    // bool confirmed = await GenerateCredit_dialougebox();
-
-    // if (confirmed) {
-    // Proceed only if the dialog was confirmed
-    // Future.delayed(const Duration(seconds: 4), () {
-    //   Generate_popup.callback();
-    // });
-
-    // showDialog(
-    //   context: context,
-    //   builder: (context) {
-    //     return AlertDialog(
-    //         backgroundColor: Primary_colors.Light,
-    //         content: Generate_popup(
-    //           type: 'E://Credit.pdf',
-    //         ));
-    //   },
-    // );
-    // }
-  }
   String formatNumber(int number) {
     if (number >= 10000000) {
       return "₹ ${(number / 10000000).toStringAsFixed(1)}Cr";
@@ -1173,5 +948,50 @@ mixin SalesServices {
     await GetProcesscustomerList(context);
     await GetProcessList(context, 0);
     await GetSalesData(context, salesController.salesModel.salesperiod.value);
+  }
+
+  int fetch_messageType() {
+    if (salesController.salesModel.whatsapp_selectionStatus.value && salesController.salesModel.gmail_selectionStatus.value) return 3;
+    if (salesController.salesModel.whatsapp_selectionStatus.value) return 1;
+    if (salesController.salesModel.gmail_selectionStatus.value) return 2;
+
+    return 0;
+  }
+
+  dynamic postData_sendPDF(context, int messageType, File pdf) async {
+    try {
+      Map<String, dynamic> queryString = {
+        "emailid": salesController.salesModel.emailController.value.text,
+        "phoneno": salesController.salesModel.phoneController.value.text,
+        "feedback": salesController.salesModel.feedbackController.value.text,
+        "messagetype": messageType,
+        "ccemail": salesController.salesModel.CCemailController.value.text,
+      };
+      await sendPDFdata(context, jsonEncode(queryString), pdf);
+    } catch (e) {
+      await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {}, showCancel: false);
+    }
+  }
+
+// hariprasath.s@sporadsecure.com
+// arunkumar.m@sporadasecure.com
+  dynamic sendPDFdata(context, String jsonData, File file) async {
+    try {
+      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.send_anyPDF);
+      if (response['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response);
+        if (value.code) {
+          await Basic_dialog(context: context, title: "Invoice", content: value.message!, onOk: () {}, showCancel: false);
+          // Navigator.of(context).pop(true);
+          // invoiceController.resetData();
+        } else {
+          await Basic_dialog(context: context, title: 'Processing Invoice', content: value.message ?? "", onOk: () {}, showCancel: false);
+        }
+      } else {
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+      }
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/models/entities/SALES/Sales_entities.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
@@ -93,18 +94,48 @@ class _QuoteProductsState extends State<QuoteProducts> {
                       const SizedBox(height: 25),
                       Obx(
                         () {
-                          return BasicTextfield(
-                            digitsOnly: false,
+                          return DropdownMenu<ProductSuggestion>(
+                            trailingIcon: const Icon(
+                              Icons.arrow_drop_down,
+                              color: Color.fromARGB(255, 122, 121, 121),
+                            ),
+                            label: const Text(
+                              "Product",
+                              style: TextStyle(color: Color.fromARGB(255, 167, 165, 165), fontSize: Primary_font_size.Text7),
+                            ),
+                            textStyle: const TextStyle(color: Primary_colors.Color1),
                             width: 400,
-                            readonly: false,
-                            text: 'Product Name',
+                            inputDecorationTheme: const InputDecorationTheme(
+                              contentPadding: EdgeInsets.only(left: 10, right: 5),
+                              filled: true,
+                              fillColor: Primary_colors.Dark,
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              border: OutlineInputBorder(),
+                              hintStyle: TextStyle(
+                                fontSize: 13,
+                                color: Color.fromARGB(255, 167, 165, 165),
+                              ),
+                            ),
                             controller: quoteController.quoteModel.productNameController.value,
-                            icon: Icons.production_quantity_limits,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Product name';
+                            dropdownMenuEntries: quoteController.quoteModel.Quote_productSuggestion.map<DropdownMenuEntry<ProductSuggestion>>((ProductSuggestion suggestion) {
+                              return DropdownMenuEntry<ProductSuggestion>(
+                                value: suggestion, // Passing the entire object
+                                label: suggestion.productName, // Display product name in dropdown
+                              );
+                            }).toList(),
+                            onSelected: (ProductSuggestion? selectedSuggestion) {
+                              if (selectedSuggestion != null) {
+                                widget.set_ProductValues(selectedSuggestion);
                               }
-                              return null;
                             },
                           );
                         },
@@ -160,9 +191,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                               ),
                               controller: quoteController.quoteModel.gstController.value,
                               keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter Product GST';
@@ -205,9 +234,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                               ),
                               controller: quoteController.quoteModel.priceController.value,
                               keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter Product price';
@@ -248,9 +275,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                                   color: Colors.white,
                                 ),
                               ),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               controller: quoteController.quoteModel.quantityController.value,
                               keyboardType: TextInputType.number,
                               // inputFormatters: [

@@ -334,3 +334,104 @@ class Clientprofiledata {
     };
   }
 }
+
+class CustomerPDF_List {
+  final String customerAddressName;
+  final String customerAddress;
+  final String billingAddress;
+  final String billingAddressName;
+  final String customerEmail;
+  final String customerPhone;
+  final String customerGst;
+  final DateTime date;
+  final String customType;
+  final String genId;
+  final Uint8List pdfData;
+  final String filePath;
+
+  CustomerPDF_List({
+    required this.customerAddressName,
+    required this.customerAddress,
+    required this.billingAddress,
+    required this.billingAddressName,
+    required this.customerEmail,
+    required this.customerPhone,
+    required this.customerGst,
+    required this.date,
+    required this.customType,
+    required this.genId,
+    required this.pdfData,
+    required this.filePath,
+  });
+
+  factory CustomerPDF_List.fromJson(Map<String, dynamic> json) {
+    return CustomerPDF_List(
+      customerAddressName: json['customeraddress_name'] ?? '',
+      customerAddress: json['customeraddress'] ?? '',
+      billingAddress: json['billing_address'] ?? '',
+      billingAddressName: json['billingaddress_name'] ?? '',
+      customerEmail: json['customer_mailid'] ?? '',
+      customerPhone: json['customer_phoneno'] ?? '',
+      customerGst: json['customer_gstno'] ?? '',
+      date: DateTime.parse(json['date']),
+      customType: json['custom_type'] ?? '',
+      genId: json['gen_id'] ?? '',
+      pdfData: json['pdf_path'] != null && json['pdf_path']['data'] != null ? Uint8List.fromList(List<int>.from(json['pdf_path']['data'])) : Uint8List(0),
+      filePath: json['path'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'customeraddress_name': customerAddressName,
+      'customeraddress': customerAddress,
+      'billing_address': billingAddress,
+      'billingaddress_name': billingAddressName,
+      'customer_mailid': customerEmail,
+      'customer_phoneno': customerPhone,
+      'customer_gstno': customerGst,
+      'date': date.toIso8601String(),
+      'custom_type': customType,
+      'gen_id': genId,
+      'pdf_path': {
+        'type': 'Buffer',
+        'data': pdfData.toList(),
+      },
+      'path': filePath,
+    };
+  }
+}
+
+class ProductSuggestion {
+  final String productName;
+  final String productHsn;
+  final double productPrice;
+  final double productGst;
+
+  ProductSuggestion({
+    required this.productName,
+    required this.productHsn,
+    required this.productPrice,
+    required this.productGst,
+  });
+
+  /// Factory method to convert JSON to Product object
+  factory ProductSuggestion.fromJson(Map<String, dynamic> json) {
+    return ProductSuggestion(
+      productName: json['product_name'] as String,
+      productHsn: json['product_hsn'].toString(), // Ensure String type
+      productPrice: (json['product_price'] as num).toDouble(),
+      productGst: (json['product_gst'] as num).toDouble(),
+    );
+  }
+
+  /// Method to convert Product object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'product_name': productName,
+      'product_hsn': productHsn,
+      'product_price': productPrice,
+      'product_gst': productGst,
+    };
+  }
+}

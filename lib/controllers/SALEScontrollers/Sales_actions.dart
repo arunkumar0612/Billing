@@ -23,6 +23,15 @@ class SalesController extends GetxController {
     // print('object');
   }
 
+  void addToCustompdfList(CMDlResponse value) {
+    salesModel.customPdfList.clear();
+    salesfilteredModel.customPdfList.clear();
+    for (int i = 0; i < value.data.length; i++) {
+      salesModel.customPdfList.add(CustomerPDF_List.fromJson(value.data[i]));
+      salesfilteredModel.customPdfList.add(CustomerPDF_List.fromJson(value.data[i]));
+    }
+  }
+
   void addToProcessList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
       salesModel.processList.add(Process.fromJson(value, i));
@@ -56,12 +65,25 @@ class SalesController extends GetxController {
     salesModel.selectedIndices.value = value;
   }
 
+  void toggleCCemailvisibility(bool value) {
+    salesModel.CCemailToggle.value = value;
+  }
+
   void updatetype(int value) {
     salesModel.type.value = value;
   }
 
   void updateprofilepage(bool value) {
     salesModel.isprofilepage.value = value;
+  }
+
+  void clear_sharedata() {
+    salesModel.emailController.value.clear();
+    salesModel.phoneController.value.clear();
+    salesModel.feedbackController.value.clear();
+    salesModel.CCemailController.value.clear();
+    salesModel.whatsapp_selectionStatus.value = false;
+    salesModel.gmail_selectionStatus.value = false;
   }
 
   void search(String query) {
@@ -83,6 +105,22 @@ class SalesController extends GetxController {
 
       salesModel.processList.assignAll(filteredProcesses);
       salesModel.processcustomerList.assignAll(filteredCustomers);
+    }
+  }
+
+  void search_CustomPDF(String query) {
+    // salesModel.searchQuery.value = query;
+
+    if (query.isEmpty) {
+      salesModel.customPdfList.assignAll(salesfilteredModel.customPdfList);
+      // salesModel.processcustomerList.assignAll(salesfilteredModel.processcustomerList);
+    } else {
+      var filteredList = salesfilteredModel.customPdfList.where((process) =>
+          process.customerAddressName.toLowerCase().contains(query.toLowerCase()) ||
+          process.customerAddress.toLowerCase().contains(query.toLowerCase()) ||
+          process.genId.toLowerCase().contains(query.toLowerCase()));
+
+      salesModel.customPdfList.assignAll(filteredList);
     }
   }
 

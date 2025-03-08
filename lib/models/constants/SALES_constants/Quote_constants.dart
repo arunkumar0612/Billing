@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/models/entities/SALES/Sales_entities.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 import '../../entities/SALES/Quote_entities.dart';
 
@@ -22,6 +23,8 @@ class QuoteModel extends GetxController with GetSingleTickerProviderStateMixin {
   final detailsKey = GlobalKey<FormState>().obs;
 
   // PRODUCTS
+  var Quote_productSuggestion = <ProductSuggestion>[].obs;
+
   final productKey = GlobalKey<FormState>().obs;
   final product_editIndex = Rxn<int>();
   final productNameController = TextEditingController().obs;

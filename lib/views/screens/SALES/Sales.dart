@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 import 'package:animations/animations.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
@@ -11,11 +12,9 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers
 import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Quote_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/Debit_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/Credit_actions.dart';
 import 'package:ssipl_billing/services/SALES/CustomPDF_services/DC/CustomPDF_DC_services.dart';
 import 'package:ssipl_billing/services/SALES/CustomPDF_services/Invoice/CustomPDF_Invoice_services.dart';
 import 'package:ssipl_billing/services/SALES/CustomPDF_services/Quote/CustomPDF_Quote_services.dart';
@@ -23,11 +22,15 @@ import 'package:ssipl_billing/services/SALES/CustomPDF_services/Quote/CustomPDF_
 import 'package:ssipl_billing/services/SALES/sales_service.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:ssipl_billing/utils/helpers/support_functions.dart';
+import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
+import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/views/screens/SALES/CustomPDF/DC/CustomPDF_DC_design.dart';
 import 'package:ssipl_billing/views/screens/SALES/CustomPDF/Quote/CustomPDF_Quote_design.dart';
 import 'package:ssipl_billing/views/screens/SALES/Sales_chart.dart';
 import 'package:ssipl_billing/views/screens/SALES/CustomPDF/Invoice/CustomPDF_invoice_design.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../../controllers/SALEScontrollers/Sales_actions.dart';
 // import 'package:cool_dropdown/models/cool_dropdown_item.dart';
 
@@ -47,8 +50,6 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
   final InvoiceController invoiceController = Get.find<InvoiceController>();
   final QuoteController quoteController = Get.find<QuoteController>();
   final RfqController rfqController = Get.find<RfqController>();
-  final CreditController creditController = Get.find<CreditController>();
-  final DebitController debitController = Get.find<DebitController>();
   final CustomPDF_InvoiceController custom_Invoice_controller = Get.find<CustomPDF_InvoiceController>();
   final CustomPDF_DcController custom_Dc_controller = Get.find<CustomPDF_DcController>();
 
@@ -650,14 +651,55 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                           inst_dcDesign.showA4StyledPopup(context);
                                                           break;
                                                         case 'Custom PDF List':
-                                                          widget.GetCustomPDFLsit(context);
-                                                          showModalTopSheet(
-                                                            context: context,
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(20),
-                                                              child: _manualcreation_list(), // Your widget inside the top sheet
-                                                            ),
-                                                          );
+                                                          () async {
+                                                            // Show Bottom Sheet with a loading message initially
+                                                            showModalBottomSheet(
+                                                              barrierColor: const Color.fromARGB(244, 11, 15, 26),
+                                                              enableDrag: true,
+                                                              backgroundColor: Colors.transparent,
+                                                              context: context,
+                                                              shape: const RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.vertical(
+                                                                  top: Radius.circular(20),
+                                                                ),
+                                                              ),
+                                                              builder: (BuildContext context) {
+                                                                return const SizedBox(
+                                                                  child: Padding(
+                                                                    padding: EdgeInsets.only(left: 70, right: 70),
+                                                                    child: Center(child: CircularProgressIndicator()), // Show loader initially
+                                                                  ),
+                                                                );
+                                                              },
+                                                            );
+
+                                                            // Call the API after showing the bottom sheet
+                                                            bool success = await widget.GetCustomPDFLsit(context);
+
+                                                            // Close the previous bottom sheet
+                                                            Navigator.pop(context);
+
+                                                            // Show a new bottom sheet based on API response
+                                                            showModalBottomSheet(
+                                                              barrierColor: const Color.fromARGB(244, 11, 15, 26),
+                                                              enableDrag: true,
+                                                              backgroundColor: Colors.transparent,
+                                                              context: context,
+                                                              shape: const RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.vertical(
+                                                                  top: Radius.circular(20),
+                                                                ),
+                                                              ),
+                                                              builder: (BuildContext context) {
+                                                                return SizedBox(
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.only(left: 70, right: 70),
+                                                                    child: success ? customPDF_list() : const Text('No Data available!'),
+                                                                  ),
+                                                                );
+                                                              },
+                                                            );
+                                                          }();
                                                           break;
                                                       }
                                                     },
@@ -2281,428 +2323,725 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
     );
   }
 
-  final List<Map<String, dynamic>> documentlist = [
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-    {
-      "clientname": "Khivraj Groups",
-      "title": "Camera materials",
-      "type": "Invoice",
-      "date": "10 mar 2024",
-      "days": "5 days",
-    },
-  ];
-  // bool select = false;
-  Widget _manualcreation_list() {
-    return Container(
-        decoration: const BoxDecoration(
-          // color: Primary_colors.Color3,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
+  Widget customPDF_list() {
+    salesController.clear_sharedata();
+    return Obx(() {
+      return Container(
+          decoration: const BoxDecoration(
+            // color: Primary_colors.Color3,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              SizedBox(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Manual Document List',
-                      style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text12),
-                    ),
-                    SizedBox(
-                      width: 400,
-                      height: 40,
-                      child: TextFormField(
-                        style: const TextStyle(fontSize: 13, color: Colors.white),
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(1),
-                          filled: true,
-                          fillColor: const Color.fromARGB(0, 255, 255, 255),
-                          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Color.fromARGB(123, 255, 255, 255))),
-                          // enabledBorder: InputBorder.none, // Removes the enabled border
-                          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Color.fromARGB(104, 255, 255, 255))),
-                          hintStyle: const TextStyle(
-                            fontSize: Primary_font_size.Text7,
-                            color: Primary_colors.Color1,
-                          ),
-                          hintText: 'Search',
-                          prefixIcon: const Icon(Icons.search, color: Primary_colors.Color1),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 30,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Primary_colors.Color3),
-                child: const Padding(
-                  padding: EdgeInsets.all(5),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                SizedBox(
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Checkbox(
-                      //   value: select,
-                      //   onChanged: (bool? value) {
-                      //     setState(() {
-                      //       value = value == true ? false : true;
-                      //     });
-                      //   },
-                      //   activeColor: Primary_colors.Color4, // More vibrant color
-                      //   checkColor: Colors.white, // White checkmark for contrast
-                      //   side: const BorderSide(color: Primary_colors.Color1, width: 2), // Styled border
-                      //   shape: RoundedRectangleBorder(
-                      //     borderRadius: BorderRadius.circular(4), // Soft rounded corners
-                      //   ),
-                      // ),
-                      // const SizedBox(width: 10),
-                      Expanded(
-                        flex: 3,
-                        child: Text(
-                          'Client Name',
-                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
-                        ),
+                      const Text(
+                        "CUSTOM PDF's",
+                        style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text12),
                       ),
-                      Expanded(
-                        flex: 3,
-                        child: Text(
-                          'Title',
-                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          'Type',
-                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          'Date',
-                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          'Days',
-                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          'PDF',
-                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                      SizedBox(
+                        width: 400,
+                        height: 40,
+                        child: TextFormField(
+                          style: const TextStyle(fontSize: 13, color: Colors.white),
+                          onChanged: salesController.search_CustomPDF,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(1),
+                            filled: true,
+                            fillColor: const Color.fromARGB(0, 255, 255, 255),
+                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Color.fromARGB(123, 255, 255, 255))),
+                            // enabledBorder: InputBorder.none, // Removes the enabled border
+                            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Color.fromARGB(104, 255, 255, 255))),
+                            hintStyle: const TextStyle(
+                              fontSize: Primary_font_size.Text7,
+                              color: Primary_colors.Color1,
+                            ),
+                            hintText: 'Search',
+                            prefixIcon: const Icon(Icons.search, color: Primary_colors.Color1),
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-              // Container(
-              //   height: 2,
-              //   color: Primary_colors.Color1,
-              // ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: documentlist.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      decoration: const BoxDecoration(border: Border(bottom: BorderSide(width: 0.5, color: Color.fromARGB(255, 195, 193, 193)))),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 5),
-                        child: Row(
-                          children: [
-                            // Checkbox(
-                            //   value: select,
-                            //   onChanged: (bool? value) {
-                            //     setState(() {
-                            //       value = value == true ? false : true;
-                            //     });
-                            //   },
-                            //   activeColor: Primary_colors.Color4, // More vibrant color
-                            //   checkColor: Colors.white, // White checkmark for contrast
-                            //   side: const BorderSide(color: Primary_colors.Color1, width: 2), // Styled border
-                            //   shape: RoundedRectangleBorder(
-                            //     borderRadius: BorderRadius.circular(4), // Soft rounded corners
-                            //   ),
-                            // ),
-                            // const SizedBox(width: 10),
-                            Expanded(
-                              flex: 3,
-                              child: Text(
-                                documentlist[index]['clientname'],
-                                style: const TextStyle(
-                                  color: Primary_colors.Color1,
-                                  fontSize: Primary_font_size.Text8,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Text(
-                                documentlist[index]['title'],
-                                style: const TextStyle(
-                                  color: Primary_colors.Color1,
-                                  fontSize: Primary_font_size.Text8,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                documentlist[index]['type'],
-                                style: const TextStyle(
-                                  color: Primary_colors.Color1,
-                                  fontSize: Primary_font_size.Text8,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                documentlist[index]['date'],
-                                style: const TextStyle(
-                                  color: Primary_colors.Color1,
-                                  fontSize: Primary_font_size.Text8,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                documentlist[index]['days'],
-                                style: const TextStyle(
-                                  color: Primary_colors.Color1,
-                                  fontSize: Primary_font_size.Text8,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    // widget.showPDF(context, 'weqwer');
-                                  },
-                                  child: Image.asset(height: 40, 'assets/images/pdfdownload.png'),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                const SizedBox(
+                  height: 10,
                 ),
-              )
-            ],
-          ),
-        ));
-  }
-}
+                Container(
+                  height: 30,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Primary_colors.Color3),
+                  child: const Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Row(
+                      children: [
+                        // Checkbox(
+                        //   value: select,
+                        //   onChanged: (bool? value) {
+                        //     setState(() {
+                        //       value = value == true ? false : true;
+                        //     });
+                        //   },
+                        //   activeColor: Primary_colors.Color4, // More vibrant color
+                        //   checkColor: Colors.white, // White checkmark for contrast
+                        //   side: const BorderSide(color: Primary_colors.Color1, width: 2), // Styled border
+                        //   shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(4), // Soft rounded corners
+                        //   ),
+                        // ),
+                        // const SizedBox(width: 10),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            'Date',
+                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Text(
+                            'Client Name',
+                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            'Reference no',
+                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: Text(
+                            'path',
+                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                          ),
+                        ),
 
-void showModalTopSheet({
-  required BuildContext context,
-  required Widget child,
-  Color barrierColor = const Color.fromARGB(244, 11, 15, 26),
-}) {
-  showGeneralDialog(
-    context: context,
-    barrierDismissible: true,
-    barrierLabel: "Dismiss",
-    barrierColor: barrierColor,
-    transitionDuration: const Duration(milliseconds: 300),
-    pageBuilder: (_, __, ___) {
-      return Align(
-        alignment: Alignment.topCenter,
-        child: Material(
-          color: Colors.transparent,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 50), // Adjust top padding
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.8, // Width
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: child,
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            'Download',
+                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            'Share',
+                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            'View',
+                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // Container(
+                //   height: 2,
+                //   color: Primary_colors.Color1,
+                // ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: salesController.salesModel.customPdfList.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        decoration: const BoxDecoration(border: Border(bottom: BorderSide(width: 0.5, color: Color.fromARGB(255, 195, 193, 193)))),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 5),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  formatDate(salesController.salesModel.customPdfList[index].date),
+                                  // documentlist[index]['date'],
+                                  style: const TextStyle(
+                                    color: Primary_colors.Color1,
+                                    fontSize: Primary_font_size.Text8,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  salesController.salesModel.customPdfList[index].customerAddressName,
+                                  // documentlist[index]['clientname'],
+                                  style: const TextStyle(
+                                    color: Primary_colors.Color1,
+                                    fontSize: Primary_font_size.Text8,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  salesController.salesModel.customPdfList[index].genId,
+                                  // documentlist[index]['title'],
+                                  style: const TextStyle(
+                                    color: Primary_colors.Color1,
+                                    fontSize: Primary_font_size.Text8,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 5,
+                                child: Text(
+                                  salesController.salesModel.customPdfList[index].filePath,
+                                  // documentlist[index]['type'],
+                                  style: const TextStyle(
+                                    color: Primary_colors.Color1,
+                                    fontSize: Primary_font_size.Text8,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: IconButton(
+                                    onPressed: () async {
+                                      widget.downloadPdf(
+                                          context,
+                                          salesController.salesModel.customPdfList[index].filePath
+                                              .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
+                                              .replaceAll(" ", ""),
+                                          await widget.savePdfToTemp(salesController.salesModel.customPdfList[index].pdfData));
+                                    },
+                                    icon: const Icon(
+                                      Icons.download,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: IconButton(
+                                    onPressed: () async {
+                                      salesController.clear_sharedata();
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return Obx(
+                                            () {
+                                              return AlertDialog(
+                                                // shadowColor: Primary_colors.Color3,
+                                                titlePadding: const EdgeInsets.all(5),
+                                                backgroundColor: const Color.fromARGB(255, 194, 198, 253), // Matching background color
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(10), // Consistent with Snackbar
+                                                ),
+                                                title: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(7),
+                                                    color: Primary_colors.Color3,
+                                                  ),
+                                                  child: const Padding(
+                                                    padding: EdgeInsets.all(7),
+                                                    child: Text(
+                                                      "Share",
+                                                      style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ),
+                                                content: IntrinsicHeight(
+                                                  child: SizedBox(
+                                                    // height: 200,
+                                                    width: 500,
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            const Text("File name"),
+                                                            const SizedBox(
+                                                              width: 20,
+                                                            ),
+                                                            const Text(":"),
+                                                            const SizedBox(
+                                                              width: 20,
+                                                            ),
+                                                            Expanded(
+                                                              child: Text(
+                                                                salesController.salesModel.customPdfList[index].filePath,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        if (salesController.salesModel.whatsapp_selectionStatus.value)
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                        if (salesController.salesModel.whatsapp_selectionStatus.value)
+                                                          Row(
+                                                            children: [
+                                                              const Text("whatsapp"),
+                                                              const SizedBox(
+                                                                width: 20,
+                                                              ),
+                                                              const Text(":"),
+                                                              const SizedBox(
+                                                                width: 20,
+                                                              ),
+                                                              Expanded(
+                                                                child: TextFormField(
+                                                                  // maxLines: 5,
+                                                                  controller: salesController.salesModel.phoneController.value,
+                                                                  style: const TextStyle(fontSize: 13, color: Colors.black),
+                                                                  decoration: const InputDecoration(
+                                                                      // contentPadding: const EdgeInsets.all(10),
+                                                                      // filled: true,
+                                                                      // fillColor: Primary_colors.Dark,
+                                                                      // focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.transparent)),
+                                                                      // // enabledBorder: InputBorder.none, // Removes the enabled border
+                                                                      // enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.transparent)),
+                                                                      // hintStyle: const TextStyle(
+                                                                      //   fontSize: Primary_font_size.Text7,
+                                                                      //   color: Color.fromARGB(255, 167, 165, 165),
+                                                                      // ),
+                                                                      // hintText: 'Enter Feedback...',
+                                                                      // prefixIcon: const Icon(
+                                                                      //   Icons.feedback_outlined,
+                                                                      //   color: Colors.white,
+                                                                      // ),
+                                                                      // suffixIcon: Padding(
+                                                                      //   padding: const EdgeInsets.only(top: 50),
+                                                                      //   child: IconButton(
+                                                                      //     onPressed: () {},
+                                                                      //     icon: const Icon(
+                                                                      //       Icons.send,
+                                                                      //       color: Colors.red,
+                                                                      //     ),
+                                                                      //   ),
+                                                                      // ),
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        if (salesController.salesModel.gmail_selectionStatus.value)
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                        if (salesController.salesModel.gmail_selectionStatus.value)
+                                                          Row(
+                                                            children: [
+                                                              const Text("E-mail"),
+                                                              const SizedBox(
+                                                                width: 50,
+                                                              ),
+                                                              const Text(":"),
+                                                              const SizedBox(
+                                                                width: 20,
+                                                              ),
+
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  // width: 400,
+                                                                  child: TextFormField(
+                                                                    readOnly: false,
+                                                                    style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
+                                                                    controller: salesController.salesModel.emailController.value,
+                                                                    decoration: InputDecoration(
+                                                                      // filled: true,
+                                                                      fillColor: Primary_colors.Dark,
+                                                                      // focusedBorder: const OutlineInputBorder(
+                                                                      //   borderSide: BorderSide(
+                                                                      //     color: Colors.black,
+                                                                      //   ),
+                                                                      // ),
+                                                                      // enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                                                                      // labelStyle: const TextStyle(
+                                                                      //   fontSize: Primary_font_size.Text7,
+                                                                      //   color: Color.fromARGB(255, 167, 165, 165),
+                                                                      // ),
+                                                                      // border: const OutlineInputBorder(),
+                                                                      suffixIcon: MouseRegion(
+                                                                        cursor: SystemMouseCursors.click, // Change cursor to hand
+                                                                        child: GestureDetector(
+                                                                          onTap: () {
+                                                                            salesController.toggleCCemailvisibility(!salesController.salesModel.CCemailToggle.value);
+                                                                          },
+                                                                          child: SizedBox(
+                                                                            height: 20,
+                                                                            width: 20,
+                                                                            child: Stack(
+                                                                              children: [
+                                                                                Align(
+                                                                                  alignment: Alignment.center,
+                                                                                  child: Icon(
+                                                                                    salesController.salesModel.CCemailToggle.value
+                                                                                        ? Icons.closed_caption_outlined
+                                                                                        : Icons.closed_caption_disabled_outlined,
+                                                                                    color: Primary_colors.Dark,
+                                                                                  ),
+                                                                                ),
+                                                                                const Align(
+                                                                                  alignment: Alignment.bottomRight,
+                                                                                  child: Icon(
+                                                                                    size: 15,
+                                                                                    Icons.add,
+                                                                                    color: Primary_colors.Dark,
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    validator: (value) {
+                                                                      Validators.email_validator(value);
+
+                                                                      return null;
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              ),
+
+                                                              // Expanded(
+                                                              //   child: TextFormField(
+                                                              //     // maxLines: 5,
+                                                              //     controller: salesController.salesModel.emailController.value,
+                                                              //     style: const TextStyle(fontSize: 13, color: Colors.black),
+                                                              //     decoration: const InputDecoration(
+                                                              //         // contentPadding: const EdgeInsets.all(10),
+                                                              //         // filled: true,
+                                                              //         // fillColor: Primary_colors.Dark,
+                                                              //         // focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.transparent)),
+                                                              //         // // enabledBorder: InputBorder.none, // Removes the enabled border
+                                                              //         // enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.transparent)),
+                                                              //         // hintStyle: const TextStyle(
+                                                              //         //   fontSize: Primary_font_size.Text7,
+                                                              //         //   color: Color.fromARGB(255, 167, 165, 165),
+                                                              //         // ),
+                                                              //         // hintText: 'Enter Feedback...',
+                                                              //         // prefixIcon: const Icon(
+                                                              //         //   Icons.feedback_outlined,
+                                                              //         //   color: Colors.white,
+                                                              //         // ),
+                                                              //         // suffixIcon: Padding(
+                                                              //         //   padding: const EdgeInsets.only(top: 50),
+                                                              //         //   child: IconButton(
+                                                              //         //     onPressed: () {},
+                                                              //         //     icon: const Icon(
+                                                              //         //       Icons.send,
+                                                              //         //       color: Colors.red,
+                                                              //         //     ),
+                                                              //         //   ),
+                                                              //         // ),
+                                                              //         ),
+                                                              //   ),
+                                                              // ),
+                                                            ],
+                                                          ),
+                                                        if (salesController.salesModel.CCemailToggle.value && salesController.salesModel.gmail_selectionStatus.value)
+                                                          const SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                        if (salesController.salesModel.CCemailToggle.value && salesController.salesModel.gmail_selectionStatus.value)
+                                                          Row(
+                                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                                            children: [
+                                                              const Text(
+                                                                '                                      Cc :',
+                                                                style: TextStyle(fontSize: 13, color: Primary_colors.Dark, fontWeight: FontWeight.bold),
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 10,
+                                                              ),
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  // height: 30,
+                                                                  // width: 400,
+                                                                  child: TextFormField(
+                                                                    scrollPadding: const EdgeInsets.only(top: 10),
+                                                                    style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
+                                                                    controller: salesController.salesModel.CCemailController.value,
+                                                                    // decoration: const InputDecoration(
+                                                                    //   filled: true,
+                                                                    //   fillColor: Color.fromARGB(255, 38, 39, 44),
+                                                                    //   focusedBorder: OutlineInputBorder(
+                                                                    //     borderSide: BorderSide(
+                                                                    //       color: Colors.black,
+                                                                    //     ),
+                                                                    //   ),
+                                                                    //   enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                                                                    //   labelStyle: TextStyle(
+                                                                    //     fontSize: Primary_font_size.Text7,
+                                                                    //     color: Color.fromARGB(255, 167, 165, 165),
+                                                                    //   ),
+                                                                    //   border: OutlineInputBorder(),
+                                                                    // ),
+                                                                    validator: (value) {
+                                                                      Validators.email_validator(value);
+
+                                                                      return null;
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        const SizedBox(
+                                                          height: 20,
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            const Text("Select"),
+                                                            const SizedBox(
+                                                              width: 50,
+                                                            ),
+                                                            const Text(":"),
+                                                            const SizedBox(
+                                                              width: 20,
+                                                            ),
+                                                            Stack(
+                                                              alignment: FractionalOffset.topRight,
+                                                              children: [
+                                                                IconButton(
+                                                                  iconSize: 30,
+                                                                  onPressed: () {
+                                                                    salesController.salesModel.whatsapp_selectionStatus.value =
+                                                                        salesController.salesModel.whatsapp_selectionStatus.value == false ? true : false;
+                                                                  },
+                                                                  icon: Image.asset(
+                                                                    'assets/images/whatsapp.png',
+                                                                  ),
+                                                                ),
+                                                                if (salesController.salesModel.whatsapp_selectionStatus.value)
+                                                                  Align(
+                                                                    // alignment: Alignment.topLeft,
+                                                                    child: Container(
+                                                                        decoration: BoxDecoration(
+                                                                          borderRadius: BorderRadius.circular(50),
+                                                                          color: Colors.blue,
+                                                                        ),
+                                                                        child: const Padding(
+                                                                          padding: EdgeInsets.all(2),
+                                                                          child: Icon(
+                                                                            Icons.check,
+                                                                            color: Color.fromARGB(255, 255, 255, 255),
+                                                                            size: 12,
+                                                                          ),
+                                                                        )),
+                                                                  )
+                                                              ],
+                                                            ),
+                                                            const SizedBox(width: 20),
+                                                            Stack(
+                                                              alignment: FractionalOffset.topRight,
+                                                              children: [
+                                                                IconButton(
+                                                                  iconSize: 35,
+                                                                  onPressed: () {
+                                                                    salesController.salesModel.gmail_selectionStatus.value =
+                                                                        salesController.salesModel.gmail_selectionStatus.value == false ? true : false;
+                                                                  },
+                                                                  icon: Image.asset('assets/images/gmail.png'),
+                                                                ),
+                                                                if (salesController.salesModel.gmail_selectionStatus.value)
+                                                                  Align(
+                                                                    // alignment: Alignment.topLeft,
+                                                                    child: Container(
+                                                                        decoration: BoxDecoration(
+                                                                          borderRadius: BorderRadius.circular(50),
+                                                                          color: Colors.blue,
+                                                                        ),
+                                                                        child: const Padding(
+                                                                          padding: EdgeInsets.all(2),
+                                                                          child: Icon(
+                                                                            Icons.check,
+                                                                            color: Color.fromARGB(255, 255, 255, 255),
+                                                                            size: 12,
+                                                                          ),
+                                                                        )),
+                                                                  )
+                                                              ],
+                                                            )
+                                                          ],
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 20,
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.end,
+                                                          children: [
+                                                            Align(
+                                                              alignment: Alignment.bottomLeft,
+                                                              child: SizedBox(
+                                                                width: 380,
+                                                                // height: 100,
+                                                                child: TextFormField(
+                                                                  maxLines: 5,
+                                                                  controller: salesController.salesModel.feedbackController.value,
+                                                                  style: const TextStyle(fontSize: 13, color: Colors.white),
+                                                                  decoration: InputDecoration(
+                                                                    contentPadding: const EdgeInsets.all(10),
+                                                                    filled: true,
+                                                                    fillColor: Primary_colors.Dark,
+                                                                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.transparent)),
+                                                                    // enabledBorder: InputBorder.none, // Removes the enabled border
+                                                                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.transparent)),
+                                                                    hintStyle: const TextStyle(
+                                                                      fontSize: Primary_font_size.Text7,
+                                                                      color: Color.fromARGB(255, 167, 165, 165),
+                                                                    ),
+                                                                    hintText: 'Enter Feedback...',
+                                                                    // prefixIcon: const Icon(
+                                                                    //   Icons.feedback_outlined,s
+                                                                    //   color: Colors.white,
+                                                                    // ),
+                                                                    // suffixIcon: Padding(
+                                                                    //   padding: const EdgeInsets.only(top: 50),
+                                                                    //   child: IconButton(
+                                                                    //     onPressed: () {},
+                                                                    //     icon: const Icon(
+                                                                    //       Icons.send,
+                                                                    //       color: Primary_colors.Color3,
+                                                                    //     ),
+                                                                    //   ),
+                                                                    // ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            // const SizedBox(
+                                                            //   width: 20,
+                                                            // ),
+                                                            // Container(
+                                                            //   // width: 400,
+                                                            //   height: 50,
+                                                            //   color: Primary_colors.Light,
+                                                            //   child:
+                                                            // )
+                                                          ],
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 20,
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.end,
+                                                          children: [
+                                                            MouseRegion(
+                                                              cursor: salesController.salesModel.whatsapp_selectionStatus.value || salesController.salesModel.gmail_selectionStatus.value
+                                                                  ? SystemMouseCursors.click
+                                                                  : SystemMouseCursors.forbidden,
+                                                              child: GestureDetector(
+                                                                onTap: () async {
+                                                                  widget.postData_sendPDF(
+                                                                      context, widget.fetch_messageType(), await widget.savePdfToTemp(salesController.salesModel.customPdfList[index].pdfData));
+                                                                },
+                                                                child: Container(
+                                                                  width: 105,
+                                                                  // height: 40,
+                                                                  decoration: BoxDecoration(
+                                                                    color: salesController.salesModel.whatsapp_selectionStatus.value || salesController.salesModel.gmail_selectionStatus.value
+                                                                        ? const Color.fromARGB(255, 81, 89, 212)
+                                                                        : const Color.fromARGB(255, 39, 41, 73),
+                                                                    borderRadius: BorderRadius.circular(5),
+                                                                  ),
+
+                                                                  child: const Padding(
+                                                                    padding: EdgeInsets.only(left: 5, right: 5, top: 8, bottom: 8),
+                                                                    child: Center(
+                                                                      child: Text(
+                                                                        "Send",
+                                                                        style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text7),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                    // actions: [
+                                                    //   if (showCancel)
+                                                    //     TextButton(
+                                                    //       onPressed: () => Navigator.of(context).pop(false), // Cancel returns `false`
+                                                    //       child: const Text('Cancel', style: TextStyle(color: Primary_colors.Light, fontSize: 14, fontWeight: FontWeight.bold)),
+                                                    //     ),
+                                                    //   TextButton(
+                                                    //     onPressed: () {
+                                                    //       Navigator.of(context).pop(true); // OK returns `true`
+                                                    //       if (onOk != null) {
+                                                    //         onOk(); // Call onOk only if it's provided
+                                                    //       }
+                                                    //     },
+                                                    //     child: const Text('OK', style: TextStyle(color: Primary_colors.Light, fontSize: 14, fontWeight: FontWeight.bold)),
+                                                    //   ),
+                                                    // ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.share,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: MouseRegion(
+                                  cursor: SystemMouseCursors.click,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => Dialog(
+                                            insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+                                            child: SizedBox(
+                                              width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+                                              height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
+                                              child: SfPdfViewer.memory(salesController.salesModel.customPdfList[index].pdfData),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Image.asset(height: 40, 'assets/images/pdfdownload.png'),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
             ),
-          ),
-        ),
-      );
-    },
-    transitionBuilder: (context, animation, secondaryAnimation, child) {
-      return SlideTransition(
-        position: Tween<Offset>(
-          begin: const Offset(0, -1), // Start from the top
-          end: Offset.zero,
-        ).animate(animation),
-        child: child,
-      );
-    },
-  );
+          ));
+    });
+  }
 }

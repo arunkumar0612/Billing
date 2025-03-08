@@ -7,6 +7,7 @@ import 'package:ssipl_billing/models/entities/SALES/Sales_entities.dart';
 class SalesModel extends GetxController with GetSingleTickerProviderStateMixin {
   var customerList = <Customer>[].obs;
   var processcustomerList = <Processcustomer>[].obs;
+  var customPdfList = <CustomerPDF_List>[].obs;
   var processList = <Process>[].obs;
   final showcustomerprocess = Rxn<int>();
   final customerId = Rxn<int>();
@@ -21,4 +22,13 @@ class SalesModel extends GetxController with GetSingleTickerProviderStateMixin {
   var salesperiod = 'monthly'.obs;
   Rxn<Clientprofiledata> Clientprofile = Rxn<Clientprofiledata>(); // Nullable
   late AnimationController animationController;
+
+  var whatsapp_selectionStatus = true.obs;
+  var gmail_selectionStatus = true.obs;
+  final phoneController = TextEditingController().obs;
+  final emailController = TextEditingController().obs;
+  final CCemailController = TextEditingController().obs;
+  var feedbackController = TextEditingController().obs;
+  // var filePathController = TextEditingController().obs;
+  var CCemailToggle = false.obs;
 }

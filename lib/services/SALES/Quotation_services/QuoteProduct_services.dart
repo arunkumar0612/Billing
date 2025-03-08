@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
+import 'package:ssipl_billing/models/entities/SALES/Sales_entities.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
 
 import '../../../models/entities/SALES/Quote_entities.dart';
@@ -86,5 +87,11 @@ mixin QuoteproductService {
   void resetEditingState() {
     clearFields();
     quoteController.addProductEditindex(null);
+  }
+
+  void set_ProductValues(ProductSuggestion value) {
+    quoteController.updateHSN(int.parse(value.productHsn));
+    quoteController.updateGST(value.productGst);
+    quoteController.updatePrice(value.productPrice);
   }
 }

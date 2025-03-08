@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/Sales_entities.dart';
 import 'package:ssipl_billing/services/SALES/Invoice_services/InvoiceProduct_services.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
@@ -94,61 +95,7 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
                       const SizedBox(height: 25),
                       Obx(
                         () {
-                          return
-
-                              // ConstrainedBox(
-                              //   constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
-                              //   child: DropdownButtonFormField<String>(
-                              //     isExpanded: true,
-                              //     dropdownColor: Primary_colors.Dark,
-                              //     decoration: const InputDecoration(
-                              //         label: Text(
-                              //           'Product',
-                              //           style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176)),
-                              //         ),
-                              //         // hintText: 'Customer Type',hintStyle: TextStyle(),
-                              //         contentPadding: EdgeInsets.all(13),
-                              //         labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
-                              //         filled: true,
-                              //         fillColor: Primary_colors.Dark,
-                              //         border: OutlineInputBorder(
-                              //           borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                              //         ),
-                              //         enabledBorder: OutlineInputBorder(
-                              //           borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                              //         ),
-                              //         focusedBorder: OutlineInputBorder(
-                              //           borderSide: BorderSide(),
-                              //         ),
-                              //         prefixIcon: Icon(
-                              //           Icons.people,
-                              //           color: Colors.white,
-                              //         )),
-                              //     // value: invoiceController.invoiceModel.productNameController.value.text,
-                              //     items: invoiceController.invoiceModel.Invoice_productSuggestion.map((product) {
-                              //       return DropdownMenuItem<String>(
-                              //         value: product.productName,
-                              //         child: Text(
-                              //           product.productName,
-                              //           style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1, overflow: TextOverflow.ellipsis),
-                              //         ),
-                              //       );
-                              //     }).toList(),
-                              //     onChanged: (String? newValue) async {
-                              //       // clientreqController.updateCompanyName(newValue!);
-                              //       // clientreqController.update_customerID(newValue, null);
-                              //       // widget.on_Compselected(context, newValue);
-                              //       // setState(() {});
-                              //     },
-                              //     validator: (value) {
-                              //       if (value == null || value.isEmpty) {
-                              //         return 'Please Select customer type';
-                              //       }
-                              //       return null;
-                              //     },
-                              //   ),
-                              // );
-                              DropdownMenu<ProductSuggestion>(
+                          return DropdownMenu<ProductSuggestion>(
                             trailingIcon: const Icon(
                               Icons.arrow_drop_down,
                               color: Color.fromARGB(255, 122, 121, 121),
@@ -192,21 +139,6 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
                               }
                             },
                           );
-
-                          // BasicTextfield(
-                          //   digitsOnly: false,
-                          //   width: 400,
-                          //   readonly: false,
-                          //   text: 'Product Name',
-                          //   controller: invoiceController.invoiceModel.productNameController.value,
-                          //   icon: Icons.production_quantity_limits,
-                          //   validator: (value) {
-                          //     if (value == null || value.isEmpty) {
-                          //       return 'Please enter Product name';
-                          //     }
-                          //     return null;
-                          //   },
-                          // );
                         },
                       ),
                       const SizedBox(height: 25),
@@ -260,9 +192,7 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
                               ),
                               controller: invoiceController.invoiceModel.gstController.value,
                               keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter Product GST';
@@ -305,9 +235,7 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
                               ),
                               controller: invoiceController.invoiceModel.priceController.value,
                               keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter Product price';
@@ -348,9 +276,7 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
                                   color: Colors.white,
                                 ),
                               ),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               controller: invoiceController.invoiceModel.quantityController.value,
                               keyboardType: TextInputType.number,
                               // inputFormatters: [

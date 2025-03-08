@@ -22,6 +22,7 @@ class enquryDetailsState extends State<enquryDetails> {
   @override
   void initState() {
     super.initState();
+    widget.get_productSuggestionList(context);
     // widget.getEnquiry_processID(context);
   }
 

@@ -9,9 +9,7 @@ import 'package:ssipl_billing/themes/style.dart';
 // import 'package:ssipl_billing/controllers/viewSend_actions.dart';
 // import 'package:window_manager/window_manager.dart';
 import 'controllers/SALEScontrollers/ClientReq_actions.dart';
-import 'controllers/SALEScontrollers/Credit_actions.dart';
 import 'controllers/SALEScontrollers/DC_actions.dart';
-import 'controllers/SALEScontrollers/Debit_actions.dart';
 import 'controllers/IAM_actions.dart';
 import 'controllers/SALEScontrollers/Invoice_actions.dart';
 import 'controllers/SALEScontrollers/Quote_actions.dart';
@@ -40,8 +38,6 @@ Future<void> main() async {
   Get.lazyPut<InvoiceController>(() => InvoiceController());
   Get.lazyPut<QuoteController>(() => QuoteController());
   Get.lazyPut<RfqController>(() => RfqController());
-  Get.lazyPut<CreditController>(() => CreditController());
-  Get.lazyPut<DebitController>(() => DebitController());
   Get.lazyPut<DcController>(() => DcController());
   Get.lazyPut<CustomPDF_InvoiceController>(() => CustomPDF_InvoiceController());
   Get.lazyPut<CustomPDF_QuoteController>(() => CustomPDF_QuoteController());

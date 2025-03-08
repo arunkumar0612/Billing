@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
+import 'package:ssipl_billing/models/entities/SALES/Sales_entities.dart';
 import '../../models/constants/SALES_constants/Quote_constants.dart';
 import '../../models/entities/SALES/Quote_entities.dart';
 import '../../models/entities/SALES/product_entities.dart';
@@ -25,6 +26,12 @@ class QuoteController extends GetxController {
   void backTab() {
     if (quoteModel.tabController.value!.index > 0) {
       quoteModel.tabController.value!.animateTo(quoteModel.tabController.value!.index - 1);
+    }
+  }
+
+  void add_productSuggestion(List<dynamic> suggestionList) {
+    for (var item in suggestionList) {
+      quoteModel.Quote_productSuggestion.add(ProductSuggestion.fromJson(item));
     }
   }
 
@@ -181,12 +188,7 @@ class QuoteController extends GetxController {
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: [
-        'png',
-        'jpg',
-        'jpeg',
-        'pdf'
-      ],
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf'],
     );
 
     if (result != null) {
@@ -425,7 +427,18 @@ class QuoteController extends GetxController {
   }
 
   bool postDatavalidation() {
-    return (quoteModel.TitleController.value.text.isEmpty || quoteModel.processID.value == null || quoteModel.clientAddressNameController.value.text.isEmpty || quoteModel.clientAddressController.value.text.isEmpty || quoteModel.billingAddressNameController.value.text.isEmpty || quoteModel.billingAddressController.value.text.isEmpty || quoteModel.emailController.value.text.isEmpty || quoteModel.phoneController.value.text.isEmpty || quoteModel.gstNumController.value.text.isEmpty || quoteModel.Quote_products.isEmpty || quoteModel.Quote_noteList.isEmpty || quoteModel.Quote_no.value == null);
+    return (quoteModel.TitleController.value.text.isEmpty ||
+        quoteModel.processID.value == null ||
+        quoteModel.clientAddressNameController.value.text.isEmpty ||
+        quoteModel.clientAddressController.value.text.isEmpty ||
+        quoteModel.billingAddressNameController.value.text.isEmpty ||
+        quoteModel.billingAddressController.value.text.isEmpty ||
+        quoteModel.emailController.value.text.isEmpty ||
+        quoteModel.phoneController.value.text.isEmpty ||
+        quoteModel.gstNumController.value.text.isEmpty ||
+        quoteModel.Quote_products.isEmpty ||
+        quoteModel.Quote_noteList.isEmpty ||
+        quoteModel.Quote_no.value == null);
   } // If any one is empty or null, then it returns true
 
   void resetData() {

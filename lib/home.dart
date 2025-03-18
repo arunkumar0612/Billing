@@ -1,6 +1,9 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ssipl_billing/controllers/Main_actions.dart';
 import 'package:ssipl_billing/views/screens/BILLING/Billing.dart';
+import 'package:ssipl_billing/views/screens/HIERARCHY/Hierarchy.dart';
 import 'package:ssipl_billing/views/screens/SALES/Sales.dart';
 import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Subscription.dart';
 import 'package:ssipl_billing/views/screens/DASHBOARD/dashboard.dart';
@@ -17,6 +20,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   PageController pageController = PageController();
   SideMenuController sideMenu = SideMenuController();
+  final MainController mainController = Get.find<MainController>();
+
   bool showfull = true;
   @override
   void initState() {
@@ -199,6 +204,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(Icons.inventory), // Inventory Icon
                 ),
                 SideMenuItem(
+                  title: 'ENTERPRISE HIERARCHY',
+                  onTap: (index, _) {
+                    sideMenu.changePage(index);
+                  },
+                  icon: const Icon(Icons.groups_3), // Inventory Icon
+                ),
+                SideMenuItem(
                   title: 'LOGOUT',
                   onTap: (index, _) {},
                   icon: const Icon(Icons.exit_to_app), // Inventory Icon
@@ -218,6 +230,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Sales_Client(),
                   const Vendor(),
                   const Inventory(),
+                  const Enterprise_Hierarchy(),
                   Container(),
                 ],
               ),

@@ -486,6 +486,7 @@ class ClientreqController extends GetxController {
     clientReqModel.quantityController.value.clear();
     clientReqModel.product_editIndex.value = null;
     clientReqModel.clientReqProductDetails.clear();
+    clientReqModel.clientReq_productSuggestion.clear();
 
     // NOTES
     clientReqModel.noteFormKey.value = GlobalKey<FormState>();

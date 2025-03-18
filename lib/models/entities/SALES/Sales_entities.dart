@@ -114,6 +114,7 @@ class TimelineEvent {
   final String Eventname;
   final int Eventid;
   final int apporvedstatus;
+  final int internalStatus;
   final Allowedprocess Allowed_process;
 
   TimelineEvent({
@@ -122,6 +123,7 @@ class TimelineEvent {
     required this.Eventname,
     required this.Eventid,
     required this.apporvedstatus,
+    required this.internalStatus,
     required this.Allowed_process,
   });
 
@@ -132,6 +134,7 @@ class TimelineEvent {
         Eventname: json['Eventname'] as String? ?? '',
         Eventid: json['Eventid'] as int,
         apporvedstatus: json['apporvedstatus'] as int,
+        internalStatus: json['internalstatus'] as int,
         Allowed_process: Allowedprocess.fromJson(json['Allowed_process'] != null ? json['Allowed_process'] as Map<String, dynamic> : {}));
   }
 
@@ -142,6 +145,7 @@ class TimelineEvent {
       'Eventname': Eventname,
       'Eventid': Eventid,
       'apporvedstatus': apporvedstatus,
+      'internalstatus': apporvedstatus,
       'Allowed_process': Allowed_process.toJson(), // Ensure serialization works for Allowed_process
     };
   }

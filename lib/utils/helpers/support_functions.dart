@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/intl.dart';
@@ -98,4 +99,11 @@ pw.Widget bold(value, size) {
       // fontWeight: pw.FontWeight.bold,
     ),
   );
+}
+
+String generateRandomString(int length) {
+  const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  Random random = Random();
+
+  return List.generate(length, (index) => chars[random.nextInt(chars.length)]).join('');
 }

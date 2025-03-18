@@ -1257,6 +1257,16 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                               // items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
                                                                               style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
                                                                             ),
+                                                                            if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true) &&
+                                                                                salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 0)
+                                                                              const Padding(
+                                                                                padding: EdgeInsets.only(left: 5),
+                                                                                child: Text(
+                                                                                  "waiting for internal approval",
+                                                                                  // items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
+                                                                                  style: TextStyle(fontSize: 10, color: Color.fromARGB(255, 141, 141, 141)),
+                                                                                ),
+                                                                              ),
                                                                             if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1)
                                                                               Image.asset(
                                                                                 'assets/images/verified.png',
@@ -1278,31 +1288,63 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                 width: 20, // Makes the image fill the container's width
                                                                                 height: 20, // Makes the image fill the container's height
                                                                               ),
-                                                                            if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true) &&
-                                                                                (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1) &&
-                                                                                (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 0))
-                                                                              Padding(
-                                                                                padding: const EdgeInsets.only(left: 5),
-                                                                                child: Container(
-                                                                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: const Color.fromARGB(255, 2, 128, 231)),
-                                                                                  child: GestureDetector(
-                                                                                    child: const Padding(
-                                                                                      padding: EdgeInsets.only(left: 4, right: 4),
-                                                                                      child: Text(
-                                                                                        'Get Approval',
-                                                                                        style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text5),
-                                                                                      ),
-                                                                                    ),
-                                                                                    onTap: () {
-                                                                                      widget.GetApproval(context, salesController.salesModel.customerId.value!,
-                                                                                          salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                                    },
-                                                                                  ),
-                                                                                ),
-                                                                              )
+                                                                            // if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true) &&
+                                                                            //     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1) &&
+                                                                            //     (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 0))
+                                                                            //   Padding(
+                                                                            //     padding: const EdgeInsets.only(left: 5),
+                                                                            //     child: Container(
+                                                                            //       decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: const Color.fromARGB(255, 2, 128, 231)),
+                                                                            //       child: GestureDetector(
+                                                                            //         child: const Padding(
+                                                                            //           padding: EdgeInsets.only(left: 4, right: 4),
+                                                                            //           child: Text(
+                                                                            //             'Get Approval',
+                                                                            //             style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text5),
+                                                                            //           ),
+                                                                            //         ),
+                                                                            //         onTap: () {
+                                                                            //           widget.GetApproval(context, salesController.salesModel.customerId.value!,
+                                                                            //               salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                            //         },
+                                                                            //       ),
+                                                                            //     ),
+                                                                            //   )
                                                                           ],
                                                                         ),
                                                                       ),
+                                                                      if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true)
+                                                                        Row(
+                                                                          children: [
+                                                                            const SizedBox(
+                                                                              width: 10,
+                                                                            ),
+                                                                            const Text(
+                                                                              "internal approval status",
+                                                                              style: TextStyle(color: Colors.grey, fontSize: 10),
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              width: 10,
+                                                                            ),
+                                                                            const Text(
+                                                                              ":",
+                                                                              style: TextStyle(color: Colors.grey, fontSize: 10),
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              width: 10,
+                                                                            ),
+                                                                            Text(
+                                                                              salesController.salesModel.processList[index].TimelineEvents[childIndex].internalStatus == 1
+                                                                                  ? "Approved"
+                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].internalStatus == 2
+                                                                                      ? "Pending"
+                                                                                      : salesController.salesModel.processList[index].TimelineEvents[childIndex].internalStatus == 3
+                                                                                          ? "Rejected"
+                                                                                          : "Pending",
+                                                                              style: const TextStyle(color: Colors.grey, fontSize: 10),
+                                                                            ),
+                                                                          ],
+                                                                        ),
                                                                       Row(
                                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                                         children: [

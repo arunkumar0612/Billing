@@ -468,6 +468,7 @@ class QuoteController extends GetxController {
     quoteModel.gstController.value.text = "";
     quoteModel.Quote_products.clear();
     quoteModel.Quote_gstTotals.clear();
+    quoteModel.Quote_productSuggestion.clear();
 
     // Reset notes
     quoteModel.note_editIndex.value = null;

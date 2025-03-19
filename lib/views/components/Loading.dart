@@ -51,6 +51,47 @@ void showLoading(BuildContext context, Future<dynamic> Function() apiCall) {
   );
 }
 
+class LoadingOverlay {
+  static final LoadingOverlay _instance = LoadingOverlay._internal();
+  factory LoadingOverlay() => _instance;
+
+  LoadingOverlay._internal();
+
+  BuildContext? _dialogContext;
+
+  Future<void> start(BuildContext context) async {
+    if (_dialogContext != null) return; // Prevent multiple dialogs from opening
+
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent manual dismissal
+      builder: (dialogContext) {
+        _dialogContext = dialogContext;
+        return Stack(
+          children: [
+            // Blurred Background
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+              child: Container(
+                color: Colors.black.withOpacity(0.5),
+              ),
+            ),
+            // Loading Animation
+            const Center(child: LoadingWithStyledIndicator()),
+          ],
+        );
+      },
+    );
+  }
+
+  void stop() {
+    if (_dialogContext != null) {
+      Navigator.of(_dialogContext!).pop();
+      _dialogContext = null;
+    }
+  }
+}
+
 class LoadingWithStyledIndicator extends StatefulWidget {
   const LoadingWithStyledIndicator({super.key});
 
@@ -78,37 +119,22 @@ class _LoadingWithStyledIndicatorState extends State<LoadingWithStyledIndicator>
     return Stack(
       alignment: Alignment.center,
       children: [
-        // PNG Image
+        // Center Image (Ensure this image exists in assets)
         Image.asset(
-          color: Colors.white,
-          'assets/images/black.jpg', // Replace with your image
+          'assets/images/black.jpg', // Update path if needed
           width: 70,
           height: 70,
+          color: Colors.white,
         ),
-        // Stylish Circular Progress Indicator
+        // Circular Animated Loader
         SizedBox(
           width: 120,
           height: 120,
           child: AnimatedBuilder(
             animation: _controller,
             builder: (context, child) {
-              return ShaderMask(
-                shaderCallback: (Rect bounds) {
-                  return SweepGradient(
-                    startAngle: 0.0,
-                    endAngle: 3.14 * 2,
-                    colors: [
-                      const Color.fromARGB(255, 100, 111, 255).withOpacity(0.0),
-                      const Color.fromARGB(255, 100, 111, 255).withOpacity(0.0),
-                      const Color.fromARGB(255, 100, 111, 255).withOpacity(0.0),
-                      const Color.fromARGB(255, 100, 111, 255).withOpacity(0.4),
-                      const Color.fromARGB(255, 100, 111, 255).withOpacity(0.5),
-                    ],
-                    stops: const [0.0, 0.3, 0.5, 0.7, 1.0],
-                    transform: GradientRotation(_controller.value * 12.56),
-                  ).createShader(bounds);
-                },
-                child: Container(width: 130, height: 130, decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white.withOpacity(1), width: 6))),
+              return CustomPaint(
+                painter: CircularIndicatorPainter(_controller.value),
               );
             },
           ),
@@ -116,4 +142,32 @@ class _LoadingWithStyledIndicatorState extends State<LoadingWithStyledIndicator>
       ],
     );
   }
+}
+
+class CircularIndicatorPainter extends CustomPainter {
+  final double progress;
+  CircularIndicatorPainter(this.progress);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..shader = SweepGradient(
+        colors: [
+          //  const Color.fromARGB(255, 100, 111, 255).withOpacity(0.0),
+          const Color.fromARGB(255, 100, 111, 255).withOpacity(0.0),
+          const Color.fromARGB(255, 100, 111, 255).withOpacity(0.2),
+          const Color.fromARGB(255, 100, 111, 255).withOpacity(0.5),
+          const Color.fromARGB(255, 100, 111, 255).withOpacity(0.8),
+        ],
+        stops: const [0.0, 0.3, 0.7, 1.0],
+        transform: GradientRotation(progress * 2 * 3.14),
+      ).createShader(Rect.fromCircle(center: size.center(Offset.zero), radius: size.width / 2))
+      ..strokeWidth = 6
+      ..style = PaintingStyle.stroke;
+
+    canvas.drawCircle(size.center(Offset.zero), size.width / 2, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }

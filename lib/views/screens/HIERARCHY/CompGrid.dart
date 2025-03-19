@@ -1,131 +1,144 @@
-// ignore_for_file: must_be_immutable
-
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+
 import 'package:ssipl_billing/views/components/Comp_card.dart';
-
+import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/screens/HIERARCHY/Hierarchy.dart';
+import 'package:ssipl_billing/views/screens/HIERARCHY/OrgGid.dart';
 
-class CompanyGrid extends StatelessWidget {
-  final BuildContext context;
-  CompanyGrid({
-    super.key,
-    required this.context,
-  });
+class CompanyGrid extends StatefulWidget {
+  static double tween = -1.5;
+  const CompanyGrid({super.key});
 
+  @override
+  _CompanyGridState createState() => _CompanyGridState();
+}
+
+class _CompanyGridState extends State<CompanyGrid> with SingleTickerProviderStateMixin {
   var companys = <Map<String, dynamic>>[].obs;
   var organizations = <Map<String, dynamic>>[].obs;
   var OrgID = "0".obs;
-  File? picked_file;
-  dynamic Fetch_organization_list() async {
-    try {
-      organizations.clear();
-      final Map<String, String> headers = {'Content-Type': 'application/json'};
+  File? pickedFile;
 
-      final requestBody = {"sitetype": 0};
+  late AnimationController _controller;
+  late Animation<Offset> _slideAnimation;
+  final loader = LoadingOverlay();
+  @override
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
 
-      final response = await http.post(Uri.parse("http://192.168.0.200:8080/admin/organization"), headers: headers, body: json.encode(requestBody));
+    _slideAnimation = Tween<Offset>(
+      begin: Offset(CompanyGrid.tween, 0), // Slide from left
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInCubic,
+    ));
 
-      if (response.statusCode == 200) {
-        final decodedResponse = json.decode(response.body);
-        final code = decodedResponse['code'];
-
-        if (code == true) {
-          List<dynamic> data = decodedResponse['data'];
-
-          Set<String> organizationIdSet = {};
-          for (var org in data) {
-            String organizationId = org['Organization_id'].toString();
-
-            if (!organizationIdSet.contains(organizationId)) {
-              organizationIdSet.add(organizationId);
-
-              Uint8List? fileBytes;
-              if (org['Organization_Logo'] != null && org['Organization_Logo']['data'] != null) {
-                try {
-                  List<int> logoBytes = List<int>.from(org['Organization_Logo']['data']); // ✅ Correct Casting
-                  fileBytes = Uint8List.fromList(logoBytes);
-                } catch (e) {
-                  print("Error parsing logo bytes: $e");
-                }
-              }
-
-              // Use an empty image if conversion fails
-              Uint8List placeholderImage = Uint8List.fromList([]);
-
-              Map<String, dynamic> orgMap = {
-                'Id': organizationId,
-                'Name': org['Organization_Name'],
-                'email': org['Email_id'],
-                'logo': fileBytes ?? placeholderImage, // Use placeholder if parsing fails
-              };
-
-              organizations.add(orgMap);
-            }
-          }
-        } else {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Fetching organization List failed'),
-                content: const Text('message'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Fetch_organization_list();
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
-        }
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Fetching organization List failed'),
-              content: const Text('Server Error!'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    } catch (e) {
-      print(e);
-    }
+    apiCall();
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted) _controller.forward();
+    });
   }
 
-  dynamic Fetch_company_list() async {
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void apiCall() async {
+    await Future.delayed(const Duration(milliseconds: 1000));
+
+    // await loader.start(context);
+
+    // await Future.wait([
+    //   // Future.delayed(const Duration(milliseconds: 1000)),
+    //   // fetchCompanyList(),
+    //   fetchOrganizationList(),
+    // ]);
+    loader.stop();
+  }
+
+  // Future<void> fetchOrganizationList() async {
+  //   try {
+  //     organizations.clear();
+  //     final Map<String, String> headers = {'Content-Type': 'application/json'};
+  //     final requestBody = {"sitetype": 0};
+
+  //     final response = await http.post(
+  //       Uri.parse("http://192.168.0.200:8080/admin/organization"),
+  //       headers: headers,
+  //       body: json.encode(requestBody),
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       final decodedResponse = json.decode(response.body);
+  //       if (decodedResponse['code'] == true) {
+  //         List<dynamic> data = decodedResponse['data'];
+
+  //         Set<String> organizationIdSet = {};
+  //         for (var org in data) {
+  //           String organizationId = org['Organization_id'].toString();
+
+  //           if (!organizationIdSet.contains(organizationId)) {
+  //             organizationIdSet.add(organizationId);
+
+  //             Uint8List? fileBytes;
+  //             if (org['Organization_Logo'] != null && org['Organization_Logo']['data'] != null) {
+  //               try {
+  //                 List<int> logoBytes = List<int>.from(org['Organization_Logo']['data']);
+  //                 fileBytes = Uint8List.fromList(logoBytes);
+  //               } catch (e) {
+  //                 print("Error parsing logo bytes: $e");
+  //               }
+  //             }
+
+  //             Uint8List placeholderImage = Uint8List.fromList([]);
+
+  //             Map<String, dynamic> orgMap = {
+  //               'Id': organizationId,
+  //               'Name': org['Organization_Name'],
+  //               'email': org['Email_id'],
+  //               'logo': fileBytes ?? placeholderImage,
+  //             };
+
+  //             organizations.add(orgMap);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   } catch (e) {
+  //     print("Error fetching organization list: $e");
+  //   }
+  // }
+
+  Future<void> fetchCompanyList() async {
     try {
       companys.clear();
       final Map<String, String> headers = {'Content-Type': 'application/json'};
-
       final requestBody = {"sitetype": 404, "organizationid": OrgID.value};
 
-      final response = await http.post(Uri.parse("http://192.168.0.200:8080/admin/companylist"), headers: headers, body: json.encode(requestBody));
+      final response = await http.post(
+        Uri.parse("http://192.168.0.200:8080/admin/companylist"),
+        headers: headers,
+        body: json.encode(requestBody),
+      );
 
       if (response.statusCode == 200) {
         final decodedResponse = json.decode(response.body);
-        final code = decodedResponse['code'];
-
-        if (code == true) {
+        if (decodedResponse['code'] == true) {
           List<dynamic> data = decodedResponse['data'];
 
           Set<String> companyIdSet = {};
@@ -138,67 +151,29 @@ class CompanyGrid extends StatelessWidget {
               Uint8List? fileBytes;
               if (comp['Customer_Logo'] != null && comp['Customer_Logo']['data'] != null) {
                 try {
-                  List<int> logoBytes = List<int>.from(comp['Customer_Logo']['data']); // ✅ Correct Casting
+                  List<int> logoBytes = List<int>.from(comp['Customer_Logo']['data']);
                   fileBytes = Uint8List.fromList(logoBytes);
                 } catch (e) {
                   print("Error parsing logo bytes: $e");
                 }
               }
 
-              // Use an empty image if conversion fails
               Uint8List placeholderImage = Uint8List.fromList([]);
 
               Map<String, dynamic> compMap = {
                 'Id': companyId,
                 'Name': comp['Customer_name'],
                 'email': comp['Email_id'],
-                'logo': fileBytes ?? placeholderImage, // Use placeholder if parsing fails
+                'logo': fileBytes ?? placeholderImage,
               };
 
               companys.add(compMap);
             }
           }
-        } else {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Fetching company List failed'),
-                content: const Text('message'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Fetch_company_list();
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
         }
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Fetching company List failed'),
-              content: const Text('Server Error!'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
       }
     } catch (e) {
-      print(e);
+      print("Error fetching company list: $e");
     }
   }
 
@@ -212,125 +187,90 @@ class CompanyGrid extends StatelessWidget {
       if (fileLength > 2 * 1024 * 1024) {
         showDialog(
           context: context,
-          builder: (context) =>
-              AlertDialog(content: const Text('Selected file exceeds 2MB in size.'), actions: [ElevatedButton(onPressed: () => Navigator.of(context).pop(), child: const Text('OK'))]),
+          builder: (context) => AlertDialog(
+            content: const Text('Selected file exceeds 2MB in size.'),
+            actions: [ElevatedButton(onPressed: () => Navigator.of(context).pop(), child: const Text('OK'))],
+          ),
         );
 
-        picked_file = null;
+        pickedFile = null;
       } else {
-        picked_file = file;
+        pickedFile = file;
         uploadImage(file, 'company', id);
         return true;
       }
-    } else {
-      return false;
     }
     return false;
   }
 
-  dynamic uploadImage(File file, String logoType, int id) async {
+  Future<void> uploadImage(File file, String logoType, int id) async {
     try {
       final Map<String, String> headers = {'Content-Type': 'application/json'};
       List<int> fileBytes = await file.readAsBytes();
-      print("Binary Data: ${fileBytes.length}"); // Prints file in binary format
       final requestBody = {"logotype": logoType, "id": id, "image": fileBytes};
 
-      final response = await http.post(Uri.parse("http://192.168.0.200:8081/admin/uploadlogo"), headers: headers, body: json.encode(requestBody));
+      final response = await http.post(
+        Uri.parse("http://192.168.0.200:8081/admin/uploadlogo"),
+        headers: headers,
+        body: json.encode(requestBody),
+      );
 
       if (response.statusCode == 200) {
         final decodedResponse = json.decode(response.body);
-        final code = decodedResponse['code'];
-
-        if (code == true) {
-          Fetch_company_list();
-        } else {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Upload failed'),
-                content: const Text('message'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Fetch_company_list();
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
+        if (decodedResponse['code'] == true) {
+          fetchCompanyList();
         }
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Upload failed'),
-              content: const Text('Server Error!'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
       }
     } catch (e) {
-      print(e);
+      print("Error uploading image: $e");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Fetch_company_list();
-    Fetch_organization_list();
+    fetchCompanyList();
+    // fetchOrganizationList();
     return Obx(() {
       return Expanded(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 IconButton(
-                    onPressed: () {
-                      Enterprise_Hierarchy.widget_type.value = 1;
-                    },
-                    icon: const Icon(
-                      Icons.arrow_back,
-                      size: 15,
-                    )),
-                const Text(
-                  "COMPANYS",
-                  style: TextStyle(color: Colors.white, fontSize: 12),
-                )
+                  onPressed: () {
+                    loader.start(context);
+                    OrganizationGrid.tween_side = 1.5;
+                    OrganizationGrid.tween_up = 0;
+                    Enterprise_Hierarchy.widget_type.value = 1;
+                  },
+                  icon: const Icon(Icons.arrow_back, size: 15),
+                ),
+                const Text("COMPANYS", style: TextStyle(color: Colors.white, fontSize: 12)),
               ],
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GridView.count(
-                  crossAxisCount: 4,
-                  crossAxisSpacing: 30,
-                  mainAxisSpacing: 30,
-                  children: companys.map<Widget>((org) {
+              child: SlideTransition(
+                position: _slideAnimation,
+                child: GridView.builder(
+                  padding: const EdgeInsets.all(8.0),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 30,
+                    mainAxisSpacing: 30,
+                  ),
+                  itemCount: companys.length,
+                  itemBuilder: (context, index) {
+                    var org = companys[index];
                     return GestureDetector(
                       onTap: () => pickFile(context, int.parse(org['Id']!)),
                       child: CompanyCard(
                         name: org['Name']!,
                         id: org['Id']!,
-                        email: org['email']!,
+                        email: org['email'] ?? "",
                         imageBytes: org['logo']! as Uint8List,
                       ),
                     );
-                  }).toList(),
+                  },
                 ),
               ),
             ),

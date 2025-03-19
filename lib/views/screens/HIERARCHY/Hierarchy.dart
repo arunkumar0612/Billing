@@ -128,6 +128,7 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
   void dispose() {
     _productSearchController.dispose();
     _serviceSearchController.dispose();
+    Enterprise_Hierarchy.widget_type.value = 1;
     super.dispose();
   }
   // Animation Controller for dialogs
@@ -437,19 +438,10 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
                           ),
                           const SizedBox(height: 15),
                           // Products Grid
-                          if (Enterprise_Hierarchy.widget_type.value == 1)
-                            OrganizationGrid(
-                              context: context,
-                            ),
+                          if (Enterprise_Hierarchy.widget_type.value == 1) const OrganizationGrid(),
 
-                          if (Enterprise_Hierarchy.widget_type.value == 2)
-                            CompanyGrid(
-                              context: context,
-                            ),
-                          if (Enterprise_Hierarchy.widget_type.value == 3)
-                            BranchGrid(
-                              context: context,
-                            )
+                          if (Enterprise_Hierarchy.widget_type.value == 2) const CompanyGrid(),
+                          if (Enterprise_Hierarchy.widget_type.value == 3) const BranchGrid()
                         ],
                       ),
                     ),
@@ -480,15 +472,7 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
                           ),
                           const SizedBox(height: 15),
                           // Services List
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: filteredServiceList.length,
-                              itemBuilder: (context, index) {
-                                final service = filteredServiceList[index];
-                                return _buildServiceCard(service);
-                              },
-                            ),
-                          ),
+                          Expanded(child: Container(color: Primary_colors.Light)),
                         ],
                       ),
                     ),

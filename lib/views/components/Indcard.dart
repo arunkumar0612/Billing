@@ -26,7 +26,7 @@ class BranchCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [
-            Color.fromARGB(255, 207, 207, 207),
+            Primary_colors.Color3,
             Color.fromARGB(255, 189, 189, 189),
             Primary_colors.Color7,
           ], // Example gradient colors
@@ -49,7 +49,7 @@ class BranchCard extends StatelessWidget {
         cursor: SystemMouseCursors.click,
         child: GestureDetector(
           onTap: () {
-            Enterprise_Hierarchy.widget_type.value = 1;
+            // Enterprise_Hierarchy.widget_type.value = 1;
             // Get.off(() => CompanyGrid(
             //       Companys: const [],
             //       onTap: (BuildContext, int) {},

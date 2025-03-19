@@ -63,6 +63,7 @@ dependencies:
   percent_indicator: ^4.2.4
   cool_dropdown: ^2.1.1
   mqtt_client: ^10.8.0
+  visibility_detector: ^0.4.0+2
 
 dev_dependencies:
   flutter_test:

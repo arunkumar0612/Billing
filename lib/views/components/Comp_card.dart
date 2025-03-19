@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/screens/HIERARCHY/Hierarchy.dart';
 
 class CompanyCard extends StatelessWidget {
@@ -24,7 +25,7 @@ class CompanyCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [
-            Color.fromARGB(255, 207, 207, 207),
+            Primary_colors.Color3,
             Color.fromARGB(255, 189, 189, 189),
             Primary_colors.Color7,
           ], // Example gradient colors
@@ -46,7 +47,9 @@ class CompanyCard extends StatelessWidget {
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         child: GestureDetector(
-          onTap: () {
+          onTap: () async {
+            final loader = LoadingOverlay();
+            await loader.start(context);
             Enterprise_Hierarchy.widget_type.value = 3;
             // Get.off(() => CompanyGrid(
             //       Companys: const [],

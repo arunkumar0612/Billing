@@ -1,5 +1,8 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // Function to Show Dialog with API Call
@@ -25,7 +28,9 @@ void showLoading(BuildContext context, Future<dynamic> Function() apiCall) {
         if (navigator.mounted) {
           navigator.pop(); // Close loader on error
         }
-        print("API Error: $error");
+        if (kDebugMode) {
+          print("API Error: $error");
+        }
       });
 
       return Stack(

@@ -62,6 +62,9 @@ dependencies:
   animated_text_kit: ^4.2.3
   percent_indicator: ^4.2.4
   cool_dropdown: ^2.1.1
+  open_filex: ^4.6.0
+  webview_flutter: ^4.10.0
+  mailer: ^6.4.1
 
 dev_dependencies:
   flutter_test:

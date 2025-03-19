@@ -95,7 +95,7 @@ pw.Widget bold(value, size) {
       font: Helvetica_bold,
       fontSize: size.toDouble(),
       color: PdfColors.blueGrey800,
-      // fontWeight: pw.FontWeight.bold,
+      fontWeight: pw.FontWeight.bold,
     ),
   );
 }

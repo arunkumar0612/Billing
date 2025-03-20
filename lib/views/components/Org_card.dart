@@ -21,81 +21,84 @@ class OrganizationCard extends StatefulWidget {
 }
 
 class _OrganizationCardState extends State<OrganizationCard> {
-  bool _isTapped = false;
+  bool _isHovered = false;
 
-  void _onTap() async {
-    for (int i = 0; i < OrganizationGrid.organizations.length; i++) {
-      OrganizationGrid.organizations[i].isSelected = false;
+  void onSelected() {
+    for (var org in OrganizationGrid.organizations) {
+      org.isSelected = false;
     }
     OrganizationGrid.organizations[widget.index].isSelected = true;
     OrganizationGrid.organizations.refresh();
+  }
 
-    // setState(() {
-    _isTapped = true;
-    // });
-
+  void onDirected() async {
     final loader = LoadingOverlay();
     await loader.start(context);
-    CompanyGrid.tween = -1.5;
     Enterprise_Hierarchy.widget_type.value = 2;
-
-    // await Future.delayed(const Duration(milliseconds: 300)); // Animation duration
-    // setState(() {
-    //   _isTapped = false;
-    // });
-
-    // Uncomment below for navigation
-    // Get.off(() => CompanyGrid(
-    //       Companys: const [],
-    //       onTap: (BuildContext, int) {},
-    //     ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeOut,
-        transform: OrganizationGrid.organizations[widget.index].isSelected ? Matrix4.translationValues(0, -8, 0) : Matrix4.identity(),
-        padding: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              OrganizationGrid.organizations[widget.index].isSelected ? Colors.redAccent : Primary_colors.Color3,
-              const Color.fromARGB(255, 189, 189, 189),
-              Primary_colors.Color7,
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+      bool isSelected = OrganizationGrid.organizations[widget.index].isSelected;
+
+      return MouseRegion(
+        onEnter: (_) => setState(() => _isHovered = true),
+        onExit: (_) => setState(() => _isHovered = false),
+        cursor: SystemMouseCursors.click,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+          transform: Matrix4.translationValues(
+            0,
+            _isHovered ? -10 : (isSelected ? -8 : 0), // Pop up on hover
+            0,
           ),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: OrganizationGrid.organizations[widget.index].isSelected ? Colors.redAccent : Colors.transparent, // Highlight border on tap
-            width: OrganizationGrid.organizations[widget.index].isSelected ? 2 : 1,
+          padding: const EdgeInsets.all(2),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                isSelected ? Colors.redAccent : Primary_colors.Color3,
+                const Color.fromARGB(255, 189, 189, 189),
+                Primary_colors.Color7,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: isSelected ? Colors.redAccent : Colors.transparent,
+              width: isSelected ? 2 : 1,
+            ),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: Colors.redAccent.withOpacity(0.5),
+                      spreadRadius: 3,
+                      blurRadius: 6,
+                      offset: const Offset(0, 4),
+                    ),
+                  ]
+                : _isHovered
+                    ? [
+                        BoxShadow(
+                          color: Primary_colors.Color3.withOpacity(0.5),
+                          spreadRadius: 3,
+                          blurRadius: 6,
+                          offset: const Offset(0, 4),
+                        ),
+                      ]
+                    : [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset: const Offset(2, 2),
+                        ),
+                      ],
           ),
-          boxShadow: OrganizationGrid.organizations[widget.index].isSelected
-              ? [
-                  BoxShadow(
-                    color: Colors.redAccent.withOpacity(0.5),
-                    spreadRadius: 3,
-                    blurRadius: 6,
-                    offset: const Offset(0, 4),
-                  ),
-                ]
-              : [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 2,
-                    blurRadius: 4,
-                    offset: const Offset(2, 2),
-                  ),
-                ],
-        ),
-        child: GestureDetector(
-          onTap: _onTap,
-          child: MouseRegion(
-            cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: onSelected,
             child: Card(
               color: Colors.transparent,
               shadowColor: Colors.transparent,

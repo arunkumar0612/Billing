@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:ssipl_billing/themes/style.dart';
 
 // Function to Show Dialog with API Call
 void showLoading(BuildContext context, Future<dynamic> Function() apiCall) {
@@ -58,36 +60,77 @@ class LoadingOverlay {
   LoadingOverlay._internal();
 
   BuildContext? _dialogContext;
+  Completer<void>? _completer;
 
   Future<void> start(BuildContext context) async {
-    if (_dialogContext != null) return; // Prevent multiple dialogs from opening
+    if (_dialogContext != null || (_completer?.isCompleted == false)) return;
+
+    _completer = Completer<void>();
 
     showDialog(
       context: context,
       barrierDismissible: false, // Prevent manual dismissal
       builder: (dialogContext) {
         _dialogContext = dialogContext;
-        return Stack(
-          children: [
-            // Blurred Background
-            BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-              child: Container(
-                color: Colors.black.withOpacity(0.5),
+        return WillPopScope(
+          onWillPop: () async => false, // Disable back button
+          child: Stack(
+            children: [
+              // Background Blur
+              BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                child: Container(
+                  color: Colors.black.withOpacity(0.5),
+                ),
               ),
-            ),
-            // Loading Animation
-            const Center(child: LoadingWithStyledIndicator()),
-          ],
+              // Loading Box
+              Center(
+                child: Container(
+                  width: 520,
+                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: const [
+                      BoxShadow(color: Colors.black26, blurRadius: 10),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Animated Progress Bar
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: LinearProgressIndicator(
+                          minHeight: 8,
+                          backgroundColor: Colors.grey[300],
+                          valueColor: const AlwaysStoppedAnimation<Color>(Primary_colors.Color3),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      // Loading Text
+                      const Text(
+                        "Loading, please wait...",
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
+
+    return _completer!.future;
   }
 
   void stop() {
-    if (_dialogContext != null) {
+    if (_dialogContext != null && Navigator.canPop(_dialogContext!)) {
       Navigator.of(_dialogContext!).pop();
       _dialogContext = null;
+      _completer?.complete();
     }
   }
 }

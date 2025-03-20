@@ -379,18 +379,20 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return Scaffold(
+    return DefaultTabController(
+      length: 3, // Number of tabs
+      child: Scaffold(
         backgroundColor: Primary_colors.Dark,
         body: Padding(
-          padding: const EdgeInsets.only(
-            left: 10,
-          ),
+          padding: const EdgeInsets.only(left: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Primary_colors.Light),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Primary_colors.Light,
+                ),
                 height: 50,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -422,10 +424,15 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
                           Text(
                             '${filteredProductList.length} Products Available',
                             style: GoogleFonts.lato(
-                              textStyle: TextStyle(color: Colors.blue[600], fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
+                              textStyle: TextStyle(
+                                color: Colors.blue[600],
+                                fontSize: Primary_font_size.Text10,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 10),
+
                           // Search Bar
                           _buildSearchField(
                             controller: _productSearchController,
@@ -437,15 +444,35 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
                             },
                           ),
                           const SizedBox(height: 15),
-                          // Products Grid
-                          if (Enterprise_Hierarchy.widget_type.value == 1) const OrganizationGrid(),
 
-                          if (Enterprise_Hierarchy.widget_type.value == 2) const CompanyGrid(),
-                          if (Enterprise_Hierarchy.widget_type.value == 3) const BranchGrid()
+                          // TabBar
+                          const SizedBox(
+                            width: 390,
+                            child: TabBar(
+                              indicatorColor: Primary_colors.Color5,
+                              tabs: [
+                                Tab(text: 'Organizations'),
+                                Tab(text: 'Companies'),
+                                Tab(text: 'Branches'),
+                              ],
+                            ),
+                          ),
+
+                          // TabBarView
+                          const Expanded(
+                            child: TabBarView(
+                              children: [
+                                OrganizationGrid(),
+                                CompanyGrid(),
+                                BranchGrid(),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
                     const SizedBox(width: 20),
+
                     // Services Section
                     Expanded(
                       flex: 1,
@@ -456,10 +483,15 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
                           Text(
                             '${filteredServiceList.length} Services Available',
                             style: GoogleFonts.lato(
-                              textStyle: TextStyle(color: Colors.blue[600], fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
+                              textStyle: TextStyle(
+                                color: Colors.blue[600],
+                                fontSize: Primary_font_size.Text10,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 10),
+
                           // Search Bar
                           _buildSearchField(
                             controller: _serviceSearchController,
@@ -471,6 +503,7 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
                             },
                           ),
                           const SizedBox(height: 15),
+
                           // Services List
                           Expanded(child: Container(color: Primary_colors.Light)),
                         ],
@@ -482,8 +515,8 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
             ],
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 }
 

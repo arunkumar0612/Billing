@@ -5,7 +5,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/Hierarchy_entities.dart';
-import 'package:ssipl_billing/models/entities/SALES/ClientReq_entities.dart';
 import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/components/Org_card.dart';
 import 'package:http/http.dart' as http;
@@ -13,9 +12,6 @@ import 'package:http/http.dart' as http;
 class OrganizationGrid extends StatefulWidget {
   static var organizations = <OrganizationData>[].obs;
 
-  static double tween_side = 0;
-  static double tween_up = 1.5;
-  static int? selectedIndex = 0;
   const OrganizationGrid({super.key});
 
   @override
@@ -35,34 +31,32 @@ class _OrganizationGridState extends State<OrganizationGrid> with SingleTickerPr
     );
 
     _slideAnimation = Tween<Offset>(
-      begin: Offset(OrganizationGrid.tween_side, OrganizationGrid.tween_up), // Slide from left
+      begin: const Offset(0, 1.5),
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.easeInCubic,
     ));
 
-    apiCall();
     Future.delayed(const Duration(milliseconds: 300), () {
       if (mounted) _controller.forward();
     });
-  }
-
-  void apiCall() async {
-    await Future.delayed(const Duration(milliseconds: 1000));
-    loader.stop();
+    // Ensures fetchCompanyList() runs only after the first frame is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      fetchOrganizationList();
+    });
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    OrganizationGrid.tween_side = 0;
-    OrganizationGrid.tween_up = 1.5;
     super.dispose();
   }
 
   Future<void> fetchOrganizationList() async {
     try {
+      loader.start(context);
+      await Future.delayed(const Duration(milliseconds: 1000));
       OrganizationGrid.organizations.clear();
       final response = await http.post(
         Uri.parse("http://192.168.0.200:8080/admin/organization"),
@@ -87,14 +81,12 @@ class _OrganizationGridState extends State<OrganizationGrid> with SingleTickerPr
                   print("Error parsing logo bytes: $e");
                 }
               }
-
               OrganizationGrid.organizations.add(OrganizationData.fromJson(decodedResponse['data'][i]));
-
-              print(OrganizationGrid.organizations);
             }
           }
         }
       }
+      loader.stop();
     } catch (e) {
       print("Error fetching organization list: $e");
     }
@@ -143,65 +135,40 @@ class _OrganizationGridState extends State<OrganizationGrid> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    fetchOrganizationList();
-    return Obx(() {
-      return
-
-          // Expanded(
-          //     child: Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: SlideTransition(
-          //     position: _slideAnimation,
-          //     child: GridView.count(
-          //       crossAxisCount: 4,
-          //       crossAxisSpacing: 30,
-          //       mainAxisSpacing: 30,
-          //       children: organizations.map<Widget>((org) {
-          //         return GestureDetector(
-          //           onTap: () => pickFile(context, int.parse(org['Id']!)),
-          //           child: OrganizationCard(
-          //             name: org['Name']!,
-          //             id: org['Id']!,
-          //             email: org['email']!,
-          //             imageBytes: org['logo']! as Uint8List,
-          //           ),
-          //         );
-          //       }).toList(),
-          //     ),
-          //   ),
-          // ));
-
-          Expanded(
-        child: SlideTransition(
-          position: _slideAnimation,
-          child: GridView.builder(
-            padding: const EdgeInsets.all(8.0),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              crossAxisSpacing: 30,
-              mainAxisSpacing: 30,
-            ),
-            itemCount: OrganizationGrid.organizations.length,
-            itemBuilder: (context, index) {
-              var org = OrganizationGrid.organizations[index];
-              return GestureDetector(
-                onTap: () {
-                  pickFile(context, int.parse(org.id));
-                },
-                child: OrganizationCard(
-                  name: org.name,
-                  id: org.id,
-                  email: org.email,
-                  imageBytes: org.logo,
-                  index: index,
-                  // selectedIndex: OrganizationGrid.selectedIndex,
-                  // orgList: organizations
+    return Column(
+      children: [
+        Obx(() {
+          return Expanded(
+            child: SlideTransition(
+              position: _slideAnimation,
+              child: GridView.builder(
+                padding: const EdgeInsets.all(8.0),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  crossAxisSpacing: 30,
+                  mainAxisSpacing: 30,
                 ),
-              );
-            },
-          ),
-        ),
-      );
-    });
+                itemCount: OrganizationGrid.organizations.length,
+                itemBuilder: (context, index) {
+                  var org = OrganizationGrid.organizations[index];
+                  return GestureDetector(
+                    onTap: () {
+                      pickFile(context, int.parse(org.id));
+                    },
+                    child: OrganizationCard(
+                      name: org.name,
+                      id: org.id,
+                      email: org.email,
+                      imageBytes: org.logo,
+                      index: index,
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+        }),
+      ],
+    );
   }
 }

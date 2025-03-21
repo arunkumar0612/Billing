@@ -21,9 +21,7 @@ class _Dashboard_cardsState extends State<Dashboard_cards> with SingleTickerProv
       duration: const Duration(seconds: 1),
       vsync: this,
     );
-
     // Define the animation curve
-
     // Start the animation when the widget is first created
     _controller.forward();
   }
@@ -48,9 +46,7 @@ class _Dashboard_cardsState extends State<Dashboard_cards> with SingleTickerProv
                     description: "Track and analyze sales performance.",
                     totalCount: 540,
                     activeCount: 412,
-                    gradientColors: [
-                      Primary_colors.Color5
-                    ],
+                    gradientColors: [Primary_colors.Color5],
                   ),
                   const SizedBox(width: 15),
                   _buildDashboardCard(
@@ -60,9 +56,7 @@ class _Dashboard_cardsState extends State<Dashboard_cards> with SingleTickerProv
                     description: "Oversee customer subscriptions effectively.",
                     totalCount: 300,
                     activeCount: 250,
-                    gradientColors: [
-                      Primary_colors.Color4
-                    ],
+                    gradientColors: [Primary_colors.Color4],
                   ),
                 ],
               ),
@@ -81,9 +75,7 @@ class _Dashboard_cardsState extends State<Dashboard_cards> with SingleTickerProv
                     description: "Monitor and organize stock levels.",
                     totalCount: 150,
                     activeCount: 120,
-                    gradientColors: [
-                      Primary_colors.Color6
-                    ],
+                    gradientColors: [Primary_colors.Color6],
                   ),
                   const SizedBox(width: 15),
                   Expanded(
@@ -93,10 +85,7 @@ class _Dashboard_cardsState extends State<Dashboard_cards> with SingleTickerProv
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           gradient: const LinearGradient(
-                            colors: [
-                              Primary_colors.Light,
-                              Primary_colors.Light
-                            ],
+                            colors: [Primary_colors.Light, Primary_colors.Light],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
@@ -169,10 +158,7 @@ class _Dashboard_cardsState extends State<Dashboard_cards> with SingleTickerProv
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
             gradient: const LinearGradient(
-              colors: [
-                Primary_colors.Light,
-                Primary_colors.Light
-              ],
+              colors: [Primary_colors.Light, Primary_colors.Light],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

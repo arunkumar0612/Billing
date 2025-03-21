@@ -108,27 +108,28 @@ class _MyHomePageState extends State<MyHomePage> {
                     Container(
                       color: Primary_colors.Color3,
                       constraints: const BoxConstraints(
-                        maxHeight: 150,
+                        maxHeight: 250,
                         maxWidth: 150,
                       ),
-                      child: TextButton.icon(
-                        onPressed: () {
-                          setState(() {
-                            showfull = showfull ? false : true;
-                          });
-                        },
-                        label: Text(
-                          showfull ? '' : 'Collapse',
-                          style: const TextStyle(color: Primary_colors.Color1),
-                        ),
-                        icon: showfull
-                            ? Image.asset(
-                                width: 20,
-                                'assets/images/unhide.png',
-                                color: Primary_colors.Color1,
-                              )
-                            : Image.asset(width: 20, 'assets/images/hide.png'),
-                      ),
+                      child: Image.asset(width: 20, 'assets/images/white.jpg'),
+                      // child: TextButton.icon(
+                      //   onPressed: () {
+                      //     setState(() {
+                      //       showfull = showfull ? false : true;
+                      //     });
+                      //   },
+                      //   label: Text(
+                      //     showfull ? '' : 'Collapse',
+                      //     style: const TextStyle(color: Primary_colors.Color1),
+                      //   ),
+                      //   icon: showfull
+                      //       ? Image.asset(
+                      //           width: 20,
+                      //           'assets/images/unhide.png',
+                      //           color: Primary_colors.Color1,
+                      //         )
+                      //       : Image.asset(width: 20, 'assets/images/hide.png'),
+                      // ),
 
                       //  Row(
                       //   children: [
@@ -206,7 +207,20 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
             const VerticalDivider(
-              width: 15,
+              width: 5,
+            ),
+            GestureDetector(
+              child: showfull
+                  ? const Text('>', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 22))
+                  : const Text('||', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 15)),
+              onTap: () {
+                setState(() {
+                  showfull = showfull ? false : true;
+                });
+              },
+            ),
+            const VerticalDivider(
+              width: 5,
             ),
             Expanded(
               child: PageView(
@@ -214,7 +228,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   const Dashboard(),
                   const Billing(),
-                  const Subscription_Client(),
+                  Subscription_Client(),
                   Sales_Client(),
                   const Vendor(),
                   const Inventory(),

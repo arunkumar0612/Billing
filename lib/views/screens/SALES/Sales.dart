@@ -522,7 +522,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                             cursor: SystemMouseCursors.click,
                                             child: _buildIconWithLabel(
                                               image: 'assets/images/addcustomer.png',
-                                              label: 'Add Customer',
+                                              label: 'Customer Process',
                                               color: Primary_colors.Color4,
                                               onPressed: () {
                                                 widget.Generate_client_reqirement_dialougebox('Customer', context);
@@ -535,7 +535,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                             cursor: SystemMouseCursors.click,
                                             child: _buildIconWithLabel(
                                                 image: 'assets/images/addenquiry.png',
-                                                label: 'Add Enquiry',
+                                                label: 'Enquiry Process',
                                                 color: Primary_colors.Color5,
                                                 onPressed: () {
                                                   widget.Generate_client_reqirement_dialougebox('Enquiry', context);

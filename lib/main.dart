@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/controllers/Main_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
@@ -44,6 +45,10 @@ Future<void> main() async {
   Get.lazyPut<CustomPDF_QuoteController>(() => CustomPDF_QuoteController());
   Get.lazyPut<CustomPDF_DcController>(() => CustomPDF_DcController());
   Get.lazyPut<MainController>(() => MainController());
+
+  ////////////////////////--------HIERARCHY-------/////////////////////////////
+  Get.lazyPut<HierarchyController>(() => HierarchyController());
+
   // Get.lazyPut<ViewsendController>(() => ViewsendController());
   // if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux)) {
   //   await windowManager.ensureInitialized();

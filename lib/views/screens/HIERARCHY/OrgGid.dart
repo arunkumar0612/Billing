@@ -4,93 +4,96 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/models/entities/Hierarchy_entities.dart';
+import 'package:ssipl_billing/services/Hierarchy_services/hierarchy_service.dart';
 import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/components/Org_card.dart';
 import 'package:http/http.dart' as http;
 
-class OrganizationGrid extends StatefulWidget {
-  static var organizations = <OrganizationData>[].obs;
+class OrganizationGrid extends StatefulWidget with HierarchyService {
+  // static var organizations = <OrganizationData>[].obs;
 
-  const OrganizationGrid({super.key});
+  OrganizationGrid({super.key});
 
   @override
   _OrganizationGridState createState() => _OrganizationGridState();
 }
 
 class _OrganizationGridState extends State<OrganizationGrid> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<Offset> _slideAnimation;
+  final HierarchyController hierarchyController = Get.find<HierarchyController>();
+  // late AnimationController _controller;
+  // late Animation<Offset> _slideAnimation;
   final loader = LoadingOverlay();
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+    hierarchyController.hierarchyModel.controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 600),
     );
 
-    _slideAnimation = Tween<Offset>(
+    hierarchyController.hierarchyModel.slideAnimation = Tween<Offset>(
       begin: const Offset(0, 1.5),
       end: Offset.zero,
     ).animate(CurvedAnimation(
-      parent: _controller,
+      parent: hierarchyController.hierarchyModel.controller,
       curve: Curves.easeInCubic,
     ));
 
     Future.delayed(const Duration(milliseconds: 300), () {
-      if (mounted) _controller.forward();
+      if (mounted) hierarchyController.hierarchyModel.controller.forward();
     });
     // Ensures fetchCompanyList() runs only after the first frame is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      fetchOrganizationList();
+      widget.get_OrganizationList(context);
     });
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   hierarchyController.hierarchyModel.controller.dispose();
+  //   super.dispose();
+  // }
 
-  Future<void> fetchOrganizationList() async {
-    try {
-      loader.start(context);
-      await Future.delayed(const Duration(milliseconds: 1000));
-      OrganizationGrid.organizations.clear();
-      final response = await http.post(
-        Uri.parse("http://192.168.0.200:8080/admin/organization"),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({"sitetype": 0}),
-      );
+  // Future<void> fetchOrganizationList() async {
+  //   try {
+  //     loader.start(context);
+  //     await Future.delayed(const Duration(milliseconds: 1000));
+  //     OrganizationGrid.organizations.clear();
+  //     final response = await http.post(
+  //       Uri.parse("http://192.168.0.200:8080/admin/organization"),
+  //       headers: {'Content-Type': 'application/json'},
+  //       body: json.encode({"sitetype": 0}),
+  //     );
 
-      if (response.statusCode == 200) {
-        final decodedResponse = json.decode(response.body);
-        if (decodedResponse['code'] == true) {
-          Set<String> organizationIdSet = {};
-          for (int i = 0; i < decodedResponse['data'].length; i++) {
-            String organizationId = decodedResponse['data'][i]['Organization_id'].toString();
-            if (!organizationIdSet.contains(organizationId)) {
-              organizationIdSet.add(organizationId);
+  //     if (response.statusCode == 200) {
+  //       final decodedResponse = json.decode(response.body);
+  //       if (decodedResponse['code'] == true) {
+  //         Set<String> organizationIdSet = {};
+  //         for (int i = 0; i < decodedResponse['data'].length; i++) {
+  //           String organizationId = decodedResponse['data'][i]['Organization_id'].toString();
+  //           if (!organizationIdSet.contains(organizationId)) {
+  //             organizationIdSet.add(organizationId);
 
-              Uint8List? fileBytes;
-              if (decodedResponse['data'][i]['Organization_Logo'] != null && decodedResponse['data'][i]['Organization_Logo']['data'] != null) {
-                try {
-                  fileBytes = Uint8List.fromList(List<int>.from(decodedResponse['data'][i]['Organization_Logo']['data']));
-                } catch (e) {
-                  print("Error parsing logo bytes: $e");
-                }
-              }
-              OrganizationGrid.organizations.add(OrganizationData.fromJson(decodedResponse['data'][i]));
-            }
-          }
-        }
-      }
-      loader.stop();
-    } catch (e) {
-      print("Error fetching organization list: $e");
-    }
-  }
+  //             Uint8List? fileBytes;
+  //             if (decodedResponse['data'][i]['Organization_Logo'] != null && decodedResponse['data'][i]['Organization_Logo']['data'] != null) {
+  //               try {
+  //                 fileBytes = Uint8List.fromList(List<int>.from(decodedResponse['data'][i]['Organization_Logo']['data']));
+  //               } catch (e) {
+  //                 print("Error parsing logo bytes: $e");
+  //               }
+  //             }
+  //             OrganizationGrid.organizations.add(OrganizationData.fromJson(decodedResponse['data'][i]));
+  //           }
+  //         }
+  //       }
+  //     }
+  //     loader.stop();
+  //   } catch (e) {
+  //     print("Error fetching organization list: $e");
+  //   }
+  // }
 
   Future<bool> pickFile(BuildContext context, int id) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg']);
@@ -126,7 +129,7 @@ class _OrganizationGridState extends State<OrganizationGrid> with SingleTickerPr
         }),
       );
       if (response.statusCode == 200 && json.decode(response.body)['code'] == true) {
-        fetchOrganizationList();
+        widget.get_OrganizationList(context);
       }
     } catch (e) {
       print("Error uploading image: $e");
@@ -140,27 +143,30 @@ class _OrganizationGridState extends State<OrganizationGrid> with SingleTickerPr
         Obx(() {
           return Expanded(
             child: SlideTransition(
-              position: _slideAnimation,
+              position: hierarchyController.hierarchyModel.slideAnimation,
               child: GridView.builder(
                 padding: const EdgeInsets.all(8.0),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
+                  crossAxisCount: 5,
                   crossAxisSpacing: 30,
                   mainAxisSpacing: 30,
                 ),
-                itemCount: OrganizationGrid.organizations.length,
+                itemCount: hierarchyController.hierarchyModel.OrganizationList.value.Live.length,
                 itemBuilder: (context, index) {
-                  var org = OrganizationGrid.organizations[index];
+                  var org = hierarchyController.hierarchyModel.OrganizationList.value.Live[index];
                   return GestureDetector(
                     onTap: () {
-                      pickFile(context, int.parse(org.id));
+                      pickFile(context, org.organizationId);
                     },
                     child: OrganizationCard(
-                      name: org.name,
-                      id: org.id,
+                      name: org.organizationName,
+                      id: org.organizationId.toString(),
                       email: org.email,
-                      imageBytes: org.logo,
+                      imageBytes: org.organizationLogo!,
                       index: index,
+                      data: hierarchyController.hierarchyModel.CompanyList.value,
+                      controller: hierarchyController,
+                      isSelected: hierarchyController.hierarchyModel.OrganizationList.value.Live[index].isSelected,
                     ),
                   );
                 },

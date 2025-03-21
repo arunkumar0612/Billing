@@ -5,102 +5,105 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/models/entities/Hierarchy_entities.dart';
+import 'package:ssipl_billing/services/Hierarchy_services/hierarchy_service.dart';
 import 'package:ssipl_billing/views/components/Comp_card.dart';
 import 'package:ssipl_billing/views/components/Loading.dart';
 
-class CompanyGrid extends StatefulWidget {
-  static var comapanies = <CompanyData>[].obs;
+class CompanyGrid extends StatefulWidget with HierarchyService {
+  // static var comapanies = <CompanyData>[].obs;
   static int? selectedIndex = 0;
-  const CompanyGrid({super.key});
+  CompanyGrid({super.key});
 
   @override
   _CompanyGridState createState() => _CompanyGridState();
 }
 
 class _CompanyGridState extends State<CompanyGrid> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<Offset> _slideAnimation;
+  final HierarchyController hierarchyController = Get.find<HierarchyController>();
+  // late AnimationController _controller;
+  // late Animation<Offset> _slideAnimation;
   final loader = LoadingOverlay();
 
   @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
+    hierarchyController.hierarchyModel.controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 600),
     );
 
-    _slideAnimation = Tween<Offset>(
+    hierarchyController.hierarchyModel.slideAnimation = Tween<Offset>(
       begin: const Offset(0, 1.5),
       end: Offset.zero,
     ).animate(CurvedAnimation(
-      parent: _controller,
+      parent: hierarchyController.hierarchyModel.controller,
       curve: Curves.easeInCubic,
     ));
 
     Future.delayed(const Duration(milliseconds: 300), () {
-      if (mounted) _controller.forward();
+      if (mounted) hierarchyController.hierarchyModel.controller.forward();
     });
 
     // Ensures fetchCompanyList() runs only after the first frame is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      fetchCompanyList();
+      widget.get_CompanyList(context);
     });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    hierarchyController.hierarchyModel.controller.dispose();
     super.dispose();
   }
 
-  Future<void> fetchCompanyList() async {
-    try {
-      loader.start(context);
-      await Future.delayed(const Duration(milliseconds: 2000));
-      CompanyGrid.comapanies.clear();
-      final Map<String, String> headers = {'Content-Type': 'application/json'};
-      final requestBody = {"sitetype": 404, "organizationid": 0};
+  // Future<void> fetchCompanyList() async {
+  //   try {
+  //     loader.start(context);
+  //     await Future.delayed(const Duration(milliseconds: 2000));
+  //     CompanyGrid.comapanies.clear();
+  //     final Map<String, String> headers = {'Content-Type': 'application/json'};
+  //     final requestBody = {"sitetype": 404, "organizationid": 0};
 
-      final response = await http.post(
-        Uri.parse("http://192.168.0.200:8080/admin/companylist"),
-        headers: headers,
-        body: json.encode(requestBody),
-      );
+  //     final response = await http.post(
+  //       Uri.parse("http://192.168.0.200:8080/admin/companylist"),
+  //       headers: headers,
+  //       body: json.encode(requestBody),
+  //     );
 
-      if (response.statusCode == 200) {
-        final decodedResponse = json.decode(response.body);
-        if (decodedResponse['code'] == true) {
-          List<dynamic> data = decodedResponse['data'];
+  //     if (response.statusCode == 200) {
+  //       final decodedResponse = json.decode(response.body);
+  //       if (decodedResponse['code'] == true) {
+  //         List<dynamic> data = decodedResponse['data'];
 
-          Set<String> companyIdSet = {};
-          for (int i = 0; i < decodedResponse['data'].length; i++) {
-            String companyId = decodedResponse['data'][i]['Customer_id'].toString();
+  //         Set<String> companyIdSet = {};
+  //         for (int i = 0; i < decodedResponse['data'].length; i++) {
+  //           String companyId = decodedResponse['data'][i]['Customer_id'].toString();
 
-            if (!companyIdSet.contains(companyId)) {
-              companyIdSet.add(companyId);
+  //           if (!companyIdSet.contains(companyId)) {
+  //             companyIdSet.add(companyId);
 
-              Uint8List? fileBytes;
-              if (decodedResponse['data'][i]['Customer_Logo'] != null && decodedResponse['data'][i]['Customer_Logo']['data'] != null) {
-                try {
-                  List<int> logoBytes = List<int>.from(decodedResponse['data'][i]['Customer_Logo']['data']);
-                  fileBytes = Uint8List.fromList(logoBytes);
-                } catch (e) {
-                  print("Error parsing logo bytes: $e");
-                }
-              }
-              CompanyGrid.comapanies.add(CompanyData.fromJson(decodedResponse['data'][i]));
-            }
-          }
-        }
-      }
-      loader.stop();
-    } catch (e) {
-      print("Error fetching company list: $e");
-    }
-  }
+  //             Uint8List? fileBytes;
+  //             if (decodedResponse['data'][i]['Customer_Logo'] != null && decodedResponse['data'][i]['Customer_Logo']['data'] != null) {
+  //               try {
+  //                 List<int> logoBytes = List<int>.from(decodedResponse['data'][i]['Customer_Logo']['data']);
+  //                 fileBytes = Uint8List.fromList(logoBytes);
+  //               } catch (e) {
+  //                 print("Error parsing logo bytes: $e");
+  //               }
+  //             }
+  //             CompanyGrid.comapanies.add(CompanyData.fromJson(decodedResponse['data'][i]));
+  //           }
+  //         }
+  //       }
+  //     }
+  //     loader.stop();
+  //   } catch (e) {
+  //     print("Error fetching company list: $e");
+  //   }
+  // }
 
   Future<bool> pickFile(BuildContext context, int id) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg']);
@@ -140,7 +143,7 @@ class _CompanyGridState extends State<CompanyGrid> with SingleTickerProviderStat
       if (response.statusCode == 200) {
         final decodedResponse = json.decode(response.body);
         if (decodedResponse['code'] == true) {
-          fetchCompanyList();
+          widget.get_CompanyList(context);
         }
       }
     } catch (e) {
@@ -155,25 +158,28 @@ class _CompanyGridState extends State<CompanyGrid> with SingleTickerProviderStat
         Obx(() {
           return Expanded(
             child: SlideTransition(
-              position: _slideAnimation,
+              position: hierarchyController.hierarchyModel.slideAnimation,
               child: GridView.builder(
                 padding: const EdgeInsets.all(8.0),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
+                  crossAxisCount: 5,
                   crossAxisSpacing: 30,
                   mainAxisSpacing: 30,
                 ),
-                itemCount: CompanyGrid.comapanies.length,
+                itemCount: hierarchyController.hierarchyModel.CompanyList.value.Live.length,
                 itemBuilder: (context, index) {
-                  var org = CompanyGrid.comapanies[index];
+                  var org = hierarchyController.hierarchyModel.CompanyList.value.Live[index];
                   return GestureDetector(
-                    onTap: () => pickFile(context, int.parse(org.id)),
+                    onTap: () => pickFile(context, int.parse(org.customerId.toString())),
                     child: CompanyCard(
-                      name: org.name,
-                      id: org.id,
+                      name: org.customerName,
+                      id: org.customerId.toString(),
                       email: org.email,
-                      imageBytes: org.logo,
+                      imageBytes: org.customerLogo ?? Uint8List(0),
                       index: index,
+                      data: hierarchyController.hierarchyModel.CompanyList.value,
+                      controller: hierarchyController,
+                      isSelected: hierarchyController.hierarchyModel.CompanyList.value.Live[index].isSelected,
                     ),
                   );
                 },

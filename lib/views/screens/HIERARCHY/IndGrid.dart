@@ -7,11 +7,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/models/entities/Hierarchy_entities.dart';
 import 'package:ssipl_billing/views/components/Indcard.dart';
 import 'package:ssipl_billing/views/components/Loading.dart';
-import 'package:ssipl_billing/views/screens/HIERARCHY/CompGrid.dart';
-import 'package:ssipl_billing/views/screens/HIERARCHY/Hierarchy.dart';
 
 class BranchGrid extends StatefulWidget {
   const BranchGrid({super.key});
@@ -24,6 +23,7 @@ class BranchGrid extends StatefulWidget {
 }
 
 class _BranchGridState extends State<BranchGrid> with SingleTickerProviderStateMixin {
+  final HierarchyController hierarchyController = Get.find<HierarchyController>();
   late AnimationController _controller;
   late Animation<Offset> _slideAnimation;
   var OrgID = "0".obs;

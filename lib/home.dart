@@ -230,7 +230,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Sales_Client(),
                   const Vendor(),
                   const Inventory(),
-                  const Enterprise_Hierarchy(),
+                  Enterprise_Hierarchy(),
                   Container(),
                 ],
               ),

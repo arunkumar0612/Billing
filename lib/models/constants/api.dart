@@ -37,4 +37,9 @@ class API {
   static String sales_getsalesdata_API = "http://192.168.0.200:8081/sales/salesdata";
   static String sales_clientprofile_API = "http://192.168.0.200:8081/sales/clientprofile";
   static String sales_approvedquotation_API = "http://192.168.0.200:8081/sales/approvedquotation";
+
+  /////////////////////-----------HIERACHY-------------//////////////////////////////////
+  static String hierarchy_OrganizationData = "http://192.168.0.200:8081/admin/organization";
+  static String hierarchy_CompanyData = "http://192.168.0.200:8081/admin/companylist";
+  static String hierarchy_BranchData = "http://192.168.0.200:8081/admin/sitelist";
 }

@@ -48,16 +48,16 @@ class _CompanyGridState extends State<CompanyGrid> with SingleTickerProviderStat
     });
 
     // Ensures fetchCompanyList() runs only after the first frame is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.get_CompanyList(context);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   widget.get_CompanyList(context);
+    // });
   }
 
-  @override
-  void dispose() {
-    hierarchyController.hierarchyModel.controller.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   hierarchyController.hierarchyModel.controller.dispose();
+  //   super.dispose();
+  // }
 
   // Future<void> fetchCompanyList() async {
   //   try {
@@ -161,8 +161,8 @@ class _CompanyGridState extends State<CompanyGrid> with SingleTickerProviderStat
               position: hierarchyController.hierarchyModel.slideAnimation,
               child: GridView.builder(
                 padding: const EdgeInsets.all(8.0),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: hierarchyController.hierarchyModel.cardCount.value,
                   crossAxisSpacing: 30,
                   mainAxisSpacing: 30,
                 ),
@@ -173,7 +173,7 @@ class _CompanyGridState extends State<CompanyGrid> with SingleTickerProviderStat
                     onTap: () => pickFile(context, int.parse(org.customerId.toString())),
                     child: CompanyCard(
                       name: org.customerName,
-                      id: org.customerId.toString(),
+                      id: org.customerId,
                       email: org.email,
                       imageBytes: org.customerLogo ?? Uint8List(0),
                       index: index,

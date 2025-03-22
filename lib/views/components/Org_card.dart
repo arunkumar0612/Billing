@@ -2,18 +2,19 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/models/entities/Hierarchy_entities.dart';
+import 'package:ssipl_billing/services/Hierarchy_services/hierarchy_service.dart';
 import 'package:ssipl_billing/themes/style.dart';
 
-class OrganizationCard extends StatefulWidget {
+class OrganizationCard extends StatefulWidget with HierarchyService {
   final String name;
   final String email;
-  final String id;
+  final int id;
   final Uint8List imageBytes;
   final int index;
-  final CompanyResponse data;
+  final OrganizationResponse data;
   final HierarchyController controller;
   final isSelected;
-  const OrganizationCard(
+  OrganizationCard(
       {super.key, required this.name, required this.email, required this.id, required this.imageBytes, required this.index, required this.data, required this.controller, required this.isSelected});
 
   @override
@@ -82,9 +83,9 @@ class _OrganizationCardState extends State<OrganizationCard> {
         ),
         child: GestureDetector(
           onTap: () {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              widget.controller.onOrgSelected(widget.data, widget.index);
-            });
+            // WidgetsBinding.instance.addPostFrameCallback((_) {
+            widget.controller.onOrgSelected(widget.data, widget.index);
+            // });
           },
           child: Card(
             color: Colors.transparent,
@@ -129,7 +130,9 @@ class _OrganizationCardState extends State<OrganizationCard> {
                             backgroundColor: Colors.white.withOpacity(0.0),
                             child: IconButton(
                               icon: const Icon(Icons.edit_square, size: 15, color: Color.fromARGB(255, 110, 110, 110)),
-                              onPressed: () {},
+                              onPressed: () {
+                                widget.pickFile(context, 'organization', widget.id);
+                              },
                             ),
                           ),
                         ),

@@ -130,4 +130,29 @@ class Invoker extends GetxController {
       return reply;
     }
   }
+
+  Future<Map<String, dynamic>> SendByQuerystring(String body, String API) async {
+    final encryptedData = AES.encryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), body);
+
+    final requestData = {
+      "STOKEN": sessiontokenController.sessiontokenModel.sessiontoken.value,
+      "querystring": encryptedData,
+    };
+
+    final response = await apiService.post(API, requestData);
+
+    if (response.statusCode == 200) {
+      final responseData = response.body;
+      String encryptedResponse = responseData['encryptedResponse'];
+      final decryptedResponse = AES.decryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), encryptedResponse);
+      Map<String, dynamic> decodedResponse = jsonDecode(decryptedResponse);
+      final result = <String, int>{"statusCode": response.statusCode!};
+      decodedResponse.addEntries(result.entries.map((e) => MapEntry(e.key, e.value)));
+
+      return decodedResponse;
+    } else {
+      Map<String, dynamic> reply = {"statusCode": response.statusCode, "message": "Server Error"};
+      return reply;
+    }
+  }
 }

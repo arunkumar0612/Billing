@@ -6,6 +6,8 @@ class HierarchyModel extends GetxController with GetSingleTickerProviderStateMix
   var organizations = <Map<String, dynamic>>[].obs;
   late AnimationController controller;
   late Animation<Offset> slideAnimation;
+  var DataPageView = false.obs;
+  var cardCount = 5.obs;
 
   var OrganizationList = OrganizationResponse(Live: [], Demo: []).obs;
   var CompanyList = CompanyResponse(Live: [], Demo: []).obs;

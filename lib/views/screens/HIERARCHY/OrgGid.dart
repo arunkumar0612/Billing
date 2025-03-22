@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
-import 'package:ssipl_billing/models/entities/Hierarchy_entities.dart';
 import 'package:ssipl_billing/services/Hierarchy_services/hierarchy_service.dart';
 import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/components/Org_card.dart';
@@ -44,10 +42,10 @@ class _OrganizationGridState extends State<OrganizationGrid> with SingleTickerPr
     Future.delayed(const Duration(milliseconds: 300), () {
       if (mounted) hierarchyController.hierarchyModel.controller.forward();
     });
-    // Ensures fetchCompanyList() runs only after the first frame is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.get_OrganizationList(context);
-    });
+    // // Ensures fetchCompanyList() runs only after the first frame is built
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   widget.get_OrganizationList(context);
+    // });
   }
 
   // @override
@@ -146,8 +144,8 @@ class _OrganizationGridState extends State<OrganizationGrid> with SingleTickerPr
               position: hierarchyController.hierarchyModel.slideAnimation,
               child: GridView.builder(
                 padding: const EdgeInsets.all(8.0),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: hierarchyController.hierarchyModel.cardCount.value,
                   crossAxisSpacing: 30,
                   mainAxisSpacing: 30,
                 ),
@@ -160,11 +158,11 @@ class _OrganizationGridState extends State<OrganizationGrid> with SingleTickerPr
                     },
                     child: OrganizationCard(
                       name: org.organizationName,
-                      id: org.organizationId.toString(),
+                      id: org.organizationId,
                       email: org.email,
                       imageBytes: org.organizationLogo!,
                       index: index,
-                      data: hierarchyController.hierarchyModel.CompanyList.value,
+                      data: hierarchyController.hierarchyModel.OrganizationList.value,
                       controller: hierarchyController,
                       isSelected: hierarchyController.hierarchyModel.OrganizationList.value.Live[index].isSelected,
                     ),

@@ -25,16 +25,20 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
     Enterprise_Hierarchy.widget_type.value = 1;
     super.dispose();
   }
-  // Animation Controller for dialogs
-
-  // Function to show add product dialog with animation
 
   @override
   void initState() {
     super.initState();
-    widget.get_OrganizationList(context);
-    widget.get_CompanyList(context);
-    widget.get_BranchList(context);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.get_OrganizationList(context);
+      widget.get_CompanyList(context);
+      widget.get_BranchList(context);
+    });
   }
 
   @override
@@ -76,7 +80,6 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
                   children: [
                     // Products Section
                     Expanded(
-                      flex: 2,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -124,7 +127,7 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
                               children: [
                                 OrganizationGrid(),
                                 CompanyGrid(),
-                                const BranchGrid(),
+                                BranchGrid(),
                               ],
                             ),
                           ),
@@ -134,41 +137,168 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
                     const SizedBox(width: 20),
 
                     // Services Section
-                    // Expanded(
-                    //   flex: 1,
-                    //   child: Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                    //     children: [
-                    //       // Section Title
-                    //       Text(
-                    //         '${filteredServiceList.length} Services Available',
-                    //         style: GoogleFonts.lato(
-                    //           textStyle: TextStyle(
-                    //             color: Colors.blue[600],
-                    //             fontSize: Primary_font_size.Text10,
-                    //             fontWeight: FontWeight.bold,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //       const SizedBox(height: 10),
+                    Obx(() {
+                      double screenWidth = MediaQuery.of(context).size.width;
+                      print("Screen Width: $screenWidth");
 
-                    //       // Search Bar
-                    //       _buildSearchField(
-                    //         controller: _serviceSearchController,
-                    //         hintText: 'Search services',
-                    //         onChanged: (value) {
-                    //           setState(() {
-                    //             serviceSearchQuery = value;
-                    //           });
-                    //         },
-                    //       ),
-                    //       const SizedBox(height: 15),
+                      return AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300), // Smooth animation duration
+                        transitionBuilder: (Widget child, Animation<double> animation) {
+                          final Offset beginOffset = hierarchyController.hierarchyModel.DataPageView.value
+                              ? const Offset(1.0, 0.0) // Slide in from right
+                              : const Offset(1.0, 0.0); // Slide in from left
 
-                    //       // Services List
-                    //       Expanded(child: Container(color: Primary_colors.Light)),
-                    //     ],
-                    //   ),
-                    // ),
+                          return SlideTransition(
+                            position: Tween<Offset>(
+                              begin: beginOffset,
+                              end: Offset.zero,
+                            ).animate(animation),
+                            child: child,
+                          );
+                        },
+                        child: hierarchyController.hierarchyModel.DataPageView.value
+                            ? SizedBox(
+                                key: const ValueKey(1),
+                                width: screenWidth * 0.3, // Define a width
+                                child: const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text("Key1 : "),
+                                        Expanded(
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text("Key2 : "),
+                                        Expanded(
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text("Key3 : "),
+                                        Expanded(
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text("Key4 : "),
+                                        Expanded(
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text("Key5 : "),
+                                        Expanded(
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text("Key6 : "),
+                                        Expanded(
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text("Key7 : "),
+                                        Expanded(
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text("Key8 : "),
+                                        Expanded(
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text("Key9 : "),
+                                        Expanded(
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text("Key10 : "),
+                                        Expanded(
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : const SizedBox.shrink(key: ValueKey(0)),
+                      );
+                    }),
                   ],
                 ),
               )

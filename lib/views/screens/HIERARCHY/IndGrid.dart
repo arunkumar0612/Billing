@@ -9,14 +9,12 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/models/entities/Hierarchy_entities.dart';
+import 'package:ssipl_billing/services/Hierarchy_services/hierarchy_service.dart';
 import 'package:ssipl_billing/views/components/Indcard.dart';
 import 'package:ssipl_billing/views/components/Loading.dart';
 
-class BranchGrid extends StatefulWidget {
-  const BranchGrid({super.key});
-  static var branches = <BranchData>[].obs;
-  static var organizations = <OrganizationData>[].obs;
-  static int? selectedIndex = 0;
+class BranchGrid extends StatefulWidget with HierarchyService {
+  BranchGrid({super.key});
 
   @override
   _BranchGridState createState() => _BranchGridState();
@@ -24,125 +22,134 @@ class BranchGrid extends StatefulWidget {
 
 class _BranchGridState extends State<BranchGrid> with SingleTickerProviderStateMixin {
   final HierarchyController hierarchyController = Get.find<HierarchyController>();
-  late AnimationController _controller;
-  late Animation<Offset> _slideAnimation;
-  var OrgID = "0".obs;
+  // late AnimationController _controller;
+  // late Animation<Offset> _slideAnimation;
+  // var OrgID = "0".obs;
   final loader = LoadingOverlay();
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+    hierarchyController.hierarchyModel.controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 600),
     );
 
-    _slideAnimation = Tween<Offset>(
+    hierarchyController.hierarchyModel.slideAnimation = Tween<Offset>(
       begin: const Offset(0, 1.5),
       end: Offset.zero,
     ).animate(CurvedAnimation(
-      parent: _controller,
+      parent: hierarchyController.hierarchyModel.controller,
       curve: Curves.easeInCubic,
     ));
     Future.delayed(const Duration(milliseconds: 300), () {
-      if (mounted) _controller.forward();
+      if (mounted) hierarchyController.hierarchyModel.controller.forward();
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      fetchOrganizationList();
-      fetchIndividualList();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   widget.get_OrganizationList(context);
+    //   widget.get_BranchList(context);
+    // });
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     widget.get_OrganizationList(context);
+  //     widget.get_BranchList(context);
+  //   });
+  // }
 
-  Future<void> fetchIndividualList() async {
-    try {
-      loader.start(context);
-      await Future.delayed(const Duration(milliseconds: 1000));
-      BranchGrid.branches.clear();
-      final headers = {'Content-Type': 'application/json'};
-      final requestBody = {"sitetype": 0, "filter": 'ALL', "organizationid": OrgID.value, "companyid": "0"};
+  // @override
+  // void dispose() {
+  //   _controller.dispose();
+  //   super.dispose();
+  // }
 
-      final response = await http.post(
-        Uri.parse("http://192.168.0.200:8080/admin/sitelist"),
-        headers: headers,
-        body: json.encode(requestBody),
-      );
+  // Future<void> fetchIndividualList() async {
+  //   try {
+  //     loader.start(context);
+  //     await Future.delayed(const Duration(milliseconds: 1000));
+  //     BranchGrid.branches.clear();
+  //     final headers = {'Content-Type': 'application/json'};
+  //     final requestBody = {"sitetype": 0, "filter": 'ALL', "organizationid": OrgID.value, "companyid": "0"};
 
-      if (response.statusCode == 200) {
-        final decodedResponse = json.decode(response.body);
-        if (decodedResponse['code'] == true) {
-          List<dynamic> branches = decodedResponse['sql'];
-          Set<String> individualIdSet = {};
+  //     final response = await http.post(
+  //       Uri.parse("http://192.168.0.200:8080/admin/sitelist"),
+  //       headers: headers,
+  //       body: json.encode(requestBody),
+  //     );
 
-          for (int i = 0; i < branches.length; i++) {
-            String individualId = branches[i]['Branch_id'].toString();
-            if (!individualIdSet.contains(individualId)) {
-              individualIdSet.add(individualId);
+  //     if (response.statusCode == 200) {
+  //       final decodedResponse = json.decode(response.body);
+  //       if (decodedResponse['code'] == true) {
+  //         List<dynamic> branches = decodedResponse['sql'];
+  //         Set<String> individualIdSet = {};
 
-              Uint8List? fileBytes;
-              if (branches[i]['Branch_Logo'] != null && branches[i]['Branch_Logo']['data'] != null) {
-                try {
-                  List<int> logoBytes = List<int>.from(branches[i]['Branch_Logo']['data']);
-                  fileBytes = Uint8List.fromList(logoBytes);
-                } catch (e) {
-                  print("Error parsing logo bytes: $e");
-                }
-              }
+  //         for (int i = 0; i < branches.length; i++) {
+  //           String individualId = branches[i]['Branch_id'].toString();
+  //           if (!individualIdSet.contains(individualId)) {
+  //             individualIdSet.add(individualId);
 
-              BranchGrid.branches.add(BranchData.fromJson(branches[i]));
-            }
-          }
-        }
-      }
-      loader.stop();
-    } catch (e) {
-      print(e);
-    }
-  }
+  //             Uint8List? fileBytes;
+  //             if (branches[i]['Branch_Logo'] != null && branches[i]['Branch_Logo']['data'] != null) {
+  //               try {
+  //                 List<int> logoBytes = List<int>.from(branches[i]['Branch_Logo']['data']);
+  //                 fileBytes = Uint8List.fromList(logoBytes);
+  //               } catch (e) {
+  //                 print("Error parsing logo bytes: $e");
+  //               }
+  //             }
 
-  Future<void> fetchOrganizationList() async {
-    try {
-      loader.start(context);
-      await Future.delayed(const Duration(milliseconds: 1000));
-      BranchGrid.organizations.clear();
-      final response = await http.post(
-        Uri.parse("http://192.168.0.200:8080/admin/organization"),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({"sitetype": 0}),
-      );
+  //             BranchGrid.branches.add(BranchData.fromJson(branches[i]));
+  //           }
+  //         }
+  //       }
+  //     }
+  //     loader.stop();
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
-      if (response.statusCode == 200) {
-        final decodedResponse = json.decode(response.body);
-        if (decodedResponse['code'] == true) {
-          Set<String> organizationIdSet = {};
-          for (int i = 0; i < decodedResponse['data'].length; i++) {
-            String organizationId = decodedResponse['data'][i]['Organization_id'].toString();
-            if (!organizationIdSet.contains(organizationId)) {
-              organizationIdSet.add(organizationId);
+  // Future<void> fetchOrganizationList() async {
+  //   try {
+  //     loader.start(context);
+  //     await Future.delayed(const Duration(milliseconds: 1000));
+  //     BranchGrid.organizations.clear();
+  //     final response = await http.post(
+  //       Uri.parse("http://192.168.0.200:8080/admin/organization"),
+  //       headers: {'Content-Type': 'application/json'},
+  //       body: json.encode({"sitetype": 0}),
+  //     );
 
-              Uint8List? fileBytes;
-              if (decodedResponse['data'][i]['Organization_Logo'] != null && decodedResponse['data'][i]['Organization_Logo']['data'] != null) {
-                try {
-                  fileBytes = Uint8List.fromList(List<int>.from(decodedResponse['data'][i]['Organization_Logo']['data']));
-                } catch (e) {
-                  print("Error parsing logo bytes: $e");
-                }
-              }
-              BranchGrid.organizations.add(OrganizationData.fromJson(decodedResponse['data'][i]));
-            }
-          }
-        }
-      }
-      loader.stop();
-    } catch (e) {
-      print("Error fetching organization list: $e");
-    }
-  }
+  //     if (response.statusCode == 200) {
+  //       final decodedResponse = json.decode(response.body);
+  //       if (decodedResponse['code'] == true) {
+  //         Set<String> organizationIdSet = {};
+  //         for (int i = 0; i < decodedResponse['data'].length; i++) {
+  //           String organizationId = decodedResponse['data'][i]['Organization_id'].toString();
+  //           if (!organizationIdSet.contains(organizationId)) {
+  //             organizationIdSet.add(organizationId);
+
+  //             Uint8List? fileBytes;
+  //             if (decodedResponse['data'][i]['Organization_Logo'] != null && decodedResponse['data'][i]['Organization_Logo']['data'] != null) {
+  //               try {
+  //                 fileBytes = Uint8List.fromList(List<int>.from(decodedResponse['data'][i]['Organization_Logo']['data']));
+  //               } catch (e) {
+  //                 print("Error parsing logo bytes: $e");
+  //               }
+  //             }
+  //             BranchGrid.organizations.add(OrganizationData.fromJson(decodedResponse['data'][i]));
+  //           }
+  //         }
+  //       }
+  //     }
+  //     loader.stop();
+  //   } catch (e) {
+  //     print("Error fetching organization list: $e");
+  //   }
+  // }
 
   Future<bool> pickFile(BuildContext context, int id) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg']);
@@ -178,7 +185,7 @@ class _BranchGridState extends State<BranchGrid> with SingleTickerProviderStateM
         }),
       );
       if (response.statusCode == 200 && json.decode(response.body)['code'] == true) {
-        fetchOrganizationList();
+        widget.get_BranchList(context);
       }
     } catch (e) {
       print("Error uploading image: $e");
@@ -192,27 +199,30 @@ class _BranchGridState extends State<BranchGrid> with SingleTickerProviderStateM
         Obx(() {
           return Expanded(
             child: SlideTransition(
-              position: _slideAnimation,
+              position: hierarchyController.hierarchyModel.slideAnimation,
               child: GridView.builder(
                 padding: const EdgeInsets.all(8.0),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: hierarchyController.hierarchyModel.cardCount.value,
                   crossAxisSpacing: 30,
                   mainAxisSpacing: 30,
                 ),
-                itemCount: BranchGrid.branches.length,
+                itemCount: hierarchyController.hierarchyModel.BranchList.value.Live.length,
                 itemBuilder: (context, index) {
-                  var org = BranchGrid.branches[index];
+                  var Branch = hierarchyController.hierarchyModel.BranchList.value.Live[index];
                   return GestureDetector(
                     onTap: () {
-                      pickFile(context, int.parse(org.id));
+                      pickFile(context, Branch.branchId);
                     },
                     child: BranchCard(
-                      name: org.name,
-                      id: org.id,
-                      email: org.email,
-                      imageBytes: org.logo,
+                      name: Branch.branchName,
+                      id: Branch.branchId,
+                      email: Branch.emailId,
+                      imageBytes: Branch.branchLogo!,
                       index: index,
+                      data: hierarchyController.hierarchyModel.BranchList.value,
+                      controller: hierarchyController,
+                      isSelected: hierarchyController.hierarchyModel.BranchList.value.Live[index].isSelected,
                     ),
                   );
                 },

@@ -19,18 +19,86 @@ class HierarchyController extends GetxController {
   }
 
   dynamic onCompSelected(CompanyResponse data, int selectedIndex) {
+    if (data.Live[selectedIndex].isSelected) {
+      onCompDeselected(data);
+      toggle_cardCount(5);
+      toggle_dataPageView(false);
+
+      return;
+    }
     for (var Livecomp in data.Live) {
       Livecomp.isSelected = false;
     }
     data.Live[selectedIndex].isSelected = true;
+    toggle_dataPageView(true);
+    toggle_cardCount(4);
     hierarchyModel.CompanyList.refresh();
   }
 
-  dynamic onOrgSelected(CompanyResponse data, int selectedIndex) {
+  dynamic onCompDeselected(CompanyResponse data) {
     for (var Livecomp in data.Live) {
       Livecomp.isSelected = false;
     }
+    hierarchyModel.CompanyList.refresh();
+  }
+
+/////////////////////////////////-----------------------------------//////////////////////////////////
+
+  dynamic onOrgSelected(OrganizationResponse data, int selectedIndex) {
+    if (data.Live[selectedIndex].isSelected) {
+      onOrgDeselected(data);
+      toggle_cardCount(5);
+      toggle_dataPageView(false);
+      return;
+    }
+
+    for (var liveOrg in data.Live) {
+      liveOrg.isSelected = false;
+    }
+
     data.Live[selectedIndex].isSelected = true;
+    toggle_dataPageView(true);
+    toggle_cardCount(4);
     hierarchyModel.OrganizationList.refresh();
+  }
+
+  dynamic onOrgDeselected(OrganizationResponse data) {
+    for (var LiveOrg in data.Live) {
+      LiveOrg.isSelected = false;
+    }
+    hierarchyModel.OrganizationList.refresh();
+  }
+
+/////////////////////////////////-----------------------------------//////////////////////////////////
+
+  dynamic onBranchSelected(BranchResponse data, int selectedIndex) {
+    if (data.Live[selectedIndex].isSelected) {
+      onBranchDeselected(data);
+      toggle_cardCount(5);
+      toggle_dataPageView(false);
+      return;
+    }
+    for (var LiveBranch in data.Live) {
+      LiveBranch.isSelected = false;
+    }
+    data.Live[selectedIndex].isSelected = true;
+    toggle_dataPageView(true);
+    toggle_cardCount(4);
+    hierarchyModel.BranchList.refresh();
+  }
+
+  dynamic onBranchDeselected(BranchResponse data) {
+    for (var LiveBranch in data.Live) {
+      LiveBranch.isSelected = false;
+    }
+    hierarchyModel.BranchList.refresh();
+  }
+
+  void toggle_dataPageView(bool value) {
+    hierarchyModel.DataPageView.value = value;
+  }
+
+  void toggle_cardCount(int value) {
+    hierarchyModel.cardCount.value = value;
   }
 }

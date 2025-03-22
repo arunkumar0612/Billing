@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
@@ -167,7 +168,7 @@ class OrganizationsData {
       email: json['Email_id'] as String,
       organizationName: json['Organization_Name'] as String,
       orgCode: json['orgcode'] as String?,
-      organizationLogo: json['Organization_Logo'] != null && json['Organization_Logo']['data'] != null ? Uint8List.fromList(List<int>.from(json['Organization_Logo']['data'])) : null,
+      organizationLogo: json['Organization_Logo'] != null && json['Organization_Logo']['data'] != null ? Uint8List.fromList(List<int>.from(json['Organization_Logo']['data'])) : Uint8List(0),
       address: json['Address'] as String,
       siteType: json['site_type'] as String,
     );
@@ -179,7 +180,7 @@ class OrganizationsData {
       'Email_id': email,
       'Organization_Name': organizationName,
       'orgcode': orgCode,
-      'Organization_Logo': organizationLogo != null ? {'data': organizationLogo} : null,
+      'Organization_Logo': organizationLogo ?? Uint8List(0),
       'Address': address,
       'site_type': siteType,
     };
@@ -238,7 +239,7 @@ class CompanysData {
       customerName: json['Customer_name'] as String? ?? "",
       ccode: json['ccode'] as String? ?? "",
       email: json['Email_id'] as String? ?? "",
-      customerLogo: json['Customer_Logo'] != null && json['Customer_Logo']['data'] != null ? Uint8List.fromList(List<int>.from(json['Customer_Logo']['data'])) : null,
+      customerLogo: json['Customer_Logo'] != null && json['Customer_Logo']['data'] != null ? Uint8List.fromList(List<int>.from(json['Customer_Logo']['data'])) : Uint8List(0),
       siteType: json['site_type'] as String? ?? "",
     );
   }
@@ -250,7 +251,7 @@ class CompanysData {
       'Customer_name': customerName,
       'ccode': ccode,
       'Email_id': email,
-      'Customer_Logo': customerLogo,
+      'Customer_Logo': customerLogo ?? Uint8List(0),
       'site_type': siteType,
     };
   }
@@ -307,6 +308,7 @@ class BranchsData {
   final String toDate;
   final int amount;
   final int billingPeriod;
+  bool isSelected;
 
   BranchsData({
     required this.branchId,
@@ -328,6 +330,7 @@ class BranchsData {
     required this.toDate,
     required this.amount,
     required this.billingPeriod,
+    this.isSelected = false,
   });
 
   factory BranchsData.fromJson(Map<String, dynamic> json) {
@@ -343,7 +346,7 @@ class BranchsData {
       billingAddress: json['billing_address'] ?? '',
       billingAddressName: json['billing_addressname'] ?? '',
       siteType: json['site_type'] ?? '',
-      branchLogo: json['Branch_Logo'] != null && json['Branch_Logo']['data'] != null ? Uint8List.fromList(List<int>.from(json['Branch_Logo']['data'])) : null,
+      branchLogo: json['Branch_Logo'] != null && json['Branch_Logo']['data'] != null ? Uint8List.fromList(List<int>.from(json['Branch_Logo']['data'])) : Uint8List(0),
       subscriptionId: json['Subscription_ID'] ?? 0,
       billingPlan: json['billing_plan'] ?? '',
       billMode: json['Bill_mode'] ?? '',
@@ -367,7 +370,7 @@ class BranchsData {
       'billing_address': billingAddress,
       'billing_addressname': billingAddressName,
       'site_type': siteType,
-      'Branch_Logo': branchLogo,
+      'Branch_Logo': branchLogo ?? Uint8List(0),
       'Subscription_ID': subscriptionId,
       'billing_plan': billingPlan,
       'Bill_mode': billMode,
@@ -401,5 +404,33 @@ class BranchResponse {
       'Live': Live.map((e) => e.toJson()).toList(),
       'Demo': Demo.map((e) => e.toJson()).toList(),
     };
+  }
+}
+
+class BranchLogoUpload {
+  final String logotype;
+  final int id;
+  final Uint8List image;
+
+  BranchLogoUpload({
+    required this.logotype,
+    required this.id,
+    required this.image,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      "logotype": logotype,
+      "id": id,
+      "image": base64Encode(image), // Convert Uint8List to Base64 string
+    };
+  }
+
+  factory BranchLogoUpload.fromJson(Map<String, dynamic> json) {
+    return BranchLogoUpload(
+      logotype: json["logotype"],
+      id: json["id"],
+      image: base64Decode(json["image"]), // Convert Base64 string back to Uint8List
+    );
   }
 }

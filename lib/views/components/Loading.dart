@@ -102,7 +102,7 @@ class LoadingOverlay {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: LinearProgressIndicator(
-                          minHeight: 8,
+                          minHeight: 9,
                           backgroundColor: Colors.grey[300],
                           valueColor: const AlwaysStoppedAnimation<Color>(Primary_colors.Color3),
                         ),

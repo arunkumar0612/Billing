@@ -52,7 +52,7 @@ class Processcustomer {
 
   factory Processcustomer.fromJson(CMDlResponse json, int i) {
     return Processcustomer(
-      customerId: json.data[i]['Customer_id'] as int,
+      customerId: json.data[i]['customer_id'] as int,
       customerName: json.data[i]['customer_name'] as String,
       customer_phoneno: json.data[i]['customer_phoneno'] as String,
       customer_gstno: json.data[i]['customer_gstno'] as String,
@@ -148,33 +148,19 @@ class TimelineEvent {
 }
 
 class Allowedprocess {
-  final bool rfq;
-  final bool invoice;
   final bool quotation;
-  final bool debit_note;
-  final bool credit_note;
-  final bool delivery_challan;
+
   final bool revised_quatation;
   final bool get_approval;
   Allowedprocess({
-    required this.rfq,
-    required this.invoice,
     required this.quotation,
-    required this.debit_note,
-    required this.credit_note,
-    required this.delivery_challan,
     required this.revised_quatation,
     required this.get_approval,
   });
 
   factory Allowedprocess.fromJson(Map<String, dynamic> json) {
     return Allowedprocess(
-      rfq: json['rfq'] as bool? ?? false,
-      invoice: json['invoice'] as bool? ?? false,
       quotation: json['quotation'] as bool? ?? false,
-      debit_note: json['debit_note'] as bool? ?? false,
-      credit_note: json['credit_note'] as bool? ?? false,
-      delivery_challan: json['delivery_challan'] as bool? ?? false,
       revised_quatation: json['revised_quatation'] as bool? ?? false,
       get_approval: json['get_approval'] as bool? ?? false,
     );
@@ -182,12 +168,7 @@ class Allowedprocess {
 
   Map<String, dynamic> toJson() {
     return {
-      'rfq': rfq,
-      'invoice': invoice,
       'quotation': quotation,
-      'debit_note': debit_note,
-      'credit_note': credit_note,
-      'delivery_challan': delivery_challan,
       'revised_quatation': revised_quatation,
       'get_approval': get_approval,
     };

@@ -1,43 +1,38 @@
-import 'dart:io';
+// ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_Invoice/sub_invoice_details.dart';
-import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_Invoice/sub_invoice_note.dart';
-import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_Invoice/sub_invoice_products.dart';
+import 'package:get/get.dart';
+import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/Subscription_actions.dart';
 import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_Quote/post_Quote.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import '../../../../controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Quote_actions.dart';
+import 'quote_details.dart';
+import 'quote_note.dart';
+import 'quote_products.dart';
 
-class Generatesub_invoice extends StatefulWidget {
-  const Generatesub_invoice({super.key});
-  static late TabController _tabController;
-
-  static void nextTab() {
-    if (_tabController.index < _tabController.length - 1) {
-      _tabController.animateTo(_tabController.index + 1);
-    }
-  }
-
-  static void backTab() {
-    if (_tabController.index > 0) {
-      _tabController.animateTo(_tabController.index - 1);
-    }
-  }
-
+class SUBSCRIPTION_GenerateQuote extends StatefulWidget {
+  SUBSCRIPTION_GenerateQuote({super.key, required this.quoteType, required this.eventID});
+  int eventID;
+  String quoteType;
   @override
-  _Generatesub_invoiceState createState() => _Generatesub_invoiceState();
+  _SUBSCRIPTION_GenerateQuoteState createState() => _SUBSCRIPTION_GenerateQuoteState();
 }
 
-class _Generatesub_invoiceState extends State<Generatesub_invoice> with SingleTickerProviderStateMixin {
-  final File _selectedPdf = File('E://sub_invoice.pdf');
+class _SUBSCRIPTION_GenerateQuoteState extends State<SUBSCRIPTION_GenerateQuote> with SingleTickerProviderStateMixin {
+  final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
+  final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
   @override
   void initState() {
     super.initState();
-    Generatesub_invoice._tabController = TabController(length: 3, vsync: this);
+    // SUBSCRIPTION_GenerateQuote._tabController = ;
+    quoteController.initializeTabController(TabController(length: 4, vsync: this));
   }
 
   @override
   void dispose() {
-    Generatesub_invoice._tabController.dispose();
+    // SUBSCRIPTION_GenerateQuote._tabController.dispose();
+    quoteController.quoteModel.tabController.value?.dispose();
     super.dispose();
   }
 
@@ -49,7 +44,7 @@ class _Generatesub_invoiceState extends State<Generatesub_invoice> with SingleTi
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
           height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
-          child: SfPdfViewer.file(_selectedPdf),
+          child: SfPdfViewer.file(subscriptionController.subscriptionModel.pdfFile.value!),
         ),
       ),
     );
@@ -63,20 +58,23 @@ class _Generatesub_invoiceState extends State<Generatesub_invoice> with SingleTi
           children: [
             Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.all(15),
+                Padding(
+                  padding: const EdgeInsets.all(15),
                   child: Text(
-                    "Client Requirement",
-                    style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                    widget.quoteType == "quotation" ? "CLIENT REQUEST" : "QUOTATION",
+                    style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                   ),
                 ),
                 Expanded(
                   child: SizedBox(
                     width: 420,
+                    // decoration: BoxDecoration(
+                    //   border: Border.all(width: 3, color: const Color.fromARGB(255, 161, 232, 250)),
+                    // ),
                     child: GestureDetector(
                       child: Stack(
                         children: [
-                          SfPdfViewer.file(_selectedPdf),
+                          SfPdfViewer.file(subscriptionController.subscriptionModel.pdfFile.value!),
                           Align(
                             alignment: AlignmentDirectional.bottomEnd,
                             child: Padding(
@@ -100,7 +98,18 @@ class _Generatesub_invoiceState extends State<Generatesub_invoice> with SingleTi
             ),
             Expanded(
                 child: Container(
-              color: Primary_colors.Light,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: const LinearGradient(
+                  colors: [
+                    // Primary_colors.Dark,
+                    Color.fromARGB(255, 4, 6, 10), // Slightly lighter blue-grey
+                    Primary_colors.Light, // Dark purple/blue
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.centerRight,
+                ),
+              ),
               child: Column(
                 children: [
                   Container(
@@ -118,12 +127,13 @@ class _Generatesub_invoiceState extends State<Generatesub_invoice> with SingleTi
                             fontSize: Primary_font_size.Text10,
                             fontWeight: FontWeight.bold,
                           ),
-                          controller: Generatesub_invoice._tabController,
+                          controller: quoteController.quoteModel.tabController.value,
                           indicator: const BoxDecoration(),
                           tabs: const [
-                            Tab(text: "Details"),
-                            Tab(text: "Product"),
-                            Tab(text: "Note"),
+                            Tab(text: "DETAILS"),
+                            Tab(text: "PRODUCT"),
+                            Tab(text: "NOTE"),
+                            Tab(text: "POST"),
                           ],
                         ),
                       ),
@@ -131,30 +141,20 @@ class _Generatesub_invoiceState extends State<Generatesub_invoice> with SingleTi
                   ),
                   Expanded(
                     child: TabBarView(
-                      controller: Generatesub_invoice._tabController,
+                      controller: quoteController.quoteModel.tabController.value,
                       children: [
-                        const sub_invoiceDetails(),
-                        Container(
-                          color: Primary_colors.Light,
-                          child: const sub_invoiceProducts(),
+                        QuoteDetails(
+                          eventtype: widget.quoteType,
+                          eventID: widget.eventID,
                         ),
-                        const sub_invoiceNote(),
+                        QuoteProducts(),
+                        QuoteNote(),
+                        PostQuote(type: 'E:/${(quoteController.quoteModel.Quote_no.value ?? "default_filename").replaceAll("/", "-")}.pdf', eventtype: widget.quoteType
+                            // Pass the expected file path
+                            ),
                       ],
                     ),
                   ),
-                  // const Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: [
-                  //     ElevatedButton(
-                  //       onPressed: Generatesub_invoice.backTab,
-                  //       child: Text("Back"),
-                  //     ),
-                  //     ElevatedButton(
-                  //       onPressed: Generatesub_invoice.nextTab,
-                  //       child: Text("Next"),
-                  //     ),
-                  //   ],
-                  // ),
                 ],
               ),
             ))

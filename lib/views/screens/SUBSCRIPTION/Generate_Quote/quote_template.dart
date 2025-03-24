@@ -1,45 +1,26 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/utils/helpers/support_functions.dart';
+import 'package:ssipl_billing/models/entities/SALES/Quote_entities.dart';
 
-List<sub_Product> sub_quote_products = [];
-List<Map<String, dynamic>> sub_quote_gstTotals = [];
-//main
-String sub_quote_client_addr_name = "";
-String sub_quote_client_addr = "";
-String sub_quote_bill_addr_name = "";
-String sub_quote_bill_addr = "";
-String sub_quote_estimate_no = "";
-String sub_quote_title = "";
-String sub_quote_table_heading = "";
-List<Map<String, dynamic>> sub_quote_noteList = [];
-List<Map<String, dynamic>> sub_quote_recommendationList = [];
-// List<Map<String, dynamic>> sub_quote_productDetails = [];
+import '../../../../controllers/SALEScontrollers/Quote_actions.dart';
+import '../../../../models/entities/SALES/product_entities.dart';
+import '../../../../utils/helpers/support_functions.dart';
 
-Future<Uint8List> generate_sub_Quotation(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst) async {
-  final quotation = sub_Quotation(products: products, GST: gst.toDouble(), baseColor: PdfColors.green500, accentColor: PdfColors.blueGrey900, client_addr_name: client_addr_name, client_addr: client_addr, bill_addr_name: bill_addr_name, bill_addr: bill_addr, estimate: estimate_num ?? "", title_text: title, type: '', special_price: 5000);
+Future<Uint8List> generate_Quote(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, quote_gstTotals) async {
+  final quotation = Quotation(products: products, GST: gst.toDouble(), baseColor: PdfColors.green500, accentColor: PdfColors.blueGrey900, client_addr_name: client_addr_name, client_addr: client_addr, bill_addr_name: bill_addr_name, bill_addr: bill_addr, estimate: estimate_num ?? "", title_text: title, type: '', quote_gstTotals: quote_gstTotals);
 
   return await quotation.buildPdf(pageFormat);
 }
 
-class sub_Quotation {
-  sub_Quotation({
-    required this.products,
-    required this.GST,
-    required this.baseColor,
-    required this.accentColor,
-    required this.client_addr_name,
-    required this.client_addr,
-    required this.bill_addr_name,
-    required this.bill_addr,
-    required this.estimate,
-    required this.title_text,
-    required this.type,
-    required this.special_price,
-    // required this.items,
-  });
+class Quotation {
+  Quotation({required this.products, required this.GST, required this.baseColor, required this.accentColor, required this.client_addr_name, required this.client_addr, required this.bill_addr_name, required this.bill_addr, required this.estimate, required this.title_text, required this.type, required this.quote_gstTotals
+      // required this.items,
+      });
+  final QuoteController quoteController = Get.find<QuoteController>();
+  List<QuoteGSTtotals> quote_gstTotals = [];
   String client_addr_name = "";
   String client_addr = "";
   String bill_addr_name = "";
@@ -47,24 +28,21 @@ class sub_Quotation {
   String estimate = "";
   String title_text = "";
   String type = "";
-  double special_price;
 
-  final List<sub_Product> products;
+  final List<QuoteProduct> products;
   final double GST;
   final PdfColor baseColor;
   final PdfColor accentColor;
   static const _darkColor = PdfColors.blueGrey800;
-  double get CGST_total => (special_price / 100) * (GST / 2);
-  double get SGST_total => (special_price / 100) * (GST / 2);
-  // double get _total => products.map<double>((p) => p.total).reduce((a, b) => a + b);
-  double get _grandTotal => special_price + CGST_total + SGST_total;
+  double get CGST_total => quote_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
+  double get SGST_total => quote_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
+  double get _total => products.map<double>((p) => p.total).reduce((a, b) => a + b);
+  double get _grandTotal => _total + CGST_total + SGST_total;
   dynamic profileImage;
 
   Future<Uint8List> buildPdf(PdfPageFormat pageFormat) async {
     Helvetica = await loadFont_regular();
     Helvetica_bold = await loadFont_bold();
-    final Uint8List discountImage = await loadAssetImage('assets/images/discount.png');
-    final pw.Widget contentTable = await buildContentTable(discountImage);
     final doc = pw.Document();
     profileImage = pw.MemoryImage(
       (await rootBundle.load('assets/images/sporada.jpeg')).buffer.asUint8List(),
@@ -86,7 +64,7 @@ class sub_Quotation {
           pw.SizedBox(height: 10),
           title(context),
           pw.SizedBox(height: 10),
-          contentTable,
+          _contentTable(context),
           pw.SizedBox(height: 20),
           tax_table(context),
         ],
@@ -110,9 +88,8 @@ class sub_Quotation {
                 child: pw.Image(profileImage),
               ),
               pw.Text(
-                'ESTIMATE',
+                'QUOTATION',
                 style: pw.TextStyle(
-                  letterSpacing: 2,
                   font: Helvetica_bold,
                   fontSize: 15,
                   color: PdfColors.blueGrey800,
@@ -154,7 +131,7 @@ class sub_Quotation {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("AA/234L/KK", 10),
+                            child: regular("SSIPL/INST/250202", 10),
                           ),
                         ),
                       ],
@@ -327,126 +304,73 @@ class sub_Quotation {
     return pw.Center(child: bold(title_text, 12));
   }
 
-  Future<Uint8List> loadAssetImage(String path) async {
-    final ByteData data = await rootBundle.load(path);
-    return data.buffer.asUint8List();
-  }
+  pw.Widget _contentTable(pw.Context context) {
+    const tableHeaders = [
+      'S.No',
+      'Item Description',
+      'HSN',
+      ' GST',
+      'Price   ',
+      'Quantity',
+      'Total   '
+    ];
 
-  Future<pw.Widget> buildContentTable(Uint8List discountImageData) async {
-    return pw.Table(
-      columnWidths: {
-        0: const pw.FlexColumnWidth(1),
-        1: const pw.FlexColumnWidth(2),
-        2: const pw.FlexColumnWidth(2),
-        3: const pw.FlexColumnWidth(3),
-        4: const pw.FlexColumnWidth(1),
+    return pw.TableHelper.fromTextArray(
+      border: null,
+      cellAlignment: pw.Alignment.centerLeft,
+      headerDecoration: pw.BoxDecoration(
+        borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)),
+        color: baseColor,
+      ),
+      headerHeight: 22,
+      cellHeight: 30,
+      cellAlignments: {
+        0: pw.Alignment.centerLeft,
+        1: pw.Alignment.centerLeft,
+        2: pw.Alignment.centerLeft,
+        3: pw.Alignment.center,
+        4: pw.Alignment.centerRight,
+        5: pw.Alignment.center,
+        6: pw.Alignment.centerRight,
       },
-      children: [
-        // Header Row
-        pw.TableRow(
-          decoration: pw.BoxDecoration(
-            borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)), // Rounded
-            color: baseColor, // Header background color
+      headerStyle: pw.TextStyle(
+        font: Helvetica_bold,
+        color: PdfColors.white,
+        fontSize: 10,
+        fontWeight: pw.FontWeight.bold,
+      ),
+      cellStyle: pw.TextStyle(
+        font: Helvetica,
+        color: _darkColor,
+        fontSize: 10,
+      ),
+      cellDecoration: (int rowIndex, dynamic cellData, int colIndex) {
+        // Apply different colors for even and odd columns
+        return pw.BoxDecoration(
+          color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
+        );
+      },
+      rowDecoration: pw.BoxDecoration(
+        border: pw.Border(
+          bottom: pw.BorderSide(
+            color: accentColor,
+            width: .5,
           ),
-          children: [
-            _buildTableCell('S.No', isHeader: true),
-            _buildTableCell('Package', isHeader: true),
-            _buildTableCell('Regular price', isHeader: true),
-            pw.Container(
-              alignment: pw.Alignment.centerLeft,
-              padding: const pw.EdgeInsets.all(7),
-              child: pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.center,
-                crossAxisAlignment: pw.CrossAxisAlignment.center,
-                children: [
-                  pw.Text(
-                    'Special price ',
-                    style: pw.TextStyle(
-                      font: Helvetica_bold,
-                      fontSize: 10,
-                      color: PdfColors.white,
-                    ),
-                  ),
-                  pw.SizedBox(width: 4), // Space between text and image
-                  pw.Image(
-                    pw.MemoryImage(discountImageData),
-                    height: 12,
-                    width: 12,
-                  ),
-                ],
-              ),
-            ),
-            _buildTableCell('GST', isHeader: true),
-          ],
         ),
-        // Data Rows
-        for (var i = 0; i < products.length; i++)
-          pw.TableRow(
-            decoration: const pw.BoxDecoration(
-              border: pw.Border(
-                bottom: pw.BorderSide(color: PdfColors.grey, width: 0.5), // Bottom border for rows
-              ),
-            ),
-            children: [
-              _buildTableCell('${i + 1}'),
-              _buildTableCell(products[i].package),
-              _buildTableCell(products[i].regular_price.toString()),
-              _buildTableCell(products[i].special_price.toString()),
-              _buildTableCell(products[i].gst.toString()),
-            ],
-          ),
-      ],
-    );
-  }
-
-  pw.Widget _buildTableCell(String content, {bool isHeader = false}) {
-    return pw.Container(
-      alignment: pw.Alignment.center,
-      padding: const pw.EdgeInsets.all(7),
-      child: pw.Text(
-        content,
-        style: pw.TextStyle(
-          font: isHeader ? Helvetica_bold : Helvetica,
-          fontSize: isHeader ? 10 : 9,
-          color: isHeader ? PdfColors.white : _darkColor,
+      ),
+      headers: List<String>.generate(
+        tableHeaders.length,
+        (col) => tableHeaders[col],
+      ),
+      data: List<List<String>>.generate(
+        products.length,
+        (row) => List<String>.generate(
+          tableHeaders.length,
+          (col) => products[row].getIndex(col),
         ),
       ),
     );
   }
-
-  // ignore: unused_element
-  pw.TextStyle _headerTextStyle() {
-    return pw.TextStyle(
-      font: Helvetica_bold,
-      color: _darkColor,
-      fontSize: 10,
-    );
-  }
-
-  // ignore: unused_element
-  pw.TextStyle _cellTextStyle() {
-    return pw.TextStyle(
-      font: Helvetica,
-      color: _darkColor,
-      fontSize: 10,
-    );
-  }
-
-  // pw.TextStyle _headerTextStyle() {
-  //   return pw.TextStyle(
-  //     font: Helvetica_bold,
-  //     color: PdfColors.white,
-  //     fontSize: 10,
-  //   );
-  // }
-
-  // pw.TextStyle _cellTextStyle() {
-  //   return pw.TextStyle(
-  //     font: Helvetica,
-  //     color: _darkColor,
-  //     fontSize: 10,
-  //   );
-  // }
 
   pw.Widget tax_table(pw.Context context) {
     return pw.Column(
@@ -455,35 +379,209 @@ class sub_Quotation {
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
           children: [
-            notes(context),
-
             pw.Container(
-              height: 400,
+              decoration: pw.BoxDecoration(border: pw.Border.all(color: PdfColors.grey700)),
+              // height: 200,
+              // width: 300, // Ensure the container has a defined width
               child: pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.end,
-                mainAxisAlignment: pw.MainAxisAlignment.start,
+                // border: pw.TableBorder.all(color: PdfColors.grey700, width: 1),
                 children: [
-                  final_amount(context),
-                  pw.SizedBox(height: 10),
-                  authorized_signatory(context),
+                  pw.Row(
+                    children: [
+                      pw.Container(
+                        decoration: const pw.BoxDecoration(
+                          border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700)),
+                        ),
+                        height: 38,
+                        width: 80,
+                        child: pw.Center(
+                          child: pw.Text(
+                            "Taxable\nvalue",
+                            style: pw.TextStyle(
+                              font: Helvetica,
+
+                              fontSize: 10,
+                              color: PdfColors.grey700,
+                              // fontWeight: pw.FontWeight.bold,
+                            ),
+                            textAlign: pw.TextAlign.center, // Justifying the text
+                          ),
+                        ),
+                      ),
+                      pw.Container(
+                        height: 38,
+                        child: pw.Column(
+                          children: [
+                            pw.Container(
+                              width: 110,
+                              decoration: const pw.BoxDecoration(
+                                border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700)),
+                              ),
+                              height: 19, // Replace Expanded with defined height
+                              child: pw.Center(child: regular('CGST', 10)),
+                            ),
+                            pw.Container(
+                              height: 19, // Define height instead of Expanded
+                              child: pw.Row(
+                                children: [
+                                  pw.Container(
+                                    width: 40, // Define width instead of Expanded
+                                    decoration: const pw.BoxDecoration(
+                                      border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700), bottom: pw.BorderSide(color: PdfColors.grey700)),
+                                    ),
+                                    child: pw.Center(child: regular('%', 10)),
+                                  ),
+                                  pw.Container(
+                                    width: 70, // Define width instead of Expanded
+                                    decoration: const pw.BoxDecoration(
+                                      border: pw.Border(
+                                        right: pw.BorderSide(color: PdfColors.grey700),
+                                        top: pw.BorderSide(color: PdfColors.grey700),
+                                        left: pw.BorderSide(color: PdfColors.grey700),
+                                      ),
+                                    ),
+                                    child: pw.Center(child: regular('amount', 10)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      pw.Container(
+                        height: 38,
+                        child: pw.Column(
+                          children: [
+                            pw.Container(
+                              height: 19, // Replace Expanded with defined height
+                              child: pw.Center(child: regular('SGST', 10)),
+                            ),
+                            pw.Container(
+                              height: 19, // Define height instead of Expanded
+                              child: pw.Row(
+                                children: [
+                                  pw.Container(
+                                    width: 40, // Define width instead of Expanded
+                                    decoration: const pw.BoxDecoration(
+                                      border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700)),
+                                    ),
+                                    child: pw.Center(child: regular('%', 10)),
+                                  ),
+                                  pw.Container(
+                                    width: 70, // Define width instead of Expanded
+                                    decoration: const pw.BoxDecoration(
+                                      border: pw.Border(
+                                        right: pw.BorderSide(color: PdfColors.grey700),
+                                        top: pw.BorderSide(color: PdfColors.grey700),
+                                        left: pw.BorderSide(color: PdfColors.grey700),
+                                      ),
+                                    ),
+                                    child: pw.Center(child: regular('amount', 10)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  pw.ListView.builder(
+                    itemCount: quote_gstTotals.length, // Number of items in the list
+                    itemBuilder: (context, index) {
+                      return pw.Row(
+                        children: [
+                          pw.Container(
+                            decoration: const pw.BoxDecoration(
+                              border: pw.Border(
+                                right: pw.BorderSide(color: PdfColors.grey700),
+                                top: pw.BorderSide(color: PdfColors.grey700),
+                              ),
+                            ),
+                            width: 80,
+                            height: 38,
+                            child: pw.Center(child: regular(formatzero(quote_gstTotals[index].total), 10)),
+                          ),
+                          pw.Container(
+                            height: 38,
+                            child: pw.Row(
+                              children: [
+                                pw.Container(
+                                  decoration: const pw.BoxDecoration(
+                                    border: pw.Border(
+                                      top: pw.BorderSide(color: PdfColors.grey700),
+                                    ),
+                                  ),
+                                  width: 40, // Define width instead of Expanded
+                                  child: pw.Center(
+                                    child: regular((quote_gstTotals[index].gst / 2).toString(), 10),
+                                  ),
+                                ),
+                                pw.Container(
+                                  width: 70, // Define width instead of Expanded
+                                  decoration: const pw.BoxDecoration(
+                                    border: pw.Border(
+                                      right: pw.BorderSide(color: PdfColors.grey700),
+                                      top: pw.BorderSide(color: PdfColors.grey700),
+                                      left: pw.BorderSide(color: PdfColors.grey700),
+                                    ),
+                                  ),
+                                  child: pw.Center(
+                                    child: regular(
+                                        formatzero(
+                                          ((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst / 2)),
+                                        ),
+                                        10),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          pw.Container(
+                            height: 38,
+                            child: pw.Row(
+                              children: [
+                                pw.Container(
+                                  decoration: const pw.BoxDecoration(
+                                    border: pw.Border(
+                                      top: pw.BorderSide(color: PdfColors.grey700),
+                                    ),
+                                  ),
+                                  width: 40, // Define width instead of Expanded
+                                  child: pw.Center(child: regular((quote_gstTotals[index].gst / 2).toString(), 10)),
+                                ),
+                                pw.Container(
+                                  width: 70, // Define width instead of Expanded
+                                  decoration: const pw.BoxDecoration(
+                                    border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700)),
+                                  ),
+                                  child: pw.Center(child: regular(formatzero(((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst / 2))), 10)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  )
                 ],
               ),
             ),
-
-            // final_amount(context),
+            final_amount(context),
           ],
         ),
-        // pw.Row(
-        //   mainAxisAlignment: pw.MainAxisAlignment.end,
-        //   crossAxisAlignment: pw.CrossAxisAlignment.start,
-        //   children: [
-        //     pw.Expanded(child: pw.Container(), flex: 1),
+        pw.Row(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
+            // pw.Expanded(child: pw.Container(), flex: 1),
 
-        //     // 995461
-        //     pw.SizedBox(width: 100),
-        //     authorized_signatory(context),
-        //   ],
-        // ),
+            notes(context),
+
+            // 995461
+            pw.SizedBox(width: 100),
+            authorized_signatory(context),
+          ],
+        ),
       ],
     );
   }
@@ -509,7 +607,7 @@ class sub_Quotation {
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
               regular('Sub total   :', 10),
-              regular(formatzero(special_price), 10),
+              regular(formatzero(_total), 10),
             ],
           ),
           pw.SizedBox(height: 8),
@@ -558,12 +656,12 @@ class sub_Quotation {
       child: pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          // pw.SizedBox(height: 30),
+          pw.SizedBox(height: 30),
           pw.Padding(
             child: bold("Note", 12),
             padding: const pw.EdgeInsets.only(left: 0, bottom: 10),
           ),
-          ...List.generate(sub_quote_noteList.length, (index) {
+          ...List.generate(quoteController.quoteModel.Quote_noteList.length, (index) {
             return pw.Padding(
               padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
               child: pw.Row(
@@ -573,7 +671,7 @@ class sub_Quotation {
                   pw.SizedBox(width: 5),
                   pw.Expanded(
                     child: pw.Text(
-                      sub_quote_noteList[index]["notecontent"],
+                      quoteController.quoteModel.Quote_noteList[index],
                       textAlign: pw.TextAlign.start,
                       style: pw.TextStyle(
                         font: Helvetica,
@@ -588,11 +686,11 @@ class sub_Quotation {
             );
           }),
           pw.Padding(
-            padding: const pw.EdgeInsets.only(left: 0, top: 8),
+            padding: const pw.EdgeInsets.only(left: 0, top: 5),
             child: pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                regular("${sub_quote_noteList.length + 1}.", 10),
+                regular("${quoteController.quoteModel.Quote_noteList.length + 1}.", 10),
                 pw.SizedBox(width: 5),
                 pw.Expanded(
                   child: pw.Column(
@@ -645,31 +743,31 @@ class sub_Quotation {
               ],
             ),
           ),
-          if (sub_quote_recommendationList.isNotEmpty)
+          if (quoteController.quoteModel.Quote_recommendationList.isNotEmpty)
             pw.Padding(
               padding: const pw.EdgeInsets.only(left: 0, top: 5),
               child: pw.Row(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  regular("${sub_quote_noteList.length + 2}.", 10),
+                  regular("${quoteController.quoteModel.Quote_noteList.length + 2}.", 10),
                   pw.SizedBox(width: 5),
                   pw.Expanded(
                     child: pw.Column(
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
-                        bold(sub_quote_table_heading, 10),
-                        ...sub_quote_recommendationList.map((recommendation) {
+                        bold(quoteController.quoteModel.Quote_table_heading.value, 10),
+                        ...quoteController.quoteModel.Quote_recommendationList.map((recommendation) {
                           return pw.Padding(
                             padding: const pw.EdgeInsets.only(left: 5, top: 5),
                             child: pw.Row(
                               children: [
                                 pw.Container(
                                   width: 120,
-                                  child: regular(recommendation["key"].toString(), 10),
+                                  child: regular(recommendation.key.toString(), 10),
                                 ),
                                 regular(":", 10),
                                 pw.SizedBox(width: 5),
-                                regular(recommendation["value"].toString(), 10),
+                                regular(recommendation.value.toString(), 10),
                               ],
                             ),
                           );
@@ -695,8 +793,8 @@ class sub_Quotation {
             height: 30,
           ),
           pw.Container(
-            height: 90,
-            width: 185,
+            height: 70,
+            width: 250,
             decoration: const pw.BoxDecoration(
               border: pw.Border(
                 top: pw.BorderSide(
@@ -760,37 +858,5 @@ class sub_Quotation {
         )
       ],
     );
-  }
-}
-
-class sub_Product {
-  const sub_Product(
-    this.sno,
-    this.package,
-    this.regular_price,
-    this.special_price,
-    this.gst,
-  );
-
-  final String sno;
-  final String package;
-  final double regular_price;
-  final double special_price;
-  final double gst;
-
-  String getIndex(int index) {
-    switch (index) {
-      case 0:
-        return sno;
-      case 1:
-        return package;
-      case 2:
-        return regular_price.toString();
-      case 3:
-        return special_price.toString();
-      case 4:
-        return gst.toString();
-    }
-    return '';
   }
 }

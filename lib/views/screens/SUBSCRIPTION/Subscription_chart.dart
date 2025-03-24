@@ -65,7 +65,7 @@ class SubscriptionChartState extends State<SubscriptionChart> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Indicator(
-                color: const Color.fromARGB(255, 128, 240, 209),
+                color: Color.fromARGB(255, 128, 184, 240),
                 text: 'Completed',
                 isSquare: true,
               ),
@@ -129,7 +129,7 @@ class SubscriptionChartState extends State<SubscriptionChart> {
   Color getColor(int index) {
     switch (index) {
       case 0:
-        return const Color.fromARGB(255, 128, 240, 209); // Completed
+        return const Color.fromARGB(255, 128, 184, 240); // Completed
       case 1:
         return const Color.fromARGB(255, 251, 123, 155); // Pending
       default:

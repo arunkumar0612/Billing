@@ -1,48 +1,54 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+
+import 'package:ssipl_billing/models/entities/SUBSCRIPTION/SUBSCRIPTION_Sites_entities.dart';
+
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:image/image.dart' as img;
+import '../../../../controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_ClientReq_actions.dart';
 
-List<Product> sub_clientreq_products = [];
-//main
-String sub_clientreq_client_addr_name = "";
-String sub_clientreq_client_addr = "";
-String sub_clientreq_bill_addr_name = "";
-String sub_clientreq_bill_addr = "";
-String sub_clientreq_no = "";
-String sub_clientreq_table_heading = "";
-List<Map<String, dynamic>> sub_clientreq_noteList = [];
-List<Map<String, dynamic>> sub_clientreq_recommendationList = [];
-List<Map<String, dynamic>> sub_clientreq_productDetails = [];
-String sub_clientreq_MOR = "";
-String sub_clientreq_GST = "";
-String sub_clientreq_email = "";
-String sub_clientreq_contact_number = "";
-//
-
-Future<Uint8List> generate_sub_clientreq(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, sub_clientreq_num, chosen_filepath) async {
-  final sub_clientreq = Request_for_quote(products: products, baseColor: PdfColors.green500, accentColor: PdfColors.blueGrey900, client_addr_name: client_addr_name, client_addr: client_addr, bill_addr_name: bill_addr_name, bill_addr: bill_addr, sub_clientreq: sub_clientreq_num ?? "", type: '', imagePath: chosen_filepath);
-
-  return await sub_clientreq.buildPdf(pageFormat);
+Future<Uint8List> generateClientReq({
+  required PdfPageFormat pageFormat,
+  required List<SUBSCRIPTION_ClientreqSites> sites,
+  required String clientAddrName,
+  required String clientAddr,
+  required String billAddrName,
+  required String billAddr,
+  required String chosenFilepath,
+}) async {
+  final clientreq = SUBSCRIPTION_Client_requirement(
+      sites: sites,
+      baseColor: PdfColors.green500,
+      accentColor: PdfColors.blueGrey900,
+      client_addr_name: clientAddrName,
+      client_addr: clientAddr,
+      bill_addr_name: billAddrName,
+      bill_addr: billAddr,
+      imagePath: chosenFilepath);
+  return await clientreq.buildPdf(pageFormat);
 }
 
-class Request_for_quote {
-  Request_for_quote({required this.products, required this.baseColor, required this.accentColor, required this.client_addr_name, required this.client_addr, required this.bill_addr_name, required this.bill_addr, required this.sub_clientreq, required this.type, required this.imagePath
-      // required this.items,
-      });
+class SUBSCRIPTION_Client_requirement {
+  SUBSCRIPTION_Client_requirement(
+      {required this.sites,
+      required this.baseColor,
+      required this.accentColor,
+      required this.client_addr_name,
+      required this.client_addr,
+      required this.bill_addr_name,
+      required this.bill_addr,
+      required this.imagePath});
+  final SUBSCRIPTION_ClientreqController clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
+
   String client_addr_name = "";
   String client_addr = "";
   String bill_addr_name = "";
   String bill_addr = "";
-  String sub_clientreq = "";
-
-  String type = "";
-
-  final List<Product> products;
+  final List<SUBSCRIPTION_ClientreqSites> sites;
   final PdfColor baseColor;
   final PdfColor accentColor;
   static const _darkColor = PdfColors.blueGrey800;
@@ -53,26 +59,24 @@ class Request_for_quote {
   String imagePath = "";
 
   Future<void> getImageResolution() async {
-    if (imagePath != "") {
-      var file = File(imagePath);
+    var file = File(imagePath);
 
-      if (await file.exists()) {
-        List<int> imageBytes = await file.readAsBytes();
-        Uint8List uint8List = Uint8List.fromList(imageBytes);
-        img.Image? image = img.decodeImage(uint8List);
+    if (await file.exists()) {
+      List<int> imageBytes = await file.readAsBytes();
+      Uint8List uint8List = Uint8List.fromList(imageBytes);
+      img.Image? image = img.decodeImage(uint8List);
 
-        if (image != null) {
-          {
-            width = image.width;
-            height = image.height;
-          }
-          if (kDebugMode) {
-            print("h:$height , w:$width");
-          }
-        } else {
-          if (kDebugMode) {
-            print('File does not exist at path: $imagePath');
-          }
+      if (image != null) {
+        {
+          width = image.width;
+          height = image.height;
+        }
+        if (kDebugMode) {
+          print("h:$height , w:$width");
+        }
+      } else {
+        if (kDebugMode) {
+          print('File does not exist at path: $imagePath');
         }
       }
     }
@@ -86,11 +90,9 @@ class Request_for_quote {
     profileImage = pw.MemoryImage(
       (await rootBundle.load('assets/images/sporada.jpeg')).buffer.asUint8List(),
     );
-    if (imagePath != "") {
-      final imageBytes = File(imagePath).readAsBytesSync();
+    final imageBytes = File(imagePath).readAsBytesSync();
 
-      mode_of_req = pw.MemoryImage(imageBytes);
-    }
+    mode_of_req = pw.MemoryImage(imageBytes);
     doc.addPage(
       pw.MultiPage(
         pageTheme: pw.PageTheme(
@@ -107,7 +109,7 @@ class Request_for_quote {
           pw.SizedBox(height: 10),
           to_adddr(context),
           pw.SizedBox(height: 10),
-          // _contentTable(context),
+          _contentTable(context),
           pw.SizedBox(height: 20),
           notes(context),
         ],
@@ -134,7 +136,7 @@ class Request_for_quote {
           //   height: 90,
           //   child: pw.Image(profileImage),
           // ),
-          pw.Padding(padding: const pw.EdgeInsets.only(top: 20, bottom: 6), child: bold(sub_clientreq_client_addr_name, 12)),
+          pw.Padding(padding: const pw.EdgeInsets.only(top: 20, bottom: 6), child: bold(clientreqController.clientReqModel.clientNameController.value.text, 12)),
           // bold("SPORADA SECURE PVT LTD", 13),
           pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -161,7 +163,7 @@ class Request_for_quote {
                   ),
                   regular(":", 10),
                   pw.SizedBox(width: 5),
-                  regular(sub_clientreq_contact_number, 10),
+                  regular(clientreqController.clientReqModel.phoneController.value.text, 10),
                 ],
               ),
               pw.SizedBox(height: 5),
@@ -173,7 +175,7 @@ class Request_for_quote {
                   ),
                   regular(":", 10),
                   pw.SizedBox(width: 5),
-                  regular(sub_clientreq_email, 10),
+                  regular(clientreqController.clientReqModel.emailController.value.text, 10),
                 ],
               ),
               pw.SizedBox(height: 5),
@@ -185,7 +187,7 @@ class Request_for_quote {
                   ),
                   regular(":", 10),
                   pw.SizedBox(width: 5),
-                  pw.Container(width: 400, child: regular(sub_clientreq_client_addr, 10)),
+                  pw.Container(width: 400, child: regular(clientreqController.clientReqModel.clientAddressController.value.text, 10)),
                 ],
               ),
               pw.SizedBox(height: 5),
@@ -198,7 +200,7 @@ class Request_for_quote {
                   ),
                   regular(":", 10),
                   pw.SizedBox(width: 5),
-                  pw.Container(width: 400, child: regular(sub_clientreq_GST, 10)),
+                  pw.Container(width: 400, child: regular(clientreqController.clientReqModel.gstController.value.text, 10)),
                 ],
               ),
               pw.SizedBox(height: 5),
@@ -211,9 +213,9 @@ class Request_for_quote {
                   ),
                   regular(":", 10),
                   pw.SizedBox(width: 5),
-                  pw.Container(width: 400, child: regular(sub_clientreq_MOR, 10)),
+                  pw.Container(width: 400, child: regular(clientreqController.clientReqModel.morController.value.text, 10)),
                 ],
-              ),
+              )
             ],
           ),
         ],
@@ -221,12 +223,12 @@ class Request_for_quote {
     );
   }
 
-  // ignore: unused_element
   pw.Widget _contentTable(pw.Context context) {
     const tableHeaders = [
       'S.No',
-      'Item Description',
-      'Quantity',
+      'Site Name',
+      'Camera Quantity',
+      'Site Address',
     ];
 
     return pw.TableHelper.fromTextArray(
@@ -238,10 +240,17 @@ class Request_for_quote {
       ),
       headerHeight: 22,
       cellHeight: 30,
+      columnWidths: {
+        0: const pw.FlexColumnWidth(1), // S.No (Smaller width)
+        1: const pw.FlexColumnWidth(3), // Site Name
+        2: const pw.FlexColumnWidth(2), // Camera Quantity
+        3: const pw.FlexColumnWidth(4), // Site Address (Wider)
+      },
       cellAlignments: {
-        0: pw.Alignment.centerLeft,
+        0: pw.Alignment.center, // Align numbers to center
         1: pw.Alignment.centerLeft,
-        2: pw.Alignment.center,
+        2: pw.Alignment.center, // Align quantity to center
+        3: pw.Alignment.centerLeft,
       },
       headerStyle: pw.TextStyle(
         font: Helvetica_bold,
@@ -273,11 +282,13 @@ class Request_for_quote {
         (col) => tableHeaders[col],
       ),
       data: List<List<String>>.generate(
-        products.length,
-        (row) => List<String>.generate(
-          tableHeaders.length,
-          (col) => products[row].getIndex(col),
-        ),
+        sites.length,
+        (row) => [
+          (row + 1).toString(), // Generate row number (S.No)
+          sites[row].siteName.toString(), // Item Description
+          sites[row].cameraquantity.toString(), // Quantity
+          sites[row].siteAddress.toString(), // Total
+        ],
       ),
     );
   }
@@ -296,7 +307,7 @@ class Request_for_quote {
               child: bold("Note", 12),
               padding: const pw.EdgeInsets.only(left: 0, bottom: 10),
             ),
-            ...List.generate(sub_clientreq_noteList.length, (index) {
+            ...List.generate(clientreqController.clientReqModel.clientReqNoteList.length, (index) {
               return pw.Padding(
                 padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
                 child: pw.Row(
@@ -306,7 +317,7 @@ class Request_for_quote {
                     pw.SizedBox(width: 5),
                     pw.Expanded(
                       child: pw.Text(
-                        sub_clientreq_noteList[index]["notecontent"],
+                        clientreqController.clientReqModel.clientReqNoteList[index],
                         textAlign: pw.TextAlign.start,
                         style: pw.TextStyle(
                           font: Helvetica,
@@ -324,7 +335,7 @@ class Request_for_quote {
         ),
       ),
       pw.SizedBox(height: 10),
-      if (imagePath != "") modeOf_request(context),
+      modeOf_request(context),
       pw.SizedBox(width: 10),
     ]);
   }
@@ -371,38 +382,13 @@ class Request_for_quote {
                 child: bold('SPORADA SECURE INDIA PRIVATE LIMITED', 12),
               ),
               regular('687/7, 3rd Floor, Sakthivel Towers, Trichy road, Ramanathapuram, Coimbatore - 641045', 8),
-              regular('Telephone: +91-422-2312363, E-mail: Subscription@sporadasecure.com, Website: www.sporadasecure.com', 8),
+              regular('Telephone: +91-422-2312363, E-mail: sales@sporadasecure.com, Website: www.sporadasecure.com', 8),
               pw.SizedBox(height: 2),
               regular('CIN: U30007TZ2020PTC03414  |  GSTIN: 33ABECS0625B1Z0', 8),
             ],
           ),
-        )
+        ),
       ],
     );
-  }
-}
-
-class Product {
-  const Product(
-    this.sno,
-    this.productName,
-    this.quantity,
-  );
-
-  final String sno;
-  final String productName;
-
-  final int quantity;
-
-  String getIndex(int index) {
-    switch (index) {
-      case 0:
-        return sno;
-      case 1:
-        return productName;
-      case 2:
-        return quantity.toString();
-    }
-    return '';
   }
 }

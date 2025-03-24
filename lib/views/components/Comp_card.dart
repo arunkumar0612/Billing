@@ -13,10 +13,20 @@ class CompanyCard extends StatefulWidget with HierarchyService {
   final int index;
   final CompanyResponse data;
   final HierarchyController controller;
-  final isSelected;
+  final bool isSelected;
+  final String type;
 
   CompanyCard(
-      {super.key, required this.name, required this.email, required this.id, required this.imageBytes, required this.index, required this.data, required this.controller, required this.isSelected});
+      {super.key,
+      required this.name,
+      required this.email,
+      required this.id,
+      required this.imageBytes,
+      required this.index,
+      required this.data,
+      required this.controller,
+      required this.isSelected,
+      required this.type});
 
   @override
   State<CompanyCard> createState() => _CompanyCardState();
@@ -85,7 +95,7 @@ class _CompanyCardState extends State<CompanyCard> {
         child: GestureDetector(
           onTap: () {
             // WidgetsBinding.instance.addPostFrameCallback((_) {
-            widget.controller.onCompSelected(widget.data, widget.index);
+            widget.controller.onCompSelected(widget.data, widget.index, widget.type);
             // });
           },
           child: Card(

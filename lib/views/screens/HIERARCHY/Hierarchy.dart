@@ -7,11 +7,13 @@ import 'package:ssipl_billing/themes/style.dart';
 import 'package:google_fonts/google_fonts.dart'; // For custom fonts
 import 'package:ssipl_billing/views/screens/HIERARCHY/CompGrid.dart';
 import 'package:ssipl_billing/views/screens/HIERARCHY/IndGrid.dart';
+import 'package:ssipl_billing/views/screens/HIERARCHY/CompEditor.dart';
+import 'package:ssipl_billing/views/screens/HIERARCHY/OrgEditor.dart';
 import 'package:ssipl_billing/views/screens/HIERARCHY/OrgGid.dart'; // For advanced grid layouts
 
 class Enterprise_Hierarchy extends StatefulWidget with HierarchyService {
   Enterprise_Hierarchy({super.key});
-  static var widget_type = 1.obs;
+
   @override
   State<Enterprise_Hierarchy> createState() => _Enterprise_HierarchyState();
 }
@@ -19,17 +21,6 @@ class Enterprise_Hierarchy extends StatefulWidget with HierarchyService {
 class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with SingleTickerProviderStateMixin {
   final HierarchyController hierarchyController = Get.find<HierarchyController>();
   // Original lists
-
-  @override
-  void dispose() {
-    Enterprise_Hierarchy.widget_type.value = 1;
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void didChangeDependencies() {
@@ -157,144 +148,8 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
                           );
                         },
                         child: hierarchyController.hierarchyModel.DataPageView.value
-                            ? SizedBox(
-                                key: const ValueKey(1),
-                                width: screenWidth * 0.3, // Define a width
-                                child: const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text("Key1 : "),
-                                        Expanded(
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              border: OutlineInputBorder(),
-                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text("Key2 : "),
-                                        Expanded(
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              border: OutlineInputBorder(),
-                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text("Key3 : "),
-                                        Expanded(
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              border: OutlineInputBorder(),
-                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text("Key4 : "),
-                                        Expanded(
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              border: OutlineInputBorder(),
-                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text("Key5 : "),
-                                        Expanded(
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              border: OutlineInputBorder(),
-                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text("Key6 : "),
-                                        Expanded(
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              border: OutlineInputBorder(),
-                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text("Key7 : "),
-                                        Expanded(
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              border: OutlineInputBorder(),
-                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text("Key8 : "),
-                                        Expanded(
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              border: OutlineInputBorder(),
-                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text("Key9 : "),
-                                        Expanded(
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              border: OutlineInputBorder(),
-                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text("Key10 : "),
-                                        Expanded(
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              border: OutlineInputBorder(),
-                                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                            ? OrganizationEditor(
+                                screenWidth: screenWidth,
                               )
                             : const SizedBox.shrink(key: ValueKey(0)),
                       );

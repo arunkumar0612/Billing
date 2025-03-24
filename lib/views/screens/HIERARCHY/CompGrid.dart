@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
-import 'package:ssipl_billing/models/entities/Hierarchy_entities.dart';
 import 'package:ssipl_billing/services/Hierarchy_services/hierarchy_service.dart';
 import 'package:ssipl_billing/views/components/Comp_card.dart';
 import 'package:ssipl_billing/views/components/Loading.dart';
@@ -65,7 +64,7 @@ class _CompanyGridState extends State<CompanyGrid> with SingleTickerProviderStat
   //     await Future.delayed(const Duration(milliseconds: 2000));
   //     CompanyGrid.comapanies.clear();
   //     final Map<String, String> headers = {'Content-Type': 'application/json'};
-  //     final requestBody = {"sitetype": 404, "organizationid": 0};
+  //     final requestBody = {"sitetype": 404, "Companyid": 0};
 
   //     final response = await http.post(
   //       Uri.parse("http://192.168.0.200:8080/admin/companylist"),
@@ -180,6 +179,68 @@ class _CompanyGridState extends State<CompanyGrid> with SingleTickerProviderStat
                       data: hierarchyController.hierarchyModel.CompanyList.value,
                       controller: hierarchyController,
                       isSelected: hierarchyController.hierarchyModel.CompanyList.value.Live[index].isSelected,
+                      type: "LIVE",
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+        }),
+        const SizedBox(
+          height: 60,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                height: 1,
+                color: Colors.grey,
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: Text(
+                "DEMO",
+                style: TextStyle(color: Colors.blue),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                height: 1,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 60,
+        ),
+        Obx(() {
+          return Expanded(
+            child: SlideTransition(
+              position: hierarchyController.hierarchyModel.slideAnimation,
+              child: GridView.builder(
+                padding: const EdgeInsets.all(8.0),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: hierarchyController.hierarchyModel.cardCount.value,
+                  crossAxisSpacing: 30,
+                  mainAxisSpacing: 30,
+                ),
+                itemCount: hierarchyController.hierarchyModel.CompanyList.value.Demo.length,
+                itemBuilder: (context, index) {
+                  var org = hierarchyController.hierarchyModel.CompanyList.value.Demo[index];
+                  return GestureDetector(
+                    child: CompanyCard(
+                      name: org.customerName,
+                      id: org.customerId,
+                      email: org.email,
+                      imageBytes: org.customerLogo ?? Uint8List(0),
+                      index: index,
+                      data: hierarchyController.hierarchyModel.CompanyList.value,
+                      controller: hierarchyController,
+                      isSelected: hierarchyController.hierarchyModel.CompanyList.value.Demo[index].isSelected,
+                      type: "DEMO",
                     ),
                   );
                 },

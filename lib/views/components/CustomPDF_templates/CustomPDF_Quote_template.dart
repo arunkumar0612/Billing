@@ -158,7 +158,7 @@ class Quotation {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("SSIPL/INST/250202", 10),
+                            child: regular(estimate, 10),
                           ),
                         ),
                       ],
@@ -437,7 +437,7 @@ class Quotation {
                                 border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700)),
                               ),
                               height: 19, // Replace Expanded with defined height
-                              child: pw.Center(child: regular('CGST', 10)),
+                              child: pw.Center(child: regular('IGST', 10)),
                             ),
                             pw.Container(
                               height: 19, // Define height instead of Expanded
@@ -467,42 +467,42 @@ class Quotation {
                           ],
                         ),
                       ),
-                      pw.Container(
-                        height: 38,
-                        child: pw.Column(
-                          children: [
-                            pw.Container(
-                              height: 19, // Replace Expanded with defined height
-                              child: pw.Center(child: regular('SGST', 10)),
-                            ),
-                            pw.Container(
-                              height: 19, // Define height instead of Expanded
-                              child: pw.Row(
-                                children: [
-                                  pw.Container(
-                                    width: 40, // Define width instead of Expanded
-                                    decoration: const pw.BoxDecoration(
-                                      border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700)),
-                                    ),
-                                    child: pw.Center(child: regular('%', 10)),
-                                  ),
-                                  pw.Container(
-                                    width: 70, // Define width instead of Expanded
-                                    decoration: const pw.BoxDecoration(
-                                      border: pw.Border(
-                                        right: pw.BorderSide(color: PdfColors.grey700),
-                                        top: pw.BorderSide(color: PdfColors.grey700),
-                                        left: pw.BorderSide(color: PdfColors.grey700),
-                                      ),
-                                    ),
-                                    child: pw.Center(child: regular('amount', 10)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // pw.Container(
+                      //   height: 38,
+                      //   child: pw.Column(
+                      //     children: [
+                      //       pw.Container(
+                      //         height: 19, // Replace Expanded with defined height
+                      //         child: pw.Center(child: regular('SGST', 10)),
+                      //       ),
+                      //       pw.Container(
+                      //         height: 19, // Define height instead of Expanded
+                      //         child: pw.Row(
+                      //           children: [
+                      //             pw.Container(
+                      //               width: 40, // Define width instead of Expanded
+                      //               decoration: const pw.BoxDecoration(
+                      //                 border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700)),
+                      //               ),
+                      //               child: pw.Center(child: regular('%', 10)),
+                      //             ),
+                      //             pw.Container(
+                      //               width: 70, // Define width instead of Expanded
+                      //               decoration: const pw.BoxDecoration(
+                      //                 border: pw.Border(
+                      //                   right: pw.BorderSide(color: PdfColors.grey700),
+                      //                   top: pw.BorderSide(color: PdfColors.grey700),
+                      //                   left: pw.BorderSide(color: PdfColors.grey700),
+                      //                 ),
+                      //               ),
+                      //               child: pw.Center(child: regular('amount', 10)),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                   pw.ListView.builder(
@@ -533,7 +533,7 @@ class Quotation {
                                   ),
                                   width: 40, // Define width instead of Expanded
                                   child: pw.Center(
-                                    child: regular((quote_gstTotals[index].gst / 2).toString(), 10),
+                                    child: regular((quote_gstTotals[index].gst).toString(), 10),
                                   ),
                                 ),
                                 pw.Container(
@@ -548,7 +548,7 @@ class Quotation {
                                   child: pw.Center(
                                     child: regular(
                                         formatzero(
-                                          ((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst / 2)),
+                                          ((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst)),
                                         ),
                                         10),
                                   ),
@@ -556,29 +556,29 @@ class Quotation {
                               ],
                             ),
                           ),
-                          pw.Container(
-                            height: 38,
-                            child: pw.Row(
-                              children: [
-                                pw.Container(
-                                  decoration: const pw.BoxDecoration(
-                                    border: pw.Border(
-                                      top: pw.BorderSide(color: PdfColors.grey700),
-                                    ),
-                                  ),
-                                  width: 40, // Define width instead of Expanded
-                                  child: pw.Center(child: regular((quote_gstTotals[index].gst / 2).toString(), 10)),
-                                ),
-                                pw.Container(
-                                  width: 70, // Define width instead of Expanded
-                                  decoration: const pw.BoxDecoration(
-                                    border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700)),
-                                  ),
-                                  child: pw.Center(child: regular(formatzero(((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst / 2))), 10)),
-                                ),
-                              ],
-                            ),
-                          ),
+                          // pw.Container(
+                          //   height: 38,
+                          //   child: pw.Row(
+                          //     children: [
+                          //       pw.Container(
+                          //         decoration: const pw.BoxDecoration(
+                          //           border: pw.Border(
+                          //             top: pw.BorderSide(color: PdfColors.grey700),
+                          //           ),
+                          //         ),
+                          //         width: 40, // Define width instead of Expanded
+                          //         child: pw.Center(child: regular((quote_gstTotals[index].gst / 2).toString(), 10)),
+                          //       ),
+                          //       pw.Container(
+                          //         width: 70, // Define width instead of Expanded
+                          //         decoration: const pw.BoxDecoration(
+                          //           border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700)),
+                          //         ),
+                          //         child: pw.Center(child: regular(formatzero(((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst / 2))), 10)),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                         ],
                       );
                     },
@@ -630,19 +630,19 @@ class Quotation {
             ],
           ),
           pw.SizedBox(height: 8),
+          // pw.Row(
+          //   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     regular('CGST       :', 10),
+          //     regular(formatzero(CGST_total), 10),
+          //   ],
+          // ),
+          // pw.SizedBox(height: 8),
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
-              regular('CGST       :', 10),
-              regular(formatzero(CGST_total), 10),
-            ],
-          ),
-          pw.SizedBox(height: 8),
-          pw.Row(
-            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-            children: [
-              regular('SGST       :', 10),
-              regular(formatzero(CGST_total), 10),
+              regular('IGST       :', 10),
+              regular(formatzero(CGST_total * 2), 10),
             ],
           ),
           pw.SizedBox(height: 8),

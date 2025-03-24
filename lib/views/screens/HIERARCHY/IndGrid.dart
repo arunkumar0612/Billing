@@ -2,13 +2,11 @@
 
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
-import 'package:ssipl_billing/models/entities/Hierarchy_entities.dart';
 import 'package:ssipl_billing/services/Hierarchy_services/hierarchy_service.dart';
 import 'package:ssipl_billing/views/components/Indcard.dart';
 import 'package:ssipl_billing/views/components/Loading.dart';
@@ -58,97 +56,6 @@ class _BranchGridState extends State<BranchGrid> with SingleTickerProviderStateM
   //     widget.get_OrganizationList(context);
   //     widget.get_BranchList(context);
   //   });
-  // }
-
-  // @override
-  // void dispose() {
-  //   _controller.dispose();
-  //   super.dispose();
-  // }
-
-  // Future<void> fetchIndividualList() async {
-  //   try {
-  //     loader.start(context);
-  //     await Future.delayed(const Duration(milliseconds: 1000));
-  //     BranchGrid.branches.clear();
-  //     final headers = {'Content-Type': 'application/json'};
-  //     final requestBody = {"sitetype": 0, "filter": 'ALL', "organizationid": OrgID.value, "companyid": "0"};
-
-  //     final response = await http.post(
-  //       Uri.parse("http://192.168.0.200:8080/admin/sitelist"),
-  //       headers: headers,
-  //       body: json.encode(requestBody),
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       final decodedResponse = json.decode(response.body);
-  //       if (decodedResponse['code'] == true) {
-  //         List<dynamic> branches = decodedResponse['sql'];
-  //         Set<String> individualIdSet = {};
-
-  //         for (int i = 0; i < branches.length; i++) {
-  //           String individualId = branches[i]['Branch_id'].toString();
-  //           if (!individualIdSet.contains(individualId)) {
-  //             individualIdSet.add(individualId);
-
-  //             Uint8List? fileBytes;
-  //             if (branches[i]['Branch_Logo'] != null && branches[i]['Branch_Logo']['data'] != null) {
-  //               try {
-  //                 List<int> logoBytes = List<int>.from(branches[i]['Branch_Logo']['data']);
-  //                 fileBytes = Uint8List.fromList(logoBytes);
-  //               } catch (e) {
-  //                 print("Error parsing logo bytes: $e");
-  //               }
-  //             }
-
-  //             BranchGrid.branches.add(BranchData.fromJson(branches[i]));
-  //           }
-  //         }
-  //       }
-  //     }
-  //     loader.stop();
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
-
-  // Future<void> fetchOrganizationList() async {
-  //   try {
-  //     loader.start(context);
-  //     await Future.delayed(const Duration(milliseconds: 1000));
-  //     BranchGrid.organizations.clear();
-  //     final response = await http.post(
-  //       Uri.parse("http://192.168.0.200:8080/admin/organization"),
-  //       headers: {'Content-Type': 'application/json'},
-  //       body: json.encode({"sitetype": 0}),
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       final decodedResponse = json.decode(response.body);
-  //       if (decodedResponse['code'] == true) {
-  //         Set<String> organizationIdSet = {};
-  //         for (int i = 0; i < decodedResponse['data'].length; i++) {
-  //           String organizationId = decodedResponse['data'][i]['Organization_id'].toString();
-  //           if (!organizationIdSet.contains(organizationId)) {
-  //             organizationIdSet.add(organizationId);
-
-  //             Uint8List? fileBytes;
-  //             if (decodedResponse['data'][i]['Organization_Logo'] != null && decodedResponse['data'][i]['Organization_Logo']['data'] != null) {
-  //               try {
-  //                 fileBytes = Uint8List.fromList(List<int>.from(decodedResponse['data'][i]['Organization_Logo']['data']));
-  //               } catch (e) {
-  //                 print("Error parsing logo bytes: $e");
-  //               }
-  //             }
-  //             BranchGrid.organizations.add(OrganizationData.fromJson(decodedResponse['data'][i]));
-  //           }
-  //         }
-  //       }
-  //     }
-  //     loader.stop();
-  //   } catch (e) {
-  //     print("Error fetching organization list: $e");
-  //   }
   // }
 
   Future<bool> pickFile(BuildContext context, int id) async {
@@ -223,6 +130,68 @@ class _BranchGridState extends State<BranchGrid> with SingleTickerProviderStateM
                       data: hierarchyController.hierarchyModel.BranchList.value,
                       controller: hierarchyController,
                       isSelected: hierarchyController.hierarchyModel.BranchList.value.Live[index].isSelected,
+                      type: "LIVE",
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+        }),
+        const SizedBox(
+          height: 60,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                height: 1,
+                color: Colors.grey,
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: Text(
+                "DEMO",
+                style: TextStyle(color: Colors.blue),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                height: 1,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 60,
+        ),
+        Obx(() {
+          return Expanded(
+            child: SlideTransition(
+              position: hierarchyController.hierarchyModel.slideAnimation,
+              child: GridView.builder(
+                padding: const EdgeInsets.all(8.0),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: hierarchyController.hierarchyModel.cardCount.value,
+                  crossAxisSpacing: 30,
+                  mainAxisSpacing: 30,
+                ),
+                itemCount: hierarchyController.hierarchyModel.BranchList.value.Demo.length,
+                itemBuilder: (context, index) {
+                  var Branch = hierarchyController.hierarchyModel.BranchList.value.Demo[index];
+                  return GestureDetector(
+                    child: BranchCard(
+                      name: Branch.branchName,
+                      id: Branch.branchId,
+                      email: Branch.emailId,
+                      imageBytes: Branch.branchLogo!,
+                      index: index,
+                      data: hierarchyController.hierarchyModel.BranchList.value,
+                      controller: hierarchyController,
+                      isSelected: hierarchyController.hierarchyModel.BranchList.value.Live[index].isSelected,
+                      type: "LIVE",
                     ),
                   );
                 },

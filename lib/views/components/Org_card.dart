@@ -13,9 +13,19 @@ class OrganizationCard extends StatefulWidget with HierarchyService {
   final int index;
   final OrganizationResponse data;
   final HierarchyController controller;
-  final isSelected;
+  final bool isSelected;
+  final String type;
   OrganizationCard(
-      {super.key, required this.name, required this.email, required this.id, required this.imageBytes, required this.index, required this.data, required this.controller, required this.isSelected});
+      {super.key,
+      required this.name,
+      required this.email,
+      required this.id,
+      required this.imageBytes,
+      required this.index,
+      required this.data,
+      required this.controller,
+      required this.isSelected,
+      required this.type});
 
   @override
   State<OrganizationCard> createState() => _OrganizationCardState();
@@ -84,7 +94,7 @@ class _OrganizationCardState extends State<OrganizationCard> {
         child: GestureDetector(
           onTap: () {
             // WidgetsBinding.instance.addPostFrameCallback((_) {
-            widget.controller.onOrgSelected(widget.data, widget.index);
+            widget.controller.onOrgSelected(widget.data, widget.index, widget.type);
             // });
           },
           child: Card(

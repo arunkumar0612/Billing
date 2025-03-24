@@ -30,6 +30,7 @@ mixin HierarchyService {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
           hierarchyController.add_Org(value);
+          // print(hierarchyController.hierarchyModel.OrganizationList.value.Live [0].)
         } else {
           await Basic_dialog(context: context, title: 'Fetch Organization List', content: value.message ?? "", onOk: () {}, showCancel: false);
         }

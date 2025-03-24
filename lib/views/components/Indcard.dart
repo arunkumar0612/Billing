@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:get/state_manager.dart';
 import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/models/entities/Hierarchy_entities.dart';
 import 'package:ssipl_billing/services/Hierarchy_services/hierarchy_service.dart';
@@ -14,10 +13,20 @@ class BranchCard extends StatefulWidget with HierarchyService {
   final int index;
   final BranchResponse data;
   final HierarchyController controller;
-  final isSelected;
+  final bool isSelected;
+  final String type;
 
   BranchCard(
-      {super.key, required this.name, required this.email, required this.id, required this.imageBytes, required this.index, required this.data, required this.controller, required this.isSelected});
+      {super.key,
+      required this.name,
+      required this.email,
+      required this.id,
+      required this.imageBytes,
+      required this.index,
+      required this.data,
+      required this.controller,
+      required this.isSelected,
+      required this.type});
 
   @override
   State<BranchCard> createState() => _BranchCardState();
@@ -86,7 +95,7 @@ class _BranchCardState extends State<BranchCard> {
         child: GestureDetector(
           onTap: () {
             // WidgetsBinding.instance.addPostFrameCallback((_) {
-            widget.controller.onBranchSelected(widget.data, widget.index);
+            widget.controller.onBranchSelected(widget.data, widget.index, widget.type);
             // });
           },
           child: Card(

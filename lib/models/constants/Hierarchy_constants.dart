@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/models/entities/Hierarchy_entities.dart';
 
 class HierarchyModel extends GetxController with GetSingleTickerProviderStateMixin {
-  var organizations = <Map<String, dynamic>>[].obs;
   late AnimationController controller;
   late Animation<Offset> slideAnimation;
   var DataPageView = false.obs;

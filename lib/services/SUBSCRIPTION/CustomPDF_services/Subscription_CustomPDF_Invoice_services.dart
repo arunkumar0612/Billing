@@ -39,7 +39,7 @@ class SUBSCRIPTION_CustomPDF_Services {
             return accumulator;
           })
           .entries
-          .map((entry) => SUBSCRIPTION_InvoiceGSTtotals(
+          .map((entry) => SUBSCRIPTION_invoiceInvoiceGSTtotals(
                 gst: entry.key,
                 total: entry.value,
               ))

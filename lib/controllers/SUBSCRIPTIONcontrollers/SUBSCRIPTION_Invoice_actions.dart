@@ -245,7 +245,7 @@ class SUBSCRIPTION_InvoiceController extends GetxController {
 
   void addRecommendation({required String key, required String value}) {
     if (key.isNotEmpty && value.isNotEmpty) {
-      invoiceModel.Invoice_recommendationList.add(SUBSCRIPTION_Recommendation(key: key, value: value));
+      invoiceModel.Invoice_recommendationList.add(SUBSCRIPTION_invoiceRecommendation(key: key, value: value));
     } else {
       if (kDebugMode) {
         print('Key and value must not be empty');
@@ -260,7 +260,7 @@ class SUBSCRIPTION_InvoiceController extends GetxController {
   }) {
     if (index >= 0 && index < invoiceModel.Invoice_recommendationList.length) {
       if (key.isNotEmpty && value.isNotEmpty) {
-        invoiceModel.Invoice_recommendationList[index] = SUBSCRIPTION_Recommendation(key: key, value: value);
+        invoiceModel.Invoice_recommendationList[index] = SUBSCRIPTION_invoiceRecommendation(key: key, value: value);
       } else {
         if (kDebugMode) {
           print('Key and value must not be empty');
@@ -380,7 +380,7 @@ class SUBSCRIPTION_InvoiceController extends GetxController {
 
   void add_productSuggestion(List<dynamic> suggestionList) {
     for (var item in suggestionList) {
-      invoiceModel.Invoice_productSuggestion.add(SUBSCRIPTION_SiteSuggestion.fromJson(item));
+      invoiceModel.Invoice_productSuggestion.add(SUBSCRIPTION_invoiceSiteSuggestion.fromJson(item));
       if (kDebugMode) {
         print(invoiceModel.Invoice_productSuggestion[0].siteName);
       }
@@ -415,7 +415,7 @@ class SUBSCRIPTION_InvoiceController extends GetxController {
   }
 
   void update_requiredData(CMDmResponse value) {
-    SUBSCRIPTION_RequiredData instance = SUBSCRIPTION_RequiredData.fromJson(value);
+    SUBSCRIPTION_invoiceRequiredData instance = SUBSCRIPTION_invoiceRequiredData.fromJson(value);
     invoiceModel.Invoice_no.value = instance.eventnumber;
     updateInvoicenumber(instance.eventnumber);
     updateTitle(instance.title!);

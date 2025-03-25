@@ -523,29 +523,9 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                 cursor: SystemMouseCursors.click,
                                                 child: _buildIconWithLabel(
                                                   image: 'assets/images/invoice1.png',
-                                                  label: 'Manual List',
+                                                  label: 'Package',
                                                   color: Primary_colors.Color4,
-                                                  onPressed: () {
-                                                    showModalBottomSheet(
-                                                      barrierColor: const Color.fromARGB(244, 11, 15, 26),
-                                                      enableDrag: true,
-                                                      backgroundColor: Colors.transparent,
-                                                      context: context,
-                                                      shape: const RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.vertical(
-                                                          top: Radius.circular(20),
-                                                        ),
-                                                      ),
-                                                      builder: (BuildContext context) {
-                                                        return SizedBox(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 70, right: 70),
-                                                            child: _manualcreation_list(),
-                                                          ),
-                                                        );
-                                                      },
-                                                    );
-                                                  },
+                                                  onPressed: () {},
                                                 ),
                                               ),
                                             ),
@@ -630,7 +610,26 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                               inst_CustomPDF_Services.assign_GSTtotals();
                                                               inst.showA4StyledPopup(context);
                                                               break;
-                                                            case 'Option2':
+                                                            case 'Custom List':
+                                                              showModalBottomSheet(
+                                                                barrierColor: const Color.fromARGB(244, 11, 15, 26),
+                                                                enableDrag: true,
+                                                                backgroundColor: Colors.transparent,
+                                                                context: context,
+                                                                shape: const RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.vertical(
+                                                                    top: Radius.circular(20),
+                                                                  ),
+                                                                ),
+                                                                builder: (BuildContext context) {
+                                                                  return SizedBox(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.only(left: 70, right: 70),
+                                                                      child: _manualcreation_list(),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              );
                                                               if (kDebugMode) {
                                                                 // print('Option2');
                                                               }
@@ -662,10 +661,10 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                               ),
                                                             ),
                                                             const PopupMenuItem<String>(
-                                                              value: 'Option2',
+                                                              value: 'Custom List',
                                                               child: ListTile(
                                                                 leading: Icon(Icons.edit_outlined, color: Colors.green),
-                                                                title: Text('Option2', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                                                title: Text('Custom List', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
                                                               ),
                                                             ),
                                                             const PopupMenuItem<String>(

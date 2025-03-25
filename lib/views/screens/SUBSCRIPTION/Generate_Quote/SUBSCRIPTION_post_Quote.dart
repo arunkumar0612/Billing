@@ -4,28 +4,30 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
-import 'package:ssipl_billing/services/SALES/Quotation_services/QuotePost_services.dart';
+
+import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Quote_actions.dart';
+import 'package:ssipl_billing/services/SUBSCRIPTION/CustomPDF_services/SUBSCRIPTION_PostAll_services.dart';
+
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
-import 'package:ssipl_billing/views/components/Loading.dart';
+// import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:path/path.dart' as path;
 
 // ignore: must_be_immutable
-class PostQuote extends StatefulWidget with PostServices {
+class SUBSCRIPTION_PostQuote extends StatefulWidget with SUBSCRIPTION_PostServices {
   String type;
-  PostQuote({super.key, required this.type, required this.eventtype});
+  SUBSCRIPTION_PostQuote({super.key, required this.type, required this.eventtype});
   String eventtype;
   @override
-  State<PostQuote> createState() => PostQuoteState();
+  State<SUBSCRIPTION_PostQuote> createState() => SUBSCRIPTION_PostQuoteState();
 }
 
-class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixin {
+class SUBSCRIPTION_PostQuoteState extends State<SUBSCRIPTION_PostQuote> with SingleTickerProviderStateMixin {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
-  final QuoteController quoteController = Get.find<QuoteController>();
+  final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
 
   @override
   void initState() {
@@ -711,7 +713,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                                   text: "Send",
                                   colors: Colors.blue,
                                   onPressed: () {
-                                    showLoading(context, () => widget.postData(context, quoteController.fetch_messageType(), widget.eventtype));
+                                    // showLoading(context, () => widget.postData(context, quoteController.fetch_messageType(), widget.eventtype));
                                   })),
                         )
                       ],

@@ -31,8 +31,8 @@ class SUBSCRIPTION_InvoiceModel extends GetxController with GetSingleTickerProvi
   final quantityController = TextEditingController().obs;
   final gstController = TextEditingController().obs;
   var Invoice_products = <SUBSCRIPTION_InvoiceSite>[].obs;
-  var Invoice_productSuggestion = <SUBSCRIPTION_SiteSuggestion>[].obs;
-  var Invoice_gstTotals = <SUBSCRIPTION_InvoiceGSTtotals>[].obs;
+  var Invoice_productSuggestion = <SUBSCRIPTION_invoiceSiteSuggestion>[].obs;
+  var Invoice_gstTotals = <SUBSCRIPTION_invoiceInvoiceGSTtotals>[].obs;
 
   // NOTES
   final noteformKey = GlobalKey<FormState>().obs;
@@ -45,7 +45,7 @@ class SUBSCRIPTION_InvoiceModel extends GetxController with GetSingleTickerProvi
   final recommendationKeyController = TextEditingController().obs;
   final recommendationValueController = TextEditingController().obs;
   var Invoice_noteList = [].obs;
-  var Invoice_recommendationList = <SUBSCRIPTION_Recommendation>[].obs;
+  var Invoice_recommendationList = <SUBSCRIPTION_invoiceRecommendation>[].obs;
   final noteSuggestion = <String>[].obs;
 
   // POST

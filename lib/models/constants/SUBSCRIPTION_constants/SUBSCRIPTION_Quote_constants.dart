@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
-import '../../entities/SALES/Quote_entities.dart';
+import 'package:ssipl_billing/models/entities/SUBSCRIPTION/SUBSCRIPTION_Sites_entities.dart';
+import '../../entities/SUBSCRIPTION/SUBSCRIPTION_Quote_entities.dart';
 
 class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProviderStateMixin {
   final Rxn<TabController> tabController = Rxn<TabController>();
@@ -22,15 +22,15 @@ class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProvide
   final detailsKey = GlobalKey<FormState>().obs;
 
   // PRODUCTS
-  final productKey = GlobalKey<FormState>().obs;
-  final product_editIndex = Rxn<int>();
-  final productNameController = TextEditingController().obs;
+  final siteKey = GlobalKey<FormState>().obs;
+  final site_editIndex = Rxn<int>();
+  final siteNameController = TextEditingController().obs;
   final hsnController = TextEditingController().obs;
   final priceController = TextEditingController().obs;
   final quantityController = TextEditingController().obs;
   final gstController = TextEditingController().obs;
-  var Quote_products = <QuoteProduct>[].obs;
-  var Quote_gstTotals = <QuoteGSTtotals>[].obs;
+  var Quote_sites = <SUBSCRIPTION_QuoteSite>[].obs;
+  var Quote_gstTotals = <SUBSCRIPTION_QuoteGSTtotals>[].obs;
 
   // NOTES
   final noteformKey = GlobalKey<FormState>().obs;
@@ -43,7 +43,7 @@ class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProvide
   final recommendationKeyController = TextEditingController().obs;
   final recommendationValueController = TextEditingController().obs;
   var Quote_noteList = [].obs;
-  var Quote_recommendationList = <Recommendation>[].obs;
+  var Quote_recommendationList = <SUBSCRIPTION_QuoteRecommendation>[].obs;
   final notecontent = <String>[
     'Delivery within 30 working days from the date of issuing the PO.',
     'Payment terms : 100% along with PO.',

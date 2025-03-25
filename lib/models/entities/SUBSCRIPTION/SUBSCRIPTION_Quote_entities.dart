@@ -1,17 +1,17 @@
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 import 'package:ssipl_billing/models/entities/SUBSCRIPTION/SUBSCRIPTION_Sites_entities.dart';
 
-class SUBSCRIPTION_invoiceRecommendation {
+class SUBSCRIPTION_QuoteRecommendation {
   final String key;
   final String value;
 
-  SUBSCRIPTION_invoiceRecommendation({
+  SUBSCRIPTION_QuoteRecommendation({
     required this.key,
     required this.value,
   });
 
-  factory SUBSCRIPTION_invoiceRecommendation.fromJson(Map<String, dynamic> json) {
-    return SUBSCRIPTION_invoiceRecommendation(
+  factory SUBSCRIPTION_QuoteRecommendation.fromJson(Map<String, dynamic> json) {
+    return SUBSCRIPTION_QuoteRecommendation(
       key: json['key'] as String,
       value: json['value'] as String,
     );
@@ -42,17 +42,18 @@ class SUBSCRIPTION_invoiceRecommendation {
 //     };
 //   }
 // }
-class SUBSCRIPTION_invoiceInvoiceGSTtotals {
+
+class SUBSCRIPTION_QuoteGSTtotals {
   final double gst;
   final double total;
 
-  SUBSCRIPTION_invoiceInvoiceGSTtotals({
+  SUBSCRIPTION_QuoteGSTtotals({
     required this.gst,
     required this.total,
   });
 
-  factory SUBSCRIPTION_invoiceInvoiceGSTtotals.fromJson(Map<String, dynamic> json) {
-    return SUBSCRIPTION_invoiceInvoiceGSTtotals(gst: json['GST'], total: json['total']);
+  factory SUBSCRIPTION_QuoteGSTtotals.fromJson(Map<String, dynamic> json) {
+    return SUBSCRIPTION_QuoteGSTtotals(gst: json['GST'], total: json['total']);
   }
 
   Map<String, dynamic> toJson() {
@@ -63,7 +64,7 @@ class SUBSCRIPTION_invoiceInvoiceGSTtotals {
   }
 }
 
-class SUBSCRIPTION_invoiceRequiredData {
+class SUBSCRIPTION_QuoteRequiredData {
   final String eventnumber;
   final String? title;
   final String? name;
@@ -73,21 +74,20 @@ class SUBSCRIPTION_invoiceRequiredData {
   final String? gst;
   final String? billingAddressName;
   final String? billingAddress;
-  final List<SUBSCRIPTION_InvoiceSite> site;
-  SUBSCRIPTION_invoiceRequiredData(
-      {required this.eventnumber,
-      required this.title,
-      required this.name,
-      required this.emailId,
-      required this.phoneNo,
-      required this.address,
-      required this.gst,
-      required this.billingAddressName,
-      required this.billingAddress,
-      required this.site});
+  SUBSCRIPTION_QuoteRequiredData({
+    required this.eventnumber,
+    required this.title,
+    required this.name,
+    required this.emailId,
+    required this.phoneNo,
+    required this.address,
+    required this.gst,
+    required this.billingAddressName,
+    required this.billingAddress,
+  });
 
-  factory SUBSCRIPTION_invoiceRequiredData.fromJson(CMDmResponse json) {
-    return SUBSCRIPTION_invoiceRequiredData(
+  factory SUBSCRIPTION_QuoteRequiredData.fromJson(CMDmResponse json) {
+    return SUBSCRIPTION_QuoteRequiredData(
       eventnumber: json.data['eventnumber'] as String,
       title: json.data['title'] as String,
       name: json.data['client_addressname'] as String,
@@ -97,9 +97,6 @@ class SUBSCRIPTION_invoiceRequiredData {
       gst: json.data['gstnumber'] as String,
       billingAddressName: json.data['billingaddress_name'] as String,
       billingAddress: json.data['billing_address'] as String,
-      site: (json.data['site'] as List<dynamic>)
-          .map((e) => SUBSCRIPTION_InvoiceSite.fromJson(e)) // ✅ Convert each item to InvoiceSite
-          .toList(),
     );
   }
   Map<String, dynamic> toJson() {
@@ -109,7 +106,7 @@ class SUBSCRIPTION_invoiceRequiredData {
   }
 }
 
-class SUBSCRIPTION_invoicePost_Invoice {
+class SUBSCRIPTION_QuotePost_Quotation {
   String? title;
   int? processid;
   String? ClientAddressname;
@@ -119,16 +116,17 @@ class SUBSCRIPTION_invoicePost_Invoice {
   String? gst;
   String? billingAddressName;
   String? billingAddress;
-  List<SUBSCRIPTION_InvoiceSite>? site;
-  List notes;
+  String? modeOfRequest;
+  String? morReference;
+  List<SUBSCRIPTION_QuoteSite>? site;
+  List? notes;
   String? date;
-  String? invoiceGenID;
+  String? quotationGenID;
   int? messageType;
   String? feedback;
   String? ccEmail;
-  double? total_amount;
 
-  SUBSCRIPTION_invoicePost_Invoice({
+  SUBSCRIPTION_QuotePost_Quotation({
     required this.title,
     required this.processid,
     required this.ClientAddressname,
@@ -141,14 +139,13 @@ class SUBSCRIPTION_invoicePost_Invoice {
     required this.date,
     required this.site,
     required this.notes,
-    required this.invoiceGenID,
+    required this.quotationGenID,
     required this.messageType,
     required this.feedback,
     required this.ccEmail,
-    required this.total_amount,
   });
 
-  factory SUBSCRIPTION_invoicePost_Invoice.fromJson({
+  factory SUBSCRIPTION_QuotePost_Quotation.fromJson({
     required String title,
     required int processid,
     required String ClientAddressname,
@@ -158,16 +155,15 @@ class SUBSCRIPTION_invoicePost_Invoice {
     required String emailId,
     required String phoneNo,
     required String gst,
-    required List<SUBSCRIPTION_InvoiceSite> site,
+    required List<SUBSCRIPTION_QuoteSite> site,
     required List notes,
     required String date,
-    required String invoiceGenID,
+    required String quotationGenID,
     required int messageType,
     required String feedback,
     required String ccEmail,
-    required double total_amount,
   }) {
-    return SUBSCRIPTION_invoicePost_Invoice(
+    return SUBSCRIPTION_QuotePost_Quotation(
         title: title,
         processid: processid,
         ClientAddressname: ClientAddressname,
@@ -180,11 +176,10 @@ class SUBSCRIPTION_invoicePost_Invoice {
         site: site,
         notes: notes,
         date: date,
-        invoiceGenID: invoiceGenID,
+        quotationGenID: quotationGenID,
         messageType: messageType,
         feedback: feedback,
-        ccEmail: ccEmail,
-        total_amount: total_amount);
+        ccEmail: ccEmail);
   }
 
   Map<String, dynamic> toJson() {
@@ -197,49 +192,14 @@ class SUBSCRIPTION_invoicePost_Invoice {
       "billingaddress": billingAddress,
       "emailid": emailId,
       "phoneno": phoneNo,
-      "gst_number": gst,
+      "gst": gst,
       "site": site?.map((item) => item.toJson()).toList(),
       "notes": notes,
       "date": date,
-      "invoicegenid": invoiceGenID,
+      "quotationgenid": quotationGenID,
       "messagetype": messageType,
       "feedback": feedback,
       "ccemail": ccEmail,
-      "invoice_amount": total_amount
-    };
-  }
-}
-
-class SUBSCRIPTION_invoiceSiteSuggestion {
-  final String siteName;
-  final String siteHsn;
-  final double sitePrice;
-  final double siteGst;
-
-  SUBSCRIPTION_invoiceSiteSuggestion({
-    required this.siteName,
-    required this.siteHsn,
-    required this.sitePrice,
-    required this.siteGst,
-  });
-
-  /// Factory method to convert JSON to Site object
-  factory SUBSCRIPTION_invoiceSiteSuggestion.fromJson(Map<String, dynamic> json) {
-    return SUBSCRIPTION_invoiceSiteSuggestion(
-      siteName: json['site_name'] as String,
-      siteHsn: json['site_hsn'].toString(), // Ensure String type
-      sitePrice: (json['site_price'] as num).toDouble(),
-      siteGst: (json['site_gst'] as num).toDouble(),
-    );
-  }
-
-  /// Method to convert Site object to JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'site_name': siteName,
-      'site_hsn': siteHsn,
-      'site_price': sitePrice,
-      'site_gst': siteGst,
     };
   }
 }

@@ -2,22 +2,22 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Quote_actions.dart';
+import 'package:ssipl_billing/services/SUBSCRIPTION/Quotation_services/SUBSCRIPTION_QuoteDetails_service.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-import '../../../../controllers/SALEScontrollers/Quote_actions.dart';
-import '../../../../services/SALES/Quotation_services/QuoteDetails_service.dart';
 
-class QuoteDetails extends StatefulWidget with QuotedetailsService {
-  QuoteDetails({super.key, required this.eventtype, required this.eventID});
+class SUBSCRIPTION_QuoteDetails extends StatefulWidget with SUBSCRIPTION_QuotedetailsService {
+  SUBSCRIPTION_QuoteDetails({super.key, required this.eventtype, required this.eventID});
   int eventID;
   String eventtype;
   @override
-  State<QuoteDetails> createState() => _QuoteDetailsState();
+  State<SUBSCRIPTION_QuoteDetails> createState() => _SUBSCRIPTION_QuoteDetailsState();
 }
 
-class _QuoteDetailsState extends State<QuoteDetails> {
-  final QuoteController quoteController = Get.find<QuoteController>();
+class _SUBSCRIPTION_QuoteDetailsState extends State<SUBSCRIPTION_QuoteDetails> {
+  final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
 
   @override
   void initState() {

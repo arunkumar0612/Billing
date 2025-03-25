@@ -68,6 +68,8 @@ dependencies:
   shimmer: ^3.0.0
   flutter_email_sender: ^7.0.0
   image_picker: ^1.1.2
+  flutter_animate: ^4.5.2
+  glassmorphism: ^3.0.0
 
 dev_dependencies:
   flutter_test:

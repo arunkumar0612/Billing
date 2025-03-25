@@ -9,14 +9,38 @@ import '../../../../controllers/SALEScontrollers/Quote_actions.dart';
 import '../../../../models/entities/SALES/product_entities.dart';
 import '../../../../utils/helpers/support_functions.dart';
 
-Future<Uint8List> generate_Quote(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, quote_gstTotals) async {
-  final quotation = Quotation(products: products, GST: gst.toDouble(), baseColor: PdfColors.green500, accentColor: PdfColors.blueGrey900, client_addr_name: client_addr_name, client_addr: client_addr, bill_addr_name: bill_addr_name, bill_addr: bill_addr, estimate: estimate_num ?? "", title_text: title, type: '', quote_gstTotals: quote_gstTotals);
+Future<Uint8List> SUBSCRIPTION_generate_Quote(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, quote_gstTotals) async {
+  final quotation = SUBSCRIPTION_Quotation(
+      products: products,
+      GST: gst.toDouble(),
+      baseColor: PdfColors.green500,
+      accentColor: PdfColors.blueGrey900,
+      client_addr_name: client_addr_name,
+      client_addr: client_addr,
+      bill_addr_name: bill_addr_name,
+      bill_addr: bill_addr,
+      estimate: estimate_num ?? "",
+      title_text: title,
+      type: '',
+      quote_gstTotals: quote_gstTotals);
 
   return await quotation.buildPdf(pageFormat);
 }
 
-class Quotation {
-  Quotation({required this.products, required this.GST, required this.baseColor, required this.accentColor, required this.client_addr_name, required this.client_addr, required this.bill_addr_name, required this.bill_addr, required this.estimate, required this.title_text, required this.type, required this.quote_gstTotals
+class SUBSCRIPTION_Quotation {
+  SUBSCRIPTION_Quotation(
+      {required this.products,
+      required this.GST,
+      required this.baseColor,
+      required this.accentColor,
+      required this.client_addr_name,
+      required this.client_addr,
+      required this.bill_addr_name,
+      required this.bill_addr,
+      required this.estimate,
+      required this.title_text,
+      required this.type,
+      required this.quote_gstTotals
       // required this.items,
       });
   final QuoteController quoteController = Get.find<QuoteController>();
@@ -305,15 +329,7 @@ class Quotation {
   }
 
   pw.Widget _contentTable(pw.Context context) {
-    const tableHeaders = [
-      'S.No',
-      'Item Description',
-      'HSN',
-      ' GST',
-      'Price   ',
-      'Quantity',
-      'Total   '
-    ];
+    const tableHeaders = ['S.No', 'Item Description', 'HSN', ' GST', 'Price   ', 'Quantity', 'Total   '];
 
     return pw.TableHelper.fromTextArray(
       border: null,

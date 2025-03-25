@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Quote_actions.dart';
+import 'package:ssipl_billing/services/SUBSCRIPTION/Quotation_services/SUBSCRIPTION_QuoteSite_services.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-import '../../../../controllers/SALEScontrollers/Quote_actions.dart';
-import '../../../../services/SALES/Quotation_services/QuoteProduct_services.dart';
 
-class QuoteProducts extends StatefulWidget with QuoteproductService {
-  QuoteProducts({super.key});
+class SUBSCRIPTION_QuoteSites extends StatefulWidget with SUBSCRIPTION_QuotesiteService {
+  SUBSCRIPTION_QuoteSites({super.key});
 
   @override
-  State<QuoteProducts> createState() => _QuoteProductsState();
+  State<SUBSCRIPTION_QuoteSites> createState() => _SUBSCRIPTION_QuoteSitesState();
 }
 
-class _QuoteProductsState extends State<QuoteProducts> {
-  final QuoteController quoteController = Get.find<QuoteController>();
+class _SUBSCRIPTION_QuoteSitesState extends State<SUBSCRIPTION_QuoteSites> {
+  final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
 
-  Widget Quote_productDetailss() {
+  Widget Quote_siteDetailss() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        for (int i = 0; i < quoteController.quoteModel.Quote_products.length; i++)
+        for (int i = 0; i < quoteController.quoteModel.Quote_sites.length; i++)
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
                 onTap: () {
-                  widget.editproduct(i);
+                  widget.editsite(i);
                 },
                 child: Container(
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: Primary_colors.Light),
@@ -45,7 +45,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                             padding: const EdgeInsets.only(left: 10),
                             child: Text(
                               overflow: TextOverflow.ellipsis,
-                              '${i + 1}. ${quoteController.quoteModel.Quote_products[i].productName}', // Display camera type from map
+                              '${i + 1}. ${quoteController.quoteModel.Quote_sites[i].siteName}', // Display camera type from map
                               style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                             ),
                           ),
@@ -54,7 +54,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                           children: [
                             IconButton(
                               onPressed: () {
-                                quoteController.removeFromProductList(i);
+                                quoteController.removeFromsiteList(i);
                               },
                               icon: const Icon(
                                 Icons.close,
@@ -82,7 +82,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Form(
-            key: quoteController.quoteModel.productKey.value,
+            key: quoteController.quoteModel.siteKey.value,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,12 +97,12 @@ class _QuoteProductsState extends State<QuoteProducts> {
                             digitsOnly: false,
                             width: 400,
                             readonly: false,
-                            text: 'Product Name',
-                            controller: quoteController.quoteModel.productNameController.value,
+                            text: 'Site Name',
+                            controller: quoteController.quoteModel.siteNameController.value,
                             icon: Icons.production_quantity_limits,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter Product name';
+                                return 'Please enter Site name';
                               }
                               return null;
                             },
@@ -147,7 +147,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
 
                                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
                                 // labelText: text,
-                                hintText: 'Product GST',
+                                hintText: 'Site GST',
                                 hintStyle: TextStyle(
                                   fontSize: Primary_font_size.Text7,
                                   color: Color.fromARGB(255, 167, 165, 165),
@@ -160,12 +160,10 @@ class _QuoteProductsState extends State<QuoteProducts> {
                               ),
                               controller: quoteController.quoteModel.gstController.value,
                               keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter Product GST';
+                                  return 'Please enter Site GST';
                                 }
                                 return null;
                               },
@@ -192,7 +190,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
 
                                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
                                 // labelText: text,
-                                hintText: 'Product Price',
+                                hintText: 'Site Price',
                                 hintStyle: TextStyle(
                                   fontSize: Primary_font_size.Text7,
                                   color: Color.fromARGB(255, 167, 165, 165),
@@ -205,12 +203,10 @@ class _QuoteProductsState extends State<QuoteProducts> {
                               ),
                               controller: quoteController.quoteModel.priceController.value,
                               keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter Product price';
+                                  return 'Please enter Site price';
                                 }
                                 return null;
                               },
@@ -237,7 +233,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
 
                                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
                                 // labelText: text,
-                                hintText: 'Product Quantity',
+                                hintText: 'Site Quantity',
                                 hintStyle: TextStyle(
                                   fontSize: Primary_font_size.Text7,
                                   color: Color.fromARGB(255, 167, 165, 165),
@@ -248,9 +244,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                                   color: Colors.white,
                                 ),
                               ),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               controller: quoteController.quoteModel.quantityController.value,
                               keyboardType: TextInputType.number,
                               // inputFormatters: [
@@ -258,7 +252,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                               // ],
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter Product Quantity';
+                                  return 'Please enter Site Quantity';
                                 }
                                 return null;
                               },
@@ -275,17 +269,17 @@ class _QuoteProductsState extends State<QuoteProducts> {
                             children: [
                               BasicButton(
                                 colors: Colors.red,
-                                text: quoteController.quoteModel.product_editIndex.value == null ? 'Back' : 'Cancel',
+                                text: quoteController.quoteModel.site_editIndex.value == null ? 'Back' : 'Cancel',
                                 onPressed: () {
-                                  quoteController.quoteModel.product_editIndex.value == null ? quoteController.backTab() : widget.resetEditingState(); // Reset editing state when going back
+                                  quoteController.quoteModel.site_editIndex.value == null ? quoteController.backTab() : widget.resetEditingState(); // Reset editing state when going back
                                 },
                               ),
                               const SizedBox(width: 30),
                               BasicButton(
-                                colors: quoteController.quoteModel.product_editIndex.value == null ? Colors.blue : Colors.orange,
-                                text: quoteController.quoteModel.product_editIndex.value == null ? 'Add product' : 'Update',
+                                colors: quoteController.quoteModel.site_editIndex.value == null ? Colors.blue : Colors.orange,
+                                text: quoteController.quoteModel.site_editIndex.value == null ? 'Add site' : 'Update',
                                 onPressed: () {
-                                  quoteController.quoteModel.product_editIndex.value == null ? widget.addproduct(context) : widget.updateproduct(context);
+                                  quoteController.quoteModel.site_editIndex.value == null ? widget.addsite(context) : widget.updatesite(context);
                                 },
                               ),
                             ],
@@ -297,7 +291,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                         // width: 750,
                         child: Text(
                           textAlign: TextAlign.center,
-                          "The Quotation product details play a crucial role in the procurement process. Please ensure accuracy when entering product names,HSN codes, GST% and quantities, as these details directly impact order processing, inventory management, and subsequent workflows.",
+                          "The Quotation site details play a crucial role in the procurement process. Please ensure accuracy when entering site names,HSN codes, GST% and quantities, as these details directly impact order processing, inventory management, and subsequent workflows.",
                           style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                         ),
                       )
@@ -308,7 +302,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
 
                 Obx(
                   () {
-                    return (quoteController.quoteModel.Quote_products.isNotEmpty)
+                    return (quoteController.quoteModel.Quote_sites.isNotEmpty)
                         ? Expanded(
                             child: Column(
                             children: [
@@ -323,7 +317,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                                   child: Column(
                                     children: [
                                       const Text(
-                                        'Product List',
+                                        'Site List',
                                         style: TextStyle(fontSize: Primary_font_size.Text10, color: Primary_colors.Color1, fontWeight: FontWeight.bold),
                                       ),
                                       const SizedBox(height: 10),
@@ -334,7 +328,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                                           child: SingleChildScrollView(
                                             child: Padding(
                                               padding: const EdgeInsets.all(10),
-                                              child: Quote_productDetailss(),
+                                              child: Quote_siteDetailss(),
                                             ),
                                           ),
                                         ),
@@ -344,7 +338,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                                 ),
                               ),
                               const SizedBox(height: 25),
-                              if (quoteController.quoteModel.Quote_products.isNotEmpty)
+                              if (quoteController.quoteModel.Quote_sites.isNotEmpty)
                                 BasicButton(
                                   colors: Colors.green,
                                   text: 'Submit',

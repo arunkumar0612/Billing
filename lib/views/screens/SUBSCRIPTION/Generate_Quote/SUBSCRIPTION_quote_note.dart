@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Quote_actions.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
-import '../../../../controllers/SALEScontrollers/Quote_actions.dart';
-import '../../../../services/SALES/Quotation_services/QuoteNotes_service.dart';
 
-class QuoteNote extends StatefulWidget with QuotenotesService {
-  QuoteNote({super.key});
+import '../../../../services/SUBSCRIPTION/Quotation_services/SUBSCRIPTION_QuoteNotes_service.dart';
+
+class SUBSCRIPTION_QuoteNote extends StatefulWidget with SUBSCRIPTION_QuotenotesService {
+  SUBSCRIPTION_QuoteNote({super.key});
 
   @override
-  State<QuoteNote> createState() => _QuoteNoteState();
+  State<SUBSCRIPTION_QuoteNote> createState() => _SUBSCRIPTION_QuoteNoteState();
 }
 
-class _QuoteNoteState extends State<QuoteNote> {
-  final QuoteController quoteController = Get.find<QuoteController>();
+class _SUBSCRIPTION_QuoteNoteState extends State<SUBSCRIPTION_QuoteNote> {
+  final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
 
   Widget Quote_noteLists() {
     return ListView.builder(

@@ -44,7 +44,7 @@ class SUBSCRIPTION_CustomPDF_InvoiceModel {
 
   var roundoffDiff = Rxn<String>();
   var textControllers = <List<TextEditingController>>[].obs;
-  var manualInvoice_gstTotals = <SUBSCRIPTION_InvoiceGSTtotals>[].obs;
+  var manualInvoice_gstTotals = <SUBSCRIPTION_invoiceInvoiceGSTtotals>[].obs;
   var manualInvoicesites =
       <Site>[Site(siteName: 'siteName1', address: 'address1', siteID: 'siteID1', monthlyCharges: 100), Site(siteName: 'siteName2', address: 'address2', siteID: 'siteID2', monthlyCharges: 200)].obs;
 

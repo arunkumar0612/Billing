@@ -7,8 +7,8 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/models/constants/SUBSCRIPTION_constants/SUBSCRIPTION_Quote_constants.dart';
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 
-import '../../models/entities/SALES/Quote_entities.dart';
-import '../../models/entities/SALES/product_entities.dart';
+import 'package:ssipl_billing/models/entities/SUBSCRIPTION/SUBSCRIPTION_Quote_entities.dart';
+import 'package:ssipl_billing/models/entities/SUBSCRIPTION/SUBSCRIPTION_Sites_entities.dart';
 
 class SUBSCRIPTION_QuoteController extends GetxController {
   var quoteModel = SUBSCRIPTION_QuoteModel();
@@ -29,8 +29,8 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     }
   }
 
-  void updateProductName(String productName) {
-    quoteModel.productNameController.value.text = productName;
+  void updatesiteName(String siteName) {
+    quoteModel.siteNameController.value.text = siteName;
   }
 
   void updateHSN(int hsn) {
@@ -133,8 +133,8 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     quoteModel.notecontent.add(note);
   }
 
-  void addProductEditindex(int? index) {
-    quoteModel.product_editIndex.value = index;
+  void addsiteEditindex(int? index) {
+    quoteModel.site_editIndex.value = index;
   }
 
   void setProcessID(int processid) {
@@ -242,7 +242,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
 
   void addRecommendation({required String key, required String value}) {
     if (key.isNotEmpty && value.isNotEmpty) {
-      quoteModel.Quote_recommendationList.add(Recommendation(key: key, value: value));
+      quoteModel.Quote_recommendationList.add(SUBSCRIPTION_QuoteRecommendation(key: key, value: value));
     } else {
       if (kDebugMode) {
         print('Key and value must not be empty');
@@ -257,7 +257,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
   }) {
     if (index >= 0 && index < quoteModel.Quote_recommendationList.length) {
       if (key.isNotEmpty && value.isNotEmpty) {
-        quoteModel.Quote_recommendationList[index] = Recommendation(key: key, value: value);
+        quoteModel.Quote_recommendationList[index] = SUBSCRIPTION_QuoteRecommendation(key: key, value: value);
       } else {
         if (kDebugMode) {
           print('Key and value must not be empty');
@@ -280,28 +280,28 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     }
   }
 
-  void addProduct({
+  void addsite({
     required BuildContext context,
-    required String productName,
+    required String siteName,
     required String hsn,
     required double price,
     required int quantity,
     required double gst,
   }) {
     try {
-      if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
+      if (siteName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
-            content: Text('Please provide valid product details.'),
+            content: Text('Please provide valid site details.'),
           ),
         );
         return;
       }
 
-      quoteModel.Quote_products.add(QuoteProduct(
-        sno: (quoteModel.Quote_products.length + 1),
-        productName: productName,
+      quoteModel.Quote_sites.add(SUBSCRIPTION_QuoteSite(
+        sno: (quoteModel.Quote_sites.length + 1),
+        siteName: siteName,
         hsn: int.parse(hsn),
         gst: gst,
         price: price,
@@ -311,16 +311,16 @@ class SUBSCRIPTION_QuoteController extends GetxController {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: Colors.red,
-          content: Text('An error occurred while adding the product.'),
+          content: Text('An error occurred while adding the site.'),
         ),
       );
     }
   }
 
-  void updateProduct({
+  void updatesite({
     required BuildContext context,
     required int editIndex,
-    required String productName,
+    required String siteName,
     required String hsn,
     required double price,
     required int quantity,
@@ -328,39 +328,39 @@ class SUBSCRIPTION_QuoteController extends GetxController {
   }) {
     try {
       // Validate input fields
-      if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
+      if (siteName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
-            content: Text('Please provide valid product details.'),
+            content: Text('Please provide valid site details.'),
           ),
         );
         return;
       }
 
       // Check if the editIndex is valid
-      if (editIndex < 0 || editIndex >= quoteModel.Quote_products.length) {
+      if (editIndex < 0 || editIndex >= quoteModel.Quote_sites.length) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.red,
-            content: Text('Invalid product index.'),
+            content: Text('Invalid site index.'),
           ),
         );
         return;
       }
 
-      // Update the product details at the specified index
-      quoteModel.Quote_products[editIndex] = QuoteProduct(
+      // Update the site details at the specified index
+      quoteModel.Quote_sites[editIndex] = SUBSCRIPTION_QuoteSite(
         sno: (editIndex + 1),
-        productName: productName,
+        siteName: siteName,
         hsn: int.parse(hsn),
         gst: gst,
         price: price,
         quantity: quantity,
       );
 
-      // ProductDetail(
-      //   productName: productName.trim(),
+      // siteDetail(
+      //   siteName: siteName.trim(),
       //   hsn: hsn.trim(),
       //   price: price,
       //   quantity: quantity,
@@ -371,26 +371,26 @@ class SUBSCRIPTION_QuoteController extends GetxController {
       // ScaffoldMessenger.of(context).showSnackBar(
       //   const SnackBar(
       //     backgroundColor: Colors.green,
-      //     content: Text('Product updated successfully.'),
+      //     content: Text('site updated successfully.'),
       //   ),
       // );
 
       // Optional: Update UI or state if needed
-      // .updateProductDetails(quoteController.quoteModel.Quote_productDetails);
+      // .updatesiteDetails(quoteController.quoteModel.Quote_siteDetails);
     } catch (e) {
       // Handle unexpected errors
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: Colors.red,
-          content: Text('An error occurred while updating the product.'),
+          content: Text('An error occurred while updating the site.'),
         ),
       );
     }
   }
 
-  // Update products list
-  void updateProducts(List<QuoteProduct> products) {
-    quoteModel.Quote_products.value = products;
+  // Update sites list
+  void updatesites(List<SUBSCRIPTION_QuoteSite> sites) {
+    quoteModel.Quote_sites.value = sites;
   }
 
   void removeFromNoteList(int index) {
@@ -402,12 +402,12 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     quoteModel.Quote_recommendationList.isEmpty ? quoteModel.recommendationHeadingController.value.clear() : null;
   }
 
-  void removeFromProductList(index) {
-    quoteModel.Quote_products.removeAt(index);
+  void removeFromsiteList(index) {
+    quoteModel.Quote_sites.removeAt(index);
   }
 
   void update_requiredData(CMDmResponse value) {
-    RequiredData instance = RequiredData.fromJson(value);
+    SUBSCRIPTION_QuoteRequiredData instance = SUBSCRIPTION_QuoteRequiredData.fromJson(value);
     quoteModel.Quote_no.value = instance.eventnumber;
     updateQuotenumber(instance.eventnumber);
     updateTitle(instance.title!);
@@ -430,7 +430,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         quoteModel.emailController.value.text.isEmpty ||
         quoteModel.phoneController.value.text.isEmpty ||
         quoteModel.gstNumController.value.text.isEmpty ||
-        quoteModel.Quote_products.isEmpty ||
+        quoteModel.Quote_sites.isEmpty ||
         quoteModel.Quote_noteList.isEmpty ||
         quoteModel.Quote_no.value == null);
   } // If any one is empty or null, then it returns true
@@ -453,14 +453,14 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     quoteModel.billingAddressNameController.value.text = "";
     quoteModel.billingAddressController.value.text = "";
 
-    // Reset product details
-    quoteModel.product_editIndex.value = null;
-    quoteModel.productNameController.value.text = "";
+    // Reset site details
+    quoteModel.site_editIndex.value = null;
+    quoteModel.siteNameController.value.text = "";
     quoteModel.hsnController.value.text = "";
     quoteModel.priceController.value.text = "";
     quoteModel.quantityController.value.text = "";
     quoteModel.gstController.value.text = "";
-    quoteModel.Quote_products.clear();
+    quoteModel.Quote_sites.clear();
     quoteModel.Quote_gstTotals.clear();
 
     // Reset notes

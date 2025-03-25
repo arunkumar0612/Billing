@@ -2,35 +2,44 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
-import 'package:ssipl_billing/models/entities/SALES/CustomPDF_entities/CustomPDF_Product_entities.dart';
-import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
+// import 'package:ssipl_billing/controllers/sitecontrollers/Invoice_actions.dart';
+import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
+
+import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Invoice_actions.dart';
+
+import 'package:ssipl_billing/models/entities/SUBSCRIPTION/CustomPDF_entities/CustomPDF_invoice_entities.dart';
+
+import 'package:ssipl_billing/models/entities/SUBSCRIPTION/SUBSCRIPTION_Invoice_entities.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/helpers/returns.dart';
-import 'package:ssipl_billing/views/components/CustomPDF_templates/CustomPDF_Invoice_template.dart';
-import 'package:ssipl_billing/views/screens/SALES/CustomPDF/PostAll.dart';
+// import 'package:ssipl_billing/views/components/CustomPDF_templates/CustomPDF_Invoice_template.dart';
+import 'package:ssipl_billing/views/components/CustomPDF_templates/SUBSCRIPTION_CustomPDF_Invoice_template.dart';
+
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/CustomPDF/Subscription_PostAll.dart';
 import '../../APIservices/invoker.dart';
 
-class Subscription_CustomPDF_Services {
+class SUBSCRIPTION_CustomPDF_Services {
   final Invoker apiController = Get.find<Invoker>();
-  final InvoiceController invoiceController = Get.find<InvoiceController>();
-  final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
+  final SUBSCRIPTION_InvoiceController invoiceController = Get.find<SUBSCRIPTION_InvoiceController>();
+  final SUBSCRIPTION_CustomPDF_InvoiceController pdfpopup_controller = Get.find<SUBSCRIPTION_CustomPDF_InvoiceController>();
 
   void assign_GSTtotals() {
     pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.assignAll(
-      pdfpopup_controller.pdfModel.value.manualInvoiceproducts
-          .where((product) => product.gst.isNotEmpty && product.total.isNotEmpty) // Filter out empty values
-          .fold<Map<double, double>>({}, (Map<double, double> accumulator, CustomPDF_InvoiceProduct product) {
-            double gstValue = double.parse(product.gst);
-            double totalValue = double.parse(product.total);
+      pdfpopup_controller.pdfModel.value.manualInvoicesites
+          // ignore: unnecessary_null_comparison
+          .where((site) => site.monthlyCharges != null ? false : true) // Ensure non-empty values
+          .fold<Map<double, double>>({}, (accumulator, site) {
+            double totalValue = site.monthlyCharges;
+            double gstValue = double.tryParse(100.00.toString()) ?? 0; // Assuming 'gst' is a field in `site`
+
             accumulator[gstValue] = (accumulator[gstValue] ?? 0) + totalValue;
             return accumulator;
           })
           .entries
-          .map((entry) => InvoiceGSTtotals(
+          .map((entry) => SUBSCRIPTION_InvoiceGSTtotals(
                 gst: entry.key,
                 total: entry.value,
               ))
@@ -39,19 +48,62 @@ class Subscription_CustomPDF_Services {
   }
 
   Future<void> savePdfToCache(context) async {
-    Uint8List pdfData = await generate_CustomPDFInvoice(
+    Uint8List pdfData = await SUBSCRIPTION_generate_CustomPDFInvoice(
       PdfPageFormat.a4,
-      pdfpopup_controller.pdfModel.value.date.value.text,
-      pdfpopup_controller.pdfModel.value.manualInvoiceproducts,
-      pdfpopup_controller.pdfModel.value.clientName.value.text,
-      pdfpopup_controller.pdfModel.value.clientAddress.value.text,
-      pdfpopup_controller.pdfModel.value.billingName.value.text,
-      pdfpopup_controller.pdfModel.value.billingAddres.value.text,
-      pdfpopup_controller.pdfModel.value.manualinvoiceNo.value.text,
-      "",
-      pdfpopup_controller.pdfModel.value.GSTnumber.value.text,
-      pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals,
+      SUBSCRIPTION_Custom_Invoice(
+        date: '2024-03-24',
+        invoiceNo: 'INV-1001',
+        gstPercent: 18,
+        pendingAmount: 500.0,
+        addressDetails: Address(
+          clientName: pdfpopup_controller.pdfModel.value.clientName.value.text,
+          clientAddress: pdfpopup_controller.pdfModel.value.clientAddress.value.text,
+          billingName: pdfpopup_controller.pdfModel.value.billingName.value.text,
+          billingAddress: pdfpopup_controller.pdfModel.value.billingAddres.value.text,
+        ),
+        billPlanDetails: BillPlanDetails(
+            planName: pdfpopup_controller.pdfModel.value.planname.value.text,
+            customerType: pdfpopup_controller.pdfModel.value.customertype.value.text,
+            planCharges: pdfpopup_controller.pdfModel.value.plancharges.value.text,
+            internetCharges: double.tryParse(pdfpopup_controller.pdfModel.value.internetcharges.value.text) ?? 0.0,
+            billPeriod: pdfpopup_controller.pdfModel.value.billperiod.value.text,
+            billDate: pdfpopup_controller.pdfModel.value.billdate.value.text,
+            dueDate: pdfpopup_controller.pdfModel.value.duedate.value.text),
+        customerAccountDetails: CustomerAccountDetails(
+            relationshipId: pdfpopup_controller.pdfModel.value.relationshipID.value.text,
+            billNumber: pdfpopup_controller.pdfModel.value.billnumber.value.text,
+            customerGSTIN: pdfpopup_controller.pdfModel.value.customerGSTIN.value.text,
+            hsnSacCode: pdfpopup_controller.pdfModel.value.HSNcode.value.text,
+            customerPO: pdfpopup_controller.pdfModel.value.customerPO.value.text,
+            contactPerson: pdfpopup_controller.pdfModel.value.contactperson.value.text,
+            contactNumber: pdfpopup_controller.pdfModel.value.contactnumber.value.text),
+        siteData: pdfpopup_controller.pdfModel.value.manualInvoicesites,
+        finalCalc: FinalCalculation(
+            subtotal: double.tryParse(pdfpopup_controller.pdfModel.value.manualInvoicesites[1].monthlyCharges.toString()) ?? 00,
+            cgst: 9,
+            sgst: 9,
+            roundOff: '100',
+            differene: '1',
+            total: 100,
+            pendingAmount: 200,
+            grandTotal: 400),
+        notes: ['Payment due soon'],
+        pendingInvoices: [],
+      ),
     );
+    // Uint8List pdfData = await SUBSCRIPTION_generate_CustomPDFInvoice(
+    //   PdfPageFormat.a4,
+    //   pdfpopup_controller.pdfModel.value.date.value.text,
+    //   pdfpopup_controller.pdfModel.value.manualInvoicesites,
+    //   pdfpopup_controller.pdfModel.value.clientName.value.text,
+    //   pdfpopup_controller.pdfModel.value.clientAddress.value.text,
+    //   pdfpopup_controller.pdfModel.value.billingName.value.text,
+    //   pdfpopup_controller.pdfModel.value.billingAddres.value.text,
+    //   pdfpopup_controller.pdfModel.value.manualinvoiceNo.value.text,
+    //   "",
+    //   pdfpopup_controller.pdfModel.value.GSTnumber.value.text,
+    //   pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals,
+    // );
 
     Directory tempDir = await getTemporaryDirectory();
     String? sanitizedInvoiceNo = Returns.replace_Slash_hypen(pdfpopup_controller.pdfModel.value.manualinvoiceNo.value.text);
@@ -84,7 +136,7 @@ class Subscription_CustomPDF_Services {
               SizedBox(
                 height: 650,
                 width: 900,
-                child: PostInvoice(),
+                child: SUBSCRIPTION_PostInvoice(),
               ),
               Positioned(
                 top: 3,
@@ -102,7 +154,7 @@ class Subscription_CustomPDF_Services {
                   onPressed: () async {
                     // // Check if the data has any value
                     // // || ( invoiceController.invoiceModel.Invoice_gstTotals.isNotEmpty)
-                    // if ((invoiceController.invoiceModel.Invoice_products.isNotEmpty) ||
+                    // if ((invoiceController.invoiceModel.Invoice_sites.isNotEmpty) ||
                     //     (invoiceController.invoiceModel.Invoice_noteList.isNotEmpty) ||
                     //     (invoiceController.invoiceModel.Invoice_recommendationList.isNotEmpty) ||
                     //     (invoiceController.invoiceModel.clientAddressNameController.value.text != "") ||
@@ -145,7 +197,7 @@ class Subscription_CustomPDF_Services {
 
                     //   if (proceed == true) {
                     //     Navigator.of(context).pop();
-                    //     invoiceController.invoiceModel.Invoice_products.clear();
+                    //     invoiceController.invoiceModel.Invoice_sites.clear();
                     //     invoiceController.invoiceModel.Invoice_noteList.clear();
                     //     invoiceController.invoiceModel.Invoice_recommendationList.clear();
                     //     invoiceController.invoiceModel.clientAddressNameController.value.clear();

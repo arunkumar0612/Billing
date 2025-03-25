@@ -3,12 +3,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/models/constants/SUBSCRIPTION_constants/CustomPDF_constants/CustomPDF_invoice_constants.dart';
-import 'package:ssipl_billing/models/entities/SUBSCRIPTION/CustomPDF_entities/CustomPDF_Product_entities.dart';
+import 'package:ssipl_billing/models/constants/SUBSCRIPTION_constants/CustomPDF_constants/SUBSCRIPTION_CustomPDF_invoice_constants.dart';
+// import 'package:ssipl_billing/models/entities/SUBSCRIPTION/CustomPDF_entities/CustomPDF_Site_entities.dart';
+import 'package:ssipl_billing/models/entities/SUBSCRIPTION/CustomPDF_entities/CustomPDF_invoice_entities.dart';
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 
-class Subscription_CustomPDF_InvoiceController extends GetxController {
-  var pdfModel = Subscription_CustomPDF_InvoiceModel().obs;
+class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
+  var pdfModel = SUBSCRIPTION_CustomPDF_InvoiceModel().obs;
   void intAll() {
     initializeTextControllers();
     initializeCheckboxes();
@@ -17,7 +18,7 @@ class Subscription_CustomPDF_InvoiceController extends GetxController {
   }
 
   void initializeCheckboxes() {
-    pdfModel.value.checkboxValues.assignAll(List.generate(pdfModel.value.manualInvoicesubscription.length, (index) => false));
+    pdfModel.value.checkboxValues.assignAll(List.generate(pdfModel.value.manualInvoicesites.length, (index) => false));
   }
 
   void validate() {
@@ -98,13 +99,13 @@ class Subscription_CustomPDF_InvoiceController extends GetxController {
 
   void initializeTextControllers() {
     pdfModel.value.textControllers.assignAll(
-      pdfModel.value.manualInvoicesubscription.map((product) {
+      pdfModel.value.manualInvoicesites.map((site) {
         return [
-          TextEditingController(text: product.sNo),
-          TextEditingController(text: product.sitename),
-          TextEditingController(text: product.address),
-          TextEditingController(text: product.siteID),
-          TextEditingController(text: product.monthlycharges), // Total is read-only
+          TextEditingController(text: 1.toString()), // S.No is read-only
+          TextEditingController(text: site.siteName),
+          TextEditingController(text: site.address),
+          TextEditingController(text: site.siteID),
+          TextEditingController(text: site.monthlyCharges.toString()), // Total is read-only
         ];
       }).toList(),
     );
@@ -120,8 +121,8 @@ class Subscription_CustomPDF_InvoiceController extends GetxController {
     pdfModel.refresh();
   }
 
-  void updateCell(int rowIndex, int colIndex, String value) {
-    final product = pdfModel.value.manualInvoicesubscription[rowIndex];
+  void updateCell(int rowIndex, int colIndex, dynamic value) {
+    final site = pdfModel.value.manualInvoicesites[rowIndex];
 
     // Allow only numeric values for specific columns
     if ([0, 2, 3, 4, 5].contains(colIndex) && !RegExp(r'^[0-9]*$').hasMatch(value)) {
@@ -130,16 +131,16 @@ class Subscription_CustomPDF_InvoiceController extends GetxController {
 
     switch (colIndex) {
       case 0:
-        product.sNo = value;
+        site.serialNo = value;
         break;
       case 1:
-        product.address = value;
+        site.address = value;
         break;
       case 2:
-        product.siteID = value;
+        site.siteID = value;
         break;
       case 3:
-        product.monthlycharges = value;
+        site.monthlyCharges = value;
         break;
     }
 
@@ -151,12 +152,12 @@ class Subscription_CustomPDF_InvoiceController extends GetxController {
   }
 
   void calculateTotal(int rowIndex) {
-    final product = pdfModel.value.manualInvoicesubscription[rowIndex];
+    final site = pdfModel.value.manualInvoicesites[rowIndex];
 
-    final newTotal = product.monthlycharges;
+    final newTotal = site.monthlyCharges;
 
-    product.monthlycharges = newTotal;
-    pdfModel.value.textControllers[rowIndex][5].text = newTotal;
+    site.monthlyCharges = newTotal;
+    pdfModel.value.textControllers[rowIndex][5].text = newTotal.toString();
     finalCalc();
     pdfModel.refresh();
   }
@@ -167,9 +168,9 @@ class Subscription_CustomPDF_InvoiceController extends GetxController {
     double addedSGST = 0.0;
     double addedRoundoff = 0.0;
 
-    for (var product in pdfModel.value.manualInvoicesubscription) {
-      double subTotal = double.tryParse(product.monthlycharges) ?? 0.0;
-      double price = double.tryParse(product.monthlycharges) ?? 0.0;
+    for (var site in pdfModel.value.manualInvoicesites) {
+      double subTotal = double.tryParse(site.monthlyCharges.toString()) ?? 0.0;
+      double price = double.tryParse(site.monthlyCharges.toString()) ?? 0.0;
       double gst = double.tryParse('18') ?? 0.0;
       double cgst = (price / 100) * gst / 2;
       double sgst = (price / 100) * gst / 2;
@@ -193,7 +194,7 @@ class Subscription_CustomPDF_InvoiceController extends GetxController {
   void deleteRow() {
     for (int i = pdfModel.value.checkboxValues.length - 1; i >= 0; i--) {
       if (pdfModel.value.checkboxValues[i]) {
-        pdfModel.value.manualInvoicesubscription.removeAt(i);
+        pdfModel.value.manualInvoicesites.removeAt(i);
         pdfModel.value.textControllers.removeAt(i);
         pdfModel.value.checkboxValues.removeAt(i);
       }
@@ -207,15 +208,7 @@ class Subscription_CustomPDF_InvoiceController extends GetxController {
       List.generate(7, (index) => TextEditingController()),
     );
 
-    pdfModel.value.manualInvoicesubscription.add(
-      Subscription_CustomPDF_Invoice(
-        sNo: '',
-        sitename: '',
-        address: '',
-        siteID: '',
-        monthlycharges: '',
-      ),
-    );
+    pdfModel.value.manualInvoicesites.add(Site(siteName: 'siteName', address: 'address', siteID: 'siteID', monthlyCharges: 100));
 
     pdfModel.value.checkboxValues.add(false);
 
@@ -235,20 +228,20 @@ class Subscription_CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.filePathController.value.clear();
 
     pdfModel.value.subTotal.value.clear();
-    pdfModel.value.planname.value.clear();
-    pdfModel.value.customertype.value.clear();
-    pdfModel.value.plancharges.value.clear();
-    pdfModel.value.internetcharges.value.clear();
-    pdfModel.value.billperiod.value.clear();
-    pdfModel.value.billdate.value.clear();
-    pdfModel.value.duedate.value.clear();
-    pdfModel.value.relationshipID.value.clear();
-    pdfModel.value.billnumber.value.clear();
-    pdfModel.value.customerGSTIN.value.clear();
-    pdfModel.value.HSNcode.value.clear();
-    pdfModel.value.customerPO.value.clear();
-    pdfModel.value.contactperson.value.clear();
-    pdfModel.value.contactnumber.value.clear();
+    // pdfModel.value.planname.value.clear();
+    // pdfModel.value.customertype.value.clear();
+    // pdfModel.value.plancharges.value.clear();
+    // pdfModel.value.internetcharges.value.clear();
+    // pdfModel.value.billperiod.value.clear();
+    // pdfModel.value.billdate.value.clear();
+    // pdfModel.value.duedate.value.clear();
+    // pdfModel.value.relationshipID.value.clear();
+    // pdfModel.value.billnumber.value.clear();
+    // pdfModel.value.customerGSTIN.value.clear();
+    // pdfModel.value.HSNcode.value.clear();
+    // pdfModel.value.customerPO.value.clear();
+    // pdfModel.value.contactperson.value.clear();
+    // pdfModel.value.contactnumber.value.clear();
     pdfModel.value.CGST.value.clear();
     pdfModel.value.SGST.value.clear();
     pdfModel.value.roundOff.value.clear();
@@ -257,9 +250,9 @@ class Subscription_CustomPDF_InvoiceController extends GetxController {
 
     pdfModel.value.manualInvoice_gstTotals.clear();
 
-    pdfModel.value.manualInvoicesubscription.assignAll([
-      Subscription_CustomPDF_Invoice(sNo: "1", siteID: "1", sitename: "Site1", address: "Address1", monthlycharges: "1000"),
-      Subscription_CustomPDF_Invoice(sNo: "2", siteID: "2", sitename: "Site2", address: "Address2", monthlycharges: "2000")
+    pdfModel.value.manualInvoicesites.assignAll([
+      Site(siteName: 'siteName1', address: 'address1', siteID: 'siteID1', monthlyCharges: 100),
+      Site(siteName: 'siteName2', address: 'address2', siteID: 'siteID2', monthlyCharges: 200),
     ]);
 
     pdfModel.value.notecontent.clear();

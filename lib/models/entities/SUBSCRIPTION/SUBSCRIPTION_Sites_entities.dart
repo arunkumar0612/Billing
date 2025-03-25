@@ -1,24 +1,24 @@
 import '../../../utils/helpers/support_functions.dart';
 
-class DcProduct {
+class SUBSCRIPTION_DcSite {
   final int sno;
-  final String productName;
+  final String siteName;
   final int hsn;
   final double gst;
   final double price;
   final int quantity;
-  final int productid;
-  const DcProduct({
+  final int siteid;
+  const SUBSCRIPTION_DcSite({
     required this.sno,
-    required this.productName,
+    required this.siteName,
     required this.hsn,
     required this.gst,
     required this.price,
     required this.quantity,
-    required this.productid,
+    required this.siteid,
   });
 
-  /// Calculates the total price for the product
+  /// Calculates the total price for the site
   double get total => price * quantity;
 
   /// Returns specific values based on the given index
@@ -27,7 +27,7 @@ class DcProduct {
       case 0:
         return sno.toString();
       case 1:
-        return productName;
+        return siteName;
       case 2:
         return hsn.toString();
       case 3:
@@ -39,7 +39,7 @@ class DcProduct {
       case 6:
         return formatCurrency(total);
       case 7:
-        return productid.toString();
+        return siteid.toString();
       default:
         return '';
     }
@@ -48,49 +48,49 @@ class DcProduct {
   /// Converts object to JSON format
   Map<String, dynamic> toJson() {
     return {
-      'productsno': sno,
-      'productname': productName,
-      'producthsn': hsn,
-      'productgst': gst,
-      'productprice': price,
-      'productquantity': quantity,
-      'producttotal': total,
-      'productid': productid,
+      'sitesno': sno,
+      'sitename': siteName,
+      'sitehsn': hsn,
+      'sitegst': gst,
+      'siteprice': price,
+      'sitequantity': quantity,
+      'sitetotal': total,
+      'siteid': siteid,
     };
   }
 
   /// Factory constructor to create an instance from JSON
-  factory DcProduct.fromJson(Map<String, dynamic> json) {
-    return DcProduct(
-      sno: json['productsno'] as int,
-      productName: json['productname'] as String,
-      hsn: json['producthsn'] as int,
-      gst: (json['productgst'] as num).toDouble(),
-      price: (json['productprice'] as num).toDouble(),
-      quantity: json['productquantity'] as int,
-      productid: json['productid'] as int,
+  factory SUBSCRIPTION_DcSite.fromJson(Map<String, dynamic> json) {
+    return SUBSCRIPTION_DcSite(
+      sno: json['sitesno'] as int,
+      siteName: json['sitename'] as String,
+      hsn: json['sitehsn'] as int,
+      gst: (json['sitegst'] as num).toDouble(),
+      price: (json['siteprice'] as num).toDouble(),
+      quantity: json['sitequantity'] as int,
+      siteid: json['siteid'] as int,
     );
   }
 }
 
-class QuoteProduct {
+class SUBSCRIPTION_QuoteSite {
   final int sno;
-  final String productName;
+  final String siteName;
   final int hsn;
   final double gst;
   final double price;
   final int quantity;
 
-  const QuoteProduct({
+  const SUBSCRIPTION_QuoteSite({
     required this.sno,
-    required this.productName,
+    required this.siteName,
     required this.hsn,
     required this.gst,
     required this.price,
     required this.quantity,
   });
 
-  /// Calculates the total price for the product
+  /// Calculates the total price for the site
   double get total => price * quantity;
 
   /// Returns specific values based on the given index
@@ -99,7 +99,7 @@ class QuoteProduct {
       case 0:
         return sno.toString();
       case 1:
-        return productName;
+        return siteName;
       case 2:
         return hsn.toString();
       case 3:
@@ -118,37 +118,37 @@ class QuoteProduct {
   /// Converts object to JSON format
   Map<String, dynamic> toJson() {
     return {
-      'productsno': sno,
-      'productname': productName,
-      'producthsn': hsn,
-      'productgst': gst,
-      'productprice': price,
-      'productquantity': quantity,
-      'producttotal': total,
+      'sitesno': sno,
+      'sitename': siteName,
+      'sitehsn': hsn,
+      'sitegst': gst,
+      'siteprice': price,
+      'sitequantity': quantity,
+      'sitetotal': total,
     };
   }
 
   /// Factory constructor to create an instance from JSON
-  factory QuoteProduct.fromJson(Map<String, dynamic> json) {
-    return QuoteProduct(
-      sno: json['productsno'], // Ensure it's a String
-      productName: json['productname'].toString(),
-      hsn: json['producthsn'],
-      gst: double.tryParse(json['productgst'].toString()) ?? 0.0, // Convert String to double
-      price: double.tryParse(json['productprice'].toString()) ?? 0.0,
-      quantity: int.tryParse(json['productquantity'].toString()) ?? 0, // Convert String to int
+  factory SUBSCRIPTION_QuoteSite.fromJson(Map<String, dynamic> json) {
+    return SUBSCRIPTION_QuoteSite(
+      sno: json['sitesno'], // Ensure it's a String
+      siteName: json['sitename'].toString(),
+      hsn: json['sitehsn'],
+      gst: double.tryParse(json['sitegst'].toString()) ?? 0.0, // Convert String to double
+      price: double.tryParse(json['siteprice'].toString()) ?? 0.0,
+      quantity: int.tryParse(json['sitequantity'].toString()) ?? 0, // Convert String to int
     );
   }
 }
 
-class RFQProduct {
+class SUBSCRIPTION_RFQSite {
   final int sno;
-  final String productName;
+  final String siteName;
   final int quantity;
 
-  const RFQProduct({
+  const SUBSCRIPTION_RFQSite({
     required this.sno,
-    required this.productName,
+    required this.siteName,
     required this.quantity,
   });
 
@@ -158,7 +158,7 @@ class RFQProduct {
       case 0:
         return sno.toString();
       case 1:
-        return productName;
+        return siteName;
       case 2:
         return quantity.toString();
       default:
@@ -169,31 +169,31 @@ class RFQProduct {
   /// Converts object to JSON format
   Map<String, dynamic> toJson() {
     return {
-      'productsno': sno,
-      'productname': productName,
-      'productquantity': quantity,
+      'sitesno': sno,
+      'sitename': siteName,
+      'sitequantity': quantity,
     };
   }
 
   /// Factory constructor to create an instance from JSON
-  factory RFQProduct.fromJson(Map<String, dynamic> json) {
-    return RFQProduct(
-      sno: json['productsno'] as int,
-      productName: json['productname'] as String,
-      quantity: json['productquantity'] as int,
+  factory SUBSCRIPTION_RFQSite.fromJson(Map<String, dynamic> json) {
+    return SUBSCRIPTION_RFQSite(
+      sno: json['sitesno'] as int,
+      siteName: json['sitename'] as String,
+      quantity: json['sitequantity'] as int,
     );
   }
 }
 
-// class RFQProduct {
-//   const RFQProduct(
+// class SUBSCRIPTION_RFQSite {
+//   const SUBSCRIPTION_RFQSite(
 //     this.sno,
-//     this.productName,
+//     this.siteName,
 //     this.quantity,
 //   );
 
 //   final String sno;
-//   final String productName;
+//   final String siteName;
 
 //   final int quantity;
 
@@ -202,7 +202,7 @@ class RFQProduct {
 //       case 0:
 //         return sno;
 //       case 1:
-//         return productName;
+//         return siteName;
 //       case 2:
 //         return quantity.toString();
 //     }
@@ -210,10 +210,10 @@ class RFQProduct {
 //   }
 // }
 
-class CreditProduct {
-  const CreditProduct(
+class SUBSCRIPTION_CreditSite {
+  const SUBSCRIPTION_CreditSite(
     this.sno,
-    this.productName,
+    this.siteName,
     this.hsn,
     this.gst,
     this.price,
@@ -222,7 +222,7 @@ class CreditProduct {
   );
 
   final String sno;
-  final String productName;
+  final String siteName;
   final String hsn;
   final double gst;
   final double price;
@@ -235,7 +235,7 @@ class CreditProduct {
       case 0:
         return sno;
       case 1:
-        return productName;
+        return siteName;
       case 2:
         return hsn;
       case 3:
@@ -253,10 +253,10 @@ class CreditProduct {
   }
 }
 
-class DebitProduct {
-  const DebitProduct(
+class SUBSCRIPTION_DebitSite {
+  const SUBSCRIPTION_DebitSite(
     this.sno,
-    this.productName,
+    this.siteName,
     this.hsn,
     this.gst,
     this.price,
@@ -265,7 +265,7 @@ class DebitProduct {
   );
 
   final String sno;
-  final String productName;
+  final String siteName;
   final String hsn;
   final double gst;
   final double price;
@@ -278,7 +278,7 @@ class DebitProduct {
       case 0:
         return sno;
       case 1:
-        return productName;
+        return siteName;
       case 2:
         return hsn;
       case 3:
@@ -296,17 +296,17 @@ class DebitProduct {
   }
 }
 
-class InvoiceProduct {
+class SUBSCRIPTION_InvoiceSite {
   int sno;
-  String productName;
+  String siteName;
   int hsn;
   double gst;
   double price;
   int quantity;
 
-  InvoiceProduct({required this.sno, required this.productName, required this.hsn, required this.gst, required this.price, required this.quantity});
+  SUBSCRIPTION_InvoiceSite({required this.sno, required this.siteName, required this.hsn, required this.gst, required this.price, required this.quantity});
 
-  /// Calculates the total price for the product
+  /// Calculates the total price for the site
   double get total => price * quantity;
 
   /// Returns specific values based on the given index
@@ -315,7 +315,7 @@ class InvoiceProduct {
       case 0:
         return sno.toString();
       case 1:
-        return productName;
+        return siteName;
       case 2:
         return hsn.toString();
       case 3:
@@ -334,25 +334,25 @@ class InvoiceProduct {
   /// Converts object to JSON format
   Map<String, dynamic> toJson() {
     return {
-      'productsno': sno,
-      'productname': productName,
-      'producthsn': hsn,
-      'productgst': gst,
-      'productprice': price,
-      'productquantity': quantity,
-      'producttotal': total,
+      'sitesno': sno,
+      'sitename': siteName,
+      'sitehsn': hsn,
+      'sitegst': gst,
+      'siteprice': price,
+      'sitequantity': quantity,
+      'sitetotal': total,
     };
   }
 
   /// Factory constructor to create an instance from JSON
-  factory InvoiceProduct.fromJson(Map<String, dynamic> json) {
-    return InvoiceProduct(
-      sno: json['productsno'] as int,
-      productName: json['productname'] as String,
-      hsn: json['producthsn'] as int,
-      gst: (json['productgst'] as num).toDouble(),
-      price: (json['productprice'] as num).toDouble(),
-      quantity: json['productquantity'] as int,
+  factory SUBSCRIPTION_InvoiceSite.fromJson(Map<String, dynamic> json) {
+    return SUBSCRIPTION_InvoiceSite(
+      sno: json['sitesno'] as int,
+      siteName: json['sitename'] as String,
+      hsn: json['sitehsn'] as int,
+      gst: (json['sitegst'] as num).toDouble(),
+      price: (json['siteprice'] as num).toDouble(),
+      quantity: json['sitequantity'] as int,
     );
   }
 }

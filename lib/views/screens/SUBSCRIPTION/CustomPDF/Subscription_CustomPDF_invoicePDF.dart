@@ -3,15 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
-import 'package:ssipl_billing/services/SALES/CustomPDF_services/CustomPDF_Invoice_services.dart';
+import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
+// import 'package:ssipl_billing/services/site/CustomPDF_services/CustomPDF_Invoice_services.dart';
+import 'package:ssipl_billing/services/SUBSCRIPTION/CustomPDF_services/SUBSCRIPTION_CustomPDF_Invoice_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 
 class Subscription_CustomPDF_InvoicePDF {
-  final Subscription_CustomPDF_InvoiceController pdfpopup_controller = Get.find<Subscription_CustomPDF_InvoiceController>();
-  var inst = CustomPDF_Services();
+  final SUBSCRIPTION_CustomPDF_InvoiceController pdfpopup_controller = Get.find<SUBSCRIPTION_CustomPDF_InvoiceController>();
+  var inst = SUBSCRIPTION_CustomPDF_Services();
   void showA4StyledPopup(BuildContext context) async {
     try {
       await showDialog(
@@ -955,7 +956,7 @@ class Subscription_CustomPDF_InvoicePDF {
     );
   }
 
-  Widget contentTable(Subscription_CustomPDF_InvoiceController controller) {
+  Widget contentTable(SUBSCRIPTION_CustomPDF_InvoiceController controller) {
     const tableHeaders = ['✔', 'S.No', 'Site ID', 'Site Name', 'Address', 'Monthly Charges'];
 
     return Obx(

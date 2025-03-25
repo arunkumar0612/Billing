@@ -5,7 +5,8 @@ import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
+
+import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'dart:io';
 import 'package:ssipl_billing/models/constants/api.dart';
@@ -13,9 +14,9 @@ import 'package:ssipl_billing/models/entities/Response_entities.dart';
 import 'package:ssipl_billing/services/APIservices/invoker.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
 
-mixin Subscription_PostServices {
+mixin SUBSCRIPTION_PostServices {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
-  final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
+  final SUBSCRIPTION_CustomPDF_InvoiceController pdfpopup_controller = Get.find<SUBSCRIPTION_CustomPDF_InvoiceController>();
 
   final Invoker apiController = Get.find<Invoker>();
   void animation_control() async {

@@ -7,28 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
-
+import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Quote_actions.dart';
-import 'package:ssipl_billing/services/SUBSCRIPTION/CustomPDF_services/Subscription_CustomPDF_Invoice_services.dart';
-// import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
-// import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/ClientReq_actions.dart';
-// import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/DC_actions.dart';
-// import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/Debit_actions.dart';
-// import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/Invoice_actions.dart';
-// import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/Quote_actions.dart';
-// import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/RFQ_actions.dart';
-// import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/Credit_actions.dart';
-// import 'package:ssipl_billing/services/SUBSCRIPTION/CustomPDF_services/CustomPDF_Invoice_services.dart';
+
+import 'package:ssipl_billing/services/SUBSCRIPTION/CustomPDF_services/SUBSCRIPTION_CustomPDF_Invoice_services.dart';
+
 import 'package:ssipl_billing/services/SUBSCRIPTION/subscription_service.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
 import 'package:ssipl_billing/views/screens/SUBSCRIPTION/CustomPDF/Subscription_CustomPDF_invoicePDF.dart';
 import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Subscription_chart.dart';
-// import 'package:ssipl_billing/views/screens/SUBSCRIPTION/CustomPDF/CustomPDF_invoicePDF.dart';
+
 import '../../../controllers/SUBSCRIPTIONcontrollers/Subscription_actions.dart';
-// import 'package:cool_dropdown/models/cool_dropdown_item.dart';
 
 class Subscription_Client extends StatefulWidget with SubscriptionServices {
   Subscription_Client({super.key});
@@ -37,38 +28,23 @@ class Subscription_Client extends StatefulWidget with SubscriptionServices {
   _Subscription_ClientState createState() => _Subscription_ClientState();
 }
 
-// enum Menu { preview, share, getLink, remove, download }
-
 class _Subscription_ClientState extends State<Subscription_Client> with TickerProviderStateMixin {
   final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
-  var inst_CustomPDF_Services = Subscription_CustomPDF_Services();
-  final Subscription_CustomPDF_InvoiceController pdfpopup_controller = Get.find<Subscription_CustomPDF_InvoiceController>();
-  var inst = Subscription_CustomPDF_InvoicePDF();
-  // final ClientreqController clientreqController = Get.find<ClientreqController>();
-  // final DcController dcController = Get.find<DcController>();
-  // final InvoiceController invoiceController = Get.find<InvoiceController>();
+  var inst_CustomPDF_Services = SUBSCRIPTION_CustomPDF_Services();
+  final SUBSCRIPTION_CustomPDF_InvoiceController pdfpopup_controller = Get.find<SUBSCRIPTION_CustomPDF_InvoiceController>();
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
-  // final RfqController rfqController = Get.find<RfqController>();
-  // final CreditController creditController = Get.find<CreditController>();
-  // final DebitController debitController = Get.find<DebitController>();
-  // final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
-  // var inst = CustomPDF_InvoicePDF();
-  // var inst_CustomPDF_Services = CustomPDF_Services();
+  var inst = Subscription_CustomPDF_InvoicePDF();
 
   @override
   void dispose() {
-    // clientreqController.clientReqModel.cntMulti.value.dispose();
     subscriptionController.subscriptionModel.animationController.dispose();
     super.dispose();
   }
 
-  // AnimationStyle? _animationStyle;
   @override
   void initState() {
     super.initState();
-    // clientreqController.clientReqModel.cntMulti.value = MultiValueDropDownController();
-    // widget.GetCustomerList(context);
-    // clientreqController.clientReqModel.cntMulti.value = MultiValueDropDownController();
+
     subscriptionController.updateshowcustomerprocess(null);
     subscriptionController.updatecustomerId(0);
     widget.GetProcesscustomerList(context);
@@ -803,7 +779,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       "invoice_id": "56534",
       "clientname": "Maharaja",
       "image": "assets/images/download.jpg",
-      "type": "Sales",
+      "type": "SUBSCRIPTION",
       "product": "Secure 360",
       "date": "10 Nov 24",
       "amount": "50000",
@@ -843,7 +819,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       "invoice_id": "56534",
       "clientname": "Maharaja",
       "image": "assets/images/download.jpg",
-      "type": "Sales",
+      "type": "SUBSCRIPTION",
       "product": "Secure 360",
       "date": "10 Nov 24",
       "amount": "50000",
@@ -883,7 +859,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       "invoice_id": "56534",
       "clientname": "Maharaja",
       "image": "assets/images/download.jpg",
-      "type": "Sales",
+      "type": "SUBSCRIPTION",
       "product": "Secure 360",
       "date": "10 Nov 24",
       "amount": "50000",
@@ -923,7 +899,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       "invoice_id": "56534",
       "clientname": "Maharaja",
       "image": "assets/images/download.jpg",
-      "type": "Sales",
+      "type": "SUBSCRIPTION",
       "product": "Secure 360",
       "date": "10 Nov 24",
       "amount": "50000",
@@ -963,7 +939,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       "invoice_id": "56534",
       "clientname": "Maharaja",
       "image": "assets/images/download.jpg",
-      "type": "Sales",
+      "type": "SUBSCRIPTION",
       "product": "Secure 360",
       "date": "10 Nov 24",
       "amount": "50000",
@@ -1003,7 +979,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       "invoice_id": "56534",
       "clientname": "Maharaja",
       "image": "assets/images/download.jpg",
-      "type": "Sales",
+      "type": "SUBSCRIPTION",
       "product": "Secure 360",
       "date": "10 Nov 24",
       "amount": "50000",
@@ -1043,7 +1019,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       "invoice_id": "56534",
       "clientname": "Maharaja",
       "image": "assets/images/download.jpg",
-      "type": "Sales",
+      "type": "SUBSCRIPTION",
       "product": "Secure 360",
       "date": "10 Nov 24",
       "amount": "50000",
@@ -1083,7 +1059,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       "invoice_id": "56534",
       "clientname": "Maharaja",
       "image": "assets/images/download.jpg",
-      "type": "Sales",
+      "type": "SUBSCRIPTION",
       "product": "Secure 360",
       "date": "10 Nov 24",
       "amount": "50000",
@@ -1123,7 +1099,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       "invoice_id": "56534",
       "clientname": "Maharaja",
       "image": "assets/images/download.jpg",
-      "type": "Sales",
+      "type": "SUBSCRIPTION",
       "product": "Secure 360",
       "date": "10 Nov 24",
       "amount": "50000",
@@ -1163,7 +1139,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       "invoice_id": "56534",
       "clientname": "Maharaja",
       "image": "assets/images/download.jpg",
-      "type": "Sales",
+      "type": "SUBSCRIPTION",
       "product": "Secure 360",
       "date": "10 Nov 24",
       "amount": "50000",
@@ -1203,7 +1179,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       "invoice_id": "56534",
       "clientname": "Maharaja",
       "image": "assets/images/download.jpg",
-      "type": "Sales",
+      "type": "SUBSCRIPTION",
       "product": "Secure 360",
       "date": "10 Nov 24",
       "amount": "50000",
@@ -1243,7 +1219,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       "invoice_id": "56534",
       "clientname": "Maharaja",
       "image": "assets/images/download.jpg",
-      "type": "Sales",
+      "type": "SUBSCRIPTION",
       "product": "Secure 360",
       "date": "10 Nov 24",
       "amount": "50000",
@@ -1283,7 +1259,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       "invoice_id": "56534",
       "clientname": "Maharaja",
       "image": "assets/images/download.jpg",
-      "type": "Sales",
+      "type": "SUBSCRIPTION",
       "product": "Secure 360",
       "date": "10 Nov 24",
       "amount": "50000",
@@ -1323,7 +1299,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       "invoice_id": "56534",
       "clientname": "Maharaja",
       "image": "assets/images/download.jpg",
-      "type": "Sales",
+      "type": "SUBSCRIPTION",
       "product": "Secure 360",
       "date": "10 Nov 24",
       "amount": "50000",
@@ -1363,7 +1339,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       "invoice_id": "56534",
       "clientname": "Maharaja",
       "image": "assets/images/download.jpg",
-      "type": "Sales",
+      "type": "SUBSCRIPTION",
       "product": "Secure 360",
       "date": "10 Nov 24",
       "amount": "50000",

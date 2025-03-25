@@ -2,10 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/models/entities/SALES/Invoice_entities.dart';
-import 'package:ssipl_billing/models/entities/SUBSCRIPTION/CustomPDF_entities/CustomPDF_Product_entities.dart';
 
-class Subscription_CustomPDF_InvoiceModel {
+// import 'package:ssipl_billing/models/entities/SUBSCRIPTION/CustomPDF_entities/CustomPDF_Site_entities.dart';
+import 'package:ssipl_billing/models/entities/SUBSCRIPTION/CustomPDF_entities/CustomPDF_invoice_entities.dart';
+
+import 'package:ssipl_billing/models/entities/SUBSCRIPTION/SUBSCRIPTION_Invoice_entities.dart';
+
+class SUBSCRIPTION_CustomPDF_InvoiceModel {
   final date = TextEditingController().obs;
   final manualinvoiceNo = TextEditingController().obs;
   final clientName = TextEditingController().obs;
@@ -14,7 +17,16 @@ class Subscription_CustomPDF_InvoiceModel {
   final billingAddres = TextEditingController().obs;
   final phoneNumber = TextEditingController().obs;
   final Email = TextEditingController().obs;
-
+  final GSTnumber = TextEditingController().obs;
+  final feedback = TextEditingController().obs;
+  final filePathController = TextEditingController().obs;
+  final subTotal = TextEditingController().obs;
+  final CGST = TextEditingController().obs;
+  final SGST = TextEditingController().obs;
+  final roundOff = TextEditingController().obs;
+  final Total = TextEditingController().obs;
+  final CCemailController = TextEditingController().obs;
+  var noteControllers = <TextEditingController>[].obs;
   final planname = TextEditingController().obs;
   final customertype = TextEditingController().obs;
   final plancharges = TextEditingController().obs;
@@ -25,27 +37,16 @@ class Subscription_CustomPDF_InvoiceModel {
   final relationshipID = TextEditingController().obs;
   final billnumber = TextEditingController().obs;
   final customerGSTIN = TextEditingController().obs;
-  final HSNcode = TextEditingController().obs;
   final customerPO = TextEditingController().obs;
+  final HSNcode = TextEditingController().obs;
   final contactperson = TextEditingController().obs;
   final contactnumber = TextEditingController().obs;
-  final feedback = TextEditingController().obs;
-  final filePathController = TextEditingController().obs;
-  final subTotal = TextEditingController().obs;
-  final CGST = TextEditingController().obs;
-  final SGST = TextEditingController().obs;
-  final roundOff = TextEditingController().obs;
-  final Total = TextEditingController().obs;
-  final CCemailController = TextEditingController().obs;
-  var noteControllers = <TextEditingController>[].obs;
 
   var roundoffDiff = Rxn<String>();
   var textControllers = <List<TextEditingController>>[].obs;
-  var manualInvoice_gstTotals = <InvoiceGSTtotals>[].obs;
-  var manualInvoicesubscription = <Subscription_CustomPDF_Invoice>[
-    Subscription_CustomPDF_Invoice(sNo: "1", siteID: "1", sitename: "Site1", address: "Address1", monthlycharges: "1000"),
-    Subscription_CustomPDF_Invoice(sNo: "2", siteID: "2", sitename: "Site2", address: "Address2", monthlycharges: "2000")
-  ].obs;
+  var manualInvoice_gstTotals = <SUBSCRIPTION_InvoiceGSTtotals>[].obs;
+  var manualInvoicesites =
+      <Site>[Site(siteName: 'siteName1', address: 'address1', siteID: 'siteID1', monthlyCharges: 100), Site(siteName: 'siteName2', address: 'address2', siteID: 'siteID2', monthlyCharges: 200)].obs;
 
   final notecontent = <String>[].obs;
   var progress = 0.0.obs;

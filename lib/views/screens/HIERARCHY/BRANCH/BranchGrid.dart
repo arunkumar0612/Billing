@@ -1,0 +1,185 @@
+// ignore_for_file: must_be_immutable
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
+import 'package:ssipl_billing/services/Hierarchy_services/hierarchy_service.dart';
+import 'package:ssipl_billing/views/screens/HIERARCHY/BRANCH/Branchcard.dart';
+import 'package:ssipl_billing/views/components/Loading.dart';
+import 'package:ssipl_billing/views/screens/HIERARCHY/BRANCH/BranchEditor.dart';
+
+class BranchGrid extends StatefulWidget with HierarchyService {
+  BranchGrid({super.key});
+
+  @override
+  _BranchGridState createState() => _BranchGridState();
+}
+
+class _BranchGridState extends State<BranchGrid> with SingleTickerProviderStateMixin {
+  final HierarchyController hierarchyController = Get.find<HierarchyController>();
+  final loader = LoadingOverlay();
+
+  @override
+  void initState() {
+    super.initState();
+    hierarchyController.hierarchyModel.Branch_controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+
+    hierarchyController.hierarchyModel.slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 1.5),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: hierarchyController.hierarchyModel.Branch_controller,
+      curve: Curves.easeInCubic,
+    ));
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted) hierarchyController.hierarchyModel.Branch_controller.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    hierarchyController.hierarchyModel.Branch_controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Column(
+            children: [
+              Obx(() {
+                return Expanded(
+                  child: SlideTransition(
+                    position: hierarchyController.hierarchyModel.slideAnimation,
+                    child: GridView.builder(
+                      padding: const EdgeInsets.all(8.0),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: hierarchyController.hierarchyModel.Branch_cardCount.value,
+                        crossAxisSpacing: 30,
+                        mainAxisSpacing: 30,
+                      ),
+                      itemCount: hierarchyController.hierarchyModel.BranchList.value.Live.length,
+                      itemBuilder: (context, index) {
+                        var Branch = hierarchyController.hierarchyModel.BranchList.value.Live[index];
+                        return BranchCard(
+                          name: Branch.branchName ?? '',
+                          id: Branch.branchId ?? 0,
+                          email: Branch.emailId ?? '',
+                          imageBytes: Branch.branchLogo!,
+                          index: index,
+                          data: hierarchyController.hierarchyModel.BranchList.value,
+                          controller: hierarchyController,
+                          isSelected: hierarchyController.hierarchyModel.BranchList.value.Live[index].isSelected,
+                          type: "LIVE",
+                        );
+                      },
+                    ),
+                  ),
+                );
+              }),
+              const SizedBox(
+                height: 60,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 1,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    child: Text(
+                      "DEMO",
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: 1,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 60,
+              ),
+              Obx(() {
+                return Expanded(
+                  child: SlideTransition(
+                    position: hierarchyController.hierarchyModel.slideAnimation,
+                    child: GridView.builder(
+                      padding: const EdgeInsets.all(8.0),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: hierarchyController.hierarchyModel.Branch_cardCount.value,
+                        crossAxisSpacing: 30,
+                        mainAxisSpacing: 30,
+                      ),
+                      itemCount: hierarchyController.hierarchyModel.BranchList.value.Demo.length,
+                      itemBuilder: (context, index) {
+                        var Branch = hierarchyController.hierarchyModel.BranchList.value.Demo[index];
+                        return BranchCard(
+                          name: Branch.branchName ?? '',
+                          id: Branch.branchId ?? 0,
+                          email: Branch.emailId ?? '',
+                          imageBytes: Branch.branchLogo!,
+                          index: index,
+                          data: hierarchyController.hierarchyModel.BranchList.value,
+                          controller: hierarchyController,
+                          isSelected: hierarchyController.hierarchyModel.BranchList.value.Demo[index].isSelected,
+                          type: "DEMO",
+                        );
+                      },
+                    ),
+                  ),
+                );
+              }),
+            ],
+          ),
+        ),
+        Obx(() {
+          double screenWidth = MediaQuery.of(context).size.width;
+          return hierarchyController.hierarchyModel.Branch_DataPageView.value
+              ? Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 50),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300), // Smooth animation duration
+                      transitionBuilder: (Widget child, Animation<double> animation) {
+                        final Offset beginOffset = hierarchyController.hierarchyModel.Branch_DataPageView.value
+                            ? const Offset(1.0, 0.0) // Slide in from right
+                            : const Offset(1.0, 0.0); // Slide in from left
+
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: beginOffset,
+                            end: Offset.zero,
+                          ).animate(animation),
+                          child: child,
+                        );
+                      },
+                      child: hierarchyController.hierarchyModel.Branch_DataPageView.value
+                          ? BranchEditor(
+                              screenWidth: screenWidth,
+                              data: hierarchyController.hierarchyModel.selectedBranchDetails,
+                              controller: hierarchyController,
+                            )
+                          : const SizedBox.shrink(key: ValueKey(0)),
+                    ),
+                  ),
+                )
+              : const SizedBox.shrink();
+        }),
+      ],
+    );
+  }
+}

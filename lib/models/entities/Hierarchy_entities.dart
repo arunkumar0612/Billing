@@ -4,23 +4,23 @@ import 'dart:typed_data';
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 
 class OrganizationsData {
-  final int organizationId;
-  final String email;
-  final String organizationName;
+  final int? organizationId;
+  final String? email;
+  final String? organizationName;
   final String? orgCode;
   final Uint8List? organizationLogo;
-  final String address;
-  final String siteType;
+  final String? address;
+  final String? siteType;
   bool isSelected;
 
   OrganizationsData({
-    required this.organizationId,
-    required this.email,
-    required this.organizationName,
+    this.organizationId,
+    this.email,
+    this.organizationName,
     this.orgCode,
     this.organizationLogo,
-    required this.address,
-    required this.siteType,
+    this.address,
+    this.siteType,
     this.isSelected = false,
   });
 
@@ -66,7 +66,6 @@ class OrganizationResponse {
         print('$key: $value');
       }
     });
-    print("**************************************************************************");
 
     return OrganizationResponse(
       Live: (response.data['Live'] as List<dynamic>?)?.map((item) => OrganizationsData.fromJson(item as Map<String, dynamic>)).toList() ?? [],
@@ -83,23 +82,27 @@ class OrganizationResponse {
 }
 
 class CompanysData {
-  final int customerId;
-  final int organizationId;
-  final String customerName;
-  final String ccode;
-  final String email;
+  final int? customerId;
+  final int? organizationId;
+  final String? customerName;
+  final String? ccode;
+  final String? email;
   final Uint8List? customerLogo;
-  final String siteType;
+  final String? address;
+  final String? billingAddress;
+  final String? siteType;
   bool isSelected;
 
   CompanysData({
-    required this.customerId,
-    required this.organizationId,
-    required this.customerName,
-    required this.ccode,
-    required this.email,
+    this.customerId,
+    this.organizationId,
+    this.customerName,
+    this.ccode,
+    this.email,
     this.customerLogo,
-    required this.siteType,
+    this.address,
+    this.billingAddress,
+    this.siteType,
     this.isSelected = false,
   });
 
@@ -111,6 +114,8 @@ class CompanysData {
       ccode: json['ccode'] as String? ?? "",
       email: json['Email_id'] as String? ?? "",
       customerLogo: json['Customer_Logo'] != null && json['Customer_Logo']['data'] != null ? Uint8List.fromList(List<int>.from(json['Customer_Logo']['data'])) : Uint8List(0),
+      address: json['address'] as String? ?? "",
+      billingAddress: json['billing_address'] as String? ?? "",
       siteType: json['site_type'] as String? ?? "",
     );
   }
@@ -154,7 +159,7 @@ class CompanyResponse {
         print('$key: $value');
       }
     });
-    print("**************************************************************************");
+
     return CompanyResponse.fromJson(response.data);
   }
 
@@ -168,47 +173,47 @@ class CompanyResponse {
 }
 
 class BranchsData {
-  final int branchId;
-  final String branchName;
-  final String branchCode;
-  final String clientAddressName;
-  final String clientAddress;
-  final String gstNumber;
-  final String emailId;
-  final String contactNumber;
-  final String billingAddress;
-  final String billingAddressName;
-  final String siteType;
+  final int? branchId;
+  final String? branchName;
+  final String? branchCode;
+  final String? clientAddressName;
+  final String? clientAddress;
+  final String? gstNumber;
+  final String? emailId;
+  final String? contactNumber;
+  final String? billingAddress;
+  final String? billingAddressName;
+  final String? siteType;
   final Uint8List? branchLogo;
-  final int subscriptionId;
-  final String billingPlan;
-  final String billMode;
-  final String fromDate;
-  final String toDate;
-  final int amount;
-  final int billingPeriod;
+  final int? subscriptionId;
+  final String? billingPlan;
+  final String? billMode;
+  final String? fromDate;
+  final String? toDate;
+  final int? amount;
+  final int? billingPeriod;
   bool isSelected;
 
   BranchsData({
-    required this.branchId,
-    required this.branchName,
-    required this.branchCode,
-    required this.clientAddressName,
-    required this.clientAddress,
-    required this.gstNumber,
-    required this.emailId,
-    required this.contactNumber,
-    required this.billingAddress,
-    required this.billingAddressName,
-    required this.siteType,
-    required this.branchLogo,
-    required this.subscriptionId,
-    required this.billingPlan,
-    required this.billMode,
-    required this.fromDate,
-    required this.toDate,
-    required this.amount,
-    required this.billingPeriod,
+    this.branchId,
+    this.branchName,
+    this.branchCode,
+    this.clientAddressName,
+    this.clientAddress,
+    this.gstNumber,
+    this.emailId,
+    this.contactNumber,
+    this.billingAddress,
+    this.billingAddressName,
+    this.siteType,
+    this.branchLogo,
+    this.subscriptionId,
+    this.billingPlan,
+    this.billMode,
+    this.fromDate,
+    this.toDate,
+    this.amount,
+    this.billingPeriod,
     this.isSelected = false,
   });
 
@@ -279,7 +284,7 @@ class BranchResponse {
         print('$key: $value');
       }
     });
-    print("**************************************************************************");
+
     return BranchResponse(
       Live: (data['Live'] as List?)?.map((e) => BranchsData.fromJson(e)).toList() ?? [],
       Demo: (data['Demo'] as List?)?.map((e) => BranchsData.fromJson(e)).toList() ?? [],

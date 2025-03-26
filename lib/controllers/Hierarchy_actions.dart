@@ -19,179 +19,198 @@ class HierarchyController extends GetxController {
   }
 
   dynamic onCompSelected(CompanyResponse data, int selectedIndex, String type) {
-    if (type == "LIVE") {
-      if (data.Live[selectedIndex].isSelected) {
-        onCompDeselected(data, type);
-        toggle_cardCount(5);
-        toggle_dataPageView(false);
-        return;
-      }
+    List<CompanysData> selectedList = (type == "LIVE") ? data.Live : data.Demo;
 
-      for (var liveComp in data.Live) {
-        liveComp.isSelected = false;
-      }
-
-      data.Live[selectedIndex].isSelected = true;
-    } else if (type == "DEMO") {
-      if (data.Demo[selectedIndex].isSelected) {
-        onCompDeselected(data, type);
-        toggle_cardCount(5);
-        toggle_dataPageView(false);
-        return;
-      }
-
-      for (var DemoOrg in data.Live) {
-        DemoOrg.isSelected = false;
-      }
-
-      data.Demo[selectedIndex].isSelected = true;
+    if (selectedList[selectedIndex].isSelected) {
+      onCompDeselected(data);
+      toggle_cardCount(5, "comp");
+      toggle_CompdataPageView(false);
+      return;
     }
 
-    // if (data.Live[selectedIndex].isSelected) {
-    //   onCompDeselected(data);
-    //   toggle_cardCount(5);
-    //   toggle_dataPageView(false);
+    // Deselect all companies
+    for (var comp in data.Live) {
+      comp.isSelected = false;
+    }
+    for (var comp in data.Demo) {
+      comp.isSelected = false;
+    }
 
-    //   return;
-    // }
-    // for (var Livecomp in data.Live) {
-    //   Livecomp.isSelected = false;
-    // }
-    // data.Live[selectedIndex].isSelected = true;
-    toggle_dataPageView(true);
-    toggle_cardCount(4);
+    // Select the chosen company
+    selectedList[selectedIndex].isSelected = true;
+    injectCompDetails(selectedIndex, selectedList);
+    toggle_CompdataPageView(true);
+    toggle_cardCount(4, "comp");
     hierarchyModel.CompanyList.refresh();
   }
 
-  dynamic onCompDeselected(CompanyResponse data, String type) {
-    if (type == "LIVE") {
-      for (var LiveComp in data.Live) {
-        LiveComp.isSelected = false;
-      }
-    } else if (type == "DEMO") {
-      for (var DemoComp in data.Demo) {
-        DemoComp.isSelected = false;
-      }
+  dynamic onCompDeselected(CompanyResponse data) {
+    resetCompDetails();
+    for (var comp in data.Live) {
+      comp.isSelected = false;
     }
-
+    for (var comp in data.Demo) {
+      comp.isSelected = false;
+    }
     hierarchyModel.CompanyList.refresh();
   }
 
+  void injectCompDetails(int index, List<CompanysData> data) {
+    hierarchyModel.selectedCompDetails.value = data[index];
+  }
+
+  void resetCompDetails() {
+    hierarchyModel.selectedCompDetails.value = CompanysData();
+  }
 /////////////////////////////////-----------------------------------//////////////////////////////////
 
   dynamic onOrgSelected(OrganizationResponse data, int selectedIndex, String type) {
-    if (type == "LIVE") {
-      if (data.Live[selectedIndex].isSelected) {
-        print(data.Live[selectedIndex].address);
-        onOrgDeselected(data, type);
-        toggle_cardCount(5);
-        toggle_dataPageView(false);
-        return;
-      }
-
-      for (var liveOrg in data.Live) {
-        liveOrg.isSelected = false;
-      }
-
-      data.Live[selectedIndex].isSelected = true;
-    } else if (type == "DEMO") {
-      if (data.Demo[selectedIndex].isSelected) {
-        onOrgDeselected(data, type);
-        toggle_cardCount(5);
-        toggle_dataPageView(false);
-        return;
-      }
-
-      for (var DemoOrg in data.Demo) {
-        DemoOrg.isSelected = false;
-      }
-
-      data.Demo[selectedIndex].isSelected = true;
+    List<OrganizationsData> selectedList = (type == "LIVE") ? data.Live : data.Demo;
+    if (selectedList[selectedIndex].isSelected) {
+      onOrgDeselected(data);
+      toggle_OrgdataPageView(false);
+      toggle_cardCount(5, "org");
+      return;
     }
 
-    toggle_dataPageView(true);
-    toggle_cardCount(4);
-    hierarchyModel.OrganizationList.refresh();
-  }
-
-  dynamic onOrgDeselected(OrganizationResponse data, String type) {
-    if (type == "LIVE") {
-      for (var LiveOrg in data.Live) {
-        LiveOrg.isSelected = false;
-      }
-    } else if (type == "DEMO") {
-      for (var DemoOrg in data.Demo) {
-        DemoOrg.isSelected = false;
-      }
+    // Deselect all organizations
+    for (var org in data.Live) {
+      org.isSelected = false;
+    }
+    for (var org in data.Demo) {
+      org.isSelected = false;
     }
 
+    // Select the chosen organization
+    selectedList[selectedIndex].isSelected = true;
+    injectOrgDetails(selectedIndex, selectedList);
+    toggle_OrgdataPageView(true);
+    toggle_cardCount(4, "org");
     hierarchyModel.OrganizationList.refresh();
+    hierarchyModel.selectedOrgDetails.refresh();
   }
 
+  dynamic onOrgDeselected(OrganizationResponse data) {
+    resetOrgDetails();
+    for (var org in data.Live) {
+      org.isSelected = false;
+    }
+    for (var org in data.Demo) {
+      org.isSelected = false;
+    }
+    // hierarchyModel.OrganizationList.refresh();
+  }
+
+  void injectOrgDetails(int index, List<OrganizationsData> data) {
+    hierarchyModel.selectedOrgDetails.value = data[index];
+  }
+
+  void resetOrgDetails() {
+    hierarchyModel.selectedOrgDetails.value = OrganizationsData();
+  }
 /////////////////////////////////-----------------------------------//////////////////////////////////
 
-  dynamic onBranchSelected(BranchResponse data, int selectedIndex, String type) {
-    if (type == "LIVE") {
-      if (data.Live[selectedIndex].isSelected) {
-        onBranchDeselected(data, type);
-        toggle_cardCount(5);
-        toggle_dataPageView(false);
-        return;
-      }
+  dynamic onBranchSelected(BranchResponse data, int selectedIndex, String type) async {
+    List<BranchsData> selectedList = (type == "LIVE") ? data.Live : data.Demo;
 
-      for (var liveBranch in data.Live) {
-        liveBranch.isSelected = false;
-      }
+    if (selectedList[selectedIndex].isSelected) {
+      onBranchDeselected(data);
+      toggle_cardCount(5, "branch");
+      toggle_BranchdataPageView(false);
+      // await Future.delayed(const Duration(milliseconds: 2000));
 
-      data.Live[selectedIndex].isSelected = true;
-    } else if (type == "DEMO") {
-      if (data.Demo[selectedIndex].isSelected) {
-        onBranchDeselected(data, type);
-        toggle_cardCount(5);
-        toggle_dataPageView(false);
-        return;
-      }
-
-      for (var DemoBranch in data.Live) {
-        DemoBranch.isSelected = false;
-      }
-
-      data.Demo[selectedIndex].isSelected = true;
+      return;
     }
 
-    // if (data.Live[selectedIndex].isSelected) {
-    //   onBranchDeselected(data);
-    //   toggle_cardCount(5);
-    //   toggle_dataPageView(false);
-    //   return;
-    // }
-    // for (var LiveBranch in data.Live) {
-    //   LiveBranch.isSelected = false;
-    // }
-    // data.Live[selectedIndex].isSelected = true;
-    toggle_dataPageView(true);
-    toggle_cardCount(4);
+    // Deselect all branches
+    for (var branch in data.Live) {
+      branch.isSelected = false;
+    }
+    for (var branch in data.Demo) {
+      branch.isSelected = false;
+    }
+
+    // Select the chosen branch
+    selectedList[selectedIndex].isSelected = true;
+    injectBranchDetails(selectedIndex, selectedList);
+    toggle_BranchdataPageView(true);
+    toggle_cardCount(4, "branch");
     hierarchyModel.BranchList.refresh();
   }
 
-  dynamic onBranchDeselected(BranchResponse data, String type) {
-    if (type == "LIVE") {
-      for (var LiveBranch in data.Live) {
-        LiveBranch.isSelected = false;
-      }
-    } else if (type == "DEMO") {
-      for (var DemoBranch in data.Demo) {
-        DemoBranch.isSelected = false;
-      }
+  dynamic onBranchDeselected(BranchResponse data) {
+    resetBranchDetails();
+    for (var branch in data.Live) {
+      branch.isSelected = false;
+    }
+    for (var branch in data.Demo) {
+      branch.isSelected = false;
     }
     hierarchyModel.BranchList.refresh();
   }
 
-  void toggle_dataPageView(bool value) {
-    hierarchyModel.DataPageView.value = value;
+  void injectBranchDetails(int index, List<BranchsData> data) {
+    hierarchyModel.selectedBranchDetails.value = data[index];
   }
 
-  void toggle_cardCount(int value) {
-    hierarchyModel.cardCount.value = value;
+  void resetBranchDetails() {
+    hierarchyModel.selectedBranchDetails.value = BranchsData();
   }
+
+///////////////////////////////////////-------------------------------////////////////////////////////////////////
+  void toggle_OrgdataPageView(bool value) {
+    hierarchyModel.Org_DataPageView.value = value;
+  }
+
+  void toggle_CompdataPageView(bool value) {
+    hierarchyModel.Comp_DataPageView.value = value;
+  }
+
+  void toggle_BranchdataPageView(bool value) {
+    hierarchyModel.Branch_DataPageView.value = value;
+  }
+
+  void toggle_cardCount(int value, String nature) {
+    if (nature == "org") {
+      hierarchyModel.Org_cardCount.value = value;
+    } else if (nature == "comp") {
+      hierarchyModel.Comp_cardCount.value = value;
+    } else if (nature == "branch") {
+      hierarchyModel.Branch_cardCount.value = value;
+    }
+  }
+
+  // void on_OrgDispose() async {
+  //   // toggle_dataPageView(false);
+  //   // await Future.delayed(const Duration(milliseconds: 4000));
+  //   for (var liveBranch in hierarchyModel.OrganizationList.value.Live) {
+  //     liveBranch.isSelected = false;
+  //   }
+  //   for (var DemoBranch in hierarchyModel.OrganizationList.value.Demo) {
+  //     DemoBranch.isSelected = false;
+  //   }
+  // }
+
+  // void on_CompDispose() async {
+  //   // toggle_dataPageView(false);
+  //   // await Future.delayed(const Duration(milliseconds: 4000));
+  //   for (var liveBranch in hierarchyModel.CompanyList.value.Live) {
+  //     liveBranch.isSelected = false;
+  //   }
+  //   for (var DemoBranch in hierarchyModel.CompanyList.value.Demo) {
+  //     DemoBranch.isSelected = false;
+  //   }
+  // }
+
+  // void on_BranchDispose() async {
+  //   // toggle_dataPageView(false);
+  //   // await Future.delayed(const Duration(milliseconds: 4000));
+
+  //   for (var liveBranch in hierarchyModel.BranchList.value.Live) {
+  //     liveBranch.isSelected = false;
+  //   }
+  //   for (var DemoBranch in hierarchyModel.BranchList.value.Demo) {
+  //     DemoBranch.isSelected = false;
+  //   }
+  // }
 }

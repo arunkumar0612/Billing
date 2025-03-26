@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/models/entities/SALES/Sales_entities.dart';
 import 'package:ssipl_billing/models/entities/SALES/product_entities.dart';
-
 import '../../../controllers/SALEScontrollers/ClientReq_actions.dart';
 
 mixin ClientreqProductService {

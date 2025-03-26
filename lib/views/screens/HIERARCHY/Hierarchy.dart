@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/services/Hierarchy_services/hierarchy_service.dart';
-
 import 'package:ssipl_billing/themes/style.dart';
-import 'package:google_fonts/google_fonts.dart'; // For custom fonts
-import 'package:ssipl_billing/views/screens/HIERARCHY/CompGrid.dart';
-import 'package:ssipl_billing/views/screens/HIERARCHY/IndGrid.dart';
-import 'package:ssipl_billing/views/screens/HIERARCHY/CompEditor.dart';
-import 'package:ssipl_billing/views/screens/HIERARCHY/OrgEditor.dart';
-import 'package:ssipl_billing/views/screens/HIERARCHY/OrgGid.dart'; // For advanced grid layouts
+import 'package:google_fonts/google_fonts.dart';
+import 'package:ssipl_billing/views/screens/HIERARCHY/COMP/CompGrid.dart';
+import 'package:ssipl_billing/views/screens/HIERARCHY/BRANCH/BranchGrid.dart';
+import 'package:ssipl_billing/views/screens/HIERARCHY/ORG/OrgGrid.dart';
 
 class Enterprise_Hierarchy extends StatefulWidget with HierarchyService {
   Enterprise_Hierarchy({super.key});
@@ -20,7 +17,6 @@ class Enterprise_Hierarchy extends StatefulWidget with HierarchyService {
 
 class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with SingleTickerProviderStateMixin {
   final HierarchyController hierarchyController = Get.find<HierarchyController>();
-  // Original lists
 
   @override
   void didChangeDependencies() {
@@ -33,9 +29,15 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
   }
 
   @override
+  void initState() {
+    super.initState();
+    hierarchyController.hierarchyModel.initTabController(this, 3);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3, // Number of tabs
+      length: 3,
       child: Scaffold(
         backgroundColor: Primary_colors.Dark,
         body: Padding(
@@ -87,24 +89,12 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
                           ),
                           const SizedBox(height: 10),
 
-                          // Search Bar
-                          // _buildSearchField(
-                          //   controller: _productSearchController,
-                          //   hintText: 'Search products',
-                          //   onChanged: (value) {
-                          //     setState(() {
-                          //       productSearchQuery = value;
-                          //     });
-                          //   },
-                          // ),
-                          // const SizedBox(height: 15),
-
-                          // TabBar
-                          const SizedBox(
+                          SizedBox(
                             width: 390,
                             child: TabBar(
+                              controller: hierarchyController.hierarchyModel.tabController,
                               indicatorColor: Primary_colors.Color5,
-                              tabs: [
+                              tabs: const [
                                 Tab(text: 'Organizations'),
                                 Tab(text: 'Companies'),
                                 Tab(text: 'Branches'),
@@ -115,6 +105,7 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
                           // TabBarView
                           Expanded(
                             child: TabBarView(
+                              controller: hierarchyController.hierarchyModel.tabController,
                               children: [
                                 OrganizationGrid(),
                                 CompanyGrid(),
@@ -126,34 +117,6 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
                       ),
                     ),
                     const SizedBox(width: 20),
-
-                    // Services Section
-                    Obx(() {
-                      double screenWidth = MediaQuery.of(context).size.width;
-                      print("Screen Width: $screenWidth");
-
-                      return AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300), // Smooth animation duration
-                        transitionBuilder: (Widget child, Animation<double> animation) {
-                          final Offset beginOffset = hierarchyController.hierarchyModel.DataPageView.value
-                              ? const Offset(1.0, 0.0) // Slide in from right
-                              : const Offset(1.0, 0.0); // Slide in from left
-
-                          return SlideTransition(
-                            position: Tween<Offset>(
-                              begin: beginOffset,
-                              end: Offset.zero,
-                            ).animate(animation),
-                            child: child,
-                          );
-                        },
-                        child: hierarchyController.hierarchyModel.DataPageView.value
-                            ? OrganizationEditor(
-                                screenWidth: screenWidth,
-                              )
-                            : const SizedBox.shrink(key: ValueKey(0)),
-                      );
-                    }),
                   ],
                 ),
               )

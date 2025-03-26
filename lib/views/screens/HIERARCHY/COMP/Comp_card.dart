@@ -5,17 +5,18 @@ import 'package:ssipl_billing/models/entities/Hierarchy_entities.dart';
 import 'package:ssipl_billing/services/Hierarchy_services/hierarchy_service.dart';
 import 'package:ssipl_billing/themes/style.dart';
 
-class OrganizationCard extends StatefulWidget with HierarchyService {
+class CompanyCard extends StatefulWidget with HierarchyService {
   final String name;
   final String email;
   final int id;
   final Uint8List imageBytes;
   final int index;
-  final OrganizationResponse data;
+  final CompanyResponse data;
   final HierarchyController controller;
   final bool isSelected;
   final String type;
-  OrganizationCard(
+
+  CompanyCard(
       {super.key,
       required this.name,
       required this.email,
@@ -28,10 +29,10 @@ class OrganizationCard extends StatefulWidget with HierarchyService {
       required this.type});
 
   @override
-  State<OrganizationCard> createState() => _OrganizationCardState();
+  State<CompanyCard> createState() => _CompanyCardState();
 }
 
-class _OrganizationCardState extends State<OrganizationCard> {
+class _CompanyCardState extends State<CompanyCard> {
   bool _isHovered = false;
 
   @override
@@ -94,7 +95,7 @@ class _OrganizationCardState extends State<OrganizationCard> {
         child: GestureDetector(
           onTap: () {
             // WidgetsBinding.instance.addPostFrameCallback((_) {
-            widget.controller.onOrgSelected(widget.data, widget.index, widget.type);
+            widget.controller.onCompSelected(widget.data, widget.index, widget.type);
             // });
           },
           child: Card(
@@ -141,7 +142,7 @@ class _OrganizationCardState extends State<OrganizationCard> {
                             child: IconButton(
                               icon: const Icon(Icons.edit_square, size: 15, color: Color.fromARGB(255, 110, 110, 110)),
                               onPressed: () {
-                                widget.pickFile(context, 'organization', widget.id);
+                                widget.pickFile(context, 'company', widget.id);
                               },
                             ),
                           ),
@@ -169,9 +170,11 @@ class _OrganizationCardState extends State<OrganizationCard> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(height: 4),
-                          const Text(
-                            "ANAMALLAIS AGENCIES STADIUM PVT LTD, 7B, Mettupalayam road,Kavundanpalayam Coimbatore- 641030",
-                            style: TextStyle(fontSize: 8),
+                          Text(
+                            widget.type == "LIVE"
+                                ? widget.controller.hierarchyModel.CompanyList.value.Live[widget.index].address ?? ''
+                                : widget.controller.hierarchyModel.CompanyList.value.Demo[widget.index].address ?? '',
+                            style: const TextStyle(fontSize: 8),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 4),

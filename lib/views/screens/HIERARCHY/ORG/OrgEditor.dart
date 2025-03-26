@@ -1,32 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
+import 'package:ssipl_billing/models/entities/Hierarchy_entities.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 
 class OrganizationEditor extends StatefulWidget {
   final double screenWidth;
-  const OrganizationEditor({super.key, required this.screenWidth});
+  final Rx<OrganizationsData> data;
+  final HierarchyController controller;
+  const OrganizationEditor({
+    super.key,
+    required this.screenWidth,
+    required this.data,
+    required this.controller,
+  });
 
   @override
   _OrganizationEditorState createState() => _OrganizationEditorState();
 }
 
 class _OrganizationEditorState extends State<OrganizationEditor> {
-  final TextEditingController organizationIdController = TextEditingController(text: "1");
-  final TextEditingController emailIdController = TextEditingController(text: "thulasinathan@khivrajmail.com");
-  final TextEditingController organizationNameController = TextEditingController(text: "KHIVRAJ GROUP");
-  final TextEditingController orgCodeController = TextEditingController(text: "null");
-  final TextEditingController addressController = TextEditingController(text: "623, ANNA SALAI, CHENNAI – 600 006,TAMILNADU");
-  final TextEditingController siteTypeController = TextEditingController(text: "live");
-
-  @override
-  void dispose() {
-    organizationIdController.dispose();
-    emailIdController.dispose();
-    organizationNameController.dispose();
-    orgCodeController.dispose();
-    addressController.dispose();
-    siteTypeController.dispose();
-    super.dispose();
+  void autofill() {
+    widget.controller.hierarchyModel.org_IdController.value.text = (widget.data.value.organizationId ?? "").toString();
+    widget.controller.hierarchyModel.org_emailIdController.value.text = widget.data.value.email ?? "";
+    widget.controller.hierarchyModel.org_NameController.value.text = widget.data.value.organizationName ?? "";
+    widget.controller.hierarchyModel.org_CodeController.value.text = widget.data.value.orgCode ?? "";
+    widget.controller.hierarchyModel.org_addressController.value.text = widget.data.value.address ?? "";
+    widget.controller.hierarchyModel.org_siteTypeController.value.text = widget.data.value.siteType ?? "";
+    if (mounted) setState(() {});
   }
 
   Widget buildTextField(String label, TextEditingController controller, bool readOnly) {
@@ -51,7 +53,10 @@ class _OrganizationEditorState extends State<OrganizationEditor> {
               maxLines: null,
               readOnly: readOnly,
               controller: controller,
-              style: TextStyle(color: readOnly ? const Color.fromARGB(255, 66, 66, 66) : Colors.black),
+              onChanged: (value) {}, // ✅ Avoids unnecessary Obx()
+              style: TextStyle(
+                color: readOnly ? const Color.fromARGB(255, 66, 66, 66) : Colors.black,
+              ),
               decoration: InputDecoration(
                 fillColor: Colors.black,
                 focusedBorder: UnderlineInputBorder(
@@ -70,6 +75,17 @@ class _OrganizationEditorState extends State<OrganizationEditor> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    autofill();
+
+    // Listen to changes in widget.data and trigger autofill
+    ever(widget.data, (_) {
+      autofill();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       width: widget.screenWidth * 0.3,
@@ -77,9 +93,8 @@ class _OrganizationEditorState extends State<OrganizationEditor> {
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [
+            Color.fromARGB(255, 255, 249, 249),
             Color.fromARGB(255, 189, 189, 189),
-            Color.fromARGB(255, 77, 77, 77),
-            // Primary_colors.Dark,
           ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -91,19 +106,27 @@ class _OrganizationEditorState extends State<OrganizationEditor> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Center(
-              child: Text(
-            'Edit',
-            style: TextStyle(fontSize: 20),
-          )),
-          buildTextField("Organization ID", organizationIdController, true),
-          buildTextField("Email ID", emailIdController, false),
-          buildTextField("Organization Name", organizationNameController, true),
-          buildTextField("Org Code", orgCodeController, true),
-          buildTextField("Address", addressController, false),
-          buildTextField("Site Type", siteTypeController, true),
-          const SizedBox(
-            height: 30,
+            child: Text(
+              'Edit',
+              style: TextStyle(fontSize: 20),
+            ),
           ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  buildTextField("Organization ID", widget.controller.hierarchyModel.org_IdController.value, true),
+                  buildTextField("Email ID", widget.controller.hierarchyModel.org_emailIdController.value, false),
+                  buildTextField("Organization Name", widget.controller.hierarchyModel.org_NameController.value, true),
+                  buildTextField("Org Code", widget.controller.hierarchyModel.org_CodeController.value, true),
+                  buildTextField("Address", widget.controller.hierarchyModel.org_addressController.value, false),
+                  buildTextField("Site Type", widget.controller.hierarchyModel.org_siteTypeController.value, true),
+                ],
+              ),
+            ),
+          ),
+          const Divider(color: Colors.white),
+          const SizedBox(height: 30),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -111,17 +134,18 @@ class _OrganizationEditorState extends State<OrganizationEditor> {
               BasicButton(text: "Update", colors: Colors.blue, onPressed: () {}),
             ],
           ),
-          const SizedBox(
-            height: 30,
-          ),
+          const SizedBox(height: 30),
           const SizedBox(
             width: 660,
             child: Text(
               textAlign: TextAlign.center,
               'The approved Quotation shown beside can be used as a reference for generating the Invoice. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
-              style: TextStyle(color: Color.fromARGB(255, 46, 46, 46), fontSize: Primary_font_size.Text7),
+              style: TextStyle(
+                color: Color.fromARGB(255, 46, 46, 46),
+                fontSize: 14, // ✅ Replace with an actual font size
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

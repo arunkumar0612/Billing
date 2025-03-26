@@ -510,7 +510,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                               child: MouseRegion(
                                                 cursor: SystemMouseCursors.click,
                                                 child: _buildIconWithLabel(
-                                                    image: 'assets/images/subscription.png',
+                                                    image: 'assets/images/addprocess.png',
                                                     label: 'Add Process',
                                                     color: Primary_colors.Color5,
                                                     onPressed: () {
@@ -522,7 +522,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                               child: MouseRegion(
                                                 cursor: SystemMouseCursors.click,
                                                 child: _buildIconWithLabel(
-                                                  image: 'assets/images/invoice1.png',
+                                                  image: 'assets/images/subscription.png',
                                                   label: 'Package',
                                                   color: Primary_colors.Color4,
                                                   onPressed: () {},

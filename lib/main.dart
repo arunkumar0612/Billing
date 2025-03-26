@@ -6,6 +6,11 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers
 import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Quote_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Sales_actions.dart';
+import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
+import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_ClientReq_actions.dart';
+import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Invoice_actions.dart';
+import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Quote_actions.dart';
+import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/Subscription_actions.dart';
 import 'package:ssipl_billing/routes/app_routes.dart';
 import 'package:ssipl_billing/themes/style.dart';
 // import 'package:ssipl_billing/controllers/viewSend_actions.dart';
@@ -49,6 +54,12 @@ Future<void> main() async {
   ////////////////////////--------HIERARCHY-------/////////////////////////////
   Get.lazyPut<HierarchyController>(() => HierarchyController());
 
+  ////////////////////////////----SUBSCRIPTION----////////////////////////////////////
+  Get.lazyPut<SUBSCRIPTION_InvoiceController>(() => SUBSCRIPTION_InvoiceController());
+  Get.lazyPut<SubscriptionController>(() => SubscriptionController());
+  Get.lazyPut<SUBSCRIPTION_CustomPDF_InvoiceController>(() => SUBSCRIPTION_CustomPDF_InvoiceController());
+  Get.lazyPut<SUBSCRIPTION_QuoteController>(() => SUBSCRIPTION_QuoteController());
+  Get.lazyPut<SUBSCRIPTION_ClientreqController>(() => SUBSCRIPTION_ClientreqController());
   // Get.lazyPut<ViewsendController>(() => ViewsendController());
   // if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux)) {
   //   await windowManager.ensureInitialized();

@@ -173,21 +173,20 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                             alignment: Alignment.centerLeft,
                             children: [
                               TextFormField(
-                                controller: salesController.salesModel.searchQuery.value,
-                                onChanged: salesController.search,
+                                controller: TextEditingController(text: salesController.salesModel.searchQuery.value)
+                                  ..selection = TextSelection.fromPosition(
+                                    TextPosition(offset: salesController.salesModel.searchQuery.value.length),
+                                  ),
+                                onChanged: (value) => salesController.salesModel.searchQuery.value = value, // ✅ Updates GetX state
                                 style: const TextStyle(fontSize: 13, color: Colors.white),
                                 decoration: const InputDecoration(
                                   contentPadding: EdgeInsets.all(10),
                                   filled: true,
                                   focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color.fromARGB(226, 89, 147, 255),
-                                    ),
+                                    borderSide: BorderSide(color: Color.fromARGB(226, 89, 147, 255)),
                                   ),
                                   enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color.fromARGB(255, 104, 93, 255),
-                                    ),
+                                    borderSide: BorderSide(color: Color.fromARGB(255, 104, 93, 255)),
                                   ),
                                   hintText: "", // Hide default hintText
                                   border: UnderlineInputBorder(borderSide: BorderSide.none),
@@ -197,47 +196,31 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                   ),
                                 ),
                               ),
-                              if (salesController.salesModel.searchQuery.value.text.isEmpty)
+                              if (salesController.salesModel.searchQuery.value.isEmpty)
                                 Positioned(
-                                  left: 40, // Adjust positioning as needed
+                                  left: 40,
                                   child: IgnorePointer(
                                     child: AnimatedTextKit(
                                       repeatForever: true,
                                       animatedTexts: [
                                         TypewriterAnimatedText(
                                           "Search from the list...",
-                                          textStyle: const TextStyle(
-                                            fontSize: 13,
-                                            color: Color.fromARGB(255, 185, 183, 183),
-                                            letterSpacing: 1,
-                                          ),
+                                          textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
                                           speed: const Duration(milliseconds: 100),
                                         ),
                                         TypewriterAnimatedText(
                                           "Enter customer name...",
-                                          textStyle: const TextStyle(
-                                            fontSize: 13,
-                                            color: Color.fromARGB(255, 185, 183, 183),
-                                            letterSpacing: 1,
-                                          ),
+                                          textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
                                           speed: const Duration(milliseconds: 100),
                                         ),
                                         TypewriterAnimatedText(
                                           "Find an invoice...",
-                                          textStyle: const TextStyle(
-                                            fontSize: 13,
-                                            color: Color.fromARGB(255, 185, 183, 183),
-                                            letterSpacing: 1,
-                                          ),
+                                          textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
                                           speed: const Duration(milliseconds: 100),
                                         ),
                                         TypewriterAnimatedText(
-                                          "Find an Quotation...",
-                                          textStyle: const TextStyle(
-                                            fontSize: 13,
-                                            color: Color.fromARGB(255, 185, 183, 183),
-                                            letterSpacing: 1,
-                                          ),
+                                          "Find a Quotation...",
+                                          textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
                                           speed: const Duration(milliseconds: 100),
                                         ),
                                       ],
@@ -539,7 +522,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                             cursor: SystemMouseCursors.click,
                                             child: _buildIconWithLabel(
                                               image: 'assets/images/addcustomer.png',
-                                              label: 'Add Customer',
+                                              label: 'Customer Process',
                                               color: Primary_colors.Color4,
                                               onPressed: () {
                                                 widget.Generate_client_reqirement_dialougebox('Customer', context);
@@ -552,7 +535,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                             cursor: SystemMouseCursors.click,
                                             child: _buildIconWithLabel(
                                                 image: 'assets/images/addenquiry.png',
-                                                label: 'Add Enquiry',
+                                                label: 'Enquiry Process',
                                                 color: Primary_colors.Color5,
                                                 onPressed: () {
                                                   widget.Generate_client_reqirement_dialougebox('Enquiry', context);

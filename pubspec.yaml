@@ -64,6 +64,14 @@ dependencies:
   cool_dropdown: ^2.1.1
   mqtt_client: ^10.8.0
   visibility_detector: ^0.4.0+2
+  open_filex: ^4.6.0
+  webview_flutter: ^4.10.0
+  mailer: ^6.4.1
+  shimmer: ^3.0.0
+  flutter_email_sender: ^7.0.0
+  image_picker: ^1.1.2
+  flutter_animate: ^4.5.2
+  glassmorphism: ^3.0.0
 
 dev_dependencies:
   flutter_test:

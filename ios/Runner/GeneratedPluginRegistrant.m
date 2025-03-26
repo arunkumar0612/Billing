@@ -24,10 +24,28 @@
 @import file_saver;
 #endif
 
+#if __has_include(<flutter_email_sender/FlutterEmailSenderPlugin.h>)
+#import <flutter_email_sender/FlutterEmailSenderPlugin.h>
+#else
+@import flutter_email_sender;
+#endif
+
 #if __has_include(<flutter_pdfview/FLTPDFViewFlutterPlugin.h>)
 #import <flutter_pdfview/FLTPDFViewFlutterPlugin.h>
 #else
 @import flutter_pdfview;
+#endif
+
+#if __has_include(<image_picker_ios/FLTImagePickerPlugin.h>)
+#import <image_picker_ios/FLTImagePickerPlugin.h>
+#else
+@import image_picker_ios;
+#endif
+
+#if __has_include(<open_filex/OpenFilePlugin.h>)
+#import <open_filex/OpenFilePlugin.h>
+#else
+@import open_filex;
 #endif
 
 #if __has_include(<path_provider_foundation/PathProviderPlugin.h>)
@@ -78,13 +96,22 @@
 @import url_launcher_ios;
 #endif
 
+#if __has_include(<webview_flutter_wkwebview/WebViewFlutterPlugin.h>)
+#import <webview_flutter_wkwebview/WebViewFlutterPlugin.h>
+#else
+@import webview_flutter_wkwebview;
+#endif
+
 @implementation GeneratedPluginRegistrant
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
   [FPPDeviceInfoPlusPlugin registerWithRegistrar:[registry registrarForPlugin:@"FPPDeviceInfoPlusPlugin"]];
   [FilePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FilePickerPlugin"]];
   [FileSaverPlugin registerWithRegistrar:[registry registrarForPlugin:@"FileSaverPlugin"]];
+  [FlutterEmailSenderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterEmailSenderPlugin"]];
   [FLTPDFViewFlutterPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPDFViewFlutterPlugin"]];
+  [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
+  [OpenFilePlugin registerWithRegistrar:[registry registrarForPlugin:@"OpenFilePlugin"]];
   [PathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"PathProviderPlugin"]];
   [PdfImageRendererPlugin registerWithRegistrar:[registry registrarForPlugin:@"PdfImageRendererPlugin"]];
   [PdfRenderPlugin registerWithRegistrar:[registry registrarForPlugin:@"PdfRenderPlugin"]];
@@ -93,6 +120,7 @@
   [SharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"SharedPreferencesPlugin"]];
   [SyncfusionFlutterPdfViewerPlugin registerWithRegistrar:[registry registrarForPlugin:@"SyncfusionFlutterPdfViewerPlugin"]];
   [URLLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"URLLauncherPlugin"]];
+  [WebViewFlutterPlugin registerWithRegistrar:[registry registrarForPlugin:@"WebViewFlutterPlugin"]];
 }
 
 @end

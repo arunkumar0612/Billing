@@ -38,6 +38,19 @@ class API {
   static String sales_clientprofile_API = "http://192.168.0.200:8081/sales/clientprofile";
   static String sales_approvedquotation_API = "http://192.168.0.200:8081/sales/approvedquotation";
 
+  // SUBSCRIPTION ////////////
+  static String subscription_getprocesslist_API = "http://192.168.0.200:8081/subscription/getprocesslist";
+  static String subscription_addfeedback_API = "http://192.168.0.200:8081/subscription/addfeedback";
+  static String subscription_getprocesscustomer_API = "http://192.168.0.200:8081/subscription/getprocesscustomer";
+  static String subscription_getbinaryfile_API = "http://192.168.0.200:8081/subscription/getbinaryfile";
+  static String subscription_deleteprocess_API = "http://192.168.0.200:8081/subscription/deleteprocess";
+  static String subscription_archiveprocess_API = "http://192.168.0.200:8081/subscription/archiveprocess";
+  static String subscription_clientprofile_API = "http://192.168.0.200:8081/subscription/clientprofile";
+  // static String subscription_approvedquotation_API = "http://192.168.0.200:8081/subscription/approvedquotation";
+  static String subscription_Upload_MOR_API = "http://192.168.0.200:8081/subscription/uploadmor";
+  static String subscription_add_details_API = "http://192.168.0.200:8081/subscription/addsubscus";
+  static String subscription_getsubscriptiondata_API = "http://192.168.0.200:8081/subscription/subscriptiondata";
+
   /////////////////////-----------HIERACHY-------------//////////////////////////////////
   static String hierarchy_OrganizationData = "http://192.168.0.200:8081/admin/organization";
   static String hierarchy_CompanyData = "http://192.168.0.200:8081/admin/companylist";

@@ -134,17 +134,20 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
         site.serialNo = value;
         break;
       case 1:
-        site.address = value;
-        break;
-      case 2:
         site.siteID = value;
         break;
+      case 2:
+        site.siteName = value;
+        break;
       case 3:
-        site.monthlyCharges = value;
+        site.address = value;
+        break;
+      case 4:
+        site.monthlyCharges = value.isNotEmpty ? int.parse(value) : 0;
         break;
     }
 
-    if (colIndex == 4 || colIndex == 5) {
+    if (colIndex == 4) {
       calculateTotal(rowIndex);
     }
 
@@ -157,9 +160,17 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     final newTotal = site.monthlyCharges;
 
     site.monthlyCharges = newTotal;
-    pdfModel.value.textControllers[rowIndex][5].text = newTotal.toString();
+    pdfModel.value.textControllers[rowIndex][4].text = newTotal.toString();
     finalCalc();
     pdfModel.refresh();
+  }
+
+  int fetch_messageType() {
+    if (pdfModel.value.whatsapp_selectionStatus.value && pdfModel.value.gmail_selectionStatus.value) return 3;
+    if (pdfModel.value.whatsapp_selectionStatus.value) return 1;
+    if (pdfModel.value.gmail_selectionStatus.value) return 2;
+
+    return 0;
   }
 
   void finalCalc() {
@@ -228,27 +239,14 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.filePathController.value.clear();
 
     pdfModel.value.subTotal.value.clear();
-    // pdfModel.value.planname.value.clear();
-    // pdfModel.value.customertype.value.clear();
-    // pdfModel.value.plancharges.value.clear();
-    // pdfModel.value.internetcharges.value.clear();
-    // pdfModel.value.billperiod.value.clear();
-    // pdfModel.value.billdate.value.clear();
-    // pdfModel.value.duedate.value.clear();
-    // pdfModel.value.relationshipID.value.clear();
-    // pdfModel.value.billnumber.value.clear();
-    // pdfModel.value.customerGSTIN.value.clear();
-    // pdfModel.value.HSNcode.value.clear();
-    // pdfModel.value.customerPO.value.clear();
-    // pdfModel.value.contactperson.value.clear();
-    // pdfModel.value.contactnumber.value.clear();
+
     pdfModel.value.CGST.value.clear();
     pdfModel.value.SGST.value.clear();
     pdfModel.value.roundOff.value.clear();
     pdfModel.value.Total.value.clear();
     pdfModel.value.roundoffDiff.value = null;
 
-    pdfModel.value.manualInvoice_gstTotals.clear();
+    // pdfModel.value.manualInvoice_gstTotals.clear();
 
     pdfModel.value.manualInvoicesites.assignAll([
       Site(siteName: 'siteName1', address: 'address1', siteID: 'siteID1', monthlyCharges: 100),
@@ -273,5 +271,20 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.CCemailToggle.value = false;
 
     pdfModel.value.allData_key.value = GlobalKey<FormState>();
+  }
+
+  bool postDatavalidation() {
+    return pdfModel.value.clientName.value.text.isNotEmpty &&
+        pdfModel.value.clientAddress.value.text.isNotEmpty &&
+        pdfModel.value.billingName.value.text.isNotEmpty &&
+        pdfModel.value.billingAddres.value.text.isNotEmpty &&
+        pdfModel.value.planname.value.text.isNotEmpty &&
+        pdfModel.value.Email.value.text.isNotEmpty &&
+        pdfModel.value.CCemailController.value.text.isNotEmpty &&
+        pdfModel.value.phoneNumber.value.text.isNotEmpty &&
+        pdfModel.value.Total.value.text.isNotEmpty &&
+        pdfModel.value.manualinvoiceNo.value.text.isNotEmpty &&
+        pdfModel.value.date.value.text.isNotEmpty &&
+        pdfModel.value.feedback.value.text.isNotEmpty;
   }
 }

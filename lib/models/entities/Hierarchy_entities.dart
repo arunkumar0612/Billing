@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 
 class OrganizationsData {
@@ -11,6 +10,8 @@ class OrganizationsData {
   final Uint8List? organizationLogo;
   final String? address;
   final String? siteType;
+  final String? contactPerson;
+  final String? contactNo;
   bool isSelected;
 
   OrganizationsData({
@@ -21,18 +22,22 @@ class OrganizationsData {
     this.organizationLogo,
     this.address,
     this.siteType,
+    this.contactPerson,
+    this.contactNo,
     this.isSelected = false,
   });
 
   factory OrganizationsData.fromJson(Map<String, dynamic> json) {
     return OrganizationsData(
-      organizationId: json['Organization_id'] as int,
-      email: json['Email_id'] as String,
-      organizationName: json['Organization_Name'] as String,
-      orgCode: json['orgcode'] as String?,
+      organizationId: json['Organization_id'] as int? ?? 0,
+      email: json['Email_id'] as String? ?? "",
+      organizationName: json['Organization_Name'] as String? ?? "",
+      orgCode: json['orgcode'] as String? ?? "",
       organizationLogo: json['Organization_Logo'] != null && json['Organization_Logo']['data'] != null ? Uint8List.fromList(List<int>.from(json['Organization_Logo']['data'])) : Uint8List(0),
-      address: json['Address'] as String,
-      siteType: json['site_type'] as String,
+      address: json['Address'] as String? ?? "",
+      siteType: json['site_type'] as String? ?? "",
+      contactPerson: json['contactperson'] as String? ?? "",
+      contactNo: json['contactno'] as String? ?? "",
     );
   }
 
@@ -45,6 +50,8 @@ class OrganizationsData {
       'Organization_Logo': organizationLogo ?? Uint8List(0),
       'Address': address,
       'site_type': siteType,
+      'contactperson': contactPerson,
+      'contactno': contactNo,
     };
   }
 }
@@ -91,6 +98,12 @@ class CompanysData {
   final String? address;
   final String? billingAddress;
   final String? siteType;
+  final String? contactPerson;
+  final String? contactPersonNo;
+  final String? customerCIN;
+  final String? customerPAN;
+  final String? customerCode;
+  final int? customerType;
   bool isSelected;
 
   CompanysData({
@@ -103,6 +116,12 @@ class CompanysData {
     this.address,
     this.billingAddress,
     this.siteType,
+    this.contactPerson,
+    this.contactPersonNo,
+    this.customerCIN,
+    this.customerPAN,
+    this.customerCode,
+    this.customerType,
     this.isSelected = false,
   });
 
@@ -117,6 +136,12 @@ class CompanysData {
       address: json['address'] as String? ?? "",
       billingAddress: json['billing_address'] as String? ?? "",
       siteType: json['site_type'] as String? ?? "",
+      contactPerson: json['contactperson'] as String? ?? "",
+      contactPersonNo: json['contactpersonno'] as String? ?? "",
+      customerCIN: json['customer_cin'] as String? ?? "",
+      customerPAN: json['customer_pan'] as String? ?? "",
+      customerCode: json['customercode'] as String? ?? "",
+      customerType: json['customer_type'] as int? ?? 0,
     );
   }
 
@@ -128,7 +153,15 @@ class CompanysData {
       'ccode': ccode,
       'Email_id': email,
       'Customer_Logo': customerLogo ?? Uint8List(0),
+      'address': address,
+      'billing_address': billingAddress,
       'site_type': siteType,
+      'contactperson': contactPerson,
+      'contactpersonno': contactPersonNo,
+      'customer_cin': customerCIN,
+      'customer_pan': customerPAN,
+      'customercode': customerCode,
+      'customer_type': customerType,
     };
   }
 }

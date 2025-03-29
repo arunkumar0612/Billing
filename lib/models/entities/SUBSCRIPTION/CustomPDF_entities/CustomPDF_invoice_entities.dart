@@ -8,7 +8,7 @@ class Site {
   String siteName;
   String address;
   String siteID;
-  double monthlyCharges;
+  int monthlyCharges;
 
   Site({required this.siteName, required this.address, required this.siteID, required this.monthlyCharges}) : serialNo = (_counter++).toString(); // Auto-increment serial number
 
@@ -21,7 +21,7 @@ class Site {
         siteName: json['sitename'] as String, // Fix key casing
         address: json['address'] as String,
         siteID: json['customerid'] as String,
-        monthlyCharges: (json['monthlycharges'] as num).toDouble(),
+        monthlyCharges: (json['monthlycharges'] as num).toInt(),
       );
     }).toList();
   }
@@ -307,5 +307,85 @@ class FinalCalculation {
 
   Map<String, dynamic> toJson() {
     return {'subtotal': subtotal, 'CGST': cgst, 'SGST': sgst, 'roundOff': roundOff, 'difference': differene, 'total': total, 'pendingAmount': pendingAmount, 'grandTotal': grandTotal};
+  }
+}
+
+class PostInvoice {
+  List<int> siteIds;
+  String subscriptionBillId;
+  String clientAddressName;
+  String clientAddress;
+  String billingAddressName;
+  String billingAddress;
+  String? gst;
+  String planName;
+  String emailId;
+  String ccEmail;
+  String phoneNo;
+  String totalAmount;
+  String invoiceGenId;
+  String date;
+  int messageType;
+  String feedback;
+
+  PostInvoice({
+    required this.siteIds,
+    required this.subscriptionBillId,
+    required this.clientAddressName,
+    required this.clientAddress,
+    required this.billingAddressName,
+    required this.billingAddress,
+    required this.gst,
+    required this.planName,
+    required this.emailId,
+    required this.ccEmail,
+    required this.phoneNo,
+    required this.totalAmount,
+    required this.invoiceGenId,
+    required this.date,
+    required this.messageType,
+    required this.feedback,
+  });
+
+  factory PostInvoice.fromJson(Map<String, dynamic> json) {
+    return PostInvoice(
+      siteIds: List<int>.from(json["siteids"] ?? []),
+      subscriptionBillId: json["subscriptionbillid"] ?? "",
+      clientAddressName: json["clientaddressname"] ?? "",
+      clientAddress: json["clientaddress"] ?? "",
+      billingAddressName: json["billingaddressname"] ?? "",
+      billingAddress: json["billingaddress"] ?? "",
+      gst: json["gst_number"] ?? "",
+      planName: json["planname"] ?? "",
+      emailId: json["emailid"] ?? "",
+      ccEmail: json["ccemail"] ?? "",
+      phoneNo: json["phoneno"] ?? "",
+      totalAmount: json["totalamount"] ?? "",
+      invoiceGenId: json["invoicegenid"] ?? "",
+      date: json["date"] ?? "",
+      messageType: json["messagetype"] ?? 0,
+      feedback: json["feedback"] ?? "",
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "siteids": siteIds,
+      "subscriptionbillid": subscriptionBillId,
+      "clientaddressname": clientAddressName,
+      "clientaddress": clientAddress,
+      "billingaddressname": billingAddressName,
+      "billingaddress": billingAddress,
+      "gst_number": gst,
+      "planname": planName,
+      "emailid": emailId,
+      "ccemail": ccEmail,
+      "phoneno": phoneNo,
+      "totalamount": totalAmount,
+      "invoicegenid": invoiceGenId,
+      "date": date,
+      "messagetype": messageType,
+      "feedback": feedback,
+    };
   }
 }

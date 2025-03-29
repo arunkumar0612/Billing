@@ -42,26 +42,26 @@ class SUBSCRIPTION_invoiceRecommendation {
 //     };
 //   }
 // }
-class SUBSCRIPTION_invoiceInvoiceGSTtotals {
-  final double gst;
-  final double total;
+// class SUBSCRIPTION_invoiceInvoiceGSTtotals {
+//   final double gst;
+//   final double total;
 
-  SUBSCRIPTION_invoiceInvoiceGSTtotals({
-    required this.gst,
-    required this.total,
-  });
+//   SUBSCRIPTION_invoiceInvoiceGSTtotals({
+//     required this.gst,
+//     required this.total,
+//   });
 
-  factory SUBSCRIPTION_invoiceInvoiceGSTtotals.fromJson(Map<String, dynamic> json) {
-    return SUBSCRIPTION_invoiceInvoiceGSTtotals(gst: json['GST'], total: json['total']);
-  }
+//   factory SUBSCRIPTION_invoiceInvoiceGSTtotals.fromJson(Map<String, dynamic> json) {
+//     return SUBSCRIPTION_invoiceInvoiceGSTtotals(gst: json['GST'], total: json['total']);
+//   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'GST': gst,
-      'total': total,
-    };
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'GST': gst,
+//       'total': total,
+//     };
+//   }
+// }
 
 class SUBSCRIPTION_invoiceRequiredData {
   final String eventnumber;

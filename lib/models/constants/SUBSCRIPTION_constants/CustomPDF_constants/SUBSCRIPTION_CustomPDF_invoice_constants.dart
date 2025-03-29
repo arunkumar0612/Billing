@@ -1,12 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-
-// import 'package:ssipl_billing/models/entities/SUBSCRIPTION/CustomPDF_entities/CustomPDF_Site_entities.dart';
 import 'package:ssipl_billing/models/entities/SUBSCRIPTION/CustomPDF_entities/CustomPDF_invoice_entities.dart';
-
-import 'package:ssipl_billing/models/entities/SUBSCRIPTION/SUBSCRIPTION_Invoice_entities.dart';
 
 class SUBSCRIPTION_CustomPDF_InvoiceModel {
   final date = TextEditingController().obs;
@@ -17,7 +12,6 @@ class SUBSCRIPTION_CustomPDF_InvoiceModel {
   final billingAddres = TextEditingController().obs;
   final phoneNumber = TextEditingController().obs;
   final Email = TextEditingController().obs;
-  final GSTnumber = TextEditingController().obs;
   final feedback = TextEditingController().obs;
   final filePathController = TextEditingController().obs;
   final subTotal = TextEditingController().obs;
@@ -44,7 +38,7 @@ class SUBSCRIPTION_CustomPDF_InvoiceModel {
 
   var roundoffDiff = Rxn<String>();
   var textControllers = <List<TextEditingController>>[].obs;
-  var manualInvoice_gstTotals = <SUBSCRIPTION_invoiceInvoiceGSTtotals>[].obs;
+  // var manualInvoice_gstTotals = <SUBSCRIPTION_invoiceInvoiceGSTtotals>[].obs;
   var manualInvoicesites =
       <Site>[Site(siteName: 'siteName1', address: 'address1', siteID: 'siteID1', monthlyCharges: 100), Site(siteName: 'siteName2', address: 'address2', siteID: 'siteID2', monthlyCharges: 200)].obs;
 

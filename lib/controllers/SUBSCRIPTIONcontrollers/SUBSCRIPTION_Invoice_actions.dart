@@ -474,7 +474,7 @@ class SUBSCRIPTION_InvoiceController extends GetxController {
     invoiceModel.quantityController.value.text = "";
     invoiceModel.gstController.value.text = "";
     invoiceModel.Invoice_products.clear();
-    invoiceModel.Invoice_gstTotals.clear();
+    // invoiceModel.Invoice_gstTotals.clear();
     invoiceModel.Invoice_productSuggestion.clear();
 
     // Reset notes

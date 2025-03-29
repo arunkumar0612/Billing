@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,8 @@ import 'package:ssipl_billing/models/constants/api.dart';
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 import 'package:ssipl_billing/services/APIservices/invoker.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
+
+import '../../../models/entities/SUBSCRIPTION/CustomPDF_entities/CustomPDF_invoice_entities.dart';
 
 mixin SUBSCRIPTION_PostServices {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
@@ -92,42 +96,43 @@ mixin SUBSCRIPTION_PostServices {
       }
     }
   }
-  // dynamic postData(context, int messageType) async {
-  //   try {
-  //     if (invoiceController.postDatavalidation()) {
-  //       await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
-  //       return;
-  //     }
-  //     File cachedPdf = invoiceController.invoiceModel.selectedPdf.value!;
-  //     // savePdfToCache();
-  //     Post_Invoice salesData = Post_Invoice.fromJson(
-  //         title: invoiceController.invoiceModel.TitleController.value.text,
-  //         processid: invoiceController.invoiceModel.processID.value!,
-  //         ClientAddressname: invoiceController.invoiceModel.clientAddressNameController.value.text,
-  //         ClientAddress: invoiceController.invoiceModel.clientAddressController.value.text,
-  //         billingAddressName: invoiceController.invoiceModel.billingAddressNameController.value.text,
-  //         billingAddress: invoiceController.invoiceModel.billingAddressController.value.text,
-  //         emailId: invoiceController.invoiceModel.emailController.value.text,
-  //         phoneNo: invoiceController.invoiceModel.phoneController.value.text,
-  //         gst: invoiceController.invoiceModel.gstController.value.text,
-  //         product: invoiceController.invoiceModel.Invoice_products,
-  //         notes: invoiceController.invoiceModel.Invoice_noteList,
-  //         date: getCurrentDate(),
-  //         invoiceGenID: invoiceController.invoiceModel.Invoice_no.value!,
-  //         messageType: messageType,
-  //         feedback: invoiceController.invoiceModel.feedbackController.value.text,
-  //         ccEmail: invoiceController.invoiceModel.CCemailController.value.text,
-  //         total_amount: invoiceController.invoiceModel.invoice_amount.value!);
 
-  //     await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
-  //   } catch (e) {
-  //     await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {}, showCancel: false);
-  //   }
-  // }
+  dynamic postData(context, int messageType) async {
+    try {
+      if (pdfpopup_controller.postDatavalidation()) {
+        await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
+        return;
+      }
+      File cachedPdf = pdfpopup_controller.pdfModel.value.genearatedPDF.value!;
+      // savePdfToCache();
+      PostInvoice subscriptionData = PostInvoice(
+          siteIds: [], // Provide a valid list of integers
+          subscriptionBillId: "0", // Provide a valid subscription bill ID
+          clientAddressName: pdfpopup_controller.pdfModel.value.clientName.value.text, // Provide client address name
+          clientAddress: pdfpopup_controller.pdfModel.value.clientAddress.value.text, // Provide client address
+          billingAddressName: pdfpopup_controller.pdfModel.value.billingName.value.text, // Provide billing address name
+          billingAddress: pdfpopup_controller.pdfModel.value.billingAddres.value.text, // Provide billing address
+          gst: pdfpopup_controller.pdfModel.value.customerGSTIN.value.text,
+          planName: pdfpopup_controller.pdfModel.value.planname.value.text, // Provide the plan name
+          emailId: pdfpopup_controller.pdfModel.value.Email.value.text, // Provide email ID
+          ccEmail: pdfpopup_controller.pdfModel.value.CCemailController.value.text, // Provide CC email
+          phoneNo: pdfpopup_controller.pdfModel.value.phoneNumber.value.text, // Provide phone number
+          totalAmount: pdfpopup_controller.pdfModel.value.Total.value.text, // Provide total amount
+          invoiceGenId: pdfpopup_controller.pdfModel.value.manualinvoiceNo.value.text, // Provide invoice generation ID
+          date: pdfpopup_controller.pdfModel.value.date.value.text, // Provide a date
+          messageType: messageType, // Provide a valid message type (integer)
+          feedback: pdfpopup_controller.pdfModel.value.feedback.value.text // Provide feedback
+          );
+
+      await send_data(context, jsonEncode(subscriptionData.toJson()), cachedPdf);
+    } catch (e) {
+      await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {}, showCancel: false);
+    }
+  }
 
   dynamic send_data(context, String jsonData, File file) async {
     try {
-      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.add_invoice);
+      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.subscription_addCustomInvoice_API);
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {

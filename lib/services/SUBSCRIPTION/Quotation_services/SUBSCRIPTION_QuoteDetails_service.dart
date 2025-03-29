@@ -19,7 +19,7 @@ mixin SUBSCRIPTION_QuotedetailsService {
   void get_requiredData(context, String eventtype, int eventID) async {
     try {
       Map<String, dynamic> body = {"eventid": eventID, "eventtype": eventtype};
-      Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.sales_detailsPreLoader_API);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.subscription_detailsPreLoader_API);
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {

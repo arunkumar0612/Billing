@@ -41,7 +41,7 @@ mixin SalesServices {
 
   Future<bool> GetCustomPDFLsit(context) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_custompdf);
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_salesCustompdf);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {

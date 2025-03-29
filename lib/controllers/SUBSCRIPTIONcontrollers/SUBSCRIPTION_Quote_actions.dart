@@ -407,9 +407,9 @@ class SUBSCRIPTION_QuoteController extends GetxController {
   }
 
   void update_requiredData(CMDmResponse value) {
-    SUBSCRIPTION_QuoteRequiredData instance = SUBSCRIPTION_QuoteRequiredData.fromJson(value);
-    quoteModel.Quote_no.value = instance.eventnumber;
-    updateQuotenumber(instance.eventnumber);
+    SubscriptionQuoteRequiredData instance = SubscriptionQuoteRequiredData.fromJson(value);
+    quoteModel.Quote_no.value = instance.eventNumber;
+    updateQuotenumber(instance.eventNumber);
     updateTitle(instance.title!);
     updateEmail(instance.emailId!);
     updateGSTnumber(instance.gst!);

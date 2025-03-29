@@ -315,3 +315,176 @@ class Clientprofiledata {
     };
   }
 }
+
+class CustomerPDF_List {
+  final String customerAddressName;
+  final String customerAddress;
+  final String billingAddress;
+  final String billingAddressName;
+  final String customerEmail;
+  final String customerPhone;
+  final String customerGst;
+  final DateTime date;
+  // final String customType;
+  final String genId;
+  final int TotalAmount;
+  final Uint8List pdfData;
+  final String filePath;
+
+  CustomerPDF_List({
+    required this.customerAddressName,
+    required this.customerAddress,
+    required this.billingAddress,
+    required this.billingAddressName,
+    required this.customerEmail,
+    required this.customerPhone,
+    required this.customerGst,
+    required this.date,
+    // required this.customType,
+    required this.genId,
+    required this.TotalAmount,
+    required this.pdfData,
+    required this.filePath,
+  });
+
+// [0] =
+// Map (12 items)
+// 0 =
+// "Client_addressname" -> "fdsf"
+// 1 =
+// "client_address" -> "dsfds"
+// 2 =
+// "Billing_addressname" -> "fdsfdsf"
+// 3 =
+// "Billing_address" -> "dsfsdf"
+// 4 =
+// "customer_mailid" -> "hariprasath.s@sporadasecure.com"
+// 5 =
+// "customer_phoneno" -> "9952511993"
+// 6 =
+// "date" -> "2025-03-28T07:00:03.000Z"
+// 7 =
+// "gstnumber" -> null
+// 8 =
+// "subscription_billid" -> 0
+// 9 =
+// "TotalAmount" -> 354
+// 10 =
+// "pdf_path" -> Map (2 items)
+// 11 =
+// "path" -> "\\192.168.0.156\Backup_ganesh\2025\March
+  factory CustomerPDF_List.fromJson(Map<String, dynamic> json) {
+    return CustomerPDF_List(
+      customerAddressName: json['Client_addressname'] ?? '',
+      customerAddress: json['client_address'] ?? '',
+      billingAddress: json['Billing_address'] ?? '',
+      billingAddressName: json['Billing_addressname'] ?? '',
+      customerEmail: json['customer_mailid'] ?? '',
+      customerPhone: json['customer_phoneno'] ?? '',
+      customerGst: json['gstnumber'] ?? '',
+      date: DateTime.parse(json['date']),
+      // customType: json['custom_type'] ?? '',
+      genId: json['subscription_billid'] ?? '',
+      TotalAmount: json['TotalAmount'] ?? 0,
+      pdfData: json['pdf_data'] != null && json['pdf_data']['data'] != null ? Uint8List.fromList(List<int>.from(json['pdf_data']['data'])) : Uint8List(0),
+      filePath: json['path'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'customeraddress_name': customerAddressName,
+      'customeraddress': customerAddress,
+      'billing_address': billingAddress,
+      'billingaddress_name': billingAddressName,
+      'customer_mailid': customerEmail,
+      'customer_phoneno': customerPhone,
+      'customer_gstno': customerGst,
+      'date': date.toIso8601String(),
+      // 'custom_type': customType,
+      'gen_id': genId,
+      "TotalAmount": TotalAmount,
+      'pdf_data': {
+        'type': 'Buffer',
+        'data': pdfData.toList(),
+      },
+      'path': filePath,
+    };
+  }
+}
+
+class RecurringInvoice_List {
+  int subscriptionGeneratedId;
+  int subscriptionBillId;
+  List<int> siteIds;
+  String clientAddressName;
+  String clientAddress;
+  String billingAddressName;
+  String billingAddress;
+  final Uint8List pdfData;
+  String pdfPathString;
+  String invoiceNo;
+  int totalAmount;
+  String emailId;
+  String phoneNo;
+  String ccEmail;
+  String date;
+
+  RecurringInvoice_List({
+    required this.subscriptionGeneratedId,
+    required this.subscriptionBillId,
+    required this.siteIds,
+    required this.clientAddressName,
+    required this.clientAddress,
+    required this.billingAddressName,
+    required this.billingAddress,
+    required this.pdfData,
+    required this.pdfPathString,
+    required this.invoiceNo,
+    required this.totalAmount,
+    required this.emailId,
+    required this.phoneNo,
+    required this.ccEmail,
+    required this.date,
+  });
+
+  factory RecurringInvoice_List.fromJson(Map<String, dynamic> json) {
+    return RecurringInvoice_List(
+      subscriptionGeneratedId: json['subscription_generatedid'],
+      subscriptionBillId: json['subscription_billid'],
+      siteIds: List<int>.from(json['site_Ids'] ?? []),
+      clientAddressName: json['client_addressname'].toString(),
+      clientAddress: json['client_address'],
+      billingAddressName: json['billing_addressname'],
+      billingAddress: json['billing_address'],
+      pdfData: json['pdf_data'] != null && json['pdf_data']['data'] != null ? Uint8List.fromList(List<int>.from(json['pdf_data']['data'])) : Uint8List(0),
+      pdfPathString: json['pdfpath'],
+      invoiceNo: json['Invoice_no'],
+      totalAmount: json['TotalAmount'],
+      emailId: json['email_id'],
+      phoneNo: json['phone_no'].toString(),
+      ccEmail: json['ccemail'],
+      date: json['date'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'subscription_generatedid': subscriptionGeneratedId,
+      'subscription_billid': subscriptionBillId,
+      'site_Ids': siteIds,
+      'client_addressname': clientAddressName,
+      'client_address': clientAddress,
+      'billing_addressname': billingAddressName,
+      'billing_address': billingAddress,
+      'pdf_data': {'type': 'Buffer', 'data': pdfData},
+      'pdfpath': pdfPathString,
+      'Invoice_no': invoiceNo,
+      'TotalAmount': totalAmount,
+      'email_id': emailId,
+      'phone_no': phoneNo,
+      'ccemail': ccEmail,
+      "date": date,
+    };
+  }
+}

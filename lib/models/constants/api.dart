@@ -11,10 +11,10 @@ class API {
   static String add_Dc = "http://192.168.0.200:8081/sales/adddeliverychallan";
   static String add_RFQ = "http://192.168.0.200:8081/sales/addrfq";
 
-  static String add_customInvoice = "http://192.168.0.200:8081/sales/addcustominvoice";
-  static String add_customQuote = "http://192.168.0.200:8081/sales/addcustomquotation";
-  static String add_customDc = "http://192.168.0.200:8081/sales/addcustomdc";
-  static String get_custompdf = "http://192.168.0.200:8081/sales/getcustompdf";
+  static String add_salesCustomInvoice = "http://192.168.0.200:8081/sales/addcustominvoice";
+  static String add_salesCustomQuote = "http://192.168.0.200:8081/sales/addcustomquotation";
+  static String add_salesCustomDc = "http://192.168.0.200:8081/sales/addcustomdc";
+  static String get_salesCustompdf = "http://192.168.0.200:8081/sales/getcustompdf";
   static String send_anyPDF = "http://192.168.0.200:8081/sales/sendpdf";
 
   static String add_invoice = "http://192.168.0.200:8081/sales/addinvoice";
@@ -39,6 +39,7 @@ class API {
   static String sales_approvedquotation_API = "http://192.168.0.200:8081/sales/approvedquotation";
 
   // SUBSCRIPTION ////////////
+  static String subscription_detailsPreLoader_API = "http://192.168.0.200:8081/subscription/detailspreloader";
   static String subscription_getprocesslist_API = "http://192.168.0.200:8081/subscription/getprocesslist";
   static String subscription_addfeedback_API = "http://192.168.0.200:8081/subscription/addfeedback";
   static String subscription_getprocesscustomer_API = "http://192.168.0.200:8081/subscription/getprocesscustomer";
@@ -50,6 +51,9 @@ class API {
   static String subscription_Upload_MOR_API = "http://192.168.0.200:8081/subscription/uploadmor";
   static String subscription_add_details_API = "http://192.168.0.200:8081/subscription/addsubscus";
   static String subscription_getsubscriptiondata_API = "http://192.168.0.200:8081/subscription/subscriptiondata";
+  static String subscription_addCustomInvoice_API = "http://192.168.0.200:8081/subscription/addcustominvoice";
+  static String get_subscriptionCustompdf = "http://192.168.0.200:8081/subscription/getcustompdf";
+  static String get_subscription_RecurringInvoiceList = "http://192.168.0.200:8081/subscription/getrecurredinvoice";
 
   /////////////////////-----------HIERACHY-------------//////////////////////////////////
   static String hierarchy_OrganizationData = "http://192.168.0.200:8081/admin/organization";

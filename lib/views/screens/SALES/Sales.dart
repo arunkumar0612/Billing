@@ -177,7 +177,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                   ..selection = TextSelection.fromPosition(
                                     TextPosition(offset: salesController.salesModel.searchQuery.value.length),
                                   ),
-                                onChanged: (value) => salesController.salesModel.searchQuery.value = value, // ✅ Updates GetX state
+                                onChanged: (value) => salesController.search(value), // ✅ Updates GetX state
                                 style: const TextStyle(fontSize: 13, color: Colors.white),
                                 decoration: const InputDecoration(
                                   contentPadding: EdgeInsets.all(10),

@@ -2,22 +2,14 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
-// import 'package:ssipl_billing/controllers/sitecontrollers/Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
-
 import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Invoice_actions.dart';
-
 import 'package:ssipl_billing/models/entities/SUBSCRIPTION/CustomPDF_entities/CustomPDF_invoice_entities.dart';
-
-import 'package:ssipl_billing/models/entities/SUBSCRIPTION/SUBSCRIPTION_Invoice_entities.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/helpers/returns.dart';
-// import 'package:ssipl_billing/views/components/CustomPDF_templates/CustomPDF_Invoice_template.dart';
 import 'package:ssipl_billing/views/components/CustomPDF_templates/SUBSCRIPTION_CustomPDF_Invoice_template.dart';
-
 import 'package:ssipl_billing/views/screens/SUBSCRIPTION/CustomPDF/Subscription_PostAll.dart';
 import '../../APIservices/invoker.dart';
 
@@ -26,33 +18,33 @@ class SUBSCRIPTION_CustomPDF_Services {
   final SUBSCRIPTION_InvoiceController invoiceController = Get.find<SUBSCRIPTION_InvoiceController>();
   final SUBSCRIPTION_CustomPDF_InvoiceController pdfpopup_controller = Get.find<SUBSCRIPTION_CustomPDF_InvoiceController>();
 
-  void assign_GSTtotals() {
-    pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.assignAll(
-      pdfpopup_controller.pdfModel.value.manualInvoicesites
-          // ignore: unnecessary_null_comparison
-          .where((site) => site.monthlyCharges != null ? false : true) // Ensure non-empty values
-          .fold<Map<double, double>>({}, (accumulator, site) {
-            double totalValue = site.monthlyCharges;
-            double gstValue = double.tryParse(100.00.toString()) ?? 0; // Assuming 'gst' is a field in `site`
+  // void assign_GSTtotals() {
+  //   pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.assignAll(
+  //     pdfpopup_controller.pdfModel.value.manualInvoicesites
+  //         // ignore: unnecessary_null_comparison
+  //         .where((site) => site.monthlyCharges != null ? false : true) // Ensure non-empty values
+  //         .fold<Map<double, double>>({}, (accumulator, site) {
+  //           int totalValue = site.monthlyCharges;
+  //           double gstValue = 18.0; // Assuming 'gst' is a field in `site`
 
-            accumulator[gstValue] = (accumulator[gstValue] ?? 0) + totalValue;
-            return accumulator;
-          })
-          .entries
-          .map((entry) => SUBSCRIPTION_invoiceInvoiceGSTtotals(
-                gst: entry.key,
-                total: entry.value,
-              ))
-          .toList(),
-    );
-  }
+  //           accumulator[gstValue] = (accumulator[gstValue] ?? 0) + totalValue;
+  //           return accumulator;
+  //         })
+  //         .entries
+  //         .map((entry) => SUBSCRIPTION_invoiceInvoiceGSTtotals(
+  //               gst: entry.key,
+  //               total: entry.value,
+  //             ))
+  //         .toList(),
+  //   );
+  // }
 
   Future<void> savePdfToCache(context) async {
     Uint8List pdfData = await SUBSCRIPTION_generate_CustomPDFInvoice(
       PdfPageFormat.a4,
       SUBSCRIPTION_Custom_Invoice(
-        date: '2024-03-24',
-        invoiceNo: 'INV-1001',
+        date: pdfpopup_controller.pdfModel.value.date.value.text,
+        invoiceNo: pdfpopup_controller.pdfModel.value.manualinvoiceNo.value.text,
         gstPercent: 18,
         pendingAmount: 500.0,
         addressDetails: Address(
@@ -87,7 +79,7 @@ class SUBSCRIPTION_CustomPDF_Services {
             total: 100,
             pendingAmount: 200,
             grandTotal: 400),
-        notes: ['Payment due soon'],
+        notes: pdfpopup_controller.pdfModel.value.notecontent,
         pendingInvoices: [],
       ),
     );

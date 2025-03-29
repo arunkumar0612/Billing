@@ -32,7 +32,7 @@ class SUBSCRIPTION_InvoiceModel extends GetxController with GetSingleTickerProvi
   final gstController = TextEditingController().obs;
   var Invoice_products = <SUBSCRIPTION_InvoiceSite>[].obs;
   var Invoice_productSuggestion = <SUBSCRIPTION_invoiceSiteSuggestion>[].obs;
-  var Invoice_gstTotals = <SUBSCRIPTION_invoiceInvoiceGSTtotals>[].obs;
+  // var Invoice_gstTotals = <SUBSCRIPTION_invoiceInvoiceGSTtotals>[].obs;
 
   // NOTES
   final noteformKey = GlobalKey<FormState>().obs;

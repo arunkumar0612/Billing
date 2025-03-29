@@ -98,6 +98,53 @@ class SubscriptionController extends GetxController {
     subscriptionModel.subscriptionperiod.value = value;
   }
 
+  void addToCustompdfList(CMDlResponse value) {
+    subscriptionModel.customPdfList.clear();
+    subscriptionfilteredModel.customPdfList.clear();
+    for (int i = 0; i < value.data.length; i++) {
+      subscriptionModel.customPdfList.add(CustomerPDF_List.fromJson(value.data[i]));
+      subscriptionfilteredModel.customPdfList.add(CustomerPDF_List.fromJson(value.data[i]));
+    }
+  }
+
+  void addTo_RecuuringInvoiceList(CMDlResponse value) {
+    subscriptionModel.reccuringInvoice_list.clear();
+    subscriptionfilteredModel.reccuringInvoice_list.clear();
+    for (int i = 0; i < value.data.length; i++) {
+      subscriptionModel.reccuringInvoice_list.add(RecurringInvoice_List.fromJson(value.data[i]));
+      subscriptionfilteredModel.reccuringInvoice_list.add(RecurringInvoice_List.fromJson(value.data[i]));
+    }
+  }
+
+  void clear_sharedata() {
+    subscriptionModel.emailController.value.clear();
+    subscriptionModel.phoneController.value.clear();
+    subscriptionModel.feedbackController.value.clear();
+    subscriptionModel.CCemailController.value.clear();
+    subscriptionModel.whatsapp_selectionStatus.value = false;
+    subscriptionModel.gmail_selectionStatus.value = false;
+  }
+
+  void search_CustomPDF(String query) {
+    // salesModel.searchQuery.value = query;
+
+    if (query.isEmpty) {
+      subscriptionModel.customPdfList.assignAll(subscriptionfilteredModel.customPdfList);
+      // salesModel.processcustomerList.assignAll(salesfilteredModel.processcustomerList);
+    } else {
+      var filteredList = subscriptionfilteredModel.customPdfList.where((process) =>
+          process.customerAddressName.toLowerCase().contains(query.toLowerCase()) ||
+          process.customerAddress.toLowerCase().contains(query.toLowerCase()) ||
+          process.genId.toLowerCase().contains(query.toLowerCase()));
+
+      subscriptionModel.customPdfList.assignAll(filteredList);
+    }
+  }
+
+  void toggleCCemailvisibility(bool value) {
+    subscriptionModel.CCemailToggle.value = value;
+  }
+
   void resetData() {
     subscriptionModel.customerList.clear();
     subscriptionModel.processList.clear();

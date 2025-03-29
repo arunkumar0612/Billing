@@ -21,4 +21,15 @@ class SubscriptionModel extends GetxController with GetSingleTickerProviderState
   var subscriptionperiod = 'monthly'.obs;
   Rxn<Clientprofiledata> Clientprofile = Rxn<Clientprofiledata>(); // Nullable
   late AnimationController animationController;
+  var customPdfList = <CustomerPDF_List>[].obs;
+  var reccuringInvoice_list = <RecurringInvoice_List>[].obs;
+
+  var whatsapp_selectionStatus = true.obs;
+  var gmail_selectionStatus = true.obs;
+  final phoneController = TextEditingController().obs;
+  final emailController = TextEditingController().obs;
+  final CCemailController = TextEditingController().obs;
+  var feedbackController = TextEditingController().obs;
+  // var filePathController = TextEditingController().obs;
+  var CCemailToggle = false.obs;
 }

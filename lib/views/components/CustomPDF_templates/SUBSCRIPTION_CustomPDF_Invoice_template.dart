@@ -3,13 +3,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-
 import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
-
-// import 'package:ssipl_billing/models/entities/SUBSCRIPTION/CustomPDF_entities/CustomPDF_Site_entities.dart';
 import 'package:ssipl_billing/models/entities/SUBSCRIPTION/CustomPDF_entities/CustomPDF_invoice_entities.dart';
-
-// import 'package:ssipl_billing/models/entities/SUBSCRIPTION/SUBSCRIPTION_Invoice_entities.dart';
 import '../../../../utils/helpers/support_functions.dart';
 
 Future<Uint8List> SUBSCRIPTION_generate_CustomPDFInvoice(PdfPageFormat pageFormat, SUBSCRIPTION_Custom_Invoice instInvoice) async {
@@ -37,7 +32,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
     Helvetica_bold = await loadFont_bold();
 
     // Load profile image
-    final imageData = await rootBundle.load('assets/images/sporadaResized.jpeg');
+    final imageData = await rootBundle.load('assets/images/sporada.jpeg');
     profileImage = pw.MemoryImage(imageData.buffer.asUint8List());
 
     // Create PDF document

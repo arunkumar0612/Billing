@@ -64,8 +64,8 @@ class SUBSCRIPTION_QuoteGSTtotals {
   }
 }
 
-class SUBSCRIPTION_QuoteRequiredData {
-  final String eventnumber;
+class SubscriptionQuoteRequiredData {
+  final String eventNumber;
   final String? title;
   final String? name;
   final String? emailId;
@@ -74,34 +74,84 @@ class SUBSCRIPTION_QuoteRequiredData {
   final String? gst;
   final String? billingAddressName;
   final String? billingAddress;
-  SUBSCRIPTION_QuoteRequiredData({
-    required this.eventnumber,
-    required this.title,
-    required this.name,
-    required this.emailId,
-    required this.phoneNo,
-    required this.address,
-    required this.gst,
-    required this.billingAddressName,
-    required this.billingAddress,
+  final List<SubscriptionItem> subscription;
+
+  SubscriptionQuoteRequiredData({
+    required this.eventNumber,
+    this.title,
+    this.name,
+    this.emailId,
+    this.phoneNo,
+    this.address,
+    this.gst,
+    this.billingAddressName,
+    this.billingAddress,
+    required this.subscription,
   });
 
-  factory SUBSCRIPTION_QuoteRequiredData.fromJson(CMDmResponse json) {
-    return SUBSCRIPTION_QuoteRequiredData(
-      eventnumber: json.data['eventnumber'] as String,
-      title: json.data['title'] as String,
-      name: json.data['client_addressname'] as String,
-      emailId: json.data['emailid'] as String,
-      phoneNo: json.data['contact_number'] as String,
-      address: json.data['client_address'] as String,
-      gst: json.data['gstnumber'] as String,
-      billingAddressName: json.data['billingaddress_name'] as String,
-      billingAddress: json.data['billing_address'] as String,
+  factory SubscriptionQuoteRequiredData.fromJson(CMDmResponse json) {
+    return SubscriptionQuoteRequiredData(
+      eventNumber: json.data['eventnumber'] as String,
+      title: json.data['title'] as String?,
+      name: json.data['client_addressname'] as String?,
+      emailId: json.data['emailid'] as String?,
+      phoneNo: json.data['contact_number'] as String?,
+      address: json.data['client_address'] as String?,
+      gst: json.data['gstnumber'] as String?,
+      billingAddressName: json.data['billingaddress_name'] as String?,
+      billingAddress: json.data['billing_address'] as String?,
+      subscription: (json.data['subscription'] as List<dynamic>?)?.map((item) => SubscriptionItem.fromJson(item as Map<String, dynamic>)).toList() ?? [],
     );
   }
+
   Map<String, dynamic> toJson() {
     return {
-      'ID': eventnumber,
+      'eventnumber': eventNumber,
+      'title': title,
+      'client_addressname': name,
+      'emailid': emailId,
+      'contact_number': phoneNo,
+      'client_address': address,
+      'gstnumber': gst,
+      'billingaddress_name': billingAddressName,
+      'billing_address': billingAddress,
+      'subscription': subscription.map((item) => item.toJson()).toList(),
+    };
+  }
+}
+
+class SubscriptionItem {
+  final int requirementId;
+  final String siteName;
+  final int cameraQuantity;
+  final String address;
+  final String notes;
+
+  SubscriptionItem({
+    required this.requirementId,
+    required this.siteName,
+    required this.cameraQuantity,
+    required this.address,
+    required this.notes,
+  });
+
+  factory SubscriptionItem.fromJson(Map<String, dynamic> json) {
+    return SubscriptionItem(
+      requirementId: json['requirement_id'] as int,
+      siteName: json['sitename'] as String,
+      cameraQuantity: json['camera_quantity'] as int,
+      address: json['Address'] as String,
+      notes: json['Notes'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'requirement_id': requirementId,
+      'sitename': siteName,
+      'camera_quantity': cameraQuantity,
+      'Address': address,
+      'Notes': notes,
     };
   }
 }

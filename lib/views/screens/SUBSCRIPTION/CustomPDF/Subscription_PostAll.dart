@@ -7,7 +7,7 @@ import 'package:ssipl_billing/controllers/IAM_actions.dart';
 
 import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
 
-import 'package:ssipl_billing/services/SUBSCRIPTION/CustomPDF_services/SUBSCRIPTION_PostAll_services.dart';
+import 'package:ssipl_billing/services/SUBSCRIPTION/CustomPDF_services/Subscription_PostAll_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
 import 'package:ssipl_billing/views/components/button.dart';
@@ -51,6 +51,7 @@ class Subscription_PostInvoiceState extends State<SUBSCRIPTION_PostInvoice> with
   }
 
   final formKey1 = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -668,7 +669,7 @@ class Subscription_PostInvoiceState extends State<SUBSCRIPTION_PostInvoice> with
                                   text: "Send",
                                   colors: Colors.blue,
                                   onPressed: () {
-                                    //showLoading(context, () => widget.postData(context, invoiceController.fetch_messageType());
+                                    widget.postData(context, pdfpopup_controller.fetch_messageType());
                                   })),
                         ),
                       ],

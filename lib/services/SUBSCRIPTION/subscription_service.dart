@@ -1,8 +1,12 @@
 // ignore_for_file: depend_on_referenced_packages
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_ClientReq_actions.dart';
 import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Quote_actions.dart';
@@ -35,6 +39,24 @@ mixin SubscriptionServices {
           subscriptionController.addToProcesscustomerList(value);
 
           // subscriptionController.updatecustomerId(subscriptionController.subscriptionModel.processcustomerList[subscriptionController.subscriptionModel.showcustomerprocess.value!].customerId);
+        } else {
+          await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
+
+  Future<void> Get_RecurringInvoiceList(context) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_subscription_RecurringInvoiceList);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          subscriptionController.addTo_RecuuringInvoiceList(value);
         } else {
           await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
@@ -119,43 +141,41 @@ mixin SubscriptionServices {
         builder: (context) => Dialog(
           insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
           child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-            height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
-            child: Stack(
-              children: [
-                SfPdfViewer.file(subscriptionController.subscriptionModel.pdfFile.value!),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: IconButton(
-                      onPressed: () {
-                        downloadPdf(
-                          context,
-                          path
-                              .basename(filename)
-                              .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
-                              .replaceAll(" ", ""),
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.download,
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+              width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+              height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
+              child: Stack(
+                children: [
+                  SfPdfViewer.file(subscriptionController.subscriptionModel.pdfFile.value!),
+                  Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: IconButton(
+                          onPressed: () {
+                            downloadPdf(
+                                context,
+                                path
+                                    .basename(filename)
+                                    .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
+                                    .replaceAll(" ", ""),
+                                subscriptionController.subscriptionModel.pdfFile.value);
+                          },
+                          icon: const Icon(
+                            Icons.download,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ))
+                ],
+              )),
         ),
       );
     }
   }
 
-  Future<void> downloadPdf(BuildContext context, String filename) async {
+  Future<void> downloadPdf(BuildContext context, String filename, File? pdfFile) async {
     try {
-      final pdfFile = subscriptionController.subscriptionModel.pdfFile.value;
+      // final pdfFile = subscriptionController.subscriptionModel.pdfFile.value;
 
       if (pdfFile == null) {
         if (kDebugMode) {
@@ -302,6 +322,28 @@ mixin SubscriptionServices {
     }
   }
 
+  Future<bool> GetCustomPDFLsit(context) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_subscriptionCustompdf);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          subscriptionController.addToCustompdfList(value);
+          return true;
+        } else {
+          await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
+        }
+        return false;
+      } else {
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        return false;
+      }
+    } catch (e) {
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+    return false;
+  }
+
   dynamic Generate_client_reqirement_dialougebox(String value, context) async {
     await showDialog(
       context: context,
@@ -381,6 +423,13 @@ mixin SubscriptionServices {
         );
       },
     );
+  }
+
+  Future<File> savePdfToTemp(Uint8List pdfData) async {
+    final tempDir = await getTemporaryDirectory();
+    final tempFile = File('${tempDir.path}/temp_pdf.pdf');
+    await tempFile.writeAsBytes(pdfData, flush: true);
+    return tempFile;
   }
 
   dynamic generate_client_requirement(context) async {
@@ -542,5 +591,50 @@ mixin SubscriptionServices {
     await GetProcesscustomerList(context);
     await GetProcessList(context, 0);
     await GetSubscriptionData(context, subscriptionController.subscriptionModel.subscriptionperiod.value);
+  }
+
+  int fetch_messageType() {
+    if (subscriptionController.subscriptionModel.whatsapp_selectionStatus.value && subscriptionController.subscriptionModel.gmail_selectionStatus.value) return 3;
+    if (subscriptionController.subscriptionModel.whatsapp_selectionStatus.value) return 1;
+    if (subscriptionController.subscriptionModel.gmail_selectionStatus.value) return 2;
+
+    return 0;
+  }
+
+  dynamic postData_sendPDF(context, int messageType, File pdf) async {
+    try {
+      Map<String, dynamic> queryString = {
+        "emailid": subscriptionController.subscriptionModel.emailController.value.text,
+        "phoneno": subscriptionController.subscriptionModel.phoneController.value.text,
+        "feedback": subscriptionController.subscriptionModel.feedbackController.value.text,
+        "messagetype": messageType,
+        "ccemail": subscriptionController.subscriptionModel.CCemailController.value.text,
+      };
+      await sendPDFdata(context, jsonEncode(queryString), pdf);
+    } catch (e) {
+      await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {}, showCancel: false);
+    }
+  }
+
+// hariprasath.s@sporadsecure.com
+// arunkumar.m@sporadasecure.com
+  dynamic sendPDFdata(context, String jsonData, File file) async {
+    try {
+      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.send_anyPDF);
+      if (response['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response);
+        if (value.code) {
+          await Basic_dialog(context: context, title: "Invoice", content: value.message!, onOk: () {}, showCancel: false);
+          // Navigator.of(context).pop(true);
+          // invoiceController.resetData();
+        } else {
+          await Basic_dialog(context: context, title: 'Processing Invoice', content: value.message ?? "", onOk: () {}, showCancel: false);
+        }
+      } else {
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+      }
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+    }
   }
 }

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 
 import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Quote_actions.dart';
-import 'package:ssipl_billing/services/SUBSCRIPTION/CustomPDF_services/SUBSCRIPTION_PostAll_services.dart';
+import 'package:ssipl_billing/services/SUBSCRIPTION/CustomPDF_services/Subscription_PostAll_services.dart';
 
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';

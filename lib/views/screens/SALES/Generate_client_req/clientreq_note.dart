@@ -17,7 +17,6 @@ class ClientreqNote extends StatefulWidget with ClientreqNoteService {
 
 class _ClientreqNoteState extends State<ClientreqNote> {
   final ClientreqController clientreqController = Get.find<ClientreqController>();
-
   Widget Clientreq_noteLists() {
     return ListView.builder(
         itemCount: clientreqController.clientReqModel.clientReqNoteList.length,

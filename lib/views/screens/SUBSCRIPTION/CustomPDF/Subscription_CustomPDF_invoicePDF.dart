@@ -8,6 +8,7 @@ import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/CustomPDF_Cont
 import 'package:ssipl_billing/services/SUBSCRIPTION/CustomPDF_services/SUBSCRIPTION_CustomPDF_Invoice_services.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
+import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 
 class Subscription_CustomPDF_InvoicePDF {
@@ -80,7 +81,7 @@ class Subscription_CustomPDF_InvoicePDF {
                                                 onPressed: () async {
                                                   pdfpopup_controller.deleteRow();
                                                   await Future.delayed(const Duration(milliseconds: 20));
-                                                  inst.assign_GSTtotals();
+                                                  // inst.assign_GSTtotals();
                                                 },
                                                 child: const Text(
                                                   "Delete",
@@ -1016,8 +1017,7 @@ class Subscription_CustomPDF_InvoicePDF {
                           ...List.generate(
                             tableHeaders.length - 1,
                             (colIndex) {
-                              bool isNumericField = [0, 1, 4, 5].contains(colIndex);
-                              bool isTotalField = colIndex == 5;
+                              bool isNumericField = [5].contains(colIndex);
 
                               return Expanded(
                                 // flex: colIndex == 1 ? 3 : 1, // Make "Description" column wider
@@ -1026,15 +1026,15 @@ class Subscription_CustomPDF_InvoicePDF {
                                   child: TextFormField(
                                     maxLines: null,
                                     controller: controller.pdfModel.value.textControllers[rowIndex][colIndex],
-                                    textAlign: isTotalField ? TextAlign.end : TextAlign.center,
+                                    textAlign: isNumericField ? TextAlign.end : TextAlign.center,
                                     style: const TextStyle(fontSize: 12),
                                     onChanged: (value) {
-                                      if (!isTotalField) {
-                                        controller.updateCell(rowIndex, colIndex, value);
-                                      }
-                                      inst.assign_GSTtotals();
+                                      // if (!isTotalField) {
+                                      controller.updateCell(rowIndex, colIndex, value);
+
+                                      // inst.assign_GSTtotals();
                                     },
-                                    readOnly: isTotalField,
+                                    readOnly: false,
                                     inputFormatters: isNumericField ? [FilteringTextInputFormatter.digitsOnly] : null,
                                     keyboardType: isNumericField ? TextInputType.number : TextInputType.text,
                                     decoration: InputDecoration(
@@ -1322,7 +1322,7 @@ class Subscription_CustomPDF_InvoicePDF {
           children: [
             Container(
                 decoration: BoxDecoration(border: Border.all(color: const Color.fromARGB(255, 151, 150, 150))),
-                height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 125 : 90,
+                height: 90,
                 child: Column(
                   children: [
                     Expanded(
@@ -1463,10 +1463,10 @@ class Subscription_CustomPDF_InvoicePDF {
                         height: 200, // Set a fixed height (adjust as needed)
                         child: ListView.builder(
                           shrinkWrap: true, // Prevents infinite height issue
-                          itemCount: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length,
+                          itemCount: 1,
                           itemBuilder: (context, index) {
                             return SizedBox(
-                              height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 30 : 44, // Set a height for each row to prevent overflow
+                              height: 44, // Set a height for each row to prevent overflow
                               child: Row(
                                 children: [
                                   Container(
@@ -1474,7 +1474,7 @@ class Subscription_CustomPDF_InvoicePDF {
                                     decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
                                     child: Center(
                                       child: Text(
-                                        pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toString(),
+                                        pdfpopup_controller.pdfModel.value.subTotal.value.text,
                                         style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                       ),
                                     ),
@@ -1494,7 +1494,7 @@ class Subscription_CustomPDF_InvoicePDF {
                                                       decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
                                                       child: Center(
                                                         child: Text(
-                                                          formatzero(pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2).toString(),
+                                                          (18 / 2).toString(),
                                                           style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                                         ),
                                                       ),
@@ -1504,9 +1504,7 @@ class Subscription_CustomPDF_InvoicePDF {
                                                     flex: 2,
                                                     child: Center(
                                                       child: Text(
-                                                        formatzero((pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toInt() / 100) *
-                                                                (pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2))
-                                                            .toString(),
+                                                        pdfpopup_controller.pdfModel.value.CGST.value.text,
                                                         style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                                       ),
                                                     ),
@@ -1530,7 +1528,7 @@ class Subscription_CustomPDF_InvoicePDF {
                                                   decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
                                                   child: Center(
                                                     child: Text(
-                                                      formatzero(pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2).toString(),
+                                                      (18 / 2).toString(),
                                                       style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                                     ),
                                                   ),
@@ -1540,9 +1538,7 @@ class Subscription_CustomPDF_InvoicePDF {
                                                 flex: 2,
                                                 child: Center(
                                                   child: Text(
-                                                    formatzero((pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toInt() / 100) *
-                                                            (pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2))
-                                                        .toString(),
+                                                    pdfpopup_controller.pdfModel.value.SGST.value.text,
                                                     style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                                   ),
                                                 ),
@@ -1562,7 +1558,7 @@ class Subscription_CustomPDF_InvoicePDF {
                     ),
                   ],
                 )),
-            SizedBox(height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 20 : 55),
+            const SizedBox(height: 55),
             notes(),
           ],
         );
@@ -1587,71 +1583,69 @@ class Subscription_CustomPDF_InvoicePDF {
           ],
         ),
         // const SizedBox(height: 10),
-        Obx(
-          () => Container(
-            decoration: BoxDecoration(border: Border.all(color: Colors.green), borderRadius: BorderRadius.circular(5), color: Colors.green.shade50),
-            width: 400,
-            height: 90,
-            child: SingleChildScrollView(
-              child: Column(
-                children: List.generate(
-                  pdfpopup_controller.pdfModel.value.notecontent.length,
-                  (index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: Row(
-                        // crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${index + 1}.", // Auto-incrementing S.No
-                            style: const TextStyle(fontSize: Primary_font_size.Text7, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(width: 5), // Space between number and textfield
-                          Flexible(
-                            child: IntrinsicWidth(
-                              // Ensures TextField takes only required width
-                              child: ConstrainedBox(
-                                constraints: const BoxConstraints(minWidth: 50), // Set a reasonable min width
-                                child: TextFormField(
-                                  textAlign: TextAlign.start,
-                                  maxLines: null,
-                                  controller: pdfpopup_controller.pdfModel.value.noteControllers[index],
-                                  onChanged: (value) {
-                                    pdfpopup_controller.update_noteCotent(value, index);
-                                  },
-                                  style: const TextStyle(fontSize: 12),
-                                  decoration: InputDecoration(
-                                    // contentPadding: const EdgeInsets.all(0),
-                                    errorStyle: const TextStyle(height: 0, fontSize: 0),
-                                    suffix: GestureDetector(
-                                      child: const Icon(
-                                        Icons.delete,
-                                        size: 14,
-                                        color: const Color.fromARGB(193, 244, 67, 54),
-                                      ),
-                                      onTap: () {
-                                        pdfpopup_controller.deleteNote(index);
-                                      },
+        Container(
+          decoration: BoxDecoration(border: Border.all(color: Colors.green), borderRadius: BorderRadius.circular(5), color: Colors.green.shade50),
+          width: 400,
+          height: 90,
+          child: SingleChildScrollView(
+            child: Column(
+              children: List.generate(
+                pdfpopup_controller.pdfModel.value.notecontent.length,
+                (index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Row(
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${index + 1}.", // Auto-incrementing S.No
+                          style: const TextStyle(fontSize: Primary_font_size.Text7, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(width: 5), // Space between number and textfield
+                        Flexible(
+                          child: IntrinsicWidth(
+                            // Ensures TextField takes only required width
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(minWidth: 50), // Set a reasonable min width
+                              child: TextFormField(
+                                textAlign: TextAlign.start,
+                                maxLines: null,
+                                controller: pdfpopup_controller.pdfModel.value.noteControllers[index],
+                                onChanged: (value) {
+                                  pdfpopup_controller.update_noteCotent(value, index);
+                                },
+                                style: const TextStyle(fontSize: 12),
+                                decoration: InputDecoration(
+                                  // contentPadding: const EdgeInsets.all(0),
+                                  errorStyle: const TextStyle(height: 0, fontSize: 0),
+                                  suffix: GestureDetector(
+                                    child: const Icon(
+                                      Icons.delete,
+                                      size: 14,
+                                      color: const Color.fromARGB(193, 244, 67, 54),
                                     ),
-                                    hintText: "Please enter the notes....",
-                                    hintStyle: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
-                                    isDense: true,
+                                    onTap: () {
+                                      pdfpopup_controller.deleteNote(index);
+                                    },
                                   ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return '';
-                                    }
-                                    return null;
-                                  },
+                                  hintText: "Please enter the notes....",
+                                  hintStyle: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                                  isDense: true,
                                 ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return '';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
           ),
@@ -1748,6 +1742,8 @@ class Subscription_CustomPDF_InvoicePDF {
                                 debugPrint(stackTrace.toString());
                                 Get.snackbar("Error", "Something went wrong. Please try again.");
                               }
+                            } else {
+                              Basic_dialog(context: context, title: "ERROR", content: "Please check for empty fields before proceeding1", showCancel: false);
                             }
                           },
                           child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),

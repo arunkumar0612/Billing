@@ -63,7 +63,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
   void _startAnimation() {
     if (!subscriptionController.subscriptionModel.animationController.isAnimating) {
       subscriptionController.subscriptionModel.animationController.forward(from: 0).then((_) {
-        widget.refresh(context);
+        widget.subscription_refresh(context);
       });
     }
   }

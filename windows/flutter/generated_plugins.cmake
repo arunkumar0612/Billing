@@ -12,6 +12,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   syncfusion_pdfviewer_windows
   url_launcher_windows
   window_manager
+  windows_notification
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

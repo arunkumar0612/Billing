@@ -33,7 +33,7 @@ mixin SalesServices {
   final Invoker apiController = Get.find<Invoker>();
   final DcController dcController = Get.find<DcController>();
   final InvoiceController invoiceController = Get.find<InvoiceController>();
-  final QuoteController quoteController = Get.find<QuoteController>();
+  final QuoteController _quoteController = Get.find<QuoteController>();
   final RfqController rfqController = Get.find<RfqController>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final SalesController salesController = Get.find<SalesController>();
@@ -613,17 +613,17 @@ mixin SalesServices {
                   ),
                   onPressed: () async {
                     // Check if the data has any value
-                    // || ( quoteController.quoteModel.Quote_gstTotals.isNotEmpty)
-                    if ((quoteController.quoteModel.Quote_products.isNotEmpty) ||
-                        (quoteController.quoteModel.Quote_noteList.isNotEmpty) ||
-                        (quoteController.quoteModel.Quote_recommendationList.isNotEmpty) ||
-                        (quoteController.quoteModel.clientAddressNameController.value.text != "") ||
-                        (quoteController.quoteModel.clientAddressController.value.text != "") ||
-                        (quoteController.quoteModel.billingAddressNameController.value.text != "") ||
-                        (quoteController.quoteModel.billingAddressController.value.text != "") ||
-                        (quoteController.quoteModel.Quote_no.value != "") ||
-                        (quoteController.quoteModel.TitleController.value.text != "") ||
-                        (quoteController.quoteModel.Quote_table_heading.value != "")) {
+                    // || ( _quoteController.quoteModel.Quote_gstTotals.isNotEmpty)
+                    if ((_quoteController.quoteModel.Quote_products.isNotEmpty) ||
+                        (_quoteController.quoteModel.Quote_noteList.isNotEmpty) ||
+                        (_quoteController.quoteModel.Quote_recommendationList.isNotEmpty) ||
+                        (_quoteController.quoteModel.clientAddressNameController.value.text != "") ||
+                        (_quoteController.quoteModel.clientAddressController.value.text != "") ||
+                        (_quoteController.quoteModel.billingAddressNameController.value.text != "") ||
+                        (_quoteController.quoteModel.billingAddressController.value.text != "") ||
+                        (_quoteController.quoteModel.Quote_no.value != "") ||
+                        (_quoteController.quoteModel.TitleController.value.text != "") ||
+                        (_quoteController.quoteModel.Quote_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -656,18 +656,18 @@ mixin SalesServices {
                       if (proceed == true) {
                         Navigator.of(context).pop(); // Close the dialog
                         // Clear all the data when dialog is closed
-                        quoteController.quoteModel.Quote_products.clear();
-                        //  quoteController.quoteModel.Quote_gstTotals.clear();
-                        quoteController.quoteModel.Quote_noteList.clear();
-                        quoteController.quoteModel.Quote_recommendationList.clear();
-                        //  quoteController.quoteModel.iQuote_productDetails.clear();
-                        quoteController.quoteModel.clientAddressNameController.value.clear();
-                        quoteController.quoteModel.clientAddressController.value.clear();
-                        quoteController.quoteModel.billingAddressNameController.value.clear();
-                        quoteController.quoteModel.billingAddressController.value.clear();
-                        quoteController.quoteModel.Quote_no.value = "";
-                        quoteController.quoteModel.TitleController.value.clear();
-                        quoteController.quoteModel.Quote_table_heading.value = "";
+                        _quoteController.quoteModel.Quote_products.clear();
+                        //  _quoteController.quoteModel.Quote_gstTotals.clear();
+                        _quoteController.quoteModel.Quote_noteList.clear();
+                        _quoteController.quoteModel.Quote_recommendationList.clear();
+                        //  _quoteController.quoteModel.iQuote_productDetails.clear();
+                        _quoteController.quoteModel.clientAddressNameController.value.clear();
+                        _quoteController.quoteModel.clientAddressController.value.clear();
+                        _quoteController.quoteModel.billingAddressNameController.value.clear();
+                        _quoteController.quoteModel.billingAddressController.value.clear();
+                        _quoteController.quoteModel.Quote_no.value = "";
+                        _quoteController.quoteModel.TitleController.value.clear();
+                        _quoteController.quoteModel.Quote_table_heading.value = "";
                       }
                     } else {
                       // If no data, just close the dialog
@@ -941,7 +941,7 @@ mixin SalesServices {
     }
   }
 
-  Future<void> refresh(context) async {
+  Future<void> sales_refresh(context) async {
     salesController.resetData();
     salesController.updateshowcustomerprocess(null);
     salesController.updatecustomerId(0);

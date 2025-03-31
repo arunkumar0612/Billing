@@ -23,10 +23,10 @@ import 'package:path/path.dart' as path;
 
 mixin SubscriptionServices {
   final Invoker apiController = Get.find<Invoker>();
-  final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
-  final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
-  final SUBSCRIPTION_ClientreqController clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
-  final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
+  final SessiontokenController _sessiontokenController = Get.find<SessiontokenController>();
+  final SubscriptionController _subscriptionController = Get.find<SubscriptionController>();
+  final SUBSCRIPTION_ClientreqController _clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
+  final SUBSCRIPTION_QuoteController _quoteController = Get.find<SUBSCRIPTION_QuoteController>();
   Future<void> GetProcesscustomerList(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.subscription_getprocesscustomer_API);
@@ -34,11 +34,11 @@ mixin SubscriptionServices {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           // await Basic_dialog(context: context,showCancel: false, title: 'Processcustomer List', content: "Processcu    stomer List fetched successfully", onOk: () {});
-          subscriptionController.subscriptionModel.processcustomerList.clear();
+          _subscriptionController.subscriptionModel.processcustomerList.clear();
           // print(value.data);
-          subscriptionController.addToProcesscustomerList(value);
+          _subscriptionController.addToProcesscustomerList(value);
 
-          // subscriptionController.updatecustomerId(subscriptionController.subscriptionModel.processcustomerList[subscriptionController.subscriptionModel.showcustomerprocess.value!].customerId);
+          // _subscriptionController.updatecustomerId(_subscriptionController.subscriptionModel.processcustomerList[_subscriptionController.subscriptionModel.showcustomerprocess.value!].customerId);
         } else {
           await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
@@ -56,7 +56,7 @@ mixin SubscriptionServices {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          subscriptionController.addTo_RecuuringInvoiceList(value);
+          _subscriptionController.addTo_RecuuringInvoiceList(value);
         } else {
           await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
@@ -71,14 +71,14 @@ mixin SubscriptionServices {
   Future<void> GetProcessList(context, int customerid) async {
     try {
       Map<String, dynamic>? response =
-          await apiController.GetbyQueryString({"customerid": customerid, "listtype": subscriptionController.subscriptionModel.type.value}, API.subscription_getprocesslist_API);
+          await apiController.GetbyQueryString({"customerid": customerid, "listtype": _subscriptionController.subscriptionModel.type.value}, API.subscription_getprocesslist_API);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           // await Basic_dialog(context: context, showCancel: false, title: 'Process List', content: "Process List fetched successfully", onOk: () {});
-          subscriptionController.subscriptionModel.processList.clear();
+          _subscriptionController.subscriptionModel.processList.clear();
           // print(value.data);
-          subscriptionController.addToProcessList(value);
+          _subscriptionController.addToProcessList(value);
         } else {
           await Basic_dialog(context: context, showCancel: false, title: 'Process List Error', content: value.message ?? "", onOk: () {});
         }
@@ -118,7 +118,7 @@ mixin SubscriptionServices {
           response ?? {},
         );
         if (value.code) {
-          await subscriptionController.PDFfileApiData(value);
+          await _subscriptionController.PDFfileApiData(value);
           return true;
           // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
@@ -135,7 +135,7 @@ mixin SubscriptionServices {
   }
 
   void showPDF(context, String filename) async {
-    if (subscriptionController.subscriptionModel.pdfFile.value != null) {
+    if (_subscriptionController.subscriptionModel.pdfFile.value != null) {
       await showDialog(
         context: context,
         builder: (context) => Dialog(
@@ -145,7 +145,7 @@ mixin SubscriptionServices {
               height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
               child: Stack(
                 children: [
-                  SfPdfViewer.file(subscriptionController.subscriptionModel.pdfFile.value!),
+                  SfPdfViewer.file(_subscriptionController.subscriptionModel.pdfFile.value!),
                   Align(
                       alignment: Alignment.bottomRight,
                       child: Padding(
@@ -158,7 +158,7 @@ mixin SubscriptionServices {
                                     .basename(filename)
                                     .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
                                     .replaceAll(" ", ""),
-                                subscriptionController.subscriptionModel.pdfFile.value);
+                                _subscriptionController.subscriptionModel.pdfFile.value);
                           },
                           icon: const Icon(
                             Icons.download,
@@ -175,7 +175,7 @@ mixin SubscriptionServices {
 
   Future<void> downloadPdf(BuildContext context, String filename, File? pdfFile) async {
     try {
-      // final pdfFile = subscriptionController.subscriptionModel.pdfFile.value;
+      // final pdfFile = _subscriptionController.subscriptionModel.pdfFile.value;
 
       if (pdfFile == null) {
         if (kDebugMode) {
@@ -224,8 +224,8 @@ mixin SubscriptionServices {
     if (response?['statusCode'] == 200) {
       CMResponse value = CMResponse.fromJson(response ?? {});
       if (value.code) {
-        subscriptionController.subscriptionModel.selectedIndices.clear();
-        GetProcessList(context, subscriptionController.subscriptionModel.customerId.value!);
+        _subscriptionController.subscriptionModel.selectedIndices.clear();
+        GetProcessList(context, _subscriptionController.subscriptionModel.customerId.value!);
         Basic_SnackBar(context, "Process Deleted successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
@@ -244,8 +244,8 @@ mixin SubscriptionServices {
     if (response?['statusCode'] == 200) {
       CMResponse value = CMResponse.fromJson(response ?? {});
       if (value.code) {
-        subscriptionController.subscriptionModel.selectedIndices.clear();
-        GetProcessList(context, subscriptionController.subscriptionModel.customerId.value!);
+        _subscriptionController.subscriptionModel.selectedIndices.clear();
+        GetProcessList(context, _subscriptionController.subscriptionModel.customerId.value!);
         Basic_SnackBar(context, type == 0 ? "Process Unarchived successfully" : "Process Archived successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
@@ -267,7 +267,7 @@ mixin SubscriptionServices {
         // print(value.data);
         if (value.code) {
           // print(value.data);
-          subscriptionController.updateSubscriptionData(value);
+          _subscriptionController.updateSubscriptionData(value);
         } else {
           await Basic_dialog(context: context, title: 'Subscription Data Error', content: value.message ?? "", onOk: () {}, showCancel: false);
         }
@@ -287,8 +287,8 @@ mixin SubscriptionServices {
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
-          subscriptionController.updateclientprofileData(value);
-          subscriptionController.updateprofilepage(true);
+          _subscriptionController.updateclientprofileData(value);
+          _subscriptionController.updateprofilepage(true);
         } else {
           await Basic_dialog(context: context, title: 'Client Profile Error', content: value.message ?? "", onOk: () {}, showCancel: false);
         }
@@ -328,7 +328,7 @@ mixin SubscriptionServices {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          subscriptionController.addToCustompdfList(value);
+          _subscriptionController.addToCustompdfList(value);
           return true;
         } else {
           await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
@@ -378,7 +378,7 @@ mixin SubscriptionServices {
                     child: const Icon(Icons.close, color: Colors.red),
                   ),
                   onPressed: () async {
-                    if (clientreqController.anyHavedata()) {
+                    if (_clientreqController.anyHavedata()) {
                       bool? proceed = await showDialog<bool>(
                         context: context,
                         builder: (context) {
@@ -410,7 +410,7 @@ mixin SubscriptionServices {
 
                       if (proceed == true) {
                         Navigator.of(context).pop();
-                        clientreqController.resetData();
+                        _clientreqController.resetData();
                       }
                     } else {
                       Navigator.of(context).pop();
@@ -480,17 +480,17 @@ mixin SubscriptionServices {
                   ),
                   onPressed: () async {
                     // Check if the data has any value
-                    // || ( quoteController.quoteModel.Quote_gstTotals.isNotEmpty)
-                    if ((quoteController.quoteModel.Quote_sites.isNotEmpty) ||
-                        (quoteController.quoteModel.Quote_noteList.isNotEmpty) ||
-                        (quoteController.quoteModel.Quote_recommendationList.isNotEmpty) ||
-                        (quoteController.quoteModel.clientAddressNameController.value.text != "") ||
-                        (quoteController.quoteModel.clientAddressController.value.text != "") ||
-                        (quoteController.quoteModel.billingAddressNameController.value.text != "") ||
-                        (quoteController.quoteModel.billingAddressController.value.text != "") ||
-                        (quoteController.quoteModel.Quote_no.value != "") ||
-                        (quoteController.quoteModel.TitleController.value.text != "") ||
-                        (quoteController.quoteModel.Quote_table_heading.value != "")) {
+                    // || ( _quoteController.quoteModel.Quote_gstTotals.isNotEmpty)
+                    if ((_quoteController.quoteModel.Quote_sites.isNotEmpty) ||
+                        (_quoteController.quoteModel.Quote_noteList.isNotEmpty) ||
+                        (_quoteController.quoteModel.Quote_recommendationList.isNotEmpty) ||
+                        (_quoteController.quoteModel.clientAddressNameController.value.text != "") ||
+                        (_quoteController.quoteModel.clientAddressController.value.text != "") ||
+                        (_quoteController.quoteModel.billingAddressNameController.value.text != "") ||
+                        (_quoteController.quoteModel.billingAddressController.value.text != "") ||
+                        (_quoteController.quoteModel.Quote_no.value != "") ||
+                        (_quoteController.quoteModel.TitleController.value.text != "") ||
+                        (_quoteController.quoteModel.Quote_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(
                         context: context,
@@ -523,18 +523,18 @@ mixin SubscriptionServices {
                       if (proceed == true) {
                         Navigator.of(context).pop(); // Close the dialog
                         // Clear all the data when dialog is closed
-                        quoteController.quoteModel.Quote_sites.clear();
-                        //  quoteController.quoteModel.Quote_gstTotals.clear();
-                        quoteController.quoteModel.Quote_noteList.clear();
-                        quoteController.quoteModel.Quote_recommendationList.clear();
-                        //  quoteController.quoteModel.iQuote_productDetails.clear();
-                        quoteController.quoteModel.clientAddressNameController.value.clear();
-                        quoteController.quoteModel.clientAddressController.value.clear();
-                        quoteController.quoteModel.billingAddressNameController.value.clear();
-                        quoteController.quoteModel.billingAddressController.value.clear();
-                        quoteController.quoteModel.Quote_no.value = "";
-                        quoteController.quoteModel.TitleController.value.clear();
-                        quoteController.quoteModel.Quote_table_heading.value = "";
+                        _quoteController.quoteModel.Quote_sites.clear();
+                        //  _quoteController.quoteModel.Quote_gstTotals.clear();
+                        _quoteController.quoteModel.Quote_noteList.clear();
+                        _quoteController.quoteModel.Quote_recommendationList.clear();
+                        //  _quoteController.quoteModel.iQuote_productDetails.clear();
+                        _quoteController.quoteModel.clientAddressNameController.value.clear();
+                        _quoteController.quoteModel.clientAddressController.value.clear();
+                        _quoteController.quoteModel.billingAddressNameController.value.clear();
+                        _quoteController.quoteModel.billingAddressController.value.clear();
+                        _quoteController.quoteModel.Quote_no.value = "";
+                        _quoteController.quoteModel.TitleController.value.clear();
+                        _quoteController.quoteModel.Quote_table_heading.value = "";
                       }
                     } else {
                       // If no data, just close the dialog
@@ -584,19 +584,20 @@ mixin SubscriptionServices {
     }
   }
 
-  Future<void> refresh(context) async {
-    subscriptionController.resetData();
-    subscriptionController.updateshowcustomerprocess(null);
-    subscriptionController.updatecustomerId(0);
+  Future<void> subscription_refresh(context) async {
+    _subscriptionController.resetData();
+    _subscriptionController.updateshowcustomerprocess(null);
+    _subscriptionController.updatecustomerId(0);
+    await Get_RecurringInvoiceList(context);
     await GetProcesscustomerList(context);
     await GetProcessList(context, 0);
-    await GetSubscriptionData(context, subscriptionController.subscriptionModel.subscriptionperiod.value);
+    await GetSubscriptionData(context, _subscriptionController.subscriptionModel.subscriptionperiod.value);
   }
 
   int fetch_messageType() {
-    if (subscriptionController.subscriptionModel.whatsapp_selectionStatus.value && subscriptionController.subscriptionModel.gmail_selectionStatus.value) return 3;
-    if (subscriptionController.subscriptionModel.whatsapp_selectionStatus.value) return 1;
-    if (subscriptionController.subscriptionModel.gmail_selectionStatus.value) return 2;
+    if (_subscriptionController.subscriptionModel.whatsapp_selectionStatus.value && _subscriptionController.subscriptionModel.gmail_selectionStatus.value) return 3;
+    if (_subscriptionController.subscriptionModel.whatsapp_selectionStatus.value) return 1;
+    if (_subscriptionController.subscriptionModel.gmail_selectionStatus.value) return 2;
 
     return 0;
   }
@@ -604,11 +605,11 @@ mixin SubscriptionServices {
   dynamic postData_sendPDF(context, int messageType, File pdf) async {
     try {
       Map<String, dynamic> queryString = {
-        "emailid": subscriptionController.subscriptionModel.emailController.value.text,
-        "phoneno": subscriptionController.subscriptionModel.phoneController.value.text,
-        "feedback": subscriptionController.subscriptionModel.feedbackController.value.text,
+        "emailid": _subscriptionController.subscriptionModel.emailController.value.text,
+        "phoneno": _subscriptionController.subscriptionModel.phoneController.value.text,
+        "feedback": _subscriptionController.subscriptionModel.feedbackController.value.text,
         "messagetype": messageType,
-        "ccemail": subscriptionController.subscriptionModel.CCemailController.value.text,
+        "ccemail": _subscriptionController.subscriptionModel.CCemailController.value.text,
       };
       await sendPDFdata(context, jsonEncode(queryString), pdf);
     } catch (e) {
@@ -620,7 +621,7 @@ mixin SubscriptionServices {
 // arunkumar.m@sporadasecure.com
   dynamic sendPDFdata(context, String jsonData, File file) async {
     try {
-      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.send_anyPDF);
+      Map<String, dynamic>? response = await apiController.Multer(_sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.send_anyPDF);
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {

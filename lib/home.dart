@@ -1,7 +1,6 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/controllers/Main_actions.dart';
 import 'package:ssipl_billing/views/screens/BILLING/Billing.dart';
 import 'package:ssipl_billing/views/screens/HIERARCHY/Hierarchy.dart';
 import 'package:ssipl_billing/views/screens/SALES/Sales.dart';
@@ -20,7 +19,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   PageController pageController = PageController();
   SideMenuController sideMenu = SideMenuController();
-  final MainController mainController = Get.find<MainController>();
 
   bool showfull = true;
   @override

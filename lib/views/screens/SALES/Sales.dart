@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 import 'package:animations/animations.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:ssipl_billing/controllers/Notification_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/ClientReq_actions.dart';
@@ -15,17 +15,16 @@ import 'package:ssipl_billing/controllers/SALEScontrollers/DC_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Invoice_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/Quote_actions.dart';
 import 'package:ssipl_billing/controllers/SALEScontrollers/RFQ_actions.dart';
+import 'package:ssipl_billing/services/Notification_services/NotificationServices.dart';
 import 'package:ssipl_billing/services/SALES/CustomPDF_services/DC/CustomPDF_DC_services.dart';
 import 'package:ssipl_billing/services/SALES/CustomPDF_services/Invoice/CustomPDF_Invoice_services.dart';
 import 'package:ssipl_billing/services/SALES/CustomPDF_services/Quote/CustomPDF_Quote_services.dart';
-
 import 'package:ssipl_billing/services/SALES/sales_service.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
-import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/views/screens/SALES/CustomPDF/DC/CustomPDF_DC_design.dart';
 import 'package:ssipl_billing/views/screens/SALES/CustomPDF/Quote/CustomPDF_Quote_design.dart';
 import 'package:ssipl_billing/views/screens/SALES/Sales_chart.dart';
@@ -34,7 +33,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../../controllers/SALEScontrollers/Sales_actions.dart';
 // import 'package:cool_dropdown/models/cool_dropdown_item.dart';
 
-class Sales_Client extends StatefulWidget with SalesServices {
+class Sales_Client extends StatefulWidget with SalesServices, BellIconFunction {
   Sales_Client({super.key});
 // Toyota showroom and service, 100 chennai - trichy highway, Trichy - 620005s
   @override
@@ -52,7 +51,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
   final RfqController rfqController = Get.find<RfqController>();
   final CustomPDF_InvoiceController custom_Invoice_controller = Get.find<CustomPDF_InvoiceController>();
   final CustomPDF_DcController custom_Dc_controller = Get.find<CustomPDF_DcController>();
-
+  final NotificationController notificationController = Get.find<NotificationController>();
   final CustomPDF_QuoteController custom_Quote_controller = Get.find<CustomPDF_QuoteController>();
 
   var inst_invoiceDesign = CustomPDF_InvoicePDF();
@@ -91,7 +90,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
   void _startAnimation() {
     if (!salesController.salesModel.animationController.isAnimating) {
       salesController.salesModel.animationController.forward(from: 0).then((_) {
-        widget.refresh(context);
+        widget.sales_refresh(context);
       });
     }
   }
@@ -133,6 +132,50 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                   ),
                   Row(
                     children: [
+                      Obx(() {
+                        return Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: MouseRegion(
+                                onEnter: (_) => notificationController.notificationModel.isHovered.value = true,
+                                onExit: (_) => notificationController.notificationModel.isHovered.value = false,
+                                cursor: SystemMouseCursors.click,
+                                child: GestureDetector(
+                                  onTap: () => widget.showNotification(context),
+                                  child: Icon(
+                                    size: 30,
+                                    Icons.notifications,
+                                    color: notificationController.notificationModel.isHovered.value ? Colors.amber : Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                height: 15,
+                                width: 15,
+                                decoration: BoxDecoration(
+                                  color: notificationController.notificationModel.notifications.isNotEmpty ? Colors.red : Colors.blue,
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    notificationController.notificationModel.notifications.length > 9 ? '9+' : '${notificationController.notificationModel.notifications.length}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
+                      const SizedBox(width: 10),
                       GestureDetector(
                         onTap: _startAnimation,
                         child: AnimatedBuilder(

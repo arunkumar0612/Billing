@@ -1,5 +1,6 @@
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 import 'package:ssipl_billing/models/entities/SUBSCRIPTION/SUBSCRIPTION_Sites_entities.dart';
+import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 
 class SUBSCRIPTION_QuoteRecommendation {
   final String key;
@@ -156,100 +157,255 @@ class SubscriptionItem {
   }
 }
 
-class SUBSCRIPTION_QuotePost_Quotation {
-  String? title;
+class SUBSCRIPTION_PostQuotation {
   int? processid;
-  String? ClientAddressname;
-  String? ClientAddress;
-  String? emailId;
-  String? phoneNo;
-  String? gst;
-  String? billingAddressName;
-  String? billingAddress;
-  String? modeOfRequest;
-  String? morReference;
-  List<SUBSCRIPTION_QuoteSite>? site;
+  String? clientaddressname;
+  String? clientaddress;
+  String? billingaddressname;
+  String? billingaddress;
+  List<SUBSCRIPTION_QuoteSite>? sitelist;
   List? notes;
+  String? emailid;
+  String? phoneno;
+  String? ccemail;
   String? date;
-  String? quotationGenID;
-  int? messageType;
+  String? quotationgenid;
+  int? messagetype;
   String? feedback;
-  String? ccEmail;
+  int? packageid;
 
-  SUBSCRIPTION_QuotePost_Quotation({
-    required this.title,
+  SUBSCRIPTION_PostQuotation({
     required this.processid,
-    required this.ClientAddressname,
-    required this.ClientAddress,
-    required this.billingAddressName,
-    required this.billingAddress,
-    required this.emailId,
-    required this.phoneNo,
-    required this.gst,
-    required this.date,
-    required this.site,
+    required this.clientaddressname,
+    required this.clientaddress,
+    required this.billingaddressname,
+    required this.billingaddress,
+    required this.sitelist,
     required this.notes,
-    required this.quotationGenID,
-    required this.messageType,
+    required this.emailid,
+    required this.phoneno,
+    required this.ccemail,
+    required this.date,
+    required this.quotationgenid,
+    required this.messagetype,
     required this.feedback,
-    required this.ccEmail,
+    required this.packageid,
   });
 
-  factory SUBSCRIPTION_QuotePost_Quotation.fromJson({
-    required String title,
-    required int processid,
-    required String ClientAddressname,
-    required String ClientAddress,
-    required String billingAddressName,
-    required String billingAddress,
-    required String emailId,
-    required String phoneNo,
-    required String gst,
-    required List<SUBSCRIPTION_QuoteSite> site,
-    required List notes,
-    required String date,
-    required String quotationGenID,
-    required int messageType,
-    required String feedback,
-    required String ccEmail,
-  }) {
-    return SUBSCRIPTION_QuotePost_Quotation(
-        title: title,
-        processid: processid,
-        ClientAddressname: ClientAddressname,
-        ClientAddress: ClientAddress,
-        billingAddressName: billingAddressName,
-        billingAddress: billingAddress,
-        emailId: emailId,
-        phoneNo: phoneNo,
-        gst: gst,
-        site: site,
-        notes: notes,
-        date: date,
-        quotationGenID: quotationGenID,
-        messageType: messageType,
-        feedback: feedback,
-        ccEmail: ccEmail);
+  factory SUBSCRIPTION_PostQuotation.fromJson(Map<String, dynamic> json) {
+    return SUBSCRIPTION_PostQuotation(
+      processid: json["processid"],
+      clientaddressname: json["clientaddressname"],
+      clientaddress: json["clientaddress"],
+      billingaddressname: json["billingaddressname"],
+      billingaddress: json["billingaddress"],
+      sitelist: (json["sitelist"] as List?)?.map((item) => SUBSCRIPTION_QuoteSite.fromJson(item)).toList(),
+      notes: json["notes"],
+      emailid: json["emailid"],
+      phoneno: json["phoneno"],
+      ccemail: json["ccemail"],
+      date: json["date"],
+      quotationgenid: json["quotationgenid"],
+      messagetype: json["messagetype"],
+      feedback: json["feedback"],
+      packageid: json["packageid"],
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "title": title,
       "processid": processid,
-      "clientaddressname": ClientAddressname,
-      "clientaddress": ClientAddress,
-      "billingaddressname": billingAddressName,
-      "billingaddress": billingAddress,
-      "emailid": emailId,
-      "phoneno": phoneNo,
-      "gst": gst,
-      "site": site?.map((item) => item.toJson()).toList(),
+      "clientaddressname": clientaddressname,
+      "clientaddress": clientaddress,
+      "billingaddressname": billingaddressname,
+      "billingaddress": billingaddress,
+      "sitelist": sitelist?.map((item) => item.toJson()).toList(),
       "notes": notes,
+      "emailid": emailid,
+      "phoneno": phoneno,
+      "ccemail": ccemail,
       "date": date,
-      "quotationgenid": quotationGenID,
-      "messagetype": messageType,
+      "quotationgenid": quotationgenid,
+      "messagetype": messagetype,
       "feedback": feedback,
-      "ccemail": ccEmail,
+      "packageid": packageid,
     };
+  }
+}
+
+class SUBSCRIPTION_Quote {
+  final String date;
+  final String quoteNo;
+  final int gstPercent;
+  final Address addressDetails;
+
+  final List<Site> siteData;
+  final FinalCalculation finalCalc;
+  final List<String> notes;
+  SUBSCRIPTION_Quote({
+    required this.date,
+    required this.quoteNo,
+    required this.gstPercent,
+    required this.addressDetails,
+    required this.siteData,
+    required this.finalCalc,
+    required this.notes,
+  });
+
+  // Convert JSON to Invoice object
+  factory SUBSCRIPTION_Quote.fromJson(Map<String, dynamic> json) {
+    return SUBSCRIPTION_Quote(
+      date: json['date'] as String,
+      quoteNo: json['quoteNo'] as String,
+      gstPercent: json['gstPercent'] as int,
+      addressDetails: Address.fromJson(json['addressDetails']),
+      siteData: Site.fromJson(List<Map<String, dynamic>>.from(json['siteData'])),
+      finalCalc: FinalCalculation.fromJson(Site.fromJson(List<Map<String, dynamic>>.from(json['siteData'])), json['gstPercent'] as int, json['pendingAmount'] as double),
+      notes: ['This is a sample note', 'This is another sample note'],
+    );
+  }
+
+  // Convert Invoice object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'date': date,
+      'invoiceNo': quoteNo,
+      'gstPercent': gstPercent,
+      'siteData': Site.toJsonList(siteData), // Corrected Site List Serialization
+      'finalCalc': finalCalc.toJson(),
+      'addressDetails': addressDetails.toJson(),
+      'notes': notes,
+    };
+  }
+}
+
+class Address {
+  final String clientName;
+  final String clientAddress;
+  final String billingName;
+  final String billingAddress;
+
+  Address({required this.clientName, required this.clientAddress, required this.billingName, required this.billingAddress});
+
+  // Convert JSON to Address object
+  factory Address.fromJson(Map<String, dynamic> json) {
+    return Address(
+      clientName: json['clientName'] as String,
+      clientAddress: json['clientAddress'] as String,
+      billingName: json['billingName'] as String,
+      billingAddress: json['billingAddress'] as String,
+    );
+  }
+
+  // Convert Address object to JSON
+  Map<String, dynamic> toJson() {
+    return {'clientName': clientName, 'clientAddress': clientAddress, 'billingName': billingName, 'billingAddress': billingAddress};
+  }
+}
+
+class Site {
+  static int _counter = 1; // Static counter to auto-increment serial numbers
+  String serialNo;
+  String siteName;
+  String address;
+  String packageName;
+  int camCount;
+  int basicPrice;
+  int specialPrice;
+
+  Site({required this.siteName, required this.address, required this.packageName, required this.camCount, required this.basicPrice, required this.specialPrice})
+      : serialNo = (_counter++).toString(); // Auto-increment serial number
+
+  // Convert List of JSON Maps to List of Site objects
+  static List<Site> fromJson(List<Map<String, dynamic>> jsonList) {
+    _counter = 1; // Reset counter before parsing a new list
+
+    return jsonList.map((json) {
+      return Site(
+        siteName: json['sitename'] as String, // Fix key casing
+        address: json['address'] as String,
+        packageName: json['packageName'] as String,
+        camCount: json['camCount'] as int,
+        basicPrice: (json['basicPrice'] as num).toInt(),
+        specialPrice: (json['specialPrice'] as num).toInt(),
+      );
+    }).toList();
+  }
+
+  // Convert List of Site objects to JSON List
+  static List<Map<String, dynamic>> toJsonList(List<Site> sites) {
+    return sites.map((site) => site.toJson()).toList();
+  }
+
+  // Convert single Site object to JSON
+  Map<String, dynamic> toJson() {
+    return {'serialNo': serialNo, 'siteName': siteName, 'address': address, 'packageName': packageName, 'basicPrice': basicPrice, 'specialPrice': specialPrice};
+  }
+
+  dynamic getIndex(int col) {
+    switch (col) {
+      case 0:
+        return serialNo;
+      case 1:
+        return packageName;
+      case 2:
+        return siteName;
+      case 3:
+        return address;
+      case 4:
+        return camCount;
+      case 5:
+        return basicPrice;
+      case 6:
+        return specialPrice;
+      default:
+        return "";
+    }
+  }
+}
+
+class FinalCalculation {
+  final double subtotal;
+  final double cgst;
+  final double sgst;
+  final String roundOff;
+  final String differene;
+  final double total;
+  final double? pendingAmount;
+  final double grandTotal;
+
+  FinalCalculation({
+    required this.subtotal,
+    required this.cgst,
+    required this.sgst,
+    required this.roundOff,
+    required this.differene,
+    required this.total,
+    required this.pendingAmount,
+    required this.grandTotal,
+  });
+
+  factory FinalCalculation.fromJson(List<Site> sites, int gstPercent, double? pendingAmount) {
+    double subtotal = sites.fold(0.0, (sum, site) => sum + site.specialPrice);
+    double cgst = (subtotal * (gstPercent / 2)) / 100;
+    double sgst = (subtotal * (gstPercent / 2)) / 100;
+    double total = subtotal + cgst + sgst;
+    double grandTotal = pendingAmount != null ? total + pendingAmount : total;
+
+    return FinalCalculation(
+      subtotal: subtotal,
+      cgst: cgst,
+      sgst: sgst,
+      roundOff: formatCurrencyRoundedPaisa(total),
+      differene:
+          '${((double.parse(formatCurrencyRoundedPaisa(total).replaceAll(',', '')) - total) >= 0 ? '+' : '')}${(double.parse(formatCurrencyRoundedPaisa(total).replaceAll(',', '')) - total).toStringAsFixed(2)}',
+      total: total,
+      pendingAmount: pendingAmount,
+      grandTotal: grandTotal,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'subtotal': subtotal, 'CGST': cgst, 'SGST': sgst, 'roundOff': roundOff, 'difference': differene, 'total': total, 'pendingAmount': pendingAmount, 'grandTotal': grandTotal};
   }
 }

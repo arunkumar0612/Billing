@@ -75,23 +75,23 @@ mixin SUBSCRIPTION_PostServices {
       }
       File cachedPdf = quoteController.quoteModel.selectedPdf.value!;
       // savePdfToCache();
-      SUBSCRIPTION_QuotePost_Quotation subscriptionData = SUBSCRIPTION_QuotePost_Quotation.fromJson(
-          title: quoteController.quoteModel.TitleController.value.text,
-          processid: quoteController.quoteModel.processID.value!,
-          ClientAddressname: quoteController.quoteModel.clientAddressNameController.value.text,
-          ClientAddress: quoteController.quoteModel.clientAddressController.value.text,
-          billingAddressName: quoteController.quoteModel.billingAddressNameController.value.text,
-          billingAddress: quoteController.quoteModel.billingAddressController.value.text,
-          emailId: quoteController.quoteModel.emailController.value.text,
-          phoneNo: quoteController.quoteModel.phoneController.value.text,
-          gst: quoteController.quoteModel.gstController.value.text,
-          site: quoteController.quoteModel.Quote_sites,
-          notes: quoteController.quoteModel.Quote_noteList,
-          date: getCurrentDate(),
-          quotationGenID: quoteController.quoteModel.Quote_no.value!,
-          messageType: messageType,
-          feedback: quoteController.quoteModel.feedbackController.value.text,
-          ccEmail: quoteController.quoteModel.CCemailController.value.text);
+      SUBSCRIPTION_PostQuotation subscriptionData = SUBSCRIPTION_PostQuotation.fromJson({
+        "processid": quoteController.quoteModel.processID.value!,
+        "clientaddressname": quoteController.quoteModel.clientAddressNameController.value.text,
+        "clientaddress": quoteController.quoteModel.clientAddressController.value.text,
+        "billingaddressname": quoteController.quoteModel.billingAddressNameController.value.text,
+        "billingaddress": quoteController.quoteModel.billingAddressController.value.text,
+        "sitelist": quoteController.quoteModel.QuoteSiteDetails,
+        "notes": quoteController.quoteModel.Quote_noteList,
+        "emailid": quoteController.quoteModel.emailController.value.text,
+        "phoneno": quoteController.quoteModel.phoneController.value.text,
+        "ccemail": quoteController.quoteModel.CCemailController.value.text,
+        "date": getCurrentDate(),
+        "quotationgenid": quoteController.quoteModel.Quote_no.value!,
+        "messagetype": messageType,
+        "feedback": quoteController.quoteModel.feedbackController.value.text,
+        "packageid": 18, // Assuming 18 is a placeholder value for packageid
+      });
 
       await send_data(context, jsonEncode(subscriptionData.toJson()), cachedPdf, eventtype);
     } catch (e) {

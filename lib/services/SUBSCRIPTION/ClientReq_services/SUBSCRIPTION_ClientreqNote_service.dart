@@ -12,7 +12,7 @@ import 'package:ssipl_billing/models/entities/SUBSCRIPTION/SUBSCRIPTION_ClientRe
 import 'package:ssipl_billing/services/APIservices/invoker.dart';
 import 'package:ssipl_billing/utils/helpers/support_functions.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
-import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/SUBSCRIPTION_clientreq_template.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Process/Generate_client_req/SUBSCRIPTION_clientreq_template.dart';
 import '../../../models/constants/api.dart';
 
 mixin SUBSCRIPTION_ClientreqNoteService {

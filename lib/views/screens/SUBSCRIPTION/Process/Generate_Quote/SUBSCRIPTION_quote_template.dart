@@ -4,65 +4,26 @@ import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:ssipl_billing/models/entities/SALES/Quote_entities.dart';
+import 'package:ssipl_billing/models/entities/SUBSCRIPTION/SUBSCRIPTION_Quote_entities.dart';
 
-import '../../../../controllers/SALEScontrollers/Quote_actions.dart';
-import '../../../../models/entities/SALES/product_entities.dart';
-import '../../../../utils/helpers/support_functions.dart';
+import '../../../../../controllers/SALEScontrollers/Quote_actions.dart';
+import '../../../../../models/entities/SALES/product_entities.dart';
+import '../../../../../utils/helpers/support_functions.dart';
 
-Future<Uint8List> SUBSCRIPTION_generate_Quote(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, quote_gstTotals) async {
-  final quotation = SUBSCRIPTION_Quotation(
-      products: products,
-      GST: gst.toDouble(),
-      baseColor: PdfColors.green500,
-      accentColor: PdfColors.blueGrey900,
-      client_addr_name: client_addr_name,
-      client_addr: client_addr,
-      bill_addr_name: bill_addr_name,
-      bill_addr: bill_addr,
-      estimate: estimate_num ?? "",
-      title_text: title,
-      type: '',
-      quote_gstTotals: quote_gstTotals);
+Future<Uint8List> SUBSCRIPTION_generate_Quote(PdfPageFormat pageFormat, SUBSCRIPTION_Quote instQuote) async {
+  final quotation = SUBSCRIPTION_Quotation(instQuote: instQuote);
 
   return await quotation.buildPdf(pageFormat);
 }
 
 class SUBSCRIPTION_Quotation {
-  SUBSCRIPTION_Quotation(
-      {required this.products,
-      required this.GST,
-      required this.baseColor,
-      required this.accentColor,
-      required this.client_addr_name,
-      required this.client_addr,
-      required this.bill_addr_name,
-      required this.bill_addr,
-      required this.estimate,
-      required this.title_text,
-      required this.type,
-      required this.quote_gstTotals
-      // required this.items,
-      });
+  SUBSCRIPTION_Quotation({required this.instQuote});
   final QuoteController quoteController = Get.find<QuoteController>();
-  List<QuoteGSTtotals> quote_gstTotals = [];
-  String client_addr_name = "";
-  String client_addr = "";
-  String bill_addr_name = "";
-  String bill_addr = "";
-  String estimate = "";
-  String title_text = "";
-  String type = "";
-
-  final List<QuoteProduct> products;
-  final double GST;
-  final PdfColor baseColor;
-  final PdfColor accentColor;
-  static const _darkColor = PdfColors.blueGrey800;
-  double get CGST_total => quote_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
-  double get SGST_total => quote_gstTotals.map((item) => (item.gst) / 2 * (item.total) / 100).reduce((a, b) => a + b);
-  double get _total => products.map<double>((p) => p.total).reduce((a, b) => a + b);
-  double get _grandTotal => _total + CGST_total + SGST_total;
+  final SUBSCRIPTION_Quote instQuote;
   dynamic profileImage;
+  final PdfColor baseColor = PdfColors.green500;
+  final PdfColor accentColor = PdfColors.blueGrey900;
+  static const _darkColor = PdfColors.blueGrey800;
 
   Future<Uint8List> buildPdf(PdfPageFormat pageFormat) async {
     Helvetica = await loadFont_regular();
@@ -85,8 +46,8 @@ class SUBSCRIPTION_Quotation {
         footer: footer,
         header: header,
         build: (context) => [
-          pw.SizedBox(height: 10),
-          title(context),
+          // pw.SizedBox(height: 10),
+          // title(context),
           pw.SizedBox(height: 10),
           _contentTable(context),
           pw.SizedBox(height: 20),
@@ -216,7 +177,7 @@ class SUBSCRIPTION_Quotation {
               pw.Padding(
                 padding: const pw.EdgeInsets.symmetric(horizontal: 10),
                 child: pw.Text(
-                  client_addr_name,
+                  instQuote.addressDetails.clientName,
                   textAlign: pw.TextAlign.start,
                   style: pw.TextStyle(
                     font: Helvetica_bold,
@@ -233,7 +194,7 @@ class SUBSCRIPTION_Quotation {
               pw.Padding(
                 padding: const pw.EdgeInsets.symmetric(horizontal: 10),
                 child: pw.Text(
-                  client_addr,
+                  instQuote.addressDetails.clientAddress,
                   textAlign: pw.TextAlign.start,
                   style: pw.TextStyle(
                     font: Helvetica,
@@ -289,7 +250,7 @@ class SUBSCRIPTION_Quotation {
               pw.Padding(
                 padding: const pw.EdgeInsets.symmetric(horizontal: 10),
                 child: pw.Text(
-                  bill_addr_name,
+                  instQuote.addressDetails.billingName,
                   textAlign: pw.TextAlign.start,
                   style: pw.TextStyle(
                     font: Helvetica_bold,
@@ -306,7 +267,7 @@ class SUBSCRIPTION_Quotation {
               pw.Padding(
                 padding: const pw.EdgeInsets.symmetric(horizontal: 10),
                 child: pw.Text(
-                  bill_addr,
+                  instQuote.addressDetails.billingAddress,
                   textAlign: pw.TextAlign.start,
                   style: pw.TextStyle(
                     font: Helvetica,
@@ -324,9 +285,9 @@ class SUBSCRIPTION_Quotation {
     );
   }
 
-  pw.Widget title(pw.Context context) {
-    return pw.Center(child: bold(title_text, 12));
-  }
+  // pw.Widget title(pw.Context context) {
+  //   return pw.Center(child: bold(instQuote., 12));
+  // }
 
   pw.Widget _contentTable(pw.Context context) {
     const tableHeaders = ['S.No', 'Item Description', 'HSN', ' GST', 'Price   ', 'Quantity', 'Total   '];
@@ -379,10 +340,10 @@ class SUBSCRIPTION_Quotation {
         (col) => tableHeaders[col],
       ),
       data: List<List<String>>.generate(
-        products.length,
+        instQuote.siteData.length,
         (row) => List<String>.generate(
           tableHeaders.length,
-          (col) => products[row].getIndex(col),
+          (col) => instQuote.siteData[row].getIndex(col),
         ),
       ),
     );
@@ -392,7 +353,7 @@ class SUBSCRIPTION_Quotation {
     return pw.Column(
       children: [
         pw.Row(
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          crossAxisAlignment: pw.CrossAxisAlignment.center,
           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
           children: [
             pw.Container(
@@ -405,9 +366,7 @@ class SUBSCRIPTION_Quotation {
                   pw.Row(
                     children: [
                       pw.Container(
-                        decoration: const pw.BoxDecoration(
-                          border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700)),
-                        ),
+                        decoration: const pw.BoxDecoration(border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700))),
                         height: 38,
                         width: 80,
                         child: pw.Center(
@@ -430,9 +389,7 @@ class SUBSCRIPTION_Quotation {
                           children: [
                             pw.Container(
                               width: 110,
-                              decoration: const pw.BoxDecoration(
-                                border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700)),
-                              ),
+                              decoration: const pw.BoxDecoration(border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700))),
                               height: 19, // Replace Expanded with defined height
                               child: pw.Center(child: regular('CGST', 10)),
                             ),
@@ -442,19 +399,13 @@ class SUBSCRIPTION_Quotation {
                                 children: [
                                   pw.Container(
                                     width: 40, // Define width instead of Expanded
-                                    decoration: const pw.BoxDecoration(
-                                      border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700), bottom: pw.BorderSide(color: PdfColors.grey700)),
-                                    ),
+                                    decoration: const pw.BoxDecoration(border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700), bottom: pw.BorderSide(color: PdfColors.grey700))),
                                     child: pw.Center(child: regular('%', 10)),
                                   ),
                                   pw.Container(
                                     width: 70, // Define width instead of Expanded
                                     decoration: const pw.BoxDecoration(
-                                      border: pw.Border(
-                                        right: pw.BorderSide(color: PdfColors.grey700),
-                                        top: pw.BorderSide(color: PdfColors.grey700),
-                                        left: pw.BorderSide(color: PdfColors.grey700),
-                                      ),
+                                      border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700), left: pw.BorderSide(color: PdfColors.grey700)),
                                     ),
                                     child: pw.Center(child: regular('amount', 10)),
                                   ),
@@ -478,19 +429,13 @@ class SUBSCRIPTION_Quotation {
                                 children: [
                                   pw.Container(
                                     width: 40, // Define width instead of Expanded
-                                    decoration: const pw.BoxDecoration(
-                                      border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700)),
-                                    ),
+                                    decoration: const pw.BoxDecoration(border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700))),
                                     child: pw.Center(child: regular('%', 10)),
                                   ),
                                   pw.Container(
                                     width: 70, // Define width instead of Expanded
                                     decoration: const pw.BoxDecoration(
-                                      border: pw.Border(
-                                        right: pw.BorderSide(color: PdfColors.grey700),
-                                        top: pw.BorderSide(color: PdfColors.grey700),
-                                        left: pw.BorderSide(color: PdfColors.grey700),
-                                      ),
+                                      border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700), left: pw.BorderSide(color: PdfColors.grey700)),
                                     ),
                                     child: pw.Center(child: regular('amount', 10)),
                                   ),
@@ -502,102 +447,112 @@ class SUBSCRIPTION_Quotation {
                       ),
                     ],
                   ),
-                  pw.ListView.builder(
-                    itemCount: quote_gstTotals.length, // Number of items in the list
-                    itemBuilder: (context, index) {
-                      return pw.Row(
-                        children: [
-                          pw.Container(
-                            decoration: const pw.BoxDecoration(
-                              border: pw.Border(
-                                right: pw.BorderSide(color: PdfColors.grey700),
-                                top: pw.BorderSide(color: PdfColors.grey700),
+
+                  pw.Row(
+                    children: [
+                      pw.Container(
+                        decoration: const pw.BoxDecoration(border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700))),
+                        width: 80,
+                        height: 38,
+                        child: pw.Center(child: regular(formatzero(instQuote.finalCalc.subtotal), 10)),
+                      ),
+                      pw.Container(
+                        height: 38,
+                        child: pw.Row(
+                          children: [
+                            pw.Container(
+                              decoration: const pw.BoxDecoration(border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700))),
+                              width: 40, // Define width instead of Expanded
+                              child: pw.Center(child: regular((instQuote.gstPercent / 2).toString(), 10)),
+                            ),
+                            pw.Container(
+                              width: 70, // Define width instead of Expanded
+                              decoration: const pw.BoxDecoration(
+                                border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700), left: pw.BorderSide(color: PdfColors.grey700)),
                               ),
+                              child: pw.Center(child: regular(formatzero(instQuote.finalCalc.cgst), 10)),
                             ),
-                            width: 80,
-                            height: 38,
-                            child: pw.Center(child: regular(formatzero(quote_gstTotals[index].total), 10)),
-                          ),
-                          pw.Container(
-                            height: 38,
-                            child: pw.Row(
-                              children: [
-                                pw.Container(
-                                  decoration: const pw.BoxDecoration(
-                                    border: pw.Border(
-                                      top: pw.BorderSide(color: PdfColors.grey700),
-                                    ),
-                                  ),
-                                  width: 40, // Define width instead of Expanded
-                                  child: pw.Center(
-                                    child: regular((quote_gstTotals[index].gst / 2).toString(), 10),
-                                  ),
-                                ),
-                                pw.Container(
-                                  width: 70, // Define width instead of Expanded
-                                  decoration: const pw.BoxDecoration(
-                                    border: pw.Border(
-                                      right: pw.BorderSide(color: PdfColors.grey700),
-                                      top: pw.BorderSide(color: PdfColors.grey700),
-                                      left: pw.BorderSide(color: PdfColors.grey700),
-                                    ),
-                                  ),
-                                  child: pw.Center(
-                                    child: regular(
-                                        formatzero(
-                                          ((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst / 2)),
-                                        ),
-                                        10),
-                                  ),
-                                ),
-                              ],
+                          ],
+                        ),
+                      ),
+                      pw.Container(
+                        height: 38,
+                        child: pw.Row(
+                          children: [
+                            pw.Container(
+                              decoration: const pw.BoxDecoration(border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700))),
+                              width: 40, // Define width instead of Expanded
+                              child: pw.Center(child: regular((instQuote.gstPercent / 2).toString(), 10)),
                             ),
-                          ),
-                          pw.Container(
-                            height: 38,
-                            child: pw.Row(
-                              children: [
-                                pw.Container(
-                                  decoration: const pw.BoxDecoration(
-                                    border: pw.Border(
-                                      top: pw.BorderSide(color: PdfColors.grey700),
-                                    ),
-                                  ),
-                                  width: 40, // Define width instead of Expanded
-                                  child: pw.Center(child: regular((quote_gstTotals[index].gst / 2).toString(), 10)),
-                                ),
-                                pw.Container(
-                                  width: 70, // Define width instead of Expanded
-                                  decoration: const pw.BoxDecoration(
-                                    border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700)),
-                                  ),
-                                  child: pw.Center(child: regular(formatzero(((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst / 2))), 10)),
-                                ),
-                              ],
+                            pw.Container(
+                              width: 70, // Define width instead of Expanded
+                              decoration: const pw.BoxDecoration(border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700))),
+                              child: pw.Center(child: regular(formatzero(instQuote.finalCalc.sgst), 10)),
                             ),
-                          ),
-                        ],
-                      );
-                    },
-                  )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // pw.ListView.builder(
+                  //   itemCount: invoice_gstTotals.length, // Number of items in the list
+                  //   itemBuilder: (context, index) {
+                  //     return pw.Row(
+                  //       children: [
+                  //         pw.Container(
+                  //           decoration: const pw.BoxDecoration(border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700))),
+                  //           width: 80,
+                  //           height: 38,
+                  //           child: pw.Center(child: regular(formatzero(instQuote.siteData[index].monthlyCharges), 10)),
+                  //         ),
+                  //         pw.Container(
+                  //           height: 38,
+                  //           child: pw.Row(
+                  //             children: [
+                  //               pw.Container(
+                  //                 decoration: const pw.BoxDecoration(border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700))),
+                  //                 width: 40, // Define width instead of Expanded
+                  //                 child: pw.Center(child: regular((invoice_gstTotals[index].gst / 2).toString(), 10)),
+                  //               ),
+                  //               pw.Container(
+                  //                 width: 70, // Define width instead of Expanded
+                  //                 decoration: const pw.BoxDecoration(
+                  //                   border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700), left: pw.BorderSide(color: PdfColors.grey700)),
+                  //                 ),
+                  //                 child: pw.Center(child: regular(formatzero(((invoice_gstTotals[index].total.toInt() / 100) * (invoice_gstTotals[index].gst / 2))), 10)),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //         pw.Container(
+                  //           height: 38,
+                  //           child: pw.Row(
+                  //             children: [
+                  //               pw.Container(
+                  //                 decoration: const pw.BoxDecoration(border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700))),
+                  //                 width: 40, // Define width instead of Expanded
+                  //                 child: pw.Center(child: regular((invoice_gstTotals[index].gst / 2).toString(), 10)),
+                  //               ),
+                  //               pw.Container(
+                  //                 width: 70, // Define width instead of Expanded
+                  //                 decoration: const pw.BoxDecoration(border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700))),
+                  //                 child: pw.Center(child: regular(formatzero(((invoice_gstTotals[index].total.toInt() / 100) * (invoice_gstTotals[index].gst / 2))), 10)),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     );
+                  //   },
+                  // ),
                 ],
               ),
             ),
-            final_amount(context),
+            pw.Padding(padding: const pw.EdgeInsets.only(right: 5), child: final_amount(context)),
           ],
         ),
-        pw.Row(
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
-          children: [
-            // pw.Expanded(child: pw.Container(), flex: 1),
-
-            notes(context),
-
-            // 995461
-            pw.SizedBox(width: 100),
-            authorized_signatory(context),
-          ],
-        ),
+        pw.Row(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [notes(context), pw.SizedBox(width: 100)]),
       ],
     );
   }
@@ -623,7 +578,7 @@ class SUBSCRIPTION_Quotation {
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
               regular('Sub total   :', 10),
-              regular(formatzero(_total), 10),
+              regular(formatzero(instQuote.finalCalc.total), 10),
             ],
           ),
           pw.SizedBox(height: 8),
@@ -631,7 +586,7 @@ class SUBSCRIPTION_Quotation {
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
               regular('CGST       :', 10),
-              regular(formatzero(CGST_total), 10),
+              regular(formatzero(instQuote.finalCalc.cgst), 10),
             ],
           ),
           pw.SizedBox(height: 8),
@@ -639,7 +594,7 @@ class SUBSCRIPTION_Quotation {
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
               regular('SGST       :', 10),
-              regular(formatzero(CGST_total), 10),
+              regular(formatzero(instQuote.finalCalc.sgst), 10),
             ],
           ),
           pw.SizedBox(height: 8),
@@ -647,10 +602,10 @@ class SUBSCRIPTION_Quotation {
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
               regular(
-                'Round off : ${((double.parse(formatCurrencyRoundedPaisa(_grandTotal).replaceAll(',', '')) - _grandTotal) >= 0 ? '+' : '')}${(double.parse(formatCurrencyRoundedPaisa(_grandTotal).replaceAll(',', '')) - _grandTotal).toStringAsFixed(2)}',
+                'Round off : ${((double.parse(formatCurrencyRoundedPaisa(instQuote.finalCalc.grandTotal).replaceAll(',', '')) - instQuote.finalCalc.grandTotal) >= 0 ? '+' : '')}${(double.parse(formatCurrencyRoundedPaisa(instQuote.finalCalc.grandTotal).replaceAll(',', '')) - instQuote.finalCalc.grandTotal).toStringAsFixed(2)}',
                 10,
               ),
-              regular(formatCurrencyRoundedPaisa(_grandTotal), 10),
+              regular(formatCurrencyRoundedPaisa(instQuote.finalCalc.grandTotal), 10),
             ],
           ),
           pw.Divider(color: accentColor),
@@ -658,7 +613,7 @@ class SUBSCRIPTION_Quotation {
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
               bold('Total', 12),
-              bold("Rs.${formatCurrencyRoundedPaisa(_grandTotal)}", 12),
+              bold("Rs.${formatCurrencyRoundedPaisa(instQuote.finalCalc.grandTotal)}", 12),
             ],
           ),
         ],

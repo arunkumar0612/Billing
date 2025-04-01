@@ -9,7 +9,7 @@ import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
 
 // import '../../../../../services/SUBSCRIPTION/ClientReq_services/Clientreqdetails_service.dart';
-import '../../../../../utils/validators/minimal_validators.dart';
+import '../../../../../../utils/validators/minimal_validators.dart';
 
 class enquryDetails extends StatefulWidget with SUBSCRIPTION_ClientreqDetailsService {
   enquryDetails({super.key});

@@ -6,7 +6,7 @@ import 'package:ssipl_billing/views/components/button.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/textfield.dart';
 
-import '../../../../services/SUBSCRIPTION/Quotation_services/SUBSCRIPTION_QuoteNotes_service.dart';
+import '../../../../../services/SUBSCRIPTION/Quotation_services/SUBSCRIPTION_QuoteNotes_service.dart';
 
 class SUBSCRIPTION_QuoteNote extends StatefulWidget with SUBSCRIPTION_QuotenotesService {
   SUBSCRIPTION_QuoteNote({super.key});
@@ -507,7 +507,7 @@ class _SUBSCRIPTION_QuoteNoteState extends State<SUBSCRIPTION_QuoteNote> {
                                         }
                                         await Future.wait([
                                           quoteController.startProgress(),
-                                          widget.savePdfToCache(),
+                                          widget.savePdfToCache(context),
                                         ]);
                                         quoteController.nextTab();
                                         // } catch (e, stackTrace) {
@@ -517,7 +517,8 @@ class _SUBSCRIPTION_QuoteNoteState extends State<SUBSCRIPTION_QuoteNote> {
                                         // }
                                       },
                                       child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),
-                                    )),
+                                    ),
+                                  ),
                           ],
                         );
                       })

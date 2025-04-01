@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_ClientReq_actions.dart';
 // import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/clientreq_details.dart';
 // import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/clientreq_details/customer_details.dart';
-import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/clientreq_details/enquiry_details.dart';
-import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/SUBSCRIPTION_clientreq_note.dart';
-import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/SUBSCRIPTION_clientreq_sites.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Process/Generate_client_req/clientreq_details/enquiry_details.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Process/Generate_client_req/SUBSCRIPTION_clientreq_note.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Process/Generate_client_req/SUBSCRIPTION_clientreq_sites.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 

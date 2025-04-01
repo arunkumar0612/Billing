@@ -12,8 +12,8 @@ import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_C
 import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Quote_actions.dart';
 import 'package:ssipl_billing/models/constants/api.dart';
 import 'package:ssipl_billing/themes/style.dart';
-import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_Quote/SUBSCRIPTION_generateQuote.dart';
-import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_client_req/SUBSCRIPTION_generate_clientreq.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Process/Generate_Quote/SUBSCRIPTION_generateQuote.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Process/Generate_client_req/SUBSCRIPTION_generate_clientreq.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../controllers/SUBSCRIPTIONcontrollers/Subscription_actions.dart';
 import '../../models/entities/Response_entities.dart';
@@ -481,7 +481,7 @@ mixin SubscriptionServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( _quoteController.quoteModel.Quote_gstTotals.isNotEmpty)
-                    if ((_quoteController.quoteModel.Quote_sites.isNotEmpty) ||
+                    if ((_quoteController.quoteModel.QuoteSiteDetails.isNotEmpty) ||
                         (_quoteController.quoteModel.Quote_noteList.isNotEmpty) ||
                         (_quoteController.quoteModel.Quote_recommendationList.isNotEmpty) ||
                         (_quoteController.quoteModel.clientAddressNameController.value.text != "") ||
@@ -523,7 +523,7 @@ mixin SubscriptionServices {
                       if (proceed == true) {
                         Navigator.of(context).pop(); // Close the dialog
                         // Clear all the data when dialog is closed
-                        _quoteController.quoteModel.Quote_sites.clear();
+                        _quoteController.quoteModel.QuoteSiteDetails.clear();
                         //  _quoteController.quoteModel.Quote_gstTotals.clear();
                         _quoteController.quoteModel.Quote_noteList.clear();
                         _quoteController.quoteModel.Quote_recommendationList.clear();

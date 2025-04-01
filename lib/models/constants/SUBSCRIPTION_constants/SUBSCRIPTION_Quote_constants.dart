@@ -21,16 +21,13 @@ class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProvide
   final billingAddressController = TextEditingController().obs;
   final detailsKey = GlobalKey<FormState>().obs;
 
-  // PRODUCTS
-  final siteKey = GlobalKey<FormState>().obs;
-  final site_editIndex = Rxn<int>();
+//SITES
+  final siteFormkey = GlobalKey<FormState>().obs;
   final siteNameController = TextEditingController().obs;
-  final hsnController = TextEditingController().obs;
-  final priceController = TextEditingController().obs;
-  final quantityController = TextEditingController().obs;
-  final gstController = TextEditingController().obs;
-  var Quote_sites = <SUBSCRIPTION_QuoteSite>[].obs;
-  var Quote_gstTotals = <SUBSCRIPTION_QuoteGSTtotals>[].obs;
+  final addressController = TextEditingController().obs;
+  final cameraquantityController = TextEditingController().obs;
+  final site_editIndex = Rxn<int>();
+  var QuoteSiteDetails = <Site>[].obs;
 
   // NOTES
   final noteformKey = GlobalKey<FormState>().obs;

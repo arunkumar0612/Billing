@@ -37,7 +37,7 @@ class SUBSCRIPTION_ClientReqModel {
   var selected_branchList = <int>[].obs;
   final cntMulti = MultiValueDropDownController().obs;
 //######################################################################################################################################
-//PRODUCTS
+//SITES
   final siteFormkey = GlobalKey<FormState>().obs;
   final siteNameController = TextEditingController().obs;
   final addressController = TextEditingController().obs;

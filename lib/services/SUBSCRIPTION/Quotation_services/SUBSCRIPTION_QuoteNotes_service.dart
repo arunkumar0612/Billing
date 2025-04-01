@@ -7,9 +7,11 @@ import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 
 import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Quote_actions.dart';
+import 'package:ssipl_billing/models/entities/SUBSCRIPTION/SUBSCRIPTION_Quote_entities.dart';
 import 'package:ssipl_billing/services/APIservices/invoker.dart';
 import 'package:ssipl_billing/utils/helpers/returns.dart';
-import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Generate_Quote/SUBSCRIPTION_quote_template.dart';
+import 'package:ssipl_billing/utils/helpers/support_functions.dart';
+import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Process/Generate_Quote/SUBSCRIPTION_quote_template.dart';
 
 mixin SUBSCRIPTION_QuotenotesService {
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
@@ -140,23 +142,63 @@ mixin SUBSCRIPTION_QuotenotesService {
   //   viewsendController.setLoading(true);
   // }
 
-  Future<void> savePdfToCache() async {
+  // Future<void> savePdfToCache() async {
+  //   // , sites, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst
+  //   Uint8List pdfData = await SUBSCRIPTION_generate_Quote(
+  //     PdfPageFormat.a4,
+  //     quoteController.quoteModel.Quote_sites,
+  //     quoteController.quoteModel.clientAddressNameController.value.text,
+  //     quoteController.quoteModel.clientAddressController.value.text,
+  //     quoteController.quoteModel.billingAddressNameController.value.text,
+  //     quoteController.quoteModel.billingAddressController.value.text,
+  //     quoteController.quoteModel.Quote_no.value,
+  //     quoteController.quoteModel.TitleController.value.text,
+  //     9,
+  //     quoteController.quoteModel.Quote_gstTotals,
+  //   );
+
+  //   Directory tempDir = await getTemporaryDirectory();
+  //   String? sanitizedQuoteNo = Returns.replace_Slash_hypen(quoteController.quoteModel.Quote_no.value!);
+  //   String filePath = '${tempDir.path}/$sanitizedQuoteNo.pdf';
+  //   File file = File(filePath);
+  //   await file.writeAsBytes(pdfData);
+
+  //   if (kDebugMode) {
+  //     print("PDF stored in cache: $filePath");
+  //   }
+  //   quoteController.quoteModel.selectedPdf.value = file;
+  //   // return file;
+  // }
+
+  Future<void> savePdfToCache(context) async {
     Uint8List pdfData = await SUBSCRIPTION_generate_Quote(
       PdfPageFormat.a4,
-      quoteController.quoteModel.Quote_sites,
-      quoteController.quoteModel.clientAddressNameController.value.text,
-      quoteController.quoteModel.clientAddressController.value.text,
-      quoteController.quoteModel.billingAddressNameController.value.text,
-      quoteController.quoteModel.billingAddressController.value.text,
-      quoteController.quoteModel.Quote_no.value,
-      quoteController.quoteModel.TitleController.value.text,
-      9,
-      quoteController.quoteModel.Quote_gstTotals,
+      SUBSCRIPTION_Quote(
+          date: getCurrentDate(),
+          quoteNo: quoteController.quoteModel.Quote_no.value!,
+          gstPercent: 18,
+          addressDetails: Address(
+            clientName: quoteController.quoteModel.clientAddressNameController.value.text,
+            clientAddress: quoteController.quoteModel.clientAddressController.value.text,
+            billingName: quoteController.quoteModel.billingAddressNameController.value.text,
+            billingAddress: quoteController.quoteModel.billingAddressController.value.text,
+          ),
+          siteData: quoteController.quoteModel.QuoteSiteDetails,
+          finalCalc: FinalCalculation(
+              subtotal: double.tryParse(quoteController.quoteModel.QuoteSiteDetails[1].specialPrice.toString()) ?? 00,
+              cgst: 9,
+              sgst: 9,
+              roundOff: '100',
+              differene: '1',
+              total: 100,
+              pendingAmount: 200,
+              grandTotal: 400),
+          notes: quoteController.quoteModel.notecontent),
     );
 
     Directory tempDir = await getTemporaryDirectory();
-    String? sanitizedQuoteNo = Returns.replace_Slash_hypen(quoteController.quoteModel.Quote_no.value!);
-    String filePath = '${tempDir.path}/$sanitizedQuoteNo.pdf';
+    String? sanitizedInvoiceNo = Returns.replace_Slash_hypen(quoteController.quoteModel.Quote_no.value!);
+    String filePath = '${tempDir.path}/$sanitizedInvoiceNo.pdf';
     File file = File(filePath);
     await file.writeAsBytes(pdfData);
 
@@ -164,6 +206,5 @@ mixin SUBSCRIPTION_QuotenotesService {
       print("PDF stored in cache: $filePath");
     }
     quoteController.quoteModel.selectedPdf.value = file;
-    // return file;
   }
 }

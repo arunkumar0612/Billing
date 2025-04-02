@@ -260,7 +260,7 @@ class SUBSCRIPTION_Quote {
       gstPercent: json['gstPercent'] as int,
       addressDetails: Address.fromJson(json['addressDetails']),
       siteData: Site.fromJson(List<Map<String, dynamic>>.from(json['siteData'])),
-      finalCalc: FinalCalculation.fromJson(Site.fromJson(List<Map<String, dynamic>>.from(json['siteData'])), json['gstPercent'] as int, json['pendingAmount'] as double),
+      finalCalc: FinalCalculation.fromJson(Site.fromJson(List<Map<String, dynamic>>.from(json['siteData'])), json['gstPercent'] as int),
       notes: ['This is a sample note', 'This is another sample note'],
     );
   }
@@ -322,12 +322,12 @@ class Site {
 
     return jsonList.map((json) {
       return Site(
-        siteName: json['sitename'] as String, // Fix key casing
+        siteName: json['siteName'] as String, // Fix key casing
         address: json['address'] as String,
         packageName: json['packageName'] as String,
         camCount: json['camCount'] as int,
-        basicPrice: (json['basicPrice'] as num).toInt(),
-        specialPrice: (json['specialPrice'] as num).toInt(),
+        basicPrice: json['basicPrice'] as int,
+        specialPrice: json['specialPrice'] as int,
       );
     }).toList();
   }
@@ -339,7 +339,7 @@ class Site {
 
   // Convert single Site object to JSON
   Map<String, dynamic> toJson() {
-    return {'serialNo': serialNo, 'siteName': siteName, 'address': address, 'packageName': packageName, 'basicPrice': basicPrice, 'specialPrice': specialPrice};
+    return {'serialNo': serialNo, 'siteName': siteName, 'address': address, 'packageName': packageName, "camCount": camCount, 'basicPrice': basicPrice, 'specialPrice': specialPrice};
   }
 
   dynamic getIndex(int col) {
@@ -353,11 +353,11 @@ class Site {
       case 3:
         return address;
       case 4:
-        return camCount;
+        return camCount.toString();
       case 5:
-        return basicPrice;
+        return basicPrice.toString();
       case 6:
-        return specialPrice;
+        return specialPrice.toString();
       default:
         return "";
     }
@@ -371,7 +371,7 @@ class FinalCalculation {
   final String roundOff;
   final String differene;
   final double total;
-  final double? pendingAmount;
+  // final double? pendingAmount;
   final double grandTotal;
 
   FinalCalculation({
@@ -381,16 +381,16 @@ class FinalCalculation {
     required this.roundOff,
     required this.differene,
     required this.total,
-    required this.pendingAmount,
+    // required this.pendingAmount,
     required this.grandTotal,
   });
 
-  factory FinalCalculation.fromJson(List<Site> sites, int gstPercent, double? pendingAmount) {
+  factory FinalCalculation.fromJson(List<Site> sites, int gstPercent) {
     double subtotal = sites.fold(0.0, (sum, site) => sum + site.specialPrice);
     double cgst = (subtotal * (gstPercent / 2)) / 100;
     double sgst = (subtotal * (gstPercent / 2)) / 100;
     double total = subtotal + cgst + sgst;
-    double grandTotal = pendingAmount != null ? total + pendingAmount : total;
+    double grandTotal = total;
 
     return FinalCalculation(
       subtotal: subtotal,
@@ -400,12 +400,12 @@ class FinalCalculation {
       differene:
           '${((double.parse(formatCurrencyRoundedPaisa(total).replaceAll(',', '')) - total) >= 0 ? '+' : '')}${(double.parse(formatCurrencyRoundedPaisa(total).replaceAll(',', '')) - total).toStringAsFixed(2)}',
       total: total,
-      pendingAmount: pendingAmount,
+      // pendingAmount: pendingAmount,
       grandTotal: grandTotal,
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'subtotal': subtotal, 'CGST': cgst, 'SGST': sgst, 'roundOff': roundOff, 'difference': differene, 'total': total, 'pendingAmount': pendingAmount, 'grandTotal': grandTotal};
+    return {'subtotal': subtotal, 'CGST': cgst, 'SGST': sgst, 'roundOff': roundOff, 'difference': differene, 'total': total, 'grandTotal': grandTotal};
   }
 }

@@ -48,17 +48,31 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
   @override
   void initState() {
     super.initState();
-
-    subscriptionController.updateshowcustomerprocess(null);
-    subscriptionController.updatecustomerId(0);
-    widget.GetProcesscustomerList(context);
-    widget.Get_RecurringInvoiceList(context);
-    widget.GetProcessList(context, 0);
-    widget.GetSubscriptionData(context, subscriptionController.subscriptionModel.subscriptionperiod.value);
+    // widget.Get_RecurringInvoiceList(context, null);
+    // widget.get_CompanyList(context);
+    // subscriptionController.updateshowcustomerprocess(null);
+    // subscriptionController.updatecustomerId(0);
+    // widget.GetProcesscustomerList(context);
+    // widget.GetProcessList(context, 0);
+    // widget.GetSubscriptionData(context, subscriptionController.subscriptionModel.subscriptionperiod.value);
     subscriptionController.subscriptionModel.animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.Get_RecurringInvoiceList(context, null);
+      widget.get_CompanyList(context);
+      subscriptionController.updateshowcustomerprocess(null);
+      subscriptionController.updatecustomerId(0);
+      widget.GetProcesscustomerList(context);
+      widget.GetProcessList(context, 0);
+      widget.GetSubscriptionData(context, subscriptionController.subscriptionModel.subscriptionperiod.value);
+    });
   }
 
   void _startAnimation() {

@@ -3,11 +3,11 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/models/entities/SALES/Quote_entities.dart';
+// import 'package:ssipl_billing/models/entities/SALES/Quote_entities.dart';
 import 'package:ssipl_billing/models/entities/SUBSCRIPTION/SUBSCRIPTION_Quote_entities.dart';
 
 import '../../../../../controllers/SALEScontrollers/Quote_actions.dart';
-import '../../../../../models/entities/SALES/product_entities.dart';
+// import '../../../../../models/entities/SALES/product_entities.dart';
 import '../../../../../utils/helpers/support_functions.dart';
 
 Future<Uint8List> SUBSCRIPTION_generate_Quote(PdfPageFormat pageFormat, SUBSCRIPTION_Quote instQuote) async {
@@ -290,7 +290,7 @@ class SUBSCRIPTION_Quotation {
   // }
 
   pw.Widget _contentTable(pw.Context context) {
-    const tableHeaders = ['S.No', 'Item Description', 'HSN', ' GST', 'Price   ', 'Quantity', 'Total   '];
+    const tableHeaders = ['S.No', 'Package', 'Site', 'Address', 'Cameras', 'Basic price', 'Special price'];
 
     return pw.TableHelper.fromTextArray(
       border: null,
@@ -300,13 +300,22 @@ class SUBSCRIPTION_Quotation {
         color: baseColor,
       ),
       headerHeight: 22,
+      headerAlignments: {
+        0: pw.Alignment.centerLeft,
+        1: pw.Alignment.centerLeft,
+        2: pw.Alignment.center,
+        3: pw.Alignment.center,
+        4: pw.Alignment.center,
+        5: pw.Alignment.center,
+        6: pw.Alignment.centerRight,
+      },
       cellHeight: 30,
       cellAlignments: {
         0: pw.Alignment.centerLeft,
         1: pw.Alignment.centerLeft,
-        2: pw.Alignment.centerLeft,
+        2: pw.Alignment.center,
         3: pw.Alignment.center,
-        4: pw.Alignment.centerRight,
+        4: pw.Alignment.center,
         5: pw.Alignment.center,
         6: pw.Alignment.centerRight,
       },

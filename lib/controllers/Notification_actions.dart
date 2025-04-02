@@ -21,11 +21,11 @@ class NotificationController extends GetxController {
   Timer? _reconnectTimer; // Timer for automatic reconnection
   final WindowsNotification winNotifyPlugin = WindowsNotification(applicationId: r"Enterprise & Resource Planning");
 
-  @override
-  void onInit() {
-    super.onInit();
-    initializeMqttClient();
-  }
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   initializeMqttClient();
+  // }
 
   // void bringAppToFront() {
   //   final hwnd = FindWindow(nullptr, TEXT("ERP_APP"));

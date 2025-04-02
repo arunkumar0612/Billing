@@ -7,11 +7,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_ClientReq_actions.dart';
 import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Quote_actions.dart';
 import 'package:ssipl_billing/models/constants/api.dart';
 import 'package:ssipl_billing/themes/style.dart';
+import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Process/Generate_Quote/SUBSCRIPTION_generateQuote.dart';
 import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Process/Generate_client_req/SUBSCRIPTION_generate_clientreq.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -27,6 +29,51 @@ mixin SubscriptionServices {
   final SubscriptionController _subscriptionController = Get.find<SubscriptionController>();
   final SUBSCRIPTION_ClientreqController _clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
   final SUBSCRIPTION_QuoteController _quoteController = Get.find<SUBSCRIPTION_QuoteController>();
+  final loader = LoadingOverlay();
+  Future<void> get_CompanyList(context) async {
+    try {
+      // loader.start(context);
+      await Future.delayed(const Duration(milliseconds: 1000));
+      Map<String, dynamic>? response;
+      response = await apiController.GetbyToken(API.hierarchy_CompanyData);
+      if (response?['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        if (value.code) {
+          _subscriptionController.add_Comp(value);
+        } else {
+          await Basic_dialog(context: context, title: 'Fetch Company List', content: value.message ?? "", onOk: () {}, showCancel: false);
+        }
+      } else {
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+      }
+      // loader.stop();
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+    }
+  }
+
+  Future<void> get_GlobalPackageList(context) async {
+    try {
+      // loader.start(context);
+      await Future.delayed(const Duration(milliseconds: 1000));
+      Map<String, dynamic>? response;
+      response = await apiController.GetbyToken(API.get_subscription_GlobalPackageList);
+      if (response?['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        if (value.code) {
+          _subscriptionController.add_Comp(value);
+        } else {
+          await Basic_dialog(context: context, title: 'Fetch Company List', content: value.message ?? "", onOk: () {}, showCancel: false);
+        }
+      } else {
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+      }
+      // loader.stop();
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+    }
+  }
+
   Future<void> GetProcesscustomerList(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.subscription_getprocesscustomer_API);
@@ -50,21 +97,33 @@ mixin SubscriptionServices {
     }
   }
 
-  Future<void> Get_RecurringInvoiceList(context) async {
+  Future<void> Get_RecurringInvoiceList(context, int? id) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_subscription_RecurringInvoiceList);
+      loader.start(context);
+
+      Map<String, dynamic>? response;
+
+      if (id == null) {
+        response = await apiController.GetbyToken(API.get_subscription_RecurringInvoiceList);
+      } else {
+        Map<String, dynamic> body = {"customerid": id};
+        response = await apiController.GetbyQueryString(body, API.get_subscription_RecurringInvoiceList);
+      }
+
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           _subscriptionController.addTo_RecuuringInvoiceList(value);
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
+          await Basic_dialog(context: context, showCancel: false, title: 'Recurring Invoice List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
         Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
+      loader.stop();
     } catch (e) {
       Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      loader.stop();
     }
   }
 
@@ -425,6 +484,26 @@ mixin SubscriptionServices {
     );
   }
 
+// Future<void> saveFileToPrefs(Uint8List fileData, String key) async {
+//   final prefs = await SharedPreferences.getInstance();
+//   String base64File = base64Encode(fileData);
+//   await prefs.setString(key, base64File);
+// }
+
+// Future<Uint8List?> getFileFromPrefs(String key) async {
+//   final prefs = await SharedPreferences.getInstance();
+//   String? base64File = prefs.getString(key);
+//   return base64File != null ? base64Decode(base64File) : null;
+// }
+
+// Future<File> saveFileToTemp(Uint8List fileData, String fileName) async {
+//   final tempDir = await getTemporaryDirectory();
+//   final filePath = '${tempDir.path}/$fileName';
+//   final file = File(filePath);
+//   await file.writeAsBytes(fileData);
+//   return file;
+// }
+
   Future<File> savePdfToTemp(Uint8List pdfData) async {
     final tempDir = await getTemporaryDirectory();
     final tempFile = File('${tempDir.path}/temp_pdf.pdf');
@@ -588,8 +667,8 @@ mixin SubscriptionServices {
     _subscriptionController.resetData();
     _subscriptionController.updateshowcustomerprocess(null);
     _subscriptionController.updatecustomerId(0);
-    await Get_RecurringInvoiceList(context);
-    await GetProcesscustomerList(context);
+    await Get_RecurringInvoiceList(context, null);
+    await get_CompanyList(context);
     await GetProcessList(context, 0);
     await GetSubscriptionData(context, _subscriptionController.subscriptionModel.subscriptionperiod.value);
   }

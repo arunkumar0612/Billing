@@ -7,6 +7,8 @@ import 'package:ssipl_billing/models/entities/SUBSCRIPTION/Subscription_entities
 class SubscriptionModel extends GetxController with GetSingleTickerProviderStateMixin {
   var customerList = <Customer>[].obs;
   var processcustomerList = <Processcustomer>[].obs;
+  var companyList = CompanyResponse(companyList: []).obs;
+  var GloabalPackage = Global_packageList().obs;
   var processList = <Process>[].obs;
   final showcustomerprocess = Rxn<int>();
   final customerId = Rxn<int>();

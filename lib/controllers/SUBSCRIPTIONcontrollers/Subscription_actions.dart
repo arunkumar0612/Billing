@@ -15,6 +15,14 @@ class SubscriptionController extends GetxController {
     }
   }
 
+  void add_Comp(CMDmResponse value) {
+    subscriptionModel.companyList.value = CompanyResponse.fromJson(value.data);
+  }
+
+  void add_GlobalPackage(CMDlResponse value) {
+    subscriptionModel.GloabalPackage.value = Global_packageList.fromJsonList(value.data);
+  }
+
   void addToProcesscustomerList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
       subscriptionModel.processcustomerList.add(Processcustomer.fromJson(value, i));

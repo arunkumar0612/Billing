@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/IAM_actions.dart';
 
 import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Quote_actions.dart';
-import 'package:ssipl_billing/services/SUBSCRIPTION/CustomPDF_services/Subscription_PostAll_services.dart';
+import 'package:ssipl_billing/services/SUBSCRIPTION/Quotation_services/SUBSCRIPTION_QuotePost_services.dart';
 
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/utils/validators/minimal_validators.dart';
@@ -17,7 +17,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:path/path.dart' as path;
 
 // ignore: must_be_immutable
-class SUBSCRIPTION_PostQuote extends StatefulWidget with SUBSCRIPTION_PostServices {
+class SUBSCRIPTION_PostQuote extends StatefulWidget with SUBSCRIPTION_QuotePostServices {
   String type;
   SUBSCRIPTION_PostQuote({super.key, required this.type, required this.eventtype});
   String eventtype;
@@ -51,83 +51,6 @@ class SUBSCRIPTION_PostQuoteState extends State<SUBSCRIPTION_PostQuote> with Sin
     widget.animation_control();
     // update();
   }
-
-  // void _addclientRequest() async {
-  //   String? valueToToken = sessiontokenController.sessiontokenModel.sessiontoken.value;
-
-  //   final formData = {
-  //     "phoneno": "8248650039",
-  //     "mailto:emailid": "hariprasath.s@sporadasecure.com",
-  //     "pdfpath": "\\\\192.168.0.198\\backup\\Hari\\BM-blueprint.pdf",
-  //     "feedback": "Invoice for your request",
-  //     "documenttype": "Invoice"
-  //   };
-
-  //   final dataToEncrypt = jsonEncode(formData);
-  //   final encryptedData = AES.encryptWithAES(valueToToken.toString().substring(0, 16), dataToEncrypt);
-
-  //   final requestData = {
-  //     "STOKEN": valueToToken,
-  //     "querystring": encryptedData,
-  //   };
-
-  //   final response = await http.post(
-  //     Uri.parse(API.sales_add_client_requirement_API),
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     },
-  //     body: jsonEncode(requestData),
-  //   );
-  //   if (response.statusCode == 200) {
-  //     final responseData = jsonDecode(response.body);
-  //     final encryptedResponse = responseData['encryptedResponse'];
-  //     final decryptedResponse = AES.decryptWithAES(valueToToken.toString().substring(0, 16), encryptedResponse);
-  //     final decodedResponse = jsonDecode(decryptedResponse);
-  //     final Code = decodedResponse['code'];
-  //     final Message = decodedResponse['message'];
-
-  //     if (!Code) {
-  //       showDialog(
-  //         context: context,
-  //         builder: (BuildContext context) {
-  //           return AlertDialog(
-  //             title: const Text('Unable to Sent PDF'),
-  //             content: Text(Message),
-  //             actions: [
-  //               TextButton(
-  //                 onPressed: () {
-  //                   Navigator.of(context).pop();
-  //                 },
-  //                 child: const Text('OK'),
-  //               ),
-  //             ],
-  //           );
-  //         },
-  //       );
-  //     } else {
-  //       // Navigator.of(context).pop();
-  //       showDialog(
-  //         context: context,
-  //         builder: (context) => AlertDialog(
-  //           title: const Text('Success'),
-  //           content: const Text('PDF Sent.'),
-  //           actions: [
-  //             ElevatedButton(
-  //               onPressed: () {
-  //                 Navigator.of(context).pop();
-  //               },
-  //               child: const Text('OK'),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     }
-  //   } else {
-  //     if (kDebugMode) {
-  //       print('API Request Failed with Status Code: ${response.statusCode}');
-  //     }
-  //   }
-  // }
 
   @override
   void dispose() {

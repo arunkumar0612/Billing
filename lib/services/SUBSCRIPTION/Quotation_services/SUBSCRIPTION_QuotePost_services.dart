@@ -18,7 +18,7 @@ import 'package:ssipl_billing/models/entities/Response_entities.dart';
 import 'package:ssipl_billing/services/APIservices/invoker.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
 
-mixin SUBSCRIPTION_PostServices {
+mixin SUBSCRIPTION_QuotePostServices {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
   final Invoker apiController = Get.find<Invoker>();

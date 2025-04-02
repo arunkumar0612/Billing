@@ -421,7 +421,7 @@ class RecurringInvoice_List {
   String clientAddress;
   String billingAddressName;
   String billingAddress;
-  final Uint8List pdfData;
+  // final Uint8List pdfData;
   String pdfPathString;
   String invoiceNo;
   int totalAmount;
@@ -438,7 +438,7 @@ class RecurringInvoice_List {
     required this.clientAddress,
     required this.billingAddressName,
     required this.billingAddress,
-    required this.pdfData,
+    // required this.pdfData,
     required this.pdfPathString,
     required this.invoiceNo,
     required this.totalAmount,
@@ -457,7 +457,7 @@ class RecurringInvoice_List {
       clientAddress: json['client_address'],
       billingAddressName: json['billing_addressname'],
       billingAddress: json['billing_address'],
-      pdfData: json['pdf_data'] != null && json['pdf_data']['data'] != null ? Uint8List.fromList(List<int>.from(json['pdf_data']['data'])) : Uint8List(0),
+      // pdfData: json['pdf_data'] != null && json['pdf_data']['data'] != null ? Uint8List.fromList(List<int>.from(json['pdf_data']['data'])) : Uint8List(0),
       pdfPathString: json['pdfpath'],
       invoiceNo: json['Invoice_no'],
       totalAmount: json['TotalAmount'],
@@ -477,7 +477,7 @@ class RecurringInvoice_List {
       'client_address': clientAddress,
       'billing_addressname': billingAddressName,
       'billing_address': billingAddress,
-      'pdf_data': {'type': 'Buffer', 'data': pdfData},
+      // 'pdf_data': {'type': 'Buffer', 'data': pdfData},
       'pdfpath': pdfPathString,
       'Invoice_no': invoiceNo,
       'TotalAmount': totalAmount,
@@ -485,6 +485,199 @@ class RecurringInvoice_List {
       'phone_no': phoneNo,
       'ccemail': ccEmail,
       "date": date,
+    };
+  }
+}
+
+class CompanyResponse {
+  final List<CompanysData> companyList;
+
+  CompanyResponse({required this.companyList});
+
+  /// Convert from JSON
+  factory CompanyResponse.fromJson(Map<String, dynamic> json) {
+    List<CompanysData> liveList = (json['Live'] as List<dynamic>? ?? []).map((e) => CompanysData.fromJson(e as Map<String, dynamic>)).toList();
+
+    List<CompanysData> demoList = (json['Demo'] as List<dynamic>? ?? []).map((e) => CompanysData.fromJson(e as Map<String, dynamic>)).toList();
+
+    return CompanyResponse(companyList: [...liveList, ...demoList]); // Merging both lists
+  }
+
+  /// Convert from CMDmResponse
+  factory CompanyResponse.fromCMDmResponse(CMDmResponse response) {
+    var data = response.data['Live'][0];
+
+    data.forEach((key, value) {
+      if (key != 'Customer_Logo') {
+        print('$key: $value');
+      }
+    });
+
+    return CompanyResponse.fromJson(response.data);
+  }
+
+  /// Convert to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'companyList': companyList.map((e) => e.toJson()).toList(),
+    };
+  }
+}
+
+class CompanysData {
+  final int? customerId;
+  final int? organizationId;
+  final String? customerName;
+  final String? ccode;
+  final String? email;
+  final Uint8List? customerLogo;
+  final String? address;
+  final String? billingAddress;
+  final String? siteType;
+  final String? contactPerson;
+  final String? contactPersonNo;
+  final String? customerCIN;
+  final String? customerPAN;
+  final String? customerCode;
+  final int? customerType;
+  bool isSelected;
+
+  CompanysData({
+    this.customerId,
+    this.organizationId,
+    this.customerName,
+    this.ccode,
+    this.email,
+    this.customerLogo,
+    this.address,
+    this.billingAddress,
+    this.siteType,
+    this.contactPerson,
+    this.contactPersonNo,
+    this.customerCIN,
+    this.customerPAN,
+    this.customerCode,
+    this.customerType,
+    this.isSelected = false,
+  });
+
+  factory CompanysData.fromJson(Map<String, dynamic> json) {
+    return CompanysData(
+      customerId: json['Customer_id'] as int? ?? 0,
+      organizationId: json['Organization_id'] as int? ?? 0,
+      customerName: json['Customer_name'] as String? ?? "",
+      ccode: json['ccode'] as String? ?? "",
+      email: json['Email_id'] as String? ?? "",
+      customerLogo: json['Customer_Logo'] != null && json['Customer_Logo']['data'] != null ? Uint8List.fromList(List<int>.from(json['Customer_Logo']['data'])) : Uint8List(0),
+      address: json['address'] as String? ?? "",
+      billingAddress: json['billing_address'] as String? ?? "",
+      siteType: json['site_type'] as String? ?? "",
+      contactPerson: json['contactperson'] as String? ?? "",
+      contactPersonNo: json['contactpersonno'] as String? ?? "",
+      customerCIN: json['customer_cin'] as String? ?? "",
+      customerPAN: json['customer_pan'] as String? ?? "",
+      customerCode: json['customercode'] as String? ?? "",
+      customerType: json['customer_type'] as int? ?? 0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'Customer_id': customerId,
+      'Organization_id': organizationId,
+      'Customer_name': customerName,
+      'ccode': ccode,
+      'Email_id': email,
+      'Customer_Logo': customerLogo ?? Uint8List(0),
+      'address': address,
+      'billing_address': billingAddress,
+      'site_type': siteType,
+      'contactperson': contactPerson,
+      'contactpersonno': contactPersonNo,
+      'customer_cin': customerCIN,
+      'customer_pan': customerPAN,
+      'customercode': customerCode,
+      'customer_type': customerType,
+    };
+  }
+}
+
+class Global_packageList {
+  String? subscription;
+  int? noOfDevices;
+  int? noOfCameras;
+  int? addlCameras;
+  double? amount;
+  String? productDesc;
+  List<SiteDetail>? siteDetails;
+
+  Global_packageList({
+    this.subscription,
+    this.noOfDevices,
+    this.noOfCameras,
+    this.addlCameras,
+    this.amount,
+    this.productDesc,
+    this.siteDetails,
+  });
+
+  factory Global_packageList.fromJson(Map<String, dynamic> json) {
+    return Global_packageList(
+      subscription: json['Subscription'],
+      noOfDevices: json['No_of_devices'],
+      noOfCameras: json['No_of_cameras'],
+      addlCameras: json['Addl_cameras'],
+      amount: (json['Amount'] as num).toDouble(),
+      productDesc: json['product_desc'],
+      siteDetails: (json['sitedetails'] as List).map((site) => SiteDetail.fromJson(site)).toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'Subscription': subscription,
+      'No_of_devices': noOfDevices,
+      'No_of_cameras': noOfCameras,
+      'Addl_cameras': addlCameras,
+      'Amount': amount,
+      'product_desc': productDesc,
+      'sitedetails': siteDetails!.map((site) => site.toJson()).toList(),
+    };
+  }
+
+  static List<Global_packageList> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((json) => Global_packageList.fromJson(json)).toList();
+  }
+
+  static List<Map<String, dynamic>> toJsonList(List<Global_packageList> subscriptions) {
+    return subscriptions.map((sub) => sub.toJson()).toList();
+  }
+}
+
+class SiteDetail {
+  String siteName;
+  String siteLocation;
+  int siteId;
+
+  SiteDetail({
+    required this.siteName,
+    required this.siteLocation,
+    required this.siteId,
+  });
+
+  factory SiteDetail.fromJson(Map<String, dynamic> json) {
+    return SiteDetail(
+      siteName: json['site_name'],
+      siteLocation: json['site_location'],
+      siteId: json['site_id'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'site_name': siteName,
+      'site_location': siteLocation,
+      'site_id': siteId,
     };
   }
 }

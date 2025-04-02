@@ -78,6 +78,24 @@ Future<void> main() async {
   //     },
   //   );
   // }
+  // List<int> odd_array = [];
+  // List<int> even_array = [];
+  // List<int> final_array = [];
+
+  // for (int i = 1; i <= 10; i++) {
+  //   if (i % 2 == 0) {
+  //     even_array.add(i); // Corrected: Even numbers go to `even_array`
+  //   } else {
+  //     odd_array.add(i); // Corrected: Odd numbers go to `odd_array`
+  //   }
+  // }
+  // print("Odd Array: $odd_array");
+  // print("Even Array: $even_array");
+
+  // final_array.addAll(odd_array);
+  // final_array.addAll(even_array);
+
+  // print("Final Array: $final_array");
   runApp(const MyApp());
 }
 

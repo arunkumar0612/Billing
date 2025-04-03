@@ -59,9 +59,9 @@ mixin SubscriptionServices {
       Map<String, dynamic>? response;
       response = await apiController.GetbyToken(API.get_subscription_GlobalPackageList);
       if (response?['statusCode'] == 200) {
-        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          _subscriptionController.add_Comp(value);
+          _subscriptionController.add_GlobalPackage(value);
         } else {
           await Basic_dialog(context: context, title: 'Fetch Company List', content: value.message ?? "", onOk: () {}, showCancel: false);
         }

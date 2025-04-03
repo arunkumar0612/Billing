@@ -67,6 +67,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.Get_RecurringInvoiceList(context, null);
       widget.get_CompanyList(context);
+      widget.get_GlobalPackageList(context);
       subscriptionController.updateshowcustomerprocess(null);
       subscriptionController.updatecustomerId(0);
       widget.GetProcesscustomerList(context);

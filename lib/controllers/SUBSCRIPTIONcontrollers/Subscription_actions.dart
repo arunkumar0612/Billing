@@ -20,7 +20,7 @@ class SubscriptionController extends GetxController {
   }
 
   void add_GlobalPackage(CMDlResponse value) {
-    subscriptionModel.GloabalPackage.value = Global_packageList.fromJsonList(value.data);
+    subscriptionModel.GloabalPackage.value = Global_package.fromCMDlResponse(value);
   }
 
   void addToProcesscustomerList(CMDlResponse value) {

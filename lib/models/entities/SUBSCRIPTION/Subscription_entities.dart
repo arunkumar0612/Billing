@@ -504,7 +504,7 @@ class CompanyResponse {
   }
 
   /// Convert from CMDmResponse
-  factory CompanyResponse.fromCMDmResponse(CMDmResponse response) {
+  factory CompanyResponse.fromCMDlResponse(CMDmResponse response) {
     var data = response.data['Live'][0];
 
     data.forEach((key, value) {
@@ -602,8 +602,25 @@ class CompanysData {
   }
 }
 
+class Global_package {
+  final List<Global_packageList> globalPackageList;
+
+  Global_package({required this.globalPackageList});
+
+  /// Convert from CMDmResponse
+  factory Global_package.fromCMDlResponse(CMDlResponse response) {
+    var data = response.data;
+    List<Global_packageList> temp = [];
+    for (int i = 0; i < data.length; i++) {
+      temp.add(Global_packageList.fromJson(data[i]));
+    }
+    return Global_package(globalPackageList: temp);
+  }
+}
+
 class Global_packageList {
-  String? subscription;
+  int? subscriptionId;
+  String? subscriptionName;
   int? noOfDevices;
   int? noOfCameras;
   int? addlCameras;
@@ -612,7 +629,8 @@ class Global_packageList {
   List<SiteDetail>? siteDetails;
 
   Global_packageList({
-    this.subscription,
+    this.subscriptionId,
+    this.subscriptionName,
     this.noOfDevices,
     this.noOfCameras,
     this.addlCameras,
@@ -623,7 +641,8 @@ class Global_packageList {
 
   factory Global_packageList.fromJson(Map<String, dynamic> json) {
     return Global_packageList(
-      subscription: json['Subscription'],
+      subscriptionId: json['Subscription_id'],
+      subscriptionName: json['Subscription_name'],
       noOfDevices: json['No_of_devices'],
       noOfCameras: json['No_of_cameras'],
       addlCameras: json['Addl_cameras'],
@@ -635,13 +654,14 @@ class Global_packageList {
 
   Map<String, dynamic> toJson() {
     return {
-      'Subscription': subscription,
+      'Subscription_id': subscriptionId,
+      'Subscription_name': subscriptionName,
       'No_of_devices': noOfDevices,
       'No_of_cameras': noOfCameras,
       'Addl_cameras': addlCameras,
       'Amount': amount,
       'product_desc': productDesc,
-      'sitedetails': siteDetails!.map((site) => site.toJson()).toList(),
+      'sitedetails': siteDetails?.map((site) => site.toJson()).toList(),
     };
   }
 
@@ -656,27 +676,27 @@ class Global_packageList {
 
 class SiteDetail {
   String siteName;
-  String siteLocation;
+  // String siteLocation;
   int siteId;
 
   SiteDetail({
     required this.siteName,
-    required this.siteLocation,
+    // required this.siteLocation,
     required this.siteId,
   });
 
   factory SiteDetail.fromJson(Map<String, dynamic> json) {
     return SiteDetail(
-      siteName: json['site_name'],
-      siteLocation: json['site_location'],
-      siteId: json['site_id'],
+      siteName: json['sitename'],
+      // siteLocation: json['site_location'],
+      siteId: json['siteid'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'site_name': siteName,
-      'site_location': siteLocation,
+      // 'site_location': siteLocation,
       'site_id': siteId,
     };
   }

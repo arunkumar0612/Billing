@@ -8,7 +8,7 @@ class SubscriptionModel extends GetxController with GetSingleTickerProviderState
   var customerList = <Customer>[].obs;
   var processcustomerList = <Processcustomer>[].obs;
   var companyList = CompanyResponse(companyList: []).obs;
-  var GloabalPackage = Global_packageList().obs;
+  var GloabalPackage = Global_package(globalPackageList: []).obs;
   var processList = <Process>[].obs;
   final showcustomerprocess = Rxn<int>();
   final customerId = Rxn<int>();

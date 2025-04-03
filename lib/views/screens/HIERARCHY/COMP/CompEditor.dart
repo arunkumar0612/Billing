@@ -1,17 +1,21 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:glassmorphism/glassmorphism.dart';
 import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/models/entities/Hierarchy_entities.dart';
+import 'package:ssipl_billing/services/Hierarchy_services/Company_service.dart';
 
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 
-class CompanyEditor extends StatefulWidget {
+class CompanyEditor extends StatefulWidget with CompanyService {
   final double screenWidth;
   final Rx<CompanysData> data;
   final HierarchyController controller;
 
-  const CompanyEditor({
+  CompanyEditor({
     super.key,
     required this.screenWidth,
     required this.data,
@@ -26,9 +30,16 @@ class _CompanyEditorState extends State<CompanyEditor> {
   void autofill() {
     widget.controller.hierarchyModel.comp_IdController.value.text = (widget.data.value.customerId ?? "").toString();
     widget.controller.hierarchyModel.comp_NameController.value.text = widget.data.value.customerName ?? "";
-    widget.controller.hierarchyModel.comp_ccodeController.value.text = widget.data.value.ccode ?? "";
-    widget.controller.hierarchyModel.comp_emailIdController.value.text = widget.data.value.email ?? "";
     widget.controller.hierarchyModel.comp_siteTypeController.value.text = widget.data.value.siteType ?? "";
+    widget.controller.hierarchyModel.comp_organizationidController.value.text = (widget.data.value.organizationId ?? "").toString();
+    widget.controller.hierarchyModel.comp_contactpersonController.value.text = widget.data.value.contactperson ?? "";
+    widget.controller.hierarchyModel.comp_contactpersonnoController.value.text = widget.data.value.contactpersonno ?? "";
+    widget.controller.hierarchyModel.comp_emailIdController.value.text = widget.data.value.email ?? "";
+    widget.controller.hierarchyModel.comp_addressController.value.text = widget.data.value.address ?? "";
+    widget.controller.hierarchyModel.comp_billingaddressController.value.text = widget.data.value.billingAddress ?? "";
+    widget.controller.hierarchyModel.comp_pannumberController.value.text = widget.data.value.pannumber ?? "";
+    widget.controller.hierarchyModel.comp_cinnoController.value.text = widget.data.value.cinno ?? "";
+    widget.controller.hierarchyModel.comp_ccodeController.value.text = widget.data.value.ccode ?? "";
     if (mounted) setState(() {});
   }
 
@@ -38,27 +49,31 @@ class _CompanyEditorState extends State<CompanyEditor> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            label,
-            style: const TextStyle(color: Colors.black),
+          Expanded(
+            flex: 2,
+            child: Text(
+              label,
+              style: const TextStyle(color: Primary_colors.Color9, fontSize: Primary_font_size.Text8),
+            ),
           ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 15),
             child: Text(
               "  : ",
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Primary_colors.Color9, fontSize: Primary_font_size.Text8),
             ),
           ),
           Expanded(
+            flex: 4,
             child: TextFormField(
               maxLines: null,
               readOnly: readOnly,
               controller: controller,
-              style: TextStyle(color: readOnly ? const Color.fromARGB(255, 66, 66, 66) : Colors.black),
+              style: TextStyle(color: readOnly ? const Color.fromARGB(255, 167, 167, 167) : Primary_colors.Color1, fontSize: Primary_font_size.Text8),
               decoration: InputDecoration(
                 fillColor: Colors.black,
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: readOnly ? Colors.black : Primary_colors.Color3, width: 2),
+                  borderSide: BorderSide(color: readOnly ? Colors.white : Primary_colors.Color3, width: 2),
                 ),
                 enabledBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Color.fromARGB(255, 94, 94, 94), width: 1),
@@ -83,62 +98,112 @@ class _CompanyEditorState extends State<CompanyEditor> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: widget.screenWidth * 0.3,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
+    return DefaultTabController(
+      length: 1,
+      child: GlassmorphicContainer(
+        width: widget.screenWidth * 0.3,
+        height: double.infinity,
+        borderRadius: 20,
+        blur: 10,
+        alignment: Alignment.center,
+        border: 1,
+        linearGradient: LinearGradient(
           colors: [
-            Color.fromARGB(255, 255, 249, 249),
-            Color.fromARGB(255, 189, 189, 189),
+            const Color.fromARGB(255, 78, 77, 77).withOpacity(0.1),
+            const Color.fromARGB(255, 105, 104, 104).withOpacity(0.05),
           ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
         ),
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5)],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Center(
-            child: Text(
-              'Edit',
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  buildTextField("Company ID", widget.controller.hierarchyModel.comp_IdController.value, true),
-                  buildTextField("Customer Name", widget.controller.hierarchyModel.comp_NameController.value, false),
-                  buildTextField("CCODE", widget.controller.hierarchyModel.comp_ccodeController.value, true),
-                  buildTextField("Email ID", widget.controller.hierarchyModel.comp_emailIdController.value, false),
-                  buildTextField("Site Type", widget.controller.hierarchyModel.comp_siteTypeController.value, true),
+        borderGradient: const LinearGradient(
+          colors: [
+            Primary_colors.Light,
+            Primary_colors.Dark,
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const TabBar(
+                indicatorColor: Primary_colors.Color4,
+                tabs: [
+                  Tab(text: 'KYC'),
+                  // Tab(text: 'PACKAGE'),
                 ],
               ),
-            ),
-          ),
-          const Divider(color: Colors.white),
-          const SizedBox(height: 30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              BasicButton(text: "Revert", colors: Colors.redAccent, onPressed: () {}),
-              BasicButton(text: "Update", colors: Colors.blue, onPressed: () {}),
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                buildTextField("Company ID", widget.controller.hierarchyModel.comp_IdController.value, true),
+                                buildTextField("Customer Name", widget.controller.hierarchyModel.comp_NameController.value, false),
+                                buildTextField("Site type", widget.controller.hierarchyModel.comp_siteTypeController.value, true),
+                                buildTextField("Organization ID", widget.controller.hierarchyModel.comp_organizationidController.value, true),
+                                buildTextField("Contact person", widget.controller.hierarchyModel.comp_contactpersonController.value, false),
+                                buildTextField("Contact no", widget.controller.hierarchyModel.comp_contactpersonnoController.value, false),
+                                buildTextField("Email ID", widget.controller.hierarchyModel.comp_emailIdController.value, false),
+                                buildTextField("Address", widget.controller.hierarchyModel.comp_addressController.value, false),
+                                buildTextField("Billing address", widget.controller.hierarchyModel.comp_billingaddressController.value, false),
+                                buildTextField("PAN number", widget.controller.hierarchyModel.comp_pannumberController.value, false),
+                                buildTextField("CIN number", widget.controller.hierarchyModel.comp_cinnoController.value, true),
+                                buildTextField("Customer code", widget.controller.hierarchyModel.comp_ccodeController.value, true),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const Divider(color: Colors.white),
+                        const SizedBox(height: 30),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            // BasicButton(text: "Revert", colors: Colors.redAccent, onPressed: () {}),
+                            BasicButton(
+                              text: "Update",
+                              colors: Colors.blue,
+                              onPressed: () {
+                                widget.UpdateKYC(
+                                  context,
+                                  widget.controller.hierarchyModel.comp_IdController.value.text,
+                                  widget.controller.hierarchyModel.comp_NameController.value.text,
+                                  widget.controller.hierarchyModel.comp_siteTypeController.value.text,
+                                  widget.controller.hierarchyModel.comp_organizationidController.value.text,
+                                  widget.controller.hierarchyModel.comp_contactpersonController.value.text,
+                                  widget.controller.hierarchyModel.comp_contactpersonnoController.value.text,
+                                  widget.controller.hierarchyModel.comp_emailIdController.value.text,
+                                  widget.controller.hierarchyModel.comp_addressController.value.text,
+                                  widget.controller.hierarchyModel.comp_billingaddressController.value.text,
+                                  widget.controller.hierarchyModel.comp_pannumberController.value.text,
+                                  widget.controller.hierarchyModel.comp_cinnoController.value.text,
+                                  widget.controller.hierarchyModel.comp_ccodeController.value.text,
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 30),
+                        const SizedBox(
+                          width: 660,
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            'The approved Quotation shown beside can be used as a reference for generating the Invoice. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
+                            style: TextStyle(color: Primary_colors.Color9, fontSize: Primary_font_size.Text7),
+                          ),
+                        ),
+                      ],
+                    ),
+                    // Container()
+                  ],
+                ),
+              )
             ],
           ),
-          const SizedBox(height: 30),
-          const SizedBox(
-            width: 660,
-            child: Text(
-              textAlign: TextAlign.center,
-              'The approved Quotation shown beside can be used as a reference for generating the Invoice. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
-              style: TextStyle(color: Color.fromARGB(255, 46, 46, 46), fontSize: Primary_font_size.Text7),
-            ),
-          )
-        ],
+        ),
       ),
     );
   }

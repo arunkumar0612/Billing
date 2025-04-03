@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
@@ -165,9 +167,9 @@ class _BranchCardState extends State<BranchCard> {
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
                           const SizedBox(height: 4),
                           Text(
@@ -175,7 +177,8 @@ class _BranchCardState extends State<BranchCard> {
                                 ? widget.controller.hierarchyModel.BranchList.value.Live[widget.index].clientAddress ?? ""
                                 : widget.controller.hierarchyModel.BranchList.value.Demo[widget.index].clientAddress ?? "",
                             style: const TextStyle(fontSize: 8),
-                            textAlign: TextAlign.center,
+                            textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, // Truncate when resizing
+                            maxLines: 1,
                           ),
                           const SizedBox(height: 4),
                         ],

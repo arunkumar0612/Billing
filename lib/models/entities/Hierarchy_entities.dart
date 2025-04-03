@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'dart:typed_data';
+
+import 'package:flutter/foundation.dart';
 import 'package:ssipl_billing/models/entities/Response_entities.dart';
 
 class OrganizationsData {
@@ -9,9 +10,9 @@ class OrganizationsData {
   final String? orgCode;
   final Uint8List? organizationLogo;
   final String? address;
+  final String? contactperson;
+  final String? contactno;
   final String? siteType;
-  final String? contactPerson;
-  final String? contactNo;
   bool isSelected;
 
   OrganizationsData({
@@ -21,23 +22,23 @@ class OrganizationsData {
     this.orgCode,
     this.organizationLogo,
     this.address,
+    this.contactperson,
+    this.contactno,
     this.siteType,
-    this.contactPerson,
-    this.contactNo,
     this.isSelected = false,
   });
 
   factory OrganizationsData.fromJson(Map<String, dynamic> json) {
     return OrganizationsData(
-      organizationId: json['Organization_id'] as int? ?? 0,
-      email: json['Email_id'] as String? ?? "",
-      organizationName: json['Organization_Name'] as String? ?? "",
-      orgCode: json['orgcode'] as String? ?? "",
+      organizationId: json['Organization_id'] as int,
+      email: json['Email_id'] as String,
+      organizationName: json['Organization_Name'] as String,
+      orgCode: json['orgcode'] as String?,
       organizationLogo: json['Organization_Logo'] != null && json['Organization_Logo']['data'] != null ? Uint8List.fromList(List<int>.from(json['Organization_Logo']['data'])) : Uint8List(0),
-      address: json['Address'] as String? ?? "",
-      siteType: json['site_type'] as String? ?? "",
-      contactPerson: json['contactperson'] as String? ?? "",
-      contactNo: json['contactno'] as String? ?? "",
+      address: json['Address'] as String,
+      contactperson: json['contactperson'] as String,
+      contactno: json['contactno'] as String,
+      siteType: json['site_type'] as String,
     );
   }
 
@@ -49,9 +50,9 @@ class OrganizationsData {
       'orgcode': orgCode,
       'Organization_Logo': organizationLogo ?? Uint8List(0),
       'Address': address,
+      'contactperson': contactperson,
+      'contactno': contactno,
       'site_type': siteType,
-      'contactperson': contactPerson,
-      'contactno': contactNo,
     };
   }
 }
@@ -70,7 +71,9 @@ class OrganizationResponse {
 
     data.forEach((key, value) {
       if (key != 'Organization_Logo') {
-        print('$key: $value');
+        if (kDebugMode) {
+          print('$key: $value');
+        }
       }
     });
 
@@ -98,12 +101,10 @@ class CompanysData {
   final String? address;
   final String? billingAddress;
   final String? siteType;
-  final String? contactPerson;
-  final String? contactPersonNo;
-  final String? customerCIN;
-  final String? customerPAN;
-  final String? customerCode;
-  final int? customerType;
+  final String? contactperson;
+  final String? contactpersonno;
+  final String? pannumber;
+  final String? cinno;
   bool isSelected;
 
   CompanysData({
@@ -116,12 +117,10 @@ class CompanysData {
     this.address,
     this.billingAddress,
     this.siteType,
-    this.contactPerson,
-    this.contactPersonNo,
-    this.customerCIN,
-    this.customerPAN,
-    this.customerCode,
-    this.customerType,
+    this.contactperson,
+    this.contactpersonno,
+    this.pannumber,
+    this.cinno,
     this.isSelected = false,
   });
 
@@ -130,18 +129,16 @@ class CompanysData {
       customerId: json['Customer_id'] as int? ?? 0,
       organizationId: json['Organization_id'] as int? ?? 0,
       customerName: json['Customer_name'] as String? ?? "",
-      ccode: json['ccode'] as String? ?? "",
+      ccode: json['customercode'] as String? ?? "",
       email: json['Email_id'] as String? ?? "",
       customerLogo: json['Customer_Logo'] != null && json['Customer_Logo']['data'] != null ? Uint8List.fromList(List<int>.from(json['Customer_Logo']['data'])) : Uint8List(0),
       address: json['address'] as String? ?? "",
       billingAddress: json['billing_address'] as String? ?? "",
       siteType: json['site_type'] as String? ?? "",
-      contactPerson: json['contactperson'] as String? ?? "",
-      contactPersonNo: json['contactpersonno'] as String? ?? "",
-      customerCIN: json['customer_cin'] as String? ?? "",
-      customerPAN: json['customer_pan'] as String? ?? "",
-      customerCode: json['customercode'] as String? ?? "",
-      customerType: json['customer_type'] as int? ?? 0,
+      contactperson: json['contactperson'] as String? ?? "",
+      contactpersonno: json['contactpersonno'] as String? ?? "",
+      pannumber: json['customer_pan'] as String? ?? "",
+      cinno: json['customer_cin'] as String? ?? "",
     );
   }
 
@@ -150,18 +147,14 @@ class CompanysData {
       'Customer_id': customerId,
       'Organization_id': organizationId,
       'Customer_name': customerName,
-      'ccode': ccode,
+      'customercode': ccode,
       'Email_id': email,
       'Customer_Logo': customerLogo ?? Uint8List(0),
-      'address': address,
-      'billing_address': billingAddress,
       'site_type': siteType,
-      'contactperson': contactPerson,
-      'contactpersonno': contactPersonNo,
-      'customer_cin': customerCIN,
-      'customer_pan': customerPAN,
-      'customercode': customerCode,
-      'customer_type': customerType,
+      'contactperson': contactperson,
+      'contactpersonno': contactpersonno,
+      'customer_pan': pannumber,
+      'customer_cin': cinno,
     };
   }
 }
@@ -189,7 +182,9 @@ class CompanyResponse {
 
     data.forEach((key, value) {
       if (key != 'Customer_Logo') {
-        print('$key: $value');
+        if (kDebugMode) {
+          print('$key: $value');
+        }
       }
     });
 
@@ -214,6 +209,7 @@ class BranchsData {
   final String? gstNumber;
   final String? emailId;
   final String? contactNumber;
+  final String? contact_person;
   final String? billingAddress;
   final String? billingAddressName;
   final String? siteType;
@@ -236,6 +232,7 @@ class BranchsData {
     this.gstNumber,
     this.emailId,
     this.contactNumber,
+    this.contact_person,
     this.billingAddress,
     this.billingAddressName,
     this.siteType,
@@ -260,6 +257,7 @@ class BranchsData {
       gstNumber: json['gst_number'] ?? '',
       emailId: json['emailid'] ?? '',
       contactNumber: json['contact_number'] ?? '',
+      contact_person: json['contact_person'] ?? '',
       billingAddress: json['billing_address'] ?? '',
       billingAddressName: json['billing_addressname'] ?? '',
       siteType: json['site_type'] ?? '',
@@ -284,6 +282,7 @@ class BranchsData {
       'gst_number': gstNumber,
       'emailid': emailId,
       'contact_number': contactNumber,
+      'contact_person': contact_person,
       'billing_address': billingAddress,
       'billing_addressname': billingAddressName,
       'site_type': siteType,
@@ -314,7 +313,9 @@ class BranchResponse {
 
     data1.forEach((key, value) {
       if (key != 'Branch_Logo') {
-        print('$key: $value');
+        if (kDebugMode) {
+          print('$key: $value');
+        }
       }
     });
 

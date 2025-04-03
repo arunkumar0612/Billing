@@ -73,70 +73,38 @@ class SUBSCRIPTION_DcSite {
   }
 }
 
-class SUBSCRIPTION_QuoteSite {
-  final int sno;
-  final String siteName;
-  final int hsn;
-  final double gst;
-  final double price;
-  final int quantity;
+class PackageDetails {
+  final String name;
+  final int cameraCount;
+  final double packageAmount;
+  final String additionalCharges;
+  final String description;
 
-  const SUBSCRIPTION_QuoteSite({
-    required this.sno,
-    required this.siteName,
-    required this.hsn,
-    required this.gst,
-    required this.price,
-    required this.quantity,
+  PackageDetails({
+    required this.name,
+    required this.cameraCount,
+    required this.packageAmount,
+    required this.additionalCharges,
+    required this.description,
   });
 
-  /// Calculates the total price for the site
-  double get total => price * quantity;
-
-  /// Returns specific values based on the given index
-  String getIndex(int index) {
-    switch (index) {
-      case 0:
-        return sno.toString();
-      case 1:
-        return siteName;
-      case 2:
-        return hsn.toString();
-      case 3:
-        return gst.toString();
-      case 4:
-        return formatCurrency(price);
-      case 5:
-        return quantity.toString();
-      case 6:
-        return formatCurrency(total);
-      default:
-        return '';
-    }
-  }
-
-  /// Converts object to JSON format
   Map<String, dynamic> toJson() {
     return {
-      'sitesno': sno,
-      'sitename': siteName,
-      'sitehsn': hsn,
-      'sitegst': gst,
-      'siteprice': price,
-      'sitequantity': quantity,
-      'sitetotal': total,
+      'name': name,
+      'cameraCount': cameraCount,
+      'packageAmount': packageAmount,
+      'additionalCharges': additionalCharges,
+      'description': description,
     };
   }
 
-  /// Factory constructor to create an instance from JSON
-  factory SUBSCRIPTION_QuoteSite.fromJson(Map<String, dynamic> json) {
-    return SUBSCRIPTION_QuoteSite(
-      sno: json['sitesno'], // Ensure it's a String
-      siteName: json['sitename'].toString(),
-      hsn: json['sitehsn'],
-      gst: double.tryParse(json['sitegst'].toString()) ?? 0.0, // Convert String to double
-      price: double.tryParse(json['siteprice'].toString()) ?? 0.0,
-      quantity: int.tryParse(json['sitequantity'].toString()) ?? 0, // Convert String to int
+  factory PackageDetails.fromJson(Map<String, dynamic> json) {
+    return PackageDetails(
+      name: json['name'] as String,
+      cameraCount: json['cameraCount'] as int,
+      packageAmount: json['packageAmount'] as double,
+      additionalCharges: json['additionalCharges'] as String,
+      description: json['description'] as String,
     );
   }
 }

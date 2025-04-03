@@ -35,11 +35,16 @@ mixin HierarchyService {
           await Basic_dialog(context: context, title: 'Fetch Organization List', content: value.message ?? "", onOk: () {}, showCancel: false);
         }
         loader.stop();
+        return;
       } else {
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        loader.stop();
+        return;
       }
     } catch (e) {
       Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      loader.stop();
+      return;
     }
   }
 
@@ -60,8 +65,11 @@ mixin HierarchyService {
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
       }
       loader.stop();
+      return;
     } catch (e) {
       Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      loader.stop();
+      return;
     }
   }
 
@@ -82,8 +90,11 @@ mixin HierarchyService {
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
       }
       loader.stop();
+      return;
     } catch (e) {
       Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      loader.stop();
+      return;
     }
   }
 

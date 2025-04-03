@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
@@ -166,7 +168,7 @@ class _CompanyCardState extends State<CompanyCard> {
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
-                            maxLines: 3,
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(height: 4),
@@ -176,6 +178,8 @@ class _CompanyCardState extends State<CompanyCard> {
                                 : widget.controller.hierarchyModel.CompanyList.value.Demo[widget.index].address ?? '',
                             style: const TextStyle(fontSize: 8),
                             textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis, // Truncate when resizing
+                            maxLines: 1,
                           ),
                           const SizedBox(height: 4),
                         ],

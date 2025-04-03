@@ -19,6 +19,8 @@ class HierarchyModel extends GetxController with GetSingleTickerProviderStateMix
   var org_CodeController = TextEditingController().obs;
   var org_addressController = TextEditingController().obs;
   var org_siteTypeController = TextEditingController().obs;
+  var org_contactnoController = TextEditingController().obs;
+  var org_contactpersonController = TextEditingController().obs;
 
 ///////////////////////////////-----------------------------ORGANOZATION--------------------------------///////////////////////////////
   late AnimationController Comp_controller;
@@ -29,10 +31,16 @@ class HierarchyModel extends GetxController with GetSingleTickerProviderStateMix
 
   var comp_IdController = TextEditingController().obs;
   var comp_NameController = TextEditingController().obs;
-  var comp_ccodeController = TextEditingController().obs;
-  var comp_emailIdController = TextEditingController().obs;
   var comp_siteTypeController = TextEditingController().obs;
-
+  var comp_organizationidController = TextEditingController().obs;
+  var comp_contactpersonController = TextEditingController().obs;
+  var comp_contactpersonnoController = TextEditingController().obs;
+  var comp_emailIdController = TextEditingController().obs;
+  var comp_addressController = TextEditingController().obs;
+  var comp_billingaddressController = TextEditingController().obs;
+  var comp_pannumberController = TextEditingController().obs;
+  var comp_cinnoController = TextEditingController().obs;
+  var comp_ccodeController = TextEditingController().obs;
   ///////////////////////////////-----------------------------COMPANY--------------------------------///////////////////////////////
 
   late AnimationController Branch_controller;
@@ -49,6 +57,7 @@ class HierarchyModel extends GetxController with GetSingleTickerProviderStateMix
   var branch_gstNumberController = TextEditingController().obs;
   var branch_emailIdController = TextEditingController().obs;
   var branch_contactNumberController = TextEditingController().obs;
+  var branch_contact_personController = TextEditingController().obs;
   var branch_billingAddressController = TextEditingController().obs;
   var branch_billingAddressNameController = TextEditingController().obs;
   var branch_siteTypeController = TextEditingController().obs;

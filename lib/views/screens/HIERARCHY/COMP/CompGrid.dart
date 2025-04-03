@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/services/Hierarchy_services/hierarchy_service.dart';
+import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/screens/HIERARCHY/COMP/Comp_card.dart';
 import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/screens/HIERARCHY/COMP/CompEditor.dart';
@@ -50,102 +51,131 @@ class _CompanyGridState extends State<CompanyGrid> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    double screenheight = MediaQuery.of(context).size.height;
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           flex: 2,
-          child: Column(
-            children: [
-              Obx(() {
-                return Expanded(
-                  child: SlideTransition(
-                    position: hierarchyController.hierarchyModel.slideAnimation,
-                    child: GridView.builder(
-                      padding: const EdgeInsets.all(8.0),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: hierarchyController.hierarchyModel.Comp_cardCount.value,
-                        crossAxisSpacing: 30,
-                        mainAxisSpacing: 30,
-                      ),
-                      itemCount: hierarchyController.hierarchyModel.CompanyList.value.Live.length,
-                      itemBuilder: (context, index) {
-                        var Comp = hierarchyController.hierarchyModel.CompanyList.value.Live[index];
-                        return CompanyCard(
-                          name: Comp.customerName ?? "",
-                          id: Comp.customerId ?? 0,
-                          email: Comp.email ?? "",
-                          imageBytes: Comp.customerLogo ?? Uint8List(0),
-                          index: index,
-                          data: hierarchyController.hierarchyModel.CompanyList.value,
-                          controller: hierarchyController,
-                          isSelected: hierarchyController.hierarchyModel.CompanyList.value.Live[index].isSelected,
-                          type: "LIVE",
-                        );
-                      },
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Obx(() {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Primary_colors.Light,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 5,
+                          spreadRadius: 2,
+                        ),
+                      ],
                     ),
-                  ),
-                );
-              }),
-              const SizedBox(
-                height: 60,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 1,
-                      color: Colors.grey,
+                    child: ExpansionTile(
+                      collapsedIconColor: const Color.fromARGB(255, 135, 132, 132),
+                      iconColor: Colors.red,
+                      collapsedBackgroundColor: Primary_colors.Light,
+                      backgroundColor: Primary_colors.Light,
+                      title: const Text("LIVE", style: TextStyle(fontSize: 15, color: Primary_colors.Color1)),
+                      initiallyExpanded: true,
+                      children: [
+                        SizedBox(
+                          height: screenheight - 270,
+                          child: SingleChildScrollView(
+                            child: SlideTransition(
+                              position: hierarchyController.hierarchyModel.slideAnimation,
+                              child: GridView.builder(
+                                shrinkWrap: true,
+                                padding: const EdgeInsets.all(8.0),
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: hierarchyController.hierarchyModel.Comp_cardCount.value,
+                                  crossAxisSpacing: 30,
+                                  mainAxisSpacing: 30,
+                                ),
+                                itemCount: hierarchyController.hierarchyModel.CompanyList.value.Live.length,
+                                itemBuilder: (context, index) {
+                                  var Comp = hierarchyController.hierarchyModel.CompanyList.value.Live[index];
+                                  return CompanyCard(
+                                    name: Comp.customerName ?? "",
+                                    id: Comp.customerId ?? 0,
+                                    email: Comp.email ?? "",
+                                    imageBytes: Comp.customerLogo ?? Uint8List(0),
+                                    index: index,
+                                    data: hierarchyController.hierarchyModel.CompanyList.value,
+                                    controller: hierarchyController,
+                                    isSelected: hierarchyController.hierarchyModel.CompanyList.value.Live[index].isSelected,
+                                    type: "LIVE",
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    child: Text(
-                      "DEMO",
-                      style: TextStyle(color: Colors.blue),
+                  );
+                }),
+                const SizedBox(
+                  height: 20,
+                ),
+                Obx(() {
+                  return Container(
+                    // margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Primary_colors.Light,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 5,
+                          spreadRadius: 2,
+                        ),
+                      ],
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      height: 1,
-                      color: Colors.grey,
+                    child: ExpansionTile(
+                      collapsedIconColor: const Color.fromARGB(255, 135, 132, 132),
+                      iconColor: Colors.red,
+                      collapsedBackgroundColor: Primary_colors.Light,
+                      backgroundColor: Primary_colors.Light,
+                      title: const Text("DEMO", style: TextStyle(fontSize: 15, color: Primary_colors.Color1)),
+                      initiallyExpanded: false,
+                      children: [
+                        SlideTransition(
+                          position: hierarchyController.hierarchyModel.slideAnimation,
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.all(8.0),
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: hierarchyController.hierarchyModel.Comp_cardCount.value,
+                              crossAxisSpacing: 30,
+                              mainAxisSpacing: 30,
+                            ),
+                            itemCount: hierarchyController.hierarchyModel.CompanyList.value.Demo.length,
+                            itemBuilder: (context, index) {
+                              var Comp = hierarchyController.hierarchyModel.CompanyList.value.Demo[index];
+                              return CompanyCard(
+                                name: Comp.customerName ?? "",
+                                id: Comp.customerId ?? 0,
+                                email: Comp.email ?? "",
+                                imageBytes: Comp.customerLogo ?? Uint8List(0),
+                                index: index,
+                                data: hierarchyController.hierarchyModel.CompanyList.value,
+                                controller: hierarchyController,
+                                isSelected: hierarchyController.hierarchyModel.CompanyList.value.Demo[index].isSelected,
+                                type: "DEMO",
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 60,
-              ),
-              Obx(() {
-                return Expanded(
-                  child: SlideTransition(
-                    position: hierarchyController.hierarchyModel.slideAnimation,
-                    child: GridView.builder(
-                      padding: const EdgeInsets.all(8.0),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: hierarchyController.hierarchyModel.Comp_cardCount.value,
-                        crossAxisSpacing: 30,
-                        mainAxisSpacing: 30,
-                      ),
-                      itemCount: hierarchyController.hierarchyModel.CompanyList.value.Demo.length,
-                      itemBuilder: (context, index) {
-                        var Comp = hierarchyController.hierarchyModel.CompanyList.value.Demo[index];
-                        return CompanyCard(
-                          name: Comp.customerName ?? "",
-                          id: Comp.customerId ?? 0,
-                          email: Comp.email ?? "",
-                          imageBytes: Comp.customerLogo ?? Uint8List(0),
-                          index: index,
-                          data: hierarchyController.hierarchyModel.CompanyList.value,
-                          controller: hierarchyController,
-                          isSelected: hierarchyController.hierarchyModel.CompanyList.value.Demo[index].isSelected,
-                          type: "DEMO",
-                        );
-                      },
-                    ),
-                  ),
-                );
-              }),
-            ],
+                  );
+                }),
+              ],
+            ),
           ),
         ),
         Obx(() {

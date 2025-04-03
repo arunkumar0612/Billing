@@ -7,6 +7,43 @@ import 'package:ssipl_billing/models/entities/SUBSCRIPTION/SUBSCRIPTION_Sites_en
 
 mixin SUBSCRIPTION_QuotesiteService {
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
+  final Map<String, PackageDetails> packageDetailsMap = {
+    'Basic': PackageDetails(
+      name: 'Basic',
+      cameraCount: 2,
+      packageAmount: 999.0,
+      additionalCharges: 'No additional charges',
+      description: 'Basic security package with essential features',
+    ),
+    'Standard': PackageDetails(
+      name: 'Standard',
+      cameraCount: 4,
+      packageAmount: 1999.0,
+      additionalCharges: 'Installation charges may apply',
+      description: 'Standard security package with advanced features',
+    ),
+    'Premium': PackageDetails(
+      name: 'Premium',
+      cameraCount: 8,
+      packageAmount: 2999.0,
+      additionalCharges: 'Includes professional installation',
+      description: 'Premium security package with all features',
+    ),
+    'Enterprise': PackageDetails(
+      name: 'Enterprise',
+      cameraCount: 16,
+      packageAmount: 4999.0,
+      additionalCharges: 'Custom installation available',
+      description: 'Enterprise-grade security solution',
+    ),
+    'Custom': PackageDetails(
+      name: 'Custom',
+      cameraCount: 0,
+      packageAmount: 0.0,
+      additionalCharges: 'To be determined',
+      description: 'Custom security solution tailored to your needs',
+    ),
+  };
   void clearFields() {
     quoteController.quoteModel.siteNameController.value.clear();
     quoteController.quoteModel.cameraquantityController.value.clear();
@@ -28,28 +65,37 @@ mixin SUBSCRIPTION_QuotesiteService {
         return;
       }
       quoteController.addSite(
-          context: context,
-          siteName: quoteController.quoteModel.siteNameController.value.text,
-          cameraquantity: int.parse(quoteController.quoteModel.cameraquantityController.value.text),
-          address: quoteController.quoteModel.addressController.value.text);
+        context: context,
+        siteName: quoteController.quoteModel.siteNameController.value.text,
+        cameraquantity: int.parse(quoteController.quoteModel.cameraquantityController.value.text),
+        address: quoteController.quoteModel.addressController.value.text,
+        packageDetails: quoteController.quoteModel.selectedPackageController.value.text == 'Custom'
+            ? quoteController.quoteModel.customPackageDetails.value
+            : packageDetailsMap[quoteController.quoteModel.selectedPackageController.value.text],
+        selectedPackage: quoteController.quoteModel.selectedPackageController.value.text,
+      );
 
       clearFields();
     }
   }
 
-  void updateSite(context) {
+  void updatesite(context) {
     if (quoteController.quoteModel.siteFormkey.value.currentState?.validate() ?? false) {
       quoteController.updateSite(
         context: context,
-        editIndex: quoteController.quoteModel.site_editIndex.value!, // The index of the Site to be updated
-        siteName: quoteController.quoteModel.siteNameController.value.text,
-
         cameraquantity: int.parse(quoteController.quoteModel.cameraquantityController.value.text),
+        editIndex: quoteController.quoteModel.site_editIndex.value!,
+        siteName: quoteController.quoteModel.siteNameController.value.text,
+        selectedPackage: quoteController.quoteModel.selectedPackageController.value.text,
         address: quoteController.quoteModel.addressController.value.text,
+        packageDetails: quoteController.quoteModel.selectedPackageController.value.text == 'Custom'
+            ? quoteController.quoteModel.customPackageDetails.value
+            : packageDetailsMap[quoteController.quoteModel.selectedPackageController.value.text],
       );
 
       clearFields();
-      quoteController.addSiteEditindex(null);
+      quoteController.resetPackageSelection();
+      quoteController.addsiteEditindex(null);
     }
   }
 
@@ -58,6 +104,12 @@ mixin SUBSCRIPTION_QuotesiteService {
     quoteController.updateSiteName(site.siteName);
     quoteController.updateQuantity(site.camCount);
     quoteController.updateAddressName(site.address);
+    quoteController.updateSelectedPackage(site.selectedPackage);
+    quoteController.updateQuantity(site.camCount);
+    // If it's a custom package, load the details
+    if (site.selectedPackage == 'Custom' && site.packageDetails != null) {
+      quoteController.updateCustomPackageDetails(site.packageDetails!);
+    }
     quoteController.addSiteEditindex(index);
   }
 

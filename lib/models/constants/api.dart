@@ -61,4 +61,7 @@ class API {
   static String hierarchy_CompanyData = "http://192.168.0.200:8081/admin/companylist";
   static String hierarchy_BranchData = "http://192.168.0.200:8081/admin/sitelist";
   static String hierarchy_UploadImage = "http://192.168.0.200:8081/admin/uploadlogo";
+  static String updateOrganization_KYC = "http://192.168.0.200:8081/admin/updateorganization";
+  static String updateCompany_KYC = "http://192.168.0.200:8081/admin/updatecompany";
+  static String updateBranch_KYC = "http://192.168.0.200:8081/admin/updatebranch";
 }

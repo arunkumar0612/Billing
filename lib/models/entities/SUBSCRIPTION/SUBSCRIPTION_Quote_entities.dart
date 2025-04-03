@@ -163,7 +163,7 @@ class SUBSCRIPTION_PostQuotation {
   String? clientaddress;
   String? billingaddressname;
   String? billingaddress;
-  List<SUBSCRIPTION_QuoteSite>? sitelist;
+  List<Site>? sitelist;
   List? notes;
   String? emailid;
   String? phoneno;
@@ -199,7 +199,7 @@ class SUBSCRIPTION_PostQuotation {
       clientaddress: json["clientaddress"],
       billingaddressname: json["billingaddressname"],
       billingaddress: json["billingaddress"],
-      sitelist: (json["sitelist"] as List?)?.map((item) => SUBSCRIPTION_QuoteSite.fromJson(item)).toList(),
+      sitelist: (json["sitelist"])?.map((item) => Site.fromJson(item)).toList(),
       notes: json["notes"],
       emailid: json["emailid"],
       phoneno: json["phoneno"],
@@ -312,9 +312,18 @@ class Site {
   int camCount;
   int basicPrice;
   int specialPrice;
-
-  Site({required this.siteName, required this.address, required this.packageName, required this.camCount, required this.basicPrice, required this.specialPrice})
-      : serialNo = (_counter++).toString(); // Auto-increment serial number
+  final String selectedPackage;
+  final PackageDetails? packageDetails;
+  Site({
+    required this.siteName,
+    required this.address,
+    required this.packageName,
+    required this.camCount,
+    required this.basicPrice,
+    required this.specialPrice,
+    required this.selectedPackage,
+    this.packageDetails,
+  }) : serialNo = (_counter++).toString(); // Auto-increment serial number
 
   // Convert List of JSON Maps to List of Site objects
   static List<Site> fromJson(List<Map<String, dynamic>> jsonList) {
@@ -328,6 +337,8 @@ class Site {
         camCount: json['camCount'] as int,
         basicPrice: json['basicPrice'] as int,
         specialPrice: json['specialPrice'] as int,
+        selectedPackage: json['selectedPackage'] as String,
+        packageDetails: json['packageDetails'] != null ? PackageDetails.fromJson(json['packageDetails']) : null,
       );
     }).toList();
   }
@@ -339,7 +350,17 @@ class Site {
 
   // Convert single Site object to JSON
   Map<String, dynamic> toJson() {
-    return {'serialNo': serialNo, 'siteName': siteName, 'address': address, 'packageName': packageName, "camCount": camCount, 'basicPrice': basicPrice, 'specialPrice': specialPrice};
+    return {
+      'serialNo': serialNo,
+      'siteName': siteName,
+      'address': address,
+      'packageName': packageName,
+      "camCount": camCount,
+      'basicPrice': basicPrice,
+      'specialPrice': specialPrice,
+      'selectedPackage': selectedPackage,
+      'packageDetails': packageDetails?.toJson(),
+    };
   }
 
   dynamic getIndex(int col) {

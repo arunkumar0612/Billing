@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
@@ -164,9 +166,9 @@ class _OrganizationCardState extends State<OrganizationCard> {
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
+                              overflow: TextOverflow.ellipsis, // Ensures text does not wrap
                             ),
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1, // Restrict to a single line
                           ),
                           const SizedBox(height: 4),
                           Text(
@@ -175,6 +177,8 @@ class _OrganizationCardState extends State<OrganizationCard> {
                                 : widget.controller.hierarchyModel.OrganizationList.value.Demo[widget.index].address!,
                             style: const TextStyle(fontSize: 8),
                             textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis, // Truncate when resizing
+                            maxLines: 1, // Ensures it doesn't wrap
                           ),
                           const SizedBox(height: 4),
                         ],

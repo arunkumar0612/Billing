@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/services/Hierarchy_services/hierarchy_service.dart';
+import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/screens/HIERARCHY/BRANCH/Branchcard.dart';
 import 'package:ssipl_billing/views/components/Loading.dart';
 import 'package:ssipl_billing/views/screens/HIERARCHY/BRANCH/BranchEditor.dart';
@@ -47,102 +48,135 @@ class _BranchGridState extends State<BranchGrid> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    double screenheight = MediaQuery.of(context).size.height;
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           flex: 2,
-          child: Column(
-            children: [
-              Obx(() {
-                return Expanded(
-                  child: SlideTransition(
-                    position: hierarchyController.hierarchyModel.slideAnimation,
-                    child: GridView.builder(
-                      padding: const EdgeInsets.all(8.0),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: hierarchyController.hierarchyModel.Branch_cardCount.value,
-                        crossAxisSpacing: 30,
-                        mainAxisSpacing: 30,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Obx(
+                  () {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Primary_colors.Light,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 5,
+                            spreadRadius: 2,
+                          ),
+                        ],
                       ),
-                      itemCount: hierarchyController.hierarchyModel.BranchList.value.Live.length,
-                      itemBuilder: (context, index) {
-                        var Branch = hierarchyController.hierarchyModel.BranchList.value.Live[index];
-                        return BranchCard(
-                          name: Branch.branchName ?? '',
-                          id: Branch.branchId ?? 0,
-                          email: Branch.emailId ?? '',
-                          imageBytes: Branch.branchLogo!,
-                          index: index,
-                          data: hierarchyController.hierarchyModel.BranchList.value,
-                          controller: hierarchyController,
-                          isSelected: hierarchyController.hierarchyModel.BranchList.value.Live[index].isSelected,
-                          type: "LIVE",
-                        );
-                      },
-                    ),
-                  ),
-                );
-              }),
-              const SizedBox(
-                height: 60,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 1,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    child: Text(
-                      "DEMO",
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      height: 1,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 60,
-              ),
-              Obx(() {
-                return Expanded(
-                  child: SlideTransition(
-                    position: hierarchyController.hierarchyModel.slideAnimation,
-                    child: GridView.builder(
-                      padding: const EdgeInsets.all(8.0),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: hierarchyController.hierarchyModel.Branch_cardCount.value,
-                        crossAxisSpacing: 30,
-                        mainAxisSpacing: 30,
+                      child: ExpansionTile(
+                        collapsedIconColor: const Color.fromARGB(255, 135, 132, 132),
+                        iconColor: Colors.red,
+                        collapsedBackgroundColor: Primary_colors.Light,
+                        backgroundColor: Primary_colors.Light,
+                        title: const Text("LIVE", style: TextStyle(fontSize: 15, color: Primary_colors.Color1)),
+                        initiallyExpanded: true,
+                        children: [
+                          SizedBox(
+                            height: screenheight - 270,
+                            child: SingleChildScrollView(
+                              child: SlideTransition(
+                                position: hierarchyController.hierarchyModel.slideAnimation,
+                                child: GridView.builder(
+                                  shrinkWrap: true,
+                                  padding: const EdgeInsets.all(8.0),
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: hierarchyController.hierarchyModel.Branch_cardCount.value,
+                                    crossAxisSpacing: 30,
+                                    mainAxisSpacing: 30,
+                                  ),
+                                  itemCount: hierarchyController.hierarchyModel.BranchList.value.Live.length,
+                                  itemBuilder: (context, index) {
+                                    var Branch = hierarchyController.hierarchyModel.BranchList.value.Live[index];
+                                    return BranchCard(
+                                      name: Branch.branchName ?? '',
+                                      id: Branch.branchId ?? 0,
+                                      email: Branch.emailId ?? '',
+                                      imageBytes: Branch.branchLogo!,
+                                      index: index,
+                                      data: hierarchyController.hierarchyModel.BranchList.value,
+                                      controller: hierarchyController,
+                                      isSelected: hierarchyController.hierarchyModel.BranchList.value.Live[index].isSelected,
+                                      type: "LIVE",
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      itemCount: hierarchyController.hierarchyModel.BranchList.value.Demo.length,
-                      itemBuilder: (context, index) {
-                        var Branch = hierarchyController.hierarchyModel.BranchList.value.Demo[index];
-                        return BranchCard(
-                          name: Branch.branchName ?? '',
-                          id: Branch.branchId ?? 0,
-                          email: Branch.emailId ?? '',
-                          imageBytes: Branch.branchLogo!,
-                          index: index,
-                          data: hierarchyController.hierarchyModel.BranchList.value,
-                          controller: hierarchyController,
-                          isSelected: hierarchyController.hierarchyModel.BranchList.value.Demo[index].isSelected,
-                          type: "DEMO",
-                        );
-                      },
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Obx(() {
+                  return Container(
+                    // margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Primary_colors.Light,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 5,
+                          spreadRadius: 2,
+                        ),
+                      ],
                     ),
-                  ),
-                );
-              }),
-            ],
+                    child: ExpansionTile(
+                      collapsedIconColor: const Color.fromARGB(255, 135, 132, 132),
+                      iconColor: Colors.red,
+                      collapsedBackgroundColor: Primary_colors.Light,
+                      backgroundColor: Primary_colors.Light,
+                      title: const Text("DEMO", style: TextStyle(fontSize: 15, color: Primary_colors.Color1)),
+                      initiallyExpanded: false,
+                      children: [
+                        SingleChildScrollView(
+                          child: SlideTransition(
+                            position: hierarchyController.hierarchyModel.slideAnimation,
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.all(8.0),
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: hierarchyController.hierarchyModel.Branch_cardCount.value,
+                                crossAxisSpacing: 30,
+                                mainAxisSpacing: 30,
+                              ),
+                              itemCount: hierarchyController.hierarchyModel.BranchList.value.Demo.length,
+                              itemBuilder: (context, index) {
+                                var Branch = hierarchyController.hierarchyModel.BranchList.value.Demo[index];
+                                return BranchCard(
+                                  name: Branch.branchName ?? '',
+                                  id: Branch.branchId ?? 0,
+                                  email: Branch.emailId ?? '',
+                                  imageBytes: Branch.branchLogo!,
+                                  index: index,
+                                  data: hierarchyController.hierarchyModel.BranchList.value,
+                                  controller: hierarchyController,
+                                  isSelected: hierarchyController.hierarchyModel.BranchList.value.Demo[index].isSelected,
+                                  type: "DEMO",
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+              ],
+            ),
           ),
         ),
         Obx(() {

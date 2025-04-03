@@ -183,6 +183,26 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     quoteModel.filePathController.value.text = filePath;
   }
 
+  void resetPackageSelection() {
+    quoteModel.selectedPackageController.value.text = '';
+    quoteModel.customPackageDetails.value = null;
+  }
+
+  void updateSelectedPackage(String? package) {
+    quoteModel.selectedPackageController.value.text = package ?? "";
+    if (package != 'Custom') {
+      quoteModel.customPackageDetails.value = null;
+    }
+  }
+
+  void updateCustomPackageDetails(PackageDetails details) {
+    quoteModel.customPackageDetails.value = details;
+  }
+
+  void removeFromsiteList(index) {
+    quoteModel.QuoteSiteDetails.removeAt(index);
+  }
+
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -274,12 +294,8 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     }
   }
 
-  void addSite({
-    required BuildContext context,
-    required String siteName,
-    required int cameraquantity,
-    required String address,
-  }) {
+  void addSite(
+      {required BuildContext context, required String siteName, required int cameraquantity, required String address, required PackageDetails? packageDetails, required String selectedPackage}) {
     try {
       if (siteName.trim().isEmpty || cameraquantity <= 0 || address.trim().isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -290,7 +306,8 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         );
         return;
       }
-      quoteModel.QuoteSiteDetails.add(Site(siteName: siteName, address: address, packageName: '', camCount: cameraquantity, specialPrice: 100, basicPrice: 150));
+      quoteModel.QuoteSiteDetails.add(
+          Site(siteName: siteName, address: address, packageName: '', camCount: cameraquantity, specialPrice: 100, basicPrice: 150, packageDetails: packageDetails, selectedPackage: selectedPackage));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -301,13 +318,14 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     }
   }
 
-  void updateSite({
-    required BuildContext context,
-    required int editIndex,
-    required String siteName,
-    required int cameraquantity,
-    required String address,
-  }) {
+  void updateSite(
+      {required BuildContext context,
+      required int editIndex,
+      required String siteName,
+      required int cameraquantity,
+      required String address,
+      required String selectedPackage,
+      required PackageDetails? packageDetails}) {
     try {
       // Validate input fields
       if (siteName.trim().isEmpty || cameraquantity <= 0 || address.trim().isEmpty) {
@@ -332,7 +350,8 @@ class SUBSCRIPTION_QuoteController extends GetxController {
       }
 
       // Update the product details at the specified index
-      quoteModel.QuoteSiteDetails[editIndex] = Site(siteName: siteName, address: address, packageName: '', camCount: cameraquantity, specialPrice: 100, basicPrice: 150);
+      quoteModel.QuoteSiteDetails[editIndex] =
+          Site(siteName: siteName, address: address, packageName: '', camCount: cameraquantity, specialPrice: 100, basicPrice: 150, packageDetails: packageDetails, selectedPackage: selectedPackage);
 
       // ProductDetail(
       //   productName: productName.trim(),

@@ -7,22 +7,52 @@ import 'package:ssipl_billing/services/APIservices/invoker.dart';
 import 'package:ssipl_billing/views/components/Basic_DialogBox.dart';
 import 'package:ssipl_billing/views/components/Loading.dart';
 
-mixin OrganizationService {
+mixin BranchService {
   final Invoker apiController = Get.find<Invoker>();
   final loader = LoadingOverlay();
 
-  void UpdateKYC(context, String organizationid, String organizationname, String emailid, String contactno, String address, String contactperson, String? orgcode, String sitetype) async {
+  void UpdateKYC(
+    context,
+    String branchid,
+    String branchname,
+    String emailid,
+    String contactno,
+    String address,
+    String gstno,
+    String billingaddressname,
+    String billingaddress,
+    String contactperson,
+    String branchcode,
+    String sitetype,
+    String billingplan,
+    String billmode,
+    String startdate,
+    String enddate,
+    String amount,
+    String billingperiod,
+    String subscriptionid,
+  ) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({
-        "organizationid": organizationid,
-        "organizationname": organizationname,
+        "branchid": branchid,
+        "branchname": branchname,
         "emailid": emailid,
         "contactno": contactno,
         "address": address,
+        "gstno": gstno,
+        "billingaddressname": billingaddressname,
+        "billingaddress": billingaddress,
         "contactperson": contactperson,
-        "orgcode": orgcode,
+        "branchcode": branchcode,
         "sitetype": sitetype,
-      }, API.updateOrganization_KYC);
+        "billingplan": billingplan,
+        "billmode": billmode,
+        "startdate": startdate,
+        "enddate": enddate,
+        "amount": amount,
+        "billingperiod": billingperiod,
+        "subscriptionid": subscriptionid,
+      }, API.updateBranch_KYC);
       if (response?['statusCode'] == 200) {
         CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {

@@ -1,16 +1,21 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:glassmorphism/glassmorphism.dart';
+import 'package:intl/intl.dart';
 import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/models/entities/Hierarchy_entities.dart';
+import 'package:ssipl_billing/services/Hierarchy_services/Branch_service.dart';
 import 'package:ssipl_billing/themes/style.dart';
 import 'package:ssipl_billing/views/components/button.dart';
 
-class BranchEditor extends StatefulWidget {
+class BranchEditor extends StatefulWidget with BranchService {
   final double screenWidth;
   final Rx<BranchsData> data;
   final HierarchyController controller;
 
-  const BranchEditor({
+  BranchEditor({
     super.key,
     required this.screenWidth,
     required this.data,
@@ -31,6 +36,7 @@ class _BranchEditorState extends State<BranchEditor> {
     widget.controller.hierarchyModel.branch_gstNumberController.value.text = widget.data.value.gstNumber ?? "";
     widget.controller.hierarchyModel.branch_emailIdController.value.text = widget.data.value.emailId ?? "";
     widget.controller.hierarchyModel.branch_contactNumberController.value.text = widget.data.value.contactNumber ?? "";
+    widget.controller.hierarchyModel.branch_contact_personController.value.text = widget.data.value.contact_person ?? "";
     widget.controller.hierarchyModel.branch_billingAddressController.value.text = widget.data.value.billingAddress ?? "";
     widget.controller.hierarchyModel.branch_billingAddressNameController.value.text = widget.data.value.billingAddressName ?? "";
     widget.controller.hierarchyModel.branch_siteTypeController.value.text = widget.data.value.siteType ?? "";
@@ -59,20 +65,32 @@ class _BranchEditorState extends State<BranchEditor> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(label, style: const TextStyle(color: Colors.black)),
+          Expanded(
+            flex: 2,
+            child: Text(
+              label,
+              style: const TextStyle(color: Primary_colors.Color9, fontSize: Primary_font_size.Text8),
+            ),
+          ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 15),
-            child: Text(":", style: TextStyle(color: Colors.black)),
+            child: Text(
+              "  : ",
+              style: TextStyle(color: Primary_colors.Color9, fontSize: Primary_font_size.Text8),
+            ),
           ),
           Expanded(
+            flex: 4,
             child: TextFormField(
               maxLines: null,
               readOnly: readOnly,
               controller: controller,
-              style: TextStyle(color: readOnly ? const Color.fromARGB(255, 66, 66, 66) : Colors.black),
+              onChanged: (value) {}, // ✅ Avoids unnecessary Obx()
+              style: TextStyle(color: readOnly ? const Color.fromARGB(255, 167, 167, 167) : Primary_colors.Color1, fontSize: Primary_font_size.Text8),
               decoration: InputDecoration(
+                fillColor: Colors.black,
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: readOnly ? Colors.black : Primary_colors.Color3, width: 2),
+                  borderSide: BorderSide(color: readOnly ? Colors.white : Primary_colors.Color3, width: 2),
                 ),
                 enabledBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Color.fromARGB(255, 94, 94, 94), width: 1),
@@ -88,62 +106,245 @@ class _BranchEditorState extends State<BranchEditor> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: widget.screenWidth * 0.3,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
+    return DefaultTabController(
+      length: 2,
+      child: GlassmorphicContainer(
+        width: widget.screenWidth * 0.3,
+        height: double.infinity,
+        borderRadius: 20,
+        blur: 10,
+        alignment: Alignment.center,
+        border: 1,
+        linearGradient: LinearGradient(
           colors: [
-            Color.fromARGB(255, 255, 249, 249),
-            Color.fromARGB(255, 189, 189, 189),
+            const Color.fromARGB(255, 78, 77, 77).withOpacity(0.1),
+            const Color.fromARGB(255, 105, 104, 104).withOpacity(0.05),
           ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
         ),
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5)],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Center(child: Text('Edit', style: TextStyle(fontSize: 20))),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  buildTextField("Branch ID", widget.controller.hierarchyModel.branch_IdController.value, true),
-                  buildTextField("Branch Name", widget.controller.hierarchyModel.branch_NameController.value, false),
-                  buildTextField("Branch Code", widget.controller.hierarchyModel.branch_CodeController.value, true),
-                  buildTextField("Client Address Name", widget.controller.hierarchyModel.branch_clientAddressNameController.value, false),
-                  buildTextField("Client Address", widget.controller.hierarchyModel.branch_clientAddressController.value, false),
-                  buildTextField("GST Number", widget.controller.hierarchyModel.branch_gstNumberController.value, true),
-                  buildTextField("Email ID", widget.controller.hierarchyModel.branch_emailIdController.value, false),
-                  buildTextField("Contact Number", widget.controller.hierarchyModel.branch_contactNumberController.value, false),
-                  buildTextField("Billing Address", widget.controller.hierarchyModel.branch_billingAddressController.value, false),
-                  buildTextField("Billing Address Name", widget.controller.hierarchyModel.branch_billingAddressNameController.value, false),
-                  buildTextField("Site Type", widget.controller.hierarchyModel.branch_siteTypeController.value, true),
-                  buildTextField("Subscription ID", widget.controller.hierarchyModel.branch_subscriptionIdController.value, true),
-                  buildTextField("Billing Plan", widget.controller.hierarchyModel.branch_billingPlanController.value, false),
-                  buildTextField("Bill Mode", widget.controller.hierarchyModel.branch_billModeController.value, false),
-                  buildTextField("From Date", widget.controller.hierarchyModel.branch_fromDateController.value, true),
-                  buildTextField("To Date", widget.controller.hierarchyModel.branch_toDateController.value, true),
-                  buildTextField("Amount", widget.controller.hierarchyModel.branch_amountController.value, false),
-                  buildTextField("Billing Period", widget.controller.hierarchyModel.branch_billingPeriodController.value, true),
+        borderGradient: const LinearGradient(
+          colors: [
+            Primary_colors.Light,
+            Primary_colors.Dark,
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const TabBar(
+                indicatorColor: Primary_colors.Color4,
+                tabs: [
+                  Tab(text: 'KYC'),
+                  Tab(text: 'PACKAGE'),
                 ],
               ),
-            ),
-          ),
-          const Divider(color: Colors.white),
-          const SizedBox(height: 30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              BasicButton(text: "Revert", colors: Colors.redAccent, onPressed: () {}),
-              BasicButton(text: "Update", colors: Colors.blue, onPressed: () {}),
+              Expanded(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                buildTextField("Branch ID", widget.controller.hierarchyModel.branch_IdController.value, true),
+                                buildTextField("Branch Name", widget.controller.hierarchyModel.branch_NameController.value, false),
+                                buildTextField("Branch Code", widget.controller.hierarchyModel.branch_CodeController.value, true),
+                                buildTextField("Client Address Name", widget.controller.hierarchyModel.branch_clientAddressNameController.value, false),
+                                buildTextField("Client Address", widget.controller.hierarchyModel.branch_clientAddressController.value, false),
+                                buildTextField("GST Number", widget.controller.hierarchyModel.branch_gstNumberController.value, true),
+                                buildTextField("Email ID", widget.controller.hierarchyModel.branch_emailIdController.value, false),
+                                buildTextField("Contact Person", widget.controller.hierarchyModel.branch_contact_personController.value, false),
+                                buildTextField("Contact Number", widget.controller.hierarchyModel.branch_contactNumberController.value, false),
+                                buildTextField("Billing Address", widget.controller.hierarchyModel.branch_billingAddressController.value, false),
+                                buildTextField("Billing Address Name", widget.controller.hierarchyModel.branch_billingAddressNameController.value, false),
+                                buildTextField("Subscription ID", widget.controller.hierarchyModel.branch_subscriptionIdController.value, true),
+                                buildTextField("Site Type", widget.controller.hierarchyModel.branch_siteTypeController.value, true),
+                              ],
+                            ),
+                          ),
+                          SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                buildTextField("Billing Plan", widget.controller.hierarchyModel.branch_billingPlanController.value, false),
+                                buildTextField("Bill Mode", widget.controller.hierarchyModel.branch_billModeController.value, false),
+                                // buildTextField("From Date", widget.controller.hierarchyModel.branch_fromDateController.value, true),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          'From Date',
+                                          style: TextStyle(color: Primary_colors.Color9, fontSize: Primary_font_size.Text8),
+                                        ),
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 15),
+                                        child: Text(
+                                          "  : ",
+                                          style: TextStyle(color: Primary_colors.Color9, fontSize: Primary_font_size.Text8),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 4,
+                                        child: TextFormField(
+                                          controller: widget.controller.hierarchyModel.branch_fromDateController.value,
+                                          readOnly: true, // Ensures keyboard doesn't pop up
+                                          onTap: () async {
+                                            DateTime? pickedDate = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime(2000),
+                                              lastDate: DateTime(2100),
+                                            );
+
+                                            if (pickedDate != null) {
+                                              String formattedDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(pickedDate.toUtc());
+                                              widget.controller.hierarchyModel.branch_fromDateController.value.text = formattedDate;
+                                            }
+                                          },
+                                          style: const TextStyle(
+                                            color: Primary_colors.Color1,
+                                            fontSize: Primary_font_size.Text8,
+                                          ),
+                                          decoration: const InputDecoration(
+                                            fillColor: Colors.black,
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Primary_colors.Color3,
+                                                width: 2,
+                                              ),
+                                            ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color.fromARGB(255, 94, 94, 94),
+                                                width: 1,
+                                              ),
+                                            ),
+                                            contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          'To Date',
+                                          style: TextStyle(color: Primary_colors.Color9, fontSize: Primary_font_size.Text8),
+                                        ),
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 15),
+                                        child: Text(
+                                          "  : ",
+                                          style: TextStyle(color: Primary_colors.Color9, fontSize: Primary_font_size.Text8),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 4,
+                                        child: TextFormField(
+                                          controller: widget.controller.hierarchyModel.branch_toDateController.value,
+                                          readOnly: true, // Ensures keyboard doesn't pop up
+                                          onTap: () async {
+                                            DateTime? pickedDate = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime(2000),
+                                              lastDate: DateTime(2100),
+                                            );
+
+                                            if (pickedDate != null) {
+                                              String formattedDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(pickedDate.toUtc());
+                                              widget.controller.hierarchyModel.branch_toDateController.value.text = formattedDate;
+                                            }
+                                          },
+                                          style: const TextStyle(
+                                            color: Primary_colors.Color1,
+                                            fontSize: Primary_font_size.Text8,
+                                          ),
+                                          decoration: const InputDecoration(
+                                            fillColor: Colors.black,
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Primary_colors.Color3,
+                                                width: 2,
+                                              ),
+                                            ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color.fromARGB(255, 94, 94, 94),
+                                                width: 1,
+                                              ),
+                                            ),
+                                            contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // buildTextField("To Date", widget.controller.hierarchyModel.branch_toDateController.value, true),
+                                buildTextField("Amount", widget.controller.hierarchyModel.branch_amountController.value, false),
+                                buildTextField("Billing Period", widget.controller.hierarchyModel.branch_billingPeriodController.value, true),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(color: Colors.white),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        // BasicButton(text: "Revert", colors: Colors.redAccent, onPressed: () {}),
+                        BasicButton(
+                          text: "Update",
+                          colors: Colors.blue,
+                          onPressed: () {
+                            widget.UpdateKYC(
+                              context,
+                              widget.controller.hierarchyModel.branch_IdController.value.text,
+                              widget.controller.hierarchyModel.branch_NameController.value.text,
+                              widget.controller.hierarchyModel.branch_emailIdController.value.text,
+                              widget.controller.hierarchyModel.branch_contactNumberController.value.text,
+                              widget.controller.hierarchyModel.branch_clientAddressController.value.text,
+                              widget.controller.hierarchyModel.branch_gstNumberController.value.text,
+                              widget.controller.hierarchyModel.branch_billingAddressNameController.value.text,
+                              widget.controller.hierarchyModel.branch_billingAddressController.value.text,
+                              widget.controller.hierarchyModel.branch_contact_personController.value.text,
+                              widget.controller.hierarchyModel.branch_CodeController.value.text,
+                              widget.controller.hierarchyModel.branch_siteTypeController.value.text,
+                              widget.controller.hierarchyModel.branch_billingPlanController.value.text,
+                              widget.controller.hierarchyModel.branch_billModeController.value.text,
+                              widget.controller.hierarchyModel.branch_fromDateController.value.text,
+                              widget.controller.hierarchyModel.branch_toDateController.value.text,
+                              widget.controller.hierarchyModel.branch_amountController.value.text,
+                              widget.controller.hierarchyModel.branch_billingPeriodController.value.text,
+                              widget.controller.hierarchyModel.branch_subscriptionIdController.value.text,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                  ],
+                ),
+              )
             ],
           ),
-          const SizedBox(height: 30),
-        ],
+        ),
       ),
     );
   }

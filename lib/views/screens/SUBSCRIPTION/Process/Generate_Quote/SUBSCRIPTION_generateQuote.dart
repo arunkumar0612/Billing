@@ -27,7 +27,7 @@ class _SUBSCRIPTION_GenerateQuoteState extends State<SUBSCRIPTION_GenerateQuote>
   void initState() {
     super.initState();
     // SUBSCRIPTION_GenerateQuote._tabController = ;
-    quoteController.initializeTabController(TabController(length: 5, vsync: this));
+    quoteController.initializeTabController(TabController(length: 4, vsync: this));
   }
 
   @override
@@ -133,7 +133,7 @@ class _SUBSCRIPTION_GenerateQuoteState extends State<SUBSCRIPTION_GenerateQuote>
                           tabs: const [
                             Tab(text: "DETAILS"),
                             Tab(text: "SITE"),
-                            Tab(text: "PACKAGE"),
+                            // Tab(text: "PACKAGE"),
                             Tab(text: "NOTE"),
                             Tab(text: "POST"),
                           ],
@@ -150,7 +150,7 @@ class _SUBSCRIPTION_GenerateQuoteState extends State<SUBSCRIPTION_GenerateQuote>
                           eventID: widget.eventID,
                         ),
                         SUBSCRIPTION_QuoteSites(),
-                        const SubscriptionQuotePackage(),
+                        // const SubscriptionQuotePackage(),
                         SUBSCRIPTION_QuoteNote(),
                         SUBSCRIPTION_PostQuote(type: 'E:/${(quoteController.quoteModel.Quote_no.value ?? "default_filename").replaceAll("/", "-")}.pdf', eventtype: widget.quoteType
                             // Pass the expected file path

@@ -28,6 +28,17 @@ class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProvide
   final cameraquantityController = TextEditingController().obs;
   final site_editIndex = Rxn<int>();
   var QuoteSiteDetails = <Site>[].obs;
+  //  var Quote_sites = <SUBSCRIPTION_QuoteSite>[].obs;
+  var selectedPackageController = TextEditingController().obs;
+  Rx<PackageDetails?> customPackageDetails = Rx<PackageDetails?>(null);
+
+  final List<String> packages = ['Basic', 'Standard', 'Premium', 'Enterprise', 'Custom'];
+
+  // Controllers for custom package
+  final customCameraCountController = TextEditingController().obs;
+  final customPackageAmountController = TextEditingController().obs;
+  final customAdditionalChargesController = TextEditingController().obs;
+  final customDescriptionController = TextEditingController().obs;
 
   // NOTES
   final noteformKey = GlobalKey<FormState>().obs;

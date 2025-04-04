@@ -1,14 +1,13 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:ssipl_billing/views/screens/BILLING/Billing.dart';
-import 'package:ssipl_billing/views/screens/HIERARCHY/Hierarchy.dart';
-import 'package:ssipl_billing/views/screens/SALES/Sales.dart';
-import 'package:ssipl_billing/views/screens/SUBSCRIPTION/Subscription.dart';
-import 'package:ssipl_billing/views/screens/DASHBOARD/dashboard.dart';
-import 'package:ssipl_billing/views/screens/INVENTORY/inventory.dart';
-import 'package:ssipl_billing/themes/style.dart';
-import 'package:ssipl_billing/views/screens/VENDOR/vendors.dart';
+import 'package:ssipl_billing/1.DASHBOARD/views/dashboard.dart';
+import 'package:ssipl_billing/2.BILLING/views/Billing.dart';
+import 'package:ssipl_billing/3.SUBSCRIPTION/views/Subscription.dart';
+import 'package:ssipl_billing/4.SALES/views/Sales.dart';
+import 'package:ssipl_billing/5.VENDOR/views/vendors.dart';
+import 'package:ssipl_billing/6.INVENTORY/views/inventory.dart';
+import 'package:ssipl_billing/7.HIERARCHY/views/Hierarchy.dart';
+import 'package:ssipl_billing/THEMES-/style.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});

@@ -1,34 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/controllers/Hierarchy_actions.dart';
-import 'package:ssipl_billing/controllers/Notification_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/CustomPDF_Controllers/CustomPDF_Quote_actions.dart';
-import 'package:ssipl_billing/controllers/SALEScontrollers/Sales_actions.dart';
-import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
-import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_ClientReq_actions.dart';
-import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Invoice_actions.dart';
-import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/SUBSCRIPTION_Quote_actions.dart';
-import 'package:ssipl_billing/controllers/SUBSCRIPTIONcontrollers/Subscription_actions.dart';
-import 'package:ssipl_billing/routes/app_routes.dart';
-import 'package:ssipl_billing/themes/style.dart';
-// import 'package:ssipl_billing/controllers/viewSend_actions.dart';
-// import 'package:window_manager/window_manager.dart';
-import 'controllers/SALEScontrollers/ClientReq_actions.dart';
-import 'controllers/SALEScontrollers/DC_actions.dart';
-import 'controllers/IAM_actions.dart';
-import 'controllers/SALEScontrollers/Invoice_actions.dart';
-import 'controllers/SALEScontrollers/Quote_actions.dart';
-import 'controllers/SALEScontrollers/RFQ_actions.dart';
-import 'services/APIservices/invoker.dart';
+import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
+import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart';
+import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Invoice_actions.dart';
+import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
+import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/Subscription_actions.dart';
+import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
+import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
+import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_Quote_actions.dart';
+import 'package:ssipl_billing/4.SALES/controllers/Sales_actions.dart';
+import 'package:ssipl_billing/7.HIERARCHY/controllers/Hierarchy_actions.dart';
+import 'package:ssipl_billing/API-/invoker.dart';
+import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
+import 'package:ssipl_billing/NOTIFICATION-/Notification_actions.dart';
+import 'package:ssipl_billing/ROUTES-/app_routes.dart';
+import 'package:ssipl_billing/THEMES-/style.dart';
+
+import '4.SALES/controllers/ClientReq_actions.dart';
+import '4.SALES/controllers/DC_actions.dart';
+import '4.SALES/controllers/Invoice_actions.dart';
+import '4.SALES/controllers/Quote_actions.dart';
+import '4.SALES/controllers/RFQ_actions.dart';
 
 Future<void> main() async {
   // Initialize Flutter bindings
   WidgetsFlutterBinding.ensureInitialized();
   Get.lazyPut<NotificationController>(() => NotificationController());
 
-////////////////////////////----IAM----////////////////////////////////////
+////////////////////////////---IAM-----////////////////////////////////////
   Get.lazyPut<IAMController>(() => IAMController());
   Get.lazyPut<SessiontokenController>(() => SessiontokenController());
   Get.lazyPut<LoginController>(() => LoginController());

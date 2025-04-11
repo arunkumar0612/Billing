@@ -100,7 +100,7 @@ mixin SubscriptionServices {
 
   Future<void> Get_RecurringInvoiceList(context, int? id) async {
     try {
-      loader.start(context);
+      // loader.start(context);
 
       Map<String, dynamic>? response;
 
@@ -121,7 +121,7 @@ mixin SubscriptionServices {
       } else {
         Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
-      loader.stop();
+      // loader.stop();
     } catch (e) {
       Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
       loader.stop();

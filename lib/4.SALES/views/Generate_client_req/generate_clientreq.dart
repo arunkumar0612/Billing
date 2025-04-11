@@ -31,7 +31,7 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
 
   @override
   void dispose() {
-    clientreqController.clientReqModel.tabController.value?.dispose();
+    // clientreqController.clientReqModel.tabController.value?.dispose();
     super.dispose();
   }
 

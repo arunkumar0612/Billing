@@ -33,7 +33,6 @@ import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../controllers/Sales_actions.dart';
-// import 'package:cool_dropdown/models/cool_dropdown_item.dart';
 
 class Sales_Client extends StatefulWidget with SalesServices, BellIconFunction {
   Sales_Client({super.key});
@@ -144,36 +143,46 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                 onExit: (_) => notificationController.notificationModel.isHovered.value = false,
                                 cursor: SystemMouseCursors.click,
                                 child: GestureDetector(
-                                  onTap: () => widget.showNotification(context),
-                                  child: Icon(
-                                    size: 30,
-                                    Icons.notifications,
-                                    color: notificationController.notificationModel.isHovered.value ? Colors.amber : Colors.black,
-                                  ),
-                                ),
+                                    onTap: () => widget.showNotification(context),
+                                    child: ShaderMask(
+                                      shaderCallback: (Rect bounds) {
+                                        return LinearGradient(
+                                          colors:
+                                              notificationController.notificationModel.notifications.isNotEmpty ? [Colors.black, const Color.fromARGB(164, 255, 191, 0), Colors.amber] : [Colors.amber],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ).createShader(bounds);
+                                      },
+                                      blendMode: BlendMode.srcIn,
+                                      child: const Icon(
+                                        Icons.notifications,
+                                        size: 30,
+                                      ),
+                                    )),
                               ),
                             ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Container(
-                                height: 15,
-                                width: 15,
-                                decoration: BoxDecoration(
-                                  color: notificationController.notificationModel.notifications.isNotEmpty ? Colors.red : Colors.blue,
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    notificationController.notificationModel.notifications.length > 9 ? '9+' : '${notificationController.notificationModel.notifications.length}',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
+                            if (notificationController.notificationModel.notifications.isNotEmpty)
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: Container(
+                                  height: 15,
+                                  width: 15,
+                                  decoration: BoxDecoration(
+                                    color: notificationController.notificationModel.notifications.isNotEmpty ? Colors.red : Colors.blue,
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      notificationController.notificationModel.notifications.length > 9 ? '9+' : '${notificationController.notificationModel.notifications.length}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
                           ],
                         );
                       }),

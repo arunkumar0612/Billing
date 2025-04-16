@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/UTILS-/helpers/refresher.dart';
 
 import '../../controllers/ClientReq_actions.dart';
 import '../../services/ClientReq_services/ClientreqNote_service.dart';
@@ -18,6 +18,7 @@ class ClientreqNote extends StatefulWidget with ClientreqNoteService {
 
 class _ClientreqNoteState extends State<ClientreqNote> {
   final ClientreqController clientreqController = Get.find<ClientreqController>();
+
   Widget Clientreq_noteLists() {
     return ListView.builder(
         itemCount: clientreqController.clientReqModel.clientReqNoteList.length,
@@ -447,7 +448,9 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                 colors: Colors.green,
                                 text: 'Submit',
                                 onPressed: () async {
-                                  showLoading(context, () => widget.postData(context, widget.customer_type));
+                                  await widget.postData(context, widget.customer_type);
+                                  await Future.delayed(const Duration(milliseconds: 1000));
+                                  await Refresher().refreshAll(context);
                                 },
                               ),
                           ],

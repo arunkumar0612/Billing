@@ -2,12 +2,10 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/API-/api.dart';
 import 'package:ssipl_billing/API-/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
-import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
 mixin BranchService {
   final Invoker apiController = Get.find<Invoker>();
-  final loader = LoadingOverlay();
 
   void UpdateKYC(
     context,

@@ -192,15 +192,20 @@ class NotificationController extends GetxController {
     super.onClose();
   }
 
-  void react_to_MQTTlistener(String topic, String message) {
+  void react_to_MQTTlistener(String topic, String message) async {
+    final context = Get.context;
     if (topic == "Notification") {
-      Refresher();
+      if (context != null) {
+        await Refresher().refreshAll(context);
+      }
       if (!notificationModel.notifications.contains(message)) {
         notificationModel.notifications.add(message);
         showWithSmallImage(message);
       }
     } else if (topic == "refresh") {
-      Refresher();
+      if (context != null) {
+        await Refresher().refreshAll(context);
+      }
       if (!notificationModel.notifications.contains(message)) {
         notificationModel.notifications.add(message);
       }

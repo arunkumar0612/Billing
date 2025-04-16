@@ -6,7 +6,6 @@ import 'package:ssipl_billing/7.HIERARCHY/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/7.HIERARCHY/services/hierarchy_service.dart';
 import 'package:ssipl_billing/7.HIERARCHY/views/COMP/CompEditor.dart';
 import 'package:ssipl_billing/7.HIERARCHY/views/COMP/Comp_card.dart';
-import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 
 class CompanyGrid extends StatefulWidget with HierarchyService {
@@ -18,8 +17,6 @@ class CompanyGrid extends StatefulWidget with HierarchyService {
 
 class _CompanyGridState extends State<CompanyGrid> with SingleTickerProviderStateMixin {
   final HierarchyController hierarchyController = Get.find<HierarchyController>();
-
-  final loader = LoadingOverlay();
 
   @override
   void initState() {

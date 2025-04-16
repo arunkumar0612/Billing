@@ -12,14 +12,16 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/CustomPDF_entities/
 import 'package:ssipl_billing/API-/api.dart' show API;
 import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Basic_dialog;
+import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart' show CMDmResponse;
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
+import 'package:ssipl_billing/UTILS-/helpers/refresher.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 mixin SUBSCRIPTION_PostServices {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final SUBSCRIPTION_CustomPDF_InvoiceController pdfpopup_controller = Get.find<SUBSCRIPTION_CustomPDF_InvoiceController>();
-
+  final loader = LoadingOverlay();
   final Invoker apiController = Get.find<Invoker>();
   void animation_control() async {
     // await Future.delayed(const Duration(milliseconds: 200));
@@ -101,6 +103,7 @@ mixin SUBSCRIPTION_PostServices {
         await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
         return;
       }
+      loader.start(context);
       File cachedPdf = pdfpopup_controller.pdfModel.value.genearatedPDF.value!;
       // savePdfToCache();
       PostInvoice subscriptionData = PostInvoice(
@@ -134,16 +137,21 @@ mixin SUBSCRIPTION_PostServices {
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
+          loader.stop();
           await Basic_dialog(context: context, title: "Invoice", content: value.message!, onOk: () {}, showCancel: false);
           // Navigator.of(context).pop(true);
           // invoiceController.resetData();
         } else {
+          loader.stop();
           await Basic_dialog(context: context, title: 'Processing Invoice', content: value.message ?? "", onOk: () {}, showCancel: false);
         }
       } else {
+        loader.stop();
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
       }
+      await Refresher().refreshAll(context);
     } catch (e) {
+      loader.stop();
       Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
     }
   }

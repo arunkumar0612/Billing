@@ -1,29 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/4.SALES/services/sales_service.dart';
 
 import '../../3.SUBSCRIPTION/services/subscription_service.dart';
+import '../../4.SALES/services/sales_service.dart';
 
-class Refresher extends StatefulWidget with SalesServices, SubscriptionServices {
-  Refresher({super.key});
+class Refresher with SalesServices, SubscriptionServices {
+  static final Refresher _instance = Refresher._internal();
+  factory Refresher() => _instance;
+  Refresher._internal();
 
-  @override
-  State<Refresher> createState() => _RefresherState();
-}
-
-class _RefresherState extends State<Refresher> {
-  void executer(context) {
-    widget.sales_refresh(context);
-    widget.subscription_refresh(context);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    executer(context);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
+  Future<void> refreshAll(BuildContext context) async {
+    await sales_refresh(context);
+    await subscription_refresh(context);
   }
 }

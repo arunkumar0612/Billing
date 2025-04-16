@@ -1,62 +1,8 @@
 import 'dart:async';
-// ignore_for_file: deprecated_member_use
-
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
-
-// Function to Show Dialog with API Call
-void showLoading(BuildContext context, Future<dynamic> Function() apiCall) {
-  showDialog(
-    context: context,
-    barrierDismissible: false, // Prevent user from dismissing manually
-    builder: (context) {
-      // Get a reference to Navigator
-      final navigator = Navigator.of(context);
-
-      // Start the API call and close the dialog when done
-      // Future.wait([
-      //   apiCall(),
-      //   Future.delayed(const Duration(seconds: 2)), // Ensures at least 2 sec delay
-      // ])
-      Future.delayed(const Duration(seconds: 15), () {
-        if (navigator.mounted) {
-          navigator.pop(); // Close the loader if it's still open
-        }
-      });
-
-      apiCall().then((_) {
-        if (navigator.mounted) {
-          navigator.pop(); // Close loader when API call completes
-        }
-      }).catchError((error) {
-        if (navigator.mounted) {
-          navigator.pop(); // Close loader on error
-        }
-        if (kDebugMode) {
-          print("API Error: $error");
-        }
-      });
-
-      return Stack(
-        children: [
-          // Blurred Background
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-            child: Container(
-              color: Colors.black.withOpacity(0.8), // Dark semi-transparent overlay
-            ),
-          ),
-
-          // Loading Animation
-          const Center(child: LoadingWithStyledIndicator()),
-        ],
-      );
-    },
-  );
-}
 
 class LoadingOverlay {
   static final LoadingOverlay _instance = LoadingOverlay._internal();

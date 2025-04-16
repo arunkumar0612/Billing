@@ -670,7 +670,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                     ),
                                                     color: Colors.white,
                                                     elevation: 6,
-                                                    offset: const Offset(170, 20),
+                                                    offset: const Offset(170, 60),
                                                     onSelected: (String item) async {
                                                       // Handle menu item selection
 
@@ -747,16 +747,11 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                       // Determine the label for the archive/unarchive action
 
                                                       return [
-                                                        PopupMenuItem<String>(
+                                                        const PopupMenuItem<String>(
                                                           value: "Invoice",
                                                           child: ListTile(
-                                                            leading: Obx(
-                                                              () => Icon(
-                                                                salesController.salesModel.type.value != 0 ? Icons.unarchive_outlined : Icons.archive_outlined,
-                                                                color: Colors.blueAccent,
-                                                              ),
-                                                            ),
-                                                            title: const Text(
+                                                            leading: Icon(Icons.receipt_long, color: Colors.indigo), // Better icon for invoice
+                                                            title: Text(
                                                               'Invoice',
                                                               style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
                                                             ),
@@ -765,22 +760,31 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                         const PopupMenuItem<String>(
                                                           value: 'Quotation',
                                                           child: ListTile(
-                                                            leading: Icon(Icons.edit_outlined, color: Colors.green),
-                                                            title: Text('Quotation', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                                            leading: Icon(Icons.request_quote, color: Colors.green), // Matches quotations
+                                                            title: Text(
+                                                              'Quotation',
+                                                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                            ),
                                                           ),
                                                         ),
                                                         const PopupMenuItem<String>(
                                                           value: 'Delivery Challan',
                                                           child: ListTile(
-                                                            leading: Icon(Icons.delete_outline, color: Colors.redAccent),
-                                                            title: Text('Delivery Challan', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                                            leading: Icon(Icons.local_shipping, color: Colors.orange), // Delivery/shipping icon
+                                                            title: Text(
+                                                              'Delivery Challan',
+                                                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                            ),
                                                           ),
                                                         ),
                                                         const PopupMenuItem<String>(
                                                           value: 'Custom PDF List',
                                                           child: ListTile(
-                                                            leading: Icon(Icons.menu_rounded, color: Colors.blue),
-                                                            title: Text('Custom PDF List', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                                            leading: Icon(Icons.picture_as_pdf, color: Colors.redAccent), // Clear PDF representation
+                                                            title: Text(
+                                                              'Custom PDF List',
+                                                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                            ),
                                                           ),
                                                         ),
                                                       ];

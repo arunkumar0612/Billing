@@ -52,7 +52,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               readonly: false,
                               text: 'Title',
                               controller: clientreqController.clientReqModel.titleController.value,
-                              icon: Icons.person,
+                              icon: Icons.title,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter client name';
@@ -67,7 +67,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               readonly: false,
                               text: 'Contact Number',
                               controller: clientreqController.clientReqModel.phoneController.value,
-                              icon: Icons.people,
+                              icon: Icons.phone,
                               validator: (value) {
                                 return Validators.phnNo_validator(value);
                               },
@@ -79,7 +79,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               readonly: false,
                               text: 'Email',
                               controller: clientreqController.clientReqModel.emailController.value,
-                              icon: Icons.people,
+                              icon: Icons.email,
                               validator: (value) {
                                 return Validators.email_validator(value);
                               },
@@ -91,7 +91,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               readonly: false,
                               text: 'GST',
                               controller: clientreqController.clientReqModel.gstController.value,
-                              icon: Icons.people,
+                              icon: Icons.receipt_long,
                               validator: (value) {
                                 return Validators.GST_validator(value);
                               },
@@ -103,7 +103,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               readonly: false,
                               text: 'Mode of request',
                               controller: clientreqController.clientReqModel.morController.value,
-                              icon: Icons.price_change,
+                              icon: Icons.contact_support,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter the mode of request';
@@ -138,7 +138,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               readonly: false,
                               text: 'Client Address ',
                               controller: clientreqController.clientReqModel.clientAddressController.value,
-                              icon: Icons.location_history_outlined,
+                              icon: Icons.location_on_outlined,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter Client Address';
@@ -153,7 +153,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               readonly: false,
                               text: 'Billing name',
                               controller: clientreqController.clientReqModel.billingAddressNameController.value,
-                              icon: Icons.price_change,
+                              icon: Icons.badge,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter Billing Address name';
@@ -168,7 +168,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               readonly: false,
                               text: 'Billing Address',
                               controller: clientreqController.clientReqModel.billingAddressController.value,
-                              icon: Icons.price_change,
+                              icon: Icons.home_work_outlined,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter Billing Address';

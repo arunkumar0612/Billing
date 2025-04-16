@@ -29,11 +29,11 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
     clientreqController.initializeTabController(TabController(length: 3, vsync: this));
   }
 
-  @override
-  void dispose() {
-    // clientreqController.clientReqModel.tabController.value?.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   clientreqController.clientReqModel.tabController.value?.dispose();
+  //   super.dispose();
+  // }
 
   // ignore: unused_element
   void _showReadablePdf() {

@@ -55,6 +55,7 @@ class API {
   static String get_subscriptionCustompdf = "http://192.168.0.200:8081/subscription/getcustompdf";
   static String get_subscription_RecurringInvoiceList = "http://192.168.0.200:8081/subscription/getrecurredinvoice";
   static String get_subscription_GlobalPackageList = "http://192.168.0.200:8081/subscription/getglobalsubscription";
+  static String create_subscription_GlobalPackage = "http://192.168.0.200:8081/admin/createsubscription";
 
   /////////////////////-----------HIERACHY-------------//////////////////////////////////
   static String hierarchy_OrganizationData = "http://192.168.0.200:8081/admin/organization";

@@ -386,7 +386,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                               ),
                                                             ),
                                                           ),
-                                                        )
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
@@ -430,7 +430,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                             ),
                                                           ),
                                                         ),
-                                                      )
+                                                      ),
                                                     ],
                                                   ),
                                                   Padding(
@@ -475,10 +475,10 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                               ),
                                                             ),
                                                           ),
-                                                        )
+                                                        ),
                                                       ],
                                                     ),
-                                                  )
+                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -544,7 +544,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                         return Container(
                                                           height: screenHeight - 100, // Full screen height
                                                           padding: const EdgeInsets.symmetric(horizontal: 70),
-                                                          child: const SubscriptionPage(),
+                                                          child: Packagepage(),
                                                         );
                                                       },
                                                     );

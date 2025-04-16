@@ -35,4 +35,22 @@ class SubscriptionModel extends GetxController with GetSingleTickerProviderState
   var feedbackController = TextEditingController().obs;
   // var filePathController = TextEditingController().obs;
   var CCemailToggle = false.obs;
+
+  //  GLOBALPAGE VARIABLES
+  RxnInt packageselectedIndex = RxnInt();
+  var packageisEditing = false.obs;
+  final editingPackage = Rx<dynamic>(null);
+  final packagecamerasController = TextEditingController().obs;
+  final packageadditionalcamerasController = TextEditingController().obs;
+  final packagedescController = TextEditingController().obs;
+  final packagenameController = TextEditingController().obs;
+  final packagedevicesController = TextEditingController().obs;
+  final packageamountController = TextEditingController().obs;
+  final selectedPackages = <String>{}.obs;
+  final editpackagecamerasController = TextEditingController().obs;
+  final editpackageadditionalcamerasController = TextEditingController().obs;
+  final editpackagedescController = TextEditingController().obs;
+  final editpackagenameController = TextEditingController().obs;
+  final editpackagedevicesController = TextEditingController().obs;
+  final editpackageamountController = TextEditingController().obs;
 }

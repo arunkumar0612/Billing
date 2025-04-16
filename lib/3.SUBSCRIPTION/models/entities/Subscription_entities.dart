@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
@@ -509,7 +509,9 @@ class CompanyResponse {
 
     data.forEach((key, value) {
       if (key != 'Customer_Logo') {
-        print('$key: $value');
+        if (kDebugMode) {
+          print('$key: $value');
+        }
       }
     });
 
@@ -675,14 +677,14 @@ class Global_packageList {
 }
 
 class SiteDetail {
-  String siteName;
-  // String siteLocation;
-  int siteId;
+  String? siteName;
+  // String? siteLocation;
+  int? siteId;
 
   SiteDetail({
-    required this.siteName,
-    // required this.siteLocation,
-    required this.siteId,
+    this.siteName,
+    // this.siteLocation,
+    this.siteId,
   });
 
   factory SiteDetail.fromJson(Map<String, dynamic> json) {

@@ -146,9 +146,12 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                     onTap: () => widget.showNotification(context),
                                     child: ShaderMask(
                                       shaderCallback: (Rect bounds) {
-                                        return LinearGradient(
+                                        return const LinearGradient(
                                           colors:
-                                              notificationController.notificationModel.notifications.isNotEmpty ? [Colors.black, const Color.fromARGB(164, 255, 191, 0), Colors.amber] : [Colors.amber],
+                                              // notificationController.notificationModel.notifications.isNotEmpty ?
+
+                                              [Colors.black, Color.fromARGB(164, 255, 191, 0), Colors.amber],
+                                          // :  [Colors.amber],
                                           begin: Alignment.topLeft,
                                           end: Alignment.bottomRight,
                                         ).createShader(bounds);

@@ -85,7 +85,7 @@ mixin BellIconFunction {
                                           margin: const EdgeInsets.symmetric(vertical: 4),
                                           padding: const EdgeInsets.all(10),
                                           decoration: BoxDecoration(
-                                            color: Colors.white,
+                                            color: const Color.fromARGB(255, 35, 42, 63),
                                             borderRadius: BorderRadius.circular(8),
                                           ),
                                           child: Row(
@@ -97,17 +97,25 @@ mixin BellIconFunction {
                                               Expanded(
                                                 child: Text(
                                                   notification,
-                                                  style: const TextStyle(fontSize: 14, color: Colors.black, decoration: TextDecoration.none),
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white,
+                                                    decoration: TextDecoration.none,
+                                                    fontWeight: FontWeight.normal,
+                                                  ),
                                                 ),
                                               ),
-                                              SizedBox(
+                                              Container(
+                                                color: Colors.transparent,
                                                 width: 50,
                                                 child: Material(
+                                                  color: Colors.transparent, // Make the Material also transparent
                                                   child: PopupMenuButton<String>(
-                                                    padding: const EdgeInsets.only(),
+                                                    color: Colors.white, // Optional: background color of the popup itself
+                                                    padding: EdgeInsets.zero,
                                                     icon: const Icon(
                                                       Icons.more_horiz,
-                                                      color: Colors.black,
+                                                      color: Colors.white, // Black icon
                                                     ),
                                                     onSelected: (value) {
                                                       if (value == 'delete') {

@@ -1,3 +1,4 @@
+import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
@@ -96,6 +97,7 @@ Future<void> main() async {
 
   // print("Final Array: $final_array");
   runApp(const MyApp());
+  DesktopWindow.setMinWindowSize(const Size(1366.0, 768.0));
 }
 
 class MyApp extends StatelessWidget {

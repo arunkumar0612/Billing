@@ -441,8 +441,6 @@ class InvoiceController extends GetxController {
         invoiceModel.clientAddressController.value.text.isEmpty ||
         invoiceModel.billingAddressNameController.value.text.isEmpty ||
         invoiceModel.billingAddressController.value.text.isEmpty ||
-        invoiceModel.emailController.value.text.isEmpty ||
-        invoiceModel.phoneController.value.text.isEmpty ||
         invoiceModel.gstNumController.value.text.isEmpty ||
         invoiceModel.Invoice_products.isEmpty ||
         invoiceModel.Invoice_noteList.isEmpty ||

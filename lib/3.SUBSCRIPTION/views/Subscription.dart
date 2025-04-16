@@ -17,6 +17,7 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/views/Package.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Recurring_Invoice/recurringInvoice.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Subscription_chart.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
+import 'package:ssipl_billing/COMPONENTS-/importXL.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
@@ -54,15 +55,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
     // widget.GetProcesscustomerList(context);
     // widget.GetProcessList(context, 0);
     // widget.GetSubscriptionData(context, subscriptionController.subscriptionModel.subscriptionperiod.value);
-    subscriptionController.subscriptionModel.animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    );
-  }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.Get_RecurringInvoiceList(context, null);
       widget.get_CompanyList(context);
@@ -73,6 +66,15 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       widget.GetProcessList(context, 0);
       widget.GetSubscriptionData(context, subscriptionController.subscriptionModel.subscriptionperiod.value);
     });
+    subscriptionController.subscriptionModel.animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   void _startAnimation() {
@@ -687,6 +689,13 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                                 );
                                                               }();
                                                               break;
+                                                            case 'Import':
+                                                              import_excel obj = import_excel(); // Remove const
+                                                              import_excel.excelData.clear();
+                                                              await obj.pickExcelFile(context);
+                                                              print(import_excel.excelData);
+
+                                                              break;
                                                           }
                                                         },
                                                         itemBuilder: (BuildContext context) {
@@ -716,10 +725,10 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                               ),
                                                             ),
                                                             const PopupMenuItem<String>(
-                                                              value: 'Option3',
+                                                              value: 'Import',
                                                               child: ListTile(
                                                                 leading: Icon(Icons.delete_outline, color: Colors.redAccent),
-                                                                title: Text('Option3', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                                                title: Text('Import', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
                                                               ),
                                                             ),
                                                           ];

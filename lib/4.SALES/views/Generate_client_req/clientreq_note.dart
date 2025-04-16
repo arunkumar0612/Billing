@@ -33,42 +33,44 @@ class _ClientreqNoteState extends State<ClientreqNote> {
               width: 550,
               child: Center(
                   child: Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.only(left: 10, top: 5),
-                        child: Icon(
-                          Icons.circle,
-                          size: 5,
-                        )),
-                    Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                clientreqController.clientReqModel.clientReqNoteList[index], // Display camera type from map
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
+                      padding: const EdgeInsets.only(bottom: 0),
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Padding(
+                                padding: EdgeInsets.only(left: 10, top: 5),
+                                child: Icon(
+                                  Icons.circle,
+                                  size: 5,
+                                )),
+                            Expanded(
+                              child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        clientreqController.clientReqModel.clientReqNoteList[index], // Display camera type from map
+                                        style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                clientreqController.removeFromNoteList(index);
+                              },
+                              icon: const Icon(
+                                Icons.close,
+                                size: 15,
                               ),
-                            ],
-                          )),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        clientreqController.removeFromNoteList(index);
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 15,
-                      ),
-                    ),
-                  ],
-                ),
-              )),
+                            ),
+                          ],
+                        ),
+                      ))),
             ),
           );
         });
@@ -89,42 +91,44 @@ class _ClientreqNoteState extends State<ClientreqNote> {
               width: 550,
               child: Center(
                   child: Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.only(left: 10, top: 5),
-                        child: Icon(
-                          Icons.circle,
-                          size: 5,
-                        )),
-                    Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                clientreqController.clientReqModel.clientReqRecommendationList[index].key,
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
+                      padding: const EdgeInsets.only(bottom: 0),
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Padding(
+                                padding: EdgeInsets.only(left: 10, top: 5),
+                                child: Icon(
+                                  Icons.circle,
+                                  size: 5,
+                                )),
+                            Expanded(
+                              child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        clientreqController.clientReqModel.clientReqRecommendationList[index].key,
+                                        style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                clientreqController.removeFromRecommendationList(index);
+                              },
+                              icon: const Icon(
+                                Icons.close,
+                                size: 15,
                               ),
-                            ],
-                          )),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        clientreqController.removeFromRecommendationList(index);
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 15,
-                      ),
-                    ),
-                  ],
-                ),
-              )),
+                            ),
+                          ],
+                        ),
+                      ))),
             ),
           );
         });
@@ -159,6 +163,11 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                               ),
                               const SizedBox(height: 10),
                               DropdownMenu<String>(
+                                leadingIcon: const Icon(
+                                  Icons.note_add,
+                                  color: Primary_colors.Color1,
+                                ), // Add leading icon here
+                                menuHeight: 350,
                                 trailingIcon: const Icon(
                                   Icons.arrow_drop_down,
                                   color: Color.fromARGB(255, 122, 121, 121),
@@ -167,7 +176,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                   "Note",
                                   style: TextStyle(color: Color.fromARGB(255, 167, 165, 165), fontSize: Primary_font_size.Text7),
                                 ),
-                                textStyle: const TextStyle(color: Primary_colors.Color1),
+                                textStyle: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                 width: 400,
                                 inputDecorationTheme: const InputDecorationTheme(
                                   contentPadding: EdgeInsets.only(left: 10, right: 5),

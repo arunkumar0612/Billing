@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'dart:io';
 
@@ -20,11 +22,11 @@ class NotificationController extends GetxController {
   Timer? _reconnectTimer; // Timer for automatic reconnection
   final WindowsNotification winNotifyPlugin = WindowsNotification(applicationId: r"Enterprise & Resource Planning");
 
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   initializeMqttClient();
-  // }
+  @override
+  void onInit() {
+    super.onInit();
+    initializeMqttClient();
+  }
 
   // void bringAppToFront() {
   //   final hwnd = FindWindow(nullptr, TEXT("ERP_APP"));
@@ -168,9 +170,11 @@ class NotificationController extends GetxController {
 
               if (topic == 'Notification') {
                 react_to_MQTTlistener(topic, messageText);
+                return;
               }
               if (topic == 'refresh') {
                 react_to_MQTTlistener(topic, messageText);
+                return;
               }
             }
           },
@@ -188,14 +192,23 @@ class NotificationController extends GetxController {
     super.onClose();
   }
 
-  void react_to_MQTTlistener(String topic, String message) {
+  void react_to_MQTTlistener(String topic, String message) async {
+    final context = Get.context;
     if (topic == "Notification") {
-      Refresher();
-      notificationModel.notifications.add(message);
-      showWithSmallImage(message);
+      if (context != null) {
+        await Refresher().refreshAll(context);
+      }
+      if (!notificationModel.notifications.contains(message)) {
+        notificationModel.notifications.add(message);
+        showWithSmallImage(message);
+      }
     } else if (topic == "refresh") {
-      Refresher();
-      notificationModel.notifications.add(message);
+      if (context != null) {
+        await Refresher().refreshAll(context);
+      }
+      if (!notificationModel.notifications.contains(message)) {
+        notificationModel.notifications.add(message);
+      }
     }
   }
 

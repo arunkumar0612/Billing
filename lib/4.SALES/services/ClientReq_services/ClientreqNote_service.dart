@@ -11,6 +11,7 @@ import 'package:ssipl_billing/4.SALES/views/Generate_client_req/clientreq_templa
 import 'package:ssipl_billing/API-/api.dart';
 import 'package:ssipl_billing/API-/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
+import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
@@ -21,6 +22,7 @@ mixin ClientreqNoteService {
   final ClientreqController clientreqController = Get.find<ClientreqController>();
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
+  final loader = LoadingOverlay();
 
   void addtable_row(context) {
     if (clientreqController.clientReqModel.noteFormKey.value.currentState?.validate() ?? false) {
@@ -124,6 +126,7 @@ mixin ClientreqNoteService {
         await Basic_dialog(context: context, showCancel: false, title: "POST", content: "All fields must be filled", onOk: () {});
         return;
       }
+      loader.start(context);
       File cachedPdf = await savePdfToCache();
       Post_ClientRequirement salesData = Post_ClientRequirement.fromJson(
           clientreqController.clientReqModel.titleController.value.text,
@@ -155,16 +158,20 @@ mixin ClientreqNoteService {
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
+          loader.stop();
           await Basic_dialog(context: context, showCancel: false, title: "CLIENT REQUIREMENT", content: value.message!, onOk: () {});
           Navigator.of(context).pop(true);
           clientreqController.resetData();
         } else {
+          loader.stop();
           await Basic_dialog(context: context, showCancel: false, title: 'Processing client requirement', content: value.message ?? "", onOk: () {});
         }
       } else {
+        loader.stop();
         Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
+      loader.stop();
       Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }

@@ -12,15 +12,17 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_client_req/S
 import 'package:ssipl_billing/API-/api.dart' show API;
 import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Basic_dialog;
+import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart' show CMDmResponse;
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
+import 'package:ssipl_billing/UTILS-/helpers/refresher.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart' show getCurrentDate;
 
 mixin SUBSCRIPTION_ClientreqNoteService {
   final SUBSCRIPTION_ClientreqController clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
-
+  final loader = LoadingOverlay();
   void addtable_row(context) {
     if (clientreqController.clientReqModel.noteFormKey.value.currentState?.validate() ?? false) {
       clientreqController.updateRec_ValueControllerText(clientreqController.clientReqModel.Rec_HeadingController.value.text);
@@ -123,6 +125,7 @@ mixin SUBSCRIPTION_ClientreqNoteService {
         await Basic_dialog(context: context, showCancel: false, title: "POST", content: "All fields must be filled", onOk: () {});
         return;
       }
+      loader.start(context);
       File cachedPdf = await savePdfToCache();
       SUBSCRIPTION_Post_ClientRequirement salesData = SUBSCRIPTION_Post_ClientRequirement.fromJson(
         clientreqController.clientReqModel.titleController.value.text,
@@ -155,16 +158,21 @@ mixin SUBSCRIPTION_ClientreqNoteService {
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
+          loader.stop();
           await Basic_dialog(context: context, showCancel: false, title: "CLIENT REQUIREMENT", content: value.message!, onOk: () {});
           Navigator.of(context).pop(true);
           clientreqController.resetData();
         } else {
+          loader.stop();
           await Basic_dialog(context: context, showCancel: false, title: 'Processing client requirement', content: value.message ?? "", onOk: () {});
         }
       } else {
+        loader.stop();
         Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
+      await Refresher().refreshAll(context);
     } catch (e) {
+      loader.stop();
       Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }

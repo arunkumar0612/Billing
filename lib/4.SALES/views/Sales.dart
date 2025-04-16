@@ -33,7 +33,6 @@ import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../controllers/Sales_actions.dart';
-// import 'package:cool_dropdown/models/cool_dropdown_item.dart';
 
 class Sales_Client extends StatefulWidget with SalesServices, BellIconFunction {
   Sales_Client({super.key});
@@ -144,36 +143,49 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                 onExit: (_) => notificationController.notificationModel.isHovered.value = false,
                                 cursor: SystemMouseCursors.click,
                                 child: GestureDetector(
-                                  onTap: () => widget.showNotification(context),
-                                  child: Icon(
-                                    size: 30,
-                                    Icons.notifications,
-                                    color: notificationController.notificationModel.isHovered.value ? Colors.amber : Colors.black,
-                                  ),
-                                ),
+                                    onTap: () => widget.showNotification(context),
+                                    child: ShaderMask(
+                                      shaderCallback: (Rect bounds) {
+                                        return const LinearGradient(
+                                          colors:
+                                              // notificationController.notificationModel.notifications.isNotEmpty ?
+
+                                              [Colors.black, Color.fromARGB(164, 255, 191, 0), Colors.amber],
+                                          // :  [Colors.amber],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ).createShader(bounds);
+                                      },
+                                      blendMode: BlendMode.srcIn,
+                                      child: const Icon(
+                                        Icons.notifications,
+                                        size: 30,
+                                      ),
+                                    )),
                               ),
                             ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Container(
-                                height: 15,
-                                width: 15,
-                                decoration: BoxDecoration(
-                                  color: notificationController.notificationModel.notifications.isNotEmpty ? Colors.red : Colors.blue,
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    notificationController.notificationModel.notifications.length > 9 ? '9+' : '${notificationController.notificationModel.notifications.length}',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
+                            if (notificationController.notificationModel.notifications.isNotEmpty)
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: Container(
+                                  height: 15,
+                                  width: 15,
+                                  decoration: BoxDecoration(
+                                    color: notificationController.notificationModel.notifications.isNotEmpty ? Colors.red : Colors.blue,
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      notificationController.notificationModel.notifications.length > 9 ? '9+' : '${notificationController.notificationModel.notifications.length}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
                           ],
                         );
                       }),
@@ -658,7 +670,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                     ),
                                                     color: Colors.white,
                                                     elevation: 6,
-                                                    offset: const Offset(170, 20),
+                                                    offset: const Offset(170, 60),
                                                     onSelected: (String item) async {
                                                       // Handle menu item selection
 
@@ -735,16 +747,11 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                       // Determine the label for the archive/unarchive action
 
                                                       return [
-                                                        PopupMenuItem<String>(
+                                                        const PopupMenuItem<String>(
                                                           value: "Invoice",
                                                           child: ListTile(
-                                                            leading: Obx(
-                                                              () => Icon(
-                                                                salesController.salesModel.type.value != 0 ? Icons.unarchive_outlined : Icons.archive_outlined,
-                                                                color: Colors.blueAccent,
-                                                              ),
-                                                            ),
-                                                            title: const Text(
+                                                            leading: Icon(Icons.receipt_long, color: Colors.indigo), // Better icon for invoice
+                                                            title: Text(
                                                               'Invoice',
                                                               style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
                                                             ),
@@ -753,22 +760,31 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                         const PopupMenuItem<String>(
                                                           value: 'Quotation',
                                                           child: ListTile(
-                                                            leading: Icon(Icons.edit_outlined, color: Colors.green),
-                                                            title: Text('Quotation', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                                            leading: Icon(Icons.request_quote, color: Colors.green), // Matches quotations
+                                                            title: Text(
+                                                              'Quotation',
+                                                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                            ),
                                                           ),
                                                         ),
                                                         const PopupMenuItem<String>(
                                                           value: 'Delivery Challan',
                                                           child: ListTile(
-                                                            leading: Icon(Icons.delete_outline, color: Colors.redAccent),
-                                                            title: Text('Delivery Challan', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                                            leading: Icon(Icons.local_shipping, color: Colors.orange), // Delivery/shipping icon
+                                                            title: Text(
+                                                              'Delivery Challan',
+                                                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                            ),
                                                           ),
                                                         ),
                                                         const PopupMenuItem<String>(
                                                           value: 'Custom PDF List',
                                                           child: ListTile(
-                                                            leading: Icon(Icons.menu_rounded, color: Colors.blue),
-                                                            title: Text('Custom PDF List', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                                            leading: Icon(Icons.picture_as_pdf, color: Colors.redAccent), // Clear PDF representation
+                                                            title: Text(
+                                                              'Custom PDF List',
+                                                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                            ),
                                                           ),
                                                         ),
                                                       ];

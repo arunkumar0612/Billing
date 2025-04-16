@@ -6,7 +6,6 @@ import 'package:ssipl_billing/7.HIERARCHY/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/7.HIERARCHY/services/hierarchy_service.dart';
 import 'package:ssipl_billing/7.HIERARCHY/views/BRANCH/BranchEditor.dart';
 import 'package:ssipl_billing/7.HIERARCHY/views/BRANCH/Branchcard.dart';
-import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 
 class BranchGrid extends StatefulWidget with HierarchyService {
@@ -18,7 +17,6 @@ class BranchGrid extends StatefulWidget with HierarchyService {
 
 class _BranchGridState extends State<BranchGrid> with SingleTickerProviderStateMixin {
   final HierarchyController hierarchyController = Get.find<HierarchyController>();
-  final loader = LoadingOverlay();
 
   @override
   void initState() {

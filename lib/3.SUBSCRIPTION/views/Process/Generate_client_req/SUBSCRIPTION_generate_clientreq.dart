@@ -28,7 +28,7 @@ class _GenerateclientreqState extends State<SUBSCRIPTION_Generate_clientreq> wit
 
   @override
   void dispose() {
-    clientreqController.clientReqModel.tabController.value?.dispose();
+    // clientreqController.clientReqModel.tabController.value?.dispose();
     super.dispose();
   }
 

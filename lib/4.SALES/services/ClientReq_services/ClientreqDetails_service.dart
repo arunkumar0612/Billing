@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/controllers/ClientReq_actions.dart';
 import 'package:ssipl_billing/API-/api.dart';
@@ -49,7 +50,9 @@ mixin ClientreqDetailsService {
   void uploadMor(context, File file) async {
     try {
       List<int> fileBytes = await file.readAsBytes();
-      print("Binary Data: ${fileBytes.length}"); // Prints file in binary format
+      if (kDebugMode) {
+        print("Binary Data: ${fileBytes.length}");
+      } // Prints file in binary format
       Map<String, dynamic>? response = await apiController.multiPart(file, API.Upload_MOR_API);
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});

@@ -152,11 +152,16 @@ class ClientreqController extends GetxController {
 
   void removeFromNoteList(int index) {
     clientReqModel.clientReqNoteList.removeAt(index);
+    // clientReqModel.clientReqNoteList.isEmpty ? clientReqModel.noteContentController.value.clear() : null;
+    clientReqModel.noteEditIndex.value = null;
   }
 
   void removeFromRecommendationList(int index) {
     clientReqModel.clientReqRecommendationList.removeAt(index);
-    clientReqModel.clientReqRecommendationList.isEmpty ? clientReqModel.Rec_HeadingController.value.clear() : null;
+    // clientReqModel.clientReqRecommendationList.isEmpty ? clientReqModel.Rec_HeadingController.value.clear() : null;
+    // clientReqModel.clientReqRecommendationList.isEmpty ? clientReqModel.Rec_KeyController.value.clear() : null;
+    // clientReqModel.clientReqRecommendationList.isEmpty ? clientReqModel.Rec_ValueController.value.clear() : null;
+    clientReqModel.Rec_EditIndex.value = null;
   }
 
   void updateMOR_uploadedPath(CMDmResponse value) {

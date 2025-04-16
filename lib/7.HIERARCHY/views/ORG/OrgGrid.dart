@@ -6,7 +6,6 @@ import 'package:ssipl_billing/7.HIERARCHY/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/7.HIERARCHY/services/hierarchy_service.dart';
 import 'package:ssipl_billing/7.HIERARCHY/views/ORG/OrgEditor.dart';
 import 'package:ssipl_billing/7.HIERARCHY/views/ORG/Org_card.dart';
-import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 
 class OrganizationGrid extends StatefulWidget with HierarchyService {
@@ -18,7 +17,6 @@ class OrganizationGrid extends StatefulWidget with HierarchyService {
 
 class _OrganizationGridState extends State<OrganizationGrid> with SingleTickerProviderStateMixin {
   final HierarchyController hierarchyController = Get.find<HierarchyController>();
-  final loader = LoadingOverlay();
   @override
   void initState() {
     super.initState();

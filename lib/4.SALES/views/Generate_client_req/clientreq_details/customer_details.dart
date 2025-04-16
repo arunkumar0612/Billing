@@ -55,7 +55,7 @@ class customerDetailsState extends State<customerDetails> {
                           readonly: false,
                           text: 'Title',
                           controller: clientreqController.clientReqModel.titleController.value,
-                          icon: Icons.person,
+                          icon: Icons.title,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter client name';
@@ -69,7 +69,7 @@ class customerDetailsState extends State<customerDetails> {
                           readonly: false,
                           text: 'GST',
                           controller: clientreqController.clientReqModel.gstController.value,
-                          icon: Icons.people,
+                          icon: Icons.receipt,
                           validator: (value) {
                             return Validators.GST_validator(value);
                           },
@@ -77,6 +77,7 @@ class customerDetailsState extends State<customerDetails> {
                         ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
                           child: DropdownButtonFormField<String>(
+                            menuMaxHeight: 350,
                             isExpanded: true,
                             dropdownColor: Primary_colors.Dark,
                             decoration: const InputDecoration(
@@ -99,7 +100,7 @@ class customerDetailsState extends State<customerDetails> {
                                   borderSide: BorderSide(),
                                 ),
                                 prefixIcon: Icon(
-                                  Icons.people,
+                                  Icons.business,
                                   color: Colors.white,
                                 )),
                             value: clientreqController.clientReqModel.Org_Controller.value == "" ? null : clientreqController.clientReqModel.Org_Controller.value,
@@ -130,7 +131,7 @@ class customerDetailsState extends State<customerDetails> {
                           readonly: false,
                           text: 'Client Address ',
                           controller: clientreqController.clientReqModel.clientAddressController.value,
-                          icon: Icons.location_history_outlined,
+                          icon: Icons.location_on,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter Client Address';
@@ -141,6 +142,7 @@ class customerDetailsState extends State<customerDetails> {
                         ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
                           child: DropdownButtonFormField<String>(
+                            menuMaxHeight: 350,
                             isExpanded: true,
                             dropdownColor: Primary_colors.Dark,
                             decoration: const InputDecoration(
@@ -163,7 +165,7 @@ class customerDetailsState extends State<customerDetails> {
                                   borderSide: BorderSide(),
                                 ),
                                 prefixIcon: Icon(
-                                  Icons.people,
+                                  Icons.business_center,
                                   color: Colors.white,
                                 )),
                             value: clientreqController.clientReqModel.Company_Controller.value,
@@ -196,7 +198,7 @@ class customerDetailsState extends State<customerDetails> {
                           readonly: false,
                           text: 'Billing Address name',
                           controller: clientreqController.clientReqModel.billingAddressNameController.value,
-                          icon: Icons.price_change,
+                          icon: Icons.credit_card,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter Billing Address name';
@@ -242,7 +244,7 @@ class customerDetailsState extends State<customerDetails> {
                                     ),
                                     border: const OutlineInputBorder(),
                                     prefixIcon: Icon(
-                                      Icons.merge_outlined,
+                                      Icons.account_tree,
                                       color: Colors.white,
                                     ),
                                   ),
@@ -272,7 +274,7 @@ class customerDetailsState extends State<customerDetails> {
                                     ),
                                     border: OutlineInputBorder(),
                                     prefixIcon: Icon(
-                                      Icons.merge_outlined,
+                                      Icons.account_tree,
                                       color: Color.fromARGB(255, 187, 187, 187),
                                     ),
                                   ),
@@ -285,7 +287,7 @@ class customerDetailsState extends State<customerDetails> {
                           readonly: false,
                           text: 'Billing Address',
                           controller: clientreqController.clientReqModel.billingAddressController.value,
-                          icon: Icons.price_change,
+                          icon: Icons.home_work,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter Billing Address';
@@ -299,7 +301,7 @@ class customerDetailsState extends State<customerDetails> {
                           readonly: false,
                           text: 'Email',
                           controller: clientreqController.clientReqModel.emailController.value,
-                          icon: Icons.people,
+                          icon: Icons.email,
                           validator: (value) {
                             return Validators.email_validator(value);
                           },
@@ -310,7 +312,7 @@ class customerDetailsState extends State<customerDetails> {
                           readonly: false,
                           text: 'Mode of request',
                           controller: clientreqController.clientReqModel.morController.value,
-                          icon: Icons.price_change,
+                          icon: Icons.request_quote,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter the mode of request';
@@ -324,7 +326,7 @@ class customerDetailsState extends State<customerDetails> {
                           readonly: false,
                           text: 'Contact Number',
                           controller: clientreqController.clientReqModel.phoneController.value,
-                          icon: Icons.people,
+                          icon: Icons.phone,
                           validator: (value) {
                             return Validators.phnNo_validator(value);
                           },

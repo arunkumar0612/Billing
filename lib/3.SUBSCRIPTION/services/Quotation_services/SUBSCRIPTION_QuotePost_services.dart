@@ -11,8 +11,10 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_
 import 'package:ssipl_billing/API-/api.dart' show API;
 import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Basic_dialog;
+import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart' show CMDmResponse;
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
+import 'package:ssipl_billing/UTILS-/helpers/refresher.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart' show getCurrentDate;
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -20,6 +22,7 @@ mixin SUBSCRIPTION_QuotePostServices {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
   final Invoker apiController = Get.find<Invoker>();
+  final loader = LoadingOverlay();
   void animation_control() async {
     // await Future.delayed(const Duration(milliseconds: 200));
     quoteController.setpdfLoading(false);
@@ -71,6 +74,7 @@ mixin SUBSCRIPTION_QuotePostServices {
         await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
         return;
       }
+      loader.start(context);
       File cachedPdf = quoteController.quoteModel.selectedPdf.value!;
       // savePdfToCache();
       SUBSCRIPTION_PostQuotation subscriptionData = SUBSCRIPTION_PostQuotation.fromJson({
@@ -104,16 +108,21 @@ mixin SUBSCRIPTION_QuotePostServices {
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
+          loader.stop();
           await Basic_dialog(context: context, title: "Quotation", content: value.message!, onOk: () {}, showCancel: false);
           // Navigator.of(context).pop(true);
           // quoteController.resetData();
         } else {
+          loader.stop();
           await Basic_dialog(context: context, title: 'Processing Quotation', content: value.message ?? "", onOk: () {}, showCancel: false);
         }
       } else {
+        loader.stop();
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
       }
+      await Refresher().refreshAll(context);
     } catch (e) {
+      loader.stop();
       Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
     }
   }

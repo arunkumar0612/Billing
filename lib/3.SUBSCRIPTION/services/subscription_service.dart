@@ -1,7 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,6 @@ import 'package:ssipl_billing/COMPONENTS-/Loading.dart' show LoadingOverlay;
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-
 import '../../API-/invoker.dart';
 import '../../COMPONENTS-/Response_entities.dart';
 
@@ -37,7 +35,9 @@ mixin SubscriptionServices {
       Map<String, dynamic>? response;
       response = await apiController.GetbyToken(API.hierarchy_CompanyData);
       if (response?['statusCode'] == 200) {
-        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        CMDmResponse value = CMDmResponse.fromJson(
+          response ?? {},
+        );
 
         if (value.code) {
           _subscriptionController.add_Comp(value);
@@ -54,24 +54,53 @@ mixin SubscriptionServices {
   }
 
   Future<void> get_GlobalPackageList(context) async {
+    // loader.start(context);
+    await Future.delayed(const Duration(milliseconds: 1000));
+    Map<String, dynamic>? response;
+    response = await apiController.GetbyToken(API.get_subscription_GlobalPackageList);
+    if (response?['statusCode'] == 200) {
+      CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+      if (value.code) {
+        _subscriptionController.add_GlobalPackage(value);
+      } else {
+        await Basic_dialog(context: context, title: 'Fetch Company List', content: value.message ?? "", onOk: () {}, showCancel: false);
+      }
+    } else {
+      Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+    }
+    // loader.stop();
+  }
+
+  void CreateGlobalPackage(
+      context, String subscriptionName, int noOfDevice, int noOfCameras, int AdditionalCameraCharges, int amount, String productDescription, int? clientId, int? customerType) async {
     try {
-      // loader.start(context);
-      await Future.delayed(const Duration(milliseconds: 1000));
-      Map<String, dynamic>? response;
-      response = await apiController.GetbyToken(API.get_subscription_GlobalPackageList);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({
+        "subscriptionName": subscriptionName,
+        "noOfDevice": noOfDevice,
+        "noOfCameras": noOfCameras,
+        "AdditionalCameraCharges": AdditionalCameraCharges,
+        "amount": amount,
+        "productDescription": productDescription,
+        "clientId": clientId,
+        "customerType": customerType,
+        'gstpercentage': 18,
+        'hsnno': 1234
+      }, API.create_subscription_GlobalPackage);
       if (response?['statusCode'] == 200) {
-        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {
-          _subscriptionController.add_GlobalPackage(value);
+          Navigator.pop(context);
+          get_GlobalPackageList(context);
+          Basic_SnackBar(context, "Package Created successfully");
+          // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, title: 'Fetch Company List', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Basic_dialog(context: context, showCancel: false, title: 'Package created Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
-      // loader.stop();
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 
@@ -100,7 +129,7 @@ mixin SubscriptionServices {
 
   Future<void> Get_RecurringInvoiceList(context, int? id) async {
     try {
-      loader.start(context);
+      // loader.start(context);
 
       Map<String, dynamic>? response;
 
@@ -121,7 +150,7 @@ mixin SubscriptionServices {
       } else {
         Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
-      loader.stop();
+      // loader.stop();
     } catch (e) {
       Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
       loader.stop();

@@ -45,7 +45,6 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // const SizedBox(height: 25),
                           BasicTextfield(
                             digitsOnly: false,
                             width: 400,
@@ -67,7 +66,7 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                             readonly: false,
                             text: 'Client Address name',
                             controller: quoteController.quoteModel.clientAddressNameController.value,
-                            icon: Icons.people,
+                            icon: Icons.account_circle, // changed from people
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Client Address name';
@@ -82,7 +81,7 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                             readonly: false,
                             text: 'Client Address ',
                             controller: quoteController.quoteModel.clientAddressController.value,
-                            icon: Icons.location_history_outlined,
+                            icon: Icons.location_on_outlined, // better location icon
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Client Address';
@@ -95,14 +94,13 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // const SizedBox(height: 10),
                           BasicTextfield(
                             digitsOnly: false,
                             width: 400,
                             readonly: false,
                             text: 'Billing Address name',
                             controller: quoteController.quoteModel.billingAddressNameController.value,
-                            icon: Icons.price_change,
+                            icon: Icons.business, // changed from price_change
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Billing Address name';
@@ -117,7 +115,7 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                             readonly: false,
                             text: 'Billing Address',
                             controller: quoteController.quoteModel.billingAddressController.value,
-                            icon: Icons.price_change,
+                            icon: Icons.location_city, // changed from price_change
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Billing Address';
@@ -132,7 +130,7 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                             readonly: false,
                             text: 'GST number',
                             controller: quoteController.quoteModel.gstNumController.value,
-                            icon: Icons.price_change,
+                            icon: Icons.receipt_long, // changed from price_change
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter GST number';

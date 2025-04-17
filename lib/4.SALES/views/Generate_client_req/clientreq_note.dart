@@ -459,7 +459,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                 onPressed: () async {
                                   await widget.postData(context, widget.customer_type);
                                   await Future.delayed(const Duration(milliseconds: 1000));
-                                  await Refresher().refreshAll(context);
+                                  // await Refresher().refreshAll(context);
                                 },
                               ),
                           ],

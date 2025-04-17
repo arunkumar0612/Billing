@@ -120,7 +120,7 @@ mixin SUBSCRIPTION_QuotePostServices {
         loader.stop();
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
       }
-      await Refresher().refreshAll(context);
+      // await Refresher().refreshAll(context);
     } catch (e) {
       loader.stop();
       Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);

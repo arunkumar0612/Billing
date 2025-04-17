@@ -383,11 +383,13 @@ class RfqController extends GetxController {
 
   void removeFromNoteList(int index) {
     rfqModel.Rfq_noteList.removeAt(index);
+    rfqModel.note_editIndex.value = null;
   }
 
   void removeFromRecommendationList(int index) {
     rfqModel.Rfq_recommendationList.removeAt(index);
-    rfqModel.Rfq_recommendationList.isEmpty ? rfqModel.recommendationHeadingController.value.clear() : null;
+    // rfqModel.Rfq_recommendationList.isEmpty ? rfqModel.recommendationHeadingController.value.clear() : null;
+    rfqModel.recommendation_editIndex.value = null;
   }
 
   void removeFromProductList(index) {

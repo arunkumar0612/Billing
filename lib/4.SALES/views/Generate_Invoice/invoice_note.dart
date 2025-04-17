@@ -32,43 +32,46 @@ class _InvoiceNoteState extends State<InvoiceNote> {
               ),
               width: 550,
               child: Center(
-                  child: Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.only(left: 10, top: 5),
-                        child: Icon(
-                          Icons.circle,
-                          size: 5,
-                        )),
-                    Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                invoiceController.invoiceModel.Invoice_noteList[index], // Display camera type from map
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
-                              ),
-                            ],
-                          )),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        invoiceController.removeFromNoteList(index);
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 15,
+                child: Padding(
+                    padding: const EdgeInsets.only(bottom: 0),
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Padding(
+                              padding: EdgeInsets.only(left: 10, top: 5),
+                              child: Icon(
+                                Icons.circle,
+                                size: 5,
+                              )),
+                          Expanded(
+                            child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      invoiceController.invoiceModel.Invoice_noteList[index], // Display camera type from map
+                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              invoiceController.removeFromNoteList(index);
+                            },
+                            icon: const Icon(
+                              Icons.close,
+                              size: 15,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              )),
+                    )),
+              ),
             ),
           );
         });
@@ -79,54 +82,56 @@ class _InvoiceNoteState extends State<InvoiceNote> {
         itemCount: invoiceController.invoiceModel.Invoice_recommendationList.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () {
-              widget.editnotetable(index);
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(7),
-              ),
-              width: 550,
-              child: Center(
-                  child: Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.only(left: 10, top: 5),
-                        child: Icon(
-                          Icons.circle,
-                          size: 5,
-                        )),
-                    Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                invoiceController.invoiceModel.Invoice_recommendationList[index].key,
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
-                              ),
-                            ],
-                          )),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        invoiceController.removeFromRecommendationList(index);
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 15,
-                      ),
-                    ),
-                  ],
+              onTap: () {
+                widget.editnotetable(index);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7),
                 ),
-              )),
-            ),
-          );
+                width: 550,
+                child: Center(
+                  child: Padding(
+                      padding: const EdgeInsets.only(bottom: 0),
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Padding(
+                                padding: EdgeInsets.only(left: 10, top: 5),
+                                child: Icon(
+                                  Icons.circle,
+                                  size: 5,
+                                )),
+                            Expanded(
+                              child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        invoiceController.invoiceModel.Invoice_recommendationList[index].key,
+                                        style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                invoiceController.removeFromRecommendationList(index);
+                              },
+                              icon: const Icon(
+                                Icons.close,
+                                size: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
+              ));
         });
   }
 

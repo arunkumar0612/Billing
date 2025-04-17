@@ -949,7 +949,7 @@ mixin SalesServices {
     await GetProcesscustomerList(context);
     await GetProcessList(context, 0);
     await GetSalesData(context, salesController.salesModel.salesperiod.value);
-    salesController.update();
+    // salesController.update();
   }
 
   int fetch_messageType() {

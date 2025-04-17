@@ -33,42 +33,44 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
                 onTap: () {
                   widget.editproduct(i);
                 },
-                child: Container(
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: Primary_colors.Light),
-                  height: 40,
-                  width: 300,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 230,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              overflow: TextOverflow.ellipsis,
-                              '${i + 1}. ${invoiceController.invoiceModel.Invoice_products[i].productName}', // Display camera type from map
-                              style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                            ),
-                          ),
-                        ),
-                        Row(
+                child: MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: Container(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: Primary_colors.Light),
+                      height: 40,
+                      width: 300,
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            IconButton(
-                              onPressed: () {
-                                invoiceController.removeFromProductList(i);
-                              },
-                              icon: const Icon(
-                                Icons.close,
-                                size: 20,
+                            SizedBox(
+                              width: 230,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                  overflow: TextOverflow.ellipsis,
+                                  '${i + 1}. ${invoiceController.invoiceModel.Invoice_products[i].productName}', // Display camera type from map
+                                  style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                ),
                               ),
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    invoiceController.removeFromProductList(i);
+                                  },
+                                  icon: const Icon(
+                                    Icons.close,
+                                    size: 20,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  ),
-                ),
+                      ),
+                    )),
               ),
               const SizedBox(height: 15),
             ],

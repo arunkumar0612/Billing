@@ -33,39 +33,42 @@ class _QuoteProductsState extends State<QuoteProducts> {
                 onTap: () {
                   widget.editproduct(i);
                 },
-                child: Container(
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: Primary_colors.Light),
-                  height: 40,
-                  width: 300,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 230,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              overflow: TextOverflow.ellipsis,
-                              '${i + 1}. ${quoteController.quoteModel.Quote_products[i].productName}', // Display camera type from map
-                              style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                quoteController.removeFromProductList(i);
-                              },
-                              icon: const Icon(
-                                Icons.close,
-                                size: 20,
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: Container(
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: Primary_colors.Light),
+                    height: 40,
+                    width: 300,
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: 230,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                overflow: TextOverflow.ellipsis,
+                                '${i + 1}. ${quoteController.quoteModel.Quote_products[i].productName}', // Display camera type from map
+                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
-                          ],
-                        ),
-                      ],
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  quoteController.removeFromProductList(i);
+                                },
+                                icon: const Icon(
+                                  Icons.close,
+                                  size: 20,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

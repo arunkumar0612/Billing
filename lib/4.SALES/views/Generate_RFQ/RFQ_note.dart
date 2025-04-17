@@ -31,43 +31,46 @@ class _RfqNoteState extends State<RfqNote> {
               ),
               width: 550,
               child: Center(
-                  child: Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.only(left: 10, top: 5),
-                        child: Icon(
-                          Icons.circle,
-                          size: 5,
-                        )),
-                    Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                rfqController.rfqModel.Rfq_noteList[index], // Display camera type from map
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
-                              ),
-                            ],
-                          )),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        rfqController.removeFromNoteList(index);
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 15,
+                child: Padding(
+                    padding: const EdgeInsets.only(bottom: 0),
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Padding(
+                              padding: EdgeInsets.only(left: 10, top: 5),
+                              child: Icon(
+                                Icons.circle,
+                                size: 5,
+                              )),
+                          Expanded(
+                            child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      rfqController.rfqModel.Rfq_noteList[index], // Display camera type from map
+                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              rfqController.removeFromNoteList(index);
+                            },
+                            icon: const Icon(
+                              Icons.close,
+                              size: 15,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              )),
+                    )),
+              ),
             ),
           );
         });
@@ -87,43 +90,47 @@ class _RfqNoteState extends State<RfqNote> {
               ),
               width: 550,
               child: Center(
-                  child: Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.only(left: 10, top: 5),
-                        child: Icon(
-                          Icons.circle,
-                          size: 5,
-                        )),
-                    Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                rfqController.rfqModel.Rfq_recommendationList[index].key,
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
-                              ),
-                            ],
-                          )),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 0),
+                  child: MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Padding(
+                            padding: EdgeInsets.only(left: 10, top: 5),
+                            child: Icon(
+                              Icons.circle,
+                              size: 5,
+                            )),
+                        Expanded(
+                          child: Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    rfqController.rfqModel.Rfq_recommendationList[index].key,
+                                    style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
+                                  ),
+                                ],
+                              )),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            rfqController.removeFromRecommendationList(index);
+                          },
+                          icon: const Icon(
+                            Icons.close,
+                            size: 15,
+                          ),
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      onPressed: () {
-                        rfqController.removeFromRecommendationList(index);
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 15,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              )),
+              ),
             ),
           );
         });
@@ -158,6 +165,11 @@ class _RfqNoteState extends State<RfqNote> {
                               ),
                               const SizedBox(height: 10),
                               DropdownMenu<String>(
+                                menuHeight: 350,
+                                leadingIcon: const Icon(
+                                  Icons.note,
+                                  color: Primary_colors.Color1,
+                                ), // Add leading icon
                                 trailingIcon: const Icon(
                                   Icons.arrow_drop_down,
                                   color: Color.fromARGB(255, 122, 121, 121),
@@ -166,7 +178,7 @@ class _RfqNoteState extends State<RfqNote> {
                                   "Note",
                                   style: TextStyle(color: Color.fromARGB(255, 167, 165, 165), fontSize: Primary_font_size.Text7),
                                 ),
-                                textStyle: const TextStyle(color: Primary_colors.Color1),
+                                textStyle: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                 width: 400,
                                 inputDecorationTheme: const InputDecorationTheme(
                                   contentPadding: EdgeInsets.only(left: 10, right: 5),

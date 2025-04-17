@@ -18,7 +18,7 @@ class clientreqProducts extends StatefulWidget with ClientreqProductService {
 class _clientreqProductsState extends State<clientreqProducts> {
   final ClientreqController clientreqController = Get.find<ClientreqController>();
 
-  Widget clientreq_productDetailss() {
+  Widget clientreq_productDetails() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -32,39 +32,42 @@ class _clientreqProductsState extends State<clientreqProducts> {
                 onTap: () {
                   widget.editproduct(i);
                 },
-                child: Container(
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: Primary_colors.Light),
-                  height: 40,
-                  width: 300,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 230,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              overflow: TextOverflow.ellipsis,
-                              '${i + 1}. ${clientreqController.clientReqModel.clientReqProductDetails[i].productName}', // Display camera type from map
-                              style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                clientreqController.removeFromProductList(i);
-                              },
-                              icon: const Icon(
-                                Icons.close,
-                                size: 20,
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: Container(
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: Primary_colors.Light),
+                    height: 40,
+                    width: 300,
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: 230,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                overflow: TextOverflow.ellipsis,
+                                '${i + 1}. ${clientreqController.clientReqModel.clientReqProductDetails[i].productName}', // Display camera type from map
+                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
-                          ],
-                        ),
-                      ],
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  clientreqController.removeFromProductList(i);
+                                },
+                                icon: const Icon(
+                                  Icons.close,
+                                  size: 20,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -221,7 +224,7 @@ class _clientreqProductsState extends State<clientreqProducts> {
                                       child: SingleChildScrollView(
                                         child: Padding(
                                           padding: const EdgeInsets.all(10),
-                                          child: clientreq_productDetailss(),
+                                          child: clientreq_productDetails(),
                                         ),
                                       ),
                                     ),

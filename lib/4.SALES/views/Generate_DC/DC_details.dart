@@ -63,7 +63,7 @@ class _DcDetailsState extends State<DcDetails> {
                             readonly: false,
                             text: 'Client Address name',
                             controller: dcController.dcModel.clientAddressNameController.value,
-                            icon: Icons.people,
+                            icon: Icons.account_circle,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Client Address name';
@@ -78,7 +78,7 @@ class _DcDetailsState extends State<DcDetails> {
                             readonly: false,
                             text: 'Client Address ',
                             controller: dcController.dcModel.clientAddressController.value,
-                            icon: Icons.location_history_outlined,
+                            icon: Icons.location_on_outlined,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Client Address';
@@ -98,7 +98,7 @@ class _DcDetailsState extends State<DcDetails> {
                             readonly: false,
                             text: 'Billing Address name',
                             controller: dcController.dcModel.billingAddressNameController.value,
-                            icon: Icons.price_change,
+                            icon: Icons.business,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Billing Address name';
@@ -113,7 +113,7 @@ class _DcDetailsState extends State<DcDetails> {
                             readonly: false,
                             text: 'Billing Address',
                             controller: dcController.dcModel.billingAddressController.value,
-                            icon: Icons.price_change,
+                            icon: Icons.location_city,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Billing Address';
@@ -128,7 +128,7 @@ class _DcDetailsState extends State<DcDetails> {
                             readonly: false,
                             text: 'GST number',
                             controller: dcController.dcModel.gstNumController.value,
-                            icon: Icons.price_change,
+                            icon: Icons.receipt_long,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter GST number';

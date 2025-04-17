@@ -32,43 +32,46 @@ class _QuoteNoteState extends State<QuoteNote> {
               ),
               width: 550,
               child: Center(
-                  child: Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.only(left: 10, top: 5),
-                        child: Icon(
-                          Icons.circle,
-                          size: 5,
-                        )),
-                    Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                quoteController.quoteModel.Quote_noteList[index], // Display camera type from map
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
-                              ),
-                            ],
-                          )),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        quoteController.removeFromNoteList(index);
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 15,
+                child: Padding(
+                    padding: const EdgeInsets.only(bottom: 0),
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Padding(
+                              padding: EdgeInsets.only(left: 10, top: 5),
+                              child: Icon(
+                                Icons.circle,
+                                size: 5,
+                              )),
+                          Expanded(
+                            child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      quoteController.quoteModel.Quote_noteList[index], // Display camera type from map
+                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              quoteController.removeFromNoteList(index);
+                            },
+                            icon: const Icon(
+                              Icons.close,
+                              size: 15,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              )),
+                    )),
+              ),
             ),
           );
         });
@@ -88,43 +91,47 @@ class _QuoteNoteState extends State<QuoteNote> {
               ),
               width: 550,
               child: Center(
-                  child: Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.only(left: 10, top: 5),
-                        child: Icon(
-                          Icons.circle,
-                          size: 5,
-                        )),
-                    Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                quoteController.quoteModel.Quote_recommendationList[index].key,
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
-                              ),
-                            ],
-                          )),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 0),
+                  child: MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Padding(
+                            padding: EdgeInsets.only(left: 10, top: 5),
+                            child: Icon(
+                              Icons.circle,
+                              size: 5,
+                            )),
+                        Expanded(
+                          child: Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    quoteController.quoteModel.Quote_recommendationList[index].key,
+                                    style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
+                                  ),
+                                ],
+                              )),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            quoteController.removeFromRecommendationList(index);
+                          },
+                          icon: const Icon(
+                            Icons.close,
+                            size: 15,
+                          ),
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      onPressed: () {
-                        quoteController.removeFromRecommendationList(index);
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 15,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              )),
+              ),
             ),
           );
         });

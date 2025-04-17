@@ -40,6 +40,7 @@ class SubscriptionModel extends GetxController with GetSingleTickerProviderState
   RxnInt packageselectedIndex = RxnInt();
   var packageisEditing = false.obs;
   final editingPackage = Rx<dynamic>(null);
+  RxnInt packagesubscriptionID = RxnInt();
   final packagecamerasController = TextEditingController().obs;
   final packageadditionalcamerasController = TextEditingController().obs;
   final packagedescController = TextEditingController().obs;
@@ -47,6 +48,7 @@ class SubscriptionModel extends GetxController with GetSingleTickerProviderState
   final packagedevicesController = TextEditingController().obs;
   final packageamountController = TextEditingController().obs;
   final selectedPackages = <String>{}.obs;
+  RxnInt editpackagesubscriptionID = RxnInt();
   final editpackagecamerasController = TextEditingController().obs;
   final editpackageadditionalcamerasController = TextEditingController().obs;
   final editpackagedescController = TextEditingController().obs;

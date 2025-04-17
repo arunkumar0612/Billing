@@ -248,6 +248,58 @@ mixin SubscriptionServices {
     }
   }
 
+  void UpdateGlobalPackage(context, String subscriptionName, int noOfDevice, int noOfCameras, int AdditionalCameraCharges, double amount, String productDescription, int subId) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({
+        "subscriptionName": subscriptionName,
+        "noOfDevice": noOfDevice,
+        "noOfCameras": noOfCameras,
+        "AdditionalCameraCharges": AdditionalCameraCharges,
+        "amount": amount,
+        "productDescription": productDescription,
+        "subId": subId,
+      }, API.update_subscription_GlobalPackage);
+      if (response?['statusCode'] == 200) {
+        CMResponse value = CMResponse.fromJson(response ?? {});
+        if (value.code) {
+          // Navigator.pop(context);
+          get_GlobalPackageList(context);
+          Basic_SnackBar(context, "Package updated successfully");
+          // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Basic_dialog(context: context, showCancel: false, title: 'Package update error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
+
+  void DeleteGlobalPackage(context, int subId) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({
+        "subId": subId,
+      }, API.update_subscription_GlobalPackage);
+      if (response?['statusCode'] == 200) {
+        CMResponse value = CMResponse.fromJson(response ?? {});
+        if (value.code) {
+          // Navigator.pop(context);
+          get_GlobalPackageList(context);
+          Basic_SnackBar(context, "Package deleted successfully");
+          // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Basic_dialog(context: context, showCancel: false, title: 'Package delete Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
+
   Future<void> GetProcesscustomerList(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.subscription_getprocesscustomer_API);

@@ -359,11 +359,13 @@ class DcController extends GetxController {
 
   void removeFromNoteList(int index) {
     dcModel.Dc_noteList.removeAt(index);
+    dcModel.note_editIndex.value = null;
   }
 
   void removeFromRecommendationList(int index) {
     dcModel.Dc_recommendationList.removeAt(index);
-    dcModel.Dc_recommendationList.isEmpty ? dcModel.recommendationHeadingController.value.clear() : null;
+    // dcModel.Dc_recommendationList.isEmpty ? dcModel.recommendationHeadingController.value.clear() : null;
+    dcModel.recommendation_editIndex.value = null;
   }
 
   void initializeTextControllers() {

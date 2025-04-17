@@ -1392,9 +1392,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                       Row(
                                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                                         children: [
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation == true)
-                                                                              // &&(salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                              )
+                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation == true) &&
+                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                             TextButton(
                                                                               onPressed: () async {
                                                                                 bool success =
@@ -1411,9 +1410,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                 style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                               ),
                                                                             ),
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation == true)
-                                                                              //  &&                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                              )
+                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation == true) &&
+                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                             TextButton(
                                                                               onPressed: () async {
                                                                                 bool success =
@@ -1430,11 +1428,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                 style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                               ),
                                                                             ),
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.rfq == true)
-                                                                              // &&
-                                                                              //     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1
-                                                                              //     )
-                                                                              )
+                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.rfq == true) &&
+                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                             TextButton(
                                                                               onPressed: () async {
                                                                                 bool success =
@@ -1453,10 +1448,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                 style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                               ),
                                                                             ),
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.invoice == true)
-                                                                              // &&
-                                                                              //     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                              )
+                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.invoice == true) &&
+                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                             TextButton(
                                                                               onPressed: () async {
                                                                                 bool success =
@@ -1475,10 +1468,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                 style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                               ),
                                                                             ),
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan == true)
-                                                                              //  &&
-                                                                              //     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                              )
+                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan == true) &&
+                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                             TextButton(
                                                                               onPressed: () async {
                                                                                 bool success =
@@ -1497,32 +1488,32 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                 style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                               ),
                                                                             ),
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.credit_note == true)
-                                                                              // &&
+                                                                          // if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.credit_note == true)
+                                                                          //     // &&
 
-                                                                              )
-                                                                            TextButton(
-                                                                              onPressed: () {
-                                                                                // widget.GenerateCredit_dialougebox(context);
-                                                                              },
-                                                                              child: const Text(
-                                                                                "Credit",
-                                                                                style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                              ),
-                                                                            ),
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.debit_note == true)
-                                                                              //  &&
-                                                                              //     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                              )
-                                                                            TextButton(
-                                                                              onPressed: () {
-                                                                                // widget.GenerateDebit_dialougebox(context);
-                                                                              },
-                                                                              child: const Text(
-                                                                                "Debit",
-                                                                                style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                              ),
-                                                                            ),
+                                                                          //     )
+                                                                          //   TextButton(
+                                                                          //     onPressed: () {
+                                                                          //       // widget.GenerateCredit_dialougebox(context);
+                                                                          //     },
+                                                                          //     child: const Text(
+                                                                          //       "Credit",
+                                                                          //       style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                          //     ),
+                                                                          //   ),
+                                                                          // if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.debit_note == true)
+                                                                          //     //  &&
+                                                                          //     //     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1)
+                                                                          //     )
+                                                                          //   TextButton(
+                                                                          //     onPressed: () {
+                                                                          //       // widget.GenerateDebit_dialougebox(context);
+                                                                          //     },
+                                                                          //     child: const Text(
+                                                                          //       "Debit",
+                                                                          //       style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                          //     ),
+                                                                          //   ),
                                                                         ],
                                                                       )
                                                                     ],

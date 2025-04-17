@@ -47,6 +47,8 @@ class API {
   static String subscription_deleteprocess_API = "http://192.168.0.200:8081/subscription/deleteprocess";
   static String subscription_archiveprocess_API = "http://192.168.0.200:8081/subscription/archiveprocess";
   static String subscription_clientprofile_API = "http://192.168.0.200:8081/subscription/clientprofile";
+  static String subscription_uploadSubscription = "http://192.168.0.200:8081/subscription/uploadsubscription";
+
   // static String subscription_approvedquotation_API = "http://192.168.0.200:8081/subscription/approvedquotation";
   static String subscription_Upload_MOR_API = "http://192.168.0.200:8081/subscription/uploadmor";
   static String subscription_add_details_API = "http://192.168.0.200:8081/subscription/addsubscus";

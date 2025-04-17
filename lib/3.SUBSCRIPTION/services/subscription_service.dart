@@ -30,6 +30,148 @@ mixin SubscriptionServices {
   final SUBSCRIPTION_ClientreqController _clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
   final SUBSCRIPTION_QuoteController _quoteController = Get.find<SUBSCRIPTION_QuoteController>();
   final loader = LoadingOverlay();
+
+  dynamic UploadSubscription(context, List<Map<String, dynamic>> excelData) async {
+    try {
+      String encodedData = json.encode(excelData);
+      Map<String, dynamic>? response = await apiController.SendByQuerystring(encodedData, API.subscription_uploadSubscription);
+      if (response['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response);
+        if (value.code) {
+          // await Basic_dialog(context: context, title: "Upload Successfull", content: value.message!, onOk: () {}, showCancel: false);
+          await showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: const Text('Upload Results'),
+                content: SizedBox(
+                  height: 500,
+                  width: 500,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: value.data.length,
+                    itemBuilder: (context, index) {
+                      final item = value.data[index];
+                      return ListTile(
+                        leading: Text('${item['subscriptionid'] ?? '-'}'),
+                        title: Text(item['message'] ?? 'No message'),
+                      );
+                    },
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Close'),
+                  ),
+                ],
+              );
+            },
+          );
+          Navigator.of(context).pop();
+        } else {
+          await Basic_dialog(context: context, title: 'Uploading Excel', content: value.message ?? "", onOk: () {}, showCancel: false);
+        }
+      } else {
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+      }
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+    }
+  }
+
+  void showExcelDataPopup(context, List<Map<String, dynamic>> excelData) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+            child: ClipRRect(
+          borderRadius: BorderRadius.circular(25.0),
+          child: SizedBox(
+            width: 1200,
+            height: 700,
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(
+                        columnSpacing: 55,
+                        columns: excelData.isNotEmpty
+                            ? excelData.first.keys
+                                .map((String key) => DataColumn(
+                                        label: Text(
+                                      key,
+                                      style: const TextStyle(color: Color.fromARGB(255, 177, 27, 27), fontSize: 10),
+                                    )))
+                                .toList()
+                            : [],
+                        rows: excelData.where((data) => data.values.any((value) => value != null)).map((data) {
+                          return DataRow(
+                            cells: data.keys.map((key) {
+                              return DataCell(
+                                Text(
+                                  data[key]?.toString() ?? '', // Handle null values gracefully
+                                  style: const TextStyle(fontSize: 10),
+                                ),
+                              );
+                            }).toList(),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                    color: const Color.fromARGB(66, 90, 90, 90),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.red,
+                            ),
+                            height: 30,
+                            width: 100,
+                            child: TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Cancel', style: TextStyle(color: Colors.white))),
+                          ),
+                          const SizedBox(width: 40),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.blue,
+                            ),
+                            height: 30,
+                            width: 100,
+                            child: TextButton(
+                                onPressed: () async {
+                                  await UploadSubscription(context, excelData);
+                                },
+                                child: const Text(
+                                  'Proceed',
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                          ),
+                        ],
+                      ),
+                    )),
+              ],
+            ),
+          ),
+        ));
+      },
+    );
+  }
+
   Future<void> get_CompanyList(context) async {
     try {
       // loader.start(context);

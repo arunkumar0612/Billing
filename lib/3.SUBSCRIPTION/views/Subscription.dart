@@ -693,7 +693,8 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                               import_excel obj = import_excel(); // Remove const
                                                               import_excel.excelData.clear();
                                                               await obj.pickExcelFile(context);
-                                                              print(import_excel.excelData);
+                                                              // print(import_excel.excelData);
+                                                              widget.showExcelDataPopup(context, import_excel.excelData);
 
                                                               break;
                                                           }

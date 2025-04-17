@@ -402,11 +402,13 @@ class QuoteController extends GetxController {
 
   void removeFromNoteList(int index) {
     quoteModel.Quote_noteList.removeAt(index);
+    quoteModel.note_editIndex.value = null;
   }
 
   void removeFromRecommendationList(int index) {
     quoteModel.Quote_recommendationList.removeAt(index);
-    quoteModel.Quote_recommendationList.isEmpty ? quoteModel.recommendationHeadingController.value.clear() : null;
+    // quoteModel.Quote_recommendationList.isEmpty ? quoteModel.recommendationHeadingController.value.clear() : null;
+    quoteModel.recommendation_editIndex.value = null;
   }
 
   void removeFromProductList(index) {

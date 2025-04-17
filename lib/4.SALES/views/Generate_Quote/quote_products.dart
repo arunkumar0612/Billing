@@ -96,6 +96,11 @@ class _QuoteProductsState extends State<QuoteProducts> {
                       Obx(
                         () {
                           return DropdownMenu<ProductSuggestion>(
+                            menuHeight: 350,
+                            leadingIcon: const Icon(
+                              Icons.production_quantity_limits,
+                              color: Colors.white,
+                            ),
                             trailingIcon: const Icon(
                               Icons.arrow_drop_down,
                               color: Color.fromARGB(255, 122, 121, 121),
@@ -104,7 +109,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                               "Product",
                               style: TextStyle(color: Color.fromARGB(255, 167, 165, 165), fontSize: Primary_font_size.Text7),
                             ),
-                            textStyle: const TextStyle(color: Primary_colors.Color1),
+                            textStyle: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                             width: 400,
                             inputDecorationTheme: const InputDecorationTheme(
                               contentPadding: EdgeInsets.only(left: 10, right: 5),
@@ -150,7 +155,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                             readonly: false,
                             text: 'HSN',
                             controller: quoteController.quoteModel.hsnController.value,
-                            icon: Icons.numbers,
+                            icon: Icons.qr_code,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter HSN';
@@ -186,7 +191,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                                 ),
                                 border: OutlineInputBorder(),
                                 prefixIcon: Icon(
-                                  Icons.price_change,
+                                  Icons.receipt_long,
                                   color: Colors.white,
                                 ),
                               ),
@@ -272,7 +277,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                                 ),
                                 border: OutlineInputBorder(),
                                 prefixIcon: Icon(
-                                  Icons.production_quantity_limits,
+                                  Icons.format_list_numbered,
                                   color: Colors.white,
                                 ),
                               ),

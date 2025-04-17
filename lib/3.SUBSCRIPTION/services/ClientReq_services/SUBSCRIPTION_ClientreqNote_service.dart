@@ -169,7 +169,7 @@ mixin SUBSCRIPTION_ClientreqNoteService {
         loader.stop();
         Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
-      // await Refresher().refreshAll(context);
+      //await Refresher().refreshAll(context);
     } catch (e) {
       loader.stop();
       Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");

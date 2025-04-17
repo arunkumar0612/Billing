@@ -404,11 +404,13 @@ class InvoiceController extends GetxController {
 
   void removeFromNoteList(int index) {
     invoiceModel.Invoice_noteList.removeAt(index);
+    invoiceModel.note_editIndex.value = null;
   }
 
   void removeFromRecommendationList(int index) {
     invoiceModel.Invoice_recommendationList.removeAt(index);
-    invoiceModel.Invoice_recommendationList.isEmpty ? invoiceModel.recommendationHeadingController.value.clear() : null;
+    // invoiceModel.Invoice_recommendationList.isEmpty ? invoiceModel.recommendationHeadingController.value.clear() : null;
+    invoiceModel.recommendation_editIndex.value = null;
   }
 
   void removeFromProductList(index) {

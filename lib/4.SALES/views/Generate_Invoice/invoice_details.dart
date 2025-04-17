@@ -37,127 +37,128 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Form(
-                  key: invoiceController.invoiceModel.detailsKey.value,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // const SizedBox(height: 25),
-                          BasicTextfield(
-                            digitsOnly: false,
-                            width: 400,
-                            readonly: false,
-                            text: 'Title',
-                            controller: invoiceController.invoiceModel.TitleController.value,
-                            icon: Icons.title,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Title number';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 25),
-                          BasicTextfield(
-                            digitsOnly: false,
-                            width: 400,
-                            readonly: false,
-                            text: 'Client Address name',
-                            controller: invoiceController.invoiceModel.clientAddressNameController.value,
-                            icon: Icons.people,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Client Address name';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 25),
-                          BasicTextfield(
-                            digitsOnly: false,
-                            width: 400,
-                            readonly: false,
-                            text: 'Client Address ',
-                            controller: invoiceController.invoiceModel.clientAddressController.value,
-                            icon: Icons.location_history_outlined,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Client Address';
-                              }
-                              return null;
-                            },
-                          ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // const SizedBox(height: 10),
-                          BasicTextfield(
-                            digitsOnly: false,
-                            width: 400,
-                            readonly: false,
-                            text: 'Billing Address name',
-                            controller: invoiceController.invoiceModel.billingAddressNameController.value,
-                            icon: Icons.price_change,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Billing Address name';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 25),
-                          BasicTextfield(
-                            digitsOnly: false,
-                            width: 400,
-                            readonly: false,
-                            text: 'Billing Address',
-                            controller: invoiceController.invoiceModel.billingAddressController.value,
-                            icon: Icons.price_change,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Billing Address';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 25),
-                          BasicTextfield(
-                            digitsOnly: false,
-                            width: 400,
-                            readonly: false,
-                            text: 'GST number',
-                            controller: invoiceController.invoiceModel.gstNumController.value,
-                            icon: Icons.price_change,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter GST number';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 30),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              BasicButton(
-                                colors: Colors.green,
-                                text: 'Add Details',
-                                onPressed: () {
-                                  widget.nextTab();
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  )),
+                key: invoiceController.invoiceModel.detailsKey.value,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // const SizedBox(height: 25),
+                        BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
+                          readonly: false,
+                          text: 'Title',
+                          controller: invoiceController.invoiceModel.TitleController.value,
+                          icon: Icons.title,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Title number';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 25),
+                        BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
+                          readonly: false,
+                          text: 'Client Address name',
+                          controller: invoiceController.invoiceModel.clientAddressNameController.value,
+                          icon: Icons.account_circle,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Client Address name';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 25),
+                        BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
+                          readonly: false,
+                          text: 'Client Address ',
+                          controller: invoiceController.invoiceModel.clientAddressController.value,
+                          icon: Icons.location_on_outlined,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Client Address';
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // const SizedBox(height: 10),
+                        BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
+                          readonly: false,
+                          text: 'Billing Address name',
+                          controller: invoiceController.invoiceModel.billingAddressNameController.value,
+                          icon: Icons.business,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Billing Address name';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 25),
+                        BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
+                          readonly: false,
+                          text: 'Billing Address',
+                          controller: invoiceController.invoiceModel.billingAddressController.value,
+                          icon: Icons.location_city,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Billing Address';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 25),
+                        BasicTextfield(
+                          digitsOnly: false,
+                          width: 400,
+                          readonly: false,
+                          text: 'GST number',
+                          controller: invoiceController.invoiceModel.gstNumController.value,
+                          icon: Icons.receipt_long,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter GST number';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 30),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            BasicButton(
+                              colors: Colors.green,
+                              text: 'Add Details',
+                              onPressed: () {
+                                widget.nextTab();
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: 25),
               const SizedBox(
                 width: 660,

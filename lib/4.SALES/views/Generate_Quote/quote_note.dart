@@ -159,6 +159,7 @@ class _QuoteNoteState extends State<QuoteNote> {
                               ),
                               const SizedBox(height: 10),
                               DropdownMenu<String>(
+                                menuHeight: 350,
                                 trailingIcon: const Icon(
                                   Icons.arrow_drop_down,
                                   color: Color.fromARGB(255, 122, 121, 121),
@@ -167,7 +168,7 @@ class _QuoteNoteState extends State<QuoteNote> {
                                   "Note",
                                   style: TextStyle(color: Color.fromARGB(255, 167, 165, 165), fontSize: Primary_font_size.Text7),
                                 ),
-                                textStyle: const TextStyle(color: Primary_colors.Color1),
+                                textStyle: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                 width: 400,
                                 inputDecorationTheme: const InputDecorationTheme(
                                   contentPadding: EdgeInsets.only(left: 10, right: 5),

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/helpers/refresher.dart';
 
 import '../../controllers/ClientReq_actions.dart';
 import '../../services/ClientReq_services/ClientreqNote_service.dart';
@@ -459,7 +458,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                 onPressed: () async {
                                   await widget.postData(context, widget.customer_type);
                                   await Future.delayed(const Duration(milliseconds: 1000));
-                                  await Refresher().refreshAll(context);
+                                  // await Refresher().refreshAll(context);
                                 },
                               ),
                           ],

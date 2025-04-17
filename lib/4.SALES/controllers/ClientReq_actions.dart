@@ -426,9 +426,9 @@ class ClientreqController extends GetxController {
         clientReqModel.Branch_Controller.value != null ||
         clientReqModel.pickedFile.value != null ||
         clientReqModel.morFile.value != null ||
-        clientReqModel.organizationList.isNotEmpty ||
-        clientReqModel.CompanyList.isNotEmpty ||
-        clientReqModel.BranchFullList.isNotEmpty ||
+        // clientReqModel.organizationList.isNotEmpty ||
+        // clientReqModel.CompanyList.isNotEmpty ||
+        // clientReqModel.BranchFullList.isNotEmpty ||
         clientReqModel.BranchList_valueModel.isNotEmpty ||
         clientReqModel.selected_branchList.isNotEmpty ||
         clientReqModel.productNameController.value.text.isNotEmpty ||

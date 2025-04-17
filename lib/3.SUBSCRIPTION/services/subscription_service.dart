@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ import 'package:ssipl_billing/COMPONENTS-/Loading.dart' show LoadingOverlay;
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
 import '../../API-/invoker.dart';
 import '../../COMPONENTS-/Response_entities.dart';
 
@@ -167,7 +169,7 @@ mixin SubscriptionServices {
           // await Basic_dialog(context: context, showCancel: false, title: 'Process List', content: "Process List fetched successfully", onOk: () {});
           _subscriptionController.subscriptionModel.processList.clear();
           // print(value.data);
-          _subscriptionController.addToProcessList(value);
+          // _subscriptionController.addToProcessList(value);
         } else {
           await Basic_dialog(context: context, showCancel: false, title: 'Process List Error', content: value.message ?? "", onOk: () {});
         }
@@ -175,7 +177,7 @@ mixin SubscriptionServices {
         Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 

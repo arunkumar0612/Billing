@@ -1,12 +1,13 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/Billing.dart';
-import 'package:ssipl_billing/Sales.dart';
-import 'package:ssipl_billing/Subscription.dart';
-import 'package:ssipl_billing/dashboard.dart';
-import 'package:ssipl_billing/inventory.dart';
-import 'package:ssipl_billing/common_modules/style.dart';
-import 'package:ssipl_billing/vendors.dart';
+import 'package:ssipl_billing/1.DASHBOARD/views/dashboard.dart';
+import 'package:ssipl_billing/2.BILLING/views/Billing.dart';
+import 'package:ssipl_billing/3.SUBSCRIPTION/views/Subscription.dart';
+import 'package:ssipl_billing/4.SALES/views/Sales.dart';
+import 'package:ssipl_billing/5.VENDOR/views/vendors.dart';
+import 'package:ssipl_billing/6.INVENTORY/views/inventory.dart';
+import 'package:ssipl_billing/7.HIERARCHY/views/Hierarchy.dart';
+import 'package:ssipl_billing/THEMES-/style.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -17,6 +18,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   PageController pageController = PageController();
   SideMenuController sideMenu = SideMenuController();
+
   bool showfull = true;
   @override
   void initState() {
@@ -55,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // ),
               controller: sideMenu,
               style: SideMenuStyle(
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
                 showTooltip: true,
                 openSideMenuWidth: 200,
                 // compactSideMenuWidth: 50,
@@ -75,9 +78,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   fontSize: Primary_font_size.Text7, // Decrease font size for unselected items
                 ),
                 unselectedIconColor: Primary_colors.Color1,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                ),
+                // decoration: const BoxDecoration(
+                //   borderRadius: BorderRadius.all(Radius.circular(30)),
+                //   image: DecorationImage(
+                //     image: AssetImage('assets/images/bottom.jpg'), // ✅ Your image here
+                //     fit: BoxFit.fill, // Covers the entire background
+                //   ),
+                // ),
               ),
               // title: Container(
               //   height: 70,
@@ -92,10 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // ),
               title: Container(
                 decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
                   color: Primary_colors.Color3,
                 ),
                 child: Column(
@@ -106,27 +110,28 @@ class _MyHomePageState extends State<MyHomePage> {
                     Container(
                       color: Primary_colors.Color3,
                       constraints: const BoxConstraints(
-                        maxHeight: 150,
+                        maxHeight: 250,
                         maxWidth: 150,
                       ),
-                      child: TextButton.icon(
-                        onPressed: () {
-                          setState(() {
-                            showfull = showfull ? false : true;
-                          });
-                        },
-                        label: Text(
-                          showfull ? '' : 'Collapse',
-                          style: const TextStyle(color: Primary_colors.Color1),
-                        ),
-                        icon: showfull
-                            ? Image.asset(
-                                width: 20,
-                                'assets/images/unhide.png',
-                                color: Primary_colors.Color1,
-                              )
-                            : Image.asset(width: 20, 'assets/images/hide.png'),
-                      ),
+                      child: Image.asset(width: 20, 'assets/images/white.jpg'),
+                      // child: TextButton.icon(
+                      //   onPressed: () {
+                      //     setState(() {
+                      //       showfull = showfull ? false : true;
+                      //     });
+                      //   },
+                      //   label: Text(
+                      //     showfull ? '' : 'Collapse',
+                      //     style: const TextStyle(color: Primary_colors.Color1),
+                      //   ),
+                      //   icon: showfull
+                      //       ? Image.asset(
+                      //           width: 20,
+                      //           'assets/images/unhide.png',
+                      //           color: Primary_colors.Color1,
+                      //         )
+                      //       : Image.asset(width: 20, 'assets/images/hide.png'),
+                      // ),
 
                       //  Row(
                       //   children: [
@@ -197,6 +202,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(Icons.inventory), // Inventory Icon
                 ),
                 SideMenuItem(
+                  title: 'ENTERPRISE HIERARCHY',
+                  onTap: (index, _) {
+                    sideMenu.changePage(index);
+                  },
+                  icon: const Icon(Icons.groups_3), // Inventory Icon
+                ),
+                SideMenuItem(
                   title: 'LOGOUT',
                   onTap: (index, _) {},
                   icon: const Icon(Icons.exit_to_app), // Inventory Icon
@@ -204,7 +216,20 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
             const VerticalDivider(
-              width: 15,
+              width: 5,
+            ),
+            GestureDetector(
+              child: showfull
+                  ? const Text('>', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 22))
+                  : const Text('||', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 15)),
+              onTap: () {
+                setState(() {
+                  showfull = showfull ? false : true;
+                });
+              },
+            ),
+            const VerticalDivider(
+              width: 5,
             ),
             Expanded(
               child: PageView(
@@ -212,10 +237,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   const Dashboard(),
                   const Billing(),
-                  const Subscription_Client(),
-                  const Sales_Client(),
+                  Subscription_Client(),
+                  Sales_Client(),
                   const Vendor(),
                   const Inventory(),
+                  Enterprise_Hierarchy(),
                   Container(),
                 ],
               ),

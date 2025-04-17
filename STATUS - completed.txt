@@ -1,0 +1,2 @@
+5. DC products tab -  a). products must be selectable and in quantity there should be up and down arrow as well as the field should be typeable with respect to max qunatity
+                      b). If products are left and quantities are changed - update changed quatities via API to show the leftover products while submitting

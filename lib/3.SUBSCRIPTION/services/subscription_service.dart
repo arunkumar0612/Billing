@@ -94,6 +94,13 @@ mixin SubscriptionServices {
         if (value.code) {
           Navigator.pop(context);
           get_GlobalPackageList(context);
+          subscriptionController.subscriptionModel.packagenameController.value.clear();
+          subscriptionController.subscriptionModel.packageamountController.value.clear();
+          subscriptionController.subscriptionModel.packagedevicesController.value.clear();
+          subscriptionController.subscriptionModel.packagecamerasController.value.clear();
+          subscriptionController.subscriptionModel.packageadditionalcamerasController.value.clear();
+          subscriptionController.subscriptionModel.packagedescController.value.clear();
+
           Basic_SnackBar(context, "Package Created successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
@@ -147,6 +154,7 @@ mixin SubscriptionServices {
           subscriptionController.subscriptionModel.packageselectedID.value =
               subId.contains(subscriptionController.subscriptionModel.packageselectedID.value) ? null : subscriptionController.subscriptionModel.packageselectedID.value;
           subscriptionController.subscriptionModel.selectedPackagessubscriptionID.clear();
+
           // subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList[subscriptionController.subscriptionModel.packageselectedIndex.value!].subscriptionId == subId
           //     ? null
           //     : subscriptionController.subscriptionModel.packageselectedIndex.value;

@@ -57,6 +57,16 @@ class SalesController extends GetxController {
     salesModel.pdfFile.value = value;
   }
 
+  Future<void> custom_PDFfileApiData(CMDmResponse value) async {
+    var pdfFileData = await PDFfileData.fromJson(value); // Await async function
+    var binaryData = pdfFileData.data; // Extract File object
+    await update_customPDFfile(binaryData);
+  }
+
+  Future<void> update_customPDFfile(File value) async {
+    salesModel.custom_pdfFile.value = value;
+  }
+
   void updateisAllSelected(bool value) {
     salesModel.isAllSelected.value = value;
   }

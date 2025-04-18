@@ -145,7 +145,7 @@ class TimelineEvent {
       'Eventname': Eventname,
       'Eventid': Eventid,
       'apporvedstatus': apporvedstatus,
-      'internalstatus': apporvedstatus,
+      'internalstatus': internalStatus,
       'Allowed_process': Allowed_process.toJson(), // Ensure serialization works for Allowed_process
     };
   }
@@ -350,7 +350,8 @@ class CustomerPDF_List {
   final DateTime date;
   final String customType;
   final String genId;
-  final Uint8List pdfData;
+  final int customPDFid;
+  // final Uint8List pdfData;
   final String filePath;
 
   CustomerPDF_List({
@@ -364,7 +365,8 @@ class CustomerPDF_List {
     required this.date,
     required this.customType,
     required this.genId,
-    required this.pdfData,
+    required this.customPDFid,
+    // required this.pdfData,
     required this.filePath,
   });
 
@@ -379,8 +381,9 @@ class CustomerPDF_List {
       customerGst: json['customer_gstno'] ?? '',
       date: DateTime.parse(json['date']),
       customType: json['custom_type'] ?? '',
+      customPDFid: json['custompdfid'] ?? 0,
       genId: json['gen_id'] ?? '',
-      pdfData: json['pdf_path'] != null && json['pdf_path']['data'] != null ? Uint8List.fromList(List<int>.from(json['pdf_path']['data'])) : Uint8List(0),
+      // pdfData: json['pdf_path'] != null && json['pdf_path']['data'] != null ? Uint8List.fromList(List<int>.from(json['pdf_path']['data'])) : Uint8List(0),
       filePath: json['path'] ?? '',
     );
   }
@@ -396,11 +399,12 @@ class CustomerPDF_List {
       'customer_gstno': customerGst,
       'date': date.toIso8601String(),
       'custom_type': customType,
+      'customPDFid': customPDFid,
       'gen_id': genId,
-      'pdf_path': {
-        'type': 'Buffer',
-        'data': pdfData.toList(),
-      },
+      // 'pdf_path': {
+      //   'type': 'Buffer',
+      //   'data': pdfData.toList(),
+      // },
       'path': filePath,
     };
   }

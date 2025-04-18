@@ -10,6 +10,7 @@ import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/NOTIFICATION-/Notification_constants.dart';
+import 'package:ssipl_billing/UTILS-/helpers/refresher.dart';
 import 'package:windows_notification/notification_message.dart';
 import 'package:windows_notification/windows_notification.dart';
 
@@ -195,7 +196,7 @@ class NotificationController extends GetxController {
     final context = Get.context;
     if (topic == "Notification") {
       if (context != null) {
-        //await Refresher().refreshAll(context);
+        // await Refresher().refreshAll();
       }
       if (!notificationModel.notifications.contains(message)) {
         notificationModel.notifications.add(message);
@@ -203,7 +204,7 @@ class NotificationController extends GetxController {
       }
     } else if (topic == "refresh") {
       if (context != null) {
-        //await Refresher().refreshAll(context);
+        await Refresher().refreshAll();
       }
       if (!notificationModel.notifications.contains(message)) {
         notificationModel.notifications.add(message);

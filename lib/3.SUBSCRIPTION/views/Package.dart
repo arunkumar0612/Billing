@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/Subscription_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/subscription_service.dart';
-import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 
 class Packagepage extends StatefulWidget with SubscriptionServices {
@@ -77,18 +76,18 @@ class _PackagepageState extends State<Packagepage> {
                                 height: 33,
                                 child: FloatingActionButton.extended(
                                   onPressed: () {
-                                    Basic_dialog(
-                                      context: context,
-                                      title: 'Confirmation',
-                                      content: 'Are you sure you want to delete this package?',
-                                      showCancel: true,
-                                      onOk: () {
-                                        widget.DeleteGlobalPackage(context, 5
+                                    // Basic_dialog(
+                                    //   context: context,
+                                    //   title: 'Confirmation',
+                                    //   content: 'Are you sure you want to delete this package?',
+                                    //   showCancel: true,
+                                    //   onOk: () {
+                                    //     widget.DeleteGlobalPackage(context, 5
 
-                                            // 1 for Archive, 0 for Unarchive
-                                            );
-                                      },
-                                    );
+                                    //         // 1 for Archive, 0 for Unarchive
+                                    //         );
+                                    //   },
+                                    // );
                                   },
                                   icon: const Icon(
                                     Icons.delete,
@@ -901,16 +900,16 @@ class _PackagepageState extends State<Packagepage> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           // All fields are valid
-                          widget.UpdateGlobalPackage(
-                            context,
-                            subscriptionController.subscriptionModel.editpackagenameController.value.text,
-                            int.tryParse(subscriptionController.subscriptionModel.editpackagedevicesController.value.text) ?? 0,
-                            int.tryParse(subscriptionController.subscriptionModel.editpackagecamerasController.value.text) ?? 0,
-                            int.tryParse(subscriptionController.subscriptionModel.editpackageadditionalcamerasController.value.text) ?? 0,
-                            double.tryParse(subscriptionController.subscriptionModel.editpackageamountController.value.text) ?? 0.0,
-                            subscriptionController.subscriptionModel.editpackagedescController.value.text,
-                            package.subscriptionId,
-                          );
+                          // widget.UpdateGlobalPackage(
+                          //   context,
+                          //   subscriptionController.subscriptionModel.editpackagenameController.value.text,
+                          //   int.tryParse(subscriptionController.subscriptionModel.editpackagedevicesController.value.text) ?? 0,
+                          //   int.tryParse(subscriptionController.subscriptionModel.editpackagecamerasController.value.text) ?? 0,
+                          //   int.tryParse(subscriptionController.subscriptionModel.editpackageadditionalcamerasController.value.text) ?? 0,
+                          //   double.tryParse(subscriptionController.subscriptionModel.editpackageamountController.value.text) ?? 0.0,
+                          //   subscriptionController.subscriptionModel.editpackagedescController.value.text,
+                          //   package.subscriptionId,
+                          // );
                           if (kDebugMode) {
                             print('Updated successfully');
                           }

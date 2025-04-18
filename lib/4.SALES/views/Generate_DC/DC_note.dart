@@ -449,83 +449,84 @@ class _DcNoteState extends State<DcNote> {
                       Obx(() {
                         return Row(
                           children: [
-                            if (!dcController.dcModel.Dc_noteList.isNotEmpty) const SizedBox(width: 10),
-                            dcController.dcModel.isLoading.value
-                                ? SizedBox(
-                                    width: 125,
-                                    child: Stack(
-                                      children: [
-                                        LinearPercentIndicator(
-                                          lineHeight: 27,
-                                          // width: 105,
-                                          percent: dcController.dcModel.progress.value,
-                                          barRadius: const Radius.circular(5),
-                                          backgroundColor: const Color.fromARGB(255, 31, 38, 63),
-                                          progressColor: Colors.blue,
-                                          center: Text(
-                                            "${(dcController.dcModel.progress.value * 100).toInt()}%",
-                                            style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 12),
-                                          ),
-                                        ),
-                                        Positioned.fill(
-                                          child: ShaderMask(
-                                            blendMode: BlendMode.srcIn,
-                                            shaderCallback: (Rect bounds) {
-                                              return const LinearGradient(
-                                                colors: [
-                                                  Colors.blue,
-                                                  Colors.transparent,
-                                                  Primary_colors.Dark,
-                                                ],
-                                                stops: [
-                                                  0.0,
-                                                  0.5,
-                                                  1.0,
-                                                ],
-                                                begin: Alignment.centerLeft,
-                                                end: Alignment.centerRight,
-                                              ).createShader(bounds);
-                                            },
-                                            child: LinearPercentIndicator(
-                                              lineHeight: 30,
-                                              // width: 105,
-                                              percent: dcController.dcModel.progress.value,
-                                              barRadius: const Radius.circular(5),
-                                              backgroundColor: Primary_colors.Dark,
-                                              progressColor: Colors.blue,
+                            if (dcController.dcModel.Dc_noteList.isNotEmpty) const SizedBox(width: 10),
+                            if (dcController.dcModel.Dc_noteList.isNotEmpty)
+                              dcController.dcModel.isLoading.value
+                                  ? SizedBox(
+                                      width: 125,
+                                      child: Stack(
+                                        children: [
+                                          LinearPercentIndicator(
+                                            lineHeight: 27,
+                                            // width: 105,
+                                            percent: dcController.dcModel.progress.value,
+                                            barRadius: const Radius.circular(5),
+                                            backgroundColor: const Color.fromARGB(255, 31, 38, 63),
+                                            progressColor: Colors.blue,
+                                            center: Text(
+                                              "${(dcController.dcModel.progress.value * 100).toInt()}%",
+                                              style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 12),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : Container(
-                                    width: 125,
-                                    // height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: TextButton(
-                                      onPressed: () async {
-                                        try {
-                                          if (dcController.postDatavalidation()) {
-                                            Get.snackbar("Error", "Any of the required fields is Empty!");
-                                            return;
+                                          Positioned.fill(
+                                            child: ShaderMask(
+                                              blendMode: BlendMode.srcIn,
+                                              shaderCallback: (Rect bounds) {
+                                                return const LinearGradient(
+                                                  colors: [
+                                                    Colors.blue,
+                                                    Colors.transparent,
+                                                    Primary_colors.Dark,
+                                                  ],
+                                                  stops: [
+                                                    0.0,
+                                                    0.5,
+                                                    1.0,
+                                                  ],
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                ).createShader(bounds);
+                                              },
+                                              child: LinearPercentIndicator(
+                                                lineHeight: 30,
+                                                // width: 105,
+                                                percent: dcController.dcModel.progress.value,
+                                                barRadius: const Radius.circular(5),
+                                                backgroundColor: Primary_colors.Dark,
+                                                progressColor: Colors.blue,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Container(
+                                      width: 125,
+                                      // height: 40,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: TextButton(
+                                        onPressed: () async {
+                                          try {
+                                            if (dcController.postDatavalidation()) {
+                                              Get.snackbar("Error", "Any of the required fields is Empty!");
+                                              return;
+                                            }
+                                            await Future.wait([
+                                              dcController.startProgress(),
+                                              widget.savePdfToCache(),
+                                            ]);
+                                            dcController.nextTab();
+                                          } catch (e, stackTrace) {
+                                            debugPrint("Error in Future.wait: $e");
+                                            debugPrint(stackTrace.toString());
+                                            Get.snackbar("Error", "Something went wrong. Please try again.");
                                           }
-                                          await Future.wait([
-                                            dcController.startProgress(),
-                                            widget.savePdfToCache(),
-                                          ]);
-                                          dcController.nextTab();
-                                        } catch (e, stackTrace) {
-                                          debugPrint("Error in Future.wait: $e");
-                                          debugPrint(stackTrace.toString());
-                                          Get.snackbar("Error", "Something went wrong. Please try again.");
-                                        }
-                                      },
-                                      child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),
-                                    )),
+                                        },
+                                        child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),
+                                      )),
                           ],
                         );
                       })

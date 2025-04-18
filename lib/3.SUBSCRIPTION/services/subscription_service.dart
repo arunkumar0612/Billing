@@ -928,8 +928,8 @@ mixin SubscriptionServices {
 
   int fetch_messageType() {
     if (_subscriptionController.subscriptionModel.whatsapp_selectionStatus.value && _subscriptionController.subscriptionModel.gmail_selectionStatus.value) return 3;
-    if (_subscriptionController.subscriptionModel.whatsapp_selectionStatus.value) return 1;
-    if (_subscriptionController.subscriptionModel.gmail_selectionStatus.value) return 2;
+    if (_subscriptionController.subscriptionModel.whatsapp_selectionStatus.value) return 2;
+    if (_subscriptionController.subscriptionModel.gmail_selectionStatus.value) return 1;
 
     return 0;
   }

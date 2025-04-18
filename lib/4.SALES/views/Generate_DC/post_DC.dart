@@ -289,166 +289,107 @@ class PostDcState extends State<PostDc> with SingleTickerProviderStateMixin {
                         ),
                       ],
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Phone Number   :',
-                          style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 213, 211, 211), fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            child: BasicTextfield(
-                              digitsOnly: false,
-                              width: 400,
-                              readonly: false,
-                              controller: dcController.dcModel.phoneController.value,
-                              // text: 'Enter Phone Number',
-                              // icon: Icons.phone,
-                              validator: (value) {
-                                Validators.phnNo_validator(value);
-                                return null;
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    // ignore: avoid_unnecessary_containers
-                    Container(
-                      child: Column(
+
+                    if (dcController.dcModel.whatsapp_selectionStatus.value)
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const Text(
-                                'Email ID                 :',
-                                style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 213, 211, 211), fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: SizedBox(
-                                  width: 400,
-                                  child: TextFormField(
-                                    readOnly: false,
-                                    style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
-                                    controller: dcController.dcModel.emailController.value,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Primary_colors.Dark,
-                                      focusedBorder: const OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Colors.black,
-                                        ),
-                                      ),
-
-                                      enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                                      // labelText: text,
-                                      // label: Text(text ?? ''),
-                                      labelStyle: const TextStyle(
-                                        fontSize: Primary_font_size.Text7,
-                                        color: Color.fromARGB(255, 167, 165, 165),
-                                      ),
-                                      border: const OutlineInputBorder(),
-
-                                      suffixIcon: MouseRegion(
-                                        cursor: SystemMouseCursors.click, // Change cursor to hand
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            dcController.toggleCCemailvisibility(!dcController.dcModel.CCemailToggle.value);
-                                          },
-                                          child: SizedBox(
-                                            height: 20,
-                                            width: 20,
-                                            child: Stack(
-                                              children: [
-                                                Align(
-                                                  alignment: Alignment.center,
-                                                  child: Icon(
-                                                    dcController.dcModel.CCemailToggle.value ? Icons.closed_caption_outlined : Icons.closed_caption_disabled_outlined,
-                                                    color: Colors.blue,
-                                                  ),
-                                                ),
-                                                const Align(
-                                                  alignment: Alignment.bottomRight,
-                                                  child: Icon(
-                                                    size: 15,
-                                                    Icons.add,
-                                                    color: Colors.blue,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    validator: (value) {
-                                      Validators.email_validator(value);
-
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
+                          const Text(
+                            'Phone Number   :',
+                            style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 213, 211, 211), fontWeight: FontWeight.bold),
                           ),
-                          if (dcController.dcModel.CCemailToggle.value)
-                            const SizedBox(
-                              height: 10,
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              child: BasicTextfield(
+                                digitsOnly: false,
+                                width: 400,
+                                readonly: false,
+                                controller: dcController.dcModel.phoneController.value,
+                                // text: 'Enter Phone Number',
+                                // icon: Icons.phone,
+                                validator: (value) {
+                                  Validators.phnNo_validator(value);
+                                  return null;
+                                },
+                              ),
                             ),
-                          if (dcController.dcModel.CCemailToggle.value)
+                          ),
+                        ],
+                      ),
+                    // ignore: avoid_unnecessary_containers
+                    if (dcController.dcModel.gmail_selectionStatus.value)
+                      Container(
+                        child: Column(
+                          children: [
                             Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const Text(
-                                  '                                      Cc :',
-                                  style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 94, 162, 250), fontWeight: FontWeight.bold),
+                                  'Email ID                 :',
+                                  style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 213, 211, 211), fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(
                                   width: 10,
                                 ),
-
                                 Expanded(
                                   child: SizedBox(
-                                    height: 30,
                                     width: 400,
                                     child: TextFormField(
                                       readOnly: false,
-                                      style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 204, 204, 204)),
-                                      controller: dcController.dcModel.CCemailController.value,
-                                      decoration: const InputDecoration(
+                                      style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
+                                      controller: dcController.dcModel.emailController.value,
+                                      decoration: InputDecoration(
                                         filled: true,
-                                        fillColor: Color.fromARGB(255, 38, 39, 44),
-                                        focusedBorder: OutlineInputBorder(
+                                        fillColor: Primary_colors.Dark,
+                                        focusedBorder: const OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: Colors.black,
                                           ),
                                         ),
 
-                                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                                        enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
                                         // labelText: text,
                                         // label: Text(text ?? ''),
-                                        labelStyle: TextStyle(
+                                        labelStyle: const TextStyle(
                                           fontSize: Primary_font_size.Text7,
                                           color: Color.fromARGB(255, 167, 165, 165),
                                         ),
-                                        border: OutlineInputBorder(),
+                                        border: const OutlineInputBorder(),
 
-                                        // suffixIcon: GestureDetector(
-                                        //   onTap: () {
-                                        //     dcController.toggleCCemailvisibility(!dcController.dcModel.CCemailToggle.value);
-                                        //   },
-                                        //   child: Icon(
-                                        //     dcController.dcModel.CCemailToggle.value ? Icons.closed_caption_outlined : Icons.closed_caption_disabled_outlined,
-                                        //     color: Colors.blue,
-                                        //   ),
-                                        // ),
+                                        suffixIcon: MouseRegion(
+                                          cursor: SystemMouseCursors.click, // Change cursor to hand
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              dcController.toggleCCemailvisibility(!dcController.dcModel.CCemailToggle.value);
+                                            },
+                                            child: SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: Stack(
+                                                children: [
+                                                  Align(
+                                                    alignment: Alignment.center,
+                                                    child: Icon(
+                                                      dcController.dcModel.CCemailToggle.value ? Icons.closed_caption_outlined : Icons.closed_caption_disabled_outlined,
+                                                      color: Colors.blue,
+                                                    ),
+                                                  ),
+                                                  const Align(
+                                                    alignment: Alignment.bottomRight,
+                                                    child: Icon(
+                                                      size: 15,
+                                                      Icons.add,
+                                                      color: Colors.blue,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                       validator: (value) {
                                         Validators.email_validator(value);
@@ -458,28 +399,90 @@ class PostDcState extends State<PostDc> with SingleTickerProviderStateMixin {
                                     ),
                                   ),
                                 ),
-
-                                // Expanded(
-                                //   child: SizedBox(
-                                //     child: BasicTextfield(
-                                //       digitsOnly: false,
-                                //       width: 400,
-
-                                //       readonly: false,
-                                //       controller: dcController.dcModel.CCemailController.value,
-                                //       validator: (value) {
-                                //         Validators.email_validator(value);
-
-                                //         return null;
-                                //       },
-                                //     ),
-                                //   ),
-                                // ),
                               ],
                             ),
-                        ],
+                            if (dcController.dcModel.CCemailToggle.value)
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            if (dcController.dcModel.CCemailToggle.value)
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  const Text(
+                                    '                                      Cc :',
+                                    style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 94, 162, 250), fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 30,
+                                      width: 400,
+                                      child: TextFormField(
+                                        readOnly: false,
+                                        style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 204, 204, 204)),
+                                        controller: dcController.dcModel.CCemailController.value,
+                                        decoration: const InputDecoration(
+                                          filled: true,
+                                          fillColor: Color.fromARGB(255, 38, 39, 44),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+
+                                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                                          // labelText: text,
+                                          // label: Text(text ?? ''),
+                                          labelStyle: TextStyle(
+                                            fontSize: Primary_font_size.Text7,
+                                            color: Color.fromARGB(255, 167, 165, 165),
+                                          ),
+                                          border: OutlineInputBorder(),
+
+                                          // suffixIcon: GestureDetector(
+                                          //   onTap: () {
+                                          //     dcController.toggleCCemailvisibility(!dcController.dcModel.CCemailToggle.value);
+                                          //   },
+                                          //   child: Icon(
+                                          //     dcController.dcModel.CCemailToggle.value ? Icons.closed_caption_outlined : Icons.closed_caption_disabled_outlined,
+                                          //     color: Colors.blue,
+                                          //   ),
+                                          // ),
+                                        ),
+                                        validator: (value) {
+                                          Validators.email_validator(value);
+
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  ),
+
+                                  // Expanded(
+                                  //   child: SizedBox(
+                                  //     child: BasicTextfield(
+                                  //       digitsOnly: false,
+                                  //       width: 400,
+
+                                  //       readonly: false,
+                                  //       controller: dcController.dcModel.CCemailController.value,
+                                  //       validator: (value) {
+                                  //         Validators.email_validator(value);
+
+                                  //         return null;
+                                  //       },
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -705,17 +708,18 @@ class PostDcState extends State<PostDc> with SingleTickerProviderStateMixin {
                                     dcController.backTab();
                                   })),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Align(
-                              alignment: Alignment.centerRight,
-                              child: BasicButton(
-                                  text: "Send",
-                                  colors: Colors.blue,
-                                  onPressed: () {
-                                    widget.postData(context, dcController.fetch_messageType());
-                                  })),
-                        ),
+                        if (dcController.dcModel.whatsapp_selectionStatus.value || dcController.dcModel.gmail_selectionStatus.value)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Align(
+                                alignment: Alignment.centerRight,
+                                child: BasicButton(
+                                    text: "Send",
+                                    colors: Colors.blue,
+                                    onPressed: () {
+                                      widget.postData(context, dcController.fetch_messageType());
+                                    })),
+                          ),
                       ],
                     )
                   ],

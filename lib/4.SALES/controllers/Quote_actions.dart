@@ -229,8 +229,8 @@ class QuoteController extends GetxController {
 
   int fetch_messageType() {
     if (quoteModel.whatsapp_selectionStatus.value && quoteModel.gmail_selectionStatus.value) return 3;
-    if (quoteModel.whatsapp_selectionStatus.value) return 1;
-    if (quoteModel.gmail_selectionStatus.value) return 2;
+    if (quoteModel.whatsapp_selectionStatus.value) return 2;
+    if (quoteModel.gmail_selectionStatus.value) return 1;
 
     return 0;
   }
@@ -436,13 +436,13 @@ class QuoteController extends GetxController {
         quoteModel.clientAddressController.value.text.isEmpty ||
         quoteModel.billingAddressNameController.value.text.isEmpty ||
         quoteModel.billingAddressController.value.text.isEmpty ||
-        quoteModel.emailController.value.text.isEmpty ||
-        quoteModel.phoneController.value.text.isEmpty ||
+        (quoteModel.gmail_selectionStatus.value && quoteModel.emailController.value.text.isEmpty) ||
+        (quoteModel.whatsapp_selectionStatus.value && quoteModel.phoneController.value.text.isEmpty) ||
         quoteModel.gstNumController.value.text.isEmpty ||
         quoteModel.Quote_products.isEmpty ||
         quoteModel.Quote_noteList.isEmpty ||
         quoteModel.Quote_no.value == null);
-  } // If any one is empty or null, then it returns true
+  }
 
   void resetData() {
     quoteModel.tabController.value = null;

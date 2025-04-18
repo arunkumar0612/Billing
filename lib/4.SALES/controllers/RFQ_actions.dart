@@ -209,8 +209,8 @@ class RfqController extends GetxController {
 
   int fetch_messageType() {
     if (rfqModel.whatsapp_selectionStatus.value && rfqModel.gmail_selectionStatus.value) return 3;
-    if (rfqModel.whatsapp_selectionStatus.value) return 1;
-    if (rfqModel.gmail_selectionStatus.value) return 2;
+    if (rfqModel.whatsapp_selectionStatus.value) return 2;
+    if (rfqModel.gmail_selectionStatus.value) return 1;
 
     return 0;
   }
@@ -440,21 +440,16 @@ class RfqController extends GetxController {
 
   bool postDatavalidation() {
     return (rfqModel.TitleController.value.text.isEmpty ||
-            rfqModel.processID.value == null ||
-            rfqModel.vendorID.value == null ||
-            rfqModel.vendorName.value == null ||
-            // rfqModel.clientAddressNameController.value.text.isEmpty ||
-            rfqModel.AddressController.value.text.isEmpty ||
-            // rfqModel.billingAddressNameController.value.text.isEmpty ||
-            // rfqModel.billingAddressController.value.text.isEmpty ||
-            rfqModel.emailController.value.text.isEmpty ||
-            rfqModel.phoneController.value.text.isEmpty ||
-            // rfqModel.gstNumController.value.text.isEmpty ||
-            rfqModel.Rfq_products.isEmpty ||
-            rfqModel.Rfq_noteList.isEmpty
-        //      ||  rfqModel.Rfq_no.value == null
-        );
-  } // If any one is empty or null, then it returns true
+        rfqModel.processID.value == null ||
+        rfqModel.vendorID.value == null ||
+        rfqModel.vendorName.value == null ||
+        rfqModel.AddressController.value.text.isEmpty ||
+        (rfqModel.gmail_selectionStatus.value && rfqModel.emailController.value.text.isEmpty) ||
+        (rfqModel.whatsapp_selectionStatus.value && rfqModel.phoneController.value.text.isEmpty) ||
+        rfqModel.Rfq_products.isEmpty ||
+        rfqModel.Rfq_noteList.isEmpty);
+  }
+  // If any one is empty or null, then it returns true
 
   void resetData() {
     rfqModel.tabController.value = null;

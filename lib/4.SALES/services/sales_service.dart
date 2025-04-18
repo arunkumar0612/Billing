@@ -987,8 +987,8 @@ mixin SalesServices {
 
   int fetch_messageType() {
     if (salesController.salesModel.whatsapp_selectionStatus.value && salesController.salesModel.gmail_selectionStatus.value) return 3;
-    if (salesController.salesModel.whatsapp_selectionStatus.value) return 1;
-    if (salesController.salesModel.gmail_selectionStatus.value) return 2;
+    if (salesController.salesModel.whatsapp_selectionStatus.value) return 2;
+    if (salesController.salesModel.gmail_selectionStatus.value) return 1;
 
     return 0;
   }

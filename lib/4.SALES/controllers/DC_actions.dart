@@ -226,8 +226,8 @@ class DcController extends GetxController {
 
   int fetch_messageType() {
     if (dcModel.whatsapp_selectionStatus.value && dcModel.gmail_selectionStatus.value) return 3;
-    if (dcModel.whatsapp_selectionStatus.value) return 1;
-    if (dcModel.gmail_selectionStatus.value) return 2;
+    if (dcModel.whatsapp_selectionStatus.value) return 2;
+    if (dcModel.gmail_selectionStatus.value) return 1;
 
     return 0;
   }
@@ -469,13 +469,14 @@ class DcController extends GetxController {
         dcModel.clientAddressController.value.text.isEmpty ||
         dcModel.billingAddressNameController.value.text.isEmpty ||
         dcModel.billingAddressController.value.text.isEmpty ||
-        dcModel.emailController.value.text.isEmpty ||
-        dcModel.phoneController.value.text.isEmpty ||
+        (dcModel.gmail_selectionStatus.value && dcModel.emailController.value.text.isEmpty) ||
+        (dcModel.whatsapp_selectionStatus.value && dcModel.phoneController.value.text.isEmpty) ||
         dcModel.gstNumController.value.text.isEmpty ||
         dcModel.Dc_products.isEmpty ||
         dcModel.Dc_noteList.isEmpty ||
         dcModel.Dc_no.value == null);
-  } // If any one is empty or null, then it returns true
+  }
+// If any one is empty or null, then it returns true
 
   void resetData() {
     dcModel.tabController.value = null;

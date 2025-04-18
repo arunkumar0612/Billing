@@ -456,7 +456,7 @@ class SUBSCRIPTION_ClientreqController extends GetxController {
         clientReqModel.billingAddressController.value.text.isEmpty ||
         clientReqModel.morController.value.text.isEmpty ||
         clientReqModel.MOR_uploadedPath.value == null);
-  }
+  } // If any one is empty or null, then it returns true
 
   bool anyDontHavedata() {
     return !anyHavedata();

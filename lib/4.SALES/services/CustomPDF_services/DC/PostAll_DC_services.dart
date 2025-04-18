@@ -99,10 +99,10 @@ mixin PostServices {
 
   dynamic postData(context, int messageType) async {
     try {
-      // if ( pdfpopup_controller.postDatavalidation()) {
-      //   await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
-      //   return;
-      // }
+      if (pdfpopup_controller.postDatavalidation()) {
+        await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
+        return;
+      }
       loader.start(context);
       File cachedPdf = pdfpopup_controller.pdfModel.value.genearatedPDF.value!;
       // savePdfToCache();

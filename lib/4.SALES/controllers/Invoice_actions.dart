@@ -227,8 +227,8 @@ class InvoiceController extends GetxController {
 
   int fetch_messageType() {
     if (invoiceModel.whatsapp_selectionStatus.value && invoiceModel.gmail_selectionStatus.value) return 3;
-    if (invoiceModel.whatsapp_selectionStatus.value) return 1;
-    if (invoiceModel.gmail_selectionStatus.value) return 2;
+    if (invoiceModel.whatsapp_selectionStatus.value) return 2;
+    if (invoiceModel.gmail_selectionStatus.value) return 1;
 
     return 0;
   }
@@ -443,11 +443,14 @@ class InvoiceController extends GetxController {
         invoiceModel.clientAddressController.value.text.isEmpty ||
         invoiceModel.billingAddressNameController.value.text.isEmpty ||
         invoiceModel.billingAddressController.value.text.isEmpty ||
+        (invoiceModel.gmail_selectionStatus.value && invoiceModel.emailController.value.text.isEmpty) ||
+        (invoiceModel.whatsapp_selectionStatus.value && invoiceModel.phoneController.value.text.isEmpty) ||
         invoiceModel.gstNumController.value.text.isEmpty ||
         invoiceModel.Invoice_products.isEmpty ||
         invoiceModel.Invoice_noteList.isEmpty ||
         invoiceModel.Invoice_no.value == null);
-  } // If any one is empty or null, then it returns true
+  }
+  // If any one is empty or null, then it returns true
 
   void resetData() {
     invoiceModel.tabController.value = null;

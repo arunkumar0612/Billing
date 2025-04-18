@@ -153,6 +153,15 @@ class SubscriptionController extends GetxController {
     subscriptionModel.CCemailToggle.value = value;
   }
 
+  void reset_packageData() {
+    subscriptionModel.packagenameController.value.clear();
+    subscriptionModel.packageamountController.value.clear();
+    subscriptionModel.packagedevicesController.value.clear();
+    subscriptionModel.packagecamerasController.value.clear();
+    subscriptionModel.packageadditionalcamerasController.value.clear();
+    subscriptionModel.packagedescController.value.clear();
+  }
+
   void resetData() {
     subscriptionModel.customerList.clear();
     subscriptionModel.processList.clear();

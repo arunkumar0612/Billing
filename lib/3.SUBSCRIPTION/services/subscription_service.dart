@@ -28,6 +28,7 @@ mixin SubscriptionServices {
   final SubscriptionController _subscriptionController = Get.find<SubscriptionController>();
   final SUBSCRIPTION_ClientreqController _clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
   final SUBSCRIPTION_QuoteController _quoteController = Get.find<SUBSCRIPTION_QuoteController>();
+  final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
   // final loader = LoadingOverlay();
 
   dynamic UploadSubscription(context, List<Map<String, dynamic>> excelData) async {
@@ -237,10 +238,77 @@ mixin SubscriptionServices {
         if (value.code) {
           Navigator.pop(context);
           get_GlobalPackageList(context);
+          subscriptionController.reset_packageData();
+          subscriptionController.update();
           Basic_SnackBar(context, "Package Created successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
           await Basic_dialog(context: context, showCancel: false, title: 'Package created Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
+
+  void UpdateGlobalPackage(context, String subscriptionName, int noOfDevice, int noOfCameras, int AdditionalCameraCharges, double amount, String productDescription, int subId) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({
+        "subscriptionName": subscriptionName,
+        "noOfDevice": noOfDevice,
+        "noOfCameras": noOfCameras,
+        "AdditionalCameraCharges": AdditionalCameraCharges,
+        "amount": amount,
+        "productDescription": productDescription,
+        "subId": subId,
+      }, API.update_subscription_GlobalPackage);
+      if (response?['statusCode'] == 200) {
+        CMResponse value = CMResponse.fromJson(response ?? {});
+        if (value.code) {
+          // Navigator.pop(context);
+          get_GlobalPackageList(context);
+          Basic_SnackBar(context, "Package updated successfully");
+          // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Basic_dialog(context: context, showCancel: false, title: 'Package update error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
+
+  void DeleteGlobalPackage(context, List<int> subId) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({
+        "subId": subId,
+      }, API.delete_subscription_GlobalPackage);
+      if (response?['statusCode'] == 200) {
+        CMResponse value = CMResponse.fromJson(response ?? {});
+        if (value.code) {
+          subscriptionController.subscriptionModel.packageselectedID.value =
+              subId.contains(subscriptionController.subscriptionModel.packageselectedID.value) ? null : subscriptionController.subscriptionModel.packageselectedID.value;
+          subscriptionController.subscriptionModel.selectedPackagessubscriptionID.clear();
+          // subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList[subscriptionController.subscriptionModel.packageselectedIndex.value!].subscriptionId == subId
+          //     ? null
+          //     : subscriptionController.subscriptionModel.packageselectedIndex.value;
+          // subscriptionController.subscriptionModel.GloabalPackage.value = Global_package(globalPackageList: []);
+
+          // Navigator.pop(context);
+          // subscriptionController.subscriptionModel.packageselectedIndex.value = null;
+
+          // subscriptionController.subscriptionModel.selectedPackagessubscriptionID.clear();
+
+          get_GlobalPackageList(context);
+          // _subscriptionController.subscriptionModel.packageselectedIndex.value = _subscriptionController.subscriptionModel.packageselectedIndex.value! - subId.length;
+          Basic_SnackBar(context, "Package deleted successfully");
+          // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Basic_dialog(context: context, showCancel: false, title: 'Package delete Error', content: value.message ?? "", onOk: () {});
         }
       } else {
         Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");

@@ -29,6 +29,7 @@ mixin SubscriptionServices {
   final SubscriptionController _subscriptionController = Get.find<SubscriptionController>();
   final SUBSCRIPTION_ClientreqController _clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
   final SUBSCRIPTION_QuoteController _quoteController = Get.find<SUBSCRIPTION_QuoteController>();
+  final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
   final loader = LoadingOverlay();
   Future<void> get_CompanyList(context) async {
     try {
@@ -135,16 +136,29 @@ mixin SubscriptionServices {
     }
   }
 
-  void DeleteGlobalPackage(context, int subId) async {
+  void DeleteGlobalPackage(context, List<int> subId) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({
         "subId": subId,
-      }, API.update_subscription_GlobalPackage);
+      }, API.delete_subscription_GlobalPackage);
       if (response?['statusCode'] == 200) {
         CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {
+          subscriptionController.subscriptionModel.packageselectedID.value =
+              subId.contains(subscriptionController.subscriptionModel.packageselectedID.value) ? null : subscriptionController.subscriptionModel.packageselectedID.value;
+          subscriptionController.subscriptionModel.selectedPackagessubscriptionID.clear();
+          // subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList[subscriptionController.subscriptionModel.packageselectedIndex.value!].subscriptionId == subId
+          //     ? null
+          //     : subscriptionController.subscriptionModel.packageselectedIndex.value;
+          // subscriptionController.subscriptionModel.GloabalPackage.value = Global_package(globalPackageList: []);
+
           // Navigator.pop(context);
+          // subscriptionController.subscriptionModel.packageselectedIndex.value = null;
+
+          // subscriptionController.subscriptionModel.selectedPackagessubscriptionID.clear();
+
           get_GlobalPackageList(context);
+          // _subscriptionController.subscriptionModel.packageselectedIndex.value = _subscriptionController.subscriptionModel.packageselectedIndex.value! - subId.length;
           Basic_SnackBar(context, "Package deleted successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {

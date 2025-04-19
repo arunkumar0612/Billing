@@ -1322,7 +1322,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                                         context, subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
 
                                                                     if (success) {
-                                                                      // widget.GenerateQuote_dialougebox(context, "revisedquotation",
+                                                                      // widget.GenerateQuote_dialougebox(cont`ext, "revisedquotation",
                                                                       //     subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                       // quoteController.setProcessID(subscriptionController.subscriptionModel.processList[index].processid);
                                                                     }

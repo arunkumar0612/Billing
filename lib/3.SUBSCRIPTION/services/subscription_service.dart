@@ -169,7 +169,7 @@ mixin SubscriptionServices {
           // await Basic_dialog(context: context, showCancel: false, title: 'Process List', content: "Process List fetched successfully", onOk: () {});
           _subscriptionController.subscriptionModel.processList.clear();
           // print(value.data);
-          // _subscriptionController.addToProcessList(value);
+          _subscriptionController.addToProcessList(value);
         } else {
           await Basic_dialog(context: context, showCancel: false, title: 'Process List Error', content: value.message ?? "", onOk: () {});
         }

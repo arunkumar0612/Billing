@@ -27,7 +27,7 @@ class _RfqDetailsState extends State<RfqDetails> {
       "requestforquotation",
       widget.eventID,
     );
-    // widget.get_productSuggestionList(context);
+    widget.get_productSuggestionList(context);
     widget.get_noteSuggestionList(context);
     super.initState();
   }
@@ -36,7 +36,7 @@ class _RfqDetailsState extends State<RfqDetails> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -7,6 +7,7 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/services/Quotation_services/SUBSCRI
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
 
 class SUBSCRIPTION_QuoteDetails extends StatefulWidget with SUBSCRIPTION_QuotedetailsService {
   SUBSCRIPTION_QuoteDetails({super.key, required this.eventtype, required this.eventID});
@@ -30,7 +31,7 @@ class _SUBSCRIPTION_QuoteDetailsState extends State<SUBSCRIPTION_QuoteDetails> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -133,10 +134,7 @@ class _SUBSCRIPTION_QuoteDetailsState extends State<SUBSCRIPTION_QuoteDetails> {
                             controller: quoteController.quoteModel.gstNumController.value,
                             icon: Icons.price_change,
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter GST number';
-                              }
-                              return null;
+                              return Validators.GST_validator(value);
                             },
                           ),
                           const SizedBox(height: 30),

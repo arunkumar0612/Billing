@@ -14,3 +14,5 @@
 14. When RFQ is clicked and if there's a vendor process coresponding to the current sales process present- it should redirect to that page and expand that process particularly
 15. All text field icons to be changed correctly
 16. 
+7399750001
+9498804981

@@ -446,7 +446,8 @@ class InvoiceController extends GetxController {
         (invoiceModel.gmail_selectionStatus.value && invoiceModel.emailController.value.text.isEmpty) ||
         (invoiceModel.whatsapp_selectionStatus.value && invoiceModel.phoneController.value.text.isEmpty) ||
         invoiceModel.gstNumController.value.text.isEmpty ||
-        invoiceModel.Invoice_products.isEmpty ||
+        invoiceModel.Invoice_gstTotals.isEmpty ||
+        invoiceModel.Invoice_gstTotals.isEmpty ||
         invoiceModel.Invoice_noteList.isEmpty ||
         invoiceModel.Invoice_no.value == null);
   }

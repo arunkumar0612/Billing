@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
+import 'package:ssipl_billing/4.SALES/services/CustomPDF_services/Invoice/CustomPDF_Invoice_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
-import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
-import 'package:ssipl_billing/4.SALES/services/CustomPDF_services/Invoice/CustomPDF_Invoice_services.dart';
 
 class CustomPDF_InvoicePDF {
   final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
@@ -1117,15 +1117,18 @@ class CustomPDF_InvoicePDF {
                                   decoration: InputDecoration(
                                     // contentPadding: const EdgeInsets.all(0),
                                     errorStyle: const TextStyle(height: 0, fontSize: 0),
-                                    suffix: GestureDetector(
-                                      child: const Icon(
-                                        Icons.delete,
-                                        size: 14,
-                                        color: const Color.fromARGB(193, 244, 67, 54),
+                                    suffix: MouseRegion(
+                                      cursor: SystemMouseCursors.click,
+                                      child: GestureDetector(
+                                        child: const Icon(
+                                          Icons.delete,
+                                          size: 14,
+                                          color: const Color.fromARGB(193, 244, 67, 54),
+                                        ),
+                                        onTap: () {
+                                          pdfpopup_controller.deleteNote(index);
+                                        },
                                       ),
-                                      onTap: () {
-                                        pdfpopup_controller.deleteNote(index);
-                                      },
                                     ),
                                     hintText: "Please enter the notes....",
                                     hintStyle: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),

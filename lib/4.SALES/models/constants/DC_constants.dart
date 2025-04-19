@@ -29,7 +29,7 @@ class DcModel extends GetxController with GetSingleTickerProviderStateMixin {
   var Dc_gstTotals = <DcGSTtotals>[].obs;
   var checkboxValues = <bool>[].obs;
   var selectall_status = false.obs;
-  var product_feedback = Rxn<String>();
+  var product_feedback = "".obs;
   final productNameController = TextEditingController().obs;
   var textControllers = <TextEditingController>[].obs;
   var quantities = <RxInt>[].obs;

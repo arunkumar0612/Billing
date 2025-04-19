@@ -153,7 +153,6 @@ mixin DcnotesService {
       dcController.dcModel.Dc_no.value,
       dcController.dcModel.TitleController.value.text,
       9,
-      dcController.dcModel.Dc_gstTotals,
     );
 
     Directory tempDir = await getTemporaryDirectory();

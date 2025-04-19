@@ -472,7 +472,7 @@ class DcController extends GetxController {
         (dcModel.gmail_selectionStatus.value && dcModel.emailController.value.text.isEmpty) ||
         (dcModel.whatsapp_selectionStatus.value && dcModel.phoneController.value.text.isEmpty) ||
         dcModel.gstNumController.value.text.isEmpty ||
-        dcModel.Dc_products.isEmpty ||
+        dcModel.selected_dcProducts.isEmpty ||
         dcModel.Dc_noteList.isEmpty ||
         dcModel.Dc_no.value == null);
   }
@@ -501,7 +501,7 @@ class DcController extends GetxController {
     dcModel.Dc_gstTotals.clear();
     dcModel.checkboxValues.clear();
     dcModel.selectall_status.value = false;
-    dcModel.product_feedback.value = null;
+    dcModel.product_feedback.value = "";
     dcModel.productNameController.value.clear();
     dcModel.textControllers.clear();
     dcModel.quantities.clear();

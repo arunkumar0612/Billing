@@ -361,9 +361,6 @@ class RfqController extends GetxController {
   void add_productSuggestion(List<dynamic> suggestionList) {
     for (var item in suggestionList) {
       rfqModel.Rfq_productSuggestion.add(ProductSuggestion.fromJson(item));
-      if (kDebugMode) {
-        print(rfqModel.Rfq_productSuggestion[0].productName);
-      }
     }
   }
 

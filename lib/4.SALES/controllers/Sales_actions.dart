@@ -147,6 +147,13 @@ class SalesController extends GetxController {
     salesModel.salesperiod.value = value;
   }
 
+  void reset_shareData() {
+    salesModel.emailController.value.clear();
+    salesModel.phoneController.value.clear();
+    salesModel.feedbackController.value.clear();
+    salesModel.CCemailController.value.clear();
+  }
+
   void resetData() {
     // salesModel.customerList.clear();
     // salesModel.processList.clear();

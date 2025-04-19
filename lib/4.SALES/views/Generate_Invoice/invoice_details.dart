@@ -6,6 +6,7 @@ import 'package:ssipl_billing/4.SALES/services/Invoice_services/InvoiceDetails_s
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
 
 import '../../controllers/Invoice_actions.dart';
 
@@ -31,7 +32,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -134,10 +135,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                           controller: invoiceController.invoiceModel.gstNumController.value,
                           icon: Icons.receipt_long,
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter GST number';
-                            }
-                            return null;
+                            return Validators.GST_validator(value);
                           },
                         ),
                         const SizedBox(height: 30),

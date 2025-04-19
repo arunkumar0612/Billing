@@ -7,6 +7,7 @@ import 'package:ssipl_billing/4.SALES/services/DC_services/DC_Details_service.da
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
 
 class DcDetails extends StatefulWidget with DcdetailsService {
   DcDetails({super.key, required this.eventID});
@@ -27,7 +28,7 @@ class _DcDetailsState extends State<DcDetails> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -130,10 +131,7 @@ class _DcDetailsState extends State<DcDetails> {
                             controller: dcController.dcModel.gstNumController.value,
                             icon: Icons.receipt_long,
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter GST number';
-                              }
-                              return null;
+                              return Validators.GST_validator(value);
                             },
                           ),
                           const SizedBox(height: 30),

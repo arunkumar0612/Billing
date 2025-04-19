@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
+
 import '../../controllers/Quote_actions.dart';
 import '../../services/Quotation_services/QuoteDetails_service.dart';
 
@@ -30,7 +32,7 @@ class _QuoteDetailsState extends State<QuoteDetails> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -131,10 +133,7 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                             controller: quoteController.quoteModel.gstNumController.value,
                             icon: Icons.receipt_long, // changed from price_change
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter GST number';
-                              }
-                              return null;
+                              return Validators.GST_validator(value);
                             },
                           ),
                           const SizedBox(height: 30),

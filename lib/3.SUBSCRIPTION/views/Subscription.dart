@@ -1264,18 +1264,26 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                                     height: 20, // Makes the image fill the container's height
                                                                   ),
                                                                 if (subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 2)
-                                                                  Image.asset(
-                                                                    'assets/images/pending.png',
-                                                                    // fit: BoxFit.cover, // Ensures the image covers the container
-                                                                    width: 20, // Makes the image fill the container's width
-                                                                    height: 20, // Makes the image fill the container's height
+                                                                  Padding(
+                                                                    padding: const EdgeInsets.only(left: 5),
+                                                                    child: Image.asset(
+                                                                      color: Colors.amberAccent,
+                                                                      'assets/images/exclamation.png',
+                                                                      // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                      width: 15, // Makes the image fill the container's width
+                                                                      height: 15, // Makes the image fill the container's height
+                                                                    ),
                                                                   ),
                                                                 if (subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 3)
-                                                                  Image.asset(
-                                                                    'assets/images/reject.png',
-                                                                    // fit: BoxFit.cover, // Ensures the image covers the container
-                                                                    width: 20, // Makes the image fill the container's width
-                                                                    height: 20, // Makes the image fill the container's height
+                                                                  Padding(
+                                                                    padding: const EdgeInsets.only(left: 2),
+                                                                    child: Image.asset(
+                                                                      // color: Colors.amberAccent,
+                                                                      'assets/images/reject.png',
+                                                                      // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                      width: 18, // Makes the image fill the container's width
+                                                                      height: 18, // Makes the image fill the container's height
+                                                                    ),
                                                                   ),
                                                               ],
                                                             ),

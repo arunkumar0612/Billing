@@ -138,7 +138,7 @@ mixin PostServices {
           loader.stop();
           await Basic_dialog(context: context, title: "Dc", content: value.message!, onOk: () {}, showCancel: false);
           // Navigator.of(context).pop(true);
-          // DcController.resetData();
+          // pdfpopup_controller.pdfModel.value.resetData();
         } else {
           loader.stop();
           await Basic_dialog(context: context, title: 'Processing Dc', content: value.message ?? "", onOk: () {}, showCancel: false);

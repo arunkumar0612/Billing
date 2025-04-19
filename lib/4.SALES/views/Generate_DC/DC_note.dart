@@ -4,7 +4,6 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:ssipl_billing/4.SALES/controllers/DC_actions.dart';
 import 'package:ssipl_billing/4.SALES/services/DC_services/DC_Notes_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
-import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 
 class DcNote extends StatefulWidget with DcnotesService {
@@ -142,13 +141,13 @@ class _DcNoteState extends State<DcNote> {
       () {
         return Center(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Obx(
@@ -238,120 +237,120 @@ class _DcNoteState extends State<DcNote> {
                         );
                       },
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 50),
-                        const Text(
-                          'RECOMMENDATION',
-                          style: TextStyle(color: Primary_colors.Color1),
-                        ),
-                        const SizedBox(height: 10),
-                        Obx(
-                          () {
-                            return BasicTextfield(
-                              digitsOnly: false,
-                              width: 400,
-                              readonly: dcController.dcModel.recommendationHeadingController.value.text.isEmpty ? false : true,
-                              text: 'Recommendation Heading',
-                              controller: dcController.dcModel.recommendationHeadingController.value,
-                              icon: Icons.title,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter Recommendation heading';
-                                }
-                                return null;
-                              },
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 25),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 190,
-                              child: Column(
-                                children: [
-                                  Obx(
-                                    () {
-                                      return BasicTextfield(
-                                        digitsOnly: false,
-                                        width: 190,
-                                        readonly: false,
-                                        text: 'Product name',
-                                        controller: dcController.dcModel.recommendationKeyController.value,
-                                        icon: Icons.production_quantity_limits,
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Please enter a product name';
-                                          }
-                                          return null;
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 20),
-                            SizedBox(
-                              width: 190,
-                              child: Column(
-                                children: [
-                                  Obx(
-                                    () {
-                                      return BasicTextfield(
-                                        digitsOnly: true,
-                                        width: 190,
-                                        readonly: false,
-                                        text: 'Product value',
-                                        controller: dcController.dcModel.recommendationValueController.value,
-                                        icon: Icons.production_quantity_limits,
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Please enter a product value';
-                                          }
-                                          return null;
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 25),
-                        const SizedBox(
-                          width: 410,
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            "Recommendations should be carefully selected based on the client's needs. Double-check all product names and quantities before adding them to avoid errors in future references.",
-                            style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text6),
-                          ),
-                        ),
-                        const SizedBox(height: 30),
-                        SizedBox(
-                          width: 400,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Obx(
-                                () {
-                                  return BasicButton(
-                                      colors: dcController.dcModel.recommendation_editIndex.value == null ? Colors.blue : Colors.orange,
-                                      text: dcController.dcModel.recommendation_editIndex.value == null ? 'Add Recommendation ' : 'Update Recommendation',
-                                      onPressed: () {
-                                        dcController.dcModel.recommendation_editIndex.value == null ? widget.addtable_row(context) : widget.updatetable();
-                                      });
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Column(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     const SizedBox(height: 50),
+                    //     const Text(
+                    //       'RECOMMENDATION',
+                    //       style: TextStyle(color: Primary_colors.Color1),
+                    //     ),
+                    //     const SizedBox(height: 10),
+                    //     Obx(
+                    //       () {
+                    //         return BasicTextfield(
+                    //           digitsOnly: false,
+                    //           width: 400,
+                    //           readonly: dcController.dcModel.recommendationHeadingController.value.text.isEmpty ? false : true,
+                    //           text: 'Recommendation Heading',
+                    //           controller: dcController.dcModel.recommendationHeadingController.value,
+                    //           icon: Icons.title,
+                    //           validator: (value) {
+                    //             if (value == null || value.isEmpty) {
+                    //               return 'Please enter Recommendation heading';
+                    //             }
+                    //             return null;
+                    //           },
+                    //         );
+                    //       },
+                    //     ),
+                    //     const SizedBox(height: 25),
+                    //     Row(
+                    //       children: [
+                    //         SizedBox(
+                    //           width: 190,
+                    //           child: Column(
+                    //             children: [
+                    //               Obx(
+                    //                 () {
+                    //                   return BasicTextfield(
+                    //                     digitsOnly: false,
+                    //                     width: 190,
+                    //                     readonly: false,
+                    //                     text: 'Product name',
+                    //                     controller: dcController.dcModel.recommendationKeyController.value,
+                    //                     icon: Icons.production_quantity_limits,
+                    //                     validator: (value) {
+                    //                       if (value == null || value.isEmpty) {
+                    //                         return 'Please enter a product name';
+                    //                       }
+                    //                       return null;
+                    //                     },
+                    //                   );
+                    //                 },
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //         const SizedBox(width: 20),
+                    //         SizedBox(
+                    //           width: 190,
+                    //           child: Column(
+                    //             children: [
+                    //               Obx(
+                    //                 () {
+                    //                   return BasicTextfield(
+                    //                     digitsOnly: true,
+                    //                     width: 190,
+                    //                     readonly: false,
+                    //                     text: 'Product value',
+                    //                     controller: dcController.dcModel.recommendationValueController.value,
+                    //                     icon: Icons.production_quantity_limits,
+                    //                     validator: (value) {
+                    //                       if (value == null || value.isEmpty) {
+                    //                         return 'Please enter a product value';
+                    //                       }
+                    //                       return null;
+                    //                     },
+                    //                   );
+                    //                 },
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //     const SizedBox(height: 25),
+                    //     const SizedBox(
+                    //       width: 410,
+                    //       child: Text(
+                    //         textAlign: TextAlign.center,
+                    //         "Recommendations should be carefully selected based on the client's needs. Double-check all product names and quantities before adding them to avoid errors in future references.",
+                    //         style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text6),
+                    //       ),
+                    //     ),
+                    //     const SizedBox(height: 30),
+                    //     SizedBox(
+                    //       width: 400,
+                    //       child: Row(
+                    //         crossAxisAlignment: CrossAxisAlignment.start,
+                    //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //         children: [
+                    //           Obx(
+                    //             () {
+                    //               return BasicButton(
+                    //                   colors: dcController.dcModel.recommendation_editIndex.value == null ? Colors.blue : Colors.orange,
+                    //                   text: dcController.dcModel.recommendation_editIndex.value == null ? 'Add Recommendation ' : 'Update Recommendation',
+                    //                   onPressed: () {
+                    //                     dcController.dcModel.recommendation_editIndex.value == null ? widget.addtable_row(context) : widget.updatetable();
+                    //                   });
+                    //             },
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
                 SizedBox(

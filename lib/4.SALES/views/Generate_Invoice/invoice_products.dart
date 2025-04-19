@@ -157,6 +157,7 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
               colors: Colors.green,
               onPressed: () {
                 // widget.addto_Selectedproducts();
+                widget.onSubmit();
                 invoiceController.nextTab();
               },
             ),

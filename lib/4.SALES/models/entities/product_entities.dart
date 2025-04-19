@@ -6,7 +6,7 @@ class DcProduct {
   final int hsn;
   final double gst;
   final double price;
-  int quantity; // Remove final to make it mutable
+  int quantity;
   final int productid;
 
   DcProduct({
@@ -15,14 +15,12 @@ class DcProduct {
     required this.hsn,
     required this.gst,
     required this.price,
-    required this.quantity, // Now mutable
+    required this.quantity,
     required this.productid,
   });
 
-  /// Calculates the total price for the product
   double get total => price * quantity;
 
-  /// Returns specific values based on the given index
   String getIndex(int index) {
     switch (index) {
       case 0:
@@ -46,7 +44,6 @@ class DcProduct {
     }
   }
 
-  /// Converts object to JSON format
   Map<String, dynamic> toJson() {
     return {
       'productsno': sno,
@@ -60,10 +57,10 @@ class DcProduct {
     };
   }
 
-  /// Factory constructor to create an instance from JSON
-  factory DcProduct.fromJson(Map<String, dynamic> json) {
+  /// Factory constructor with external sno
+  factory DcProduct.fromJson(Map<String, dynamic> json, int sno) {
     return DcProduct(
-      sno: json['productsno'] as int,
+      sno: sno, // auto-injected externally
       productName: json['productname'] as String,
       hsn: json['producthsn'] as int,
       gst: (json['productgst'] as num).toDouble(),

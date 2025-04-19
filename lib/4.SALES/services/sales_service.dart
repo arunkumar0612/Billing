@@ -1016,11 +1016,11 @@ mixin SalesServices {
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
-          await Basic_dialog(context: context, title: "Invoice", content: value.message!, onOk: () {}, showCancel: false);
-          // Navigator.of(context).pop(true);
-          // invoiceController.resetData();
+          await Basic_dialog(context: context, title: "Share", content: value.message!, onOk: () {}, showCancel: false);
+          Navigator.of(context).pop(true);
+          salesController.reset_shareData();
         } else {
-          await Basic_dialog(context: context, title: 'Processing Invoice', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Basic_dialog(context: context, title: 'Share', content: value.message ?? "", onOk: () {}, showCancel: false);
         }
       } else {
         Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);

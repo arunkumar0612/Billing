@@ -6,6 +6,7 @@ import 'package:animations/animations.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -190,35 +191,38 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                         );
                       }),
                       const SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: _startAnimation,
-                        child: AnimatedBuilder(
-                          animation: salesController.salesModel.animationController,
-                          builder: (context, child) {
-                            return Transform.rotate(
-                              angle: -salesController.salesModel.animationController.value * 2 * pi, // Counterclockwise rotation
-                              child: Transform.scale(
-                                scale: TweenSequence([
-                                  TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 1.2), weight: 50),
-                                  TweenSequenceItem(tween: Tween<double>(begin: 1.2, end: 1.0), weight: 50),
-                                ]).animate(CurvedAnimation(parent: salesController.salesModel.animationController, curve: Curves.easeInOut)).value, // Zoom in and return to normal
-                                child: Opacity(
-                                  opacity: TweenSequence([
-                                    TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.5), weight: 50),
-                                    TweenSequenceItem(tween: Tween<double>(begin: 0.5, end: 1.0), weight: 50),
-                                  ]).animate(CurvedAnimation(parent: salesController.salesModel.animationController, curve: Curves.easeInOut)).value, // Fade and return to normal
-                                  child: ClipOval(
-                                    child: Image.asset(
-                                      'assets/images/reload.png',
-                                      fit: BoxFit.cover,
-                                      width: 30,
-                                      height: 30,
+                      MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: GestureDetector(
+                          onTap: _startAnimation,
+                          child: AnimatedBuilder(
+                            animation: salesController.salesModel.animationController,
+                            builder: (context, child) {
+                              return Transform.rotate(
+                                angle: -salesController.salesModel.animationController.value * 2 * pi, // Counterclockwise rotation
+                                child: Transform.scale(
+                                  scale: TweenSequence([
+                                    TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 1.2), weight: 50),
+                                    TweenSequenceItem(tween: Tween<double>(begin: 1.2, end: 1.0), weight: 50),
+                                  ]).animate(CurvedAnimation(parent: salesController.salesModel.animationController, curve: Curves.easeInOut)).value, // Zoom in and return to normal
+                                  child: Opacity(
+                                    opacity: TweenSequence([
+                                      TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.5), weight: 50),
+                                      TweenSequenceItem(tween: Tween<double>(begin: 0.5, end: 1.0), weight: 50),
+                                    ]).animate(CurvedAnimation(parent: salesController.salesModel.animationController, curve: Curves.easeInOut)).value, // Fade and return to normal
+                                    child: ClipOval(
+                                      child: Image.asset(
+                                        'assets/images/reload.png',
+                                        fit: BoxFit.cover,
+                                        width: 30,
+                                        height: 30,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -1310,14 +1314,18 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                             //       style: TextStyle(fontSize: 10, color: Color.fromARGB(255, 141, 141, 141)),
                                                                             //     ),
                                                                             //   ),
-                                                                            if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1)
+                                                                            if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1 &&
+                                                                                (salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation" ||
+                                                                                    salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"))
                                                                               Image.asset(
                                                                                 'assets/images/verified.png',
                                                                                 // fit: BoxFit.cover, // Ensures the image covers the container
                                                                                 width: 20, // Makes the image fill the container's width
                                                                                 height: 20, // Makes the image fill the container's height
                                                                               ),
-                                                                            if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 2)
+                                                                            if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 2 &&
+                                                                                (salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation" ||
+                                                                                    salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"))
                                                                               Padding(
                                                                                 padding: const EdgeInsets.only(left: 5),
                                                                                 child: Image.asset(
@@ -1328,7 +1336,9 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                   height: 15, // Makes the image fill the container's height
                                                                                 ),
                                                                               ),
-                                                                            if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 3)
+                                                                            if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 3 &&
+                                                                                (salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation" ||
+                                                                                    salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"))
                                                                               Padding(
                                                                                 padding: const EdgeInsets.only(left: 2),
                                                                                 child: Image.asset(
@@ -1396,7 +1406,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                               ),
                                                                             ),
                                                                           if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation == true) &&
-                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1) &&
+                                                                              (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus != 1))
                                                                             TextButton(
                                                                               onPressed: () async {
                                                                                 bool success =
@@ -1434,7 +1445,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                               ),
                                                                             ),
                                                                           if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.invoice == true) &&
-                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1) &&
+                                                                              (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1))
                                                                             TextButton(
                                                                               onPressed: () async {
                                                                                 bool success =

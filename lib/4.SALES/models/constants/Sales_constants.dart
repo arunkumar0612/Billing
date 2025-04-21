@@ -12,6 +12,7 @@ class SalesModel extends GetxController with GetSingleTickerProviderStateMixin {
   final showcustomerprocess = Rxn<int>();
   final customerId = Rxn<int>();
   final pdfFile = Rxn<File>();
+  final custom_pdfFile = Rxn<File>();
   final selectedIndices = <int>[].obs;
   final RxBool isAllSelected = false.obs;
   final type = 0.obs;

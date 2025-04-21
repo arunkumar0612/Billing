@@ -18,7 +18,7 @@ import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-mixin PostServices {
+mixin salesCustom_PostServices {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final CustomPDF_QuoteController pdfpopup_controller = Get.find<CustomPDF_QuoteController>();
   final loader = LoadingOverlay();
@@ -99,10 +99,10 @@ mixin PostServices {
 
   dynamic postData(context, int messageType) async {
     try {
-      // if ( pdfpopup_controller.postDatavalidation()) {
-      //   await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
-      //   return;
-      // }
+      if (pdfpopup_controller.postDatavalidation()) {
+        await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
+        return;
+      }
       loader.start(context);
       File cachedPdf = pdfpopup_controller.pdfModel.value.genearatedPDF.value!;
       // savePdfToCache();

@@ -32,43 +32,46 @@ class _InvoiceNoteState extends State<InvoiceNote> {
               ),
               width: 550,
               child: Center(
-                  child: Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.only(left: 10, top: 5),
-                        child: Icon(
-                          Icons.circle,
-                          size: 5,
-                        )),
-                    Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                invoiceController.invoiceModel.Invoice_noteList[index], // Display camera type from map
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
-                              ),
-                            ],
-                          )),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        invoiceController.removeFromNoteList(index);
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 15,
+                child: Padding(
+                    padding: const EdgeInsets.only(bottom: 0),
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Padding(
+                              padding: EdgeInsets.only(left: 10, top: 5),
+                              child: Icon(
+                                Icons.circle,
+                                size: 5,
+                              )),
+                          Expanded(
+                            child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      invoiceController.invoiceModel.Invoice_noteList[index], // Display camera type from map
+                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              invoiceController.removeFromNoteList(index);
+                            },
+                            icon: const Icon(
+                              Icons.close,
+                              size: 15,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              )),
+                    )),
+              ),
             ),
           );
         });
@@ -79,54 +82,56 @@ class _InvoiceNoteState extends State<InvoiceNote> {
         itemCount: invoiceController.invoiceModel.Invoice_recommendationList.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () {
-              widget.editnotetable(index);
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(7),
-              ),
-              width: 550,
-              child: Center(
-                  child: Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.only(left: 10, top: 5),
-                        child: Icon(
-                          Icons.circle,
-                          size: 5,
-                        )),
-                    Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                invoiceController.invoiceModel.Invoice_recommendationList[index].key,
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
-                              ),
-                            ],
-                          )),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        invoiceController.removeFromRecommendationList(index);
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 15,
-                      ),
-                    ),
-                  ],
+              onTap: () {
+                widget.editnotetable(index);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7),
                 ),
-              )),
-            ),
-          );
+                width: 550,
+                child: Center(
+                  child: Padding(
+                      padding: const EdgeInsets.only(bottom: 0),
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Padding(
+                                padding: EdgeInsets.only(left: 10, top: 5),
+                                child: Icon(
+                                  Icons.circle,
+                                  size: 5,
+                                )),
+                            Expanded(
+                              child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        invoiceController.invoiceModel.Invoice_recommendationList[index].key,
+                                        style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                invoiceController.removeFromRecommendationList(index);
+                              },
+                              icon: const Icon(
+                                Icons.close,
+                                size: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
+              ));
         });
   }
 
@@ -136,7 +141,7 @@ class _InvoiceNoteState extends State<InvoiceNote> {
       () {
         return Center(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -442,83 +447,84 @@ class _InvoiceNoteState extends State<InvoiceNote> {
                       Obx(() {
                         return Row(
                           children: [
-                            if (!invoiceController.invoiceModel.Invoice_noteList.isNotEmpty) const SizedBox(width: 10),
-                            invoiceController.invoiceModel.isLoading.value
-                                ? SizedBox(
-                                    width: 125,
-                                    child: Stack(
-                                      children: [
-                                        LinearPercentIndicator(
-                                          lineHeight: 27,
-                                          // width: 105,
-                                          percent: invoiceController.invoiceModel.progress.value,
-                                          barRadius: const Radius.circular(5),
-                                          backgroundColor: const Color.fromARGB(255, 31, 38, 63),
-                                          progressColor: Colors.blue,
-                                          center: Text(
-                                            "${(invoiceController.invoiceModel.progress.value * 100).toInt()}%",
-                                            style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 12),
-                                          ),
-                                        ),
-                                        Positioned.fill(
-                                          child: ShaderMask(
-                                            blendMode: BlendMode.srcIn,
-                                            shaderCallback: (Rect bounds) {
-                                              return const LinearGradient(
-                                                colors: [
-                                                  Colors.blue,
-                                                  Colors.transparent,
-                                                  Primary_colors.Dark,
-                                                ],
-                                                stops: [
-                                                  0.0,
-                                                  0.5,
-                                                  1.0,
-                                                ],
-                                                begin: Alignment.centerLeft,
-                                                end: Alignment.centerRight,
-                                              ).createShader(bounds);
-                                            },
-                                            child: LinearPercentIndicator(
-                                              lineHeight: 30,
-                                              // width: 105,
-                                              percent: invoiceController.invoiceModel.progress.value,
-                                              barRadius: const Radius.circular(5),
-                                              backgroundColor: Primary_colors.Dark,
-                                              progressColor: Colors.blue,
+                            if (invoiceController.invoiceModel.Invoice_noteList.isNotEmpty) const SizedBox(width: 10),
+                            if (invoiceController.invoiceModel.Invoice_noteList.isNotEmpty)
+                              invoiceController.invoiceModel.isLoading.value
+                                  ? SizedBox(
+                                      width: 125,
+                                      child: Stack(
+                                        children: [
+                                          LinearPercentIndicator(
+                                            lineHeight: 27,
+                                            // width: 105,
+                                            percent: invoiceController.invoiceModel.progress.value,
+                                            barRadius: const Radius.circular(5),
+                                            backgroundColor: const Color.fromARGB(255, 31, 38, 63),
+                                            progressColor: Colors.blue,
+                                            center: Text(
+                                              "${(invoiceController.invoiceModel.progress.value * 100).toInt()}%",
+                                              style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 12),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : Container(
-                                    width: 125,
-                                    // height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: TextButton(
-                                      onPressed: () async {
-                                        try {
-                                          if (invoiceController.postDatavalidation()) {
-                                            Get.snackbar("Error", "Any of the required fields is Empty!");
-                                            return;
+                                          Positioned.fill(
+                                            child: ShaderMask(
+                                              blendMode: BlendMode.srcIn,
+                                              shaderCallback: (Rect bounds) {
+                                                return const LinearGradient(
+                                                  colors: [
+                                                    Colors.blue,
+                                                    Colors.transparent,
+                                                    Primary_colors.Dark,
+                                                  ],
+                                                  stops: [
+                                                    0.0,
+                                                    0.5,
+                                                    1.0,
+                                                  ],
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                ).createShader(bounds);
+                                              },
+                                              child: LinearPercentIndicator(
+                                                lineHeight: 30,
+                                                // width: 105,
+                                                percent: invoiceController.invoiceModel.progress.value,
+                                                barRadius: const Radius.circular(5),
+                                                backgroundColor: Primary_colors.Dark,
+                                                progressColor: Colors.blue,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Container(
+                                      width: 125,
+                                      // height: 40,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: TextButton(
+                                        onPressed: () async {
+                                          try {
+                                            if (invoiceController.postDatavalidation()) {
+                                              Get.snackbar("Error", "Any of the required fields is Empty!");
+                                              return;
+                                            }
+                                            await Future.wait([
+                                              invoiceController.startProgress(),
+                                              widget.savePdfToCache(),
+                                            ]);
+                                            invoiceController.nextTab();
+                                          } catch (e, stackTrace) {
+                                            debugPrint("Error in Future.wait: $e");
+                                            debugPrint(stackTrace.toString());
+                                            Get.snackbar("Error", "Something went wrong. Please try again.");
                                           }
-                                          await Future.wait([
-                                            invoiceController.startProgress(),
-                                            widget.savePdfToCache(),
-                                          ]);
-                                          invoiceController.nextTab();
-                                        } catch (e, stackTrace) {
-                                          debugPrint("Error in Future.wait: $e");
-                                          debugPrint(stackTrace.toString());
-                                          Get.snackbar("Error", "Something went wrong. Please try again.");
-                                        }
-                                      },
-                                      child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),
-                                    )),
+                                        },
+                                        child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),
+                                      )),
                           ],
                         );
                       })

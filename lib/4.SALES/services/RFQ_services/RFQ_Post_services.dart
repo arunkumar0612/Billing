@@ -108,8 +108,8 @@ mixin PostServices {
         if (value.code) {
           loader.stop();
           await Basic_dialog(context: context, title: "Rfq", content: value.message!, onOk: () {}, showCancel: false);
-          // Navigator.of(context).pop(true);
-          // rfqController.resetData();
+          Navigator.of(context).pop(true);
+          rfqController.resetData();
         } else {
           loader.stop();
           await Basic_dialog(context: context, title: 'Processing Rfq', content: value.message ?? "", onOk: () {}, showCancel: false);

@@ -7,6 +7,7 @@ import 'package:ssipl_billing/4.SALES/services/DC_services/DC_Details_service.da
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
 
 class DcDetails extends StatefulWidget with DcdetailsService {
   DcDetails({super.key, required this.eventID});
@@ -27,7 +28,7 @@ class _DcDetailsState extends State<DcDetails> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -63,7 +64,7 @@ class _DcDetailsState extends State<DcDetails> {
                             readonly: false,
                             text: 'Client Address name',
                             controller: dcController.dcModel.clientAddressNameController.value,
-                            icon: Icons.people,
+                            icon: Icons.account_circle,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Client Address name';
@@ -78,7 +79,7 @@ class _DcDetailsState extends State<DcDetails> {
                             readonly: false,
                             text: 'Client Address ',
                             controller: dcController.dcModel.clientAddressController.value,
-                            icon: Icons.location_history_outlined,
+                            icon: Icons.location_on_outlined,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Client Address';
@@ -98,7 +99,7 @@ class _DcDetailsState extends State<DcDetails> {
                             readonly: false,
                             text: 'Billing Address name',
                             controller: dcController.dcModel.billingAddressNameController.value,
-                            icon: Icons.price_change,
+                            icon: Icons.business,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Billing Address name';
@@ -113,7 +114,7 @@ class _DcDetailsState extends State<DcDetails> {
                             readonly: false,
                             text: 'Billing Address',
                             controller: dcController.dcModel.billingAddressController.value,
-                            icon: Icons.price_change,
+                            icon: Icons.location_city,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Billing Address';
@@ -128,12 +129,9 @@ class _DcDetailsState extends State<DcDetails> {
                             readonly: false,
                             text: 'GST number',
                             controller: dcController.dcModel.gstNumController.value,
-                            icon: Icons.price_change,
+                            icon: Icons.receipt_long,
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter GST number';
-                              }
-                              return null;
+                              return Validators.GST_validator(value);
                             },
                           ),
                           const SizedBox(height: 30),

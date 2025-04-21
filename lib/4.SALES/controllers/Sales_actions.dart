@@ -57,6 +57,16 @@ class SalesController extends GetxController {
     salesModel.pdfFile.value = value;
   }
 
+  Future<void> custom_PDFfileApiData(CMDmResponse value) async {
+    var pdfFileData = await PDFfileData.fromJson(value); // Await async function
+    var binaryData = pdfFileData.data; // Extract File object
+    await update_customPDFfile(binaryData);
+  }
+
+  Future<void> update_customPDFfile(File value) async {
+    salesModel.custom_pdfFile.value = value;
+  }
+
   void updateisAllSelected(bool value) {
     salesModel.isAllSelected.value = value;
   }
@@ -135,6 +145,13 @@ class SalesController extends GetxController {
 
   void updatesalesperiod(String value) {
     salesModel.salesperiod.value = value;
+  }
+
+  void reset_shareData() {
+    salesModel.emailController.value.clear();
+    salesModel.phoneController.value.clear();
+    salesModel.feedbackController.value.clear();
+    salesModel.CCemailController.value.clear();
   }
 
   void resetData() {

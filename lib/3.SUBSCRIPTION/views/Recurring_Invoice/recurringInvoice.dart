@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/Subscription_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/subscription_service.dart';
+import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 
 class Recurringinvoice extends StatefulWidget with SubscriptionServices {
   Recurringinvoice({super.key});
@@ -373,12 +373,12 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                       subscriptionController.updateshowcustomerprocess(index);
                       subscriptionController.updatecustomerId(customerid);
 
-                      widget.Get_RecurringInvoiceList(context, customerid);
+                      widget.Get_RecurringInvoiceList(customerid);
                     }
                   : () {
                       subscriptionController.updateshowcustomerprocess(null);
                       subscriptionController.updatecustomerId(0);
-                      widget.Get_RecurringInvoiceList(context, null);
+                      widget.Get_RecurringInvoiceList(null);
                     },
             ),
           ),

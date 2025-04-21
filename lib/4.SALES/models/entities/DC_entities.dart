@@ -99,7 +99,9 @@ class RequiredData {
       billingAddressName: json.data['billingaddress_name'] as String,
       billingAddress: json.data['billing_address'] as String,
       product: (json.data['product'] as List<dynamic>)
-          .map((e) => DcProduct.fromJson(e)) // ✅ Convert each item to DcProduct
+          .asMap()
+          .entries
+          .map((entry) => DcProduct.fromJson(entry.value, entry.key + 1)) // `sno = index + 1`
           .toList(),
     );
   }

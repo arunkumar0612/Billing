@@ -2,7 +2,6 @@
 
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/controllers/DC_actions.dart';
-import 'package:ssipl_billing/4.SALES/models/entities/DC_entities.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/product_entities.dart';
 
 mixin DcproductService {
@@ -39,21 +38,21 @@ mixin DcproductService {
   //   }
   // }
 
-  void onSubmit() {
-    dcController.dcModel.Dc_gstTotals.assignAll(
-      dcController.dcModel.Dc_products
-          .fold<Map<double, double>>({}, (Map<double, double> accumulator, DcProduct product) {
-            accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
-            return accumulator;
-          })
-          .entries
-          .map((entry) => DcGSTtotals(
-                gst: entry.key, // Convert key to String
-                total: entry.value, // Convert value to String
-              ))
-          .toList(),
-    );
-  }
+  // void onSubmit() {
+  //   dcController.dcModel.Dc_gstTotals.assignAll(
+  //     dcController.dcModel.Dc_products
+  //         .fold<Map<double, double>>({}, (Map<double, double> accumulator, DcProduct product) {
+  //           accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
+  //           return accumulator;
+  //         })
+  //         .entries
+  //         .map((entry) => DcGSTtotals(
+  //               gst: entry.key, // Convert key to String
+  //               total: entry.value, // Convert value to String
+  //             ))
+  //         .toList(),
+  //   );
+  // }
 
   // void updateproduct(context) {
   //   if (dcController.dcModel.productKey.value.currentState?.validate() ?? false) {
@@ -91,7 +90,7 @@ mixin DcproductService {
   void addto_Selectedproducts() {
     dcController.dcModel.selected_dcProducts.clear();
     dcController.dcModel.pending_dcProducts.clear();
-    dcController.dcModel.product_feedback.value = null;
+    dcController.dcModel.product_feedback.value = "";
 
     int pendingProducts = 0;
 
@@ -100,17 +99,26 @@ mixin DcproductService {
       int selectedQty = dcController.dcModel.checkboxValues[i] ? dcController.dcModel.quantities[i].value : 0;
       int pendingQty = totalQty - selectedQty;
 
+// return DcProduct(
+//       sno: sno, // auto-injected externally
+//       productName: json['productname'] as String,
+//       hsn: json['producthsn'] as int,
+//       gst: (json['productgst'] as num).toDouble(),
+//       price: (json['productprice'] as num).toDouble(),
+//       quantity: json['productquantity'] as int,
+//       productid: json['productid'] as int,
+//     );
+
       if (selectedQty > 0) {
         // Add selected product with updated quantity
-        DcProduct copiedProduct = DcProduct(
-          sno: dcController.dcModel.Dc_products[i].sno,
-          productName: dcController.dcModel.Dc_products[i].productName,
-          hsn: dcController.dcModel.Dc_products[i].hsn,
-          gst: dcController.dcModel.Dc_products[i].gst,
-          price: dcController.dcModel.Dc_products[i].price,
-          quantity: selectedQty, // Assign updated quantity
-          productid: dcController.dcModel.Dc_products[i].productid,
-        );
+        DcProduct copiedProduct = DcProduct.fromJson({
+          "productname": dcController.dcModel.Dc_products[i].productName,
+          "producthsn": dcController.dcModel.Dc_products[i].hsn,
+          "productgst": dcController.dcModel.Dc_products[i].gst,
+          "productprice": dcController.dcModel.Dc_products[i].price,
+          "productquantity": selectedQty,
+          "productid": dcController.dcModel.Dc_products[i].productid,
+        }, i + 1);
         dcController.dcModel.selected_dcProducts.add(copiedProduct);
       }
 
@@ -139,6 +147,8 @@ mixin DcproductService {
 
     if (pendingProducts > 0) {
       dcController.dcModel.product_feedback.value = "Still $pendingProducts products need to be delivered!";
+    } else {
+      dcController.dcModel.product_feedback.value = "Delivery completed!";
     }
   }
 }

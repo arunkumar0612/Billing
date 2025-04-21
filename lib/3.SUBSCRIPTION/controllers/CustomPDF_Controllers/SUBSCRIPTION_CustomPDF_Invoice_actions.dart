@@ -169,8 +169,8 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
 
   int fetch_messageType() {
     if (pdfModel.value.whatsapp_selectionStatus.value && pdfModel.value.gmail_selectionStatus.value) return 3;
-    if (pdfModel.value.whatsapp_selectionStatus.value) return 1;
-    if (pdfModel.value.gmail_selectionStatus.value) return 2;
+    if (pdfModel.value.whatsapp_selectionStatus.value) return 2;
+    if (pdfModel.value.gmail_selectionStatus.value) return 1;
 
     return 0;
   }
@@ -276,17 +276,15 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
   }
 
   bool postDatavalidation() {
-    return pdfModel.value.clientName.value.text.isNotEmpty &&
-        pdfModel.value.clientAddress.value.text.isNotEmpty &&
-        pdfModel.value.billingName.value.text.isNotEmpty &&
-        pdfModel.value.billingAddres.value.text.isNotEmpty &&
-        pdfModel.value.planname.value.text.isNotEmpty &&
-        pdfModel.value.Email.value.text.isNotEmpty &&
-        pdfModel.value.CCemailController.value.text.isNotEmpty &&
-        pdfModel.value.phoneNumber.value.text.isNotEmpty &&
-        pdfModel.value.Total.value.text.isNotEmpty &&
-        pdfModel.value.manualinvoiceNo.value.text.isNotEmpty &&
-        pdfModel.value.date.value.text.isNotEmpty &&
-        pdfModel.value.feedback.value.text.isNotEmpty;
-  }
+    return (pdfModel.value.clientName.value.text.isEmpty ||
+        pdfModel.value.clientAddress.value.text.isEmpty ||
+        pdfModel.value.billingName.value.text.isEmpty ||
+        pdfModel.value.billingAddres.value.text.isEmpty ||
+        pdfModel.value.planname.value.text.isEmpty ||
+        (pdfModel.value.gmail_selectionStatus.value && pdfModel.value.Email.value.text.isEmpty) ||
+        (pdfModel.value.whatsapp_selectionStatus.value && pdfModel.value.phoneNumber.value.text.isEmpty) ||
+        pdfModel.value.Total.value.text.isEmpty ||
+        pdfModel.value.manualinvoiceNo.value.text.isEmpty ||
+        pdfModel.value.date.value.text.isEmpty);
+  } // If any one is empty or null, then it returns true
 }

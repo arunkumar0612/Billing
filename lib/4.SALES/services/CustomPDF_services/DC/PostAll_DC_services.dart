@@ -99,10 +99,10 @@ mixin PostServices {
 
   dynamic postData(context, int messageType) async {
     try {
-      // if ( pdfpopup_controller.postDatavalidation()) {
-      //   await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
-      //   return;
-      // }
+      if (pdfpopup_controller.postDatavalidation()) {
+        await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
+        return;
+      }
       loader.start(context);
       File cachedPdf = pdfpopup_controller.pdfModel.value.genearatedPDF.value!;
       // savePdfToCache();
@@ -138,7 +138,7 @@ mixin PostServices {
           loader.stop();
           await Basic_dialog(context: context, title: "Dc", content: value.message!, onOk: () {}, showCancel: false);
           // Navigator.of(context).pop(true);
-          // DcController.resetData();
+          // pdfpopup_controller.pdfModel.value.resetData();
         } else {
           loader.stop();
           await Basic_dialog(context: context, title: 'Processing Dc', content: value.message ?? "", onOk: () {}, showCancel: false);

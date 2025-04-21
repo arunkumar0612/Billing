@@ -109,8 +109,8 @@ mixin PostServices {
         if (value.code) {
           loader.stop();
           await Basic_dialog(context: context, title: "Dc", content: value.message!, onOk: () {}, showCancel: false);
-          // Navigator.of(context).pop(true);
-          // dcController.resetData();
+          Navigator.of(context).pop(true);
+          dcController.resetData();
         } else {
           loader.stop();
           await Basic_dialog(context: context, title: 'Processing Dc', content: value.message ?? "", onOk: () {}, showCancel: false);

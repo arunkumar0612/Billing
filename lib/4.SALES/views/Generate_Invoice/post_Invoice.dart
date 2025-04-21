@@ -207,162 +207,103 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                           ),
                         ],
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Phone Number   :',
-                            style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 213, 211, 211), fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: SizedBox(
-                              child: BasicTextfield(
-                                digitsOnly: false,
-                                width: 400,
-                                readonly: false,
-                                controller: invoiceController.invoiceModel.phoneController.value,
-                                // text: 'Enter Phone Number',
-                                // icon: Icons.phone,
-                                validator: (value) {
-                                  Validators.phnNo_validator(value);
-                                  return null;
-                                },
-                              ),
+                      if (invoiceController.invoiceModel.whatsapp_selectionStatus.value)
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Phone Number   :',
+                              style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 213, 211, 211), fontWeight: FontWeight.bold),
                             ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const Text(
-                                'Email ID                 :',
-                                style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 213, 211, 211), fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: SizedBox(
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: SizedBox(
+                                child: BasicTextfield(
+                                  digitsOnly: false,
                                   width: 400,
-                                  child: TextFormField(
-                                    readOnly: false,
-                                    style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
-                                    controller: invoiceController.invoiceModel.emailController.value,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Primary_colors.Dark,
-                                      focusedBorder: const OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                      enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                                      // labelText: text,
-                                      // label: Text(text ?? ''),
-                                      labelStyle: const TextStyle(
-                                        fontSize: Primary_font_size.Text7,
-                                        color: Color.fromARGB(255, 167, 165, 165),
-                                      ),
-                                      border: const OutlineInputBorder(),
-
-                                      suffixIcon: MouseRegion(
-                                        cursor: SystemMouseCursors.click, // Change cursor to hand
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            invoiceController.toggleCCemailvisibility(!invoiceController.invoiceModel.CCemailToggle.value);
-                                          },
-                                          child: SizedBox(
-                                            height: 20,
-                                            width: 20,
-                                            child: Stack(
-                                              children: [
-                                                Align(
-                                                  alignment: Alignment.center,
-                                                  child: Icon(
-                                                    invoiceController.invoiceModel.CCemailToggle.value ? Icons.closed_caption_outlined : Icons.closed_caption_disabled_outlined,
-                                                    color: Colors.blue,
-                                                  ),
-                                                ),
-                                                const Align(
-                                                  alignment: Alignment.bottomRight,
-                                                  child: Icon(
-                                                    size: 15,
-                                                    Icons.add,
-                                                    color: Colors.blue,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    validator: (value) {
-                                      Validators.email_validator(value);
-
-                                      return null;
-                                    },
-                                  ),
+                                  readonly: false,
+                                  controller: invoiceController.invoiceModel.phoneController.value,
+                                  // text: 'Enter Phone Number',
+                                  // icon: Icons.phone,
+                                  validator: (value) {
+                                    Validators.phnNo_validator(value);
+                                    return null;
+                                  },
                                 ),
                               ),
-                            ],
-                          ),
-                          if (invoiceController.invoiceModel.CCemailToggle.value)
-                            const SizedBox(
-                              height: 10,
                             ),
-                          if (invoiceController.invoiceModel.CCemailToggle.value)
+                          ],
+                        ),
+                      if (invoiceController.invoiceModel.gmail_selectionStatus.value)
+                        Column(
+                          children: [
                             Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const Text(
-                                  '                                      Cc :',
-                                  style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 94, 162, 250), fontWeight: FontWeight.bold),
+                                  'Email ID                 :',
+                                  style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 213, 211, 211), fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(
                                   width: 10,
                                 ),
                                 Expanded(
                                   child: SizedBox(
-                                    height: 30,
                                     width: 400,
                                     child: TextFormField(
                                       readOnly: false,
-                                      style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 204, 204, 204)),
-                                      controller: invoiceController.invoiceModel.CCemailController.value,
-                                      decoration: const InputDecoration(
+                                      style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
+                                      controller: invoiceController.invoiceModel.emailController.value,
+                                      decoration: InputDecoration(
                                         filled: true,
-                                        fillColor: Color.fromARGB(255, 38, 39, 44),
-                                        focusedBorder: OutlineInputBorder(
+                                        fillColor: Primary_colors.Dark,
+                                        focusedBorder: const OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: Colors.black,
                                           ),
                                         ),
-
-                                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                                        enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
                                         // labelText: text,
                                         // label: Text(text ?? ''),
-                                        labelStyle: TextStyle(
+                                        labelStyle: const TextStyle(
                                           fontSize: Primary_font_size.Text7,
                                           color: Color.fromARGB(255, 167, 165, 165),
                                         ),
-                                        border: OutlineInputBorder(),
+                                        border: const OutlineInputBorder(),
 
-                                        // suffixIcon: GestureDetector(
-                                        //   onTap: () {
-                                        //     invoiceController.toggleCCemailvisibility(!invoiceController.invoiceModel.CCemailToggle.value);
-                                        //   },
-                                        //   child: Icon(
-                                        //     invoiceController.invoiceModel.CCemailToggle.value ? Icons.closed_caption_outlined : Icons.closed_caption_disabled_outlined,
-                                        //     color: Colors.blue,
-                                        //   ),
-                                        // ),
+                                        suffixIcon: MouseRegion(
+                                          cursor: SystemMouseCursors.click, // Change cursor to hand
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              invoiceController.toggleCCemailvisibility(!invoiceController.invoiceModel.CCemailToggle.value);
+                                            },
+                                            child: SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: Stack(
+                                                children: [
+                                                  Align(
+                                                    alignment: Alignment.center,
+                                                    child: Icon(
+                                                      invoiceController.invoiceModel.CCemailToggle.value ? Icons.closed_caption_outlined : Icons.closed_caption_disabled_outlined,
+                                                      color: Colors.blue,
+                                                    ),
+                                                  ),
+                                                  const Align(
+                                                    alignment: Alignment.bottomRight,
+                                                    child: Icon(
+                                                      size: 15,
+                                                      Icons.add,
+                                                      color: Colors.blue,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                       validator: (value) {
                                         Validators.email_validator(value);
@@ -372,27 +313,88 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                                     ),
                                   ),
                                 ),
-
-                                // Expanded(
-                                //   child: SizedBox(
-                                //     child: BasicTextfield(
-                                //       digitsOnly: false,
-                                //       width: 400,
-
-                                //       readonly: false,
-                                //       controller: invoiceController.invoiceModel.CCemailController.value,
-                                //       validator: (value) {
-                                //         Validators.email_validator(value);
-
-                                //         return null;
-                                //       },
-                                //     ),
-                                //   ),
-                                // ),
                               ],
                             ),
-                        ],
-                      ),
+                            if (invoiceController.invoiceModel.CCemailToggle.value)
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            if (invoiceController.invoiceModel.CCemailToggle.value)
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  const Text(
+                                    '                                      Cc :',
+                                    style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 94, 162, 250), fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 30,
+                                      width: 400,
+                                      child: TextFormField(
+                                        readOnly: false,
+                                        style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 204, 204, 204)),
+                                        controller: invoiceController.invoiceModel.CCemailController.value,
+                                        decoration: const InputDecoration(
+                                          filled: true,
+                                          fillColor: Color.fromARGB(255, 38, 39, 44),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+
+                                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                                          // labelText: text,
+                                          // label: Text(text ?? ''),
+                                          labelStyle: TextStyle(
+                                            fontSize: Primary_font_size.Text7,
+                                            color: Color.fromARGB(255, 167, 165, 165),
+                                          ),
+                                          border: OutlineInputBorder(),
+
+                                          // suffixIcon: GestureDetector(
+                                          //   onTap: () {
+                                          //     invoiceController.toggleCCemailvisibility(!invoiceController.invoiceModel.CCemailToggle.value);
+                                          //   },
+                                          //   child: Icon(
+                                          //     invoiceController.invoiceModel.CCemailToggle.value ? Icons.closed_caption_outlined : Icons.closed_caption_disabled_outlined,
+                                          //     color: Colors.blue,
+                                          //   ),
+                                          // ),
+                                        ),
+                                        validator: (value) {
+                                          Validators.email_validator(value);
+
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  ),
+
+                                  // Expanded(
+                                  //   child: SizedBox(
+                                  //     child: BasicTextfield(
+                                  //       digitsOnly: false,
+                                  //       width: 400,
+
+                                  //       readonly: false,
+                                  //       controller: invoiceController.invoiceModel.CCemailController.value,
+                                  //       validator: (value) {
+                                  //         Validators.email_validator(value);
+
+                                  //         return null;
+                                  //       },
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
+                          ],
+                        ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -620,19 +622,20 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: BasicButton(
-                                text: "Send",
-                                colors: Colors.blue,
-                                onPressed: () {
-                                  widget.postData(context, invoiceController.fetch_messageType());
-                                },
+                          if (invoiceController.invoiceModel.whatsapp_selectionStatus.value || invoiceController.invoiceModel.gmail_selectionStatus.value)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: BasicButton(
+                                  text: "Send",
+                                  colors: Colors.blue,
+                                  onPressed: () {
+                                    widget.postData(context, invoiceController.fetch_messageType());
+                                  },
+                                ),
                               ),
-                            ),
-                          )
+                            )
                         ],
                       )
                     ],

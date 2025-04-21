@@ -244,6 +244,11 @@ class _DcProductsState extends State<DcProducts> {
               text: "Submit",
               colors: Colors.green,
               onPressed: () {
+                if (!dcController.dcModel.checkboxValues.contains(true)) {
+                  Get.snackbar("Error", "Select at least one product!");
+                  return;
+                }
+
                 widget.addto_Selectedproducts();
                 dcController.nextTab();
               },

@@ -650,15 +650,18 @@ class CustomPDF_DcPDF {
                                   decoration: InputDecoration(
                                     // contentPadding: const EdgeInsets.all(0),
                                     errorStyle: const TextStyle(height: 0, fontSize: 0),
-                                    suffix: GestureDetector(
-                                      child: const Icon(
-                                        Icons.delete,
-                                        size: 14,
-                                        color: const Color.fromARGB(193, 244, 67, 54),
+                                    suffix: MouseRegion(
+                                      cursor: SystemMouseCursors.click,
+                                      child: GestureDetector(
+                                        child: const Icon(
+                                          Icons.delete,
+                                          size: 14,
+                                          color: const Color.fromARGB(193, 244, 67, 54),
+                                        ),
+                                        onTap: () {
+                                          pdfpopup_controller.deleteNote(index);
+                                        },
                                       ),
-                                      onTap: () {
-                                        pdfpopup_controller.deleteNote(index);
-                                      },
                                     ),
                                     hintText: "Please enter the notes....",
                                     hintStyle: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),

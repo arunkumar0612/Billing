@@ -27,7 +27,7 @@ class _RfqDetailsState extends State<RfqDetails> {
       "requestforquotation",
       widget.eventID,
     );
-    // widget.get_productSuggestionList(context);
+    widget.get_productSuggestionList(context);
     widget.get_noteSuggestionList(context);
     super.initState();
   }
@@ -36,7 +36,7 @@ class _RfqDetailsState extends State<RfqDetails> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -69,6 +69,7 @@ class _RfqDetailsState extends State<RfqDetails> {
                           ConstrainedBox(
                             constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
                             child: DropdownButtonFormField<VendorList>(
+                              menuMaxHeight: 350,
                               isExpanded: true,
                               dropdownColor: Primary_colors.Dark,
                               decoration: const InputDecoration(
@@ -81,7 +82,9 @@ class _RfqDetailsState extends State<RfqDetails> {
                                 filled: true,
                                 fillColor: Primary_colors.Dark,
                                 border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                                  borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                  ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),

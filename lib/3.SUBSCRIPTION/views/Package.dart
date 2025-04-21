@@ -1,10 +1,12 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/Subscription_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/subscription_service.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 
 class Packagepage extends StatefulWidget with SubscriptionServices {
@@ -21,7 +23,7 @@ class _PackagepageState extends State<Packagepage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Obx(() {
-      final selectedCount = subscriptionController.subscriptionModel.selectedPackages.length;
+      final selectedCount = subscriptionController.subscriptionModel.selectedPackagessubscriptionID.length;
       final totalCount = subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList.length;
       final allSelected = selectedCount == totalCount && totalCount > 0;
       return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -74,7 +76,18 @@ class _PackagepageState extends State<Packagepage> {
                               SizedBox(
                                 height: 33,
                                 child: FloatingActionButton.extended(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Basic_dialog(
+                                      context: context,
+                                      title: 'Confirmation',
+                                      content: 'Are you sure you want to delete this package?',
+                                      showCancel: true,
+                                      onOk: () {
+                                        widget.DeleteGlobalPackage(context, subscriptionController.subscriptionModel.selectedPackagessubscriptionID);
+                                        // print('object');
+                                      },
+                                    );
+                                  },
                                   icon: const Icon(
                                     Icons.delete,
                                     size: 15,
@@ -196,19 +209,21 @@ class _PackagepageState extends State<Packagepage> {
                                           itemBuilder: (context, index) {
                                             final package = subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList[index]; // Skip null items
 
-                                            final isChecked = subscriptionController.subscriptionModel.selectedPackages.contains(package.subscriptionName);
+                                            final isChecked = subscriptionController.subscriptionModel.selectedPackagessubscriptionID.contains(package.subscriptionId);
                                             return Padding(
                                               padding: const EdgeInsets.symmetric(vertical: 8.0),
                                               child: _SubscriptionCard(
                                                 package: package,
-                                                isSelected: subscriptionController.subscriptionModel.packageselectedIndex.value == index,
+                                                isSelected: subscriptionController.subscriptionModel.packageselectedID.value ==
+                                                    subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList[index].subscriptionId,
                                                 isChecked: isChecked,
                                                 onChecked: (value) {
-                                                  _handlePackageSelection(package.subscriptionName, value);
+                                                  _handlePackageSelection(package.subscriptionId, value);
                                                 },
                                                 onTap: () {
                                                   if (index < subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList.length) {
-                                                    subscriptionController.subscriptionModel.packageselectedIndex.value = index;
+                                                    subscriptionController.subscriptionModel.packageselectedID.value =
+                                                        subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList[index].subscriptionId;
                                                   }
                                                 },
                                               ),
@@ -237,14 +252,15 @@ class _PackagepageState extends State<Packagepage> {
                             ),
                           ),
                         ),
-
                         // Details panel (right panel)
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                            child: subscriptionController.subscriptionModel.packageselectedIndex.value != null
-                                ? _buildDetailsPanel(
-                                    subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList[subscriptionController.subscriptionModel.packageselectedIndex.value!])
+                            child: subscriptionController.subscriptionModel.packageselectedID.value != null
+                                // &&   subscriptionController.subscriptionModel.packageselectedID.value! < subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList.length
+                                ? _buildDetailsPanel(subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList[subscriptionController
+                                    .subscriptionModel.GloabalPackage.value.globalPackageList
+                                    .indexWhere((p) => p.subscriptionId == subscriptionController.subscriptionModel.packageselectedID.value)])
                                 : Center(
                                     child: Text(
                                       'Select a package to view details',
@@ -268,25 +284,25 @@ class _PackagepageState extends State<Packagepage> {
   void _toggleSelectAll(bool select) {
     final controller = subscriptionController.subscriptionModel;
     if (select) {
-      controller.selectedPackages.addAll(
-        controller.GloabalPackage.value.globalPackageList.map((p) => p.subscriptionName).whereType<String>(),
+      controller.selectedPackagessubscriptionID.addAll(
+        controller.GloabalPackage.value.globalPackageList.map((p) => p.subscriptionId).whereType<int>(),
       );
     } else {
-      controller.selectedPackages.clear();
+      controller.selectedPackagessubscriptionID.clear();
     }
   }
 
-  void _handlePackageSelection(String? packageName, bool isSelected) {
-    if (packageName == null) return;
+  void _handlePackageSelection(int? packageID, bool isSelected) {
+    if (packageID == null) return;
 
     final currentList = subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList;
     if (currentList.isEmpty) return;
 
     final controller = subscriptionController.subscriptionModel;
     if (isSelected) {
-      controller.selectedPackages.add(packageName);
+      controller.selectedPackagessubscriptionID.add(packageID);
     } else {
-      controller.selectedPackages.remove(packageName);
+      controller.selectedPackagessubscriptionID.remove(packageID);
     }
   }
 
@@ -790,114 +806,150 @@ class _PackagepageState extends State<Packagepage> {
 
   Widget _buildEditPanel(dynamic package) {
     final theme = Theme.of(context);
+    final _formKey = GlobalKey<FormState>();
+    subscriptionController.subscriptionModel.editpackagenameController.value.text = package.subscriptionName ?? '';
+    subscriptionController.subscriptionModel.editpackageamountController.value.text = package.amount?.toString() ?? '';
+    subscriptionController.subscriptionModel.editpackagedevicesController.value.text = package.noOfDevices?.toString() ?? '';
+    subscriptionController.subscriptionModel.editpackagecamerasController.value.text = package.noOfCameras?.toString() ?? '';
+    subscriptionController.subscriptionModel.editpackageadditionalcamerasController.value.text = package.addlCameras?.toString() ?? '';
+    subscriptionController.subscriptionModel.editpackagedescController.value.text = package.productDesc ?? '';
+    subscriptionController.subscriptionModel.editpackagesubscriptionID.value = package.subscriptionId ?? 0;
 
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Package Name
-          _buildEditField(
-            'Package Name',
-            subscriptionController.subscriptionModel.editpackagenameController.value,
-            initialValue: package.subscriptionName ?? '',
-          ),
-
-          // Price
-          _buildEditField(
-            'Amount (₹)',
-            subscriptionController.subscriptionModel.editpackageamountController.value,
-            initialValue: package.amount?.toString() ?? '',
-            isNumber: true,
-          ),
-
-          // Devices
-          _buildEditField(
-            'Number of Devices',
-            subscriptionController.subscriptionModel.editpackagedevicesController.value,
-            initialValue: package.noOfDevices?.toString() ?? '',
-            isNumber: true,
-          ),
-          _buildEditField(
-            'Number of Cameras',
-            subscriptionController.subscriptionModel.editpackagecamerasController.value,
-            initialValue: package.noOfCameras?.toString() ?? '',
-            isNumber: true,
-          ),
-          // Cameras
-          _buildEditField(
-            'Additional Cameras',
-            subscriptionController.subscriptionModel.editpackageadditionalcamerasController.value,
-            initialValue: package.addlCameras?.toString() ?? '',
-            isNumber: true,
-          ),
-
-          // Description
-          _buildEditField(
-            'Description',
-            subscriptionController.subscriptionModel.editpackagedescController.value,
-            initialValue: package.productDesc ?? '',
-            maxLines: 5,
-          ),
-
-          const SizedBox(height: 24),
-
-          // Action buttons
-          Row(
+    return Obx(() {
+      return SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  onPressed: () {
-                    subscriptionController.subscriptionModel.packageisEditing.value = false;
-                  },
-                  child: Text(
-                    'CANCEL',
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Primary_colors.Dark,
-                    ),
-                  ),
-                ),
+              // Package Name
+              _buildEditField(
+                'Package Name',
+                subscriptionController.subscriptionModel.editpackagenameController.value,
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Primary_colors.Color3,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+
+              // Price
+              _buildEditField(
+                'Amount (₹)',
+                subscriptionController.subscriptionModel.editpackageamountController.value,
+                isNumber: true,
+                isDouble: true, // 👈 New flag
+              ),
+
+              // Devices
+              _buildEditField(
+                'Number of Devices',
+                subscriptionController.subscriptionModel.editpackagedevicesController.value,
+                isNumber: true,
+              ),
+              _buildEditField(
+                'Number of Cameras',
+                subscriptionController.subscriptionModel.editpackagecamerasController.value,
+                isNumber: true,
+              ),
+              // Cameras
+              _buildEditField(
+                'Additional Cameras',
+                subscriptionController.subscriptionModel.editpackageadditionalcamerasController.value,
+                isNumber: true,
+              ),
+
+              // Description
+              _buildEditField(
+                'Description',
+                subscriptionController.subscriptionModel.editpackagedescController.value,
+                maxLines: 5,
+              ),
+
+              const SizedBox(height: 24),
+
+              // Action buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        subscriptionController.subscriptionModel.packageisEditing.value = false;
+                      },
+                      child: Text(
+                        'CANCEL',
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Primary_colors.Dark,
+                        ),
+                      ),
                     ),
                   ),
-                  // onPressed: () => _updateSubscription(package),
-                  onPressed: () {},
-                  child: Text(
-                    'SAVE CHANGES',
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: Primary_colors.Color3,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      // onPressed: () => _updateSubscription(package),
+
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          // All fields are valid
+                          widget.UpdateGlobalPackage(
+                            context,
+                            subscriptionController.subscriptionModel.editpackagenameController.value.text,
+                            int.tryParse(subscriptionController.subscriptionModel.editpackagedevicesController.value.text) ?? 0,
+                            int.tryParse(subscriptionController.subscriptionModel.editpackagecamerasController.value.text) ?? 0,
+                            int.tryParse(subscriptionController.subscriptionModel.editpackageadditionalcamerasController.value.text) ?? 0,
+                            double.tryParse(subscriptionController.subscriptionModel.editpackageamountController.value.text) ?? 0.0,
+                            subscriptionController.subscriptionModel.editpackagedescController.value.text,
+                            package.subscriptionId,
+                          );
+                          if (kDebugMode) {
+                            print('Updated successfully');
+                          }
+                          // Add saving logic here
+                        } else {
+                          // Validation failed
+                          if (kDebugMode) {
+                            print('Validation failed');
+                          }
+                        }
+                      },
+
+                      child: Text(
+                        'SAVE CHANGES',
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
-    );
+        ),
+      );
+    } // End of Obx
+        );
   }
 
-  Widget _buildEditField(String label, TextEditingController controller, {String initialValue = '', bool isNumber = false, int maxLines = 1}) {
-    if (controller.text.isEmpty && initialValue.isNotEmpty) {
-      controller.text = initialValue;
-    }
-
+  Widget _buildEditField(
+    String label,
+    TextEditingController controller, {
+    bool isNumber = false,
+    bool isDouble = false, // 👈 New flag
+    int maxLines = 1,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Column(
@@ -911,11 +963,33 @@ class _PackagepageState extends State<Packagepage> {
             ),
           ),
           const SizedBox(height: 4),
-          TextField(
+          TextFormField(
             controller: controller,
-            keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+            keyboardType: isNumber || isDouble ? const TextInputType.numberWithOptions(decimal: true) : TextInputType.text,
             maxLines: maxLines,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white, height: 1.6, fontSize: Primary_font_size.Text8),
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return 'Please enter $label';
+              }
+              if (isDouble) {
+                final parsed = double.tryParse(value);
+                if (parsed == null) {
+                  return 'Enter a valid number for $label';
+                }
+              }
+              return null;
+            },
+            inputFormatters: isDouble
+                ? [
+                    // Optional: restrict characters to digits and dot
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+                  ]
+                : null,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Colors.white,
+                  height: 1.6,
+                  fontSize: Primary_font_size.Text8,
+                ),
             decoration: InputDecoration(
               filled: true,
               fillColor: const Color.fromARGB(255, 56, 66, 103),

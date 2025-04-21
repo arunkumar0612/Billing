@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as path;
-import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart' show Validators;
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart' show SUBSCRIPTION_CustomPDF_InvoiceController;
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/CustomPDF_services/Subscription_PostAll_services.dart' show SUBSCRIPTION_PostServices;
 import 'package:ssipl_billing/COMPONENTS-/button.dart' show BasicButton;
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart' show BasicTextfield;
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
+import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart' show Validators;
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class SUBSCRIPTION_PostInvoice extends StatefulWidget with SUBSCRIPTION_PostServices {
@@ -288,146 +288,100 @@ class Subscription_PostInvoiceState extends State<SUBSCRIPTION_PostInvoice> with
                         ),
                       ],
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Phone Number   :',
-                          style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 213, 211, 211), fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            child: BasicTextfield(
-                              digitsOnly: false,
-                              width: 400,
-                              readonly: false,
-                              controller: pdfpopup_controller.pdfModel.value.phoneNumber.value,
-                              // text: 'Enter Phone Number',
-                              // icon: Icons.phone,
-                              validator: (value) {
-                                Validators.phnNo_validator(value);
-                                return null;
-                              },
-                            ),
+                    if (pdfpopup_controller.pdfModel.value.whatsapp_selectionStatus.value)
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Phone Number   :',
+                            style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 213, 211, 211), fontWeight: FontWeight.bold),
                           ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'Email ID                 :',
-                              style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 213, 211, 211), fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: SizedBox(
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              child: BasicTextfield(
+                                digitsOnly: false,
                                 width: 400,
-                                child: TextFormField(
-                                  readOnly: false,
-                                  style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
-                                  controller: pdfpopup_controller.pdfModel.value.Email.value,
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Primary_colors.Dark,
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                                    labelStyle: const TextStyle(
-                                      fontSize: Primary_font_size.Text7,
-                                      color: Color.fromARGB(255, 167, 165, 165),
-                                    ),
-                                    border: const OutlineInputBorder(),
-                                    suffixIcon: MouseRegion(
-                                      cursor: SystemMouseCursors.click, // Change cursor to hand
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          pdfpopup_controller.toggleCCemailvisibility(!pdfpopup_controller.pdfModel.value.CCemailToggle.value);
-                                        },
-                                        child: SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: Stack(
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.center,
-                                                child: Icon(
-                                                  pdfpopup_controller.pdfModel.value.CCemailToggle.value ? Icons.closed_caption_outlined : Icons.closed_caption_disabled_outlined,
-                                                  color: Colors.blue,
-                                                ),
-                                              ),
-                                              const Align(
-                                                alignment: Alignment.bottomRight,
-                                                child: Icon(
-                                                  size: 15,
-                                                  Icons.add,
-                                                  color: Colors.blue,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    Validators.email_validator(value);
-
-                                    return null;
-                                  },
-                                ),
+                                readonly: false,
+                                controller: pdfpopup_controller.pdfModel.value.phoneNumber.value,
+                                // text: 'Enter Phone Number',
+                                // icon: Icons.phone,
+                                validator: (value) {
+                                  Validators.phnNo_validator(value);
+                                  return null;
+                                },
                               ),
                             ),
-                          ],
-                        ),
-                        if (pdfpopup_controller.pdfModel.value.CCemailToggle.value)
-                          const SizedBox(
-                            height: 10,
                           ),
-                        if (pdfpopup_controller.pdfModel.value.CCemailToggle.value)
+                        ],
+                      ),
+                    if (pdfpopup_controller.pdfModel.value.gmail_selectionStatus.value)
+                      Column(
+                        children: [
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               const Text(
-                                '                                      Cc :',
-                                style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 94, 162, 250), fontWeight: FontWeight.bold),
+                                'Email ID                 :',
+                                style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 213, 211, 211), fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(
                                 width: 10,
                               ),
                               Expanded(
                                 child: SizedBox(
-                                  height: 30,
                                   width: 400,
                                   child: TextFormField(
                                     readOnly: false,
-                                    style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 204, 204, 204)),
-                                    controller: pdfpopup_controller.pdfModel.value.CCemailController.value,
-                                    decoration: const InputDecoration(
+                                    style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
+                                    controller: pdfpopup_controller.pdfModel.value.Email.value,
+                                    decoration: InputDecoration(
                                       filled: true,
-                                      fillColor: Color.fromARGB(255, 38, 39, 44),
-                                      focusedBorder: OutlineInputBorder(
+                                      fillColor: Primary_colors.Dark,
+                                      focusedBorder: const OutlineInputBorder(
                                         borderSide: BorderSide(
                                           color: Colors.black,
                                         ),
                                       ),
-                                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                                      labelStyle: TextStyle(
+                                      enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                                      labelStyle: const TextStyle(
                                         fontSize: Primary_font_size.Text7,
                                         color: Color.fromARGB(255, 167, 165, 165),
                                       ),
-                                      border: OutlineInputBorder(),
+                                      border: const OutlineInputBorder(),
+                                      suffixIcon: MouseRegion(
+                                        cursor: SystemMouseCursors.click, // Change cursor to hand
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            pdfpopup_controller.toggleCCemailvisibility(!pdfpopup_controller.pdfModel.value.CCemailToggle.value);
+                                          },
+                                          child: SizedBox(
+                                            height: 20,
+                                            width: 20,
+                                            child: Stack(
+                                              children: [
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: Icon(
+                                                    pdfpopup_controller.pdfModel.value.CCemailToggle.value ? Icons.closed_caption_outlined : Icons.closed_caption_disabled_outlined,
+                                                    color: Colors.blue,
+                                                  ),
+                                                ),
+                                                const Align(
+                                                  alignment: Alignment.bottomRight,
+                                                  child: Icon(
+                                                    size: 15,
+                                                    Icons.add,
+                                                    color: Colors.blue,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                     validator: (value) {
                                       Validators.email_validator(value);
@@ -439,8 +393,56 @@ class Subscription_PostInvoiceState extends State<SUBSCRIPTION_PostInvoice> with
                               ),
                             ],
                           ),
-                      ],
-                    ),
+                          if (pdfpopup_controller.pdfModel.value.CCemailToggle.value)
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          if (pdfpopup_controller.pdfModel.value.CCemailToggle.value)
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const Text(
+                                  '                                      Cc :',
+                                  style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 94, 162, 250), fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: SizedBox(
+                                    height: 30,
+                                    width: 400,
+                                    child: TextFormField(
+                                      readOnly: false,
+                                      style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 204, 204, 204)),
+                                      controller: pdfpopup_controller.pdfModel.value.CCemailController.value,
+                                      decoration: const InputDecoration(
+                                        filled: true,
+                                        fillColor: Color.fromARGB(255, 38, 39, 44),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                                        labelStyle: TextStyle(
+                                          fontSize: Primary_font_size.Text7,
+                                          color: Color.fromARGB(255, 167, 165, 165),
+                                        ),
+                                        border: OutlineInputBorder(),
+                                      ),
+                                      validator: (value) {
+                                        Validators.email_validator(value);
+
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -660,17 +662,18 @@ class Subscription_PostInvoiceState extends State<SUBSCRIPTION_PostInvoice> with
                             ),
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Align(
-                              alignment: Alignment.centerRight,
-                              child: BasicButton(
-                                  text: "Send",
-                                  colors: Colors.blue,
-                                  onPressed: () {
-                                    widget.postData(context, pdfpopup_controller.fetch_messageType());
-                                  })),
-                        ),
+                        if (pdfpopup_controller.pdfModel.value.whatsapp_selectionStatus.value || pdfpopup_controller.pdfModel.value.gmail_selectionStatus.value)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Align(
+                                alignment: Alignment.centerRight,
+                                child: BasicButton(
+                                    text: "Send",
+                                    colors: Colors.blue,
+                                    onPressed: () {
+                                      widget.postData(context, pdfpopup_controller.fetch_messageType());
+                                    })),
+                          ),
                       ],
                     )
                   ],

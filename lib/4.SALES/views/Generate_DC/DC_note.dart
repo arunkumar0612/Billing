@@ -4,7 +4,6 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:ssipl_billing/4.SALES/controllers/DC_actions.dart';
 import 'package:ssipl_billing/4.SALES/services/DC_services/DC_Notes_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
-import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 
 class DcNote extends StatefulWidget with DcnotesService {
@@ -19,58 +18,63 @@ class _DcNoteState extends State<DcNote> {
 
   Widget Dc_noteLists() {
     return ListView.builder(
-        itemCount: dcController.dcModel.Dc_noteList.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              widget.editnote(index);
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(7),
-              ),
-              width: 550,
-              child: Center(
-                  child: Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.only(left: 10, top: 5),
-                        child: Icon(
-                          Icons.circle,
-                          size: 5,
-                        )),
-                    Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                dcController.dcModel.Dc_noteList[index], // Display camera type from map
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
-                              ),
-                            ],
-                          )),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        dcController.removeFromNoteList(index);
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 15,
-                      ),
-                    ),
-                  ],
-                ),
-              )),
+      itemCount: dcController.dcModel.Dc_noteList.length,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          onTap: () {
+            widget.editnote(index);
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(7),
             ),
-          );
-        });
+            width: 550,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 0),
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Padding(
+                          padding: EdgeInsets.only(left: 10, top: 5),
+                          child: Icon(
+                            Icons.circle,
+                            size: 5,
+                          )),
+                      Expanded(
+                        child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  dcController.dcModel.Dc_noteList[index], // Display camera type from map
+                                  style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
+                                ),
+                              ],
+                            )),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          dcController.removeFromNoteList(index);
+                        },
+                        icon: const Icon(
+                          Icons.close,
+                          size: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   RecommendationTable() {
@@ -78,54 +82,56 @@ class _DcNoteState extends State<DcNote> {
         itemCount: dcController.dcModel.Dc_recommendationList.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () {
-              widget.editnotetable(index);
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(7),
-              ),
-              width: 550,
-              child: Center(
-                  child: Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.only(left: 10, top: 5),
-                        child: Icon(
-                          Icons.circle,
-                          size: 5,
-                        )),
-                    Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                dcController.dcModel.Dc_recommendationList[index].key,
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
-                              ),
-                            ],
-                          )),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        dcController.removeFromRecommendationList(index);
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 15,
-                      ),
-                    ),
-                  ],
+              onTap: () {
+                widget.editnotetable(index);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7),
                 ),
-              )),
-            ),
-          );
+                width: 550,
+                child: Center(
+                  child: Padding(
+                      padding: const EdgeInsets.only(bottom: 0),
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Padding(
+                                padding: EdgeInsets.only(left: 10, top: 5),
+                                child: Icon(
+                                  Icons.circle,
+                                  size: 5,
+                                )),
+                            Expanded(
+                              child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        dcController.dcModel.Dc_recommendationList[index].key,
+                                        style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                dcController.removeFromRecommendationList(index);
+                              },
+                              icon: const Icon(
+                                Icons.close,
+                                size: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
+              ));
         });
   }
 
@@ -135,13 +141,13 @@ class _DcNoteState extends State<DcNote> {
       () {
         return Center(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Obx(
@@ -158,6 +164,8 @@ class _DcNoteState extends State<DcNote> {
                               ),
                               const SizedBox(height: 10),
                               DropdownMenu<String>(
+                                menuHeight: 350,
+                                leadingIcon: const Icon(Icons.note_add, color: Primary_colors.Color1),
                                 trailingIcon: const Icon(
                                   Icons.arrow_drop_down,
                                   color: Color.fromARGB(255, 122, 121, 121),
@@ -166,7 +174,7 @@ class _DcNoteState extends State<DcNote> {
                                   "Note",
                                   style: TextStyle(color: Color.fromARGB(255, 167, 165, 165), fontSize: Primary_font_size.Text7),
                                 ),
-                                textStyle: const TextStyle(color: Primary_colors.Color1),
+                                textStyle: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                 width: 400,
                                 inputDecorationTheme: const InputDecorationTheme(
                                   contentPadding: EdgeInsets.only(left: 10, right: 5),
@@ -229,120 +237,120 @@ class _DcNoteState extends State<DcNote> {
                         );
                       },
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 50),
-                        const Text(
-                          'RECOMMENDATION',
-                          style: TextStyle(color: Primary_colors.Color1),
-                        ),
-                        const SizedBox(height: 10),
-                        Obx(
-                          () {
-                            return BasicTextfield(
-                              digitsOnly: false,
-                              width: 400,
-                              readonly: dcController.dcModel.recommendationHeadingController.value.text.isEmpty ? false : true,
-                              text: 'Recommendation Heading',
-                              controller: dcController.dcModel.recommendationHeadingController.value,
-                              icon: Icons.title,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter Recommendation heading';
-                                }
-                                return null;
-                              },
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 25),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 190,
-                              child: Column(
-                                children: [
-                                  Obx(
-                                    () {
-                                      return BasicTextfield(
-                                        digitsOnly: false,
-                                        width: 190,
-                                        readonly: false,
-                                        text: 'Product name',
-                                        controller: dcController.dcModel.recommendationKeyController.value,
-                                        icon: Icons.production_quantity_limits,
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Please enter a product name';
-                                          }
-                                          return null;
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 20),
-                            SizedBox(
-                              width: 190,
-                              child: Column(
-                                children: [
-                                  Obx(
-                                    () {
-                                      return BasicTextfield(
-                                        digitsOnly: true,
-                                        width: 190,
-                                        readonly: false,
-                                        text: 'Product value',
-                                        controller: dcController.dcModel.recommendationValueController.value,
-                                        icon: Icons.production_quantity_limits,
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Please enter a product value';
-                                          }
-                                          return null;
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 25),
-                        const SizedBox(
-                          width: 410,
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            "Recommendations should be carefully selected based on the client's needs. Double-check all product names and quantities before adding them to avoid errors in future references.",
-                            style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text6),
-                          ),
-                        ),
-                        const SizedBox(height: 30),
-                        SizedBox(
-                          width: 400,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Obx(
-                                () {
-                                  return BasicButton(
-                                      colors: dcController.dcModel.recommendation_editIndex.value == null ? Colors.blue : Colors.orange,
-                                      text: dcController.dcModel.recommendation_editIndex.value == null ? 'Add Recommendation ' : 'Update Recommendation',
-                                      onPressed: () {
-                                        dcController.dcModel.recommendation_editIndex.value == null ? widget.addtable_row(context) : widget.updatetable();
-                                      });
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Column(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     const SizedBox(height: 50),
+                    //     const Text(
+                    //       'RECOMMENDATION',
+                    //       style: TextStyle(color: Primary_colors.Color1),
+                    //     ),
+                    //     const SizedBox(height: 10),
+                    //     Obx(
+                    //       () {
+                    //         return BasicTextfield(
+                    //           digitsOnly: false,
+                    //           width: 400,
+                    //           readonly: dcController.dcModel.recommendationHeadingController.value.text.isEmpty ? false : true,
+                    //           text: 'Recommendation Heading',
+                    //           controller: dcController.dcModel.recommendationHeadingController.value,
+                    //           icon: Icons.title,
+                    //           validator: (value) {
+                    //             if (value == null || value.isEmpty) {
+                    //               return 'Please enter Recommendation heading';
+                    //             }
+                    //             return null;
+                    //           },
+                    //         );
+                    //       },
+                    //     ),
+                    //     const SizedBox(height: 25),
+                    //     Row(
+                    //       children: [
+                    //         SizedBox(
+                    //           width: 190,
+                    //           child: Column(
+                    //             children: [
+                    //               Obx(
+                    //                 () {
+                    //                   return BasicTextfield(
+                    //                     digitsOnly: false,
+                    //                     width: 190,
+                    //                     readonly: false,
+                    //                     text: 'Product name',
+                    //                     controller: dcController.dcModel.recommendationKeyController.value,
+                    //                     icon: Icons.production_quantity_limits,
+                    //                     validator: (value) {
+                    //                       if (value == null || value.isEmpty) {
+                    //                         return 'Please enter a product name';
+                    //                       }
+                    //                       return null;
+                    //                     },
+                    //                   );
+                    //                 },
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //         const SizedBox(width: 20),
+                    //         SizedBox(
+                    //           width: 190,
+                    //           child: Column(
+                    //             children: [
+                    //               Obx(
+                    //                 () {
+                    //                   return BasicTextfield(
+                    //                     digitsOnly: true,
+                    //                     width: 190,
+                    //                     readonly: false,
+                    //                     text: 'Product value',
+                    //                     controller: dcController.dcModel.recommendationValueController.value,
+                    //                     icon: Icons.production_quantity_limits,
+                    //                     validator: (value) {
+                    //                       if (value == null || value.isEmpty) {
+                    //                         return 'Please enter a product value';
+                    //                       }
+                    //                       return null;
+                    //                     },
+                    //                   );
+                    //                 },
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //     const SizedBox(height: 25),
+                    //     const SizedBox(
+                    //       width: 410,
+                    //       child: Text(
+                    //         textAlign: TextAlign.center,
+                    //         "Recommendations should be carefully selected based on the client's needs. Double-check all product names and quantities before adding them to avoid errors in future references.",
+                    //         style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text6),
+                    //       ),
+                    //     ),
+                    //     const SizedBox(height: 30),
+                    //     SizedBox(
+                    //       width: 400,
+                    //       child: Row(
+                    //         crossAxisAlignment: CrossAxisAlignment.start,
+                    //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //         children: [
+                    //           Obx(
+                    //             () {
+                    //               return BasicButton(
+                    //                   colors: dcController.dcModel.recommendation_editIndex.value == null ? Colors.blue : Colors.orange,
+                    //                   text: dcController.dcModel.recommendation_editIndex.value == null ? 'Add Recommendation ' : 'Update Recommendation',
+                    //                   onPressed: () {
+                    //                     dcController.dcModel.recommendation_editIndex.value == null ? widget.addtable_row(context) : widget.updatetable();
+                    //                   });
+                    //             },
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
                 SizedBox(
@@ -440,83 +448,84 @@ class _DcNoteState extends State<DcNote> {
                       Obx(() {
                         return Row(
                           children: [
-                            if (!dcController.dcModel.Dc_noteList.isNotEmpty) const SizedBox(width: 10),
-                            dcController.dcModel.isLoading.value
-                                ? SizedBox(
-                                    width: 125,
-                                    child: Stack(
-                                      children: [
-                                        LinearPercentIndicator(
-                                          lineHeight: 27,
-                                          // width: 105,
-                                          percent: dcController.dcModel.progress.value,
-                                          barRadius: const Radius.circular(5),
-                                          backgroundColor: const Color.fromARGB(255, 31, 38, 63),
-                                          progressColor: Colors.blue,
-                                          center: Text(
-                                            "${(dcController.dcModel.progress.value * 100).toInt()}%",
-                                            style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 12),
-                                          ),
-                                        ),
-                                        Positioned.fill(
-                                          child: ShaderMask(
-                                            blendMode: BlendMode.srcIn,
-                                            shaderCallback: (Rect bounds) {
-                                              return const LinearGradient(
-                                                colors: [
-                                                  Colors.blue,
-                                                  Colors.transparent,
-                                                  Primary_colors.Dark,
-                                                ],
-                                                stops: [
-                                                  0.0,
-                                                  0.5,
-                                                  1.0,
-                                                ],
-                                                begin: Alignment.centerLeft,
-                                                end: Alignment.centerRight,
-                                              ).createShader(bounds);
-                                            },
-                                            child: LinearPercentIndicator(
-                                              lineHeight: 30,
-                                              // width: 105,
-                                              percent: dcController.dcModel.progress.value,
-                                              barRadius: const Radius.circular(5),
-                                              backgroundColor: Primary_colors.Dark,
-                                              progressColor: Colors.blue,
+                            if (dcController.dcModel.Dc_noteList.isNotEmpty) const SizedBox(width: 10),
+                            if (dcController.dcModel.Dc_noteList.isNotEmpty)
+                              dcController.dcModel.isLoading.value
+                                  ? SizedBox(
+                                      width: 125,
+                                      child: Stack(
+                                        children: [
+                                          LinearPercentIndicator(
+                                            lineHeight: 27,
+                                            // width: 105,
+                                            percent: dcController.dcModel.progress.value,
+                                            barRadius: const Radius.circular(5),
+                                            backgroundColor: const Color.fromARGB(255, 31, 38, 63),
+                                            progressColor: Colors.blue,
+                                            center: Text(
+                                              "${(dcController.dcModel.progress.value * 100).toInt()}%",
+                                              style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 12),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : Container(
-                                    width: 125,
-                                    // height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: TextButton(
-                                      onPressed: () async {
-                                        try {
-                                          if (dcController.postDatavalidation()) {
-                                            Get.snackbar("Error", "Any of the required fields is Empty!");
-                                            return;
+                                          Positioned.fill(
+                                            child: ShaderMask(
+                                              blendMode: BlendMode.srcIn,
+                                              shaderCallback: (Rect bounds) {
+                                                return const LinearGradient(
+                                                  colors: [
+                                                    Colors.blue,
+                                                    Colors.transparent,
+                                                    Primary_colors.Dark,
+                                                  ],
+                                                  stops: [
+                                                    0.0,
+                                                    0.5,
+                                                    1.0,
+                                                  ],
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                ).createShader(bounds);
+                                              },
+                                              child: LinearPercentIndicator(
+                                                lineHeight: 30,
+                                                // width: 105,
+                                                percent: dcController.dcModel.progress.value,
+                                                barRadius: const Radius.circular(5),
+                                                backgroundColor: Primary_colors.Dark,
+                                                progressColor: Colors.blue,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Container(
+                                      width: 125,
+                                      // height: 40,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: TextButton(
+                                        onPressed: () async {
+                                          try {
+                                            if (dcController.postDatavalidation()) {
+                                              Get.snackbar("Error", "Any of the required fields is Empty!");
+                                              return;
+                                            }
+                                            await Future.wait([
+                                              dcController.startProgress(),
+                                              widget.savePdfToCache(),
+                                            ]);
+                                            dcController.nextTab();
+                                          } catch (e, stackTrace) {
+                                            debugPrint("Error in Future.wait: $e");
+                                            debugPrint(stackTrace.toString());
+                                            Get.snackbar("Error", "Something went wrong. Please try again.");
                                           }
-                                          await Future.wait([
-                                            dcController.startProgress(),
-                                            widget.savePdfToCache(),
-                                          ]);
-                                          dcController.nextTab();
-                                        } catch (e, stackTrace) {
-                                          debugPrint("Error in Future.wait: $e");
-                                          debugPrint(stackTrace.toString());
-                                          Get.snackbar("Error", "Something went wrong. Please try again.");
-                                        }
-                                      },
-                                      child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),
-                                    )),
+                                        },
+                                        child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),
+                                      )),
                           ],
                         );
                       })

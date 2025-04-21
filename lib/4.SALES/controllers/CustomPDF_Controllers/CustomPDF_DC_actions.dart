@@ -18,8 +18,8 @@ class CustomPDF_DcController extends GetxController {
 
   int fetch_messageType() {
     if (pdfModel.value.whatsapp_selectionStatus.value && pdfModel.value.gmail_selectionStatus.value) return 3;
-    if (pdfModel.value.whatsapp_selectionStatus.value) return 1;
-    if (pdfModel.value.gmail_selectionStatus.value) return 2;
+    if (pdfModel.value.whatsapp_selectionStatus.value) return 2;
+    if (pdfModel.value.gmail_selectionStatus.value) return 1;
 
     return 0;
   }
@@ -239,6 +239,19 @@ class CustomPDF_DcController extends GetxController {
     pdfModel.value.checkboxValues.add(false);
 
     pdfModel.refresh();
+  }
+
+  bool postDatavalidation() {
+    return (pdfModel.value.clientName.value.text.isEmpty ||
+        pdfModel.value.clientAddress.value.text.isEmpty ||
+        pdfModel.value.billingName.value.text.isEmpty ||
+        pdfModel.value.billingAddres.value.text.isEmpty ||
+        (pdfModel.value.gmail_selectionStatus.value && pdfModel.value.Email.value.text.isEmpty) ||
+        (pdfModel.value.whatsapp_selectionStatus.value && pdfModel.value.phoneNumber.value.text.isEmpty) ||
+        pdfModel.value.GSTnumber.value.text.isEmpty ||
+        pdfModel.value.manualDcproducts.isEmpty ||
+        pdfModel.value.notecontent.isEmpty ||
+        pdfModel.value.manualdcNo.value.text.isEmpty);
   }
 
   void resetData() {

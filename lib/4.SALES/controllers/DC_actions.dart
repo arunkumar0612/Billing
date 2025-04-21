@@ -226,8 +226,8 @@ class DcController extends GetxController {
 
   int fetch_messageType() {
     if (dcModel.whatsapp_selectionStatus.value && dcModel.gmail_selectionStatus.value) return 3;
-    if (dcModel.whatsapp_selectionStatus.value) return 1;
-    if (dcModel.gmail_selectionStatus.value) return 2;
+    if (dcModel.whatsapp_selectionStatus.value) return 2;
+    if (dcModel.gmail_selectionStatus.value) return 1;
 
     return 0;
   }
@@ -359,11 +359,13 @@ class DcController extends GetxController {
 
   void removeFromNoteList(int index) {
     dcModel.Dc_noteList.removeAt(index);
+    dcModel.note_editIndex.value = null;
   }
 
   void removeFromRecommendationList(int index) {
     dcModel.Dc_recommendationList.removeAt(index);
-    dcModel.Dc_recommendationList.isEmpty ? dcModel.recommendationHeadingController.value.clear() : null;
+    // dcModel.Dc_recommendationList.isEmpty ? dcModel.recommendationHeadingController.value.clear() : null;
+    dcModel.recommendation_editIndex.value = null;
   }
 
   void initializeTextControllers() {
@@ -467,13 +469,14 @@ class DcController extends GetxController {
         dcModel.clientAddressController.value.text.isEmpty ||
         dcModel.billingAddressNameController.value.text.isEmpty ||
         dcModel.billingAddressController.value.text.isEmpty ||
-        dcModel.emailController.value.text.isEmpty ||
-        dcModel.phoneController.value.text.isEmpty ||
+        (dcModel.gmail_selectionStatus.value && dcModel.emailController.value.text.isEmpty) ||
+        (dcModel.whatsapp_selectionStatus.value && dcModel.phoneController.value.text.isEmpty) ||
         dcModel.gstNumController.value.text.isEmpty ||
-        dcModel.Dc_products.isEmpty ||
+        dcModel.selected_dcProducts.isEmpty ||
         dcModel.Dc_noteList.isEmpty ||
         dcModel.Dc_no.value == null);
-  } // If any one is empty or null, then it returns true
+  }
+// If any one is empty or null, then it returns true
 
   void resetData() {
     dcModel.tabController.value = null;
@@ -498,7 +501,7 @@ class DcController extends GetxController {
     dcModel.Dc_gstTotals.clear();
     dcModel.checkboxValues.clear();
     dcModel.selectall_status.value = false;
-    dcModel.product_feedback.value = null;
+    dcModel.product_feedback.value = "";
     dcModel.productNameController.value.clear();
     dcModel.textControllers.clear();
     dcModel.quantities.clear();

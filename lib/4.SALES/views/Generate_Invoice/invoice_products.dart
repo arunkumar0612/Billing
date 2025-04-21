@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4.SALES/models/entities/Sales_entities.dart';
 import 'package:ssipl_billing/4.SALES/services/Invoice_services/InvoiceProduct_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
-import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 
 import '../../controllers/Invoice_actions.dart';
@@ -19,378 +16,255 @@ class InvoiceProducts extends StatefulWidget with InvoiceproductService {
 class _InvoiceProductsState extends State<InvoiceProducts> {
   final InvoiceController invoiceController = Get.find<InvoiceController>();
 
-  Widget Invoice_productDetailss() {
+  Widget buildProductlist() {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        for (int i = 0; i < invoiceController.invoiceModel.Invoice_products.length; i++)
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  widget.editproduct(i);
-                },
-                child: Container(
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: Primary_colors.Light),
-                  height: 40,
-                  width: 300,
+        const SizedBox(height: 10),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: const Color.fromARGB(36, 100, 110, 255),
+          ),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 2,
                   child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 230,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              overflow: TextOverflow.ellipsis,
-                              '${i + 1}. ${invoiceController.invoiceModel.Invoice_products[i].productName}', // Display camera type from map
-                              style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                            ),
-                          ),
+                    child: Padding(
+                      padding: EdgeInsets.only(),
+                      child: Text(
+                        'Product Name',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                invoiceController.removeFromProductList(i);
-                              },
-                              icon: const Icon(
-                                Icons.close,
-                                size: 20,
-                              ),
-                            ),
-                          ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Text(
+                      'HSN',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(),
+                      child: Text(
+                        'GST %',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(),
+                      child: Text(
+                        'Price',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(),
+                      child: Text(
+                        'Quantity',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Expanded(
+          child: Container(
+            // height: 200,
+            // width: 300,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.transparent),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: ListView.builder(
+                itemCount: invoiceController.invoiceModel.Invoice_products.length,
+                itemBuilder: (context, index) {
+                  final product = invoiceController.invoiceModel.Invoice_products[index];
+                  // final iera = site['InactiveDevices'] == '0';
+                  // final offline_color = iera
+                  //     ? const Color.fromARGB(255, 255, 255, 255)
+                  //     : Colors.red;
+                  const backgroundColor = Color.fromARGB(255, 255, 255, 255);
+
+                  return Column(
+                    children: [
+                      buildProductRow(product.productName, product.hsn.toString(), product.gst.toString(), product.price.toString(), product.quantity.toString(), backgroundColor, index),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            BasicButton(
+              colors: Colors.red,
+              text: 'Back',
+              onPressed: () {
+                invoiceController.backTab();
+              },
+            ),
+            const SizedBox(width: 20),
+            BasicButton(
+              text: "proceed",
+              colors: Colors.green,
+              onPressed: () {
+                // widget.addto_Selectedproducts();
+                widget.onSubmit();
+                invoiceController.nextTab();
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget buildProductRow(String productName, String HSN, String gst, String price, String quantity, Color backgroundColor, int index) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5, top: 5, left: 10, right: 10),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Primary_colors.Dark,
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 2,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(),
+                  child: Text(
+                    productName,
+                    style: TextStyle(
+                      color: backgroundColor,
+                      fontSize: 13,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
-            ],
-          ),
-      ],
+            ),
+            Expanded(
+              flex: 1,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(),
+                  child: Text(
+                    HSN,
+                    style: TextStyle(
+                      color: backgroundColor,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(),
+                  child: Text(
+                    gst,
+                    style: TextStyle(
+                      color: backgroundColor,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(),
+                  child: Text(
+                    price,
+                    style: TextStyle(
+                      color: backgroundColor,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(),
+                  child: Text(
+                    quantity,
+                    style: TextStyle(
+                      color: backgroundColor,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Form(
-            key: invoiceController.invoiceModel.productKey.value,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 25),
-                      Obx(
-                        () {
-                          return DropdownMenu<ProductSuggestion>(
-                            menuHeight: 350,
-                            leadingIcon: const Icon(Icons.production_quantity_limits, color: Primary_colors.Color1),
-                            trailingIcon: const Icon(
-                              Icons.arrow_drop_down,
-                              color: Color.fromARGB(255, 122, 121, 121),
-                            ),
-                            label: const Text(
-                              "Product",
-                              style: TextStyle(color: Color.fromARGB(255, 167, 165, 165), fontSize: Primary_font_size.Text7),
-                            ),
-                            textStyle: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                            width: 400,
-                            inputDecorationTheme: const InputDecorationTheme(
-                              contentPadding: EdgeInsets.only(left: 10, right: 5),
-                              filled: true,
-                              fillColor: Primary_colors.Dark,
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
-                                borderSide: BorderSide(color: Colors.black),
-                              ),
-                              border: OutlineInputBorder(),
-                              hintStyle: TextStyle(
-                                fontSize: 13,
-                                color: Color.fromARGB(255, 167, 165, 165),
-                              ),
-                            ),
-                            controller: invoiceController.invoiceModel.productNameController.value,
-                            dropdownMenuEntries: invoiceController.invoiceModel.Invoice_productSuggestion.map<DropdownMenuEntry<ProductSuggestion>>((ProductSuggestion suggestion) {
-                              return DropdownMenuEntry<ProductSuggestion>(
-                                value: suggestion, // Passing the entire object
-                                label: suggestion.productName, // Display product name in dropdown
-                              );
-                            }).toList(),
-                            onSelected: (ProductSuggestion? selectedSuggestion) {
-                              if (selectedSuggestion != null) {
-                                widget.set_ProductValues(selectedSuggestion);
-                              }
-                            },
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 25),
-                      Obx(
-                        () {
-                          return BasicTextfield(
-                            digitsOnly: true,
-                            width: 400,
-                            readonly: false,
-                            text: 'HSN',
-                            controller: invoiceController.invoiceModel.hsnController.value,
-                            icon: Icons.qr_code,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter HSN';
-                              }
-                              return null;
-                            },
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 25),
-                      SizedBox(
-                        width: 400,
-                        child: Obx(
-                          () {
-                            return TextFormField(
-                              readOnly: false,
-                              style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Primary_colors.Dark,
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                  ),
-                                ),
-
-                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                                // labelText: text,
-                                hintText: 'Product GST',
-                                hintStyle: TextStyle(
-                                  fontSize: Primary_font_size.Text7,
-                                  color: Color.fromARGB(255, 167, 165, 165),
-                                ),
-                                border: OutlineInputBorder(),
-                                prefixIcon: Icon(
-                                  Icons.receipt_long,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              controller: invoiceController.invoiceModel.gstController.value,
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter Product GST';
-                                }
-                                return null;
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 25),
-                      Obx(
-                        () {
-                          return SizedBox(
-                            width: 400,
-                            child: TextFormField(
-                              readOnly: false,
-                              style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Primary_colors.Dark,
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                  ),
-                                ),
-
-                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                                // labelText: text,
-                                hintText: 'Product Price',
-                                hintStyle: TextStyle(
-                                  fontSize: Primary_font_size.Text7,
-                                  color: Color.fromARGB(255, 167, 165, 165),
-                                ),
-                                border: OutlineInputBorder(),
-                                prefixIcon: Icon(
-                                  Icons.currency_rupee,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              controller: invoiceController.invoiceModel.priceController.value,
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter Product price';
-                                }
-                                return null;
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 25),
-                      Obx(
-                        () {
-                          return SizedBox(
-                            width: 400,
-                            child: TextFormField(
-                              readOnly: false,
-                              style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.white),
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Primary_colors.Dark,
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                  ),
-                                ),
-
-                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                                // labelText: text,
-                                hintText: 'Product Quantity',
-                                hintStyle: TextStyle(
-                                  fontSize: Primary_font_size.Text7,
-                                  color: Color.fromARGB(255, 167, 165, 165),
-                                ),
-                                border: OutlineInputBorder(),
-                                prefixIcon: Icon(
-                                  Icons.format_list_numbered,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                              controller: invoiceController.invoiceModel.quantityController.value,
-                              keyboardType: TextInputType.number,
-                              // inputFormatters: [
-                              //   FilteringTextInputFormatter.digitsOnly
-                              // ],
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter Product Quantity';
-                                }
-                                return null;
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 30),
-                      Obx(
-                        () {
-                          return Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              BasicButton(
-                                colors: Colors.red,
-                                text: invoiceController.invoiceModel.product_editIndex.value == null ? 'Back' : 'Cancel',
-                                onPressed: () {
-                                  invoiceController.invoiceModel.product_editIndex.value == null ? invoiceController.backTab() : widget.resetEditingState(); // Reset editing state when going back
-                                },
-                              ),
-                              const SizedBox(width: 30),
-                              BasicButton(
-                                colors: invoiceController.invoiceModel.product_editIndex.value == null ? Colors.blue : Colors.orange,
-                                text: invoiceController.invoiceModel.product_editIndex.value == null ? 'Add product' : 'Update',
-                                onPressed: () {
-                                  invoiceController.invoiceModel.product_editIndex.value == null ? widget.addproduct(context) : widget.updateproduct(context);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      const SizedBox(
-                        // width: 750,
-                        child: Text(
-                          textAlign: TextAlign.center,
-                          "The Quotation product details play a crucial role in the procurement process. Please ensure accuracy when entering product names,HSN codes, GST% and quantities, as these details directly impact order processing, inventory management, and subsequent workflows.",
-                          style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                // if (length != 0) const SizedBox(width: 60),
-
-                Obx(
-                  () {
-                    return (invoiceController.invoiceModel.Invoice_products.isNotEmpty)
-                        ? Expanded(
-                            child: Column(
-                            children: [
-                              const SizedBox(height: 25),
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7),
-                                  color: Primary_colors.Dark,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 10, top: 15),
-                                  child: Column(
-                                    children: [
-                                      const Text(
-                                        'Product List',
-                                        style: TextStyle(fontSize: Primary_font_size.Text10, color: Primary_colors.Color1, fontWeight: FontWeight.bold),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      SizedBox(
-                                        height: 295,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(bottom: 10),
-                                          child: SingleChildScrollView(
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(10),
-                                              child: Invoice_productDetailss(),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 25),
-                              if (invoiceController.invoiceModel.Invoice_products.isNotEmpty)
-                                BasicButton(
-                                  colors: Colors.green,
-                                  text: 'Submit',
-                                  onPressed: () {
-                                    widget.onSubmit();
-                                    invoiceController.nextTab();
-                                  },
-                                ),
-                            ],
-                          ))
-                        : const SizedBox.shrink();
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      child: Padding(padding: const EdgeInsets.all(16.0), child: buildProductlist()),
     );
   }
 }

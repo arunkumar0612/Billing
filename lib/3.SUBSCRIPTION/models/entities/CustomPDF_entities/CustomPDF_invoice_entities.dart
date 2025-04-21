@@ -376,7 +376,7 @@ class PostInvoice {
       "clientaddress": clientAddress,
       "billingaddressname": billingAddressName,
       "billingaddress": billingAddress,
-      "gst_number": gst,
+      "gstnumber": gst,
       "planname": planName,
       "emailid": emailId,
       "ccemail": ccEmail,

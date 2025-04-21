@@ -31,39 +31,42 @@ class _RfqProductsState extends State<RfqProducts> {
                 onTap: () {
                   widget.editproduct(i);
                 },
-                child: Container(
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: Primary_colors.Light),
-                  height: 40,
-                  width: 300,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 230,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              overflow: TextOverflow.ellipsis,
-                              '${i + 1}. ${rfqController.rfqModel.Rfq_products[i].productName}', // Display camera type from map
-                              style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                rfqController.removeFromProductList(i);
-                              },
-                              icon: const Icon(
-                                Icons.close,
-                                size: 20,
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: Container(
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: Primary_colors.Light),
+                    height: 40,
+                    width: 300,
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: 230,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                overflow: TextOverflow.ellipsis,
+                                '${i + 1}. ${rfqController.rfqModel.Rfq_products[i].productName}', // Display camera type from map
+                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
-                          ],
-                        ),
-                      ],
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  rfqController.removeFromProductList(i);
+                                },
+                                icon: const Icon(
+                                  Icons.close,
+                                  size: 20,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -94,6 +97,11 @@ class _RfqProductsState extends State<RfqProducts> {
                       Obx(
                         () {
                           return DropdownMenu<ProductSuggestion>(
+                            menuHeight: 350,
+                            leadingIcon: const Icon(
+                              Icons.production_quantity_limits,
+                              color: Colors.white,
+                            ),
                             trailingIcon: const Icon(
                               Icons.arrow_drop_down,
                               color: Color.fromARGB(255, 122, 121, 121),
@@ -102,7 +110,7 @@ class _RfqProductsState extends State<RfqProducts> {
                               "Product",
                               style: TextStyle(color: Color.fromARGB(255, 167, 165, 165), fontSize: Primary_font_size.Text7),
                             ),
-                            textStyle: const TextStyle(color: Primary_colors.Color1),
+                            textStyle: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                             width: 400,
                             inputDecorationTheme: const InputDecorationTheme(
                               contentPadding: EdgeInsets.only(left: 10, right: 5),

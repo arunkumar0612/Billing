@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'dart:ui';
 
@@ -23,6 +25,8 @@ class LoadingOverlay {
       barrierDismissible: false, // Prevent manual dismissal
       builder: (dialogContext) {
         _dialogContext = dialogContext;
+        // ignore: duplicate_ignore
+        // ignore: deprecated_member_use
         return WillPopScope(
           onWillPop: () async => false, // Disable back button
           child: Stack(

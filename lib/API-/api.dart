@@ -27,6 +27,7 @@ class API {
   static String sales_getprocesslist_API = "http://192.168.0.200:8081/sales/getprocesslist";
   static String sales_addfeedback_API = "http://192.168.0.200:8081/sales/addfeedback";
   static String sales_getbinaryfile_API = "http://192.168.0.200:8081/sales/getbinaryfile";
+  static String sales_getcustombinaryfile_API = "http://192.168.0.200:8081/sales/getcustombinaryfile";
   static String sales_fetchOrg_list = "http://192.168.0.200:8081/admin/organizationlist";
   static String sales_fetchCompany_list = "http://192.168.0.200:8081/admin/company";
   static String sales_fetchBranch_list = "http://192.168.0.200:8081/admin/branchlist";
@@ -47,6 +48,8 @@ class API {
   static String subscription_deleteprocess_API = "http://192.168.0.200:8081/subscription/deleteprocess";
   static String subscription_archiveprocess_API = "http://192.168.0.200:8081/subscription/archiveprocess";
   static String subscription_clientprofile_API = "http://192.168.0.200:8081/subscription/clientprofile";
+  static String subscription_uploadSubscription = "http://192.168.0.200:8081/subscription/uploadsubscription";
+
   // static String subscription_approvedquotation_API = "http://192.168.0.200:8081/subscription/approvedquotation";
   static String subscription_Upload_MOR_API = "http://192.168.0.200:8081/subscription/uploadmor";
   static String subscription_add_details_API = "http://192.168.0.200:8081/subscription/addsubscus";

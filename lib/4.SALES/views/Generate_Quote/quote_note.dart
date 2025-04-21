@@ -449,83 +449,84 @@ class _QuoteNoteState extends State<QuoteNote> {
                       Obx(() {
                         return Row(
                           children: [
-                            if (!quoteController.quoteModel.Quote_noteList.isNotEmpty) const SizedBox(width: 10),
-                            quoteController.quoteModel.isLoading.value
-                                ? SizedBox(
-                                    width: 125,
-                                    child: Stack(
-                                      children: [
-                                        LinearPercentIndicator(
-                                          lineHeight: 27,
-                                          // width: 105,
-                                          percent: quoteController.quoteModel.progress.value,
-                                          barRadius: const Radius.circular(5),
-                                          backgroundColor: const Color.fromARGB(255, 31, 38, 63),
-                                          progressColor: Colors.blue,
-                                          center: Text(
-                                            "${(quoteController.quoteModel.progress.value * 100).toInt()}%",
-                                            style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 12),
-                                          ),
-                                        ),
-                                        Positioned.fill(
-                                          child: ShaderMask(
-                                            blendMode: BlendMode.srcIn,
-                                            shaderCallback: (Rect bounds) {
-                                              return const LinearGradient(
-                                                colors: [
-                                                  Colors.blue,
-                                                  Colors.transparent,
-                                                  Primary_colors.Dark,
-                                                ],
-                                                stops: [
-                                                  0.0,
-                                                  0.5,
-                                                  1.0,
-                                                ],
-                                                begin: Alignment.centerLeft,
-                                                end: Alignment.centerRight,
-                                              ).createShader(bounds);
-                                            },
-                                            child: LinearPercentIndicator(
-                                              lineHeight: 30,
-                                              // width: 105,
-                                              percent: quoteController.quoteModel.progress.value,
-                                              barRadius: const Radius.circular(5),
-                                              backgroundColor: Primary_colors.Dark,
-                                              progressColor: Colors.blue,
+                            if (quoteController.quoteModel.Quote_noteList.isNotEmpty) const SizedBox(width: 10),
+                            if (quoteController.quoteModel.Quote_noteList.isNotEmpty)
+                              quoteController.quoteModel.isLoading.value
+                                  ? SizedBox(
+                                      width: 125,
+                                      child: Stack(
+                                        children: [
+                                          LinearPercentIndicator(
+                                            lineHeight: 27,
+                                            // width: 105,
+                                            percent: quoteController.quoteModel.progress.value,
+                                            barRadius: const Radius.circular(5),
+                                            backgroundColor: const Color.fromARGB(255, 31, 38, 63),
+                                            progressColor: Colors.blue,
+                                            center: Text(
+                                              "${(quoteController.quoteModel.progress.value * 100).toInt()}%",
+                                              style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 12),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : Container(
-                                    width: 125,
-                                    // height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: TextButton(
-                                      onPressed: () async {
-                                        // try {
-                                        if (quoteController.postDatavalidation()) {
-                                          Get.snackbar("Error", "Any of the required fields is Empty!");
-                                          return;
-                                        }
-                                        await Future.wait([
-                                          quoteController.startProgress(),
-                                          widget.savePdfToCache(),
-                                        ]);
-                                        quoteController.nextTab();
-                                        // } catch (e, stackTrace) {
-                                        //   debugPrint("Error in Future.wait: $e");
-                                        //   debugPrint(stackTrace.toString());
-                                        //   Get.snackbar("Error", "Something went wrong. Please try again.");
-                                        // }
-                                      },
-                                      child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),
-                                    )),
+                                          Positioned.fill(
+                                            child: ShaderMask(
+                                              blendMode: BlendMode.srcIn,
+                                              shaderCallback: (Rect bounds) {
+                                                return const LinearGradient(
+                                                  colors: [
+                                                    Colors.blue,
+                                                    Colors.transparent,
+                                                    Primary_colors.Dark,
+                                                  ],
+                                                  stops: [
+                                                    0.0,
+                                                    0.5,
+                                                    1.0,
+                                                  ],
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                ).createShader(bounds);
+                                              },
+                                              child: LinearPercentIndicator(
+                                                lineHeight: 30,
+                                                // width: 105,
+                                                percent: quoteController.quoteModel.progress.value,
+                                                barRadius: const Radius.circular(5),
+                                                backgroundColor: Primary_colors.Dark,
+                                                progressColor: Colors.blue,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Container(
+                                      width: 125,
+                                      // height: 40,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: TextButton(
+                                        onPressed: () async {
+                                          // try {
+                                          if (quoteController.postDatavalidation()) {
+                                            Get.snackbar("Error", "Any of the required fields is Empty!");
+                                            return;
+                                          }
+                                          await Future.wait([
+                                            quoteController.startProgress(),
+                                            widget.savePdfToCache(),
+                                          ]);
+                                          quoteController.nextTab();
+                                          // } catch (e, stackTrace) {
+                                          //   debugPrint("Error in Future.wait: $e");
+                                          //   debugPrint(stackTrace.toString());
+                                          //   Get.snackbar("Error", "Something went wrong. Please try again.");
+                                          // }
+                                        },
+                                        child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),
+                                      )),
                           ],
                         );
                       })

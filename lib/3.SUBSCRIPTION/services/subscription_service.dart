@@ -15,7 +15,6 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_Quote/SUBSCR
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_client_req/SUBSCRIPTION_generate_clientreq.dart' show SUBSCRIPTION_Generate_clientreq;
 import 'package:ssipl_billing/API-/api.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Basic_SnackBar, Basic_dialog;
-import 'package:ssipl_billing/COMPONENTS-/Loading.dart' show LoadingOverlay;
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -30,8 +29,153 @@ mixin SubscriptionServices {
   final SUBSCRIPTION_ClientreqController _clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
   final SUBSCRIPTION_QuoteController _quoteController = Get.find<SUBSCRIPTION_QuoteController>();
   final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
-  final loader = LoadingOverlay();
-  Future<void> get_CompanyList(context) async {
+  // final loader = LoadingOverlay();
+
+  dynamic UploadSubscription(context, List<Map<String, dynamic>> excelData) async {
+    try {
+      String encodedData = json.encode(excelData);
+      Map<String, dynamic>? response = await apiController.SendByQuerystring(encodedData, API.subscription_uploadSubscription);
+      if (response['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response);
+        if (value.code) {
+          // await Basic_dialog(context: context, title: "Upload Successfull", content: value.message!, onOk: () {}, showCancel: false);
+          await showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: const Text('Upload Results'),
+                content: SizedBox(
+                  height: 500,
+                  width: 500,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: value.data.length,
+                    itemBuilder: (context, index) {
+                      final item = value.data[index];
+                      return ListTile(
+                        leading: Text('${item['subscriptionid'] ?? '-'}'),
+                        title: Text(item['message'] ?? 'No message'),
+                      );
+                    },
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Close'),
+                  ),
+                ],
+              );
+            },
+          );
+          Navigator.of(context).pop();
+        } else {
+          await Basic_dialog(context: context, title: 'Uploading Excel', content: value.message ?? "", onOk: () {}, showCancel: false);
+        }
+      } else {
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+      }
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+    }
+  }
+
+  void showExcelDataPopup(context, List<Map<String, dynamic>> excelData) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+            child: ClipRRect(
+          borderRadius: BorderRadius.circular(25.0),
+          child: SizedBox(
+            width: 1200,
+            height: 700,
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(
+                        columnSpacing: 55,
+                        columns: excelData.isNotEmpty
+                            ? excelData.first.keys
+                                .map(
+                                  (String key) => DataColumn(
+                                    label: Text(
+                                      key,
+                                      style: const TextStyle(color: Color.fromARGB(255, 177, 27, 27), fontSize: 10),
+                                    ),
+                                  ),
+                                )
+                                .toList()
+                            : [],
+                        rows: excelData.where((data) => data.values.any((value) => value != null)).map((data) {
+                          return DataRow(
+                            cells: data.keys.map((key) {
+                              return DataCell(
+                                Text(
+                                  data[key]?.toString() ?? '', // Handle null values gracefully
+                                  style: const TextStyle(fontSize: 10),
+                                ),
+                              );
+                            }).toList(),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                    color: const Color.fromARGB(66, 90, 90, 90),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.red,
+                            ),
+                            height: 30,
+                            width: 100,
+                            child: TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Cancel', style: TextStyle(color: Colors.white))),
+                          ),
+                          const SizedBox(width: 40),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.blue,
+                            ),
+                            height: 30,
+                            width: 100,
+                            child: TextButton(
+                                onPressed: () async {
+                                  await UploadSubscription(context, excelData);
+                                },
+                                child: const Text(
+                                  'Proceed',
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                          ),
+                        ],
+                      ),
+                    )),
+              ],
+            ),
+          ),
+        ));
+      },
+    );
+  }
+
+  Future<void> get_CompanyList() async {
     try {
       // loader.start(context);
       await Future.delayed(const Duration(milliseconds: 1000));
@@ -45,14 +189,23 @@ mixin SubscriptionServices {
         if (value.code) {
           _subscriptionController.add_Comp(value);
         } else {
-          await Basic_dialog(context: context, title: 'Fetch Company List', content: value.message ?? "", onOk: () {}, showCancel: false);
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
+          // await Basic_dialog(context: context, title: 'Fetch Company List', content: value.message ?? "", onOk: () {}, showCancel: false);
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
+        // Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
       }
       // loader.stop();
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      if (kDebugMode) {
+        print("error : $e");
+      }
+      // Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
     }
   }
 
@@ -94,13 +247,8 @@ mixin SubscriptionServices {
         if (value.code) {
           Navigator.pop(context);
           get_GlobalPackageList(context);
-          subscriptionController.subscriptionModel.packagenameController.value.clear();
-          subscriptionController.subscriptionModel.packageamountController.value.clear();
-          subscriptionController.subscriptionModel.packagedevicesController.value.clear();
-          subscriptionController.subscriptionModel.packagecamerasController.value.clear();
-          subscriptionController.subscriptionModel.packageadditionalcamerasController.value.clear();
-          subscriptionController.subscriptionModel.packagedescController.value.clear();
-
+          subscriptionController.reset_packageData();
+          subscriptionController.update();
           Basic_SnackBar(context, "Package Created successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
@@ -203,7 +351,7 @@ mixin SubscriptionServices {
     }
   }
 
-  Future<void> Get_RecurringInvoiceList(context, int? id) async {
+  Future<void> Get_RecurringInvoiceList(int? id) async {
     try {
       // loader.start(context);
 
@@ -221,19 +369,28 @@ mixin SubscriptionServices {
         if (value.code) {
           _subscriptionController.addTo_RecuuringInvoiceList(value);
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Recurring Invoice List Error', content: value.message ?? "", onOk: () {});
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
+          // await Basic_dialog(context: context, showCancel: false, title: 'Recurring Invoice List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
+        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
       // loader.stop();
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
-      loader.stop();
+      if (kDebugMode) {
+        print("error : $e");
+      }
+      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      // loader.stop();
     }
   }
 
-  Future<void> GetProcessList(context, int customerid) async {
+  Future<void> GetProcessList(int customerid) async {
     try {
       Map<String, dynamic>? response =
           await apiController.GetbyQueryString({"customerid": customerid, "listtype": _subscriptionController.subscriptionModel.type.value}, API.subscription_getprocesslist_API);
@@ -243,14 +400,23 @@ mixin SubscriptionServices {
           // await Basic_dialog(context: context, showCancel: false, title: 'Process List', content: "Process List fetched successfully", onOk: () {});
           _subscriptionController.subscriptionModel.processList.clear();
           // print(value.data);
-          // _subscriptionController.addToProcessList(value);
+          _subscriptionController.addToProcessList(value);
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Process List Error', content: value.message ?? "", onOk: () {});
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
+          // await Basic_dialog(context: context, showCancel: false, title: 'Process List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
+        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
+      if (kDebugMode) {
+        print("error : $e");
+      }
       // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
@@ -261,7 +427,7 @@ mixin SubscriptionServices {
       if (response?['statusCode'] == 200) {
         CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {
-          GetProcessList(context, customerid);
+          GetProcessList(customerid);
           Basic_SnackBar(context, "Feedback added successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
@@ -390,7 +556,7 @@ mixin SubscriptionServices {
       CMResponse value = CMResponse.fromJson(response ?? {});
       if (value.code) {
         _subscriptionController.subscriptionModel.selectedIndices.clear();
-        GetProcessList(context, _subscriptionController.subscriptionModel.customerId.value!);
+        GetProcessList(_subscriptionController.subscriptionModel.customerId.value!);
         Basic_SnackBar(context, "Process Deleted successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
@@ -410,7 +576,7 @@ mixin SubscriptionServices {
       CMResponse value = CMResponse.fromJson(response ?? {});
       if (value.code) {
         _subscriptionController.subscriptionModel.selectedIndices.clear();
-        GetProcessList(context, _subscriptionController.subscriptionModel.customerId.value!);
+        GetProcessList(_subscriptionController.subscriptionModel.customerId.value!);
         Basic_SnackBar(context, type == 0 ? "Process Unarchived successfully" : "Process Archived successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
@@ -422,7 +588,7 @@ mixin SubscriptionServices {
     }
   }
 
-  Future<bool> GetSubscriptionData(context, String subscriptionperiod) async {
+  Future<bool> GetSubscriptionData(String subscriptionperiod) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"subscriptionperiod": subscriptionperiod}, API.subscription_getsubscriptiondata_API);
 
@@ -434,14 +600,23 @@ mixin SubscriptionServices {
           // print(value.data);
           _subscriptionController.updateSubscriptionData(value);
         } else {
-          await Basic_dialog(context: context, title: 'Subscription Data Error', content: value.message ?? "", onOk: () {}, showCancel: false);
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
+          // await Basic_dialog(context: context, title: 'Subscription Data Error', content: value.message ?? "", onOk: () {}, showCancel: false);
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
+        // Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
       }
       return false;
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      if (kDebugMode) {
+        print("error : $e");
+      }
+      // Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
       return false;
     }
   }
@@ -473,7 +648,7 @@ mixin SubscriptionServices {
       if (response?['statusCode'] == 200) {
         CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {
-          GetProcessList(context, customerid);
+          GetProcessList(customerid);
           Basic_SnackBar(context, "Approval Sent successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
@@ -769,14 +944,14 @@ mixin SubscriptionServices {
     }
   }
 
-  Future<void> subscription_refresh(context) async {
+  Future<void> subscription_refresh() async {
     _subscriptionController.resetData();
     _subscriptionController.updateshowcustomerprocess(null);
     _subscriptionController.updatecustomerId(0);
-    await Get_RecurringInvoiceList(context, null);
-    await get_CompanyList(context);
-    await GetProcessList(context, 0);
-    await GetSubscriptionData(context, _subscriptionController.subscriptionModel.subscriptionperiod.value);
+    await Get_RecurringInvoiceList(null);
+    await get_CompanyList();
+    await GetProcessList(0);
+    await GetSubscriptionData(_subscriptionController.subscriptionModel.subscriptionperiod.value);
   }
 
   int fetch_messageType() {

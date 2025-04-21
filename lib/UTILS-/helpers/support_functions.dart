@@ -108,3 +108,7 @@ String generateRandomString(int length) {
 
   return List.generate(length, (index) => chars[random.nextInt(chars.length)]).join('');
 }
+
+Future<Uint8List> convertFileToUint8List(File file) async {
+  return await file.readAsBytes();
+}

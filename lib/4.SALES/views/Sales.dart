@@ -1,5 +1,5 @@
+import 'dart:io';
 import 'dart:math';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:animations/animations.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
@@ -25,23 +25,20 @@ import 'package:ssipl_billing/4.SALES/views/CustomPDF/Invoice/CustomPDF_invoice_
 import 'package:ssipl_billing/4.SALES/views/CustomPDF/Quote/CustomPDF_Quote_design.dart';
 import 'package:ssipl_billing/4.SALES/views/Sales_chart.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
+import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/NOTIFICATION-/NotificationServices.dart';
 import 'package:ssipl_billing/NOTIFICATION-/Notification_actions.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-
 import '../controllers/Sales_actions.dart';
 
 class Sales_Client extends StatefulWidget with SalesServices, BellIconFunction {
   Sales_Client({super.key});
-// Toyota showroom and service, 100 chennai - trichy highway, Trichy - 620005s
   @override
   _Sales_ClientState createState() => _Sales_ClientState();
 }
-
-// enum Menu { preview, share, getLink, remove, download }
 
 class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMixin {
   final SalesController salesController = Get.find<SalesController>();
@@ -54,7 +51,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
   final CustomPDF_DcController custom_Dc_controller = Get.find<CustomPDF_DcController>();
   final NotificationController notificationController = Get.find<NotificationController>();
   final CustomPDF_QuoteController custom_Quote_controller = Get.find<CustomPDF_QuoteController>();
-
+  final loader = LoadingOverlay();
   var inst_invoiceDesign = CustomPDF_InvoicePDF();
   var inst_quoteDesign = CustomPDF_QuotePDF();
   var inst_dcDesign = CustomPDF_DcPDF();
@@ -76,12 +73,13 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
     super.initState();
     clientreqController.clientReqModel.cntMulti.value = MultiValueDropDownController();
     // widget.GetCustomerList(context);
+    widget.Get_salesCustomPDFLsit();
     clientreqController.clientReqModel.cntMulti.value = MultiValueDropDownController();
     salesController.updateshowcustomerprocess(null);
     salesController.updatecustomerId(0);
-    widget.GetProcesscustomerList(context);
-    widget.GetProcessList(context, 0);
-    widget.GetSalesData(context, salesController.salesModel.salesperiod.value);
+    widget.Get_salesProcesscustomerList();
+    widget.Get_salesProcessList(0);
+    widget.GetSalesData(salesController.salesModel.salesperiod.value);
     salesController.salesModel.animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -91,7 +89,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
   void _startAnimation() {
     if (!salesController.salesModel.animationController.isAnimating) {
       salesController.salesModel.animationController.forward(from: 0).then((_) {
-        widget.sales_refresh(context);
+        widget.sales_refresh();
       });
     }
   }
@@ -354,9 +352,9 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                     salesController.updatesalesperiod(newValue == "Monthly view" ? 'monthly' : 'yearly');
 
                                                     if (newValue == "Monthly view") {
-                                                      widget.GetSalesData(context, 'monthly');
+                                                      widget.GetSalesData('monthly');
                                                     } else if (newValue == "Yearly view") {
-                                                      widget.GetSalesData(context, 'yearly');
+                                                      widget.GetSalesData('yearly');
                                                     }
                                                   }
                                                 },
@@ -633,7 +631,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                   onPressed: () {
                                                     salesController.salesModel.selectedIndices.clear();
                                                     salesController.updatetype(salesController.salesModel.type.value == 0 ? 1 : 0);
-                                                    widget.GetProcessList(context, salesController.salesModel.customerId.value!);
+                                                    widget.Get_salesProcessList(salesController.salesModel.customerId.value!);
                                                   },
                                                 ),
                                               ),
@@ -693,31 +691,30 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                         case 'Custom PDF List':
                                                           () async {
                                                             // Show Bottom Sheet with a loading message initially
-                                                            showModalBottomSheet(
-                                                              barrierColor: const Color.fromARGB(244, 11, 15, 26),
-                                                              enableDrag: true,
-                                                              backgroundColor: Colors.transparent,
-                                                              context: context,
-                                                              shape: const RoundedRectangleBorder(
-                                                                borderRadius: BorderRadius.vertical(
-                                                                  top: Radius.circular(20),
-                                                                ),
-                                                              ),
-                                                              builder: (BuildContext context) {
-                                                                return const SizedBox(
-                                                                  child: Padding(
-                                                                    padding: EdgeInsets.only(left: 70, right: 70),
-                                                                    child: Center(child: CircularProgressIndicator()), // Show loader initially
-                                                                  ),
-                                                                );
-                                                              },
-                                                            );
-
-                                                            // Call the API after showing the bottom sheet
-                                                            bool success = await widget.GetCustomPDFLsit(context);
-
+                                                            // showModalBottomSheet(
+                                                            //   barrierColor: const Color.fromARGB(244, 11, 15, 26),
+                                                            //   enableDrag: true,
+                                                            //   backgroundColor: Colors.transparent,
+                                                            //   context: context,
+                                                            //   shape: const RoundedRectangleBorder(
+                                                            //     borderRadius: BorderRadius.vertical(
+                                                            //       top: Radius.circular(20),
+                                                            //     ),
+                                                            //   ),
+                                                            //   builder: (BuildContext context) {
+                                                            //     return const SizedBox(
+                                                            //       child: Padding(
+                                                            //         padding: EdgeInsets.only(left: 70, right: 70),
+                                                            //         child: Center(child: CircularProgressIndicator()), // Show loader initially
+                                                            //       ),
+                                                            //     );
+                                                            //   },
+                                                            // );
+                                                            // loader.start(context);
+                                                            // // Call the API after showing the bottom sheet
+                                                            // loader.stop();
                                                             // Close the previous bottom sheet
-                                                            Navigator.pop(context);
+                                                            // Navigator.pop(context);
 
                                                             // Show a new bottom sheet based on API response
                                                             showModalBottomSheet(
@@ -734,7 +731,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                 return SizedBox(
                                                                   child: Padding(
                                                                     padding: const EdgeInsets.only(left: 70, right: 70),
-                                                                    child: success ? customPDF_list() : const Text('No Data available!'),
+                                                                    child: customPDF_list(),
                                                                   ),
                                                                 );
                                                               },
@@ -1301,16 +1298,16 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                               // items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
                                                                               style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
                                                                             ),
-                                                                            if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true) &&
-                                                                                salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 0)
-                                                                              const Padding(
-                                                                                padding: EdgeInsets.only(left: 5),
-                                                                                child: Text(
-                                                                                  "waiting for internal approval",
-                                                                                  // items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
-                                                                                  style: TextStyle(fontSize: 10, color: Color.fromARGB(255, 141, 141, 141)),
-                                                                                ),
-                                                                              ),
+                                                                            // if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true) &&
+                                                                            //     salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 0)
+                                                                            //   const Padding(
+                                                                            //     padding: EdgeInsets.only(left: 5),
+                                                                            //     child: Text(
+                                                                            //       "waiting for internal approval",
+                                                                            //       // items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
+                                                                            //       style: TextStyle(fontSize: 10, color: Color.fromARGB(255, 141, 141, 141)),
+                                                                            //     ),
+                                                                            //   ),
                                                                             if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1)
                                                                               Image.asset(
                                                                                 'assets/images/verified.png',
@@ -1332,28 +1329,6 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                 width: 20, // Makes the image fill the container's width
                                                                                 height: 20, // Makes the image fill the container's height
                                                                               ),
-                                                                            // if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true) &&
-                                                                            //     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1) &&
-                                                                            //     (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 0))
-                                                                            //   Padding(
-                                                                            //     padding: const EdgeInsets.only(left: 5),
-                                                                            //     child: Container(
-                                                                            //       decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: const Color.fromARGB(255, 2, 128, 231)),
-                                                                            //       child: GestureDetector(
-                                                                            //         child: const Padding(
-                                                                            //           padding: EdgeInsets.only(left: 4, right: 4),
-                                                                            //           child: Text(
-                                                                            //             'Get Approval',
-                                                                            //             style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text5),
-                                                                            //           ),
-                                                                            //         ),
-                                                                            //         onTap: () {
-                                                                            //           widget.GetApproval(context, salesController.salesModel.customerId.value!,
-                                                                            //               salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                            //         },
-                                                                            //       ),
-                                                                            //     ),
-                                                                            //   )
                                                                           ],
                                                                         ),
                                                                       ),
@@ -1392,9 +1367,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                       Row(
                                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                                         children: [
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation == true)
-                                                                              // &&(salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                              )
+                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation == true) &&
+                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                             TextButton(
                                                                               onPressed: () async {
                                                                                 bool success =
@@ -1411,9 +1385,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                 style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                               ),
                                                                             ),
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation == true)
-                                                                              //  &&                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                              )
+                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation == true) &&
+                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                             TextButton(
                                                                               onPressed: () async {
                                                                                 bool success =
@@ -1430,11 +1403,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                 style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                               ),
                                                                             ),
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.rfq == true)
-                                                                              // &&
-                                                                              //     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1
-                                                                              //     )
-                                                                              )
+                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.rfq == true) &&
+                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                             TextButton(
                                                                               onPressed: () async {
                                                                                 bool success =
@@ -1453,10 +1423,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                 style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                               ),
                                                                             ),
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.invoice == true)
-                                                                              // &&
-                                                                              //     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                              )
+                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.invoice == true) &&
+                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                             TextButton(
                                                                               onPressed: () async {
                                                                                 bool success =
@@ -1475,10 +1443,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                 style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                               ),
                                                                             ),
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan == true)
-                                                                              //  &&
-                                                                              //     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                              )
+                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan == true) &&
+                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                             TextButton(
                                                                               onPressed: () async {
                                                                                 bool success =
@@ -1497,32 +1463,32 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                 style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                               ),
                                                                             ),
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.credit_note == true)
-                                                                              // &&
+                                                                          // if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.credit_note == true)
+                                                                          //     // &&
 
-                                                                              )
-                                                                            TextButton(
-                                                                              onPressed: () {
-                                                                                // widget.GenerateCredit_dialougebox(context);
-                                                                              },
-                                                                              child: const Text(
-                                                                                "Credit",
-                                                                                style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                              ),
-                                                                            ),
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.debit_note == true)
-                                                                              //  &&
-                                                                              //     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                              )
-                                                                            TextButton(
-                                                                              onPressed: () {
-                                                                                // widget.GenerateDebit_dialougebox(context);
-                                                                              },
-                                                                              child: const Text(
-                                                                                "Debit",
-                                                                                style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                              ),
-                                                                            ),
+                                                                          //     )
+                                                                          //   TextButton(
+                                                                          //     onPressed: () {
+                                                                          //       // widget.GenerateCredit_dialougebox(context);
+                                                                          //     },
+                                                                          //     child: const Text(
+                                                                          //       "Credit",
+                                                                          //       style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                          //     ),
+                                                                          //   ),
+                                                                          // if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.debit_note == true)
+                                                                          //     //  &&
+                                                                          //     //     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1)
+                                                                          //     )
+                                                                          //   TextButton(
+                                                                          //     onPressed: () {
+                                                                          //       // widget.GenerateDebit_dialougebox(context);
+                                                                          //     },
+                                                                          //     child: const Text(
+                                                                          //       "Debit",
+                                                                          //       style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                          //     ),
+                                                                          //   ),
                                                                         ],
                                                                       )
                                                                     ],
@@ -2339,12 +2305,12 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                       salesController.updateshowcustomerprocess(index);
                       salesController.updatecustomerId(customerid);
 
-                      widget.GetProcessList(context, customerid);
+                      widget.Get_salesProcessList(customerid);
                     }
                   : () {
                       salesController.updateshowcustomerprocess(null);
                       salesController.updatecustomerId(0);
-                      widget.GetProcessList(context, salesController.salesModel.customerId.value!);
+                      widget.Get_salesProcessList(salesController.salesModel.customerId.value!);
                     },
             ),
           ),
@@ -2603,12 +2569,16 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                   alignment: Alignment.centerLeft,
                                   child: IconButton(
                                     onPressed: () async {
+                                      // File? temp =File(path)
+                                      // File? pdfFile = await widget.savePdfToTemp(salesController.salesModel.custom_pdfFile.value);
+
+                                      widget.Get_customPDFfile(context, salesController.salesModel.customPdfList[index].customPDFid);
                                       widget.downloadPdf(
                                           context,
                                           salesController.salesModel.customPdfList[index].filePath
                                               .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
                                               .replaceAll(" ", ""),
-                                          await widget.savePdfToTemp(salesController.salesModel.customPdfList[index].pdfData));
+                                          salesController.salesModel.custom_pdfFile.value);
                                     },
                                     icon: const Icon(
                                       Icons.download,
@@ -3033,8 +3003,27 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                   : SystemMouseCursors.forbidden,
                                                               child: GestureDetector(
                                                                 onTap: () async {
-                                                                  widget.postData_sendPDF(
-                                                                      context, widget.fetch_messageType(), await widget.savePdfToTemp(salesController.salesModel.customPdfList[index].pdfData));
+                                                                  await widget.Get_customPDFfile(
+                                                                    context,
+                                                                    salesController.salesModel.customPdfList[index].customPDFid,
+                                                                  );
+
+                                                                  File? file = salesController.salesModel.custom_pdfFile.value;
+
+                                                                  if (file != null && await file.exists() && await file.length() > 0) {
+                                                                    widget.postData_sendPDF(
+                                                                      context,
+                                                                      widget.fetch_messageType(),
+                                                                      file,
+                                                                    );
+                                                                  } else {
+                                                                    Basic_dialog(
+                                                                      context: context,
+                                                                      title: "Error",
+                                                                      content: "The PDF file is empty or missing.",
+                                                                      showCancel: false,
+                                                                    );
+                                                                  }
                                                                 },
                                                                 child: Container(
                                                                   width: 105,
@@ -3100,18 +3089,35 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => Dialog(
-                                            insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
-                                            child: SizedBox(
-                                              width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-                                              height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
-                                              child: SfPdfViewer.memory(salesController.salesModel.customPdfList[index].pdfData),
-                                            ),
-                                          ),
+                                      onTap: () async {
+                                        await widget.Get_customPDFfile(
+                                          context,
+                                          salesController.salesModel.customPdfList[index].customPDFid,
                                         );
+
+                                        File? file = salesController.salesModel.custom_pdfFile.value;
+
+                                        if (file != null && await file.exists() && await file.length() > 0) {
+                                          Uint8List? temp = await convertFileToUint8List(salesController.salesModel.custom_pdfFile.value!);
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => Dialog(
+                                              insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+                                              child: SizedBox(
+                                                width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+                                                height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
+                                                child: SfPdfViewer.memory(temp),
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          Basic_dialog(
+                                            context: context,
+                                            title: "Error",
+                                            content: "The  PDF file is empty or missing.",
+                                            showCancel: false,
+                                          );
+                                        }
                                       },
                                       child: Image.asset(height: 40, 'assets/images/pdfdownload.png'),
                                     ),

@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -10,6 +11,7 @@ import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/NOTIFICATION-/Notification_constants.dart';
+import 'package:ssipl_billing/UTILS-/helpers/refresher.dart';
 import 'package:windows_notification/notification_message.dart';
 import 'package:windows_notification/windows_notification.dart';
 
@@ -113,28 +115,40 @@ class NotificationController extends GetxController {
 
   Future<void> connect() async {
     try {
-      print("Connecting to MQTT Broker...");
+      if (kDebugMode) {
+        print("Connecting to MQTT Broker...");
+      }
       await notificationModel.MQTT_client.connect();
       if (notificationModel.MQTT_client.connectionStatus!.state == MqttConnectionState.connected) {
-        print("Successfully connected to MQTT broker.");
+        if (kDebugMode) {
+          print("Successfully connected to MQTT broker.");
+        }
         connectAndSubscribe();
       } else {
-        print("Connection failed: ${notificationModel.MQTT_client.connectionStatus}");
+        if (kDebugMode) {
+          print("Connection failed: ${notificationModel.MQTT_client.connectionStatus}");
+        }
         startReconnectTimer();
       }
     } catch (e) {
-      print("MQTT Connection Error: $e");
+      if (kDebugMode) {
+        print("MQTT Connection Error: $e");
+      }
       startReconnectTimer();
     }
   }
 
   void onConnected() {
-    print("MQTT Connected");
+    if (kDebugMode) {
+      print("MQTT Connected");
+    }
     _reconnectTimer?.cancel(); // Cancel reconnect attempts if connected
   }
 
   void onDisconnected() {
-    print("MQTT Disconnected");
+    if (kDebugMode) {
+      print("MQTT Disconnected");
+    }
     startReconnectTimer();
   }
 
@@ -142,10 +156,14 @@ class NotificationController extends GetxController {
     _reconnectTimer?.cancel(); // Ensure previous timer is canceled
     _reconnectTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       if (notificationModel.MQTT_client.connectionStatus!.state != MqttConnectionState.connected) {
-        print("Attempting to reconnect...");
+        if (kDebugMode) {
+          print("Attempting to reconnect...");
+        }
         connect();
       } else {
-        print("Reconnected successfully!");
+        if (kDebugMode) {
+          print("Reconnected successfully!");
+        }
         _reconnectTimer?.cancel();
       }
     });
@@ -154,7 +172,9 @@ class NotificationController extends GetxController {
   Future<void> connectAndSubscribe() async {
     try {
       if (notificationModel.MQTT_client.connectionStatus!.state == MqttConnectionState.connected) {
-        print('Subscribing to topic: Notification');
+        if (kDebugMode) {
+          print('Subscribing to topic: Notification');
+        }
         notificationModel.MQTT_client.subscribe('Notification', MqttQos.atLeastOnce);
         notificationModel.MQTT_client.subscribe('refresh', MqttQos.atLeastOnce);
 
@@ -165,7 +185,9 @@ class NotificationController extends GetxController {
               final topic = message.topic;
 
               final String messageText = MqttPublishPayload.bytesToStringAsString(recMessage.payload.message);
-              print('Received message: $messageText from topic: $topic');
+              if (kDebugMode) {
+                print('Received message: $messageText from topic: $topic');
+              }
 
               if (topic == 'Notification') {
                 react_to_MQTTlistener(topic, messageText);
@@ -180,7 +202,9 @@ class NotificationController extends GetxController {
         );
       }
     } catch (e) {
-      print('MQTT Exception: $e');
+      if (kDebugMode) {
+        print('MQTT Exception: $e');
+      }
     }
   }
 
@@ -195,7 +219,7 @@ class NotificationController extends GetxController {
     final context = Get.context;
     if (topic == "Notification") {
       if (context != null) {
-        //await Refresher().refreshAll(context);
+        // await Refresher().refreshAll();
       }
       if (!notificationModel.notifications.contains(message)) {
         notificationModel.notifications.add(message);
@@ -203,7 +227,7 @@ class NotificationController extends GetxController {
       }
     } else if (topic == "refresh") {
       if (context != null) {
-        //await Refresher().refreshAll(context);
+        await Refresher().refreshAll();
       }
       if (!notificationModel.notifications.contains(message)) {
         notificationModel.notifications.add(message);

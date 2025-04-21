@@ -137,7 +137,7 @@ class _PackagepageState extends State<Packagepage> {
                             children: [
                               // Select all checkbox
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 8.0),
+                                padding: const EdgeInsets.only(top: 16.0, left: 24.0, right: 24.0),
                                 child: Container(
                                   decoration: BoxDecoration(
                                     // color: Colors.white.withOpacity(0.1),
@@ -196,7 +196,7 @@ class _PackagepageState extends State<Packagepage> {
                               // Subscription list
                               Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 8.0),
+                                  padding: EdgeInsets.only(left: 24.0, right: 24.0, bottom: MediaQuery.of(context).viewInsets.bottom),
                                   child: subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList.isEmpty
                                       ? Center(
                                           child: Text(
@@ -600,206 +600,208 @@ class _PackagepageState extends State<Packagepage> {
             ]),
             const SizedBox(height: 25),
             Expanded(
-                child: TabBarView(children: [
-              subscriptionController.subscriptionModel.packageisEditing.value && subscriptionController.subscriptionModel.editingPackage.value == package
-                  ? _buildEditPanel(package)
-                  : SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            package.subscriptionName ?? 'No Name',
-                            style: theme.textTheme.headlineSmall?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: Primary_font_size.Heading,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-
-                          // Price and duration
-                          Text(
-                            '₹ ${package.amount?.toStringAsFixed(2)} / 1 Month',
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              color: Colors.white.withOpacity(0.9),
-                              fontWeight: FontWeight.bold,
-                              fontSize: Primary_font_size.Text10,
-                            ),
-                          ),
-                          const SizedBox(height: 34),
-
-                          // Features
-                          Column(
+              child: TabBarView(
+                children: [
+                  subscriptionController.subscriptionModel.packageisEditing.value && subscriptionController.subscriptionModel.editingPackage.value == package
+                      ? _buildEditPanel(package)
+                      : SingleChildScrollView(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'PLAN BENEFITS',
-                                style: theme.textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
+                                package.subscriptionName ?? 'No Name',
+                                style: theme.textTheme.headlineSmall?.copyWith(
                                   color: Colors.white,
-                                  letterSpacing: 1.5,
-                                  fontSize: Primary_font_size.Text8,
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              _buildFeatureItem('Enjoy full access and control from ${package.noOfDevices} devices.'),
-                              _buildFeatureItem('Monitor ${package.noOfCameras} cameras simultaneously with HD streaming and smart alerts.'),
-                              if (package.addlCameras != null && package.addlCameras! > 0)
-                                _buildFeatureItem('Expand your coverage with support for ${package.addlCameras} cameras for large-scale surveillance.'),
-                              _buildFeatureItem('Early access to new releases.'),
-                              _buildFeatureItem('Cancel anytime with no fees.'),
-                              const SizedBox(height: 25),
-                              Text(
-                                'DESCRIPTION',
-                                style: theme.textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  letterSpacing: 1.5,
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              if (package.productDesc != null && package.productDesc!.isNotEmpty)
-                                Text(
-                                  package.productDesc!,
-                                  style: theme.textTheme.bodyLarge?.copyWith(
-                                    color: Colors.white70,
-                                    height: 1.6,
-                                    fontSize: Primary_font_size.Text8,
-                                  ),
-                                ),
-                              const SizedBox(height: 25),
-                              SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(vertical: 18),
-                                    backgroundColor: Primary_colors.Color3,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    elevation: 5,
-                                    shadowColor: Primary_colors.Color3.withOpacity(0.5),
-                                  ),
-                                  onPressed: () {
-                                    subscriptionController.subscriptionModel.packageisEditing.value = true;
-                                    subscriptionController.subscriptionModel.editingPackage.value = package;
-                                    subscriptionController.subscriptionModel.editpackagenameController.value.clear();
-                                    subscriptionController.subscriptionModel.editpackageamountController.value.clear();
-                                    subscriptionController.subscriptionModel.editpackagedevicesController.value.clear();
-                                    subscriptionController.subscriptionModel.editpackagecamerasController.value.clear();
-                                    subscriptionController.subscriptionModel.editpackageadditionalcamerasController.value.clear();
-                                    subscriptionController.subscriptionModel.editpackagedescController.value.clear();
-                                    // Clear controllers to prepare for new values
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(Icons.edit, color: Colors.white),
-                                      const SizedBox(width: 8),
-                                      Text(
-                                        'EDIT SUBSCRIPTION',
-                                        style: theme.textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1.2, fontSize: Primary_font_size.Text8),
-                                      ),
-                                    ],
-                                  ),
+                                  fontSize: Primary_font_size.Heading,
                                 ),
                               ),
                               const SizedBox(height: 16),
 
-                              // Changes notice
-                              Center(
-                                child: Text(
-                                  subscriptionController.subscriptionModel.packageisEditing.value ? 'Edit the subscription details' : 'Changes will be applied immediately',
-                                  style: theme.textTheme.bodySmall?.copyWith(
-                                    color: Colors.white54,
+                              // Price and duration
+                              Text(
+                                '₹ ${package.amount?.toStringAsFixed(2)} / 1 Month',
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  color: Colors.white.withOpacity(0.9),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Primary_font_size.Text10,
+                                ),
+                              ),
+                              const SizedBox(height: 34),
+
+                              // Features
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'PLAN BENEFITS',
+                                    style: theme.textTheme.titleMedium?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      letterSpacing: 1.5,
+                                      fontSize: Primary_font_size.Text8,
+                                    ),
                                   ),
+                                  const SizedBox(height: 16),
+                                  _buildFeatureItem('Enjoy full access and control from ${package.noOfDevices} devices.'),
+                                  _buildFeatureItem('Monitor ${package.noOfCameras} cameras simultaneously with HD streaming and smart alerts.'),
+                                  if (package.addlCameras != null && package.addlCameras! > 0)
+                                    _buildFeatureItem('Expand your coverage with support for ${package.addlCameras} cameras for large-scale surveillance.'),
+                                  _buildFeatureItem('Early access to new releases.'),
+                                  _buildFeatureItem('Cancel anytime with no fees.'),
+                                  const SizedBox(height: 25),
+                                  Text(
+                                    'DESCRIPTION',
+                                    style: theme.textTheme.titleMedium?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      letterSpacing: 1.5,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+                                  if (package.productDesc != null && package.productDesc!.isNotEmpty)
+                                    Text(
+                                      package.productDesc!,
+                                      style: theme.textTheme.bodyLarge?.copyWith(
+                                        color: Colors.white70,
+                                        height: 1.6,
+                                        fontSize: Primary_font_size.Text8,
+                                      ),
+                                    ),
+                                  const SizedBox(height: 25),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(vertical: 18),
+                                        backgroundColor: Primary_colors.Color3,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        elevation: 5,
+                                        shadowColor: Primary_colors.Color3.withOpacity(0.5),
+                                      ),
+                                      onPressed: () {
+                                        subscriptionController.subscriptionModel.packageisEditing.value = true;
+                                        subscriptionController.subscriptionModel.editingPackage.value = package;
+                                        subscriptionController.subscriptionModel.editpackagenameController.value.clear();
+                                        subscriptionController.subscriptionModel.editpackageamountController.value.clear();
+                                        subscriptionController.subscriptionModel.editpackagedevicesController.value.clear();
+                                        subscriptionController.subscriptionModel.editpackagecamerasController.value.clear();
+                                        subscriptionController.subscriptionModel.editpackageadditionalcamerasController.value.clear();
+                                        subscriptionController.subscriptionModel.editpackagedescController.value.clear();
+                                        // Clear controllers to prepare for new values
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          const Icon(Icons.edit, color: Colors.white),
+                                          const SizedBox(width: 8),
+                                          Text(
+                                            'EDIT SUBSCRIPTION',
+                                            style: theme.textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1.2, fontSize: Primary_font_size.Text8),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+
+                                  // Changes notice
+                                  Center(
+                                    child: Text(
+                                      subscriptionController.subscriptionModel.packageisEditing.value ? 'Edit the subscription details' : 'Changes will be applied immediately',
+                                      style: theme.textTheme.bodySmall?.copyWith(
+                                        color: Colors.white54,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              // Sites
+                              // In your _buildDetailsPanel method, update the sites section to:
+                            ],
+                          ),
+                        ),
+                  package.siteDetails != null && package.siteDetails!.isNotEmpty
+                      ? SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    itemCount: package.siteDetails!.length,
+                                    itemBuilder: (context, index) {
+                                      final site = package.siteDetails![index];
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.05),
+                                          borderRadius: BorderRadius.circular(12),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withOpacity(0.2),
+                                              blurRadius: 6,
+                                              offset: const Offset(0, 2),
+                                            ),
+                                          ],
+                                        ),
+                                        child: ListTile(
+                                          contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+                                          leading: const Icon(
+                                            Icons.person,
+                                            color: Colors.blueAccent,
+                                            size: 24,
+                                          ),
+                                          title: Text(
+                                            '${site.siteName}',
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: Primary_font_size.Text9,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          // Optionally you can add a subtitle or trailing icon here
+                                          // subtitle: Text('Additional info', style: TextStyle(color: Colors.white70)),
+                                          // trailing: Icon(Icons.chevron_right, color: Colors.white54),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        )
+                      : Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.group_off, // People icon with "empty" style
+                                size: 64,
+                                color: Colors.grey[400],
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                "Looks like you don’t have any clients yet",
+                                style: TextStyle(
+                                  fontSize: Primary_font_size.Text12,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey[400],
                                 ),
                               ),
                             ],
                           ),
-
-                          // Sites
-                          // In your _buildDetailsPanel method, update the sites section to:
-                        ],
-                      ),
-                    ),
-              SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Sites
-                    // In your _buildDetailsPanel method, update the sites section to:
-                    if (package.siteDetails != null && package.siteDetails!.isNotEmpty)
-                      // Column(
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   children: [
-                      //     ListView.builder(
-                      //       shrinkWrap: true,
-                      //       physics: const NeverScrollableScrollPhysics(),
-                      //       itemCount: package.siteDetails!.length,
-                      //       itemBuilder: (context, index) {
-                      //         final site = package.siteDetails![index];
-                      //         return Padding(
-                      //           padding: const EdgeInsets.symmetric(vertical: 4.0),
-                      //           child: Text(
-                      //             '• ${site.siteName}',
-                      //             style: const TextStyle(color: Colors.white70),
-                      //           ),
-                      //         );
-                      //       },
-                      //     ),
-                      //   ],
-                      // ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: package.siteDetails!.length,
-                            itemBuilder: (context, index) {
-                              final site = package.siteDetails![index];
-                              return Container(
-                                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.05),
-                                  borderRadius: BorderRadius.circular(12),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.2),
-                                      blurRadius: 6,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: ListTile(
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
-                                  leading: const Icon(
-                                    Icons.person,
-                                    color: Colors.blueAccent,
-                                    size: 24,
-                                  ),
-                                  title: Text(
-                                    '${site.siteName}',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: Primary_font_size.Text9,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  // Optionally you can add a subtitle or trailing icon here
-                                  // subtitle: Text('Additional info', style: TextStyle(color: Colors.white70)),
-                                  // trailing: Icon(Icons.chevron_right, color: Colors.white54),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                  ],
-                ),
-              )
-            ]))
+                        )
+                ],
+              ),
+            )
           ],
         ));
   }

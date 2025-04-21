@@ -48,15 +48,21 @@ mixin SalesServices {
         if (value.code) {
           salesController.addToCustompdfList(value);
         } else {
-          print("error : ${value.message}");
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
           // await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        print("error : ${"please contact administration"}");
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
         // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      print("error : $e");
+      if (kDebugMode) {
+        print("error : $e");
+      }
       // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
@@ -120,15 +126,21 @@ mixin SalesServices {
 
           // salesController.updatecustomerId(salesController.salesModel.processcustomerList[salesController.salesModel.showcustomerprocess.value!].customerId);
         } else {
-          print("error : ${value.message}");
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
           // await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        print("error : ${"please contact administration"}");
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
         // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      print("error : $e");
+      if (kDebugMode) {
+        print("error : $e");
+      }
       // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
@@ -143,15 +155,21 @@ mixin SalesServices {
           salesController.salesModel.processList.clear();
           salesController.addToProcessList(value);
         } else {
-          print("error : ${value.message}");
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
           // await Basic_dialog(context: context, showCancel: false, title: 'Process List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        print("error : ${"please contact administration"}");
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
         // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      print("error : $e");
+      if (kDebugMode) {
+        print("error : $e");
+      }
       // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
@@ -336,16 +354,22 @@ mixin SalesServices {
         if (value.code) {
           salesController.updateSalesData(value);
         } else {
-          print("error : ${value.message}");
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
           // await Basic_dialog(context: context, title: 'Sales Data Error', content: value.message ?? "", onOk: () {}, showCancel: false);
         }
       } else {
-        print("error : ${"please contact administration"}");
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
         // Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
       }
       return false;
     } catch (e) {
-      print("error : $e");
+      if (kDebugMode) {
+        print("error : $e");
+      }
       // Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
       return false;
     }

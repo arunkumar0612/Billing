@@ -1,9 +1,10 @@
-// ignore_for_file: non_constant_identifier_names, camel_case_types, constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, camel_case_types, constant_identifier_names, library_prefixes
 
 import 'dart:io';
 
 import 'package:excel/excel.dart' as Excel;
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 
@@ -29,7 +30,9 @@ class import_excel {
         return null;
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
     return null;
   }
@@ -67,7 +70,9 @@ class import_excel {
                 rowData[validHeaders[i]!] = cellValue.toString();
                 hasNonNullValue = true;
               } else {
-                print('⚠️ Empty cell at Row ${rows.indexOf(row) + 1}, Column "${validHeaders[i]}"');
+                if (kDebugMode) {
+                  print('⚠️ Empty cell at Row ${rows.indexOf(row) + 1}, Column "${validHeaders[i]}"');
+                }
               }
             }
 
@@ -78,8 +83,12 @@ class import_excel {
         }
       }
 
-      print('Excel data length: ${excelData.length}');
-      print('Mismatched rows: $mismatchedRows');
+      if (kDebugMode) {
+        print('Excel data length: ${excelData.length}');
+      }
+      if (kDebugMode) {
+        print('Mismatched rows: $mismatchedRows');
+      }
 
       if (mismatchedRows.isNotEmpty) {
         showDialog(
@@ -107,7 +116,9 @@ class import_excel {
         );
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 }

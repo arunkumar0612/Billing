@@ -28,6 +28,16 @@ class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProvide
   final siteFormkey = GlobalKey<FormState>().obs;
   final siteNameController = TextEditingController().obs;
   final addressController = TextEditingController().obs;
+  var Billingtype_Controller = Rxn<String>();
+  var BillingtypeList = <String>[
+    'Individual',
+    'Consolidate',
+  ].obs;
+  var Mailtype_Controller = Rxn<String>();
+  var MailtypeList = <String>[
+    'Individual',
+    'Consolidate',
+  ].obs;
   final cameraquantityController = TextEditingController().obs;
   final site_editIndex = Rxn<int>();
   var QuoteSiteDetails = <site.Site>[].obs;
@@ -35,13 +45,57 @@ class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProvide
   var selectedPackageController = TextEditingController().obs;
   Rx<PackageDetails?> customPackageDetails = Rx<PackageDetails?>(null);
 
-  final List<String> packages = ['Basic', 'Standard', 'Premium', 'Enterprise', 'Custom'];
+  // PACKAGE
 
-  // Controllers for custom package
-  final customCameraCountController = TextEditingController().obs;
-  final customPackageAmountController = TextEditingController().obs;
-  final customAdditionalChargesController = TextEditingController().obs;
-  final customDescriptionController = TextEditingController().obs;
+  final List<String> packageList = ['Basic Plan', 'Standard Plan', 'Premium Plan', 'Custom Package'].obs;
+  Rx<String?> selectedPackage = Rx<String?>(null);
+
+  RxBool customPackageCreated = false.obs;
+  late AnimationController animationControllers;
+  late Animation<double> fadeAnimations;
+  final RxList<Map<String, String>> selectedPackages = <Map<String, String>>[].obs;
+
+  final Map<String, Map<String, String>> packageDetails = {
+    'Basic Plan': {
+      'name': 'Basic Plan',
+      'description': 'Includes 5 cameras, ideal for small homes or small businesses.',
+      'camera_count': '5',
+      'amount': '\$50/month',
+      'additional_cameras': '\$10 per extra camera',
+      'show': 'Global',
+      'icon': '🏠',
+    },
+    'Standard Plan': {
+      'name': 'Standard Plan',
+      'description': 'Includes 10 cameras, perfect for medium offices and retail spaces.',
+      'camera_count': '10',
+      'amount': '\$100/month',
+      'additional_cameras': '\$8 per extra camera',
+      'show': 'Global',
+      'icon': '🏢',
+    },
+    'Premium Plan': {
+      'name': 'Premium Plan',
+      'description': 'Includes 20 cameras, designed for large buildings and enterprises.',
+      'camera_count': '20',
+      'amount': '\$200/month',
+      'additional_cameras': '\$5 per extra camera',
+      'show': 'Global',
+      'icon': '🏭',
+    },
+  }.obs;
+
+  final customNameControllers = TextEditingController().obs;
+  final customDescControllers = TextEditingController().obs;
+  final customCameraCountControllers = TextEditingController().obs;
+  final customAmountControllers = TextEditingController().obs;
+  final customChargesControllers = TextEditingController().obs;
+  final showto = 'Global'.obs;
+
+  Rx<Map<String, String>?> customPackage = Rx<Map<String, String>?>(null);
+
+  RxBool showSiteList = false.obs;
+  var selectedIndices = <int>[].obs;
 
   // NOTES
   final noteformKey = GlobalKey<FormState>().obs;

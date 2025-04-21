@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/Subscription_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_Quote/SUBSCRIPTION_post_Quote.dart';
+import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_Quote/SUBSCRIPTION_quote_package.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -27,7 +28,7 @@ class _SUBSCRIPTION_GenerateQuoteState extends State<SUBSCRIPTION_GenerateQuote>
   void initState() {
     super.initState();
     // SUBSCRIPTION_GenerateQuote._tabController = ;
-    quoteController.initializeTabController(TabController(length: 4, vsync: this));
+    quoteController.initializeTabController(TabController(length: 5, vsync: this));
   }
 
   @override
@@ -54,51 +55,51 @@ class _SUBSCRIPTION_GenerateQuoteState extends State<SUBSCRIPTION_GenerateQuote>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Primary_colors.Dark,
-        body: Row(
-          children: [
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Text(
-                    widget.quoteType == "quotation" ? "CLIENT REQUEST" : "QUOTATION",
-                    style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                  ),
+      backgroundColor: Primary_colors.Dark,
+      body: Row(
+        children: [
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: Text(
+                  widget.quoteType == "quotation" ? "CLIENT REQUEST" : "QUOTATION",
+                  style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                 ),
-                Expanded(
-                  child: SizedBox(
-                    width: 420,
-                    // decoration: BoxDecoration(
-                    //   border: Border.all(width: 3, color: const Color.fromARGB(255, 161, 232, 250)),
-                    // ),
-                    child: GestureDetector(
-                      child: Stack(
-                        children: [
-                          SfPdfViewer.file(subscriptionController.subscriptionModel.pdfFile.value!),
-                          Align(
-                            alignment: AlignmentDirectional.bottomEnd,
-                            child: Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
+              ),
+              Expanded(
+                child: SizedBox(
+                  width: 420,
+                  // decoration: BoxDecoration(
+                  //   border: Border.all(width: 3, color: const Color.fromARGB(255, 161, 232, 250)),
+                  // ),
+                  child: GestureDetector(
+                    child: Stack(
+                      children: [
+                        SfPdfViewer.file(subscriptionController.subscriptionModel.pdfFile.value!),
+                        Align(
+                          alignment: AlignmentDirectional.bottomEnd,
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
                               ),
                             ),
-                          )
-                        ],
-                      ),
-                      onDoubleTap: () {
-                        _showReadablePdf();
-                      },
+                          ),
+                        ),
+                      ],
                     ),
+                    onDoubleTap: () {
+                      _showReadablePdf();
+                    },
                   ),
-                )
-              ],
-            ),
-            Expanded(
-                child: Container(
+                ),
+              )
+            ],
+          ),
+          Expanded(
+            child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 gradient: const LinearGradient(
@@ -133,7 +134,7 @@ class _SUBSCRIPTION_GenerateQuoteState extends State<SUBSCRIPTION_GenerateQuote>
                           tabs: const [
                             Tab(text: "DETAILS"),
                             Tab(text: "SITE"),
-                            // Tab(text: "PACKAGE"),
+                            Tab(text: "PACKAGE"),
                             Tab(text: "NOTE"),
                             Tab(text: "POST"),
                           ],
@@ -150,7 +151,7 @@ class _SUBSCRIPTION_GenerateQuoteState extends State<SUBSCRIPTION_GenerateQuote>
                           eventID: widget.eventID,
                         ),
                         SUBSCRIPTION_QuoteSites(),
-                        // const SubscriptionQuotePackage(),
+                        const SubscriptionQuotePackage(),
                         SUBSCRIPTION_QuoteNote(),
                         SUBSCRIPTION_PostQuote(type: 'E:/${(quoteController.quoteModel.Quote_no.value ?? "default_filename").replaceAll("/", "-")}.pdf', eventtype: widget.quoteType
                             // Pass the expected file path
@@ -160,8 +161,10 @@ class _SUBSCRIPTION_GenerateQuoteState extends State<SUBSCRIPTION_GenerateQuote>
                   ),
                 ],
               ),
-            ))
-          ],
-        ));
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

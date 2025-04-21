@@ -146,9 +146,9 @@ class _SubscriptionQuotePackageState extends State<SubscriptionQuotePackage> wit
                       flex: 2,
                       child: quoteController.quoteModel.selectedPackage.value == null
                           ? _buildPlaceholder()
-                          : quoteController.quoteModel.selectedPackage == 'Custom Package'
+                          : quoteController.quoteModel.selectedPackage.value == 'Custom Package'
                               ? buildCustomPackageForm()
-                              : quoteController.quoteModel.packageDetails.containsKey(quoteController.quoteModel.selectedPackage)
+                              : quoteController.quoteModel.packageDetails.containsKey(quoteController.quoteModel.selectedPackage.value)
                                   ? FadeTransition(
                                       opacity: quoteController.quoteModel.fadeAnimations,
                                       child: Column(
@@ -240,7 +240,7 @@ class _SubscriptionQuotePackageState extends State<SubscriptionQuotePackage> wit
               ),
             ),
             const SizedBox(height: 20),
-            if (quoteController.quoteModel.selectedPackage != 'Custom Package')
+            if (quoteController.quoteModel.selectedPackage.value != 'Custom Package')
               Text(
                 'Need something different? Consider our Custom Package option',
                 style: TextStyle(

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:animations/animations.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
@@ -33,6 +34,7 @@ import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
 import '../controllers/Sales_actions.dart';
 
 class Sales_Client extends StatefulWidget with SalesServices, BellIconFunction {
@@ -50,8 +52,9 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
   final RfqController rfqController = Get.find<RfqController>();
   final CustomPDF_InvoiceController custom_Invoice_controller = Get.find<CustomPDF_InvoiceController>();
   final CustomPDF_DcController custom_Dc_controller = Get.find<CustomPDF_DcController>();
-  final NotificationController notificationController = Get.find<NotificationController>();
   final CustomPDF_QuoteController custom_Quote_controller = Get.find<CustomPDF_QuoteController>();
+  final NotificationController notificationController = Get.find<NotificationController>();
+
   final loader = LoadingOverlay();
   var inst_invoiceDesign = CustomPDF_InvoicePDF();
   var inst_quoteDesign = CustomPDF_QuotePDF();
@@ -65,7 +68,20 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
   void dispose() {
     clientreqController.clientReqModel.cntMulti.value.dispose();
     salesController.salesModel.animationController.dispose();
+    reset_all();
     super.dispose();
+  }
+
+  void reset_all() {
+    salesController.resetData();
+    clientreqController.resetData();
+    dcController.resetData();
+    invoiceController.resetData();
+    quoteController.resetData();
+    rfqController.resetData();
+    custom_Invoice_controller.resetData();
+    custom_Dc_controller.resetData();
+    custom_Quote_controller.resetData();
   }
 
   // AnimationStyle? _animationStyle;

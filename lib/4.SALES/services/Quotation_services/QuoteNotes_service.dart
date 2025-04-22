@@ -10,6 +10,7 @@ import 'package:ssipl_billing/4.SALES/views/Generate_Quote/quote_template.dart';
 import 'package:ssipl_billing/API-/invoker.dart';
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/UTILS-/helpers/returns.dart';
+import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 
 mixin QuotenotesService {
   final QuoteController quoteController = Get.find<QuoteController>();
@@ -149,9 +150,10 @@ mixin QuotenotesService {
       quoteController.quoteModel.billingAddressNameController.value.text,
       quoteController.quoteModel.billingAddressController.value.text,
       quoteController.quoteModel.Quote_no.value,
-      quoteController.quoteModel.TitleController.value.text,
-      9,
+      quoteController.quoteModel.gstNumController.value.text,
+      // 9,
       quoteController.quoteModel.Quote_gstTotals,
+      isGST_Local(quoteController.quoteModel.gstNumController.value.text),
     );
 
     Directory tempDir = await getTemporaryDirectory();

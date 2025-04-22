@@ -112,3 +112,14 @@ String generateRandomString(int length) {
 Future<Uint8List> convertFileToUint8List(File file) async {
   return await file.readAsBytes();
 }
+
+bool isGST_Local(String gstNumber) {
+  // Check if the GST number is valid and has at least 2 characters
+  if (gstNumber.length < 2) return false;
+
+  // Extract the first two digits (state code)
+  String stateCode = gstNumber.substring(0, 2);
+
+  // Return true if Tamil Nadu (33), else false
+  return stateCode == '33';
+}

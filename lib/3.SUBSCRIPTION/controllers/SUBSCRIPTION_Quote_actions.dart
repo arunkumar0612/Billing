@@ -202,6 +202,14 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     quoteModel.QuoteSiteDetails.removeAt(index);
   }
 
+  void updateBillingtype(String billingtype) {
+    quoteModel.Billingtype_Controller.value = billingtype;
+  }
+
+  void updateMailtype(String mailtype) {
+    quoteModel.Mailtype_Controller.value = mailtype;
+  }
+
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,

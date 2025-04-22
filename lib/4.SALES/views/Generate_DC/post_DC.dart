@@ -717,6 +717,7 @@ class PostDcState extends State<PostDc> with SingleTickerProviderStateMixin {
                                     text: "Send",
                                     colors: Colors.blue,
                                     onPressed: () {
+                                      dcController.resetData();
                                       widget.postData(context, dcController.fetch_messageType());
                                     })),
                           ),

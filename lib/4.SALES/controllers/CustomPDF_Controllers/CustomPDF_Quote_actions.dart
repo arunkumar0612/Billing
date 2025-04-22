@@ -258,6 +258,17 @@ class CustomPDF_QuoteController extends GetxController {
         pdfModel.value.manualquoteNo.value.text.isEmpty);
   }
 
+   void clear_postFields() {
+    pdfModel.value.phoneNumber.value.clear();
+    pdfModel.value.Email.value.clear();
+    pdfModel.value.feedback.value.clear();
+    pdfModel.value.whatsapp_selectionStatus.value = true;
+    pdfModel.value.gmail_selectionStatus.value = true;
+    pdfModel.value.CCemailController.value.clear();
+    pdfModel.value.CCemailToggle.value = false;
+    pdfModel.value.filePathController.value.clear();
+  }
+
   void resetData() {
     pdfModel.value.date.value.clear();
     pdfModel.value.manualquoteNo.value.clear();

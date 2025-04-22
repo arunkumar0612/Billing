@@ -101,11 +101,14 @@ mixin SubscriptionServices {
                         columnSpacing: 55,
                         columns: excelData.isNotEmpty
                             ? excelData.first.keys
-                                .map((String key) => DataColumn(
-                                        label: Text(
+                                .map(
+                                  (String key) => DataColumn(
+                                    label: Text(
                                       key,
                                       style: const TextStyle(color: Color.fromARGB(255, 177, 27, 27), fontSize: 10),
-                                    )))
+                                    ),
+                                  ),
+                                )
                                 .toList()
                             : [],
                         rows: excelData.where((data) => data.values.any((value) => value != null)).map((data) {
@@ -186,16 +189,22 @@ mixin SubscriptionServices {
         if (value.code) {
           _subscriptionController.add_Comp(value);
         } else {
-          print("error : ${value.message}");
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
           // await Basic_dialog(context: context, title: 'Fetch Company List', content: value.message ?? "", onOk: () {}, showCancel: false);
         }
       } else {
-        print("error : ${"please contact administration"}");
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
         // Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
       }
       // loader.stop();
     } catch (e) {
-      print("error : $e");
+      if (kDebugMode) {
+        print("error : $e");
+      }
       // Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
     }
   }
@@ -293,6 +302,7 @@ mixin SubscriptionServices {
           subscriptionController.subscriptionModel.packageselectedID.value =
               subId.contains(subscriptionController.subscriptionModel.packageselectedID.value) ? null : subscriptionController.subscriptionModel.packageselectedID.value;
           subscriptionController.subscriptionModel.selectedPackagessubscriptionID.clear();
+
           // subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList[subscriptionController.subscriptionModel.packageselectedIndex.value!].subscriptionId == subId
           //     ? null
           //     : subscriptionController.subscriptionModel.packageselectedIndex.value;
@@ -359,16 +369,22 @@ mixin SubscriptionServices {
         if (value.code) {
           _subscriptionController.addTo_RecuuringInvoiceList(value);
         } else {
-          print("error : ${value.message}");
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
           // await Basic_dialog(context: context, showCancel: false, title: 'Recurring Invoice List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        print("error : ${"please contact administration"}");
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
         // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
       // loader.stop();
     } catch (e) {
-      print("error : $e");
+      if (kDebugMode) {
+        print("error : $e");
+      }
       // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
       // loader.stop();
     }
@@ -386,15 +402,21 @@ mixin SubscriptionServices {
           // print(value.data);
           _subscriptionController.addToProcessList(value);
         } else {
-          print("error : ${value.message}");
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
           // await Basic_dialog(context: context, showCancel: false, title: 'Process List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        print("error : ${"please contact administration"}");
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
         // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      print("error : $e");
+      if (kDebugMode) {
+        print("error : $e");
+      }
       // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
@@ -578,16 +600,22 @@ mixin SubscriptionServices {
           // print(value.data);
           _subscriptionController.updateSubscriptionData(value);
         } else {
-          print("error : ${value.message}");
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
           // await Basic_dialog(context: context, title: 'Subscription Data Error', content: value.message ?? "", onOk: () {}, showCancel: false);
         }
       } else {
-        print("error : ${"please contact administration"}");
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
         // Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
       }
       return false;
     } catch (e) {
-      print("error : $e");
+      if (kDebugMode) {
+        print("error : $e");
+      }
       // Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
       return false;
     }
@@ -853,20 +881,8 @@ mixin SubscriptionServices {
 
                       // If user confirms (Yes), clear data and close the dialog
                       if (proceed == true) {
-                        Navigator.of(context).pop(); // Close the dialog
-                        // Clear all the data when dialog is closed
-                        _quoteController.quoteModel.QuoteSiteDetails.clear();
-                        //  _quoteController.quoteModel.Quote_gstTotals.clear();
-                        _quoteController.quoteModel.Quote_noteList.clear();
-                        _quoteController.quoteModel.Quote_recommendationList.clear();
-                        //  _quoteController.quoteModel.iQuote_productDetails.clear();
-                        _quoteController.quoteModel.clientAddressNameController.value.clear();
-                        _quoteController.quoteModel.clientAddressController.value.clear();
-                        _quoteController.quoteModel.billingAddressNameController.value.clear();
-                        _quoteController.quoteModel.billingAddressController.value.clear();
-                        _quoteController.quoteModel.Quote_no.value = "";
-                        _quoteController.quoteModel.TitleController.value.clear();
-                        _quoteController.quoteModel.Quote_table_heading.value = "";
+                        Navigator.of(context).pop(); 
+                         _quoteController.resetData();// Close the dialog
                       }
                     } else {
                       // If no data, just close the dialog

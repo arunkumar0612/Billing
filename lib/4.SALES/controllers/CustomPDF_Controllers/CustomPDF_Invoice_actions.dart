@@ -22,7 +22,8 @@ class CustomPDF_InvoiceController extends GetxController {
   }
 
   void initializeCheckboxes() {
-    pdfModel.value.checkboxValues.assignAll(List.generate(pdfModel.value.manualInvoiceproducts.length, (index) => false));
+    pdfModel.value.checkboxValues.assignAll(List.generate(
+        pdfModel.value.manualInvoiceproducts.length, (index) => false));
   }
 
   void validate() {
@@ -31,7 +32,8 @@ class CustomPDF_InvoiceController extends GetxController {
 
   void add_Note() {
     pdfModel.value.notecontent.add(""); // Add empty note
-    pdfModel.value.noteControllers.add(TextEditingController()); // Add controller
+    pdfModel.value.noteControllers
+        .add(TextEditingController()); // Add controller
     pdfModel.refresh();
   }
 
@@ -118,7 +120,8 @@ class CustomPDF_InvoiceController extends GetxController {
   }
 
   int fetch_messageType() {
-    if (pdfModel.value.whatsapp_selectionStatus.value && pdfModel.value.gmail_selectionStatus.value) return 3;
+    if (pdfModel.value.whatsapp_selectionStatus.value &&
+        pdfModel.value.gmail_selectionStatus.value) return 3;
     if (pdfModel.value.whatsapp_selectionStatus.value) return 2;
     if (pdfModel.value.gmail_selectionStatus.value) return 1;
 
@@ -139,7 +142,8 @@ class CustomPDF_InvoiceController extends GetxController {
     final product = pdfModel.value.manualInvoiceproducts[rowIndex];
 
     // Allow only numeric values for specific columns
-    if ([0, 2, 3, 4, 5].contains(colIndex) && !RegExp(r'^[0-9]*$').hasMatch(value)) {
+    if ([0, 2, 3, 4, 5].contains(colIndex) &&
+        !RegExp(r'^[0-9]*$').hasMatch(value)) {
       return;
     }
 
@@ -206,8 +210,10 @@ class CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.subTotal.value.text = addedSubTotal.toStringAsFixed(2);
     pdfModel.value.CGST.value.text = addedCGST.toStringAsFixed(2);
     pdfModel.value.SGST.value.text = addedSGST.toStringAsFixed(2);
-    pdfModel.value.roundOff.value.text = formatCurrencyRoundedPaisa(addedRoundoff);
-    pdfModel.value.roundoffDiff.value = calculateFormattedDifference(addedRoundoff);
+    pdfModel.value.roundOff.value.text =
+        formatCurrencyRoundedPaisa(addedRoundoff);
+    pdfModel.value.roundoffDiff.value =
+        calculateFormattedDifference(addedRoundoff);
     pdfModel.value.Total.value.text = formatCurrencyRoundedPaisa(addedRoundoff);
 
     pdfModel.refresh();
@@ -250,12 +256,25 @@ class CustomPDF_InvoiceController extends GetxController {
         pdfModel.value.clientAddress.value.text.isEmpty ||
         pdfModel.value.billingName.value.text.isEmpty ||
         pdfModel.value.billingAddres.value.text.isEmpty ||
-        (pdfModel.value.gmail_selectionStatus.value && pdfModel.value.Email.value.text.isEmpty) ||
-        (pdfModel.value.whatsapp_selectionStatus.value && pdfModel.value.phoneNumber.value.text.isEmpty) ||
+        (pdfModel.value.gmail_selectionStatus.value &&
+            pdfModel.value.Email.value.text.isEmpty) ||
+        (pdfModel.value.whatsapp_selectionStatus.value &&
+            pdfModel.value.phoneNumber.value.text.isEmpty) ||
         pdfModel.value.GSTnumber.value.text.isEmpty ||
         pdfModel.value.manualInvoiceproducts.isEmpty ||
         pdfModel.value.notecontent.isEmpty ||
         pdfModel.value.manualinvoiceNo.value.text.isEmpty);
+  }
+
+  void clear_postFields() {
+    pdfModel.value.phoneNumber.value.clear();
+    pdfModel.value.Email.value.clear();
+    pdfModel.value.feedback.value.clear();
+    pdfModel.value.whatsapp_selectionStatus.value = true;
+    pdfModel.value.gmail_selectionStatus.value = true;
+    pdfModel.value.CCemailController.value.clear();
+    pdfModel.value.CCemailToggle.value = false;
+    pdfModel.value.filePathController.value.clear();
   }
 
   void resetData() {
@@ -281,8 +300,22 @@ class CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.manualInvoice_gstTotals.clear();
 
     pdfModel.value.manualInvoiceproducts.assignAll([
-      CustomPDF_InvoiceProduct(sNo: "1", description: "Laptop", hsn: "8471", gst: "18", price: "1000", quantity: "2", total: "2000"),
-      CustomPDF_InvoiceProduct(sNo: "2", description: "Mouse", hsn: "8472", gst: "18", price: "50", quantity: "5", total: "250"),
+      CustomPDF_InvoiceProduct(
+          sNo: "1",
+          description: "Laptop",
+          hsn: "8471",
+          gst: "18",
+          price: "1000",
+          quantity: "2",
+          total: "2000"),
+      CustomPDF_InvoiceProduct(
+          sNo: "2",
+          description: "Mouse",
+          hsn: "8472",
+          gst: "18",
+          price: "50",
+          quantity: "5",
+          total: "250"),
     ]);
 
     pdfModel.value.notecontent.clear();

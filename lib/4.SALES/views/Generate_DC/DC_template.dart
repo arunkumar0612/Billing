@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
@@ -6,8 +7,18 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:ssipl_billing/4.SALES/controllers/DC_actions.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/product_entities.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
+import 'package:pdf/widgets.dart' as wid;
 
-Future<Uint8List> generate_Dc(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst) async {
+Future<Uint8List> generate_Dc(
+    PdfPageFormat pageFormat,
+    products,
+    client_addr_name,
+    client_addr,
+    bill_addr_name,
+    bill_addr,
+    estimate_num,
+    title,
+    gst) async {
   final quotation = Quotation(
     products: products,
     GST: gst.toDouble(),
@@ -66,7 +77,9 @@ class Quotation {
     Helvetica_bold = await loadFont_bold();
     final doc = pw.Document();
     profileImage = pw.MemoryImage(
-      (await rootBundle.load('assets/images/sporada.jpeg')).buffer.asUint8List(),
+      (await rootBundle.load('assets/images/sporada.jpeg'))
+          .buffer
+          .asUint8List(),
     );
 
     doc.addPage(
@@ -191,7 +204,8 @@ class Quotation {
                 // width: 285,
                 height: 20,
                 decoration: pw.BoxDecoration(
-                  borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)),
+                  borderRadius:
+                      const pw.BorderRadius.all(pw.Radius.circular(2)),
                   color: baseColor,
                   border: pw.Border.all(
                     color: baseColor,
@@ -264,7 +278,8 @@ class Quotation {
                 // width: 285,
                 height: 20,
                 decoration: pw.BoxDecoration(
-                  borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)),
+                  borderRadius:
+                      const pw.BorderRadius.all(pw.Radius.circular(2)),
                   color: baseColor,
                   border: pw.Border.all(
                     color: baseColor,
@@ -400,127 +415,224 @@ class Quotation {
 
   pw.Widget notes(pw.Context context) {
     return pw.Row(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        pw.Container(
-          width: 280,
-          child: pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.SizedBox(height: 30),
-              pw.Padding(
-                child: bold("Note", 12),
-                padding: const pw.EdgeInsets.only(left: 0, bottom: 10),
-              ),
-              ...List.generate(dcController.dcModel.Dc_noteList.length, (index) {
-                return pw.Padding(
-                  padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
-                  child: pw.Row(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    children: [
-                      regular("${index + 1}.", 10),
-                      pw.SizedBox(width: 5),
-                      pw.Expanded(
-                        child: pw.Text(
-                          dcController.dcModel.Dc_noteList[index],
-                          textAlign: pw.TextAlign.start,
-                          style: pw.TextStyle(
-                            font: Helvetica,
-                            fontSize: 10,
-                            lineSpacing: 2,
-                            color: PdfColors.blueGrey800,
-                          ),
-                        ),
-                      ),
-                    ],
+        pw.Column(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
+            pw.Container(
+              width: 280,
+              child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.SizedBox(height: 30),
+                  pw.Padding(
+                    child: bold("Note", 12),
+                    padding: const pw.EdgeInsets.only(left: 0, bottom: 10),
                   ),
-                );
-              }),
-              pw.Padding(
-                padding: const pw.EdgeInsets.only(left: 0, top: 5),
-                child: pw.Row(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    regular("${dcController.dcModel.Dc_noteList.length + 1}.", 10),
-                    pw.SizedBox(width: 5),
-                    pw.Expanded(
-                      child: pw.Column(
+                  ...List.generate(dcController.dcModel.Dc_noteList.length,
+                      (index) {
+                    return pw.Padding(
+                      padding:
+                          pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
+                      child: pw.Row(
                         crossAxisAlignment: pw.CrossAxisAlignment.start,
                         children: [
-                          bold("Bank Account Details:", 10),
-                          pw.SizedBox(height: 5), // Adds a small space between the lines
-                          pw.Row(
-                            children: [
-                              regular("Current a/c:", 10),
-                              pw.SizedBox(width: 5),
-                              regular("257399850001", 10),
-                            ],
-                          ),
-                          pw.SizedBox(height: 5),
-                          pw.Row(
-                            children: [
-                              regular("IFSC code:", 10),
-                              pw.SizedBox(width: 5),
-                              regular("INDB0000521", 10),
-                            ],
-                          ),
-                          pw.SizedBox(height: 5),
-                          pw.Row(
-                            children: [
-                              regular("Bank name:", 10),
-                              pw.SizedBox(width: 5),
-                              regular(": IndusInd Bank Limited", 10),
-                            ],
-                          ),
-                          pw.SizedBox(height: 5),
-                          pw.Row(
-                            children: [
-                              regular("Branch name:", 10),
-                              pw.SizedBox(width: 5),
-                              regular("R.S. Puram, Coimbatore.", 10),
-                            ],
+                          regular("${index + 1}.", 10),
+                          pw.SizedBox(width: 5),
+                          pw.Expanded(
+                            child: pw.Text(
+                              dcController.dcModel.Dc_noteList[index],
+                              textAlign: pw.TextAlign.start,
+                              style: pw.TextStyle(
+                                font: Helvetica,
+                                fontSize: 10,
+                                lineSpacing: 2,
+                                color: PdfColors.blueGrey800,
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              pw.Padding(
-                padding: const pw.EdgeInsets.only(left: 0, top: 5),
-                child: pw.Row(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    // regular("${Delivery_challan_noteList.length + 2}.", 10),
-                    pw.SizedBox(width: 5),
-                    pw.Expanded(
-                      child: pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: [
-                          bold(dcController.dcModel.recommendationHeadingController.value.text, 10),
-                          ...dcController.dcModel.Dc_recommendationList.map((recommendation) {
-                            return pw.Padding(
-                              padding: const pw.EdgeInsets.only(left: 5, top: 5),
-                              child: pw.Row(
+                    );
+                  }),
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.only(left: 0, top: 5,bottom: 5),
+                    child: pw.Row(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        regular(
+                            "${dcController.dcModel.Dc_noteList.length + 1}.",
+                            10),
+                        pw.SizedBox(width: 5),
+                        pw.Expanded(
+                          child: pw.Column(
+                            crossAxisAlignment: pw.CrossAxisAlignment.start,
+                            children: [
+                              bold("Bank Account Details:", 10),
+                              pw.SizedBox(
+                                  height:
+                                      5), // Adds a small space between the lines
+                              pw.Row(
                                 children: [
-                                  pw.Container(
-                                    width: 120,
-                                    child: regular(recommendation.key.toString(), 10),
-                                  ),
-                                  regular(":", 10),
+                                  regular("Current a/c:", 10),
                                   pw.SizedBox(width: 5),
-                                  regular(recommendation.value.toString(), 10),
+                                  regular("257399850001", 10),
                                 ],
                               ),
-                            );
-                          }),
-                        ],
-                      ),
+                              pw.SizedBox(height: 5),
+                              pw.Row(
+                                children: [
+                                  regular("IFSC code:", 10),
+                                  pw.SizedBox(width: 5),
+                                  regular("INDB0000521", 10),
+                                ],
+                              ),
+                              pw.SizedBox(height: 5),
+                              pw.Row(
+                                children: [
+                                  regular("Bank name:", 10),
+                                  pw.SizedBox(width: 5),
+                                  regular(": IndusInd Bank Limited", 10),
+                                ],
+                              ),
+                              pw.SizedBox(height: 5),
+                              pw.Row(
+                                children: [
+                                  regular("Branch name:", 10),
+                                  pw.SizedBox(width: 5),
+                                  regular("R.S. Puram, Coimbatore.", 10),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  // pw.Padding(
+                  //   padding: const pw.EdgeInsets.only(left: 0, top: 15),
+                  //   child: pw.Row(
+                  //     crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  //     children: [
+                  //       // regular("${Delivery_challan_noteList.length + 2}.", 10),
+                  //       pw.SizedBox(width: 5),
+                  //       pw.Expanded(
+                  //         child: pw.Column(
+                  //           crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  //           children: [
+                  //             bold(
+                  //                 dcController.dcModel
+                  //                     .recommendationHeadingController.value.text,
+                  //                 10),
+                  //             ...dcController.dcModel.Dc_recommendationList
+                  //                 .map((recommendation) {
+                  //               return pw.Padding(
+                  //                 padding: const pw.EdgeInsets.only(top: 5),
+                  //                 child: pw.Row(
+                  //                   crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  //                   children: [
+                  //                     pw.SizedBox(
+                  //                       width: 50, // Fixed width to align keys
+                  //                       child: regular(
+                  //                           recommendation.key.toString(), 10),
+                  //                     ),
+                  //                     pw.Text(":",
+                  //                         style: pw.TextStyle(fontSize: 10)),
+                  //                     pw.SizedBox(width: 5),
+                  //                     pw.Expanded(
+                  //                       child: regular(
+                  //                           recommendation.value.toString(), 10),
+                  //                     ),
+                  //                   ],
+                  //                 ),
+                  //               );
+                  //             }),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                ],
               ),
-            ],
-          ),
+            ),
+           pw.Container(
+            width: 230,
+            child:  pw.Divider(
+
+              thickness: 0.1,
+              color: PdfColors.grey
+            )),
+            pw.Container(
+              width: 280,
+              child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.only(left: 0, top: 5),
+                    child: pw.Row(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        // regular("${Delivery_challan_noteList.length + 2}.", 10),
+                        // pw.SizedBox(width: 5),
+                        pw.Expanded(
+                          child: pw.Column(
+                            crossAxisAlignment: pw.CrossAxisAlignment.start,
+                            children: [
+                              pw.Padding(
+                                child: bold(
+                                    dcController
+                                        .dcModel
+                                        .recommendationHeadingController
+                                        .value
+                                        .text,
+                                    10),
+                                padding: const pw.EdgeInsets.only(
+                                    left: 0, bottom: 5),
+                              ),
+                              ...dcController.dcModel.Dc_recommendationList
+                                  .asMap()
+                                  .entries
+                                  .map((entry) {
+                                final index = entry.key;
+                                final recommendation = entry.value;
+                                return pw.Padding(
+                                  padding: const pw.EdgeInsets.only(top: 5),
+                                  child: pw.Row(
+                                    crossAxisAlignment:
+                                        pw.CrossAxisAlignment.start,
+                                    children: [
+                                      regular("${index + 1}.", 10),
+                                      pw.SizedBox(width: 5),
+                                      pw.Padding(
+                                        child: bold(
+                                            recommendation.key.toString(), 10),
+                                        padding: const pw.EdgeInsets.only(
+                                            left: 0, right: 5),
+                                      ),
+                                      pw.Text(":",
+                                          style: pw.TextStyle(fontSize: 10)),
+                                      pw.SizedBox(width: 5),
+                                      pw.Expanded(
+                                        child: regular(
+                                            recommendation.value.toString(),
+                                            10),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
         pw.SizedBox(
           width: 110,
@@ -564,7 +676,12 @@ class Quotation {
             ),
             child: pw.Align(
               alignment: pw.Alignment.bottomCenter,
-              child: pw.Text("Authorized Signatory", style: pw.TextStyle(font: Helvetica, color: PdfColors.grey, fontSize: 10, letterSpacing: 0.5)),
+              child: pw.Text("Authorized Signatory",
+                  style: pw.TextStyle(
+                      font: Helvetica,
+                      color: PdfColors.grey,
+                      fontSize: 10,
+                      letterSpacing: 0.5)),
             ),
           ),
         ],
@@ -596,10 +713,15 @@ class Quotation {
                 padding: const pw.EdgeInsets.only(top: 10, bottom: 2),
                 child: bold('SPORADA SECURE INDIA PRIVATE LIMITED', 12),
               ),
-              regular('687/7, 3rd Floor, Sakthivel Towers, Trichy road, Ramanathapuram, Coimbatore - 641045', 8),
-              regular('Telephone: +91-422-2312363, E-mail: sales@sporadasecure.com, Website: www.sporadasecure.com', 8),
+              regular(
+                  '687/7, 3rd Floor, Sakthivel Towers, Trichy road, Ramanathapuram, Coimbatore - 641045',
+                  8),
+              regular(
+                  'Telephone: +91-422-2312363, E-mail: sales@sporadasecure.com, Website: www.sporadasecure.com',
+                  8),
               pw.SizedBox(height: 2),
-              regular('CIN: U30007TZ2020PTC03414  |  GSTIN: 33ABECS0625B1Z0', 8),
+              regular(
+                  'CIN: U30007TZ2020PTC03414  |  GSTIN: 33ABECS0625B1Z0', 8),
             ],
           ),
         )

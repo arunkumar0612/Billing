@@ -254,7 +254,7 @@ class CustomPDF_DcController extends GetxController {
         pdfModel.value.manualdcNo.value.text.isEmpty);
   }
 
-  void resetData() {
+  // void resetData() {
     // pdfModel.value.date.value.clear();
     // pdfModel.value.manualdcNo.value.clear();
     // pdfModel.value.clientName.value.clear();
@@ -301,7 +301,19 @@ class CustomPDF_DcController extends GetxController {
 
     // pdfModel.value.allData_key.value = GlobalKey<FormState>();
   // }
+  
+ void clear_postFields() {
+    pdfModel.value.phoneNumber.value.clear();
+    pdfModel.value.Email.value.clear();
+    pdfModel.value.feedback.value.clear();
+    pdfModel.value.whatsapp_selectionStatus.value = true;
+    pdfModel.value.gmail_selectionStatus.value = true;
+    pdfModel.value.CCemailController.value.clear();
+    pdfModel.value.CCemailToggle.value = false;
+    pdfModel.value.filePathController.value.clear();
+  }
 
+  
   void resetData() {
   // TEXT CONTROLLERS
   pdfModel.value.date.value.clear();
@@ -349,6 +361,6 @@ class CustomPDF_DcController extends GetxController {
   // PDF
   pdfModel.value.genearatedPDF.value = null;
 }
-  }
+  
 }
 

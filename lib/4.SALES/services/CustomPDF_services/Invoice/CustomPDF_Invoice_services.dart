@@ -19,13 +19,17 @@ import '../../../../API-/invoker.dart';
 class Custom_Invoice_Services {
   final Invoker apiController = Get.find<Invoker>();
   final InvoiceController invoiceController = Get.find<InvoiceController>();
-  final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
+  final CustomPDF_InvoiceController pdfpopup_controller =
+      Get.find<CustomPDF_InvoiceController>();
 
   void assign_GSTtotals() {
     pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.assignAll(
       pdfpopup_controller.pdfModel.value.manualInvoiceproducts
-          .where((product) => product.gst.isNotEmpty && product.total.isNotEmpty) // Filter out empty values
-          .fold<Map<double, double>>({}, (Map<double, double> accumulator, CustomPDF_InvoiceProduct product) {
+          .where((product) =>
+              product.gst.isNotEmpty &&
+              product.total.isNotEmpty) // Filter out empty values
+          .fold<Map<double, double>>({}, (Map<double, double> accumulator,
+              CustomPDF_InvoiceProduct product) {
             double gstValue = double.parse(product.gst);
             double totalValue = double.parse(product.total);
             accumulator[gstValue] = (accumulator[gstValue] ?? 0) + totalValue;
@@ -56,7 +60,8 @@ class Custom_Invoice_Services {
     );
 
     Directory tempDir = await getTemporaryDirectory();
-    String? sanitizedInvoiceNo = Returns.replace_Slash_hypen(pdfpopup_controller.pdfModel.value.manualinvoiceNo.value.text);
+    String? sanitizedInvoiceNo = Returns.replace_Slash_hypen(
+        pdfpopup_controller.pdfModel.value.manualinvoiceNo.value.text);
     String filePath = '${tempDir.path}/$sanitizedInvoiceNo.pdf';
     File file = File(filePath);
     await file.writeAsBytes(pdfData);
@@ -73,10 +78,12 @@ class Custom_Invoice_Services {
   dynamic show_generatedPDF(context) async {
     await showDialog(
       context: context,
-      barrierDismissible: false, // Prevents closing the dialog by clicking outside
+      barrierDismissible:
+          false, // Prevents closing the dialog by clicking outside
       builder: (context) {
         return AlertDialog(
-          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          contentPadding:
+              const EdgeInsets.only(left: 10, right: 10, bottom: 10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -161,6 +168,7 @@ class Custom_Invoice_Services {
                     // } else {
                     //   Navigator.of(context).pop();
                     // }
+                    pdfpopup_controller.clear_postFields();
                     Navigator.of(context).pop();
                   },
                 ),

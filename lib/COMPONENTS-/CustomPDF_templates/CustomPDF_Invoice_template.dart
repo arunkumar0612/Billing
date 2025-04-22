@@ -728,7 +728,7 @@ class MaualInvoiceTemplate {
                         children: [
                           regular("Bank name:", 10),
                           pw.SizedBox(width: 5),
-                          regular(": IndusInd Bank Limited", 10),
+                          regular("IndusInd Bank Limited", 10),
                         ],
                       ),
                       pw.SizedBox(height: 5),

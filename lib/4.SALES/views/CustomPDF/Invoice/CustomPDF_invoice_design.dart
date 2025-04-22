@@ -1233,18 +1233,20 @@ class CustomPDF_InvoicePDF {
                         child: TextButton(
                           onPressed: () async {
                             if (pdfpopup_controller.pdfModel.value.allData_key.value.currentState?.validate() ?? false) {
-                              try {
+                              // try {
                                 await Future.wait(
                                   [
                                     pdfpopup_controller.startProgress(),
                                     inst.savePdfToCache(context),
                                   ],
                                 );
-                              } catch (e, stackTrace) {
-                                debugPrint("Error in Future.wait: $e");
-                                debugPrint(stackTrace.toString());
-                                Get.snackbar("Error", "Something went wrong. Please try again.");
-                              }
+                              // } catch (e, stackTrace) {
+                              //   debugPrint("Error in Future.wait: $e");
+                              //   debugPrint(stackTrace.toString());
+                              //   Get.snackbar("Error", "Something went wrong. Please try again.");
+                              // }
+                            }else{
+                               Get.snackbar("ERROR", "Check for Red Highlighted Fields!");
                             }
                           },
                           child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),

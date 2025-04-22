@@ -6,6 +6,7 @@ class Primary_colors {
   static const Color Color1 = Colors.white;
   static const Color Color2 = Colors.black;
   static const Color Color3 = Color.fromARGB(255, 100, 111, 255);
+  // static const Color Color3 = Color.fromARGB(255, 100, 111, 255);
   static const Color Color4 = Color.fromARGB(255, 255, 169, 150);
   static const Color Color5 = Color.fromARGB(255, 225, 174, 240);
   static const Color Color6 = Color.fromARGB(255, 255, 217, 120);

@@ -478,61 +478,130 @@ class DcController extends GetxController {
   }
 // If any one is empty or null, then it returns true
 
+  // void resetData() {
+  //   dcModel.tabController.value = null;
+  //   dcModel.processID.value = null;
+  //   dcModel.Dc_no.value = null;
+  //   dcModel.Dc_table_heading.value = "";
+
+  //   dcModel.gstNumController.value.clear();
+  //   dcModel.dc_amount.value = null;
+
+  //   // Reset details
+  //   dcModel.TitleController.value.clear();
+  //   dcModel.clientAddressNameController.value.clear();
+  //   dcModel.clientAddressController.value.clear();
+  //   dcModel.billingAddressNameController.value.clear();
+  //   dcModel.billingAddressController.value.clear();
+  //   dcModel.detailsKey.value = GlobalKey<FormState>();
+
+  //   // Reset products
+  //   dcModel.Dc_products.clear();
+  //   dcModel.selected_dcProducts.clear();
+  //   dcModel.Dc_gstTotals.clear();
+  //   dcModel.checkboxValues.clear();
+  //   dcModel.selectall_status.value = false;
+  //   dcModel.product_feedback.value = "";
+  //   dcModel.productNameController.value.clear();
+  //   dcModel.textControllers.clear();
+  //   dcModel.quantities.clear();
+  //   dcModel.focusNodes.clear();
+  //   dcModel.isFocused.clear();
+
+  //   // Reset notes
+  //   dcModel.noteformKey.value = GlobalKey<FormState>();
+  //   dcModel.progress.value = 0.0;
+  //   dcModel.isLoading.value = false;
+  //   dcModel.note_editIndex.value = null;
+  //   dcModel.notecontentController.value.clear();
+  //   dcModel.recommendation_editIndex.value = null;
+  //   dcModel.recommendationHeadingController.value.clear();
+  //   dcModel.recommendationKeyController.value.clear();
+  //   dcModel.recommendationValueController.value.clear();
+  //   dcModel.Dc_noteList.clear();
+  //   dcModel.Dc_recommendationList.clear();
+  //   dcModel.noteSuggestion.clear();
+
+  //   // Reset post-related data
+  //   dcModel.pickedFile.value = null;
+  //   dcModel.selectedPdf.value = null;
+  //   dcModel.ispdfLoading.value = false;
+  //   dcModel.whatsapp_selectionStatus.value = true;
+  //   dcModel.gmail_selectionStatus.value = true;
+  //   dcModel.phoneController.value.clear();
+  //   dcModel.emailController.value.clear();
+  //   dcModel.CCemailController.value.clear();
+  //   dcModel.feedbackController.value.clear();
+  //   dcModel.filePathController.value.clear();
+  //   dcModel.CCemailToggle.value = false;
+  // }
+
   void resetData() {
-    dcModel.tabController.value = null;
-    dcModel.processID.value = null;
-    dcModel.Dc_no.value = null;
-    dcModel.Dc_table_heading.value = "";
+  // TAB, PROCESS & GENERAL
+   dcModel.tabController.value = null;
+   dcModel.processID.value = null;
+   dcModel.Dc_no.value = null;
+   dcModel.Dc_table_heading.value = '';
+   dcModel.gstNumController.value.clear();
+   dcModel.dc_amount.value = null;
 
-    dcModel.gstNumController.value.clear();
-    dcModel.dc_amount.value = null;
+  // DETAILS
+   dcModel.TitleController.value.clear();
+   dcModel.clientAddressNameController.value.clear();
+   dcModel.clientAddressController.value.clear();
+   dcModel.billingAddressNameController.value.clear();
+   dcModel.billingAddressController.value.clear();
+   dcModel.detailsKey.value = GlobalKey<FormState>();
 
-    // Reset details
-    dcModel.TitleController.value.clear();
-    dcModel.clientAddressNameController.value.clear();
-    dcModel.clientAddressController.value.clear();
-    dcModel.billingAddressNameController.value.clear();
-    dcModel.billingAddressController.value.clear();
-    dcModel.detailsKey.value = GlobalKey<FormState>();
+  // PRODUCTS
+   dcModel.Dc_products.clear();
+   dcModel.selected_dcProducts.clear();
+   dcModel.pending_dcProducts.clear();
+   dcModel.Dc_gstTotals.clear();
+   dcModel.checkboxValues.clear();
+   dcModel.selectall_status.value = false;
+   dcModel.product_feedback.value = '';
+   dcModel.productNameController.value.clear();
 
-    // Reset products
-    dcModel.Dc_products.clear();
-    dcModel.selected_dcProducts.clear();
-    dcModel.Dc_gstTotals.clear();
-    dcModel.checkboxValues.clear();
-    dcModel.selectall_status.value = false;
-    dcModel.product_feedback.value = "";
-    dcModel.productNameController.value.clear();
-    dcModel.textControllers.clear();
-    dcModel.quantities.clear();
-    dcModel.focusNodes.clear();
-    dcModel.isFocused.clear();
-
-    // Reset notes
-    dcModel.noteformKey.value = GlobalKey<FormState>();
-    dcModel.progress.value = 0.0;
-    dcModel.isLoading.value = false;
-    dcModel.note_editIndex.value = null;
-    dcModel.notecontentController.value.clear();
-    dcModel.recommendation_editIndex.value = null;
-    dcModel.recommendationHeadingController.value.clear();
-    dcModel.recommendationKeyController.value.clear();
-    dcModel.recommendationValueController.value.clear();
-    dcModel.Dc_noteList.clear();
-    dcModel.Dc_recommendationList.clear();
-    dcModel.noteSuggestion.clear();
-
-    // Reset post-related data
-    dcModel.pickedFile.value = null;
-    dcModel.selectedPdf.value = null;
-    dcModel.ispdfLoading.value = false;
-    dcModel.whatsapp_selectionStatus.value = true;
-    dcModel.gmail_selectionStatus.value = true;
-    dcModel.phoneController.value.clear();
-    dcModel.emailController.value.clear();
-    dcModel.CCemailController.value.clear();
-    dcModel.feedbackController.value.clear();
-    dcModel.filePathController.value.clear();
-    dcModel.CCemailToggle.value = false;
+  for (var controller in  dcModel.textControllers) {
+    controller.clear();
   }
+   dcModel.textControllers.clear();
+
+   dcModel.quantities.clear();
+
+  for (var node in  dcModel.focusNodes) {
+    node.value.dispose();
+  }
+   dcModel.focusNodes.clear();
+   dcModel.isFocused.clear();
+
+  // NOTES
+   dcModel.noteformKey.value = GlobalKey<FormState>();
+   dcModel.progress.value = 0.0;
+   dcModel.isLoading.value = false;
+   dcModel.note_editIndex.value = null;
+   dcModel.notecontentController.value.clear();
+   dcModel.recommendation_editIndex.value = null;
+   dcModel.recommendationHeadingController.value.clear();
+   dcModel.recommendationKeyController.value.clear();
+   dcModel.recommendationValueController.value.clear();
+   dcModel.Dc_noteList.clear();
+   dcModel.Dc_recommendationList.clear();
+   dcModel.noteSuggestion.clear();
+
+  // POST
+   dcModel.pickedFile.value = null;
+   dcModel.selectedPdf.value = null;
+   dcModel.ispdfLoading.value = false;
+   dcModel.whatsapp_selectionStatus.value = true;
+   dcModel.gmail_selectionStatus.value = true;
+   dcModel.phoneController.value.clear();
+   dcModel.emailController.value.clear();
+   dcModel.CCemailController.value.clear();
+   dcModel.feedbackController.value.clear();
+   dcModel.filePathController.value.clear();
+   dcModel.CCemailToggle.value = false;
+}
+
 }

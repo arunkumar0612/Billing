@@ -458,53 +458,111 @@ class ClientreqController extends GetxController {
     return !anyHavedata();
   }
 
+  // void resetData() {
+  //   clientReqModel.MOR_uploadedPath.value = null;
+
+  //   // DETAILS
+  //   clientReqModel.tabController.value = null;
+  //   clientReqModel.selectedPdf.value = File('E://Client_requirement.pdf');
+  //   clientReqModel.detailsformKey.value = GlobalKey<FormState>();
+  //   clientReqModel.clientNameController.value.clear();
+  //   clientReqModel.titleController.value.clear();
+  //   clientReqModel.clientAddressController.value.clear();
+  //   clientReqModel.billingAddressNameController.value.clear();
+  //   clientReqModel.billingAddressController.value.clear();
+  //   clientReqModel.morController.value.clear();
+  //   clientReqModel.phoneController.value.clear();
+  //   clientReqModel.emailController.value.clear();
+  //   clientReqModel.gstController.value.clear();
+  //   clientReqModel.Org_Controller.value = null;
+  //   clientReqModel.Company_Controller.value = null;
+  //   clientReqModel.Branch_Controller.value = null;
+  //   clientReqModel.pickedFile.value = null;
+  //   clientReqModel.morFile.value = null;
+  //   clientReqModel.organizationList.clear();
+  //   clientReqModel.CompanyList.clear();
+  //   clientReqModel.BranchFullList.clear();
+  //   clientReqModel.BranchList_valueModel.clear();
+  //   clientReqModel.customer_id.value = 0;
+  //   clientReqModel.selected_branchList.clear();
+
+  //   // PRODUCTS
+  //   clientReqModel.productFormkey.value = GlobalKey<FormState>();
+  //   clientReqModel.productNameController.value.clear();
+  //   clientReqModel.quantityController.value.clear();
+  //   clientReqModel.product_editIndex.value = null;
+  //   clientReqModel.clientReqProductDetails.clear();
+  //   clientReqModel.clientReq_productSuggestion.clear();
+
+  //   // NOTES
+  //   clientReqModel.noteFormKey.value = GlobalKey<FormState>();
+  //   clientReqModel.noteContentController.value.clear();
+  //   clientReqModel.Rec_HeadingController.value.clear();
+  //   clientReqModel.Rec_KeyController.value.clear();
+  //   clientReqModel.Rec_ValueController.value.clear();
+  //   clientReqModel.noteEditIndex.value = null;
+  //   clientReqModel.Rec_EditIndex.value = null;
+  //   clientReqModel.clientReqNoteList.clear();
+  //   clientReqModel.clientReqRecommendationList.clear();
+  //   clientReqModel.noteLength.value = 0;
+  //   clientReqModel.Rec_Length.value = 0;
+  // }
+
   void resetData() {
-    clientReqModel.MOR_uploadedPath.value = null;
+  clientReqModel.MOR_uploadedPath.value = null;
+  clientReqModel.customer_id.value = 0;
+  clientReqModel.tabController.value = null;
+  clientReqModel.selectedPdf.value = File('E://Client_requirement.pdf'); // default value
 
-    // DETAILS
-    clientReqModel.tabController.value = null;
-    clientReqModel.selectedPdf.value = File('E://Client_requirement.pdf');
-    clientReqModel.detailsformKey.value = GlobalKey<FormState>();
-    clientReqModel.clientNameController.value.clear();
-    clientReqModel.titleController.value.clear();
-    clientReqModel.clientAddressController.value.clear();
-    clientReqModel.billingAddressNameController.value.clear();
-    clientReqModel.billingAddressController.value.clear();
-    clientReqModel.morController.value.clear();
-    clientReqModel.phoneController.value.clear();
-    clientReqModel.emailController.value.clear();
-    clientReqModel.gstController.value.clear();
-    clientReqModel.Org_Controller.value = null;
-    clientReqModel.Company_Controller.value = null;
-    clientReqModel.Branch_Controller.value = null;
-    clientReqModel.pickedFile.value = null;
-    clientReqModel.morFile.value = null;
-    clientReqModel.organizationList.clear();
-    clientReqModel.CompanyList.clear();
-    clientReqModel.BranchFullList.clear();
-    clientReqModel.BranchList_valueModel.clear();
-    clientReqModel.customer_id.value = 0;
-    clientReqModel.selected_branchList.clear();
+  // DETAILS
+  clientReqModel.detailsformKey.value = GlobalKey<FormState>();
+  clientReqModel.clientNameController.value.clear();
+  clientReqModel.titleController.value.clear();
+  clientReqModel.clientAddressController.value.clear();
+  clientReqModel.billingAddressNameController.value.clear();
+  clientReqModel.billingAddressController.value.clear();
+  clientReqModel.morController.value.clear();
+  clientReqModel.phoneController.value.clear();
+  clientReqModel.emailController.value.clear();
+  clientReqModel.gstController.value.clear();
+  clientReqModel.Org_Controller.value = null;
+  clientReqModel.Company_Controller.value = null;
+  clientReqModel.Branch_Controller.value = null;
+  clientReqModel.pickedFile.value = null;
+  clientReqModel.morFile.value = null;
+  clientReqModel.organizationList.clear();
+  clientReqModel.CompanyList.clear();
+  clientReqModel.BranchFullList.clear();
+  clientReqModel.BranchList_valueModel.clear();
+  clientReqModel.selected_branchList.clear();
+ 
 
-    // PRODUCTS
-    clientReqModel.productFormkey.value = GlobalKey<FormState>();
-    clientReqModel.productNameController.value.clear();
-    clientReqModel.quantityController.value.clear();
-    clientReqModel.product_editIndex.value = null;
-    clientReqModel.clientReqProductDetails.clear();
-    clientReqModel.clientReq_productSuggestion.clear();
+  // SITES
+  // clientReqModel.siteFormkey.value = GlobalKey<FormState>();
+  // clientReqModel.siteNameController.value.clear();
+  // clientReqModel.addressController.value.clear();
+  // clientReqModel.cameraquantityController.value.clear();
+  // clientReqModel.site_editIndex.value = null;
+  // clientReqModel.clientReqSiteDetails.clear();
 
-    // NOTES
-    clientReqModel.noteFormKey.value = GlobalKey<FormState>();
-    clientReqModel.noteContentController.value.clear();
-    clientReqModel.Rec_HeadingController.value.clear();
-    clientReqModel.Rec_KeyController.value.clear();
-    clientReqModel.Rec_ValueController.value.clear();
-    clientReqModel.noteEditIndex.value = null;
-    clientReqModel.Rec_EditIndex.value = null;
-    clientReqModel.clientReqNoteList.clear();
-    clientReqModel.clientReqRecommendationList.clear();
-    clientReqModel.noteLength.value = 0;
-    clientReqModel.Rec_Length.value = 0;
-  }
+  // NOTES
+  clientReqModel.noteFormKey.value = GlobalKey<FormState>();
+  clientReqModel.noteContentController.value.clear();
+  clientReqModel.Rec_HeadingController.value.clear();
+  clientReqModel.Rec_KeyController.value.clear();
+  clientReqModel.Rec_ValueController.value.clear();
+  clientReqModel.noteEditIndex.value = null;
+  clientReqModel.Rec_EditIndex.value = null;
+  clientReqModel.clientReqNoteList.clear();
+  clientReqModel.clientReqRecommendationList.clear();
+  clientReqModel.noteLength.value = 0;
+  clientReqModel.Rec_Length.value = 0;
+
+  clientReqModel.noteContent.value = [
+    'Delivery within 30 working days from the date of issuing the PO.',
+    'Payment terms: 100% along with PO.',
+    'Client needs to provide Ethernet cable and UPS power supply to the point where the device is proposed to install.',
+  ];
+}
+
 }

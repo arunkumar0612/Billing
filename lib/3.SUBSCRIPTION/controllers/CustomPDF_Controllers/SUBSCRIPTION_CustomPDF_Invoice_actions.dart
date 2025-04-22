@@ -228,52 +228,52 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     pdfModel.refresh();
   }
 
-  void resetData() {
-    pdfModel.value.date.value.clear();
-    pdfModel.value.manualinvoiceNo.value.clear();
-    pdfModel.value.clientName.value.clear();
-    pdfModel.value.clientAddress.value.clear();
-    pdfModel.value.billingName.value.clear();
-    pdfModel.value.billingAddres.value.clear();
-    pdfModel.value.phoneNumber.value.clear();
-    pdfModel.value.Email.value.clear();
-    pdfModel.value.feedback.value.clear();
-    pdfModel.value.filePathController.value.clear();
+  // void resetData() {
+  //   pdfModel.value.date.value.clear();
+  //   pdfModel.value.manualinvoiceNo.value.clear();
+  //   pdfModel.value.clientName.value.clear();
+  //   pdfModel.value.clientAddress.value.clear();
+  //   pdfModel.value.billingName.value.clear();
+  //   pdfModel.value.billingAddres.value.clear();
+  //   pdfModel.value.phoneNumber.value.clear();
+  //   pdfModel.value.Email.value.clear();
+  //   pdfModel.value.feedback.value.clear();
+  //   pdfModel.value.filePathController.value.clear();
 
-    pdfModel.value.subTotal.value.clear();
+  //   pdfModel.value.subTotal.value.clear();
 
-    pdfModel.value.CGST.value.clear();
-    pdfModel.value.SGST.value.clear();
-    pdfModel.value.roundOff.value.clear();
-    pdfModel.value.Total.value.clear();
-    pdfModel.value.roundoffDiff.value = null;
+  //   pdfModel.value.CGST.value.clear();
+  //   pdfModel.value.SGST.value.clear();
+  //   pdfModel.value.roundOff.value.clear();
+  //   pdfModel.value.Total.value.clear();
+  //   pdfModel.value.roundoffDiff.value = null;
 
-    // pdfModel.value.manualInvoice_gstTotals.clear();
+  //   // pdfModel.value.manualInvoice_gstTotals.clear();
 
-    pdfModel.value.manualInvoicesites.assignAll([
-      Site(siteName: 'siteName1', address: 'address1', siteID: 'siteID1', monthlyCharges: 100),
-      Site(siteName: 'siteName2', address: 'address2', siteID: 'siteID2', monthlyCharges: 200),
-    ]);
+  //   pdfModel.value.manualInvoicesites.assignAll([
+  //     Site(siteName: 'siteName1', address: 'address1', siteID: 'siteID1', monthlyCharges: 100),
+  //     Site(siteName: 'siteName2', address: 'address2', siteID: 'siteID2', monthlyCharges: 200),
+  //   ]);
 
-    pdfModel.value.notecontent.clear();
-    pdfModel.value.checkboxValues.clear();
-    pdfModel.value.textControllers.clear();
-    pdfModel.value.genearatedPDF.value = null;
+  //   pdfModel.value.notecontent.clear();
+  //   pdfModel.value.checkboxValues.clear();
+  //   pdfModel.value.textControllers.clear();
+  //   pdfModel.value.genearatedPDF.value = null;
 
-    for (var controller in pdfModel.value.noteControllers) {
-      controller.clear();
-    }
-    pdfModel.value.noteControllers.clear();
+  //   for (var controller in pdfModel.value.noteControllers) {
+  //     controller.clear();
+  //   }
+  //   pdfModel.value.noteControllers.clear();
 
-    pdfModel.value.whatsapp_selectionStatus.value = true;
-    pdfModel.value.gmail_selectionStatus.value = true;
-    pdfModel.value.CCemailController.value.clear();
-    pdfModel.value.progress.value = 0.0;
-    pdfModel.value.isLoading.value = false;
-    pdfModel.value.CCemailToggle.value = false;
+  //   pdfModel.value.whatsapp_selectionStatus.value = true;
+  //   pdfModel.value.gmail_selectionStatus.value = true;
+  //   pdfModel.value.CCemailController.value.clear();
+  //   pdfModel.value.progress.value = 0.0;
+  //   pdfModel.value.isLoading.value = false;
+  //   pdfModel.value.CCemailToggle.value = false;
 
-    pdfModel.value.allData_key.value = GlobalKey<FormState>();
-  }
+  //   pdfModel.value.allData_key.value = GlobalKey<FormState>();
+  // }
 
   bool postDatavalidation() {
     return (pdfModel.value.clientName.value.text.isEmpty ||
@@ -287,4 +287,71 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
         pdfModel.value.manualinvoiceNo.value.text.isEmpty ||
         pdfModel.value.date.value.text.isEmpty);
   } // If any one is empty or null, then it returns true
+
+  void resetData() {
+  pdfModel.value.date.value.clear();
+  pdfModel.value.manualinvoiceNo.value.clear();
+  pdfModel.value.clientName.value.clear();
+  pdfModel.value.clientAddress.value.clear();
+  pdfModel.value.billingName.value.clear();
+  pdfModel.value.billingAddres.value.clear();
+  pdfModel.value.phoneNumber.value.clear();
+  pdfModel.value.Email.value.clear();
+  pdfModel.value.feedback.value.clear();
+  pdfModel.value.filePathController.value.clear();
+  pdfModel.value.subTotal.value.clear();
+  pdfModel.value.CGST.value.clear();
+  pdfModel.value.SGST.value.clear();
+  pdfModel.value.roundOff.value.clear();
+  pdfModel.value.Total.value.clear();
+  pdfModel.value.CCemailController.value.clear();
+  pdfModel.value.planname.value.clear();
+  pdfModel.value.customertype.value.clear();
+  pdfModel.value.plancharges.value.clear();
+  pdfModel.value.internetcharges.value.clear();
+  pdfModel.value.billperiod.value.clear();
+  pdfModel.value.billdate.value.clear();
+  pdfModel.value.duedate.value.clear();
+  pdfModel.value.relationshipID.value.clear();
+  pdfModel.value.billnumber.value.clear();
+  pdfModel.value.customerGSTIN.value.clear();
+  pdfModel.value.customerPO.value.clear();
+  pdfModel.value.HSNcode.value.clear();
+  pdfModel.value.contactperson.value.clear();
+  pdfModel.value.contactnumber.value.clear();
+
+   pdfModel.value.roundoffDiff.value = null;
+
+  // Clear individual note controllers
+  for (var controller in  pdfModel.value.noteControllers) {
+    controller.clear();
+  }
+   pdfModel.value.noteControllers.clear();
+
+  // Clear matrix-style text controllers
+  for (var controllerList in  pdfModel.value.textControllers) {
+    for (var controller in controllerList) {
+      controller.clear();
+    }
+  }
+   pdfModel.value.textControllers.clear();
+
+  // Sites - reset to initial static list if needed
+   pdfModel.value.manualInvoicesites.value = [
+    Site(siteName: 'siteName1', address: 'address1', siteID: 'siteID1', monthlyCharges: 100),
+    Site(siteName: 'siteName2', address: 'address2', siteID: 'siteID2', monthlyCharges: 200)
+  ];
+
+  pdfModel.value.notecontent.clear();
+  pdfModel.value.progress.value = 0.0;
+  pdfModel.value.checkboxValues.clear();
+  pdfModel.value.ispdfLoading.value = false;
+  pdfModel.value.whatsapp_selectionStatus.value = true;
+  pdfModel.value.gmail_selectionStatus.value = true;
+  pdfModel.value.isLoading.value = false;
+  pdfModel.value.CCemailToggle.value = false;
+  pdfModel.value.genearatedPDF.value = null;
+  pdfModel.value.allData_key.value = GlobalKey<FormState>();
+}
+
 }

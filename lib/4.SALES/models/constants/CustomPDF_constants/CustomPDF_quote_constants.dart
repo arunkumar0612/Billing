@@ -20,6 +20,7 @@ class CustomPDF_QuoteModel {
   final subTotal = TextEditingController().obs;
   final CGST = TextEditingController().obs;
   final SGST = TextEditingController().obs;
+  final IGST = TextEditingController().obs;
   final roundOff = TextEditingController().obs;
   final Total = TextEditingController().obs;
   var Total_amount = 0.0.obs;
@@ -47,4 +48,5 @@ class CustomPDF_QuoteModel {
   late AnimationController animationController;
   late Animation<double> animation;
   final allData_key = GlobalKey<FormState>().obs;
+  var isGST_local = true.obs;
 }

@@ -87,6 +87,11 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.isLoading.value = value;
   }
 
+  
+  void setGSTtype(bool value) {
+    pdfModel.value.isGST_local.value = value;
+  }
+
   Future<void> startProgress() async {
     setLoading(true);
     pdfModel.value.progress.value = 0.0;
@@ -175,30 +180,41 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     return 0;
   }
 
-  void finalCalc() {
+   void finalCalc() {
     double addedSubTotal = 0.0;
+    double addedIGST = 0.0;
     double addedCGST = 0.0;
     double addedSGST = 0.0;
     double addedRoundoff = 0.0;
 
-    for (var site in pdfModel.value.manualInvoicesites) {
-      double subTotal = double.tryParse(site.monthlyCharges.toString()) ?? 0.0;
-      double price = double.tryParse(site.monthlyCharges.toString()) ?? 0.0;
+    for (var product in pdfModel.value.manualInvoicesites) {
+      double subTotal = double.tryParse(product.monthlyCharges.toString()) ?? 0.0;
+      double price = double.tryParse(product.monthlyCharges.toString()) ?? 0.0;
       double gst = double.tryParse('18') ?? 0.0;
       double cgst = (price / 100) * gst / 2;
       double sgst = (price / 100) * gst / 2;
+      double igst = (price / 100) * gst;
 
+      addedIGST += igst;
       addedCGST += cgst;
       addedSGST += sgst;
       addedSubTotal += subTotal;
     }
-    addedRoundoff = addedSubTotal + addedCGST + addedSGST;
+    if(isGST_Local(pdfModel.value.customerGSTIN.value.text)){
+ addedRoundoff = addedSubTotal + addedCGST + addedSGST;
+    }else{
+       addedRoundoff = addedSubTotal + addedIGST;
+    }
+   
 
     pdfModel.value.subTotal.value.text = addedSubTotal.toStringAsFixed(2);
+    pdfModel.value.IGST.value.text = addedIGST.toStringAsFixed(2);
     pdfModel.value.CGST.value.text = addedCGST.toStringAsFixed(2);
     pdfModel.value.SGST.value.text = addedSGST.toStringAsFixed(2);
-    pdfModel.value.roundOff.value.text = formatCurrencyRoundedPaisa(addedRoundoff);
-    pdfModel.value.roundoffDiff.value = calculateFormattedDifference(addedRoundoff);
+    pdfModel.value.roundOff.value.text =
+        formatCurrencyRoundedPaisa(addedRoundoff);
+    pdfModel.value.roundoffDiff.value =
+        calculateFormattedDifference(addedRoundoff);
     pdfModel.value.Total.value.text = formatCurrencyRoundedPaisa(addedRoundoff);
 
     pdfModel.refresh();

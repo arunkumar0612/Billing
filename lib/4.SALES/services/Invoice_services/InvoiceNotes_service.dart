@@ -10,6 +10,7 @@ import 'package:ssipl_billing/4.SALES/views/Generate_Invoice/invoice_template.da
 import 'package:ssipl_billing/API-/invoker.dart';
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/UTILS-/helpers/returns.dart';
+import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 
 mixin InvoicenotesService {
   final InvoiceController invoiceController = Get.find<InvoiceController>();
@@ -142,17 +143,16 @@ mixin InvoicenotesService {
 
   Future<void> savePdfToCache() async {
     Uint8List pdfData = await generate_Invoice(
-      PdfPageFormat.a4,
-      invoiceController.invoiceModel.Invoice_products,
-      invoiceController.invoiceModel.clientAddressNameController.value.text,
-      invoiceController.invoiceModel.clientAddressController.value.text,
-      invoiceController.invoiceModel.billingAddressNameController.value.text,
-      invoiceController.invoiceModel.billingAddressController.value.text,
-      invoiceController.invoiceModel.Invoice_no.value,
-      invoiceController.invoiceModel.TitleController.value.text,
-      9,
-      invoiceController.invoiceModel.Invoice_gstTotals,
-    );
+        PdfPageFormat.a4,
+        invoiceController.invoiceModel.Invoice_products,
+        invoiceController.invoiceModel.clientAddressNameController.value.text,
+        invoiceController.invoiceModel.clientAddressController.value.text,
+        invoiceController.invoiceModel.billingAddressNameController.value.text,
+        invoiceController.invoiceModel.billingAddressController.value.text,
+        invoiceController.invoiceModel.Invoice_no.value,
+        invoiceController.invoiceModel.gstNumController.value.text,
+        invoiceController.invoiceModel.Invoice_gstTotals,
+        isGST_Local(invoiceController.invoiceModel.gstNumController.value.text));
 
     Directory tempDir = await getTemporaryDirectory();
     String? sanitizedInvoiceNo = Returns.replace_Slash_hypen(invoiceController.invoiceModel.Invoice_no.value!);

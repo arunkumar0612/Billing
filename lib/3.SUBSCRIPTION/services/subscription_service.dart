@@ -662,26 +662,53 @@ mixin SubscriptionServices {
     }
   }
 
-  Future<bool> GetCustomPDFLsit(context) async {
+  Future<void> Get_salesCustomPDFLsit() async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_subscriptionCustompdf);
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_salesCustompdf);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           _subscriptionController.addToCustompdfList(value);
-          return true;
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
+          // await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
-        return false;
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
-        return false;
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
+        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      if (kDebugMode) {
+        print("error : $e");
+      }
+      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
-    return false;
+  }
+
+  Future<bool> Get_customPDFfile(context, int customPDFid) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"custompdfid": customPDFid}, API.sales_getcustombinaryfile_API);
+      if (response?['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        if (value.code) {
+          await subscriptionController.custom_PDFfileApiData(value);
+          return true;
+          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Basic_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {}, showCancel: false);
+        }
+      } else {
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+      }
+      return false;
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      return false;
+    }
   }
 
   dynamic Generate_client_reqirement_dialougebox(String value, context) async {

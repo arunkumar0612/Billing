@@ -9,16 +9,19 @@ import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 
 class CustomPDF_InvoicePDF {
-  final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
+  final CustomPDF_InvoiceController pdfpopup_controller =
+      Get.find<CustomPDF_InvoiceController>();
   var inst = Custom_Invoice_Services();
   void showA4StyledPopup(BuildContext context) async {
     try {
       await showDialog(
         context: context,
-        barrierDismissible: false, // Prevents closing the dialog by clicking outside
+        barrierDismissible:
+            false, // Prevents closing the dialog by clicking outside
         builder: (context) {
           return AlertDialog(
-            contentPadding: const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 5),
+            contentPadding:
+                const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 5),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -39,8 +42,10 @@ class CustomPDF_InvoicePDF {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Form(
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
-                                key: pdfpopup_controller.pdfModel.value.allData_key.value,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                key: pdfpopup_controller
+                                    .pdfModel.value.allData_key.value,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
@@ -48,33 +53,70 @@ class CustomPDF_InvoicePDF {
                                     addresses(),
                                     const SizedBox(height: 10),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         SizedBox(
                                           height: 35,
                                           width: 200,
                                           child: TextFormField(
                                             textAlign: TextAlign.start,
-                                            style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black, height: 2.3),
-                                            controller: pdfpopup_controller.pdfModel.value.GSTnumber.value,
+                                            style: const TextStyle(
+                                                fontSize:
+                                                    Primary_font_size.Text7,
+                                                color: Colors.black,
+                                                height: 2.3),
+                                            controller: pdfpopup_controller
+                                                .pdfModel.value.GSTnumber.value,
+                                            onChanged: (value) {
+                                              bool val = isGST_Local(value);
+                                              pdfpopup_controller
+                                                  .setGSTtype(val);
+                                              if (pdfpopup_controller
+                                                      .pdfModel
+                                                      .value
+                                                      .GSTnumber
+                                                      .value
+                                                      .text
+                                                      .length <=
+                                                  2) {
+                                                pdfpopup_controller
+                                                    .setGSTtype(true);
+                                              }
+                                            },
                                             decoration: const InputDecoration(
-                                              errorStyle: TextStyle(height: -1, fontSize: 0),
+                                              errorStyle: TextStyle(
+                                                  height: -1, fontSize: 0),
                                               contentPadding: EdgeInsets.only(
                                                 left: 5,
                                                 right: 5,
                                               ),
                                               // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
                                               hintText: "07AAACL1234C1Z5",
-                                              hintStyle: TextStyle(fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 136, 136, 136)),
+                                              hintStyle: TextStyle(
+                                                  fontSize:
+                                                      Primary_font_size.Text8,
+                                                  color: Color.fromARGB(
+                                                      255, 136, 136, 136)),
                                               // border: OutlineInputBorder(borderSide: BorderSide.none),
-                                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Primary_colors.Color3, width: 2)),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color:
+                                                          Primary_colors.Color3,
+                                                      width: 2)),
                                               prefixIcon: Padding(
-                                                padding: EdgeInsets.only(left: 5, top: 11),
-                                                child: Text("GSTIN  :  ", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                                                padding: EdgeInsets.only(
+                                                    left: 5, top: 11),
+                                                child: Text("GSTIN  :  ",
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
                                               ),
                                             ),
                                             validator: (value) {
-                                              if (value == null || value.isEmpty) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
                                                 return '';
                                               }
                                               return null;
@@ -82,40 +124,59 @@ class CustomPDF_InvoicePDF {
                                           ),
                                         ),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
                                           children: [
                                             BasicButton(
                                                 text: "Add product",
-                                                colors: const Color.fromARGB(202, 33, 149, 243),
+                                                colors: const Color.fromARGB(
+                                                    202, 33, 149, 243),
                                                 onPressed: () {
                                                   pdfpopup_controller.addRow();
                                                 }),
-                                            if (pdfpopup_controller.pdfModel.value.checkboxValues.contains(true)) const SizedBox(width: 5),
-                                            if (pdfpopup_controller.pdfModel.value.checkboxValues.contains(true))
+                                            if (pdfpopup_controller
+                                                .pdfModel.value.checkboxValues
+                                                .contains(true))
+                                              const SizedBox(width: 5),
+                                            if (pdfpopup_controller
+                                                .pdfModel.value.checkboxValues
+                                                .contains(true))
                                               Container(
                                                 width: 75,
                                                 // height: 40,
                                                 decoration: BoxDecoration(
-                                                  color: const Color.fromARGB(204, 244, 67, 54),
+                                                  color: const Color.fromARGB(
+                                                      204, 244, 67, 54),
                                                   // gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [
                                                   //   colors,
                                                   //   colors,
                                                   //   Primary_colors.Light,
                                                   // ]),
-                                                  borderRadius: BorderRadius.circular(5),
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
                                                 ),
 
                                                 child: Padding(
-                                                  padding: const EdgeInsets.only(left: 5, right: 5),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 5, right: 5),
                                                   child: TextButton(
                                                     onPressed: () async {
-                                                      pdfpopup_controller.deleteRow();
-                                                      await Future.delayed(const Duration(milliseconds: 20));
+                                                      pdfpopup_controller
+                                                          .deleteRow();
+                                                      await Future.delayed(
+                                                          const Duration(
+                                                              milliseconds:
+                                                                  20));
                                                       inst.assign_GSTtotals();
                                                     },
                                                     child: const Text(
                                                       "Delete",
-                                                      style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text7),
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize:
+                                                              Primary_font_size
+                                                                  .Text7),
                                                     ),
                                                   ),
                                                 ),
@@ -128,7 +189,14 @@ class CustomPDF_InvoicePDF {
                                     // const SizedBox(height: 5),
                                     const SizedBox(height: 5),
                                     SizedBox(
-                                      height: pdfpopup_controller.pdfModel.value.textControllers.length > 3 ? 200 : pdfpopup_controller.pdfModel.value.textControllers.length * 40 + 40,
+                                      height: pdfpopup_controller.pdfModel.value
+                                                  .textControllers.length >
+                                              3
+                                          ? 200
+                                          : pdfpopup_controller.pdfModel.value
+                                                      .textControllers.length *
+                                                  40 +
+                                              40,
                                       child: contentTable(pdfpopup_controller),
                                     ),
                                     const SizedBox(height: 20),
@@ -137,7 +205,15 @@ class CustomPDF_InvoicePDF {
                                   ],
                                 ),
                               ),
-                              SizedBox(height: pdfpopup_controller.pdfModel.value.textControllers.length > 3 ? 5 : 130 - pdfpopup_controller.pdfModel.value.textControllers.length * 40),
+                              SizedBox(
+                                  height: pdfpopup_controller.pdfModel.value
+                                              .textControllers.length >
+                                          3
+                                      ? 5
+                                      : 130 -
+                                          pdfpopup_controller.pdfModel.value
+                                                  .textControllers.length *
+                                              40),
                               footer(context),
                             ],
                           ),
@@ -164,7 +240,8 @@ class CustomPDF_InvoicePDF {
                         context: context,
                         builder: (_) {
                           return AlertDialog(
-                            title: const Text('Are you sure you want to close this pop-up?'),
+                            title: const Text(
+                                'Are you sure you want to close this pop-up?'),
                             actions: [
                               TextButton(
                                 child: const Text('No'),
@@ -203,7 +280,10 @@ class CustomPDF_InvoicePDF {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Image.asset('assets/images/sporadaResized.jpeg', height: 100),
-        const Text("INVOICE", style: TextStyle(fontSize: Primary_font_size.SubHeading, fontWeight: FontWeight.bold)),
+        const Text("INVOICE",
+            style: TextStyle(
+                fontSize: Primary_font_size.SubHeading,
+                fontWeight: FontWeight.bold)),
         SizedBox(
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,25 +292,32 @@ class CustomPDF_InvoicePDF {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const Text("Date          ", style: TextStyle(fontSize: Primary_font_size.Text7)),
-                  const Text("  :  ", style: TextStyle(fontSize: Primary_font_size.Text7)),
+                  const Text("Date          ",
+                      style: TextStyle(fontSize: Primary_font_size.Text7)),
+                  const Text("  :  ",
+                      style: TextStyle(fontSize: Primary_font_size.Text7)),
                   SizedBox(
                     // height: 20,
                     width: 80,
                     child: TextFormField(
-                      style: const TextStyle(fontSize: Primary_font_size.Text5, color: Colors.black),
+                      style: const TextStyle(
+                          fontSize: Primary_font_size.Text5,
+                          color: Colors.black),
                       controller: pdfpopup_controller.pdfModel.value.date.value,
                       decoration: const InputDecoration(
                         errorStyle: TextStyle(height: -6, fontSize: 0),
                         isDense: true,
                         contentPadding: EdgeInsets.all(7),
-                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey)),
                         labelStyle: TextStyle(
                           fontSize: Primary_font_size.Text7,
                           color: Color.fromARGB(255, 167, 165, 165),
                         ),
                         border: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Primary_colors.Color3, width: 2)),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -249,25 +336,32 @@ class CustomPDF_InvoicePDF {
                     "Invoice no",
                     style: TextStyle(fontSize: Primary_font_size.Text7),
                   ),
-                  const Text("  :  ", style: TextStyle(fontSize: Primary_font_size.Text7)),
+                  const Text("  :  ",
+                      style: TextStyle(fontSize: Primary_font_size.Text7)),
                   SizedBox(
                     // height: 20,
                     width: 80,
                     child: TextFormField(
                       maxLines: null,
-                      style: const TextStyle(fontSize: Primary_font_size.Text5, color: Colors.black),
-                      controller: pdfpopup_controller.pdfModel.value.manualinvoiceNo.value,
+                      style: const TextStyle(
+                          fontSize: Primary_font_size.Text5,
+                          color: Colors.black),
+                      controller: pdfpopup_controller
+                          .pdfModel.value.manualinvoiceNo.value,
                       decoration: const InputDecoration(
                         errorStyle: TextStyle(height: -6, fontSize: 0),
                         isDense: true,
                         contentPadding: EdgeInsets.all(7),
-                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey)),
                         labelStyle: TextStyle(
                           fontSize: Primary_font_size.Text7,
                           color: Color.fromARGB(255, 167, 165, 165),
                         ),
                         border: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Primary_colors.Color3, width: 2)),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -304,7 +398,8 @@ class CustomPDF_InvoicePDF {
                 child: const Center(
                   child: Text(
                     "CLIENT ADDRESS",
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -321,16 +416,25 @@ class CustomPDF_InvoicePDF {
                       SizedBox(
                         height: 30,
                         child: TextFormField(
-                          style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
-                          controller: pdfpopup_controller.pdfModel.value.clientName.value,
+                          style: const TextStyle(
+                              fontSize: Primary_font_size.Text7,
+                              color: Colors.black),
+                          controller: pdfpopup_controller
+                              .pdfModel.value.clientName.value,
                           decoration: const InputDecoration(
                             errorStyle: TextStyle(height: -6, fontSize: 0),
                             contentPadding: EdgeInsets.only(left: 5, right: 5),
-                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey)),
                             hintText: "ABS Enterprises",
-                            hintStyle: TextStyle(fontSize: Primary_font_size.Text4, fontStyle: FontStyle.italic, color: Color.fromARGB(255, 58, 58, 58)),
+                            hintStyle: TextStyle(
+                                fontSize: Primary_font_size.Text4,
+                                fontStyle: FontStyle.italic,
+                                color: Color.fromARGB(255, 58, 58, 58)),
                             border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Primary_colors.Color3, width: 2)),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -344,16 +448,26 @@ class CustomPDF_InvoicePDF {
                       SizedBox(
                         height: 50,
                         child: TextFormField(
-                          style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
-                          controller: pdfpopup_controller.pdfModel.value.clientAddress.value,
+                          style: const TextStyle(
+                              fontSize: Primary_font_size.Text7,
+                              color: Colors.black),
+                          controller: pdfpopup_controller
+                              .pdfModel.value.clientAddress.value,
                           decoration: const InputDecoration(
                             errorStyle: TextStyle(height: -6, fontSize: 0),
                             contentPadding: EdgeInsets.only(left: 5, right: 5),
-                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                            hintText: "123, Business Park Avenue, Sector 45, Downtown City, State - 560102, Country - USA",
-                            hintStyle: TextStyle(fontSize: Primary_font_size.Text4, fontStyle: FontStyle.italic, color: Color.fromARGB(255, 58, 58, 58)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey)),
+                            hintText:
+                                "123, Business Park Avenue, Sector 45, Downtown City, State - 560102, Country - USA",
+                            hintStyle: TextStyle(
+                                fontSize: Primary_font_size.Text4,
+                                fontStyle: FontStyle.italic,
+                                color: Color.fromARGB(255, 58, 58, 58)),
                             border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Primary_colors.Color3, width: 2)),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -385,7 +499,8 @@ class CustomPDF_InvoicePDF {
                 child: const Center(
                   child: Text(
                     "BILLING ADDRESS",
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -402,16 +517,25 @@ class CustomPDF_InvoicePDF {
                       SizedBox(
                         height: 30,
                         child: TextFormField(
-                          style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
-                          controller: pdfpopup_controller.pdfModel.value.billingName.value,
+                          style: const TextStyle(
+                              fontSize: Primary_font_size.Text7,
+                              color: Colors.black),
+                          controller: pdfpopup_controller
+                              .pdfModel.value.billingName.value,
                           decoration: const InputDecoration(
                             errorStyle: TextStyle(height: -6, fontSize: 0),
                             contentPadding: EdgeInsets.only(left: 5, right: 5),
-                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey)),
                             hintText: "ABS Enterprises",
-                            hintStyle: TextStyle(fontSize: Primary_font_size.Text4, fontStyle: FontStyle.italic, color: Color.fromARGB(255, 58, 58, 58)),
+                            hintStyle: TextStyle(
+                                fontSize: Primary_font_size.Text4,
+                                fontStyle: FontStyle.italic,
+                                color: Color.fromARGB(255, 58, 58, 58)),
                             border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Primary_colors.Color3, width: 2)),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -425,16 +549,26 @@ class CustomPDF_InvoicePDF {
                       SizedBox(
                         height: 50,
                         child: TextFormField(
-                          style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
-                          controller: pdfpopup_controller.pdfModel.value.billingAddres.value,
+                          style: const TextStyle(
+                              fontSize: Primary_font_size.Text7,
+                              color: Colors.black),
+                          controller: pdfpopup_controller
+                              .pdfModel.value.billingAddres.value,
                           decoration: const InputDecoration(
                             errorStyle: TextStyle(height: -6, fontSize: 0),
                             contentPadding: EdgeInsets.only(left: 5, right: 5),
-                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                            hintText: "123, Business Park Avenue, Sector 45, Downtown City, State - 560102, Country - USA",
-                            hintStyle: TextStyle(fontSize: Primary_font_size.Text4, fontStyle: FontStyle.italic, color: Color.fromARGB(255, 58, 58, 58)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey)),
+                            hintText:
+                                "123, Business Park Avenue, Sector 45, Downtown City, State - 560102, Country - USA",
+                            hintStyle: TextStyle(
+                                fontSize: Primary_font_size.Text4,
+                                fontStyle: FontStyle.italic,
+                                color: Color.fromARGB(255, 58, 58, 58)),
                             border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Primary_colors.Color3, width: 2)),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -456,7 +590,16 @@ class CustomPDF_InvoicePDF {
   }
 
   Widget contentTable(CustomPDF_InvoiceController controller) {
-    const tableHeaders = ['✔', 'S.No', 'Description', 'HSN', 'GST', 'Price', 'Quantity', 'Total'];
+    const tableHeaders = [
+      '✔',
+      'S.No',
+      'Description',
+      'HSN',
+      'GST',
+      'Price',
+      'Quantity',
+      'Total'
+    ];
 
     return Obx(
       () => Column(
@@ -468,15 +611,22 @@ class CustomPDF_InvoicePDF {
               borderRadius: BorderRadius.circular(5),
               color: Colors.green,
             ),
-            padding: const EdgeInsets.only(left: 0, top: 8, bottom: 8, right: 10),
+            padding:
+                const EdgeInsets.only(left: 0, top: 8, bottom: 8, right: 10),
             child: Row(
               children: tableHeaders.map((header) {
                 return Expanded(
                   flex: header == "Description" ? 3 : 1,
                   child: Text(
                     header,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12, overflow: TextOverflow.ellipsis),
-                    textAlign: header == tableHeaders.last ? TextAlign.end : TextAlign.center,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        overflow: TextOverflow.ellipsis),
+                    textAlign: header == tableHeaders.last
+                        ? TextAlign.end
+                        : TextAlign.center,
                   ),
                 );
               }).toList(),
@@ -486,10 +636,12 @@ class CustomPDF_InvoicePDF {
           Expanded(
               child: SingleChildScrollView(
             child: Column(
-              children: List.generate(controller.pdfModel.value.textControllers.length, (rowIndex) {
+              children: List.generate(
+                  controller.pdfModel.value.textControllers.length, (rowIndex) {
                 return Container(
                     height: 40,
-                    color: rowIndex % 2 == 0 ? Colors.green.shade50 : Colors.white,
+                    color:
+                        rowIndex % 2 == 0 ? Colors.green.shade50 : Colors.white,
                     padding: const EdgeInsets.only(right: 5),
                     child: Row(
                       children: [
@@ -499,11 +651,15 @@ class CustomPDF_InvoicePDF {
                             width: 20,
                             child: Obx(
                               () => Checkbox(
-                                activeColor: rowIndex % 2 == 0 ? Colors.green.shade50 : Colors.white,
+                                activeColor: rowIndex % 2 == 0
+                                    ? Colors.green.shade50
+                                    : Colors.white,
                                 checkColor: Primary_colors.Color3,
-                                value: controller.pdfModel.value.checkboxValues[rowIndex],
+                                value: controller
+                                    .pdfModel.value.checkboxValues[rowIndex],
                                 onChanged: (value) {
-                                  controller.pdfModel.value.checkboxValues[rowIndex] = value!;
+                                  controller.pdfModel.value
+                                      .checkboxValues[rowIndex] = value!;
                                 },
                               ),
                             ),
@@ -513,34 +669,50 @@ class CustomPDF_InvoicePDF {
                         ...List.generate(
                           tableHeaders.length - 1,
                           (colIndex) {
-                            bool isNumericField = [0, 2, 3, 4, 5].contains(colIndex);
+                            bool isNumericField =
+                                [0, 2, 3, 4, 5].contains(colIndex);
                             bool isTotalField = colIndex == 6;
 
                             return Expanded(
-                              flex: colIndex == 1 ? 3 : 1, // Make "Description" column wider
+                              flex: colIndex == 1
+                                  ? 3
+                                  : 1, // Make "Description" column wider
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 0),
                                 child: TextFormField(
                                   maxLines: null,
-                                  controller: controller.pdfModel.value.textControllers[rowIndex][colIndex],
-                                  textAlign: isTotalField ? TextAlign.end : TextAlign.center,
+                                  controller: controller.pdfModel.value
+                                      .textControllers[rowIndex][colIndex],
+                                  textAlign: isTotalField
+                                      ? TextAlign.end
+                                      : TextAlign.center,
                                   style: const TextStyle(fontSize: 12),
                                   onChanged: (value) {
                                     if (!isTotalField) {
-                                      controller.updateCell(rowIndex, colIndex, value);
+                                      controller.updateCell(
+                                          rowIndex, colIndex, value);
                                     }
                                     inst.assign_GSTtotals();
                                   },
                                   readOnly: isTotalField,
-                                  inputFormatters: isNumericField ? [FilteringTextInputFormatter.digitsOnly] : null,
-                                  keyboardType: isNumericField ? TextInputType.number : TextInputType.text,
+                                  inputFormatters: isNumericField
+                                      ? [FilteringTextInputFormatter.digitsOnly]
+                                      : null,
+                                  keyboardType: isNumericField
+                                      ? TextInputType.number
+                                      : TextInputType.text,
                                   decoration: InputDecoration(
-                                    errorStyle: const TextStyle(height: -1, fontSize: 0),
+                                    errorStyle: const TextStyle(
+                                        height: -1, fontSize: 0),
                                     hintText: tableHeaders[colIndex + 1],
-                                    hintStyle: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.grey),
+                                    hintStyle: const TextStyle(
+                                        fontSize: Primary_font_size.Text7,
+                                        color: Colors.grey),
                                     contentPadding: const EdgeInsets.all(1),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Primary_colors.Color3, width: 2),
+                                      borderSide: const BorderSide(
+                                          color: Primary_colors.Color3,
+                                          width: 2),
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                   ),
@@ -570,17 +742,26 @@ class CustomPDF_InvoicePDF {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(child: gstTable()),
+        Obx(() {
+          return Expanded(
+              child: pdfpopup_controller.pdfModel.value.isGST_local.value
+                  ? gstTable()
+                  : Other_gstTable());
+        }),
         const SizedBox(width: 60),
-        SizedBox(
-          width: 220,
-          child: amount_data(),
-        )
+        Obx(() {
+          return SizedBox(
+            width: 220,
+            child: pdfpopup_controller.pdfModel.value.isGST_local.value
+                ? local_amount_data()
+                : IGST_amount_data(),
+          );
+        })
       ],
     );
   }
 
-  Widget amount_data() {
+  Widget local_amount_data() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -621,13 +802,15 @@ class CustomPDF_InvoicePDF {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
+                    // fop sub-total
                     // height: 20,
                     // width: 80,
                     child: TextFormField(
                       readOnly: true,
                       textAlign: TextAlign.end,
                       style: const TextStyle(fontSize: 12, color: Colors.black),
-                      controller: pdfpopup_controller.pdfModel.value.subTotal.value,
+                      controller:
+                          pdfpopup_controller.pdfModel.value.subTotal.value,
                       decoration: const InputDecoration(
                         errorStyle: TextStyle(height: 0, fontSize: 0),
                         isDense: true,
@@ -648,6 +831,7 @@ class CustomPDF_InvoicePDF {
                   ),
                   const SizedBox(height: 10),
                   SizedBox(
+                    // for  CGST calculation
                     // height: 20,
                     child: TextFormField(
                       readOnly: true,
@@ -674,6 +858,7 @@ class CustomPDF_InvoicePDF {
                   ),
                   const SizedBox(height: 10),
                   SizedBox(
+                    // for SGST calculation
                     // height: 20,
                     child: TextFormField(
                       readOnly: true,
@@ -701,12 +886,14 @@ class CustomPDF_InvoicePDF {
                   ),
                   const SizedBox(height: 10),
                   SizedBox(
+                    // for round-off value
                     // height: 20,
                     child: TextFormField(
                       readOnly: true,
                       textAlign: TextAlign.end,
                       style: const TextStyle(fontSize: 12, color: Colors.black),
-                      controller: pdfpopup_controller.pdfModel.value.roundOff.value,
+                      controller:
+                          pdfpopup_controller.pdfModel.value.roundOff.value,
                       decoration: const InputDecoration(
                         errorStyle: TextStyle(height: 0, fontSize: 0),
                         isDense: true,
@@ -729,7 +916,12 @@ class CustomPDF_InvoicePDF {
                     " ${pdfpopup_controller.pdfModel.value.roundoffDiff.value ?? ""}   ",
                     style: TextStyle(
                       fontSize: Primary_font_size.Text7,
-                      color: pdfpopup_controller.pdfModel.value.roundoffDiff.value?.startsWith('-') == true ? Colors.red : Colors.green,
+                      color: pdfpopup_controller
+                                  .pdfModel.value.roundoffDiff.value
+                                  ?.startsWith('-') ==
+                              true
+                          ? Colors.red
+                          : Colors.green,
                     ),
                   )
                 ],
@@ -747,7 +939,13 @@ class CustomPDF_InvoicePDF {
             const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [Text("Total", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 56, 61, 136)))],
+              children: [
+                Text("Total",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 56, 61, 136)))
+              ],
             ),
             const Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -759,22 +957,241 @@ class CustomPDF_InvoicePDF {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
+                      // for total value calculation
                       height: 20,
                       child: Padding(
                         padding: const EdgeInsets.only(right: 5),
                         child: TextFormField(
                           readOnly: true,
                           textAlign: TextAlign.end,
-                          style: const TextStyle(fontSize: 15, color: Color.fromARGB(255, 56, 61, 136), fontWeight: FontWeight.bold),
-                          controller: pdfpopup_controller.pdfModel.value.Total.value,
+                          style: const TextStyle(
+                              fontSize: 15,
+                              color: Color.fromARGB(255, 56, 61, 136),
+                              fontWeight: FontWeight.bold),
+                          controller:
+                              pdfpopup_controller.pdfModel.value.Total.value,
                           decoration: const InputDecoration(
                             errorStyle: TextStyle(height: 0, fontSize: 0),
                             contentPadding: EdgeInsets.only(),
                             // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
 
                             hintText: "0.0",
-                            hintStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 56, 61, 136)),
-                            border: OutlineInputBorder(borderSide: BorderSide.none),
+                            hintStyle: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 56, 61, 136)),
+                            border:
+                                OutlineInputBorder(borderSide: BorderSide.none),
+                            // focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return '';
+                            }
+                            return null;
+                          },
+                        ),
+                      )),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        signatory(),
+      ],
+    );
+  }
+
+  Widget IGST_amount_data() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Sub total", style: TextStyle(fontSize: 12)),
+                SizedBox(height: 10),
+                Text("IGST", style: TextStyle(fontSize: 12)),
+                SizedBox(height: 10),
+                Text("Round off", style: TextStyle(fontSize: 12)),
+              ],
+            ),
+            const SizedBox(width: 10),
+            const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("  :  ", style: TextStyle(fontSize: 12)),
+                SizedBox(height: 10),
+                Text("  :  ", style: TextStyle(fontSize: 12)),
+                SizedBox(height: 10),
+                Text("  :  ", style: TextStyle(fontSize: 12)),
+              ],
+            ),
+            // const SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    // for sub-total calculation
+                    // height: 20,
+                    // width: 80,
+                    child: TextFormField(
+                      readOnly: true,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(fontSize: 12, color: Colors.black),
+                      controller:
+                          pdfpopup_controller.pdfModel.value.subTotal.value,
+                      decoration: const InputDecoration(
+                        errorStyle: TextStyle(height: 0, fontSize: 0),
+                        isDense: true,
+                        contentPadding: EdgeInsets.only(left: 5, right: 5),
+                        // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                        hintText: "0.0",
+                        hintStyle: TextStyle(),
+                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                        // focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    // for IGST calculation
+                    // height: 20,
+                    child: TextFormField(
+                      readOnly: true,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(fontSize: 12, color: Colors.black),
+                      controller: pdfpopup_controller.pdfModel.value.IGST.value,
+                      decoration: const InputDecoration(
+                        errorStyle: TextStyle(height: 0, fontSize: 0),
+                        isDense: true,
+                        contentPadding: EdgeInsets.only(left: 5, right: 5),
+                        // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                        hintText: "0.0",
+                        hintStyle: TextStyle(),
+                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                        // focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    // for round off value calculation
+                    // height: 20,
+                    child: TextFormField(
+                      readOnly: true,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(fontSize: 12, color: Colors.black),
+                      controller:
+                          pdfpopup_controller.pdfModel.value.roundOff.value,
+                      decoration: const InputDecoration(
+                        errorStyle: TextStyle(height: 0, fontSize: 0),
+                        isDense: true,
+                        contentPadding: EdgeInsets.only(left: 5, right: 5),
+                        // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                        hintText: "0.0",
+                        hintStyle: TextStyle(),
+                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                        // focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Text(
+                    " ${pdfpopup_controller.pdfModel.value.roundoffDiff.value ?? ""}   ",
+                    style: TextStyle(
+                      fontSize: Primary_font_size.Text7,
+                      color: pdfpopup_controller
+                                  .pdfModel.value.roundoffDiff.value
+                                  ?.startsWith('-') ==
+                              true
+                          ? Colors.red
+                          : Colors.green,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Container(height: 1, color: Colors.black),
+        const SizedBox(height: 10),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Total",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 56, 61, 136)))
+              ],
+            ),
+            const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [Text("            ", style: TextStyle(fontSize: 12))],
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                      // for total value calculation
+                      height: 20,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: TextFormField(
+                          readOnly: true,
+                          textAlign: TextAlign.end,
+                          style: const TextStyle(
+                              fontSize: 15,
+                              color: Color.fromARGB(255, 56, 61, 136),
+                              fontWeight: FontWeight.bold),
+                          controller:
+                              pdfpopup_controller.pdfModel.value.Total.value,
+                          decoration: const InputDecoration(
+                            errorStyle: TextStyle(height: 0, fontSize: 0),
+                            contentPadding: EdgeInsets.only(),
+                            // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+
+                            hintText: "0.0",
+                            hintStyle: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 56, 61, 136)),
+                            border:
+                                OutlineInputBorder(borderSide: BorderSide.none),
                             // focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
                           ),
                           validator: (value) {
@@ -803,7 +1220,10 @@ class CustomPDF_InvoicePDF {
       decoration: BoxDecoration(border: Border.all()),
       child: const Align(
         alignment: Alignment.bottomCenter,
-        child: Text("Authorized Signatory", style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 127, 126, 126))),
+        child: Text("Authorized Signatory",
+            style: TextStyle(
+                fontSize: Primary_font_size.Text7,
+                color: Color.fromARGB(255, 127, 126, 126))),
       ),
     );
   }
@@ -815,13 +1235,23 @@ class CustomPDF_InvoicePDF {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                decoration: BoxDecoration(border: Border.all(color: const Color.fromARGB(255, 151, 150, 150))),
-                height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 125 : 90,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 151, 150, 150))),
+                height: pdfpopup_controller
+                            .pdfModel.value.manualInvoice_gstTotals.length >
+                        1
+                    ? 125
+                    : 90,
                 child: Column(
                   children: [
                     Expanded(
                       child: Container(
-                        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                        decoration: const BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color:
+                                        Color.fromARGB(255, 151, 150, 150)))),
                         child: Row(
                           children: [
                             Container(
@@ -829,7 +1259,9 @@ class CustomPDF_InvoicePDF {
                               height: double.infinity,
                               decoration: const BoxDecoration(
                                 border: Border(
-                                  right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)),
+                                  right: BorderSide(
+                                      color:
+                                          Color.fromARGB(255, 151, 150, 150)),
                                 ),
                               ),
                               child: const Column(
@@ -850,7 +1282,9 @@ class CustomPDF_InvoicePDF {
                               child: Container(
                                 decoration: const BoxDecoration(
                                   border: Border(
-                                    right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)),
+                                    right: BorderSide(
+                                        color:
+                                            Color.fromARGB(255, 151, 150, 150)),
                                   ),
                                 ),
                                 child: Column(
@@ -858,11 +1292,17 @@ class CustomPDF_InvoicePDF {
                                     Expanded(
                                       child: Container(
                                         width: double.infinity,
-                                        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                        decoration: const BoxDecoration(
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    color: Color.fromARGB(
+                                                        255, 151, 150, 150)))),
                                         child: const Text(
                                           textAlign: TextAlign.center,
                                           'CGST',
-                                          style: TextStyle(fontSize: Primary_font_size.Text8, overflow: TextOverflow.ellipsis),
+                                          style: TextStyle(
+                                              fontSize: Primary_font_size.Text8,
+                                              overflow: TextOverflow.ellipsis),
                                         ),
                                       ),
                                     ),
@@ -873,11 +1313,22 @@ class CustomPDF_InvoicePDF {
                                             flex: 1,
                                             child: Container(
                                               height: double.infinity,
-                                              decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                              decoration: const BoxDecoration(
+                                                  border: Border(
+                                                      right: BorderSide(
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              151,
+                                                              150,
+                                                              150)))),
                                               child: const Text(
                                                 textAlign: TextAlign.center,
                                                 '%',
-                                                style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        Primary_font_size.Text7,
+                                                    overflow:
+                                                        TextOverflow.ellipsis),
                                               ),
                                             ),
                                           ),
@@ -888,7 +1339,11 @@ class CustomPDF_InvoicePDF {
                                               child: Text(
                                                 textAlign: TextAlign.center,
                                                 'amount',
-                                                style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        Primary_font_size.Text7,
+                                                    overflow:
+                                                        TextOverflow.ellipsis),
                                               ),
                                             ),
                                           ),
@@ -910,11 +1365,17 @@ class CustomPDF_InvoicePDF {
                                     Expanded(
                                       child: Container(
                                         width: double.infinity,
-                                        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                        decoration: const BoxDecoration(
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    color: Color.fromARGB(
+                                                        255, 151, 150, 150)))),
                                         child: const Text(
                                           textAlign: TextAlign.center,
                                           'SGST',
-                                          style: TextStyle(fontSize: Primary_font_size.Text8, overflow: TextOverflow.ellipsis),
+                                          style: TextStyle(
+                                              fontSize: Primary_font_size.Text8,
+                                              overflow: TextOverflow.ellipsis),
                                         ),
                                       ),
                                     ),
@@ -925,11 +1386,22 @@ class CustomPDF_InvoicePDF {
                                             flex: 1,
                                             child: Container(
                                               height: double.infinity,
-                                              decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                              decoration: const BoxDecoration(
+                                                  border: Border(
+                                                      right: BorderSide(
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              151,
+                                                              150,
+                                                              150)))),
                                               child: const Text(
                                                 textAlign: TextAlign.center,
                                                 '%',
-                                                style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        Primary_font_size.Text7,
+                                                    overflow:
+                                                        TextOverflow.ellipsis),
                                               ),
                                             ),
                                           ),
@@ -938,7 +1410,11 @@ class CustomPDF_InvoicePDF {
                                             child: Text(
                                               textAlign: TextAlign.center,
                                               'amount',
-                                              style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      Primary_font_size.Text7,
+                                                  overflow:
+                                                      TextOverflow.ellipsis),
                                             ),
                                           ),
                                         ],
@@ -957,26 +1433,46 @@ class CustomPDF_InvoicePDF {
                         height: 200, // Set a fixed height (adjust as needed)
                         child: ListView.builder(
                           shrinkWrap: true, // Prevents infinite height issue
-                          itemCount: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length,
+                          itemCount: pdfpopup_controller
+                              .pdfModel.value.manualInvoice_gstTotals.length,
                           itemBuilder: (context, index) {
                             return SizedBox(
-                              height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 30 : 44, // Set a height for each row to prevent overflow
+                              height: pdfpopup_controller.pdfModel.value
+                                          .manualInvoice_gstTotals.length >
+                                      1
+                                  ? 30
+                                  : 44, // Set a height for each row to prevent overflow
                               child: Row(
                                 children: [
                                   Container(
                                     width: 90,
-                                    decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                    decoration: const BoxDecoration(
+                                        border: Border(
+                                            right: BorderSide(
+                                                color: Color.fromARGB(
+                                                    255, 151, 150, 150)))),
                                     child: Center(
                                       child: Text(
-                                        pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toString(),
-                                        style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                        pdfpopup_controller
+                                            .pdfModel
+                                            .value
+                                            .manualInvoice_gstTotals[index]
+                                            .total
+                                            .toString(),
+                                        style: const TextStyle(
+                                            fontSize: Primary_font_size.Text7,
+                                            overflow: TextOverflow.ellipsis),
                                       ),
                                     ),
                                   ),
                                   Expanded(
                                       flex: 3,
                                       child: Container(
-                                        decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                        decoration: const BoxDecoration(
+                                            border: Border(
+                                                right: BorderSide(
+                                                    color: Color.fromARGB(
+                                                        255, 151, 150, 150)))),
                                         child: Column(
                                           children: [
                                             Expanded(
@@ -985,11 +1481,32 @@ class CustomPDF_InvoicePDF {
                                                   Expanded(
                                                     flex: 1,
                                                     child: Container(
-                                                      decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                                      decoration: const BoxDecoration(
+                                                          border: Border(
+                                                              right: BorderSide(
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          151,
+                                                                          150,
+                                                                          150)))),
                                                       child: Center(
                                                         child: Text(
-                                                          formatzero(pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2).toString(),
-                                                          style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                                          formatzero(pdfpopup_controller
+                                                                      .pdfModel
+                                                                      .value
+                                                                      .manualInvoice_gstTotals[
+                                                                          index]
+                                                                      .gst /
+                                                                  2)
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              fontSize:
+                                                                  Primary_font_size
+                                                                      .Text7,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis),
                                                         ),
                                                       ),
                                                     ),
@@ -998,10 +1515,29 @@ class CustomPDF_InvoicePDF {
                                                     flex: 2,
                                                     child: Center(
                                                       child: Text(
-                                                        formatzero((pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toInt() / 100) *
-                                                                (pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2))
+                                                        formatzero((pdfpopup_controller
+                                                                        .pdfModel
+                                                                        .value
+                                                                        .manualInvoice_gstTotals[
+                                                                            index]
+                                                                        .total
+                                                                        .toInt() /
+                                                                    100) *
+                                                                (pdfpopup_controller
+                                                                        .pdfModel
+                                                                        .value
+                                                                        .manualInvoice_gstTotals[
+                                                                            index]
+                                                                        .gst /
+                                                                    2))
                                                             .toString(),
-                                                        style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                                        style: const TextStyle(
+                                                            fontSize:
+                                                                Primary_font_size
+                                                                    .Text7,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis),
                                                       ),
                                                     ),
                                                   ),
@@ -1021,11 +1557,31 @@ class CustomPDF_InvoicePDF {
                                               Expanded(
                                                 flex: 1,
                                                 child: Container(
-                                                  decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                                  decoration: const BoxDecoration(
+                                                      border: Border(
+                                                          right: BorderSide(
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      151,
+                                                                      150,
+                                                                      150)))),
                                                   child: Center(
                                                     child: Text(
-                                                      formatzero(pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2).toString(),
-                                                      style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                                      formatzero(pdfpopup_controller
+                                                                  .pdfModel
+                                                                  .value
+                                                                  .manualInvoice_gstTotals[
+                                                                      index]
+                                                                  .gst /
+                                                              2)
+                                                          .toString(),
+                                                      style: const TextStyle(
+                                                          fontSize:
+                                                              Primary_font_size
+                                                                  .Text7,
+                                                          overflow: TextOverflow
+                                                              .ellipsis),
                                                     ),
                                                   ),
                                                 ),
@@ -1034,10 +1590,28 @@ class CustomPDF_InvoicePDF {
                                                 flex: 2,
                                                 child: Center(
                                                   child: Text(
-                                                    formatzero((pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].total.toInt() / 100) *
-                                                            (pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals[index].gst / 2))
+                                                    formatzero((pdfpopup_controller
+                                                                    .pdfModel
+                                                                    .value
+                                                                    .manualInvoice_gstTotals[
+                                                                        index]
+                                                                    .total
+                                                                    .toInt() /
+                                                                100) *
+                                                            (pdfpopup_controller
+                                                                    .pdfModel
+                                                                    .value
+                                                                    .manualInvoice_gstTotals[
+                                                                        index]
+                                                                    .gst /
+                                                                2))
                                                         .toString(),
-                                                    style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                                    style: const TextStyle(
+                                                        fontSize:
+                                                            Primary_font_size
+                                                                .Text7,
+                                                        overflow: TextOverflow
+                                                            .ellipsis),
                                                   ),
                                                 ),
                                               ),
@@ -1056,7 +1630,281 @@ class CustomPDF_InvoicePDF {
                     ),
                   ],
                 )),
-            SizedBox(height: pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals.length > 1 ? 20 : 55),
+            SizedBox(
+                height: pdfpopup_controller
+                            .pdfModel.value.manualInvoice_gstTotals.length >
+                        1
+                    ? 20
+                    : 55),
+            notes(),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget Other_gstTable() {
+    return Obx(
+      () {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 151, 150, 150))),
+                height: pdfpopup_controller
+                            .pdfModel.value.manualInvoice_gstTotals.length >
+                        1
+                    ? 125
+                    : 90,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color:
+                                        Color.fromARGB(255, 151, 150, 150)))),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 90,
+                              height: double.infinity,
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  right: BorderSide(
+                                      color:
+                                          Color.fromARGB(255, 151, 150, 150)),
+                                ),
+                              ),
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    'Taxable Value',
+                                    style: TextStyle(
+                                      fontSize: Primary_font_size.Text8,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    right: BorderSide(
+                                        color:
+                                            Color.fromARGB(255, 151, 150, 150)),
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        decoration: const BoxDecoration(
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    color: Color.fromARGB(
+                                                        255, 151, 150, 150)))),
+                                        child: const Text(
+                                          textAlign: TextAlign.center,
+                                          'IGST',
+                                          style: TextStyle(
+                                              fontSize: Primary_font_size.Text8,
+                                              overflow: TextOverflow.ellipsis),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Container(
+                                              height: double.infinity,
+                                              decoration: const BoxDecoration(
+                                                  border: Border(
+                                                      right: BorderSide(
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              151,
+                                                              150,
+                                                              150)))),
+                                              child: const Text(
+                                                textAlign: TextAlign.center,
+                                                '%',
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        Primary_font_size.Text7,
+                                                    overflow:
+                                                        TextOverflow.ellipsis),
+                                              ),
+                                            ),
+                                          ),
+                                          const Expanded(
+                                            flex: 2,
+                                            child: SizedBox(
+                                              width: double.infinity,
+                                              child: Text(
+                                                textAlign: TextAlign.center,
+                                                'amount',
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        Primary_font_size.Text7,
+                                                    overflow:
+                                                        TextOverflow.ellipsis),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        height: 200, // Set a fixed height (adjust as needed)
+                        child: ListView.builder(
+                          shrinkWrap: true, // Prevents infinite height issue
+                          itemCount: pdfpopup_controller
+                              .pdfModel.value.manualInvoice_gstTotals.length,
+                          itemBuilder: (context, index) {
+                            return SizedBox(
+                              height: pdfpopup_controller.pdfModel.value
+                                          .manualInvoice_gstTotals.length >
+                                      1
+                                  ? 30
+                                  : 44, // Set a height for each row to prevent overflow
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 90,
+                                    decoration: const BoxDecoration(
+                                        border: Border(
+                                            right: BorderSide(
+                                                color: Color.fromARGB(
+                                                    255, 151, 150, 150)))),
+                                    child: Center(
+                                      child: Text(
+                                        pdfpopup_controller
+                                            .pdfModel
+                                            .value
+                                            .manualInvoice_gstTotals[index]
+                                            .total
+                                            .toString(),
+                                        style: const TextStyle(
+                                            fontSize: Primary_font_size.Text7,
+                                            overflow: TextOverflow.ellipsis),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                            border: Border(
+                                                right: BorderSide(
+                                                    color: Color.fromARGB(
+                                                        255, 151, 150, 150)))),
+                                        child: Column(
+                                          children: [
+                                            Expanded(
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                      decoration: const BoxDecoration(
+                                                          border: Border(
+                                                              right: BorderSide(
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          151,
+                                                                          150,
+                                                                          150)))),
+                                                      child: Center(
+                                                        child: Text(
+                                                          formatzero(pdfpopup_controller
+                                                                  .pdfModel
+                                                                  .value
+                                                                  .manualInvoice_gstTotals[
+                                                                      index]
+                                                                  .gst)
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              fontSize:
+                                                                  Primary_font_size
+                                                                      .Text7,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: Center(
+                                                      child: Text(
+                                                        formatzero((pdfpopup_controller
+                                                                        .pdfModel
+                                                                        .value
+                                                                        .manualInvoice_gstTotals[
+                                                                            index]
+                                                                        .total
+                                                                        .toInt() /
+                                                                    100) *
+                                                                pdfpopup_controller
+                                                                    .pdfModel
+                                                                    .value
+                                                                    .manualInvoice_gstTotals[
+                                                                        index]
+                                                                    .gst)
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            fontSize:
+                                                                Primary_font_size
+                                                                    .Text7,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
+            SizedBox(
+                height: pdfpopup_controller
+                            .pdfModel.value.manualInvoice_gstTotals.length >
+                        1
+                    ? 20
+                    : 55),
             notes(),
           ],
         );
@@ -1071,7 +1919,8 @@ class CustomPDF_InvoicePDF {
         Row(
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text("NOTES", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+            const Text("NOTES",
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
             IconButton(
               icon: const Icon(Icons.add, size: 18, color: Colors.blue),
               onPressed: () {
@@ -1083,7 +1932,10 @@ class CustomPDF_InvoicePDF {
         // const SizedBox(height: 10),
         Obx(
           () => Container(
-            decoration: BoxDecoration(border: Border.all(color: Colors.green), borderRadius: BorderRadius.circular(5), color: Colors.green.shade50),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.green),
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.green.shade50),
             width: 400,
             height: 90,
             child: SingleChildScrollView(
@@ -1098,32 +1950,40 @@ class CustomPDF_InvoicePDF {
                         children: [
                           Text(
                             "${index + 1}.", // Auto-incrementing S.No
-                            style: const TextStyle(fontSize: Primary_font_size.Text7, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                fontSize: Primary_font_size.Text7,
+                                fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(width: 5), // Space between number and textfield
+                          const SizedBox(
+                              width: 5), // Space between number and textfield
                           Flexible(
                             child: IntrinsicWidth(
                               // Ensures TextField takes only required width
                               child: ConstrainedBox(
-                                constraints: const BoxConstraints(minWidth: 50), // Set a reasonable min width
+                                constraints: const BoxConstraints(
+                                    minWidth: 50), // Set a reasonable min width
                                 child: TextFormField(
                                   textAlign: TextAlign.start,
                                   maxLines: null,
-                                  controller: pdfpopup_controller.pdfModel.value.noteControllers[index],
+                                  controller: pdfpopup_controller
+                                      .pdfModel.value.noteControllers[index],
                                   onChanged: (value) {
-                                    pdfpopup_controller.update_noteCotent(value, index);
+                                    pdfpopup_controller.update_noteCotent(
+                                        value, index);
                                   },
                                   style: const TextStyle(fontSize: 12),
                                   decoration: InputDecoration(
                                     // contentPadding: const EdgeInsets.all(0),
-                                    errorStyle: const TextStyle(height: 0, fontSize: 0),
+                                    errorStyle:
+                                        const TextStyle(height: 0, fontSize: 0),
                                     suffix: MouseRegion(
                                       cursor: SystemMouseCursors.click,
                                       child: GestureDetector(
                                         child: const Icon(
                                           Icons.delete,
                                           size: 14,
-                                          color: const Color.fromARGB(193, 244, 67, 54),
+                                          color: const Color.fromARGB(
+                                              193, 244, 67, 54),
                                         ),
                                         onTap: () {
                                           pdfpopup_controller.deleteNote(index);
@@ -1131,7 +1991,9 @@ class CustomPDF_InvoicePDF {
                                       ),
                                     ),
                                     hintText: "Please enter the notes....",
-                                    hintStyle: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                                    hintStyle: const TextStyle(
+                                        fontSize: 12,
+                                        fontStyle: FontStyle.italic),
                                     isDense: true,
                                   ),
                                   validator: (value) {
@@ -1182,13 +2044,17 @@ class CustomPDF_InvoicePDF {
                             LinearPercentIndicator(
                               lineHeight: 27,
                               // width: 105,
-                              percent: pdfpopup_controller.pdfModel.value.progress.value,
+                              percent: pdfpopup_controller
+                                  .pdfModel.value.progress.value,
                               barRadius: const Radius.circular(5),
-                              backgroundColor: const Color.fromARGB(255, 31, 38, 63),
+                              backgroundColor:
+                                  const Color.fromARGB(255, 31, 38, 63),
                               progressColor: Colors.blue,
                               center: Text(
                                 "${(pdfpopup_controller.pdfModel.value.progress.value * 100).toInt()}%",
-                                style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 12),
+                                style: const TextStyle(
+                                    color: Color.fromARGB(255, 255, 255, 255),
+                                    fontSize: 12),
                               ),
                             ),
                             Positioned.fill(
@@ -1213,7 +2079,8 @@ class CustomPDF_InvoicePDF {
                                 child: LinearPercentIndicator(
                                   lineHeight: 30,
                                   // width: 105,
-                                  percent: pdfpopup_controller.pdfModel.value.progress.value,
+                                  percent: pdfpopup_controller
+                                      .pdfModel.value.progress.value,
                                   barRadius: const Radius.circular(5),
                                   backgroundColor: Primary_colors.Dark,
                                   progressColor: Colors.blue,
@@ -1232,24 +2099,30 @@ class CustomPDF_InvoicePDF {
                         ),
                         child: TextButton(
                           onPressed: () async {
-                            if (pdfpopup_controller.pdfModel.value.allData_key.value.currentState?.validate() ?? false) {
+                            if (pdfpopup_controller.pdfModel.value.allData_key
+                                    .value.currentState
+                                    ?.validate() ??
+                                false) {
                               // try {
-                                await Future.wait(
-                                  [
-                                    pdfpopup_controller.startProgress(),
-                                    inst.savePdfToCache(context),
-                                  ],
-                                );
+                              await Future.wait(
+                                [
+                                  pdfpopup_controller.startProgress(),
+                                  inst.savePdfToCache(context),
+                                ],
+                              );
                               // } catch (e, stackTrace) {
                               //   debugPrint("Error in Future.wait: $e");
                               //   debugPrint(stackTrace.toString());
                               //   Get.snackbar("Error", "Something went wrong. Please try again.");
                               // }
-                            }else{
-                               Get.snackbar("ERROR", "Check for Red Highlighted Fields!");
+                            } else {
+                              Get.snackbar(
+                                  "ERROR", "Check for Red Highlighted Fields!");
                             }
                           },
-                          child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),
+                          child: const Text("Generate",
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.white)),
                         )),
               ],
             );

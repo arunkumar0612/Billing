@@ -335,10 +335,10 @@ class CustomerPDF_List {
   final String customerPhone;
   final String customerGst;
   final DateTime date;
-  // final String customType;
+  final String customType;
   final String genId;
-  final int TotalAmount;
-  final Uint8List pdfData;
+  final int customPDFid;
+  // final Uint8List pdfData;
   final String filePath;
 
   CustomerPDF_List({
@@ -350,53 +350,27 @@ class CustomerPDF_List {
     required this.customerPhone,
     required this.customerGst,
     required this.date,
-    // required this.customType,
+    required this.customType,
     required this.genId,
-    required this.TotalAmount,
-    required this.pdfData,
+    required this.customPDFid,
+    // required this.pdfData,
     required this.filePath,
   });
 
-// [0] =
-// Map (12 items)
-// 0 =
-// "Client_addressname" -> "fdsf"
-// 1 =
-// "client_address" -> "dsfds"
-// 2 =
-// "Billing_addressname" -> "fdsfdsf"
-// 3 =
-// "Billing_address" -> "dsfsdf"
-// 4 =
-// "customer_mailid" -> "hariprasath.s@sporadasecure.com"
-// 5 =
-// "customer_phoneno" -> "9952511993"
-// 6 =
-// "date" -> "2025-03-28T07:00:03.000Z"
-// 7 =
-// "gstnumber" -> null
-// 8 =
-// "subscription_billid" -> 0
-// 9 =
-// "TotalAmount" -> 354
-// 10 =
-// "pdf_path" -> Map (2 items)
-// 11 =
-// "path" -> "\\192.168.0.156\Backup_ganesh\2025\March
   factory CustomerPDF_List.fromJson(Map<String, dynamic> json) {
     return CustomerPDF_List(
-      customerAddressName: json['Client_addressname'] ?? '',
-      customerAddress: json['client_address'] ?? '',
-      billingAddress: json['Billing_address'] ?? '',
-      billingAddressName: json['Billing_addressname'] ?? '',
+      customerAddressName: json['customeraddress_name'] ?? '',
+      customerAddress: json['customeraddress'] ?? '',
+      billingAddress: json['billing_address'] ?? '',
+      billingAddressName: json['billingaddress_name'] ?? '',
       customerEmail: json['customer_mailid'] ?? '',
       customerPhone: json['customer_phoneno'] ?? '',
-      customerGst: json['gstnumber'] ?? '',
+      customerGst: json['customer_gstno'] ?? '',
       date: DateTime.parse(json['date']),
-      // customType: json['custom_type'] ?? '',
-      genId: json['subscription_billid'] ?? '',
-      TotalAmount: json['TotalAmount'] ?? 0,
-      pdfData: json['pdf_data'] != null && json['pdf_data']['data'] != null ? Uint8List.fromList(List<int>.from(json['pdf_data']['data'])) : Uint8List(0),
+      customType: json['custom_type'] ?? '',
+      customPDFid: json['custompdfid'] ?? 0,
+      genId: json['gen_id'] ?? '',
+      // pdfData: json['pdf_path'] != null && json['pdf_path']['data'] != null ? Uint8List.fromList(List<int>.from(json['pdf_path']['data'])) : Uint8List(0),
       filePath: json['path'] ?? '',
     );
   }
@@ -411,13 +385,13 @@ class CustomerPDF_List {
       'customer_phoneno': customerPhone,
       'customer_gstno': customerGst,
       'date': date.toIso8601String(),
-      // 'custom_type': customType,
+      'custom_type': customType,
+      'customPDFid': customPDFid,
       'gen_id': genId,
-      "TotalAmount": TotalAmount,
-      'pdf_data': {
-        'type': 'Buffer',
-        'data': pdfData.toList(),
-      },
+      // 'pdf_path': {
+      //   'type': 'Buffer',
+      //   'data': pdfData.toList(),
+      // },
       'path': filePath,
     };
   }

@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:animations/animations.dart';
@@ -67,6 +69,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.Get_RecurringInvoiceList(null);
+      widget.Get_salesCustomPDFLsit();
       widget.get_CompanyList();
       widget.get_GlobalPackageList(context);
       subscriptionController.updateshowcustomerprocess(null);
@@ -650,31 +653,30 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                             case 'Custom List':
                                                               () async {
                                                                 // Show Bottom Sheet with a loading message initially
-                                                                showModalBottomSheet(
-                                                                  barrierColor: const Color.fromARGB(244, 11, 15, 26),
-                                                                  enableDrag: true,
-                                                                  backgroundColor: Colors.transparent,
-                                                                  context: context,
-                                                                  shape: const RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.vertical(
-                                                                      top: Radius.circular(20),
-                                                                    ),
-                                                                  ),
-                                                                  builder: (BuildContext context) {
-                                                                    return const SizedBox(
-                                                                      child: Padding(
-                                                                        padding: EdgeInsets.only(left: 70, right: 70),
-                                                                        child: Center(child: CircularProgressIndicator()), // Show loader initially
-                                                                      ),
-                                                                    );
-                                                                  },
-                                                                );
-
-                                                                // Call the API after showing the bottom sheet
-                                                                bool success = await widget.GetCustomPDFLsit(context);
-
+                                                                // showModalBottomSheet(
+                                                                //   barrierColor: const Color.fromARGB(244, 11, 15, 26),
+                                                                //   enableDrag: true,
+                                                                //   backgroundColor: Colors.transparent,
+                                                                //   context: context,
+                                                                //   shape: const RoundedRectangleBorder(
+                                                                //     borderRadius: BorderRadius.vertical(
+                                                                //       top: Radius.circular(20),
+                                                                //     ),
+                                                                //   ),
+                                                                //   builder: (BuildContext context) {
+                                                                //     return const SizedBox(
+                                                                //       child: Padding(
+                                                                //         padding: EdgeInsets.only(left: 70, right: 70),
+                                                                //         child: Center(child: CircularProgressIndicator()), // Show loader initially
+                                                                //       ),
+                                                                //     );
+                                                                //   },
+                                                                // );
+                                                                // loader.start(context);
+                                                                // // Call the API after showing the bottom sheet
+                                                                // loader.stop();
                                                                 // Close the previous bottom sheet
-                                                                Navigator.pop(context);
+                                                                // Navigator.pop(context);
 
                                                                 // Show a new bottom sheet based on API response
                                                                 showModalBottomSheet(
@@ -691,7 +693,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                                     return SizedBox(
                                                                       child: Padding(
                                                                         padding: const EdgeInsets.only(left: 70, right: 70),
-                                                                        child: success ? _manualcreation_list() : const Text('No Data available!'),
+                                                                        child: customPDF_list(),
                                                                       ),
                                                                     );
                                                                   },
@@ -2253,7 +2255,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
     );
   }
 
-  Widget _manualcreation_list() {
+  Widget customPDF_list() {
     subscriptionController.clear_sharedata();
     return Obx(() {
       return Container(
@@ -2447,12 +2449,16 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                   alignment: Alignment.centerLeft,
                                   child: IconButton(
                                     onPressed: () async {
+                                      // File? temp =File(path)
+                                      // File? pdfFile = await widget.savePdfToTemp(subscriptionController.subscriptionModel.custom_pdfFile.value);
+
+                                      widget.Get_customPDFfile(context, subscriptionController.subscriptionModel.customPdfList[index].customPDFid);
                                       widget.downloadPdf(
                                           context,
                                           subscriptionController.subscriptionModel.customPdfList[index].filePath
                                               .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
                                               .replaceAll(" ", ""),
-                                          await widget.savePdfToTemp(subscriptionController.subscriptionModel.customPdfList[index].pdfData));
+                                          subscriptionController.subscriptionModel.custom_pdfFile.value);
                                     },
                                     icon: const Icon(
                                       Icons.download,
@@ -2878,8 +2884,27 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                                   : SystemMouseCursors.forbidden,
                                                               child: GestureDetector(
                                                                 onTap: () async {
-                                                                  widget.postData_sendPDF(context, widget.fetch_messageType(),
-                                                                      await widget.savePdfToTemp(subscriptionController.subscriptionModel.customPdfList[index].pdfData));
+                                                                  await widget.Get_customPDFfile(
+                                                                    context,
+                                                                    subscriptionController.subscriptionModel.customPdfList[index].customPDFid,
+                                                                  );
+
+                                                                  File? file = subscriptionController.subscriptionModel.custom_pdfFile.value;
+
+                                                                  if (await file!.exists() && await file.length() > 0) {
+                                                                    widget.postData_sendPDF(
+                                                                      context,
+                                                                      widget.fetch_messageType(),
+                                                                      file,
+                                                                    );
+                                                                  } else {
+                                                                    Basic_dialog(
+                                                                      context: context,
+                                                                      title: "Error",
+                                                                      content: "The PDF file is empty or missing.",
+                                                                      showCancel: false,
+                                                                    );
+                                                                  }
                                                                 },
                                                                 child: Container(
                                                                   width: 105,
@@ -2946,18 +2971,35 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => Dialog(
-                                            insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
-                                            child: SizedBox(
-                                              width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-                                              height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
-                                              child: SfPdfViewer.memory(subscriptionController.subscriptionModel.customPdfList[index].pdfData),
-                                            ),
-                                          ),
+                                      onTap: () async {
+                                        await widget.Get_customPDFfile(
+                                          context,
+                                          subscriptionController.subscriptionModel.customPdfList[index].customPDFid,
                                         );
+
+                                        File? file = subscriptionController.subscriptionModel.custom_pdfFile.value;
+
+                                        if (await file!.exists() && await file.length() > 0) {
+                                          Uint8List? temp = await convertFileToUint8List(subscriptionController.subscriptionModel.custom_pdfFile.value!);
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => Dialog(
+                                              insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+                                              child: SizedBox(
+                                                width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+                                                height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
+                                                child: SfPdfViewer.memory(temp),
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          Basic_dialog(
+                                            context: context,
+                                            title: "Error",
+                                            content: "The  PDF file is empty or missing.",
+                                            showCancel: false,
+                                          );
+                                        }
                                       },
                                       child: Image.asset(height: 40, 'assets/images/pdfdownload.png'),
                                     ),

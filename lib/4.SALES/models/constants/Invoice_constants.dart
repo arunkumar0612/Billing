@@ -65,6 +65,7 @@ class InvoiceModel extends GetxController with GetSingleTickerProviderStateMixin
   var feedbackController = TextEditingController().obs;
   var filePathController = TextEditingController().obs;
   var CCemailToggle = false.obs;
+ var isGST_local = true.obs;
 
   @override
   void onInit() {

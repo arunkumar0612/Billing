@@ -542,6 +542,7 @@ class QuoteController extends GetxController {
   quoteModel.feedbackController.value.clear();
   quoteModel.filePathController.value.clear();
   quoteModel.CCemailToggle.value = false;
+  quoteModel.isGST_local = true.obs;
 }
 
 }

@@ -13,8 +13,10 @@ import 'package:ssipl_billing/4.SALES/models/entities/Invoice_entities.dart';
 import 'package:ssipl_billing/4.SALES/views/CustomPDF/Invoice/Invoice_PostAll.dart';
 import 'package:ssipl_billing/COMPONENTS-/CustomPDF_templates/CustomPDF_Invoice_template.dart';
 import 'package:ssipl_billing/UTILS-/helpers/returns.dart';
+import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 
 import '../../../../API-/invoker.dart';
+
 
 class Custom_Invoice_Services {
   final Invoker apiController = Get.find<Invoker>();
@@ -57,6 +59,7 @@ class Custom_Invoice_Services {
       "",
       pdfpopup_controller.pdfModel.value.GSTnumber.value.text,
       pdfpopup_controller.pdfModel.value.manualInvoice_gstTotals,
+      isGST_Local(pdfpopup_controller.pdfModel.value.GSTnumber.value.text)
     );
 
     Directory tempDir = await getTemporaryDirectory();

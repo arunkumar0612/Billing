@@ -549,6 +549,7 @@ class InvoiceController extends GetxController {
   invoiceModel.feedbackController.value.clear();
   invoiceModel.filePathController.value.clear();
   invoiceModel.CCemailToggle.value = false;
+  invoiceModel.isGST_local.value = true;
 }
 
 }

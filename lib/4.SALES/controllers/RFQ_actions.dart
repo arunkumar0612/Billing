@@ -391,6 +391,7 @@ class RfqController extends GetxController {
 
   void removeFromProductList(index) {
     rfqModel.Rfq_products.removeAt(index);
+    rfqModel.product_editIndex.value = null;
   }
 
   void update_requiredData(CMDmResponse value) {

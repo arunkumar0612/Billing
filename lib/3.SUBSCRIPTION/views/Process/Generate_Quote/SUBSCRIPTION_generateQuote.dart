@@ -151,7 +151,7 @@ class _SUBSCRIPTION_GenerateQuoteState extends State<SUBSCRIPTION_GenerateQuote>
                           eventID: widget.eventID,
                         ),
                         SUBSCRIPTION_QuoteSites(),
-                        const SubscriptionQuotePackage(),
+                        SUBSCRIPTION_QuotePackage(),
                         SUBSCRIPTION_QuoteNote(),
                         SUBSCRIPTION_PostQuote(type: 'E:/${(quoteController.quoteModel.Quote_no.value ?? "default_filename").replaceAll("/", "-")}.pdf', eventtype: widget.quoteType
                             // Pass the expected file path

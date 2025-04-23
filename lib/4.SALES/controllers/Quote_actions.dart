@@ -413,6 +413,7 @@ class QuoteController extends GetxController {
 
   void removeFromProductList(index) {
     quoteModel.Quote_products.removeAt(index);
+    quoteModel.product_editIndex.value = null;
   }
 
   void update_requiredData(CMDmResponse value) {

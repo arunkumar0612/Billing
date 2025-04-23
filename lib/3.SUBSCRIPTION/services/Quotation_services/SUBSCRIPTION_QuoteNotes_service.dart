@@ -179,6 +179,7 @@ mixin SUBSCRIPTION_QuotenotesService {
       "gstPercent": 18,
       "GSTIN": quoteController.quoteModel.gstNumController.value.text,
       'pendingAmount': 0.0,
+      "package_Mapped_sites": quoteController.quoteModel.selectedPackages.map((package) => package.toJson()).toList(),
       "addressDetails": {
         "clientName": quoteController.quoteModel.clientAddressNameController.value.text,
         "clientAddress": quoteController.quoteModel.clientAddressController.value.text,

@@ -614,52 +614,58 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                       children: [
                         Row(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                widget.printPdf();
-                              },
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Image.asset(height: 40, 'assets/images/printer.png'),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  const Text(
-                                    "Print",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color.fromARGB(255, 143, 143, 143),
+                            MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: GestureDetector(
+                                onTap: () {
+                                  widget.printPdf();
+                                },
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Image.asset(height: 40, 'assets/images/printer.png'),
+                                    const SizedBox(
+                                      height: 5,
                                     ),
-                                  ),
-                                ],
+                                    const Text(
+                                      "Print",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color.fromARGB(255, 143, 143, 143),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             const SizedBox(width: 30), // Space between buttons
                             // Download Button
-                            GestureDetector(
-                              onTap: () {
-                                widget.downloadPdf(path.basename(pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path ?? ""));
-                              },
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Image.asset(height: 40, 'assets/images/pdfdownload.png'),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  const Text(
-                                    "Download",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color.fromARGB(255, 143, 143, 143),
+                            MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: GestureDetector(
+                                onTap: () {
+                                  widget.downloadPdf(path.basename(pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path ?? ""));
+                                },
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Image.asset(height: 40, 'assets/images/pdfdownload.png'),
+                                    const SizedBox(
+                                      height: 5,
                                     ),
-                                  ),
-                                ],
+                                    const Text(
+                                      "Download",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color.fromARGB(255, 143, 143, 143),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
+                            )
                           ],
                         ),
                         if (pdfpopup_controller.pdfModel.value.whatsapp_selectionStatus.value || pdfpopup_controller.pdfModel.value.gmail_selectionStatus.value)

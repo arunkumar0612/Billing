@@ -1,3 +1,4 @@
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Sites_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
@@ -239,7 +240,7 @@ class SUBSCRIPTION_Quote {
   final int gstPercent;
   final String GSTIN;
   final Address addressDetails;
-
+  final List<Map<String, dynamic>> package_Mapped_sites;
   final List<Site> siteData;
   final FinalCalculation finalCalc;
   final List<String> notes;
@@ -249,6 +250,7 @@ class SUBSCRIPTION_Quote {
     required this.gstPercent,
     required this.GSTIN,
     required this.addressDetails,
+    required this.package_Mapped_sites,
     required this.siteData,
     required this.finalCalc,
     required this.notes,
@@ -262,6 +264,7 @@ class SUBSCRIPTION_Quote {
       gstPercent: json['gstPercent'] as int,
       GSTIN: json['GSTIN'] as String,
       addressDetails: Address.fromJson(json['addressDetails']),
+      package_Mapped_sites: json['package_Mapped_sites'],
       siteData: Site.fromJson(List<Map<String, dynamic>>.from(json['siteData'])),
       finalCalc: FinalCalculation.fromJson(Site.fromJson(List<Map<String, dynamic>>.from(json['siteData'])), json['gstPercent'] as int, json['pendingAmount'] as double),
       notes: ['This is a sample note', 'This is another sample note'],
@@ -306,8 +309,145 @@ class Address {
   }
 }
 
+class Package {
+  String name;
+  String description;
+  String cameraCount;
+  String amount;
+  String additionalCameras;
+  String show;
+  List<Site> sites;
+
+  // Reactive states
+  RxList<int> selectedIndices = <int>[].obs;
+  RxBool showSiteList = false.obs;
+  RxBool editingMode = false.obs;
+
+  // Temp values for editing
+  RxString tempName = ''.obs;
+  RxString tempDescription = ''.obs;
+  RxString tempCameraCount = ''.obs;
+  RxString tempAmount = ''.obs;
+  RxString tempAdditionalCameras = ''.obs;
+  RxString tempShow = ''.obs;
+
+  Package({
+    required this.name,
+    required this.description,
+    required this.cameraCount,
+    required this.amount,
+    required this.additionalCameras,
+    required this.show,
+    required this.sites,
+  }) {
+    // Init reactive values
+    selectedIndices = <int>[].obs;
+    showSiteList = false.obs;
+    editingMode = false.obs;
+
+    tempName = name.obs;
+    tempDescription = description.obs;
+    tempCameraCount = cameraCount.obs;
+    tempAmount = amount.obs;
+    tempAdditionalCameras = additionalCameras.obs;
+    tempShow = show.obs;
+  }
+
+  // JSON methods
+  factory Package.fromJson(Map<String, dynamic> json) {
+    return Package(
+      name: json['name'] as String,
+      description: json['description'] as String,
+      cameraCount: json['camera_count'] as String,
+      amount: json['amount'] as String,
+      additionalCameras: json['additional_cameras'] as String,
+      show: json['show'] as String,
+      sites: Site.fromJson(List<Map<String, dynamic>>.from(json['sites'])),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'description': description,
+      'camera_count': cameraCount,
+      'amount': amount,
+      'additional_cameras': additionalCameras,
+      'show': show,
+      'sites': sites.map((site) => site.toJson()).toList(),
+    };
+  }
+
+  // Save changes from temp fields
+  void saveChanges() {
+    name = tempName.value;
+    description = tempDescription.value;
+    cameraCount = tempCameraCount.value;
+    amount = tempAmount.value;
+    additionalCameras = tempAdditionalCameras.value;
+    show = tempShow.value;
+    editingMode.value = false;
+  }
+
+  // Cancel edit
+  void cancelEditing() {
+    tempName.value = name;
+    tempDescription.value = description;
+    tempCameraCount.value = cameraCount;
+    tempAmount.value = amount;
+    tempAdditionalCameras.value = additionalCameras;
+    tempShow.value = show;
+    editingMode.value = false;
+  }
+
+  // Add/remove site helpers
+  void addSite(Site site) => sites.add(site);
+  void removeSite(int index) => sites.removeAt(index);
+
+  // Toggle selection for site
+  void toggleSiteSelection(int index) {
+    if (selectedIndices.contains(index)) {
+      selectedIndices.remove(index);
+    } else {
+      selectedIndices.add(index);
+    }
+  }
+
+  // Equality & Copying
+  @override
+  bool operator ==(Object other) => identical(this, other) || other is Package && name == other.name && description == other.description;
+
+  @override
+  int get hashCode => name.hashCode ^ description.hashCode;
+
+  Package copyWith({
+    String? name,
+    String? description,
+    String? cameraCount,
+    String? amount,
+    String? additionalCameras,
+    String? show,
+    List<Site>? sites,
+  }) {
+    return Package(
+      name: name ?? this.name,
+      description: description ?? this.description,
+      cameraCount: cameraCount ?? this.cameraCount,
+      amount: amount ?? this.amount,
+      additionalCameras: additionalCameras ?? this.additionalCameras,
+      show: show ?? this.show,
+      sites: sites ?? List.from(this.sites),
+    );
+  }
+
+  // Optional: validation placeholder
+  bool isValid() {
+    return name.isNotEmpty && cameraCount.isNotEmpty && amount.isNotEmpty;
+  }
+}
+
 class Site {
-  static int _counter = 1; // Static counter to auto-increment serial numbers
+  static int _counter = 1;
   String serialNo;
   String siteName;
   String address;
@@ -317,6 +457,7 @@ class Site {
   int specialPrice;
   final String selectedPackage;
   final PackageDetails? packageDetails;
+
   Site({
     required this.siteName,
     required this.address,
@@ -326,15 +467,13 @@ class Site {
     required this.specialPrice,
     required this.selectedPackage,
     this.packageDetails,
-  }) : serialNo = (_counter++).toString(); // Auto-increment serial number
+  }) : serialNo = (_counter++).toString();
 
-  // Convert List of JSON Maps to List of Site objects
   static List<Site> fromJson(List<Map<String, dynamic>> jsonList) {
-    _counter = 1; // Reset counter before parsing a new list
-
+    _counter = 1;
     return jsonList.map((json) {
       return Site(
-        siteName: json['siteName'] as String, // Fix key casing
+        siteName: json['siteName'] as String,
         address: json['address'] as String,
         packageName: json['packageName'] as String,
         camCount: json['camCount'] as int,
@@ -346,19 +485,17 @@ class Site {
     }).toList();
   }
 
-  // Convert List of Site objects to JSON List
   static List<Map<String, dynamic>> toJsonList(List<Site> sites) {
     return sites.map((site) => site.toJson()).toList();
   }
 
-  // Convert single Site object to JSON
   Map<String, dynamic> toJson() {
     return {
       'serialNo': serialNo,
       'siteName': siteName,
       'address': address,
       'packageName': packageName,
-      "camCount": camCount,
+      'camCount': camCount,
       'basicPrice': basicPrice,
       'specialPrice': specialPrice,
       'selectedPackage': selectedPackage,

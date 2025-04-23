@@ -29,9 +29,6 @@ class _SUBSCRIPTION_GenerateQuoteState extends State<SUBSCRIPTION_GenerateQuote>
     super.initState();
     // SUBSCRIPTION_GenerateQuote._tabController = ;
     quoteController.initializeTabController(TabController(length: 5, vsync: this));
-    quoteController.quoteModel.fadeAnimations = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: quoteController.quoteModel.animationControllers, curve: Curves.easeIn),
-    );
   }
 
   @override

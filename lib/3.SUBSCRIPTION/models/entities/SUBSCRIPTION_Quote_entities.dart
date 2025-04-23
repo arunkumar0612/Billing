@@ -370,7 +370,6 @@ class Package {
       'additional_cameras': additionalCameras,
       'show': show,
       'sites': sites.map((site) => site.toJson()).toList(),
-      'icon': '🛠️',
     };
   }
 

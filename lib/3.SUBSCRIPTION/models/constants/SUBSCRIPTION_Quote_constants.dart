@@ -51,36 +51,39 @@ class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProvide
   Rx<String?> selectedPackage = Rx<String?>(null);
 
   RxBool customPackageCreated = false.obs;
-  late AnimationController animationControllers;
-  late Animation<double> fadeAnimations;
+  // late AnimationController animationControllers;
+  // late Animation<double> fadeAnimations;
   RxList<Package> selectedPackages = <Package>[].obs;
 
-  final Map<String, Map<String, String>> packageDetails = {
-    'Basic Plan': {
-      'name': 'Basic Plan',
-      'description': 'Includes 5 cameras, ideal for small homes or small businesses.',
-      'camera_count': '5',
-      'amount': '\$50/month',
-      'additional_cameras': '\$10 per extra camera',
-      'show': 'Global',
-    },
-    'Standard Plan': {
-      'name': 'Standard Plan',
-      'description': 'Includes 10 cameras, perfect for medium offices and retail spaces.',
-      'camera_count': '10',
-      'amount': '\$100/month',
-      'additional_cameras': '\$8 per extra camera',
-      'show': 'Global',
-    },
-    'Premium Plan': {
-      'name': 'Premium Plan',
-      'description': 'Includes 20 cameras, designed for large buildings and enterprises.',
-      'camera_count': '20',
-      'amount': '\$200/month',
-      'additional_cameras': '\$5 per extra camera',
-      'show': 'Global',
-    },
-  }.obs;
+  RxList<Package> packageDetails = <Package>[
+    Package(
+      name: 'Basic Plan',
+      description: 'Includes 5 cameras, ideal for small homes or small businesses.',
+      cameraCount: '5',
+      amount: '\$50/month',
+      additionalCameras: '\$10 per extra camera',
+      show: 'Global',
+      sites: [],
+    ),
+    Package(
+      name: 'Standard Plan',
+      description: 'Includes 10 cameras, perfect for medium offices and retail spaces.',
+      cameraCount: '10',
+      amount: '\$100/month',
+      additionalCameras: '\$8 per extra camera',
+      show: 'Global',
+      sites: [],
+    ),
+    Package(
+      name: 'Premium Plan',
+      description: 'Includes 20 cameras, designed for large buildings and enterprises.',
+      cameraCount: '20',
+      amount: '\$200/month',
+      additionalCameras: '\$5 per extra camera',
+      show: 'Global',
+      sites: [],
+    ),
+  ].obs;
 
   final customNameControllers = TextEditingController().obs;
   final customDescControllers = TextEditingController().obs;
@@ -89,7 +92,7 @@ class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProvide
   final customChargesControllers = TextEditingController().obs;
   final showto = 'Global'.obs;
 
-  Rx<Map<String, String>?> customPackage = Rx<Map<String, String>?>(null);
+  Rx<Package?> customPackage = Rx<Package?>(null);
 
   RxBool showSiteList = false.obs;
   var selectedIndices = <int>[].obs;

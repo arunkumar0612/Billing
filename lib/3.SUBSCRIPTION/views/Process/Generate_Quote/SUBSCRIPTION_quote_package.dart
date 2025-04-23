@@ -22,13 +22,6 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
   @override
   void initState() {
     super.initState();
-    quoteController.quoteModel.animationControllers = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
-    // quoteController.quoteModel.fadeAnimations = Tween<double>(begin: 0, end: 1).animate(
-    //   CurvedAnimation(parent: quoteController.quoteModel.animationControllers, curve: Curves.easeIn),
-    // );
   }
 
   @override
@@ -144,67 +137,75 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
           onChanged: (String? newValue) async {
             if (newValue == null) return;
 
+            // Update selected package value
             quoteController.quoteModel.selectedPackage.value = newValue;
-            quoteController.quoteModel.animationControllers.reset();
-            quoteController.quoteModel.animationControllers.forward();
 
             if (newValue != 'Custom Package') {
-              final package = quoteController.quoteModel.packageDetails[newValue];
-              if (package != null) {
-                // Find packages with NO sites assigned
-                final emptyPackages = quoteController.quoteModel.selectedPackages.where((pkg) => pkg.sites.isEmpty).toList();
+              final package = quoteController.quoteModel.packageDetails.firstWhere(
+                (p) => p.name == newValue,
+                // orElse: () => Package(), // Fallback empty package
+              );
 
-                // If there are empty packages, ask to replace only those
-                if (emptyPackages.isNotEmpty) {
-                  final shouldReplace = await Basic_dialog(
-                        context: context,
-                        title: 'Replace Empty Packages?',
-                        content: 'The following packages have no sites assigned:\n'
-                            '${emptyPackages.map((p) => p.name).join(', ')}\n'
-                            'Would you like to replace them with "$newValue"?',
-                        showCancel: true,
-                      ) ??
-                      false;
+              // 1. Check for empty packages (packages with no sites)
+              final emptyPackages = quoteController.quoteModel.selectedPackages.where((pkg) => pkg.sites.isEmpty).toList();
 
-                  if (shouldReplace) {
-                    // Remove only the empty packages
-                    quoteController.quoteModel.selectedPackages.removeWhere((pkg) => pkg.sites.isEmpty);
-                  } else {
-                    return; // User chose to keep empty packages
-                  }
+              // 2. Show replacement dialog if empty packages exist
+              if (emptyPackages.isNotEmpty) {
+                final shouldReplace = await Basic_dialog(
+                      context: context,
+                      title: 'Replace Empty Packages?',
+                      content: 'The following packages have no sites assigned:\n'
+                          '${emptyPackages.map((p) => p.name).join(', ')}\n'
+                          'Would you like to replace them with "$newValue"?',
+                      showCancel: true,
+                    ) ??
+                    false;
+
+                if (shouldReplace) {
+                  // Remove only empty packages
+                  quoteController.quoteModel.selectedPackages.removeWhere((pkg) => pkg.sites.isEmpty);
+                } else {
+                  return; // User chose to keep empty packages
                 }
-                final existingIndex = quoteController.quoteModel.selectedPackages.indexWhere((p) => p.name == package['name']);
+              }
 
-                if (existingIndex != -1) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('${package['name']!} package already exists'),
-                      backgroundColor: Colors.blue,
-                    ),
-                  );
-                  return;
-                }
+              // 3. Check for duplicate packages
+              final existingIndex = quoteController.quoteModel.selectedPackages.indexWhere((p) => p.name == package.name);
 
-                // Add the new package
-                quoteController.quoteModel.selectedPackages.add(
-                  Package(
-                    name: package['name']!,
-                    description: package['description']!,
-                    cameraCount: package['camera_count']!,
-                    amount: package['amount']!,
-                    additionalCameras: package['additional_cameras']!,
-                    show: package['show']!,
-                    sites: [],
-                  ),
-                );
-
+              if (existingIndex != -1) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('${package['name']!} added to packages'),
-                    backgroundColor: Colors.green,
+                    content: Text('${package.name} package already exists'),
+                    backgroundColor: Colors.blue,
                   ),
                 );
+                return;
               }
+
+              // 4. Add the new package
+              quoteController.quoteModel.selectedPackages.add(
+                Package(
+                  name: package.name,
+                  description: package.description,
+                  cameraCount: package.cameraCount,
+                  amount: package.amount,
+                  additionalCameras: package.additionalCameras,
+                  show: package.show,
+                  sites: [], // Start with empty sites
+                ),
+              );
+
+              // 5. Show success feedback
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('${package.name} added to packages'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            } else {
+              // Handle Custom Package selection
+              quoteController.quoteModel.customPackageCreated.value = false;
+              widget.resetCustomPackageFields();
             }
           },
         ),
@@ -218,20 +219,17 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
     } else if (quoteController.quoteModel.selectedPackage.value == 'Custom Package') {
       return buildCustomPackageForm();
     } else {
-      return FadeTransition(
-        opacity: quoteController.quoteModel.fadeAnimations,
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: quoteController.quoteModel.selectedPackages.length,
-                itemBuilder: (context, index) {
-                  return buildPackageDetails(quoteController.quoteModel.selectedPackages[index]);
-                },
-              ),
+      return Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: quoteController.quoteModel.selectedPackages.length,
+              itemBuilder: (context, index) {
+                return buildPackageDetails(quoteController.quoteModel.selectedPackages[index]);
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       );
     }
   }
@@ -671,7 +669,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
 
   Widget _buildPackageDetailsTab(Map<String, dynamic> details) {
     // Check if this is a custom package
-    final isCustomPackage = quoteController.quoteModel.customPackage.value?['name'] == details['name'];
+    final isCustomPackage = quoteController.quoteModel.customPackage.value?.name == details['name'];
     final packageIndex = quoteController.quoteModel.selectedPackages.indexWhere((p) => p.name == details['name']);
     final package = quoteController.quoteModel.selectedPackages[packageIndex];
 
@@ -721,9 +719,9 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                       children: [
                         Row(
                           children: [
-                            const Text(
+                            Text(
                               '📷',
-                              style: TextStyle(fontSize: 15),
+                              style: const TextStyle(fontSize: 15),
                             ),
                             const SizedBox(width: 10),
                             const SizedBox(
@@ -825,32 +823,27 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                     height: 20,
                     child: ElevatedButton(
                       onPressed: () {
+                        setState(() {
+                          package.name = package.tempName.value;
+                          package.cameraCount = package.tempCameraCount.value;
+                          package.amount = package.tempAmount.value;
+                          package.additionalCameras = package.tempAdditionalCameras.value;
+                          package.description = package.tempDescription.value;
+                          package.editingMode.value = false;
+
+                          // Update the custom package reference
+                          if (quoteController.quoteModel.customPackage.value != null) {
+                            quoteController.quoteModel.customPackage.value = package;
+                          }
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Package updated successfully'),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        });
                         // Save changes
-                        package.name = package.tempName.value;
-                        package.cameraCount = package.tempCameraCount.value;
-                        package.amount = package.tempAmount.value;
-                        package.additionalCameras = package.tempAdditionalCameras.value;
-                        package.description = package.tempDescription.value;
-                        package.editingMode.value = false;
-
-                        // Update the custom package reference
-                        if (quoteController.quoteModel.customPackage.value != null) {
-                          quoteController.quoteModel.customPackage.value = {
-                            'name': package.name,
-                            'description': package.description,
-                            'camera_count': package.cameraCount,
-                            'amount': package.amount,
-                            'additional_cameras': package.additionalCameras,
-                            'show': package.show,
-                          };
-                        }
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Package updated successfully'),
-                            backgroundColor: Colors.green,
-                          ),
-                        );
                       },
                       child: const Text('Save'),
                     ),

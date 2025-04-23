@@ -57,7 +57,9 @@ class _MyHomePageState extends State<MyHomePage> {
               // ),
               controller: sideMenu,
               style: SideMenuStyle(
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                ),
                 showTooltip: true,
                 openSideMenuWidth: 200,
                 // compactSideMenuWidth: 50,
@@ -218,15 +220,18 @@ class _MyHomePageState extends State<MyHomePage> {
             const VerticalDivider(
               width: 5,
             ),
-            GestureDetector(
-              child: showfull
-                  ? const Text('>', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 22))
-                  : const Text('||', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 15)),
-              onTap: () {
-                setState(() {
-                  showfull = showfull ? false : true;
-                });
-              },
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                child: showfull
+                    ? const Text('>', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 22))
+                    : const Text('||', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 15)),
+                onTap: () {
+                  setState(() {
+                    showfull = showfull ? false : true;
+                  });
+                },
+              ),
             ),
             const VerticalDivider(
               width: 5,

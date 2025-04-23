@@ -53,7 +53,7 @@ class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProvide
   RxBool customPackageCreated = false.obs;
   late AnimationController animationControllers;
   late Animation<double> fadeAnimations;
-  final RxList<Map<String, String>> selectedPackages = <Map<String, String>>[].obs;
+  RxList<Package> selectedPackages = <Package>[].obs;
 
   final Map<String, Map<String, String>> packageDetails = {
     'Basic Plan': {

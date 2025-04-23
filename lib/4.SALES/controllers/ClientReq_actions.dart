@@ -148,6 +148,7 @@ class ClientreqController extends GetxController {
 
   void removeFromProductList(index) {
     clientReqModel.clientReqProductDetails.removeAt(index);
+    clientReqModel.product_editIndex.value = null;
   }
 
   void removeFromNoteList(int index) {

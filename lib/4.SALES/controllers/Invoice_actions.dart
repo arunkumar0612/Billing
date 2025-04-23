@@ -415,6 +415,7 @@ class InvoiceController extends GetxController {
 
   void removeFromProductList(index) {
     invoiceModel.Invoice_products.removeAt(index);
+    invoiceModel.product_editIndex.value = null;
   }
 
   void update_requiredData(CMDmResponse value) {

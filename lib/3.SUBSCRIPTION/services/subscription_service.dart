@@ -895,6 +895,9 @@ mixin SubscriptionServices {
                         _quoteController.quoteModel.Quote_no.value = "";
                         _quoteController.quoteModel.TitleController.value.clear();
                         _quoteController.quoteModel.Quote_table_heading.value = "";
+                        _quoteController.quoteModel.selectedPackages.clear();
+                        _quoteController.quoteModel.selectedPackage.value = null;
+                        _quoteController.quoteModel.selectedIndices.clear;
                       }
                     } else {
                       // If no data, just close the dialog

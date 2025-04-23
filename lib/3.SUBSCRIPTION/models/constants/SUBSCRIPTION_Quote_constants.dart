@@ -63,7 +63,6 @@ class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProvide
       'amount': '\$50/month',
       'additional_cameras': '\$10 per extra camera',
       'show': 'Global',
-      'icon': '🏠',
     },
     'Standard Plan': {
       'name': 'Standard Plan',
@@ -72,7 +71,6 @@ class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProvide
       'amount': '\$100/month',
       'additional_cameras': '\$8 per extra camera',
       'show': 'Global',
-      'icon': '🏢',
     },
     'Premium Plan': {
       'name': 'Premium Plan',
@@ -81,7 +79,6 @@ class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProvide
       'amount': '\$200/month',
       'additional_cameras': '\$5 per extra camera',
       'show': 'Global',
-      'icon': '🏭',
     },
   }.obs;
 

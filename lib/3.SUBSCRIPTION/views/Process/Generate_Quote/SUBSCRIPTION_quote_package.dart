@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/Quotation_services/SUBSCRIPTION_QuotePackage_services.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:glassmorphism/glassmorphism.dart';
@@ -25,14 +26,13 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-    quoteController.quoteModel.fadeAnimations = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: quoteController.quoteModel.animationControllers, curve: Curves.easeIn),
-    );
+    // quoteController.quoteModel.fadeAnimations = Tween<double>(begin: 0, end: 1).animate(
+    //   CurvedAnimation(parent: quoteController.quoteModel.animationControllers, curve: Curves.easeIn),
+    // );
   }
 
   @override
   void dispose() {
-    quoteController.quoteModel.animationControllers.dispose();
     super.dispose();
   }
 
@@ -97,6 +97,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: DropdownButtonFormField<String>(
+          menuMaxHeight: 400,
           style: const TextStyle(
             color: Primary_colors.Color1,
             fontWeight: FontWeight.w500,
@@ -140,7 +141,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
               ),
             );
           }).toList(),
-          onChanged: (String? newValue) {
+          onChanged: (String? newValue) async {
             if (newValue == null) return;
 
             quoteController.quoteModel.selectedPackage.value = newValue;
@@ -149,7 +150,42 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
 
             if (newValue != 'Custom Package') {
               final package = quoteController.quoteModel.packageDetails[newValue];
-              if (package != null && !quoteController.quoteModel.selectedPackages.any((p) => p.name == package['name']!)) {
+              if (package != null) {
+                // Find packages with NO sites assigned
+                final emptyPackages = quoteController.quoteModel.selectedPackages.where((pkg) => pkg.sites.isEmpty).toList();
+
+                // If there are empty packages, ask to replace only those
+                if (emptyPackages.isNotEmpty) {
+                  final shouldReplace = await Basic_dialog(
+                        context: context,
+                        title: 'Replace Empty Packages?',
+                        content: 'The following packages have no sites assigned:\n'
+                            '${emptyPackages.map((p) => p.name).join(', ')}\n'
+                            'Would you like to replace them with "$newValue"?',
+                        showCancel: true,
+                      ) ??
+                      false;
+
+                  if (shouldReplace) {
+                    // Remove only the empty packages
+                    quoteController.quoteModel.selectedPackages.removeWhere((pkg) => pkg.sites.isEmpty);
+                  } else {
+                    return; // User chose to keep empty packages
+                  }
+                }
+                final existingIndex = quoteController.quoteModel.selectedPackages.indexWhere((p) => p.name == package['name']);
+
+                if (existingIndex != -1) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('${package['name']!} package already exists'),
+                      backgroundColor: Colors.blue,
+                    ),
+                  );
+                  return;
+                }
+
+                // Add the new package
                 quoteController.quoteModel.selectedPackages.add(
                   Package(
                     name: package['name']!,
@@ -164,28 +200,10 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('${package['name']!} added to selected packages'),
+                    content: Text('${package['name']!} added to packages'),
                     backgroundColor: Colors.green,
                   ),
                 );
-              }
-            } else {
-              // Initialize custom package fields if custom package exists
-              if (quoteController.quoteModel.customPackage.value != null) {
-                quoteController.quoteModel.customNameControllers.value.text = quoteController.quoteModel.customPackage.value!['name']!;
-                quoteController.quoteModel.customDescControllers.value.text = quoteController.quoteModel.customPackage.value!['description']!;
-                quoteController.quoteModel.customCameraCountControllers.value.text = quoteController.quoteModel.customPackage.value!['camera_count']!;
-                quoteController.quoteModel.customAmountControllers.value.text = quoteController.quoteModel.customPackage.value!['amount']!;
-                quoteController.quoteModel.customChargesControllers.value.text = quoteController.quoteModel.customPackage.value!['additional_cameras']!;
-                quoteController.quoteModel.showto.value = quoteController.quoteModel.customPackage.value!['show']!;
-              } else {
-                // Clear fields if no custom package exists
-                quoteController.quoteModel.customNameControllers.value.clear();
-                quoteController.quoteModel.customDescControllers.value.clear();
-                quoteController.quoteModel.customCameraCountControllers.value.clear();
-                quoteController.quoteModel.customAmountControllers.value.clear();
-                quoteController.quoteModel.customChargesControllers.value.clear();
-                quoteController.quoteModel.showto.value = 'Company';
               }
             }
           },
@@ -383,92 +401,96 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
   }
 
   Widget buildCustomPackageForm() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Create Custom Package',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Primary_colors.Color3,
-                  fontWeight: FontWeight.bold,
-                  fontSize: Primary_font_size.Text8,
-                ),
-          ),
-          const SizedBox(height: 8),
-
-          _buildCustomTextField(
-            controller: quoteController.quoteModel.customNameControllers.value,
-            label: 'Package Name',
-            icon: Icons.badge_outlined,
-          ),
-          _buildCustomTextField(
-            controller: quoteController.quoteModel.customCameraCountControllers.value,
-            label: 'Camera Count',
-            icon: Icons.videocam_outlined,
-            isNumber: true,
-          ),
-          _buildCustomTextField(
-            controller: quoteController.quoteModel.customAmountControllers.value,
-            label: 'Package Amount',
-            icon: Icons.attach_money_outlined,
-            isNumber: true,
-          ),
-          _buildCustomTextField(
-            controller: quoteController.quoteModel.customChargesControllers.value,
-            label: 'Additional Charges',
-            icon: Icons.money_off_csred_outlined,
-            isNumber: true,
-          ),
-
-          // Show to all sites radio buttons
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Row(
-              children: [
-                const Text(
-                  'Show this to all sites:',
-                  style: TextStyle(
-                    fontSize: Primary_font_size.Text9,
-                    color: Color.fromARGB(255, 202, 201, 201),
+    return Obx(() {
+      return SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Create Custom Package',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Primary_colors.Color3,
+                    fontWeight: FontWeight.bold,
+                    fontSize: Primary_font_size.Text8,
                   ),
-                ),
-                const SizedBox(width: 16),
-                _buildCustomRadio(
-                  context,
-                  title: 'Yes',
-                  value: 'Company',
-                  groupValue: quoteController.quoteModel.showto.value,
-                ),
-                const SizedBox(width: 16),
-                _buildCustomRadio(
-                  context,
-                  title: 'No',
-                  value: 'Global',
-                  groupValue: quoteController.quoteModel.showto.value,
-                ),
-              ],
             ),
-          ),
+            const SizedBox(height: 8),
 
-          const SizedBox(height: 10),
-          _buildCustomTextField(
-            controller: quoteController.quoteModel.customDescControllers.value,
-            label: 'Package Description',
-            maxLines: 3,
-          ),
-          const SizedBox(height: 16),
-          BasicButton(
-            colors: Primary_colors.Color3,
-            text: quoteController.quoteModel.customPackageCreated.value ? 'Update Package' : 'Save Custom Package',
-            onPressed: () {
-              widget.saveCustomPackage(context);
-            },
-          ),
-        ],
-      ),
-    );
+            _buildCustomTextField(
+              controller: quoteController.quoteModel.customNameControllers.value,
+              label: 'Package Name',
+              icon: Icons.badge_outlined,
+            ),
+            _buildCustomTextField(
+              controller: quoteController.quoteModel.customCameraCountControllers.value,
+              label: 'Camera Count',
+              icon: Icons.videocam_outlined,
+              isNumber: true,
+            ),
+            _buildCustomTextField(
+              controller: quoteController.quoteModel.customAmountControllers.value,
+              label: 'Package Amount',
+              icon: Icons.attach_money_outlined,
+              isNumber: true,
+            ),
+            _buildCustomTextField(
+              controller: quoteController.quoteModel.customChargesControllers.value,
+              label: 'Additional Camera',
+              icon: Icons.money_off_csred_outlined,
+              isNumber: true,
+            ),
+
+            // Show to all sites radio buttons
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Row(
+                children: [
+                  const Text(
+                    'Show this to all sites:',
+                    style: TextStyle(
+                      fontSize: Primary_font_size.Text9,
+                      color: Color.fromARGB(255, 202, 201, 201),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  _buildCustomRadio(
+                    context,
+                    title: 'Yes',
+                    value: 'Company',
+                    groupValue: quoteController.quoteModel.showto.value,
+                  ),
+                  const SizedBox(width: 16),
+                  _buildCustomRadio(
+                    context,
+                    title: 'No',
+                    value: 'Global',
+                    groupValue: quoteController.quoteModel.showto.value,
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 10),
+            _buildCustomTextField(
+              controller: quoteController.quoteModel.customDescControllers.value,
+              label: 'Package Description',
+              maxLines: 3,
+            ),
+            const SizedBox(height: 16),
+            BasicButton(
+              colors: Primary_colors.Color3,
+              text: 'Save Custom Package',
+              onPressed: () {
+                setState(() {
+                  widget.saveCustomPackage(context);
+                });
+              },
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildCustomTextField({
@@ -699,9 +721,9 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                       children: [
                         Row(
                           children: [
-                            Text(
-                              details['icon'] ?? '📷',
-                              style: const TextStyle(fontSize: 15),
+                            const Text(
+                              '📷',
+                              style: TextStyle(fontSize: 15),
                             ),
                             const SizedBox(width: 10),
                             const SizedBox(
@@ -761,7 +783,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                         const SizedBox(height: 12),
                         _buildDetailRow(
                           icon: Icons.money_off_csred_outlined,
-                          title: 'Additional Charges',
+                          title: 'Additional Camera',
                           value: package.editingMode.value ? package.tempAdditionalCameras.value : details['additional_cameras']!,
                           isEditable: isCustomPackage && package.editingMode.value,
                           onChanged: (value) => package.tempAdditionalCameras.value = value,

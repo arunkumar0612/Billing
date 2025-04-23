@@ -429,8 +429,8 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         quoteModel.clientAddressController.value.text.isEmpty ||
         quoteModel.billingAddressNameController.value.text.isEmpty ||
         quoteModel.billingAddressController.value.text.isEmpty ||
-        (quoteModel.gmail_selectionStatus.value && quoteModel.emailController.value.text.isEmpty) ||
-        (quoteModel.whatsapp_selectionStatus.value && quoteModel.phoneController.value.text.isEmpty) ||
+        // (quoteModel.gmail_selectionStatus.value && quoteModel.emailController.value.text.isEmpty) ||
+        // (quoteModel.whatsapp_selectionStatus.value && quoteModel.phoneController.value.text.isEmpty) ||
         // (quoteModel.gstNumController.value.text.isEmpty) // Optional if needed later
         quoteModel.Quote_noteList.isEmpty ||
         quoteModel.Quote_no.value == null);

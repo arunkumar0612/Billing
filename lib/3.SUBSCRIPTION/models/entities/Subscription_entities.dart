@@ -5,38 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
-class Customer {
-  final int customerId;
-  final String customerName;
-  final String? ccode;
-  final String subRequirementId;
-
-  Customer({
-    required this.customerId,
-    required this.customerName,
-    this.ccode,
-    required this.subRequirementId,
-  });
-
-  factory Customer.fromJson(CMDlResponse json, int i) {
-    return Customer(
-      customerId: json.data[i]['Customer_id'] as int,
-      customerName: json.data[i]['customer_name'] as String,
-      ccode: json.data[i]['ccode'] as String?,
-      subRequirementId: json.data[i]['Sub_requirement_id'] as String,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'Customer_id': customerId,
-      'customer_name': customerName,
-      'ccode': ccode,
-      'Sub_requirement_id': subRequirementId,
-    };
-  }
-}
-
 class Processcustomer {
   final int customerId;
   final String customerName;
@@ -56,6 +24,38 @@ class Processcustomer {
       customerName: json.data[i]['customer_name'] as String,
       customer_phoneno: json.data[i]['customer_phoneno'] as String,
       customer_gstno: json.data[i]['customer_gstno'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'Customer_id': customerId,
+      'customer_name': customerName,
+      'customer_phoneno': customer_phoneno,
+      'customer_gstno': customer_gstno,
+    };
+  }
+}
+
+class Recurredcustomer {
+  final int customerId;
+  final String customerName;
+  final String customer_phoneno;
+  final String customer_gstno;
+
+  Recurredcustomer({
+    required this.customerId,
+    required this.customerName,
+    required this.customer_phoneno,
+    required this.customer_gstno,
+  });
+
+  factory Recurredcustomer.fromJson(CMDlResponse json, int i) {
+    return Recurredcustomer(
+      customerId: json.data[i]['customer_id'] as int,
+      customerName: json.data[i]['customer_name'] as String,
+      customer_phoneno: json.data[i]['customer_phoneno'] as String,
+      customer_gstno: json.data[i]['customer_gstno'] ?? "",
     );
   }
 
@@ -359,46 +359,47 @@ class CustomerPDF_List {
 
   factory CustomerPDF_List.fromJson(Map<String, dynamic> json) {
     return CustomerPDF_List(
-      customerAddressName: json['customeraddress_name'] ?? '',
-      customerAddress: json['customeraddress'] ?? '',
-      billingAddress: json['billing_address'] ?? '',
-      billingAddressName: json['billingaddress_name'] ?? '',
+      customerAddressName: json['Client_addressname'] ?? '',
+      customerAddress: json['client_address'] ?? '',
+      billingAddress: json['Billing_address'] ?? '',
+      billingAddressName: json['Billing_addressname'] ?? '',
       customerEmail: json['customer_mailid'] ?? '',
       customerPhone: json['customer_phoneno'] ?? '',
-      customerGst: json['customer_gstno'] ?? '',
+      customerGst: json['gstnumber'] ?? '',
       date: DateTime.parse(json['date']),
       customType: json['custom_type'] ?? '',
       customPDFid: json['custompdfid'] ?? 0,
-      genId: json['gen_id'] ?? '',
+      genId: json['subscription_billid'] ?? '',
       // pdfData: json['pdf_path'] != null && json['pdf_path']['data'] != null ? Uint8List.fromList(List<int>.from(json['pdf_path']['data'])) : Uint8List(0),
-      filePath: json['path'] ?? '',
+      filePath: json['pdfpath'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'customeraddress_name': customerAddressName,
-      'customeraddress': customerAddress,
-      'billing_address': billingAddress,
-      'billingaddress_name': billingAddressName,
+      'Client_addressname': customerAddressName,
+      'client_address': customerAddress,
+      'Billing_address': billingAddress,
+      'Billing_addressname': billingAddressName,
       'customer_mailid': customerEmail,
       'customer_phoneno': customerPhone,
-      'customer_gstno': customerGst,
+      'gstnumber': customerGst,
       'date': date.toIso8601String(),
       'custom_type': customType,
-      'customPDFid': customPDFid,
-      'gen_id': genId,
+      'custombill_id': customPDFid,
+      'subscription_billid': genId,
       // 'pdf_path': {
       //   'type': 'Buffer',
       //   'data': pdfData.toList(),
       // },
-      'path': filePath,
+      'pdfpath': filePath,
     };
   }
 }
 
 class RecurringInvoice_List {
-  int subscriptionGeneratedId;
+  int recurredbillid;
+
   int subscriptionBillId;
   List<int> siteIds;
   String clientAddressName;
@@ -415,7 +416,7 @@ class RecurringInvoice_List {
   String date;
 
   RecurringInvoice_List({
-    required this.subscriptionGeneratedId,
+    required this.recurredbillid,
     required this.subscriptionBillId,
     required this.siteIds,
     required this.clientAddressName,
@@ -434,7 +435,7 @@ class RecurringInvoice_List {
 
   factory RecurringInvoice_List.fromJson(Map<String, dynamic> json) {
     return RecurringInvoice_List(
-      subscriptionGeneratedId: json['subscription_generatedid'],
+      recurredbillid: json['recurredbillid'],
       subscriptionBillId: json['subscription_billid'],
       siteIds: List<int>.from(json['site_Ids'] ?? []),
       clientAddressName: json['client_addressname'].toString(),
@@ -454,7 +455,7 @@ class RecurringInvoice_List {
 
   Map<String, dynamic> toJson() {
     return {
-      'subscription_generatedid': subscriptionGeneratedId,
+      'recurredbillid': recurredbillid,
       'subscription_billid': subscriptionBillId,
       'site_Ids': siteIds,
       'client_addressname': clientAddressName,

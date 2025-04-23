@@ -328,7 +328,7 @@ mixin SubscriptionServices {
     }
   }
 
-  Future<void> GetProcesscustomerList(context) async {
+  Future<void> GetProcesscustomerList() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.subscription_getprocesscustomer_API);
       if (response?['statusCode'] == 200) {
@@ -341,13 +341,42 @@ mixin SubscriptionServices {
 
           // _subscriptionController.updatecustomerId(_subscriptionController.subscriptionModel.processcustomerList[_subscriptionController.subscriptionModel.showcustomerprocess.value!].customerId);
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
+          print("error : ${value.message}");
+          // await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        print("error : ${"please contact administration"}");
+        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      print("error : $e");
+      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
+
+  Future<void> GetReccuredcustomerList() async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.subscription_getrecurredcustomer_API);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          // await Basic_dialog(context: context,showCancel: false, title: 'Processcustomer List', content: "Processcu    stomer List fetched successfully", onOk: () {});
+          _subscriptionController.subscriptionModel.recurredcustomerList.clear();
+          // print(value.data);
+          _subscriptionController.addToRecurredcustomerList(value);
+
+          // _subscriptionController.updatecustomerId(_subscriptionController.subscriptionModel.processcustomerList[_subscriptionController.subscriptionModel.showcustomerprocess.value!].customerId);
+        } else {
+          print("error : ${value.message}");
+          // await Basic_dialog(context: context, showCancel: false, title: 'Recurredcustomer List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        print("error : ${"please contact administration"}");
+        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      print("error : $e");
+      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 
@@ -662,9 +691,9 @@ mixin SubscriptionServices {
     }
   }
 
-  Future<void> Get_salesCustomPDFLsit() async {
+  Future<void> Get_subscriptionCustomPDFLsit() async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_salesCustompdf);
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_subscriptionCustompdf);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
@@ -691,11 +720,33 @@ mixin SubscriptionServices {
 
   Future<bool> Get_customPDFfile(context, int customPDFid) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyQueryString({"custompdfid": customPDFid}, API.sales_getcustombinaryfile_API);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"custompdfid": customPDFid}, API.subscription_getcustombinaryfile_API);
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
           await subscriptionController.custom_PDFfileApiData(value);
+          return true;
+          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Basic_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {}, showCancel: false);
+        }
+      } else {
+        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+      }
+      return false;
+    } catch (e) {
+      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      return false;
+    }
+  }
+
+  Future<bool> Get_RecurredPDFfile(context, int recurredPDFid) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"recurredbillid": recurredPDFid}, API.subscription_getRecurredBinaryfile_API);
+      if (response?['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        if (value.code) {
+          await subscriptionController.recurred_PDFfileApiData(value);
           return true;
           // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
@@ -976,6 +1027,8 @@ mixin SubscriptionServices {
     _subscriptionController.updateshowcustomerprocess(null);
     _subscriptionController.updatecustomerId(0);
     await Get_RecurringInvoiceList(null);
+    await GetProcesscustomerList();
+    await GetReccuredcustomerList();
     await get_CompanyList();
     await GetProcessList(0);
     await GetSubscriptionData(_subscriptionController.subscriptionModel.subscriptionperiod.value);

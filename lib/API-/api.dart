@@ -44,6 +44,7 @@ class API {
   static String subscription_getprocesslist_API = "http://192.168.0.200:8081/subscription/getprocesslist";
   static String subscription_addfeedback_API = "http://192.168.0.200:8081/subscription/addfeedback";
   static String subscription_getprocesscustomer_API = "http://192.168.0.200:8081/subscription/getprocesscustomer";
+  static String subscription_getrecurredcustomer_API = "http://192.168.0.200:8081/subscription/getrecurredcustomer";
   static String subscription_getbinaryfile_API = "http://192.168.0.200:8081/subscription/getbinaryfile";
   static String subscription_deleteprocess_API = "http://192.168.0.200:8081/subscription/deleteprocess";
   static String subscription_archiveprocess_API = "http://192.168.0.200:8081/subscription/archiveprocess";
@@ -55,12 +56,14 @@ class API {
   static String subscription_add_details_API = "http://192.168.0.200:8081/subscription/addsubscus";
   static String subscription_getsubscriptiondata_API = "http://192.168.0.200:8081/subscription/subscriptiondata";
   static String subscription_addCustomInvoice_API = "http://192.168.0.200:8081/subscription/addcustominvoice";
-  static String get_subscriptionCustompdf = "http://192.168.0.200:8081/subscription/getcustompdf";
   static String get_subscription_RecurringInvoiceList = "http://192.168.0.200:8081/subscription/getrecurredinvoice";
   static String get_subscription_GlobalPackageList = "http://192.168.0.200:8081/subscription/getglobalsubscription";
   static String create_subscription_GlobalPackage = "http://192.168.0.200:8081/admin/createsubscription";
   static String update_subscription_GlobalPackage = "http://192.168.0.200:8081/admin/updatesubscription/";
   static String delete_subscription_GlobalPackage = "http://192.168.0.200:8081/admin/deletesubscription/";
+  static String get_subscriptionCustompdf = "http://192.168.0.200:8081/subscription/getcustompdf";
+  static String subscription_getcustombinaryfile_API = "http://192.168.0.200:8081/subscription/getcustombinaryfile";
+  static String subscription_getRecurredBinaryfile_API = "http://192.168.0.200:8081/subscription/getrecurredbinaryfile";
 
   /////////////////////-----------HIERACHY-------------//////////////////////////////////
   static String hierarchy_OrganizationData = "http://192.168.0.200:8081/admin/organization";

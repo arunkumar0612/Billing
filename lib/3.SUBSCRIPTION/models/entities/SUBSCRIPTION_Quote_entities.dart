@@ -237,6 +237,7 @@ class SUBSCRIPTION_Quote {
   final String date;
   final String quoteNo;
   final int gstPercent;
+  final String GSTIN;
   final Address addressDetails;
 
   final List<Site> siteData;
@@ -246,6 +247,7 @@ class SUBSCRIPTION_Quote {
     required this.date,
     required this.quoteNo,
     required this.gstPercent,
+    required this.GSTIN,
     required this.addressDetails,
     required this.siteData,
     required this.finalCalc,
@@ -258,9 +260,10 @@ class SUBSCRIPTION_Quote {
       date: json['date'] as String,
       quoteNo: json['quoteNo'] as String,
       gstPercent: json['gstPercent'] as int,
+      GSTIN: json['GSTIN'] as String,
       addressDetails: Address.fromJson(json['addressDetails']),
       siteData: Site.fromJson(List<Map<String, dynamic>>.from(json['siteData'])),
-      finalCalc: FinalCalculation.fromJson(Site.fromJson(List<Map<String, dynamic>>.from(json['siteData'])), json['gstPercent'] as int),
+      finalCalc: FinalCalculation.fromJson(Site.fromJson(List<Map<String, dynamic>>.from(json['siteData'])), json['gstPercent'] as int, json['pendingAmount'] as double),
       notes: ['This is a sample note', 'This is another sample note'],
     );
   }
@@ -387,46 +390,50 @@ class Site {
 
 class FinalCalculation {
   final double subtotal;
+  final double igst;
   final double cgst;
   final double sgst;
   final String roundOff;
   final String differene;
   final double total;
-  // final double? pendingAmount;
+  final double? pendingAmount;
   final double grandTotal;
 
   FinalCalculation({
     required this.subtotal,
+    required this.igst,
     required this.cgst,
     required this.sgst,
     required this.roundOff,
     required this.differene,
     required this.total,
-    // required this.pendingAmount,
+    required this.pendingAmount,
     required this.grandTotal,
   });
 
-  factory FinalCalculation.fromJson(List<Site> sites, int gstPercent) {
+  factory FinalCalculation.fromJson(List<Site> sites, int gstPercent, double? pendingAmount) {
     double subtotal = sites.fold(0.0, (sum, site) => sum + site.specialPrice);
+    double igst = (subtotal * gstPercent) / 100;
     double cgst = (subtotal * (gstPercent / 2)) / 100;
     double sgst = (subtotal * (gstPercent / 2)) / 100;
     double total = subtotal + cgst + sgst;
-    double grandTotal = total;
+    double grandTotal = pendingAmount != null ? total + pendingAmount : total;
 
     return FinalCalculation(
       subtotal: subtotal,
+      igst: igst,
       cgst: cgst,
       sgst: sgst,
       roundOff: formatCurrencyRoundedPaisa(total),
       differene:
           '${((double.parse(formatCurrencyRoundedPaisa(total).replaceAll(',', '')) - total) >= 0 ? '+' : '')}${(double.parse(formatCurrencyRoundedPaisa(total).replaceAll(',', '')) - total).toStringAsFixed(2)}',
       total: total,
-      // pendingAmount: pendingAmount,
+      pendingAmount: pendingAmount,
       grandTotal: grandTotal,
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'subtotal': subtotal, 'CGST': cgst, 'SGST': sgst, 'roundOff': roundOff, 'difference': differene, 'total': total, 'grandTotal': grandTotal};
+    return {'subtotal': subtotal, 'IGST': igst, 'CGST': cgst, 'SGST': sgst, 'roundOff': roundOff, 'difference': differene, 'total': total, 'pendingAmount': pendingAmount, 'grandTotal': grandTotal};
   }
 }

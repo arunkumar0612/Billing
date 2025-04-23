@@ -177,6 +177,8 @@ mixin SUBSCRIPTION_QuotenotesService {
       "date": getCurrentDate(),
       "quoteNo": quoteController.quoteModel.Quote_no.value!.toString(),
       "gstPercent": 18,
+      "GSTIN": quoteController.quoteModel.gstNumController.value.text,
+      'pendingAmount': 0.0,
       "addressDetails": {
         "clientName": quoteController.quoteModel.clientAddressNameController.value.text,
         "clientAddress": quoteController.quoteModel.clientAddressController.value.text,
@@ -184,10 +186,7 @@ mixin SUBSCRIPTION_QuotenotesService {
         "billingAddress": quoteController.quoteModel.billingAddressController.value.text,
       },
       "siteData": quoteController.quoteModel.QuoteSiteDetails.map((site) => site.toJson()).toList(),
-      "finalCalc": FinalCalculation.fromJson(
-        quoteController.quoteModel.QuoteSiteDetails,
-        18,
-      ).toJson(),
+      "finalCalc": FinalCalculation.fromJson(quoteController.quoteModel.QuoteSiteDetails, 18, 0).toJson(),
       "notes": quoteController.quoteModel.notecontent,
     };
 

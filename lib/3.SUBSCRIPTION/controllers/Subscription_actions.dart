@@ -9,11 +9,6 @@ import '../../COMPONENTS-/Response_entities.dart';
 class SubscriptionController extends GetxController {
   var subscriptionModel = SubscriptionModel();
   var subscriptionfilteredModel = SubscriptionModel();
-  void addToCustomerList(CMDlResponse value) {
-    for (int i = 0; i < value.data.length; i++) {
-      subscriptionModel.customerList.add(Customer.fromJson(value, i));
-    }
-  }
 
   void add_Comp(CMDmResponse value) {
     subscriptionModel.companyList.value = CompanyResponse.fromJson(value.data);
@@ -29,11 +24,25 @@ class SubscriptionController extends GetxController {
     await update_customPDFfile(binaryData);
   }
 
+  Future<void> recurred_PDFfileApiData(CMDmResponse value) async {
+    var pdfFileData = await PDFfileData.fromJson(value); // Await async function
+    var binaryData = pdfFileData.data; // Extract File object
+    await update_recurredPDFfile(binaryData);
+  }
+
   void addToProcesscustomerList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
       subscriptionModel.processcustomerList.add(Processcustomer.fromJson(value, i));
     }
     subscriptionfilteredModel.processcustomerList.assignAll(subscriptionModel.processcustomerList);
+    // print('object');
+  }
+
+  void addToRecurredcustomerList(CMDlResponse value) {
+    for (int i = 0; i < value.data.length; i++) {
+      subscriptionModel.recurredcustomerList.add(Recurredcustomer.fromJson(value, i));
+    }
+    subscriptionfilteredModel.recurredcustomerList.assignAll(subscriptionModel.recurredcustomerList);
     // print('object');
   }
 
@@ -66,6 +75,10 @@ class SubscriptionController extends GetxController {
     subscriptionModel.custom_pdfFile.value = value;
   }
 
+  Future<void> update_recurredPDFfile(File value) async {
+    subscriptionModel.recurred_pdfFile.value = value;
+  }
+
   void updateisAllSelected(bool value) {
     subscriptionModel.isAllSelected.value = value;
   }
@@ -87,7 +100,9 @@ class SubscriptionController extends GetxController {
 
     if (query.isEmpty) {
       subscriptionModel.processList.assignAll(subscriptionfilteredModel.processList);
+      subscriptionModel.reccuringInvoice_list.assignAll(subscriptionfilteredModel.reccuringInvoice_list);
       subscriptionModel.processcustomerList.assignAll(subscriptionfilteredModel.processcustomerList);
+      subscriptionModel.recurredcustomerList.assignAll(subscriptionfilteredModel.recurredcustomerList);
     } else {
       var filteredProcesses = subscriptionfilteredModel.processList.where((process) =>
           process.title.toLowerCase().contains(query.toLowerCase()) ||
@@ -98,6 +113,19 @@ class SubscriptionController extends GetxController {
           customer.customerName.toLowerCase().contains(query.toLowerCase()) ||
           customer.customer_phoneno.toLowerCase().contains(query.toLowerCase()) ||
           customer.customer_gstno.toLowerCase().contains(query.toLowerCase()));
+
+      var filteredRecurred_invoices = subscriptionfilteredModel.reccuringInvoice_list.where((recurred) =>
+          recurred.clientAddressName.toLowerCase().contains(query.toLowerCase()) ||
+          recurred.date.toLowerCase().contains(query.toLowerCase()) ||
+          recurred.invoiceNo.toLowerCase().contains(query.toLowerCase()));
+
+      var filteredRecurred_clients = subscriptionfilteredModel.recurredcustomerList.where((customer) =>
+          customer.customerName.toLowerCase().contains(query.toLowerCase()) ||
+          customer.customer_phoneno.toLowerCase().contains(query.toLowerCase()) ||
+          customer.customer_gstno.toLowerCase().contains(query.toLowerCase()));
+
+      subscriptionModel.reccuringInvoice_list.assignAll(filteredRecurred_invoices);
+      subscriptionModel.recurredcustomerList.assignAll(filteredRecurred_clients);
 
       subscriptionModel.processList.assignAll(filteredProcesses);
       subscriptionModel.processcustomerList.assignAll(filteredCustomers);
@@ -148,7 +176,6 @@ class SubscriptionController extends GetxController {
 
     if (query.isEmpty) {
       subscriptionModel.customPdfList.assignAll(subscriptionfilteredModel.customPdfList);
-      // salesModel.processcustomerList.assignAll(salesfilteredModel.processcustomerList);
     } else {
       var filteredList = subscriptionfilteredModel.customPdfList.where((process) =>
           process.customerAddressName.toLowerCase().contains(query.toLowerCase()) ||
@@ -173,8 +200,9 @@ class SubscriptionController extends GetxController {
   }
 
   void resetData() {
-    subscriptionModel.customerList.clear();
     subscriptionModel.processList.clear();
+    subscriptionModel.reccuringInvoice_list.clear();
+    subscriptionModel.recurredcustomerList.clear();
     subscriptionModel.processcustomerList.clear();
     subscriptionModel.showcustomerprocess.value = null;
     subscriptionModel.customerId.value = null;

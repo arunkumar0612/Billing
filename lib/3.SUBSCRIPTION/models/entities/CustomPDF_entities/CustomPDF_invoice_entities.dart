@@ -266,6 +266,7 @@ class PendingInvoices {
 
 class FinalCalculation {
   final double subtotal;
+  final double igst;
   final double cgst;
   final double sgst;
   final String roundOff;
@@ -276,6 +277,7 @@ class FinalCalculation {
 
   FinalCalculation({
     required this.subtotal,
+    required this.igst,
     required this.cgst,
     required this.sgst,
     required this.roundOff,
@@ -287,6 +289,7 @@ class FinalCalculation {
 
   factory FinalCalculation.fromJson(List<Site> sites, int gstPercent, double? pendingAmount) {
     double subtotal = sites.fold(0.0, (sum, site) => sum + site.monthlyCharges);
+    double igst = (subtotal * gstPercent) / 100;
     double cgst = (subtotal * (gstPercent / 2)) / 100;
     double sgst = (subtotal * (gstPercent / 2)) / 100;
     double total = subtotal + cgst + sgst;
@@ -294,6 +297,7 @@ class FinalCalculation {
 
     return FinalCalculation(
       subtotal: subtotal,
+      igst: igst,
       cgst: cgst,
       sgst: sgst,
       roundOff: formatCurrencyRoundedPaisa(total),
@@ -306,7 +310,7 @@ class FinalCalculation {
   }
 
   Map<String, dynamic> toJson() {
-    return {'subtotal': subtotal, 'CGST': cgst, 'SGST': sgst, 'roundOff': roundOff, 'difference': differene, 'total': total, 'pendingAmount': pendingAmount, 'grandTotal': grandTotal};
+    return {'subtotal': subtotal, 'IGST': igst, 'CGST': cgst, 'SGST': sgst, 'roundOff': roundOff, 'difference': differene, 'total': total, 'pendingAmount': pendingAmount, 'grandTotal': grandTotal};
   }
 }
 

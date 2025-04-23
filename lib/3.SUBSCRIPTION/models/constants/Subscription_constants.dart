@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import '../entities/Subscription_entities.dart';
 
 class SubscriptionModel extends GetxController with GetSingleTickerProviderStateMixin {
-  var customerList = <Customer>[].obs;
   var processcustomerList = <Processcustomer>[].obs;
+  var recurredcustomerList = <Recurredcustomer>[].obs;
   var companyList = CompanyResponse(companyList: []).obs;
   var GloabalPackage = Global_package(globalPackageList: []).obs;
   var processList = <Process>[].obs;
@@ -15,6 +15,7 @@ class SubscriptionModel extends GetxController with GetSingleTickerProviderState
   final customerId = Rxn<int>();
   final pdfFile = Rxn<File>();
   final custom_pdfFile = Rxn<File>();
+  final recurred_pdfFile = Rxn<File>();
   final selectedIndices = <int>[].obs;
   final RxBool isAllSelected = false.obs;
   final type = 0.obs;

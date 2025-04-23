@@ -23,6 +23,12 @@ class SubscriptionController extends GetxController {
     subscriptionModel.GloabalPackage.value = Global_package.fromCMDlResponse(value);
   }
 
+  Future<void> custom_PDFfileApiData(CMDmResponse value) async {
+    var pdfFileData = await PDFfileData.fromJson(value); // Await async function
+    var binaryData = pdfFileData.data; // Extract File object
+    await update_customPDFfile(binaryData);
+  }
+
   void addToProcesscustomerList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
       subscriptionModel.processcustomerList.add(Processcustomer.fromJson(value, i));
@@ -54,6 +60,10 @@ class SubscriptionController extends GetxController {
 
   Future<void> updatePDFfile(File value) async {
     subscriptionModel.pdfFile.value = value;
+  }
+
+  Future<void> update_customPDFfile(File value) async {
+    subscriptionModel.custom_pdfFile.value = value;
   }
 
   void updateisAllSelected(bool value) {

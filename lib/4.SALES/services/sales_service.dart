@@ -678,7 +678,7 @@ mixin SalesServices {
                         (_quoteController.quoteModel.billingAddressNameController.value.text != "") ||
                         (_quoteController.quoteModel.billingAddressController.value.text != "") ||
                         (_quoteController.quoteModel.Quote_no.value != "") ||
-                        (_quoteController.quoteModel.TitleController.value.text != "") ||
+                        (_quoteController.quoteModel.gstController.value.text != "") ||
                         (_quoteController.quoteModel.Quote_table_heading.value != "")) {
                       // Show confirmation dialog
                       bool? proceed = await showDialog<bool>(

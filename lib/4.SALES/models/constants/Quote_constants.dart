@@ -13,7 +13,6 @@ class QuoteModel extends GetxController with GetSingleTickerProviderStateMixin {
   var Quote_no = Rxn<String>();
   // var gst_no = Rxn<String>();
   var Quote_table_heading = "".obs;
-  final gstNumController = TextEditingController().obs;
 
   // DETAILS
   final TitleController = TextEditingController().obs;
@@ -22,6 +21,7 @@ class QuoteModel extends GetxController with GetSingleTickerProviderStateMixin {
   final billingAddressNameController = TextEditingController().obs;
   final billingAddressController = TextEditingController().obs;
   final detailsKey = GlobalKey<FormState>().obs;
+  final gstNumController = TextEditingController().obs;
 
   // PRODUCTS
   var Quote_productSuggestion = <ProductSuggestion>[].obs;

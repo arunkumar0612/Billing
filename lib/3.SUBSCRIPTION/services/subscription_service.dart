@@ -959,23 +959,8 @@ mixin SubscriptionServices {
 
                       // If user confirms (Yes), clear data and close the dialog
                       if (proceed == true) {
-                        Navigator.of(context).pop(); // Close the dialog
-                        // Clear all the data when dialog is closed
-                        _quoteController.quoteModel.QuoteSiteDetails.clear();
-                        //  _quoteController.quoteModel.Quote_gstTotals.clear();
-                        _quoteController.quoteModel.Quote_noteList.clear();
-                        _quoteController.quoteModel.Quote_recommendationList.clear();
-                        //  _quoteController.quoteModel.iQuote_productDetails.clear();
-                        _quoteController.quoteModel.clientAddressNameController.value.clear();
-                        _quoteController.quoteModel.clientAddressController.value.clear();
-                        _quoteController.quoteModel.billingAddressNameController.value.clear();
-                        _quoteController.quoteModel.billingAddressController.value.clear();
-                        _quoteController.quoteModel.Quote_no.value = "";
-                        _quoteController.quoteModel.TitleController.value.clear();
-                        _quoteController.quoteModel.Quote_table_heading.value = "";
-                        _quoteController.quoteModel.selectedPackages.clear();
-                        _quoteController.quoteModel.selectedPackage.value = null;
-                        _quoteController.quoteModel.selectedIndices.clear;
+                        Navigator.of(context).pop();
+                        _quoteController.resetData(); // Close the dialog
                       }
                     } else {
                       // If no data, just close the dialog

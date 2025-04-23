@@ -156,6 +156,7 @@ class Custom_Dc_Services {
                     // } else {
                     //   Navigator.of(context).pop();
                     // }
+                    pdfpopup_controller.clear_postFields();
                     Navigator.of(context).pop();
                   },
                 ),

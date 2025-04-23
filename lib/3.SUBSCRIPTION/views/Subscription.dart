@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
+import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/CustomPDF_services/SUBSCRIPTION_CustomPDF_Invoice_services.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/subscription_service.dart';
@@ -37,6 +38,7 @@ class Subscription_Client extends StatefulWidget with SubscriptionServices {
 class _Subscription_ClientState extends State<Subscription_Client> with TickerProviderStateMixin {
   final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
   var inst_CustomPDF_Services = SUBSCRIPTION_CustomPDF_Services();
+  final SUBSCRIPTION_ClientreqController subscription_clientreqController =Get.find<SUBSCRIPTION_ClientreqController>();
   final SUBSCRIPTION_CustomPDF_InvoiceController pdfpopup_controller = Get.find<SUBSCRIPTION_CustomPDF_InvoiceController>();
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
   var inst = Subscription_CustomPDF_InvoicePDF();
@@ -44,7 +46,14 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
   @override
   void dispose() {
     subscriptionController.subscriptionModel.animationController.dispose();
+    resetAll();
     super.dispose();
+  }
+
+  void resetAll(){
+    subscription_clientreqController.resetData();
+    pdfpopup_controller.resetData();
+    quoteController.resetData();
   }
 
   @override
@@ -1354,7 +1363,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                                         context, subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
 
                                                                     if (success) {
-                                                                      // widget.GenerateQuote_dialougebox(context, "revisedquotation",
+                                                                      // widget.GenerateQuote_dialougebox(cont`ext, "revisedquotation",
                                                                       //     subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                       // quoteController.setProcessID(subscriptionController.subscriptionModel.processList[index].processid);
                                                                     }

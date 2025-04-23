@@ -54,7 +54,6 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
   final CustomPDF_DcController custom_Dc_controller = Get.find<CustomPDF_DcController>();
   final CustomPDF_QuoteController custom_Quote_controller = Get.find<CustomPDF_QuoteController>();
   final NotificationController notificationController = Get.find<NotificationController>();
-
   final loader = LoadingOverlay();
   var inst_invoiceDesign = CustomPDF_InvoicePDF();
   var inst_quoteDesign = CustomPDF_QuotePDF();
@@ -68,11 +67,11 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
   void dispose() {
     clientreqController.clientReqModel.cntMulti.value.dispose();
     salesController.salesModel.animationController.dispose();
-    reset_all();
+    resetAll();
     super.dispose();
   }
 
-  void reset_all() {
+  void resetAll(){
     salesController.resetData();
     clientreqController.resetData();
     dcController.resetData();

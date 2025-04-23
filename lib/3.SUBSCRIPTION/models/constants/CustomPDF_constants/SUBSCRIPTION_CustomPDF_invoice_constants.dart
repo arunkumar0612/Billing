@@ -19,6 +19,7 @@ class SUBSCRIPTION_CustomPDF_InvoiceModel {
   final subTotal = TextEditingController().obs;
   final CGST = TextEditingController().obs;
   final SGST = TextEditingController().obs;
+  final IGST=TextEditingController().obs;
   final roundOff = TextEditingController().obs;
   final Total = TextEditingController().obs;
   final CCemailController = TextEditingController().obs;
@@ -52,6 +53,7 @@ class SUBSCRIPTION_CustomPDF_InvoiceModel {
   var gmail_selectionStatus = true.obs;
   var isLoading = false.obs;
   var CCemailToggle = false.obs;
+  var isGST_local=true.obs;
 
   var genearatedPDF = Rxn<File>();
   late AnimationController animationController;

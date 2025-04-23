@@ -13,6 +13,7 @@ import 'package:ssipl_billing/4.SALES/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entities.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/Quote_entities.dart';
 import 'package:ssipl_billing/4.SALES/views/CustomPDF/Quote/Quote_PostAll.dart';
+import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 
 import '../../../../API-/invoker.dart';
 
@@ -53,7 +54,10 @@ class Custom_Quote_Services {
       "",
       pdfpopup_controller.pdfModel.value.GSTnumber.value.text,
       pdfpopup_controller.pdfModel.value.manualQuote_gstTotals,
+      isGST_Local( pdfpopup_controller.pdfModel.value.GSTnumber.value.text)
     );
+
+
 
     Directory tempDir = await getTemporaryDirectory();
     String? sanitizedQuoteNo = Returns.replace_Slash_hypen(pdfpopup_controller.pdfModel.value.manualquoteNo.value.text);
@@ -161,6 +165,7 @@ class Custom_Quote_Services {
                     // } else {
                     //   Navigator.of(context).pop();
                     // }
+                    pdfpopup_controller.clear_postFields();
                     Navigator.of(context).pop();
                   },
                 ),

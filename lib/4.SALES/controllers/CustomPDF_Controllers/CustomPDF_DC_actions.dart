@@ -254,7 +254,7 @@ class CustomPDF_DcController extends GetxController {
         pdfModel.value.manualdcNo.value.text.isEmpty);
   }
 
-  void resetData() {
+  // void resetData() {
     // pdfModel.value.date.value.clear();
     // pdfModel.value.manualdcNo.value.clear();
     // pdfModel.value.clientName.value.clear();
@@ -300,5 +300,67 @@ class CustomPDF_DcController extends GetxController {
     // pdfModel.value.CCemailToggle.value = false;
 
     // pdfModel.value.allData_key.value = GlobalKey<FormState>();
+  // }
+  
+ void clear_postFields() {
+    pdfModel.value.phoneNumber.value.clear();
+    pdfModel.value.Email.value.clear();
+    pdfModel.value.feedback.value.clear();
+    pdfModel.value.whatsapp_selectionStatus.value = true;
+    pdfModel.value.gmail_selectionStatus.value = true;
+    pdfModel.value.CCemailController.value.clear();
+    pdfModel.value.CCemailToggle.value = false;
+    pdfModel.value.filePathController.value.clear();
   }
+
+  
+  void resetData() {
+  // TEXT CONTROLLERS
+  pdfModel.value.date.value.clear();
+  pdfModel.value.manualdcNo.value.clear();
+  pdfModel.value.clientName.value.clear();
+  pdfModel.value.clientAddress.value.clear();
+  pdfModel.value.billingName.value.clear();
+  pdfModel.value.billingAddres.value.clear();
+  pdfModel.value.phoneNumber.value.clear();
+  pdfModel.value.Email.value.clear();
+  pdfModel.value.GSTnumber.value.clear();
+  pdfModel.value.feedback.value.clear();
+  pdfModel.value.filePathController.value.clear();
+  pdfModel.value.CCemailController.value.clear();
+
+  // NOTES
+  for (var controller in pdfModel.value.noteControllers) {
+    controller.clear();
+  }
+  pdfModel.value.noteControllers.clear();
+
+  // TABLE TEXT CONTROLLERS
+  for (var row in pdfModel.value.textControllers) {
+    for (var controller in row) {
+      controller.clear();
+    }
+  }
+  pdfModel.value.textControllers.clear();
+
+  // PRODUCTS
+  pdfModel.value.manualDcproducts.clear();
+
+  // NOTE TEXTS
+  pdfModel.value.notecontent.clear();
+
+  // STATE
+  pdfModel.value.progress.value = 0.0;
+  pdfModel.value.checkboxValues.clear();
+  pdfModel.value.ispdfLoading.value = false;
+  pdfModel.value.whatsapp_selectionStatus.value = true;
+  pdfModel.value.gmail_selectionStatus.value = true;
+  pdfModel.value.isLoading.value = false;
+  pdfModel.value.CCemailToggle.value = false;
+
+  // PDF
+  pdfModel.value.genearatedPDF.value = null;
 }
+  
+}
+

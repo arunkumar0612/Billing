@@ -1,6 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages, deprecated_member_use
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;

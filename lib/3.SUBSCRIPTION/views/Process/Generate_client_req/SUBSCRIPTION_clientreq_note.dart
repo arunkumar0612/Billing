@@ -451,6 +451,7 @@ class _SUBSCRIPTION_ClientreqNoteState extends State<SUBSCRIPTION_ClientreqNote>
                                 text: 'Submit',
                                 onPressed: () async {
                                   // showLoading(context, () => widget.postData(context, widget.customer_type));
+                                  clientreqController.resetData();
                                   widget.postData(context, widget.customer_type);
                                 },
                               ),

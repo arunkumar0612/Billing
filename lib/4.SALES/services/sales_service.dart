@@ -471,6 +471,7 @@ mixin SalesServices {
                               ),
                               TextButton(
                                 onPressed: () {
+                                   clientreqController.resetData();
                                   Navigator.of(context).pop(true); // Yes action
                                 },
                                 child: const Text("Yes"),
@@ -698,6 +699,7 @@ mixin SalesServices {
                               ),
                               TextButton(
                                 onPressed: () {
+                                  _quoteController.resetData();
                                   Navigator.of(context).pop(true); // Yes action
                                 },
                                 child: const Text("Yes"),

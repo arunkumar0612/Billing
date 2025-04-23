@@ -57,6 +57,22 @@ class CustomPDF_QuotePDF {
                                             textAlign: TextAlign.start,
                                             style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black, height: 2.3),
                                             controller: pdfpopup_controller.pdfModel.value.GSTnumber.value,
+                                            onChanged: (value) {
+                                              bool val = isGST_Local(value);
+                                              pdfpopup_controller
+                                                  .setGSTtype(val);
+                                              if (pdfpopup_controller
+                                                      .pdfModel
+                                                      .value
+                                                      .GSTnumber
+                                                      .value
+                                                      .text
+                                                      .length <=
+                                                  2) {
+                                                pdfpopup_controller
+                                                    .setGSTtype(true);
+                                              }
+                                            },
                                             decoration: const InputDecoration(
                                               errorStyle: TextStyle(height: -1, fontSize: 0),
                                               contentPadding: EdgeInsets.only(
@@ -570,17 +586,27 @@ class CustomPDF_QuotePDF {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(child: gstTable()),
+        Obx(() {
+          return Expanded(
+              child: pdfpopup_controller.pdfModel.value.isGST_local.value
+                  ? gstTable()
+                  : Other_gstTable());
+        }),
         const SizedBox(width: 60),
-        SizedBox(
-          width: 220,
-          child: amount_data(),
-        )
+        Obx(() {
+          return SizedBox(
+            width: 220,
+            child: pdfpopup_controller.pdfModel.value.isGST_local.value
+                ? local_amount_data()
+                : IGST_amount_data(),
+          );
+        })
       ],
     );
   }
 
-  Widget amount_data() {
+
+  Widget local_amount_data() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -796,6 +822,215 @@ class CustomPDF_QuotePDF {
     );
   }
 
+ Widget IGST_amount_data() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Sub total", style: TextStyle(fontSize: 12)),
+                SizedBox(height: 10),
+                Text("IGST", style: TextStyle(fontSize: 12)),
+                SizedBox(height: 10),
+                Text("Round off", style: TextStyle(fontSize: 12)),
+              ],
+            ),
+            const SizedBox(width: 10),
+            const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("  :  ", style: TextStyle(fontSize: 12)),
+                SizedBox(height: 10),
+                Text("  :  ", style: TextStyle(fontSize: 12)),
+                SizedBox(height: 10),
+                Text("  :  ", style: TextStyle(fontSize: 12)),
+              ],
+            ),
+            // const SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    // for sub-total calculation
+                    // height: 20,
+                    // width: 80,
+                    child: TextFormField(
+                      readOnly: true,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(fontSize: 12, color: Colors.black),
+                      controller:
+                          pdfpopup_controller.pdfModel.value.subTotal.value,
+                      decoration: const InputDecoration(
+                        errorStyle: TextStyle(height: 0, fontSize: 0),
+                        isDense: true,
+                        contentPadding: EdgeInsets.only(left: 5, right: 5),
+                        // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                        hintText: "0.0",
+                        hintStyle: TextStyle(),
+                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                        // focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    // for IGST calculation
+                    // height: 20,
+                    child: TextFormField(
+                      readOnly: true,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(fontSize: 12, color: Colors.black),
+                      controller: pdfpopup_controller.pdfModel.value.IGST.value,
+                      decoration: const InputDecoration(
+                        errorStyle: TextStyle(height: 0, fontSize: 0),
+                        isDense: true,
+                        contentPadding: EdgeInsets.only(left: 5, right: 5),
+                        // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                        hintText: "0.0",
+                        hintStyle: TextStyle(),
+                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                        // focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    // for round off value calculation
+                    // height: 20,
+                    child: TextFormField(
+                      readOnly: true,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(fontSize: 12, color: Colors.black),
+                      controller:
+                          pdfpopup_controller.pdfModel.value.roundOff.value,
+                      decoration: const InputDecoration(
+                        errorStyle: TextStyle(height: 0, fontSize: 0),
+                        isDense: true,
+                        contentPadding: EdgeInsets.only(left: 5, right: 5),
+                        // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                        hintText: "0.0",
+                        hintStyle: TextStyle(),
+                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                        // focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Text(
+                    " ${pdfpopup_controller.pdfModel.value.roundoffDiff.value ?? ""}   ",
+                    style: TextStyle(
+                      fontSize: Primary_font_size.Text7,
+                      color: pdfpopup_controller
+                                  .pdfModel.value.roundoffDiff.value
+                                  ?.startsWith('-') ==
+                              true
+                          ? Colors.red
+                          : Colors.green,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Container(height: 1, color: Colors.black),
+        const SizedBox(height: 10),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Total",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 56, 61, 136)))
+              ],
+            ),
+            const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [Text("            ", style: TextStyle(fontSize: 12))],
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                      // for total value calculation
+                      height: 20,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: TextFormField(
+                          readOnly: true,
+                          textAlign: TextAlign.end,
+                          style: const TextStyle(
+                              fontSize: 15,
+                              color: Color.fromARGB(255, 56, 61, 136),
+                              fontWeight: FontWeight.bold),
+                          controller:
+                              pdfpopup_controller.pdfModel.value.Total.value,
+                          decoration: const InputDecoration(
+                            errorStyle: TextStyle(height: 0, fontSize: 0),
+                            contentPadding: EdgeInsets.only(),
+                            // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+
+                            hintText: "0.0",
+                            hintStyle: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 56, 61, 136)),
+                            border:
+                                OutlineInputBorder(borderSide: BorderSide.none),
+                            // focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return '';
+                            }
+                            return null;
+                          },
+                        ),
+                      )),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        signatory(),
+      ],
+    );
+  }
   Widget signatory() {
     return Container(
       height: 90,
@@ -1063,6 +1298,276 @@ class CustomPDF_QuotePDF {
       },
     );
   }
+
+  Other_gstTable() {
+    return Obx(
+      () {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 151, 150, 150))),
+                height: pdfpopup_controller
+                            .pdfModel.value.manualQuote_gstTotals.length >
+                        1
+                    ? 125
+                    : 90,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color:
+                                        Color.fromARGB(255, 151, 150, 150)))),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 90,
+                              height: double.infinity,
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  right: BorderSide(
+                                      color:
+                                          Color.fromARGB(255, 151, 150, 150)),
+                                ),
+                              ),
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    'Taxable Value',
+                                    style: TextStyle(
+                                      fontSize: Primary_font_size.Text8,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    right: BorderSide(
+                                        color:
+                                            Color.fromARGB(255, 151, 150, 150)),
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        decoration: const BoxDecoration(
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    color: Color.fromARGB(
+                                                        255, 151, 150, 150)))),
+                                        child: const Text(
+                                          textAlign: TextAlign.center,
+                                          'IGST',
+                                          style: TextStyle(
+                                              fontSize: Primary_font_size.Text8,
+                                              overflow: TextOverflow.ellipsis),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Container(
+                                              height: double.infinity,
+                                              decoration: const BoxDecoration(
+                                                  border: Border(
+                                                      right: BorderSide(
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              151,
+                                                              150,
+                                                              150)))),
+                                              child: const Text(
+                                                textAlign: TextAlign.center,
+                                                '%',
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        Primary_font_size.Text7,
+                                                    overflow:
+                                                        TextOverflow.ellipsis),
+                                              ),
+                                            ),
+                                          ),
+                                          const Expanded(
+                                            flex: 2,
+                                            child: SizedBox(
+                                              width: double.infinity,
+                                              child: Text(
+                                                textAlign: TextAlign.center,
+                                                'amount',
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        Primary_font_size.Text7,
+                                                    overflow:
+                                                        TextOverflow.ellipsis),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        height: 200, // Set a fixed height (adjust as needed)
+                        child: ListView.builder(
+                          shrinkWrap: true, // Prevents infinite height issue
+                          itemCount: pdfpopup_controller
+                              .pdfModel.value.manualQuote_gstTotals.length,
+                          itemBuilder: (context, index) {
+                            return SizedBox(
+                              height: pdfpopup_controller.pdfModel.value
+                                          .manualQuote_gstTotals.length >
+                                      1
+                                  ? 30
+                                  : 44, // Set a height for each row to prevent overflow
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 90,
+                                    decoration: const BoxDecoration(
+                                        border: Border(
+                                            right: BorderSide(
+                                                color: Color.fromARGB(
+                                                    255, 151, 150, 150)))),
+                                    child: Center(
+                                      child: Text(
+                                        pdfpopup_controller
+                                            .pdfModel
+                                            .value
+                                            .manualQuote_gstTotals[index]
+                                            .total
+                                            .toString(),
+                                        style: const TextStyle(
+                                            fontSize: Primary_font_size.Text7,
+                                            overflow: TextOverflow.ellipsis),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                            border: Border(
+                                                right: BorderSide(
+                                                    color: Color.fromARGB(
+                                                        255, 151, 150, 150)))),
+                                        child: Column(
+                                          children: [
+                                            Expanded(
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                      decoration: const BoxDecoration(
+                                                          border: Border(
+                                                              right: BorderSide(
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          151,
+                                                                          150,
+                                                                          150)))),
+                                                      child: Center(
+                                                        child: Text(
+                                                          formatzero(pdfpopup_controller
+                                                                  .pdfModel
+                                                                  .value
+                                                                  .manualQuote_gstTotals[
+                                                                      index]
+                                                                  .gst)
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              fontSize:
+                                                                  Primary_font_size
+                                                                      .Text7,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: Center(
+                                                      child: Text(
+                                                        formatzero((pdfpopup_controller
+                                                                        .pdfModel
+                                                                        .value
+                                                                        .manualQuote_gstTotals[
+                                                                            index]
+                                                                        .total
+                                                                        .toInt() /
+                                                                    100) *
+                                                                pdfpopup_controller
+                                                                    .pdfModel
+                                                                    .value
+                                                                    .manualQuote_gstTotals[
+                                                                        index]
+                                                                    .gst)
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            fontSize:
+                                                                Primary_font_size
+                                                                    .Text7,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
+            SizedBox(
+                height: pdfpopup_controller
+                            .pdfModel.value.manualQuote_gstTotals.length >
+                        1
+                    ? 20
+                    : 55),
+            notes(),
+          ],
+        );
+      },
+    );
+  }
+  
 
   Widget notes() {
     return Column(

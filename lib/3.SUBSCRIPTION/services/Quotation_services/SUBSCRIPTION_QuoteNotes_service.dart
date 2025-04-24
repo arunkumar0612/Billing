@@ -86,7 +86,7 @@ mixin SUBSCRIPTION_QuotenotesService {
     if (quoteController.quoteModel.noteformKey.value.currentState?.validate() ?? false) {
       bool exists = quoteController.quoteModel.Quote_noteList.any((note) => note == quoteController.quoteModel.notecontentController.value.text);
       if (exists) {
-        Get.snackbar("Note", 'This note Name already exists.');
+        Get.snackbar("Note", 'This note Name already exists.', backgroundColor: const Color.fromARGB(97, 255, 193, 7));
         return;
       }
       quoteController.addNote(quoteController.quoteModel.notecontentController.value.text);

@@ -32,17 +32,21 @@ mixin HierarchyService {
           hierarchyController.add_Org(value);
           // print(hierarchyController.hierarchyModel.OrganizationList.value.Live [0].)
         } else {
-          await Basic_dialog(context: context, title: 'Fetch Organization List', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(context: context, title: 'Fetch Organization List', content: value.message ?? "", onOk: () {});
         }
         loader.stop();
         return;
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(
+          context: context,
+          title: "SERVER DOWN",
+          content: "Please contact administration!",
+        );
         loader.stop();
         return;
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(context: context, title: "ERROR", content: "$e");
       loader.stop();
       return;
     }
@@ -59,15 +63,20 @@ mixin HierarchyService {
         if (value.code) {
           hierarchyController.add_Comp(value);
         } else {
-          await Basic_dialog(context: context, title: 'Fetch Company List', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(
+            context: context,
+            title: 'Fetch Company List',
+            content: value.message ?? "",
+            onOk: () {},
+          );
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
       loader.stop();
       return;
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(context: context, title: "ERROR", content: "$e");
       loader.stop();
       return;
     }
@@ -84,15 +93,15 @@ mixin HierarchyService {
         if (value.code) {
           hierarchyController.add_Branch(value);
         } else {
-          await Basic_dialog(context: context, title: 'Fetch Branch List', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(context: context, title: 'Fetch Branch List', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
       loader.stop();
       return;
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(context: context, title: "ERROR", content: "$e");
       loader.stop();
       return;
     }
@@ -133,7 +142,7 @@ mixin HierarchyService {
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
-          await Basic_dialog(context: context, title: "LOGO", content: value.message!, onOk: () {}, showCancel: false);
+          await Error_dialog(context: context, title: "LOGO", content: value.message!, onOk: () {});
 
           if (logoType == 'organization') {
             get_OrganizationList(context);
@@ -143,13 +152,13 @@ mixin HierarchyService {
             get_BranchList(context);
           }
         } else {
-          await Basic_dialog(context: context, title: 'Uploading Logo', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(context: context, title: 'Uploading Logo', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 }

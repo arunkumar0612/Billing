@@ -714,7 +714,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                               // inst_CustomPDF_Services.assign_GSTtotals();
                                                               inst.showA4StyledPopup(context);
                                                               break;
-                                                            case 'Custom List':
+                                                            case 'Custom PDF List':
                                                               () async {
                                                                 // Show Bottom Sheet with a loading message initially
                                                                 // showModalBottomSheet(
@@ -787,7 +787,9 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                               child: ListTile(
                                                                 leading: Obx(
                                                                   () => Icon(
-                                                                    subscriptionController.subscriptionModel.type.value != 0 ? Icons.unarchive_outlined : Icons.archive_outlined,
+                                                                    subscriptionController.subscriptionModel.type.value != 0
+                                                                        ? Icons.receipt_long // Used for invoices or bills
+                                                                        : Icons.archive_outlined, // Fallback to archive icon
                                                                     color: Colors.blueAccent,
                                                                   ),
                                                                 ),
@@ -798,17 +800,23 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                               ),
                                                             ),
                                                             const PopupMenuItem<String>(
-                                                              value: 'Custom List',
+                                                              value: 'Custom PDF List',
                                                               child: ListTile(
-                                                                leading: Icon(Icons.edit_outlined, color: Colors.green),
-                                                                title: Text('Custom List', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                                                leading: Icon(Icons.picture_as_pdf, color: Colors.redAccent), // Better represents a custom list
+                                                                title: Text(
+                                                                  'Custom PDF List',
+                                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                                ),
                                                               ),
                                                             ),
                                                             const PopupMenuItem<String>(
                                                               value: 'Import',
                                                               child: ListTile(
-                                                                leading: Icon(Icons.delete_outline, color: Colors.redAccent),
-                                                                title: Text('Import', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                                                leading: Icon(Icons.file_download_outlined, color: Colors.green), // Represents import action
+                                                                title: Text(
+                                                                  'Import',
+                                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                                ),
                                                               ),
                                                             ),
                                                           ];
@@ -949,7 +957,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
 
                                     switch (item) {
                                       case 'Archive':
-                                        Basic_dialog(
+                                        Warning_dialog(
                                           context: context,
                                           title: 'Confirmation',
                                           content: 'Are you sure you want to Archive this process?',
@@ -964,7 +972,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                         );
                                         break;
                                       case 'Unarchive':
-                                        Basic_dialog(
+                                        Warning_dialog(
                                           context: context,
                                           title: 'Confirmation',
                                           content: 'Are you sure you want to Unarchive this process?',
@@ -979,7 +987,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                         );
                                         break;
                                       case 'Modify':
-                                        Basic_dialog(
+                                        Warning_dialog(
                                           context: context,
                                           title: 'Error',
                                           content: 'Unable to modify the process',
@@ -987,7 +995,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                         );
                                         break;
                                       case 'Delete':
-                                        Basic_dialog(
+                                        Warning_dialog(
                                           context: context,
                                           title: 'Confirmation',
                                           content: 'Are you sure you want to delete this process?',
@@ -2970,11 +2978,11 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                                       file,
                                                                     );
                                                                   } else {
-                                                                    Basic_dialog(
+                                                                    Error_dialog(
                                                                       context: context,
                                                                       title: "Error",
                                                                       content: "The PDF file is empty or missing.",
-                                                                      showCancel: false,
+                                                                      // showCancel: false,
                                                                     );
                                                                   }
                                                                 },
@@ -3065,11 +3073,11 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                               ),
                                             );
                                           } else {
-                                            Basic_dialog(
+                                            Error_dialog(
                                               context: context,
                                               title: "Error",
                                               content: "The  PDF file is empty or missing.",
-                                              showCancel: false,
+                                              // showCancel: false,
                                             );
                                           }
                                         } else {

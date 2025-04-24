@@ -11,7 +11,7 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Client
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_client_req/SUBSCRIPTION_clientreq_template.dart';
 import 'package:ssipl_billing/API-/api.dart' show API;
 import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
-import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Basic_dialog;
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart' show CMDmResponse;
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
@@ -121,7 +121,7 @@ mixin SUBSCRIPTION_ClientreqNoteService {
   dynamic postData(context, customer_type) async {
     try {
       if (clientreqController.postDatavalidation()) {
-        await Basic_dialog(context: context, showCancel: false, title: "POST", content: "All fields must be filled", onOk: () {});
+        await Error_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {});
         return;
       }
       loader.start(context);
@@ -147,7 +147,7 @@ mixin SUBSCRIPTION_ClientreqNoteService {
 
       await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
     } catch (e) {
-      await Basic_dialog(context: context, showCancel: false, title: "POST", content: "$e", onOk: () {});
+      await Error_dialog(context: context, title: "POST", content: "$e", onOk: () {});
     }
   }
 
@@ -158,21 +158,21 @@ mixin SUBSCRIPTION_ClientreqNoteService {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
           loader.stop();
-          await Basic_dialog(context: context, showCancel: false, title: "CLIENT REQUIREMENT", content: value.message!, onOk: () {});
+          await Success_dialog(context: context, title: "CLIENT REQUIREMENT", content: value.message!, onOk: () {});
           Navigator.of(context).pop(true);
           clientreqController.resetData();
         } else {
           loader.stop();
-          await Basic_dialog(context: context, showCancel: false, title: 'Processing client requirement', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Processing client requirement', content: value.message ?? "", onOk: () {});
         }
       } else {
         loader.stop();
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
       //await Refresher().refreshAll(context);
     } catch (e) {
       loader.stop();
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 }

@@ -149,7 +149,7 @@ class _Verify_OTPState extends State<Verify_OTP> {
                             VerifyOTPController.toggleIndicator(true);
                             widget.Verify_OTP(context);
                           } else {
-                            Basic_dialog(context: context, showCancel: false, title: "Error", content: "Please enter OTP Correctly!");
+                            Error_dialog(context: context, title: "Error", content: "Please enter OTP Correctly!");
                           }
                         },
                         child: Text(

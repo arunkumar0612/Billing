@@ -34,3 +34,42 @@ class Primary_font_size {
   static const double SubHeading = 17.0;
   static const double Heading = 22.0;
 }
+
+final List<LinearGradient> packageGradients = [
+  LinearGradient(
+    colors: [
+      const Color(0xFF00FFC6).withOpacity(0.9), // Bright teal-green
+      const Color(0xFF00FFD1).withOpacity(0.1),
+    ],
+  ),
+  LinearGradient(
+    colors: [
+      const Color(0xFFFF5F6D).withOpacity(0.9), // Bright coral-red
+      const Color(0xFFFFC371).withOpacity(0.1),
+    ],
+  ),
+  LinearGradient(
+    colors: [
+      const Color.fromARGB(255, 111, 255, 145).withOpacity(0.9), // Pink gradient
+      const Color.fromARGB(255, 26, 199, 133).withOpacity(0.1),
+    ],
+  ),
+  LinearGradient(
+    colors: [
+      const Color(0xFF00C9FF).withOpacity(0.9), // Cyan to light blue
+      const Color(0xFF92FE9D).withOpacity(0.1),
+    ],
+  ),
+  LinearGradient(
+    colors: [
+      const Color(0xFFFFD200).withOpacity(0.9), // Bright yellow gold
+      const Color(0xFFFFA500).withOpacity(0.1),
+    ],
+  ),
+  LinearGradient(
+    colors: [
+      const Color.fromARGB(255, 192, 129, 255).withOpacity(0.9), // Bright violet
+      const Color(0xFFE100FF).withOpacity(0.1),
+    ],
+  ),
+];

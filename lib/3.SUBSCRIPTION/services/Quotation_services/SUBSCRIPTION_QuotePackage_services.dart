@@ -60,7 +60,7 @@ mixin SUBSCRIPTION_QuotepackageService {
       final emptyPackages = quoteController.quoteModel.selectedPackages.where((pkg) => pkg.sites.isEmpty).toList();
 
       if (emptyPackages.isNotEmpty) {
-        final shouldReplace = await Basic_dialog(
+        final shouldReplace = await Warning_dialog(
                 context: context,
                 title: 'Replace Empty Packages?',
                 content: 'The following packages have no sites assigned:\n'

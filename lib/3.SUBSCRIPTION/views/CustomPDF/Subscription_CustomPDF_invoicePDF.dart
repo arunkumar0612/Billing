@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart' show SUBSCRIPTION_CustomPDF_InvoiceController;
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/CustomPDF_services/SUBSCRIPTION_CustomPDF_Invoice_services.dart';
-import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Basic_dialog;
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Error_dialog;
 import 'package:ssipl_billing/COMPONENTS-/button.dart' show BasicButton;
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
@@ -790,22 +790,13 @@ class Subscription_CustomPDF_InvoicePDF {
                           textAlign: TextAlign.start,
                           style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black, height: 2.3),
                           controller: pdfpopup_controller.pdfModel.value.customerGSTIN.value,
-                           onChanged: (value) {
-                                              bool val = isGST_Local(value);
-                                              pdfpopup_controller
-                                                  .setGSTtype(val);
-                                              if (pdfpopup_controller
-                                                      .pdfModel
-                                                      .value
-                                                      .customerGSTIN
-                                                      .value
-                                                      .text
-                                                      .length <=
-                                                  2) {
-                                                pdfpopup_controller
-                                                    .setGSTtype(true);
-                                              }
-                                            },
+                          onChanged: (value) {
+                            bool val = isGST_Local(value);
+                            pdfpopup_controller.setGSTtype(val);
+                            if (pdfpopup_controller.pdfModel.value.customerGSTIN.value.text.length <= 2) {
+                              pdfpopup_controller.setGSTtype(true);
+                            }
+                          },
                           decoration: const InputDecoration(
                             errorStyle: TextStyle(height: -1, fontSize: 0),
                             contentPadding: EdgeInsets.only(
@@ -1084,24 +1075,20 @@ class Subscription_CustomPDF_InvoicePDF {
       ),
     );
   }
- Widget collage() {
+
+  Widget collage() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Obx(() {
-          return Expanded(
-              child: pdfpopup_controller.pdfModel.value.isGST_local.value
-                  ? gstTable()
-                  : Other_gstTable());
+          return Expanded(child: pdfpopup_controller.pdfModel.value.isGST_local.value ? gstTable() : Other_gstTable());
         }),
         const SizedBox(width: 60),
         Obx(() {
           return SizedBox(
             width: 220,
-            child: pdfpopup_controller.pdfModel.value.isGST_local.value
-                ? local_amount_data()
-                : IGST_amount_data(),
+            child: pdfpopup_controller.pdfModel.value.isGST_local.value ? local_amount_data() : IGST_amount_data(),
             // child:amount_data(),
           );
         })
@@ -1369,8 +1356,7 @@ class Subscription_CustomPDF_InvoicePDF {
                       readOnly: true,
                       textAlign: TextAlign.end,
                       style: const TextStyle(fontSize: 12, color: Colors.black),
-                      controller:
-                          pdfpopup_controller.pdfModel.value.subTotal.value,
+                      controller: pdfpopup_controller.pdfModel.value.subTotal.value,
                       decoration: const InputDecoration(
                         errorStyle: TextStyle(height: 0, fontSize: 0),
                         isDense: true,
@@ -1424,8 +1410,7 @@ class Subscription_CustomPDF_InvoicePDF {
                       readOnly: true,
                       textAlign: TextAlign.end,
                       style: const TextStyle(fontSize: 12, color: Colors.black),
-                      controller:
-                          pdfpopup_controller.pdfModel.value.roundOff.value,
+                      controller: pdfpopup_controller.pdfModel.value.roundOff.value,
                       decoration: const InputDecoration(
                         errorStyle: TextStyle(height: 0, fontSize: 0),
                         isDense: true,
@@ -1448,12 +1433,7 @@ class Subscription_CustomPDF_InvoicePDF {
                     " ${pdfpopup_controller.pdfModel.value.roundoffDiff.value ?? ""}   ",
                     style: TextStyle(
                       fontSize: Primary_font_size.Text7,
-                      color: pdfpopup_controller
-                                  .pdfModel.value.roundoffDiff.value
-                                  ?.startsWith('-') ==
-                              true
-                          ? Colors.red
-                          : Colors.green,
+                      color: pdfpopup_controller.pdfModel.value.roundoffDiff.value?.startsWith('-') == true ? Colors.red : Colors.green,
                     ),
                   )
                 ],
@@ -1471,13 +1451,7 @@ class Subscription_CustomPDF_InvoicePDF {
             const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Total",
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 56, 61, 136)))
-              ],
+              children: [Text("Total", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 56, 61, 136)))],
             ),
             const Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -1496,24 +1470,16 @@ class Subscription_CustomPDF_InvoicePDF {
                         child: TextFormField(
                           readOnly: true,
                           textAlign: TextAlign.end,
-                          style: const TextStyle(
-                              fontSize: 15,
-                              color: Color.fromARGB(255, 56, 61, 136),
-                              fontWeight: FontWeight.bold),
-                          controller:
-                              pdfpopup_controller.pdfModel.value.Total.value,
+                          style: const TextStyle(fontSize: 15, color: Color.fromARGB(255, 56, 61, 136), fontWeight: FontWeight.bold),
+                          controller: pdfpopup_controller.pdfModel.value.Total.value,
                           decoration: const InputDecoration(
                             errorStyle: TextStyle(height: 0, fontSize: 0),
                             contentPadding: EdgeInsets.only(),
                             // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
 
                             hintText: "0.0",
-                            hintStyle: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 56, 61, 136)),
-                            border:
-                                OutlineInputBorder(borderSide: BorderSide.none),
+                            hintStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 56, 61, 136)),
+                            border: OutlineInputBorder(borderSide: BorderSide.none),
                             // focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
                           ),
                           validator: (value) {
@@ -1993,10 +1959,6 @@ class Subscription_CustomPDF_InvoicePDF {
     );
   }
 
-  
-
-  
-
   Widget notes() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2177,7 +2139,7 @@ class Subscription_CustomPDF_InvoicePDF {
                                 Get.snackbar("Error", "Something went wrong. Please try again.");
                               }
                             } else {
-                              Basic_dialog(context: context, title: "ERROR", content: "Please check for empty fields before proceeding1", showCancel: false);
+                              Error_dialog(context: context, title: "ERROR", content: "Please check for empty fields before proceeding1");
                             }
                           },
                           child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),

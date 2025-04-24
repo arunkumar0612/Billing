@@ -77,7 +77,7 @@ class _PackagepageState extends State<Packagepage> {
                                 height: 33,
                                 child: FloatingActionButton.extended(
                                   onPressed: () {
-                                    Basic_dialog(
+                                    Warning_dialog(
                                       context: context,
                                       title: 'Confirmation',
                                       content: 'Are you sure you want to delete this package?',

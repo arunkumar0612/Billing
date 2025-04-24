@@ -29,13 +29,13 @@ mixin RfqdetailsService {
           // print(clientreqController.clientReqModel.Enq_ID.value);
           // salesController.addToCustomerList(value);
         } else {
-          await Basic_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -55,13 +55,18 @@ mixin RfqdetailsService {
           // print(clientreqController.clientReqModel.Enq_ID.value);
           // salesController.addToCustomerList(value);
         } else {
-          await Basic_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(
+            context: context,
+            title: 'PRE - LOADER',
+            content: value.message ?? "",
+            onOk: () {},
+          );
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -76,13 +81,13 @@ mixin RfqdetailsService {
           // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
           // clientreqController.update_CompanyList(value);
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Fetching Vendor List Error', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Fetching Vendor List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -95,13 +100,26 @@ mixin RfqdetailsService {
         if (value.code) {
           rfqController.add_productSuggestion(value.data);
         } else {
-          await Basic_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(
+            context: context,
+            title: 'PRE - LOADER',
+            content: value.message ?? "",
+            onOk: () {},
+          );
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(
+          context: context,
+          title: "SERVER DOWN",
+          content: "Please contact administration!",
+        );
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(
+        context: context,
+        title: "ERROR",
+        content: "$e",
+      );
     }
   }
 }

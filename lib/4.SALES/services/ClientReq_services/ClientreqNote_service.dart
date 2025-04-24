@@ -123,7 +123,7 @@ mixin ClientreqNoteService {
   dynamic postData(context, customer_type) async {
     try {
       if (clientreqController.postDatavalidation()) {
-        await Basic_dialog(context: context, showCancel: false, title: "POST", content: "All fields must be filled", onOk: () {});
+        await Error_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {});
         return;
       }
       loader.start(context);
@@ -148,7 +148,7 @@ mixin ClientreqNoteService {
 
       await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
     } catch (e) {
-      await Basic_dialog(context: context, showCancel: false, title: "POST", content: "$e", onOk: () {});
+      await Error_dialog(context: context, title: "POST", content: "$e", onOk: () {});
     }
   }
 
@@ -159,20 +159,20 @@ mixin ClientreqNoteService {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
           loader.stop();
-          await Basic_dialog(context: context, showCancel: false, title: "CLIENT REQUIREMENT", content: value.message!, onOk: () {});
+          await Success_dialog(context: context, title: "CLIENT REQUIREMENT", content: value.message!, onOk: () {});
           Navigator.of(context).pop(true);
           clientreqController.resetData();
         } else {
           loader.stop();
-          await Basic_dialog(context: context, showCancel: false, title: 'Processing client requirement', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Processing client requirement', content: value.message ?? "", onOk: () {});
         }
       } else {
         loader.stop();
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
       loader.stop();
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 }

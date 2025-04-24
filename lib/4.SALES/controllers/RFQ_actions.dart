@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/models/constants/RFQ_constants.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/RFQ_entities.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/product_entities.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
 class RfqController extends GetxController {
@@ -186,18 +187,7 @@ class RfqController extends GetxController {
           print('Selected file exceeds 2MB in size.');
         }
         // Show Alert Dialog
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: const Text('Selected file exceeds 2MB in size.'),
-            actions: [
-              ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
+        Error_dialog(context: context, title: 'Error', content: 'Selected file exceeds 2MB in size.');
         rfqModel.pickedFile.value = null;
         rfqModel.selectedPdf.value = null;
       } else {

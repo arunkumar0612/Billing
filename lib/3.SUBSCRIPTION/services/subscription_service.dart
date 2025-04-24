@@ -14,7 +14,7 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/Subscription_actions.da
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_Quote/SUBSCRIPTION_generateQuote.dart' show SUBSCRIPTION_GenerateQuote;
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_client_req/SUBSCRIPTION_generate_clientreq.dart' show SUBSCRIPTION_Generate_clientreq;
 import 'package:ssipl_billing/API-/api.dart';
-import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Basic_SnackBar, Error_dialog;
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Basic_SnackBar, Error_dialog, Warning_dialog;
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -820,37 +820,15 @@ mixin SubscriptionServices {
                   ),
                   onPressed: () async {
                     if (_clientreqController.anyHavedata()) {
-                      bool? proceed = await showDialog<bool>(
+                      bool? proceed = await Warning_dialog(
                         context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            title: const Text("Warning"),
-                            content: const Text(
-                              "The data may be lost. Do you want to proceed?",
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(false); // No action
-                                },
-                                child: const Text("No"),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(true); // Yes action
-                                },
-                                child: const Text("Yes"),
-                              ),
-                            ],
-                          );
-                        },
+                        title: "Warning",
+                        content: "The data may be lost. Do you want to proceed?",
+                        onOk: () {},
+                        // showCancel: true,
                       );
-
                       if (proceed == true) {
-                        Navigator.of(context).pop();
+                        // Navigator.of(context).pop();
                         Navigator.of(context).pop();
                         _clientreqController.resetData();
                       }
@@ -954,31 +932,12 @@ mixin SubscriptionServices {
                         (_quoteController.quoteModel.TitleController.value.text != "") ||
                         (_quoteController.quoteModel.Quote_table_heading.value != "")) {
                       // Show confirmation dialog
-                      bool? proceed = await showDialog<bool>(
+                      bool? proceed = await Warning_dialog(
                         context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                            title: const Text("Warning"),
-                            content: const Text(
-                              "The data may be lost. Do you want to proceed?",
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(false); // No action
-                                },
-                                child: const Text("No"),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(true); // Yes action
-                                },
-                                child: const Text("Yes"),
-                              ),
-                            ],
-                          );
-                        },
+                        title: "Warning",
+                        content: "The data may be lost. Do you want to proceed?",
+                        onOk: () {},
+                        // showCancel: true,
                       );
 
                       // If user confirms (Yes), clear data and close the dialog

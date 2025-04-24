@@ -910,7 +910,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                       context: context,
                                                       title: 'Confirmation',
                                                       content: 'Are you sure you want to Archive this process?',
-                                                      showCancel: true,
+                                                      // showCancel: true,
                                                       onOk: () {
                                                         widget.ArchiveProcesscontrol(
                                                           context,
@@ -925,7 +925,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                       context: context,
                                                       title: 'Confirmation',
                                                       content: 'Are you sure you want to Unarchive this process?',
-                                                      showCancel: true,
+                                                      // showCancel: true,
                                                       onOk: () {
                                                         widget.ArchiveProcesscontrol(
                                                           context,
@@ -948,7 +948,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                       context: context,
                                                       title: 'Confirmation',
                                                       content: 'Are you sure you want to delete this process?',
-                                                      showCancel: true,
+                                                      // showCancel: true,
                                                       onOk: () {
                                                         widget.DeleteProcess(
                                                           context,

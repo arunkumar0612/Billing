@@ -152,7 +152,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                       content: 'The following packages have no sites assigned:\n'
                           '${emptyPackages.map((p) => p.name).join(', ')}\n'
                           'Would you like to replace them with "$newValue"?',
-                      showCancel: true,
+                      // showCancel: true,
                     ) ??
                     false;
 

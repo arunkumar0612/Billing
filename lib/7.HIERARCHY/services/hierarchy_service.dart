@@ -113,13 +113,7 @@ mixin HierarchyService {
       final file = File(result.files.single.path!);
       final fileLength = await file.length();
       if (fileLength > 2 * 1024 * 1024) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: const Text('Selected file exceeds 2MB in size.'),
-            actions: [ElevatedButton(onPressed: () => Navigator.of(context).pop(), child: const Text('OK'))],
-          ),
-        );
+        Error_dialog(context: context, title: 'Error', content: 'Selected file exceeds 2MB in size.');
         return false;
       } else {
         uploadImage(context, file, logoType, id);

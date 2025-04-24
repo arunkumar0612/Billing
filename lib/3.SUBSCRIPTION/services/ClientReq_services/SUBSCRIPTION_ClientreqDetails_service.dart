@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart' show SUBSCRIPTION_ClientreqController;
 import 'package:ssipl_billing/API-/api.dart' show API;
 import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
-import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Basic_dialog;
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart' show CMDmResponse;
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
 
@@ -56,13 +56,13 @@ mixin SUBSCRIPTION_ClientreqDetailsService {
           // await Basic_dialog(context: context, showCancel: false, title: 'Upload MOR', content: "MOR uploaded Successfully", onOk: () {});
           clientreqController.updateMOR_uploadedPath(value);
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Upload MOR', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Upload MOR', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 

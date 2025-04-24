@@ -14,8 +14,7 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/Subscription_actions.da
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_Quote/SUBSCRIPTION_generateQuote.dart' show SUBSCRIPTION_GenerateQuote;
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_client_req/SUBSCRIPTION_generate_clientreq.dart' show SUBSCRIPTION_Generate_clientreq;
 import 'package:ssipl_billing/API-/api.dart';
-import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Basic_SnackBar, Basic_dialog;
-import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Basic_SnackBar, Error_dialog;
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -30,7 +29,7 @@ mixin SubscriptionServices {
   final SUBSCRIPTION_ClientreqController _clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
   final SUBSCRIPTION_QuoteController _quoteController = Get.find<SUBSCRIPTION_QuoteController>();
   final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
-  final loader = LoadingOverlay();
+  // final loader = LoadingOverlay();
 
   dynamic UploadSubscription(context, List<Map<String, dynamic>> excelData) async {
     try {
@@ -71,13 +70,18 @@ mixin SubscriptionServices {
           );
           Navigator.of(context).pop();
         } else {
-          await Basic_dialog(context: context, title: 'Uploading Excel', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(
+            context: context,
+            title: 'Uploading Excel',
+            content: value.message ?? "",
+            onOk: () {},
+          );
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -220,10 +224,19 @@ mixin SubscriptionServices {
       if (value.code) {
         _subscriptionController.add_GlobalPackage(value);
       } else {
-        await Basic_dialog(context: context, title: 'Fetch Company List', content: value.message ?? "", onOk: () {}, showCancel: false);
+        await Error_dialog(
+          context: context,
+          title: 'Fetch Company List',
+          content: value.message ?? "",
+          onOk: () {},
+        );
       }
     } else {
-      Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+      Error_dialog(
+        context: context,
+        title: "SERVER DOWN",
+        content: "Please contact administration!",
+      );
     }
     // loader.stop();
   }
@@ -253,13 +266,13 @@ mixin SubscriptionServices {
           Basic_SnackBar(context, "Package Created successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Package created Error', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Package created Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -282,13 +295,13 @@ mixin SubscriptionServices {
           Basic_SnackBar(context, "Package updated successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Package update error', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Package update error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -319,13 +332,13 @@ mixin SubscriptionServices {
           Basic_SnackBar(context, "Package deleted successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Package delete Error', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Package delete Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -461,13 +474,13 @@ mixin SubscriptionServices {
           Basic_SnackBar(context, "Feedback added successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -483,14 +496,19 @@ mixin SubscriptionServices {
           return true;
           // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(
+            context: context,
+            title: 'PDF file Error',
+            content: value.message ?? "",
+            onOk: () {},
+          );
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
       return false;
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(context: context, title: "ERROR", content: "$e");
       return false;
     }
   }
@@ -536,59 +554,41 @@ mixin SubscriptionServices {
 
   Future<void> downloadPdf(BuildContext context, String filename, File? pdfFile) async {
     try {
-      loader.start(context);
-
-      // ✅ Let the loader show before blocking UI
-      await Future.delayed(const Duration(milliseconds: 300));
+      // final pdfFile = _subscriptionController.subscriptionModel.pdfFile.value;
 
       if (pdfFile == null) {
-        loader.stop();
         if (kDebugMode) {
           print("No PDF file found to download.");
         }
-        Basic_dialog(
-          context: context,
-          title: "No PDF Found",
-          content: "There is no PDF file to download.",
-          showCancel: false,
-        );
         return;
       }
 
-      await Future.delayed(const Duration(milliseconds: 100));
+      // Let the user pick a folder to save the file
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
 
-      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(lockParentWindow: true);
-
-      // ✅ Always stop loader after native call
-      loader.stop();
-
+      // Check if the user canceled folder selection
       if (selectedDirectory == null) {
-        if (kDebugMode) {
-          print("User cancelled the folder selection.");
-        }
-        Basic_dialog(
+        Error_dialog(
           context: context,
-          title: "Cancelled",
-          content: "Download cancelled. No folder was selected.",
-          showCancel: false,
+          title: "Error",
+          content: "Cannot find the path. Please select a folder to save the PDF.",
+          // showCancel: false,
         );
         return;
       }
 
+      // Define the destination path
       String savePath = "$selectedDirectory/$filename.pdf";
-      await pdfFile.copy(savePath);
 
-      Basic_SnackBar(context, "✅ PDF downloaded successfully to: $savePath");
+      // Copy the PDF file to the selected directory
+      await pdfFile.copy(savePath);
+      Basic_SnackBar(context, "PDF downloaded successfully to: $savePath");
     } catch (e) {
-      loader.stop();
-      if (kDebugMode) {
-        print("❌ Error while downloading PDF: $e");
-      }
-      Basic_dialog(
+      Error_dialog(
         context: context,
         title: "Error",
-        content: "An error occurred while downloading the PDF:\n$e",
-        showCancel: false,
+        content: "Error downloading PDF: $e",
+        // showCancel: false,
       );
     }
   }
@@ -608,10 +608,10 @@ mixin SubscriptionServices {
         Basic_SnackBar(context, "Process Deleted successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
-        await Basic_dialog(context: context, showCancel: false, title: 'Delete Process Error', content: value.message ?? "", onOk: () {});
+        await Error_dialog(context: context, title: 'Delete Process Error', content: value.message ?? "", onOk: () {});
       }
     } else {
-      Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
     }
   }
 
@@ -628,11 +628,10 @@ mixin SubscriptionServices {
         Basic_SnackBar(context, type == 0 ? "Process Unarchived successfully" : "Process Archived successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
-        await Basic_dialog(
-            context: context, showCancel: false, title: type == 0 ? 'Error : Failed to unarchive the process.' : 'Error : Failed to archive the process.', content: value.message ?? "", onOk: () {});
+        await Error_dialog(context: context, title: type == 0 ? 'Error : Failed to unarchive the process.' : 'Error : Failed to archive the process.', content: value.message ?? "", onOk: () {});
       }
     } else {
-      Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
     }
   }
 
@@ -678,14 +677,19 @@ mixin SubscriptionServices {
           _subscriptionController.updateclientprofileData(value);
           _subscriptionController.updateprofilepage(true);
         } else {
-          await Basic_dialog(context: context, title: 'Client Profile Error', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(
+            context: context,
+            title: 'Client Profile Error',
+            content: value.message ?? "",
+            onOk: () {},
+          );
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
       return false;
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(context: context, title: "ERROR", content: "$e");
       return false;
     }
   }
@@ -700,13 +704,13 @@ mixin SubscriptionServices {
           Basic_SnackBar(context, "Approval Sent successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Approval Send add Error', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Approval Send add Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -747,14 +751,14 @@ mixin SubscriptionServices {
           return true;
           // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
       return false;
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(context: context, title: "ERROR", content: "$e");
       return false;
     }
   }
@@ -769,14 +773,14 @@ mixin SubscriptionServices {
           return true;
           // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
       return false;
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(context: context, title: "ERROR", content: "$e");
       return false;
     }
   }
@@ -978,8 +982,23 @@ mixin SubscriptionServices {
 
                       // If user confirms (Yes), clear data and close the dialog
                       if (proceed == true) {
-                        Navigator.of(context).pop();
-                        _quoteController.resetData(); // Close the dialog
+                        Navigator.of(context).pop(); // Close the dialog
+                        // Clear all the data when dialog is closed
+                        _quoteController.quoteModel.QuoteSiteDetails.clear();
+                        //  _quoteController.quoteModel.Quote_gstTotals.clear();
+                        _quoteController.quoteModel.Quote_noteList.clear();
+                        _quoteController.quoteModel.Quote_recommendationList.clear();
+                        //  _quoteController.quoteModel.iQuote_productDetails.clear();
+                        _quoteController.quoteModel.clientAddressNameController.value.clear();
+                        _quoteController.quoteModel.clientAddressController.value.clear();
+                        _quoteController.quoteModel.billingAddressNameController.value.clear();
+                        _quoteController.quoteModel.billingAddressController.value.clear();
+                        _quoteController.quoteModel.Quote_no.value = "";
+                        _quoteController.quoteModel.TitleController.value.clear();
+                        _quoteController.quoteModel.Quote_table_heading.value = "";
+                        _quoteController.quoteModel.selectedPackages.clear();
+                        _quoteController.quoteModel.selectedPackage.value = null;
+                        _quoteController.quoteModel.selectedIndices.clear;
                       }
                     } else {
                       // If no data, just close the dialog
@@ -1060,7 +1079,7 @@ mixin SubscriptionServices {
       };
       await sendPDFdata(context, jsonEncode(queryString), pdf);
     } catch (e) {
-      await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {}, showCancel: false);
+      await Error_dialog(context: context, title: "POST", content: "$e", onOk: () {});
     }
   }
 
@@ -1072,17 +1091,17 @@ mixin SubscriptionServices {
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
-          await Basic_dialog(context: context, title: "Invoice", content: value.message!, onOk: () {}, showCancel: false);
+          await Error_dialog(context: context, title: "Invoice", content: value.message!, onOk: () {});
           // Navigator.of(context).pop(true);
           // invoiceController.resetData();
         } else {
-          await Basic_dialog(context: context, title: 'Processing Invoice', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(context: context, title: 'Processing Invoice', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 }

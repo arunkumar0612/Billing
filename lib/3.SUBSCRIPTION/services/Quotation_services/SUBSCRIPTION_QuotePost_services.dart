@@ -10,7 +10,7 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_acti
 import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart' show SUBSCRIPTION_PostQuotation;
 import 'package:ssipl_billing/API-/api.dart' show API;
 import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
-import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Basic_dialog;
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Error_dialog;
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart' show CMDmResponse;
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
@@ -70,7 +70,7 @@ mixin SUBSCRIPTION_QuotePostServices {
   dynamic postData(context, int messageType, String eventtype) async {
     try {
       if (quoteController.postDatavalidation()) {
-        await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
+        await Error_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {});
         return;
       }
       loader.start(context);
@@ -96,7 +96,12 @@ mixin SUBSCRIPTION_QuotePostServices {
 
       await send_data(context, jsonEncode(subscriptionData.toJson()), cachedPdf, eventtype);
     } catch (e) {
-      await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {}, showCancel: false);
+      await Error_dialog(
+        context: context,
+        title: "POST",
+        content: "$e",
+        onOk: () {},
+      );
     }
   }
 
@@ -108,21 +113,21 @@ mixin SUBSCRIPTION_QuotePostServices {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
           loader.stop();
-          await Basic_dialog(context: context, title: "Quotation", content: value.message!, onOk: () {}, showCancel: false);
+          await Error_dialog(context: context, title: "Quotation", content: value.message!, onOk: () {});
           // Navigator.of(context).pop(true);
           // quoteController.resetData();
         } else {
           loader.stop();
-          await Basic_dialog(context: context, title: 'Processing Quotation', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(context: context, title: 'Processing Quotation', content: value.message ?? "", onOk: () {});
         }
       } else {
         loader.stop();
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
       //await Refresher().refreshAll(context);
     } catch (e) {
       loader.stop();
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 }

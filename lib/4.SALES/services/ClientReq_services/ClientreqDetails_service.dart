@@ -60,13 +60,13 @@ mixin ClientreqDetailsService {
           // await Basic_dialog(context: context,showCancel: false, title: 'Upload MOR', content: "MOR uploaded Successfully", onOk: () {});
           clientreqController.updateMOR_uploadedPath(value);
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Upload MOR', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Upload MOR', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -79,13 +79,13 @@ mixin ClientreqDetailsService {
           // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
           clientreqController.update_OrganizationList(value);
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Fetching Organization List Error', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Fetching Organization List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -99,13 +99,13 @@ mixin ClientreqDetailsService {
           // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
           clientreqController.update_CompanyList(value);
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Fetching Company List Error', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Fetching Company List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -119,13 +119,13 @@ mixin ClientreqDetailsService {
           // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
           clientreqController.update_BranchList(value);
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Fetching Branch List Error', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Fetching Branch List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -138,13 +138,26 @@ mixin ClientreqDetailsService {
         if (value.code) {
           clientreqController.add_productSuggestion(value.data);
         } else {
-          await Basic_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(
+            context: context,
+            title: 'PRE - LOADER',
+            content: value.message ?? "",
+            onOk: () {},
+          );
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(
+          context: context,
+          title: "SERVER DOWN",
+          content: "Please contact administration!",
+        );
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(
+        context: context,
+        title: "ERROR",
+        content: "$e",
+      );
     }
   }
 }

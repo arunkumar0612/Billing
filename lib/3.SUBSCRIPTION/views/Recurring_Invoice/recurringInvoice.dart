@@ -212,19 +212,19 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                                         ),
                                                       );
                                                     } else {
-                                                      Basic_dialog(
+                                                      Error_dialog(
                                                         context: context,
                                                         title: "Error",
                                                         content: "The  PDF file is empty or missing.",
-                                                        showCancel: false,
+                                                        // showCancel: false,
                                                       );
                                                     }
                                                   } else {
-                                                    Basic_dialog(
+                                                    Error_dialog(
                                                       context: context,
                                                       title: "Error",
                                                       content: "The  PDF file is empty or missing.",
-                                                      showCancel: false,
+                                                      // showCancel: false,
                                                     );
                                                   }
                                                 } else {
@@ -673,11 +673,11 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                                                                   file,
                                                                                 );
                                                                               } else {
-                                                                                Basic_dialog(
+                                                                                Error_dialog(
                                                                                   context: context,
                                                                                   title: "Error",
                                                                                   content: "The PDF file is empty or missing.",
-                                                                                  showCancel: false,
+                                                                                  // showCancel: false,
                                                                                 );
                                                                               }
                                                                             } else {

@@ -146,7 +146,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
 
               // 2. Show replacement dialog if empty packages exist
               if (emptyPackages.isNotEmpty) {
-                final shouldReplace = await Basic_dialog(
+                final shouldReplace = await Warning_dialog(
                       context: context,
                       title: 'Replace Empty Packages?',
                       content: 'The following packages have no sites assigned:\n'
@@ -220,7 +220,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
             child: ListView.builder(
               itemCount: quoteController.quoteModel.selectedPackages.length,
               itemBuilder: (context, index) {
-                return buildPackageDetails(quoteController.quoteModel.selectedPackages[index]);
+                return buildPackageDetails(quoteController.quoteModel.selectedPackages[index], index);
               },
             ),
           ),
@@ -598,7 +598,10 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
     );
   }
 
-  Widget buildPackageDetails(Package package) {
+  Widget buildPackageDetails(Package package, int index) {
+    // Get gradient based on index (cycles through available gradients)
+    final gradient = packageGradients[index % packageGradients.length];
+
     return DefaultTabController(
       length: 2,
       child: Padding(
@@ -609,19 +612,14 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
           borderRadius: 20,
           blur: 10,
           alignment: Alignment.center,
-          border: 1,
+          border: 2,
           linearGradient: LinearGradient(
             colors: [
               const Color.fromARGB(255, 78, 77, 77).withOpacity(0.1),
               const Color.fromARGB(255, 105, 104, 104).withOpacity(0.05),
             ],
           ),
-          borderGradient: LinearGradient(
-            colors: [
-              Primary_colors.Color3.withOpacity(0.9),
-              Primary_colors.Color3.withOpacity(0.10),
-            ],
-          ),
+          borderGradient: gradient, // Apply the selected gradient
           child: Column(
             children: [
               Row(
@@ -645,7 +643,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                           setState(() {
                             widget.removePackage(package, context);
                           });
-                        }, // Pass the package directly
+                        },
                       ),
                     ),
                   ),

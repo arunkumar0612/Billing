@@ -74,22 +74,22 @@ mixin SalesServices {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          await Basic_dialog(context: context, showCancel: false, title: 'Customer List', content: "Customer List fetched successfully", onOk: () {});
+          await Success_dialog(context: context, title: 'Customer List', content: "Customer List fetched successfully", onOk: () {});
           salesController.addToCustomerList(value);
           // if (kDebugMode) {
           //   print("*****************${salesController.salesModel.customerList[1].customerId}");
           // }
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
       if (kDebugMode) {
         print(response);
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -103,14 +103,27 @@ mixin SalesServices {
           return true;
           // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(
+            context: context,
+            title: 'PDF file Error',
+            content: value.message ?? "",
+            onOk: () {},
+          );
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(
+          context: context,
+          title: "SERVER DOWN",
+          content: "Please contact administration!",
+        );
       }
       return false;
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(
+        context: context,
+        title: "ERROR",
+        content: "$e",
+      );
       return false;
     }
   }
@@ -185,13 +198,13 @@ mixin SalesServices {
           Basic_SnackBar(context, "Feedback added successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -205,14 +218,14 @@ mixin SalesServices {
           return true;
           // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
       return false;
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(context: context, title: "ERROR", content: "$e");
       return false;
     }
   }
@@ -275,11 +288,11 @@ mixin SalesServices {
         if (kDebugMode) {
           print("No PDF file found to download.");
         }
-        Basic_dialog(
+        Error_dialog(
           context: context,
           title: "No PDF Found",
           content: "There is no PDF file to download.",
-          showCancel: false,
+          // showCancel: false,
         );
         return;
       }
@@ -295,11 +308,11 @@ mixin SalesServices {
         if (kDebugMode) {
           print("User cancelled the folder selection.");
         }
-        Basic_dialog(
+        Error_dialog(
           context: context,
           title: "Cancelled",
           content: "Download cancelled. No folder was selected.",
-          showCancel: false,
+          // showCancel: false,
         );
         return;
       }
@@ -313,11 +326,11 @@ mixin SalesServices {
       if (kDebugMode) {
         print("❌ Error while downloading PDF: $e");
       }
-      Basic_dialog(
+      Error_dialog(
         context: context,
         title: "Error",
         content: "An error occurred while downloading the PDF:\n$e",
-        showCancel: false,
+        // showCancel: false,
       );
     }
   }
@@ -337,10 +350,10 @@ mixin SalesServices {
         Basic_SnackBar(context, "Process Deleted successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
-        await Basic_dialog(context: context, showCancel: false, title: 'Delete Process Error', content: value.message ?? "", onOk: () {});
+        await Error_dialog(context: context, title: 'Delete Process Error', content: value.message ?? "", onOk: () {});
       }
     } else {
-      Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
     }
   }
 
@@ -357,11 +370,10 @@ mixin SalesServices {
         Basic_SnackBar(context, type == 0 ? "Process Unarchived successfully" : "Process Archived successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
-        await Basic_dialog(
-            context: context, showCancel: false, title: type == 0 ? 'Error : Failed to unarchive the process.' : 'Error : Failed to archive the process.', content: value.message ?? "", onOk: () {});
+        await Error_dialog(context: context, title: type == 0 ? 'Error : Failed to unarchive the process.' : 'Error : Failed to archive the process.', content: value.message ?? "", onOk: () {});
       }
     } else {
-      Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
     }
   }
 
@@ -403,14 +415,18 @@ mixin SalesServices {
           salesController.updateclientprofileData(value);
           salesController.updateprofilepage(true);
         } else {
-          await Basic_dialog(context: context, title: 'Client Profile Error', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(context: context, title: 'Client Profile Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
       return false;
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(
+        context: context,
+        title: "ERROR",
+        content: "$e",
+      );
       return false;
     }
   }
@@ -425,13 +441,13 @@ mixin SalesServices {
           Basic_SnackBar(context, "Approval Sent successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Basic_dialog(context: context, showCancel: false, title: 'Approval Send add Error', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Approval Send add Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -1049,7 +1065,7 @@ mixin SalesServices {
       };
       await sendPDFdata(context, jsonEncode(queryString), pdf);
     } catch (e) {
-      await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {}, showCancel: false);
+      await Error_dialog(context: context, title: "POST", content: "$e", onOk: () {});
     }
   }
 
@@ -1061,17 +1077,21 @@ mixin SalesServices {
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
-          await Basic_dialog(context: context, title: "Share", content: value.message!, onOk: () {}, showCancel: false);
+          await Success_dialog(context: context, title: "Share", content: value.message!, onOk: () {});
           Navigator.of(context).pop(true);
           salesController.reset_shareData();
         } else {
-          await Basic_dialog(context: context, title: 'Share', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(context: context, title: 'Share', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(
+          context: context,
+          title: "SERVER DOWN",
+          content: "Please contact administration!",
+        );
       }
     } catch (e) {
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 }

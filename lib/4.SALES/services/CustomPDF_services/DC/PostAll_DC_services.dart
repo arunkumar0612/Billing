@@ -80,11 +80,11 @@ mixin PostServices {
         if (kDebugMode) {
           print("No PDF file found to download.");
         }
-        Basic_dialog(
+        Error_dialog(
           context: context,
           title: "No PDF Found",
           content: "There is no PDF file to download.",
-          showCancel: false,
+          // showCancel: false,
         );
         return;
       }
@@ -100,11 +100,11 @@ mixin PostServices {
         if (kDebugMode) {
           print("User cancelled the folder selection.");
         }
-        Basic_dialog(
+        Error_dialog(
           context: context,
           title: "Cancelled",
           content: "Download cancelled. No folder was selected.",
-          showCancel: false,
+          // showCancel: false,
         );
         return;
       }
@@ -118,11 +118,11 @@ mixin PostServices {
       if (kDebugMode) {
         print("❌ Error while downloading PDF: $e");
       }
-      Basic_dialog(
+      Error_dialog(
         context: context,
         title: "Error",
         content: "An error occurred while downloading the PDF:\n$e",
-        showCancel: false,
+        // showCancel: false,
       );
     }
   }
@@ -130,7 +130,12 @@ mixin PostServices {
   dynamic postData(context, int messageType) async {
     try {
       if (pdfpopup_controller.postDatavalidation()) {
-        await Basic_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {}, showCancel: false);
+        await Error_dialog(
+          context: context,
+          title: "POST",
+          content: "All fields must be filled",
+          onOk: () {},
+        );
         return;
       }
       loader.start(context);
@@ -155,7 +160,12 @@ mixin PostServices {
 
       await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
     } catch (e) {
-      await Basic_dialog(context: context, title: "POST", content: "$e", onOk: () {}, showCancel: false);
+      await Error_dialog(
+        context: context,
+        title: "POST",
+        content: "$e",
+        onOk: () {},
+      );
     }
   }
 
@@ -166,21 +176,39 @@ mixin PostServices {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
           loader.stop();
-          await Basic_dialog(context: context, title: "Dc", content: value.message!, onOk: () {}, showCancel: false);
+          await Success_dialog(
+            context: context,
+            title: "Dc",
+            content: value.message!,
+            onOk: () {},
+          );
           // Navigator.of(context).pop(true);
           // pdfpopup_controller.pdfModel.value.resetData();
         } else {
           loader.stop();
-          await Basic_dialog(context: context, title: 'Processing Dc', content: value.message ?? "", onOk: () {}, showCancel: false);
+          await Error_dialog(
+            context: context,
+            title: 'Processing Dc',
+            content: value.message ?? "",
+            onOk: () {},
+          );
         }
       } else {
         loader.stop();
-        Basic_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!", showCancel: false);
+        Error_dialog(
+          context: context,
+          title: "SERVER DOWN",
+          content: "Please contact administration!",
+        );
       }
       //await Refresher().refreshAll(context);
     } catch (e) {
       loader.stop();
-      Basic_dialog(context: context, title: "ERROR", content: "$e", showCancel: false);
+      Error_dialog(
+        context: context,
+        title: "ERROR",
+        content: "$e",
+      );
     }
   }
 }

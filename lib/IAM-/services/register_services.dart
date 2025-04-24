@@ -27,9 +27,9 @@ class RegisterServices {
         CMResponse data = CMResponse.fromJson(response!);
         if (data.code) {
           registerController.toggleIndicator(false);
-          await Basic_dialog(
+          await Error_dialog(
             context: context,
-            showCancel: false,
+            // showCancel: false,
             title: 'Please click the link to verify on your Mail',
             content: data.message ?? "",
             onOk: () {
@@ -44,15 +44,15 @@ class RegisterServices {
           IamController.IAMModel.pagename.value = "Login";
         } else {
           registerController.toggleIndicator(false);
-          await Basic_dialog(context: context, showCancel: false, title: 'Register Failed', content: data.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Register Failed', content: data.message ?? "", onOk: () {});
         }
       } else {
         registerController.toggleIndicator(false);
-        Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
       registerController.toggleIndicator(false);
-      Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 }

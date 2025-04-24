@@ -71,7 +71,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
     super.dispose();
   }
 
-  void resetAll(){
+  void resetAll() {
     salesController.resetData();
     clientreqController.resetData();
     dcController.resetData();
@@ -906,7 +906,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
 
                                                 switch (item) {
                                                   case 'Archive':
-                                                    Basic_dialog(
+                                                    Warning_dialog(
                                                       context: context,
                                                       title: 'Confirmation',
                                                       content: 'Are you sure you want to Archive this process?',
@@ -921,7 +921,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                     );
                                                     break;
                                                   case 'Unarchive':
-                                                    Basic_dialog(
+                                                    Warning_dialog(
                                                       context: context,
                                                       title: 'Confirmation',
                                                       content: 'Are you sure you want to Unarchive this process?',
@@ -936,15 +936,15 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                     );
                                                     break;
                                                   case 'Modify':
-                                                    Basic_dialog(
+                                                    Error_dialog(
                                                       context: context,
                                                       title: 'Error',
                                                       content: 'Unable to modify the process',
-                                                      showCancel: true,
+                                                      // showCancel: true,
                                                     );
                                                     break;
                                                   case 'Delete':
-                                                    Basic_dialog(
+                                                    Warning_dialog(
                                                       context: context,
                                                       title: 'Confirmation',
                                                       content: 'Are you sure you want to delete this process?',
@@ -3148,11 +3148,11 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                       file,
                                                                     );
                                                                   } else {
-                                                                    Basic_dialog(
+                                                                    Error_dialog(
                                                                       context: context,
                                                                       title: "Error",
                                                                       content: "The PDF file is empty or missing.",
-                                                                      showCancel: false,
+                                                                      // showCancel: false,
                                                                     );
                                                                   }
                                                                 },
@@ -3242,11 +3242,11 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                             ),
                                           );
                                         } else {
-                                          Basic_dialog(
+                                          Error_dialog(
                                             context: context,
                                             title: "Error",
                                             content: "The  PDF file is empty or missing.",
-                                            showCancel: false,
+                                            // showCancel: false,
                                           );
                                         }
                                       },

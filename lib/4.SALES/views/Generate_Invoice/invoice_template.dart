@@ -8,8 +8,8 @@ import 'package:ssipl_billing/4.SALES/models/entities/Invoice_entities.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/product_entities.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 
-Future<Uint8List> generate_Invoice(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, GSTIN, invoice_gstTotals, isGST_local) async {
-  final quotation = Quotation(
+Future<Uint8List> generate_Invoice(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, invoice_num, GSTIN, invoice_gstTotals, isGST_local) async {
+  final invoice = Invoice(
     products: products,
     baseColor: PdfColors.green500,
     accentColor: PdfColors.blueGrey900,
@@ -17,18 +17,18 @@ Future<Uint8List> generate_Invoice(PdfPageFormat pageFormat, products, client_ad
     client_addr: client_addr,
     bill_addr_name: bill_addr_name,
     bill_addr: bill_addr,
-    estimate: estimate_num ?? "",
+    invoice_num: invoice_num ?? "",
     GSTIN: GSTIN,
     type: '',
     invoice_gstTotals: invoice_gstTotals,
     isGST_local: isGST_local,
   );
 
-  return await quotation.buildPdf(pageFormat);
+  return await invoice.buildPdf(pageFormat);
 }
 
-class Quotation {
-  Quotation(
+class Invoice {
+  Invoice(
       {required this.products,
       required this.baseColor,
       required this.accentColor,
@@ -36,7 +36,7 @@ class Quotation {
       required this.client_addr,
       required this.bill_addr_name,
       required this.bill_addr,
-      required this.estimate,
+      required this.invoice_num,
       required this.GSTIN,
       required this.type,
       required this.invoice_gstTotals,
@@ -49,7 +49,7 @@ class Quotation {
   String client_addr = "";
   String bill_addr_name = "";
   String bill_addr = "";
-  String estimate = "";
+  String invoice_num = "";
   String GSTIN = "";
   String type = "";
   bool isGST_local = true;
@@ -150,7 +150,7 @@ class Quotation {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("Feb 05, 2025", 10),
+                            child: regular(formatDate(DateTime.now()), 10),
                             // formatDate(DateTime.now()), 10
                           ),
                         ),
@@ -158,7 +158,7 @@ class Quotation {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("AA/INST/250201", 10),
+                            child: regular(invoice_num, 10),
                           ),
                         ),
                       ],

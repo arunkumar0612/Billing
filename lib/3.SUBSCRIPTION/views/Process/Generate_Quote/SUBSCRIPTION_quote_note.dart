@@ -499,21 +499,21 @@ class _SUBSCRIPTION_QuoteNoteState extends State<SUBSCRIPTION_QuoteNote> {
                                     ),
                                     child: TextButton(
                                       onPressed: () async {
-                                        // try {
-                                        if (quoteController.postDatavalidation()) {
-                                          Get.snackbar("Error", "Any of the required fields is Empty!");
-                                          return;
+                                        try {
+                                          if (quoteController.generate_Datavalidation()) {
+                                            Get.snackbar("Error", "Any of the required fields is Empty!");
+                                            return;
+                                          }
+                                          await Future.wait([
+                                            quoteController.startProgress(),
+                                            widget.savePdfToCache(context),
+                                          ]);
+                                          quoteController.nextTab();
+                                        } catch (e, stackTrace) {
+                                          debugPrint("Error in Future.wait: $e");
+                                          debugPrint(stackTrace.toString());
+                                          Get.snackbar("Error", "Something went wrong. Please try again.");
                                         }
-                                        await Future.wait([
-                                          quoteController.startProgress(),
-                                          widget.savePdfToCache(context),
-                                        ]);
-                                        quoteController.nextTab();
-                                        // } catch (e, stackTrace) {
-                                        //   debugPrint("Error in Future.wait: $e");
-                                        //   debugPrint(stackTrace.toString());
-                                        //   Get.snackbar("Error", "Something went wrong. Please try again.");
-                                        // }
                                       },
                                       child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),
                                     ),

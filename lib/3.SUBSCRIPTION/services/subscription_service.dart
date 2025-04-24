@@ -847,6 +847,7 @@ mixin SubscriptionServices {
 
                       if (proceed == true) {
                         Navigator.of(context).pop();
+                        Navigator.of(context).pop();
                         _clientreqController.resetData();
                       }
                     } else {

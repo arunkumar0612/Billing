@@ -458,9 +458,8 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                 colors: Colors.green,
                                 text: 'Submit',
                                 onPressed: () async {
-                                  clientreqController.resetData();
                                   await widget.postData(context, widget.customer_type);
-                                  await Future.delayed(const Duration(milliseconds: 1000));
+
                                   //await Refresher().refreshAll(context);
                                 },
                               ),

@@ -459,6 +459,19 @@ class DcController extends GetxController {
     // }
   }
 
+  bool generate_Datavalidation() {
+    return (dcModel.TitleController.value.text.isEmpty ||
+        dcModel.processID.value == null ||
+        dcModel.clientAddressNameController.value.text.isEmpty ||
+        dcModel.clientAddressController.value.text.isEmpty ||
+        dcModel.billingAddressNameController.value.text.isEmpty ||
+        dcModel.billingAddressController.value.text.isEmpty ||
+        dcModel.gstNumController.value.text.isEmpty ||
+        dcModel.selected_dcProducts.isEmpty ||
+        dcModel.Dc_noteList.isEmpty ||
+        dcModel.Dc_no.value == null);
+  }
+
   bool postDatavalidation() {
     return (dcModel.TitleController.value.text.isEmpty ||
         dcModel.processID.value == null ||

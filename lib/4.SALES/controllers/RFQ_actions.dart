@@ -440,6 +440,16 @@ class RfqController extends GetxController {
     rfqModel.phoneController.value.text = selectedVendor.vendorPhoneNo;
   }
 
+  bool generate_Datavalidation() {
+    return (rfqModel.TitleController.value.text.isEmpty ||
+        rfqModel.processID.value == null ||
+        rfqModel.vendorID.value == null ||
+        rfqModel.vendorName.value == null ||
+        rfqModel.AddressController.value.text.isEmpty ||
+        rfqModel.Rfq_products.isEmpty ||
+        rfqModel.Rfq_noteList.isEmpty);
+  }
+
   bool postDatavalidation() {
     return (rfqModel.TitleController.value.text.isEmpty ||
         rfqModel.processID.value == null ||

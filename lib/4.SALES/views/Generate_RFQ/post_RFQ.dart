@@ -714,7 +714,6 @@ class PostRfqState extends State<PostRfq> with SingleTickerProviderStateMixin {
                                     text: "Send",
                                     colors: Colors.blue,
                                     onPressed: () {
-                                      rfqController.resetData();
                                       widget.postData(context, rfqController.fetch_messageType());
                                     })),
                           )

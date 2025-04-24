@@ -509,7 +509,7 @@ class _DcNoteState extends State<DcNote> {
                                       child: TextButton(
                                         onPressed: () async {
                                           try {
-                                            if (dcController.postDatavalidation()) {
+                                            if (dcController.generate_Datavalidation()) {
                                               Get.snackbar("Error", "Any of the required fields is Empty!");
                                               return;
                                             }

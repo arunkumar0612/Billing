@@ -201,35 +201,38 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                             );
                           }),
                           const SizedBox(width: 10),
-                          GestureDetector(
-                            onTap: _startAnimation,
-                            child: AnimatedBuilder(
-                              animation: subscriptionController.subscriptionModel.animationController,
-                              builder: (context, child) {
-                                return Transform.rotate(
-                                  angle: -subscriptionController.subscriptionModel.animationController.value * 2 * pi, // Counterclockwise rotation
-                                  child: Transform.scale(
-                                    scale: TweenSequence([
-                                      TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 1.2), weight: 50),
-                                      TweenSequenceItem(tween: Tween<double>(begin: 1.2, end: 1.0), weight: 50),
-                                    ]).animate(CurvedAnimation(parent: subscriptionController.subscriptionModel.animationController, curve: Curves.easeInOut)).value, // Zoom in and return to normal
-                                    child: Opacity(
-                                      opacity: TweenSequence([
-                                        TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.5), weight: 50),
-                                        TweenSequenceItem(tween: Tween<double>(begin: 0.5, end: 1.0), weight: 50),
-                                      ]).animate(CurvedAnimation(parent: subscriptionController.subscriptionModel.animationController, curve: Curves.easeInOut)).value, // Fade and return to normal
-                                      child: ClipOval(
-                                        child: Image.asset(
-                                          'assets/images/reload.png',
-                                          fit: BoxFit.cover,
-                                          width: 30,
-                                          height: 30,
+                          MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: GestureDetector(
+                              onTap: _startAnimation,
+                              child: AnimatedBuilder(
+                                animation: subscriptionController.subscriptionModel.animationController,
+                                builder: (context, child) {
+                                  return Transform.rotate(
+                                    angle: -subscriptionController.subscriptionModel.animationController.value * 2 * pi, // Counterclockwise rotation
+                                    child: Transform.scale(
+                                      scale: TweenSequence([
+                                        TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 1.2), weight: 50),
+                                        TweenSequenceItem(tween: Tween<double>(begin: 1.2, end: 1.0), weight: 50),
+                                      ]).animate(CurvedAnimation(parent: subscriptionController.subscriptionModel.animationController, curve: Curves.easeInOut)).value, // Zoom in and return to normal
+                                      child: Opacity(
+                                        opacity: TweenSequence([
+                                          TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.5), weight: 50),
+                                          TweenSequenceItem(tween: Tween<double>(begin: 0.5, end: 1.0), weight: 50),
+                                        ]).animate(CurvedAnimation(parent: subscriptionController.subscriptionModel.animationController, curve: Curves.easeInOut)).value, // Fade and return to normal
+                                        child: ClipOval(
+                                          child: Image.asset(
+                                            'assets/images/reload.png',
+                                            fit: BoxFit.cover,
+                                            width: 30,
+                                            height: 30,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -245,7 +248,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                       ..selection = TextSelection.fromPosition(
                                         TextPosition(offset: subscriptionController.subscriptionModel.searchQuery.value.length),
                                       ),
-                                    onChanged: (value) => subscriptionController.subscriptionModel.searchQuery.value = value, // ✅ Updates GetX state
+                                    onChanged: (value) => subscriptionController.search(value), // ✅ Updates GetX state
                                     style: const TextStyle(fontSize: 13, color: Colors.white),
                                     decoration: const InputDecoration(
                                       contentPadding: EdgeInsets.all(10),

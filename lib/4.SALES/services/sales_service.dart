@@ -490,7 +490,6 @@ mixin SalesServices {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  clientreqController.resetData();
                                   Navigator.of(context).pop(true); // Yes action
                                 },
                                 child: const Text("Yes"),
@@ -596,7 +595,6 @@ mixin SalesServices {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  invoiceController.resetData();
                                   Navigator.of(context).pop(true); // Yes action
                                 },
                                 child: const Text("Yes"),
@@ -608,16 +606,7 @@ mixin SalesServices {
 
                       if (proceed == true) {
                         Navigator.of(context).pop();
-                        invoiceController.invoiceModel.Invoice_products.clear();
-                        invoiceController.invoiceModel.Invoice_noteList.clear();
-                        invoiceController.invoiceModel.Invoice_recommendationList.clear();
-                        invoiceController.invoiceModel.clientAddressNameController.value.clear();
-                        invoiceController.invoiceModel.clientAddressController.value.clear();
-                        invoiceController.invoiceModel.billingAddressNameController.value.clear();
-                        invoiceController.invoiceModel.billingAddressController.value.clear();
-                        invoiceController.invoiceModel.Invoice_no.value = "";
-                        invoiceController.invoiceModel.TitleController.value.clear();
-                        invoiceController.invoiceModel.Invoice_table_heading.value = "";
+                        invoiceController.resetData();
                       }
                     } else {
                       Navigator.of(context).pop();
@@ -718,7 +707,6 @@ mixin SalesServices {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  _quoteController.resetData();
                                   Navigator.of(context).pop(true); // Yes action
                                 },
                                 child: const Text("Yes"),
@@ -731,19 +719,7 @@ mixin SalesServices {
                       // If user confirms (Yes), clear data and close the dialog
                       if (proceed == true) {
                         Navigator.of(context).pop(); // Close the dialog
-                        // Clear all the data when dialog is closed
-                        _quoteController.quoteModel.Quote_products.clear();
-                        //  _quoteController.quoteModel.Quote_gstTotals.clear();
-                        _quoteController.quoteModel.Quote_noteList.clear();
-                        _quoteController.quoteModel.Quote_recommendationList.clear();
-                        //  _quoteController.quoteModel.iQuote_productDetails.clear();
-                        _quoteController.quoteModel.clientAddressNameController.value.clear();
-                        _quoteController.quoteModel.clientAddressController.value.clear();
-                        _quoteController.quoteModel.billingAddressNameController.value.clear();
-                        _quoteController.quoteModel.billingAddressController.value.clear();
-                        _quoteController.quoteModel.Quote_no.value = "";
-                        _quoteController.quoteModel.TitleController.value.clear();
-                        _quoteController.quoteModel.Quote_table_heading.value = "";
+                        _quoteController.resetData();
                       }
                     } else {
                       // If no data, just close the dialog
@@ -846,7 +822,6 @@ mixin SalesServices {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  rfqController.resetData();
                                   Navigator.of(context).pop(true); // Yes action
                                 },
                                 child: const Text("Yes"),
@@ -858,16 +833,7 @@ mixin SalesServices {
 
                       if (proceed == true) {
                         Navigator.of(context).pop();
-                        rfqController.rfqModel.Rfq_products.clear();
-                        rfqController.rfqModel.Rfq_noteList.clear();
-                        rfqController.rfqModel.Rfq_recommendationList.clear();
-                        // rfqController.rfqModel.clientAddressNameController.value.clear();
-                        rfqController.rfqModel.AddressController.value.clear();
-                        // rfqController.rfqModel.billingAddressNameController.value.clear();
-                        // rfqController.rfqModel.billingAddressController.value.clear();
-                        rfqController.rfqModel.Rfq_no.value = "";
-                        rfqController.rfqModel.TitleController.value.clear();
-                        rfqController.rfqModel.Rfq_table_heading.value = "";
+                        rfqController.resetData();
                       }
                     } else {
                       Navigator.of(context).pop();
@@ -969,7 +935,6 @@ mixin SalesServices {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  dcController.resetData();
                                   Navigator.of(context).pop(true); // Yes action
                                 },
                                 child: const Text("Yes"),
@@ -981,16 +946,7 @@ mixin SalesServices {
 
                       if (proceed == true) {
                         Navigator.of(context).pop();
-                        dcController.dcModel.Dc_products.clear();
-                        dcController.dcModel.Dc_noteList.clear();
-                        dcController.dcModel.Dc_recommendationList.clear();
-                        dcController.dcModel.clientAddressNameController.value.clear();
-                        dcController.dcModel.clientAddressController.value.clear();
-                        dcController.dcModel.billingAddressNameController.value.clear();
-                        dcController.dcModel.billingAddressController.value.clear();
-                        dcController.dcModel.Dc_no.value = "";
-                        dcController.dcModel.TitleController.value.clear();
-                        dcController.dcModel.Dc_table_heading.value = "";
+                        dcController.resetData();
                       }
                     } else {
                       Navigator.of(context).pop();

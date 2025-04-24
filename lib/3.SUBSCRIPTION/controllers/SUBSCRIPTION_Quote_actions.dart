@@ -419,7 +419,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     updateBillingAddress(instance.billingAddress!);
   }
 
-  bool postDatavalidation() {
+  bool generate_Datavalidation() {
     return (quoteModel.TitleController.value.text.isEmpty ||
         quoteModel.processID.value == null ||
         quoteModel.clientAddressNameController.value.text.isEmpty ||
@@ -428,7 +428,21 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         quoteModel.billingAddressController.value.text.isEmpty ||
         // (quoteModel.gmail_selectionStatus.value && quoteModel.emailController.value.text.isEmpty) ||
         // (quoteModel.whatsapp_selectionStatus.value && quoteModel.phoneController.value.text.isEmpty) ||
-        // (quoteModel.gstNumController.value.text.isEmpty) // Optional if needed later
+        (quoteModel.gstNumController.value.text.isEmpty) || // Optional if needed later
+        quoteModel.Quote_noteList.isEmpty ||
+        quoteModel.Quote_no.value == null);
+  } // If any one is empty or null, then it returns true
+
+  bool postDatavalidation() {
+    return (quoteModel.TitleController.value.text.isEmpty ||
+        quoteModel.processID.value == null ||
+        quoteModel.clientAddressNameController.value.text.isEmpty ||
+        quoteModel.clientAddressController.value.text.isEmpty ||
+        quoteModel.billingAddressNameController.value.text.isEmpty ||
+        quoteModel.billingAddressController.value.text.isEmpty ||
+        (quoteModel.gmail_selectionStatus.value && quoteModel.emailController.value.text.isEmpty) ||
+        (quoteModel.whatsapp_selectionStatus.value && quoteModel.phoneController.value.text.isEmpty) ||
+        (quoteModel.gstNumController.value.text.isEmpty) || // Optional if needed later
         quoteModel.Quote_noteList.isEmpty ||
         quoteModel.Quote_no.value == null);
   } // If any one is empty or null, then it returns true

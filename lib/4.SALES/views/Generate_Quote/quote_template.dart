@@ -158,7 +158,7 @@ class Quotation {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("SSIPL/INST/250202", 10),
+                            child: regular(estimate, 10),
                           ),
                         ),
                       ],

@@ -533,6 +533,7 @@ class ClientreqController extends GetxController {
     clientReqModel.BranchFullList.clear();
     clientReqModel.BranchList_valueModel.clear();
     clientReqModel.selected_branchList.clear();
+    clientReqModel.clientReqProductDetails.clear();
 
     // SITES
     // clientReqModel.siteFormkey.value = GlobalKey<FormState>();

@@ -96,7 +96,7 @@ class SubscriptionController extends GetxController {
   }
 
   void search(String query) {
-    // subscriptionModel.searchQuery.value = query;
+    subscriptionModel.searchQuery.value = query;
 
     if (query.isEmpty) {
       subscriptionModel.processList.assignAll(subscriptionfilteredModel.processList);

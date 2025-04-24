@@ -513,7 +513,7 @@ class _RfqNoteState extends State<RfqNote> {
                                       child: TextButton(
                                         onPressed: () async {
                                           try {
-                                            if (rfqController.postDatavalidation()) {
+                                            if (rfqController.generate_Datavalidation()) {
                                               Get.snackbar("Error", "Any of the required fields is Empty!");
                                               return;
                                             }

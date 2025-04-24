@@ -508,7 +508,7 @@ class _InvoiceNoteState extends State<InvoiceNote> {
                                       child: TextButton(
                                         onPressed: () async {
                                           try {
-                                            if (invoiceController.postDatavalidation()) {
+                                            if (invoiceController.generate_Datavalidation()) {
                                               Get.snackbar("Error", "Any of the required fields is Empty!");
                                               return;
                                             }

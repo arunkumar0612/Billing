@@ -434,6 +434,19 @@ class QuoteController extends GetxController {
     updateBillingAddress(instance.billingAddress!);
   }
 
+  bool generate_Datavalidation() {
+    return (quoteModel.TitleController.value.text.isEmpty ||
+        quoteModel.processID.value == null ||
+        quoteModel.clientAddressNameController.value.text.isEmpty ||
+        quoteModel.clientAddressController.value.text.isEmpty ||
+        quoteModel.billingAddressNameController.value.text.isEmpty ||
+        quoteModel.billingAddressController.value.text.isEmpty ||
+        quoteModel.gstNumController.value.text.isEmpty ||
+        quoteModel.Quote_products.isEmpty ||
+        quoteModel.Quote_noteList.isEmpty ||
+        quoteModel.Quote_no.value == null);
+  }
+
   bool postDatavalidation() {
     return (quoteModel.TitleController.value.text.isEmpty ||
         quoteModel.processID.value == null ||

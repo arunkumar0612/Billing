@@ -441,6 +441,19 @@ class InvoiceController extends GetxController {
     // }
   }
 
+  bool generate_Datavalidation() {
+    return (invoiceModel.TitleController.value.text.isEmpty ||
+        invoiceModel.processID.value == null ||
+        invoiceModel.clientAddressNameController.value.text.isEmpty ||
+        invoiceModel.clientAddressController.value.text.isEmpty ||
+        invoiceModel.billingAddressNameController.value.text.isEmpty ||
+        invoiceModel.billingAddressController.value.text.isEmpty ||
+        invoiceModel.gstNumController.value.text.isEmpty ||
+        invoiceModel.Invoice_gstTotals.isEmpty ||
+        invoiceModel.Invoice_noteList.isEmpty ||
+        invoiceModel.Invoice_no.value == null);
+  }
+
   bool postDatavalidation() {
     return (invoiceModel.TitleController.value.text.isEmpty ||
         invoiceModel.processID.value == null ||

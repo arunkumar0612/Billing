@@ -168,9 +168,13 @@ class RfqController extends GetxController {
 
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf'],
-    );
+        type: FileType.custom,
+        allowedExtensions: [
+          'png',
+          'jpg',
+          'jpeg',
+        ],
+        lockParentWindow: true);
 
     if (result != null) {
       final file = File(result.files.single.path!);
@@ -493,54 +497,53 @@ class RfqController extends GetxController {
   // }
 
   void resetData() {
-  // TAB, PROCESS & GENERAL
-  rfqModel.tabController.value = null;
-  rfqModel.processID.value = null;
-  rfqModel.vendorID.value = null;
-  rfqModel.vendorName.value = null;
-  rfqModel.Rfq_no.value = null;
-  rfqModel.Rfq_table_heading.value = '';
-  rfqModel.vendorList.clear();
+    // TAB, PROCESS & GENERAL
+    rfqModel.tabController.value = null;
+    rfqModel.processID.value = null;
+    rfqModel.vendorID.value = null;
+    rfqModel.vendorName.value = null;
+    rfqModel.Rfq_no.value = null;
+    rfqModel.Rfq_table_heading.value = '';
+    rfqModel.vendorList.clear();
 
-  // DETAILS
-  rfqModel.TitleController.value.clear();
-  rfqModel.AddressController.value.clear();
-  rfqModel.detailsKey.value = GlobalKey<FormState>();
+    // DETAILS
+    rfqModel.TitleController.value.clear();
+    rfqModel.AddressController.value.clear();
+    rfqModel.detailsKey.value = GlobalKey<FormState>();
 
-  // PRODUCTS
-  rfqModel.productKey.value = GlobalKey<FormState>();
-  rfqModel.product_editIndex.value = null;
-  rfqModel.productNameController.value.clear();
-  rfqModel.quantityController.value.clear();
-  rfqModel.Rfq_products.clear();
-  rfqModel.Rfq_productSuggestion.clear();
+    // PRODUCTS
+    rfqModel.productKey.value = GlobalKey<FormState>();
+    rfqModel.product_editIndex.value = null;
+    rfqModel.productNameController.value.clear();
+    rfqModel.quantityController.value.clear();
+    rfqModel.Rfq_products.clear();
+    rfqModel.Rfq_productSuggestion.clear();
 
-  // NOTES
-  rfqModel.noteformKey.value = GlobalKey<FormState>();
-  rfqModel.progress.value = 0.0;
-  rfqModel.isLoading.value = false;
-  rfqModel.note_editIndex.value = null;
-  rfqModel.notecontentController.value.clear();
-  rfqModel.recommendation_editIndex.value = null;
-  rfqModel.recommendationHeadingController.value.clear();
-  rfqModel.recommendationKeyController.value.clear();
-  rfqModel.recommendationValueController.value.clear();
-  rfqModel.Rfq_noteList.clear();
-  rfqModel.Rfq_recommendationList.clear();
-  rfqModel.noteSuggestion.clear();
+    // NOTES
+    rfqModel.noteformKey.value = GlobalKey<FormState>();
+    rfqModel.progress.value = 0.0;
+    rfqModel.isLoading.value = false;
+    rfqModel.note_editIndex.value = null;
+    rfqModel.notecontentController.value.clear();
+    rfqModel.recommendation_editIndex.value = null;
+    rfqModel.recommendationHeadingController.value.clear();
+    rfqModel.recommendationKeyController.value.clear();
+    rfqModel.recommendationValueController.value.clear();
+    rfqModel.Rfq_noteList.clear();
+    rfqModel.Rfq_recommendationList.clear();
+    rfqModel.noteSuggestion.clear();
 
-  // POST
-  rfqModel.pickedFile.value = null;
-  rfqModel.selectedPdf.value = null;
-  rfqModel.ispdfLoading.value = false;
-  rfqModel.whatsapp_selectionStatus.value = true;
-  rfqModel.gmail_selectionStatus.value = true;
-  rfqModel.phoneController.value.clear();
-  rfqModel.emailController.value.clear();
-  rfqModel.CCemailController.value.clear();
-  rfqModel.feedbackController.value.clear();
-  rfqModel.filePathController.value.clear();
-  rfqModel.CCemailToggle.value = false;
-}
-
+    // POST
+    rfqModel.pickedFile.value = null;
+    rfqModel.selectedPdf.value = null;
+    rfqModel.ispdfLoading.value = false;
+    rfqModel.whatsapp_selectionStatus.value = true;
+    rfqModel.gmail_selectionStatus.value = true;
+    rfqModel.phoneController.value.clear();
+    rfqModel.emailController.value.clear();
+    rfqModel.CCemailController.value.clear();
+    rfqModel.feedbackController.value.clear();
+    rfqModel.filePathController.value.clear();
+    rfqModel.CCemailToggle.value = false;
+  }
 }

@@ -186,9 +186,13 @@ class InvoiceController extends GetxController {
 
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf'],
-    );
+        type: FileType.custom,
+        allowedExtensions: [
+          'png',
+          'jpg',
+          'jpeg',
+        ],
+        lockParentWindow: true);
 
     if (result != null) {
       final file = File(result.files.single.path!);
@@ -496,61 +500,60 @@ class InvoiceController extends GetxController {
   // }
 
   void resetData() {
-  // TAB, PROCESS & GENERAL
-  invoiceModel.tabController.value = null;
-  invoiceModel.processID.value = null;
-  invoiceModel.Invoice_no.value = null;
-  invoiceModel.Invoice_table_heading.value = '';
-  invoiceModel.gstNumController.value.clear();
-  invoiceModel.invoice_amount.value = null;
+    // TAB, PROCESS & GENERAL
+    invoiceModel.tabController.value = null;
+    invoiceModel.processID.value = null;
+    invoiceModel.Invoice_no.value = null;
+    invoiceModel.Invoice_table_heading.value = '';
+    invoiceModel.gstNumController.value.clear();
+    invoiceModel.invoice_amount.value = null;
 
-  // DETAILS
-  invoiceModel.TitleController.value.clear();
-  invoiceModel.clientAddressNameController.value.clear();
-  invoiceModel.clientAddressController.value.clear();
-  invoiceModel.billingAddressNameController.value.clear();
-  invoiceModel.billingAddressController.value.clear();
-  invoiceModel.detailsKey.value = GlobalKey<FormState>();
+    // DETAILS
+    invoiceModel.TitleController.value.clear();
+    invoiceModel.clientAddressNameController.value.clear();
+    invoiceModel.clientAddressController.value.clear();
+    invoiceModel.billingAddressNameController.value.clear();
+    invoiceModel.billingAddressController.value.clear();
+    invoiceModel.detailsKey.value = GlobalKey<FormState>();
 
-  // PRODUCTS
-  invoiceModel.productKey.value = GlobalKey<FormState>();
-  invoiceModel.product_editIndex.value = null;
-  invoiceModel.productNameController.value.clear();
-  invoiceModel.hsnController.value.clear();
-  invoiceModel.priceController.value.clear();
-  invoiceModel.quantityController.value.clear();
-  invoiceModel.gstController.value.clear();
-  invoiceModel.Invoice_products.clear();
-  invoiceModel.Invoice_productSuggestion.clear();
-  invoiceModel.Invoice_gstTotals.clear();
+    // PRODUCTS
+    invoiceModel.productKey.value = GlobalKey<FormState>();
+    invoiceModel.product_editIndex.value = null;
+    invoiceModel.productNameController.value.clear();
+    invoiceModel.hsnController.value.clear();
+    invoiceModel.priceController.value.clear();
+    invoiceModel.quantityController.value.clear();
+    invoiceModel.gstController.value.clear();
+    invoiceModel.Invoice_products.clear();
+    invoiceModel.Invoice_productSuggestion.clear();
+    invoiceModel.Invoice_gstTotals.clear();
 
-  // NOTES
-  invoiceModel.noteformKey.value = GlobalKey<FormState>();
-  invoiceModel.progress.value = 0.0;
-  invoiceModel.isLoading.value = false;
-  invoiceModel.note_editIndex.value = null;
-  invoiceModel.notecontentController.value.clear();
-  invoiceModel.recommendation_editIndex.value = null;
-  invoiceModel.recommendationHeadingController.value.clear();
-  invoiceModel.recommendationKeyController.value.clear();
-  invoiceModel.recommendationValueController.value.clear();
-  invoiceModel.Invoice_noteList.clear();
-  invoiceModel.Invoice_recommendationList.clear();
-  invoiceModel.noteSuggestion.clear();
+    // NOTES
+    invoiceModel.noteformKey.value = GlobalKey<FormState>();
+    invoiceModel.progress.value = 0.0;
+    invoiceModel.isLoading.value = false;
+    invoiceModel.note_editIndex.value = null;
+    invoiceModel.notecontentController.value.clear();
+    invoiceModel.recommendation_editIndex.value = null;
+    invoiceModel.recommendationHeadingController.value.clear();
+    invoiceModel.recommendationKeyController.value.clear();
+    invoiceModel.recommendationValueController.value.clear();
+    invoiceModel.Invoice_noteList.clear();
+    invoiceModel.Invoice_recommendationList.clear();
+    invoiceModel.noteSuggestion.clear();
 
-  // POST
-  invoiceModel.pickedFile.value = null;
-  invoiceModel.selectedPdf.value = null;
-  invoiceModel.ispdfLoading.value = false;
-  invoiceModel.whatsapp_selectionStatus.value = true;
-  invoiceModel.gmail_selectionStatus.value = true;
-  invoiceModel.phoneController.value.clear();
-  invoiceModel.emailController.value.clear();
-  invoiceModel.CCemailController.value.clear();
-  invoiceModel.feedbackController.value.clear();
-  invoiceModel.filePathController.value.clear();
-  invoiceModel.CCemailToggle.value = false;
-  invoiceModel.isGST_local.value = true;
-}
-
+    // POST
+    invoiceModel.pickedFile.value = null;
+    invoiceModel.selectedPdf.value = null;
+    invoiceModel.ispdfLoading.value = false;
+    invoiceModel.whatsapp_selectionStatus.value = true;
+    invoiceModel.gmail_selectionStatus.value = true;
+    invoiceModel.phoneController.value.clear();
+    invoiceModel.emailController.value.clear();
+    invoiceModel.CCemailController.value.clear();
+    invoiceModel.feedbackController.value.clear();
+    invoiceModel.filePathController.value.clear();
+    invoiceModel.CCemailToggle.value = false;
+    invoiceModel.isGST_local.value = true;
+  }
 }

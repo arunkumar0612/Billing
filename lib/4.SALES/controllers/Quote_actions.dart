@@ -188,9 +188,13 @@ class QuoteController extends GetxController {
 
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf'],
-    );
+        type: FileType.custom,
+        allowedExtensions: [
+          'png',
+          'jpg',
+          'jpeg',
+        ],
+        lockParentWindow: true);
 
     if (result != null) {
       final file = File(result.files.single.path!);
@@ -486,64 +490,63 @@ class QuoteController extends GetxController {
   // }
 
   void resetData() {
-  // TAB, PROCESS & GENERAL
-  quoteModel.tabController.value = null;
-  quoteModel.processID.value = null;
-  quoteModel.Quote_no.value = null;
-  quoteModel.Quote_table_heading.value = '';
-  quoteModel.gstNumController.value.clear();
+    // TAB, PROCESS & GENERAL
+    quoteModel.tabController.value = null;
+    quoteModel.processID.value = null;
+    quoteModel.Quote_no.value = null;
+    quoteModel.Quote_table_heading.value = '';
+    quoteModel.gstNumController.value.clear();
 
-  // DETAILS
-  quoteModel.TitleController.value.clear();
-  quoteModel.clientAddressNameController.value.clear();
-  quoteModel.clientAddressController.value.clear();
-  quoteModel.billingAddressNameController.value.clear();
-  quoteModel.billingAddressController.value.clear();
-  quoteModel.detailsKey.value = GlobalKey<FormState>();
+    // DETAILS
+    quoteModel.TitleController.value.clear();
+    quoteModel.clientAddressNameController.value.clear();
+    quoteModel.clientAddressController.value.clear();
+    quoteModel.billingAddressNameController.value.clear();
+    quoteModel.billingAddressController.value.clear();
+    quoteModel.detailsKey.value = GlobalKey<FormState>();
 
-  // PRODUCTS
-  quoteModel.Quote_productSuggestion.clear();
-  quoteModel.productKey.value = GlobalKey<FormState>();
-  quoteModel.product_editIndex.value = null;
-  quoteModel.productNameController.value.clear();
-  quoteModel.hsnController.value.clear();
-  quoteModel.priceController.value.clear();
-  quoteModel.quantityController.value.clear();
-  quoteModel.gstController.value.clear();
-  quoteModel.Quote_products.clear();
-  quoteModel.Quote_gstTotals.clear();
+    // PRODUCTS
+    quoteModel.Quote_productSuggestion.clear();
+    quoteModel.productKey.value = GlobalKey<FormState>();
+    quoteModel.product_editIndex.value = null;
+    quoteModel.productNameController.value.clear();
+    quoteModel.hsnController.value.clear();
+    quoteModel.priceController.value.clear();
+    quoteModel.quantityController.value.clear();
+    quoteModel.gstController.value.clear();
+    quoteModel.Quote_products.clear();
+    quoteModel.Quote_gstTotals.clear();
 
-  // NOTES
-  quoteModel.noteformKey.value = GlobalKey<FormState>();
-  quoteModel.progress.value = 0.0;
-  quoteModel.isLoading.value = false;
-  quoteModel.note_editIndex.value = null;
-  quoteModel.notecontentController.value.clear();
-  quoteModel.recommendation_editIndex.value = null;
-  quoteModel.recommendationHeadingController.value.clear();
-  quoteModel.recommendationKeyController.value.clear();
-  quoteModel.recommendationValueController.value.clear();
-  quoteModel.Quote_noteList.clear();
-  quoteModel.Quote_recommendationList.clear();
-  quoteModel.notecontent.value = [
-    'Delivery within 30 working days from the date of issuing the PO.',
-    'Payment terms : 100% along with PO.',
-    'Client needs to provide Ethernet cable and UPS power supply to the point where the device is proposed to install.',
-  ];
+    // NOTES
+    quoteModel.noteformKey.value = GlobalKey<FormState>();
+    quoteModel.progress.value = 0.0;
+    quoteModel.isLoading.value = false;
+    quoteModel.note_editIndex.value = null;
+    quoteModel.notecontentController.value.clear();
+    quoteModel.recommendation_editIndex.value = null;
+    quoteModel.recommendationHeadingController.value.clear();
+    quoteModel.recommendationKeyController.value.clear();
+    quoteModel.recommendationValueController.value.clear();
+    quoteModel.Quote_noteList.clear();
+    quoteModel.Quote_recommendationList.clear();
+    quoteModel.notecontent.value = [
+      'Delivery within 30 working days from the date of issuing the PO.',
+      'Payment terms : 100% along with PO.',
+      'Client needs to provide Ethernet cable and UPS power supply to the point where the device is proposed to install.',
+    ];
 
-  // POST
-  quoteModel.pickedFile.value = null;
-  quoteModel.selectedPdf.value = null;
-  quoteModel.ispdfLoading.value = false;
-  quoteModel.whatsapp_selectionStatus.value = true;
-  quoteModel.gmail_selectionStatus.value = true;
-  quoteModel.phoneController.value.clear();
-  quoteModel.emailController.value.clear();
-  quoteModel.CCemailController.value.clear();
-  quoteModel.feedbackController.value.clear();
-  quoteModel.filePathController.value.clear();
-  quoteModel.CCemailToggle.value = false;
-  quoteModel.isGST_local = true.obs;
-}
-
+    // POST
+    quoteModel.pickedFile.value = null;
+    quoteModel.selectedPdf.value = null;
+    quoteModel.ispdfLoading.value = false;
+    quoteModel.whatsapp_selectionStatus.value = true;
+    quoteModel.gmail_selectionStatus.value = true;
+    quoteModel.phoneController.value.clear();
+    quoteModel.emailController.value.clear();
+    quoteModel.CCemailController.value.clear();
+    quoteModel.feedbackController.value.clear();
+    quoteModel.filePathController.value.clear();
+    quoteModel.CCemailToggle.value = false;
+    quoteModel.isGST_local = true.obs;
+  }
 }

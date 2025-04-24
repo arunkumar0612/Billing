@@ -45,9 +45,13 @@ class CustomPDF_QuoteController extends GetxController {
 
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf'],
-    );
+        type: FileType.custom,
+        allowedExtensions: [
+          'png',
+          'jpg',
+          'jpeg',
+        ],
+        lockParentWindow: true);
 
     if (result != null) {
       final file = File(result.files.single.path!);
@@ -208,12 +212,11 @@ class CustomPDF_QuoteController extends GetxController {
       addedSGST += sgst;
       addedSubTotal += subTotal;
     }
-    if(isGST_Local(pdfModel.value.GSTnumber.value.text)){
- addedRoundoff = addedSubTotal + addedCGST + addedSGST;
-    }else{
-       addedRoundoff = addedSubTotal + addedIGST;
+    if (isGST_Local(pdfModel.value.GSTnumber.value.text)) {
+      addedRoundoff = addedSubTotal + addedCGST + addedSGST;
+    } else {
+      addedRoundoff = addedSubTotal + addedIGST;
     }
-   
 
     pdfModel.value.subTotal.value.text = addedSubTotal.toStringAsFixed(2);
     pdfModel.value.IGST.value.text = addedIGST.toStringAsFixed(2);
@@ -271,7 +274,7 @@ class CustomPDF_QuoteController extends GetxController {
         pdfModel.value.manualquoteNo.value.text.isEmpty);
   }
 
-   void clear_postFields() {
+  void clear_postFields() {
     pdfModel.value.phoneNumber.value.clear();
     pdfModel.value.Email.value.clear();
     pdfModel.value.feedback.value.clear();

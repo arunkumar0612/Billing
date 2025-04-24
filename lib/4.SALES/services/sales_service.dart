@@ -18,6 +18,7 @@ import 'package:ssipl_billing/4.SALES/controllers/RFQ_actions.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_DC/generateDC.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_RFQ/generateRFQ.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
+import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -39,7 +40,7 @@ mixin SalesServices {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final SalesController salesController = Get.find<SalesController>();
   final ClientreqController clientreqController = Get.find<ClientreqController>();
-
+  final loader = LoadingOverlay();
   Future<void> Get_salesCustomPDFLsit() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_salesCustompdf);
@@ -264,40 +265,58 @@ mixin SalesServices {
 
   Future<void> downloadPdf(BuildContext context, String filename, File? pdfFile) async {
     try {
-      // final pdfFile = salesController.salesModel.pdfFile.value;
+      loader.start(context);
+
+      // ✅ Let the loader show before blocking UI
+      await Future.delayed(const Duration(milliseconds: 300));
 
       if (pdfFile == null) {
+        loader.stop();
         if (kDebugMode) {
           print("No PDF file found to download.");
         }
-        return;
-      }
-
-      // Let the user pick a folder to save the file
-      String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
-
-      // Check if the user canceled folder selection
-      if (selectedDirectory == null) {
         Basic_dialog(
           context: context,
-          title: "Error",
-          content: "Cannot find the path. Please select a folder to save the PDF.",
+          title: "No PDF Found",
+          content: "There is no PDF file to download.",
           showCancel: false,
         );
         return;
       }
 
-      // Define the destination path
-      String savePath = "$selectedDirectory/$filename.pdf";
+      await Future.delayed(const Duration(milliseconds: 100));
 
-      // Copy the PDF file to the selected directory
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(lockParentWindow: true);
+
+      // ✅ Always stop loader after native call
+      loader.stop();
+
+      if (selectedDirectory == null) {
+        if (kDebugMode) {
+          print("User cancelled the folder selection.");
+        }
+        Basic_dialog(
+          context: context,
+          title: "Cancelled",
+          content: "Download cancelled. No folder was selected.",
+          showCancel: false,
+        );
+        return;
+      }
+
+      String savePath = "$selectedDirectory/$filename.pdf";
       await pdfFile.copy(savePath);
-      Basic_SnackBar(context, "PDF downloaded successfully to: $savePath");
+
+      Basic_SnackBar(context, "✅ PDF downloaded successfully to: $savePath");
     } catch (e) {
+      loader.stop();
+      if (kDebugMode) {
+        print("❌ Error while downloading PDF: $e");
+      }
       Basic_dialog(
         context: context,
         title: "Error",
-        content: "Error downloading PDF: $e",
+        content: "An error occurred while downloading the PDF:\n$e",
         showCancel: false,
       );
     }
@@ -471,7 +490,7 @@ mixin SalesServices {
                               ),
                               TextButton(
                                 onPressed: () {
-                                   clientreqController.resetData();
+                                  clientreqController.resetData();
                                   Navigator.of(context).pop(true); // Yes action
                                 },
                                 child: const Text("Yes"),

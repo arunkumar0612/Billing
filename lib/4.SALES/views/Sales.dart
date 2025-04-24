@@ -1070,146 +1070,225 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                             Obx(
                               () => Expanded(
                                 // child: Container(),
-                                child: ListView.builder(
-                                  itemCount: salesController.salesModel.processList.length,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.only(top: 10),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(15),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Primary_colors.Dark,
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: ExpansionTile(
-                                            collapsedIconColor: const Color.fromARGB(255, 135, 132, 132),
-                                            iconColor: Colors.red,
-                                            collapsedBackgroundColor: Primary_colors.Dark,
-                                            backgroundColor: Primary_colors.Dark,
-                                            title: Obx(
-                                              () => Row(
-                                                children: [
-                                                  Checkbox(
-                                                    value: salesController.salesModel.selectedIndices.contains(index),
-                                                    onChanged: (bool? value) {
-                                                      if (value == true) {
-                                                        salesController.salesModel.selectedIndices.add(index);
-                                                      } else {
-                                                        salesController.salesModel.selectedIndices.remove(index);
-                                                        salesController.updateisAllSelected(salesController.salesModel.selectedIndices.length == salesController.salesModel.processList.length);
-                                                      }
-                                                    },
-                                                    activeColor: Primary_colors.Color3, // More vibrant color
-                                                    checkColor: Colors.white, // White checkmark for contrast
-                                                    side: const BorderSide(color: Primary_colors.Color3, width: 2), // Styled border
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(4), // Soft rounded corners
+                                child: salesController.salesModel.processList.isNotEmpty
+                                    ? ListView.builder(
+                                        itemCount: salesController.salesModel.processList.length,
+                                        itemBuilder: (context, index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(top: 10),
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(15),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: Primary_colors.Dark,
+                                                  borderRadius: BorderRadius.circular(10),
+                                                ),
+                                                child: ExpansionTile(
+                                                  collapsedIconColor: const Color.fromARGB(255, 135, 132, 132),
+                                                  iconColor: Colors.red,
+                                                  collapsedBackgroundColor: Primary_colors.Dark,
+                                                  backgroundColor: Primary_colors.Dark,
+                                                  title: Obx(
+                                                    () => Row(
+                                                      children: [
+                                                        Checkbox(
+                                                          value: salesController.salesModel.selectedIndices.contains(index),
+                                                          onChanged: (bool? value) {
+                                                            if (value == true) {
+                                                              salesController.salesModel.selectedIndices.add(index);
+                                                            } else {
+                                                              salesController.salesModel.selectedIndices.remove(index);
+                                                              salesController.updateisAllSelected(salesController.salesModel.selectedIndices.length == salesController.salesModel.processList.length);
+                                                            }
+                                                          },
+                                                          activeColor: Primary_colors.Color3, // More vibrant color
+                                                          checkColor: Colors.white, // White checkmark for contrast
+                                                          side: const BorderSide(color: Primary_colors.Color3, width: 2), // Styled border
+                                                          shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(4), // Soft rounded corners
+                                                          ),
+                                                        ),
+                                                        const SizedBox(width: 20),
+                                                        Expanded(
+                                                          flex: 4,
+                                                          child: Tooltip(
+                                                            message: salesController.salesModel.processList[index].customer_name, // Show client name
+                                                            textStyle: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text6),
+                                                            decoration: BoxDecoration(
+                                                              color: Colors.black87,
+                                                              borderRadius: BorderRadius.circular(8),
+                                                            ),
+                                                            child: Text(
+                                                              salesController.salesModel.processList[index].processid.toString(),
+                                                              style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                          flex: 15,
+                                                          child: Text(
+                                                            salesController.salesModel.processList[index].title,
+                                                            // items[showcustomerprocess]['name'],
+                                                            style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                            flex: 4,
+                                                            child: Text(
+                                                              DateFormat("dd MMM yyyy").format(DateTime.parse(salesController.salesModel.processList[index].Process_date)),
+                                                              style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                            )),
+                                                        Expanded(
+                                                          flex: 4,
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(left: 5),
+                                                            child: Text(
+                                                              salesController.salesModel.processList[index].age_in_days.toString(),
+                                                              // items[showcustomerprocess]['process'][index]['daycounts'],
+                                                              style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
-                                                  const SizedBox(width: 20),
-                                                  Expanded(
-                                                    flex: 4,
-                                                    child: Tooltip(
-                                                      message: salesController.salesModel.processList[index].customer_name, // Show client name
-                                                      textStyle: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text6),
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.black87,
-                                                        borderRadius: BorderRadius.circular(8),
-                                                      ),
-                                                      child: Text(
-                                                        salesController.salesModel.processList[index].processid.toString(),
-                                                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 15,
-                                                    child: Text(
-                                                      salesController.salesModel.processList[index].title,
-                                                      // items[showcustomerprocess]['name'],
-                                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                      flex: 4,
-                                                      child: Text(
-                                                        DateFormat("dd MMM yyyy").format(DateTime.parse(salesController.salesModel.processList[index].Process_date)),
-                                                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                                      )),
-                                                  Expanded(
-                                                    flex: 4,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.only(left: 5),
-                                                      child: Text(
-                                                        salesController.salesModel.processList[index].age_in_days.toString(),
-                                                        // items[showcustomerprocess]['process'][index]['daycounts'],
-                                                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            children: [
-                                              SizedBox(
-                                                height: ((salesController.salesModel.processList[index].TimelineEvents.length * 80) + 20).toDouble(),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(16.0),
-                                                  child: ListView.builder(
-                                                    itemCount: salesController.salesModel.processList[index].TimelineEvents.length, // +1 for "Add Event" button
-                                                    itemBuilder: (context, childIndex) {
-                                                      final Rx<Color> textColor = const Color.fromARGB(255, 199, 198, 198).obs;
-                                                      return Row(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          Column(
-                                                            children: [
-                                                              MouseRegion(
-                                                                cursor: SystemMouseCursors.click,
-                                                                child: GestureDetector(
-                                                                  child: Container(
-                                                                    height: 40,
-                                                                    width: 40,
-                                                                    padding: const EdgeInsets.all(8),
-                                                                    decoration: BoxDecoration(
-                                                                      gradient: LinearGradient(
-                                                                        begin: Alignment.topLeft,
-                                                                        end: Alignment.bottomRight,
-                                                                        colors: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
-                                                                            ? [
-                                                                                const Color.fromARGB(78, 0, 0, 0),
-                                                                                const Color.fromARGB(36, 231, 139, 33),
-                                                                              ]
-                                                                            : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Invoice"
-                                                                                ? [
-                                                                                    const Color.fromARGB(66, 0, 0, 0),
-                                                                                    const Color.fromARGB(24, 118, 253, 129),
-                                                                                  ]
-                                                                                : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
-                                                                                    ? [
-                                                                                        const Color.fromARGB(78, 0, 0, 0),
-                                                                                        const Color.fromARGB(38, 223, 55, 55),
-                                                                                      ]
-                                                                                    : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
-                                                                                        ? [
-                                                                                            const Color.fromARGB(78, 0, 0, 0),
-                                                                                            const Color.fromARGB(24, 118, 253, 129),
-                                                                                          ]
-                                                                                        : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
-                                                                                            ? [
-                                                                                                const Color.fromARGB(78, 0, 0, 0),
-                                                                                                const Color.fromARGB(43, 0, 76, 240),
-                                                                                              ]
-                                                                                            : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
-                                                                                                    "Request for Quotation"
-                                                                                                ? [
-                                                                                                    const Color.fromARGB(78, 0, 0, 0),
-                                                                                                    const Color.fromARGB(43, 253, 205, 116),
-                                                                                                  ]
-                                                                                                : [Colors.white],
+                                                  children: [
+                                                    SizedBox(
+                                                      height: ((salesController.salesModel.processList[index].TimelineEvents.length * 80) + 20).toDouble(),
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(16.0),
+                                                        child: ListView.builder(
+                                                          itemCount: salesController.salesModel.processList[index].TimelineEvents.length, // +1 for "Add Event" button
+                                                          itemBuilder: (context, childIndex) {
+                                                            final Rx<Color> textColor = const Color.fromARGB(255, 199, 198, 198).obs;
+                                                            return Row(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Column(
+                                                                  children: [
+                                                                    MouseRegion(
+                                                                      cursor: SystemMouseCursors.click,
+                                                                      child: GestureDetector(
+                                                                        child: Container(
+                                                                          height: 40,
+                                                                          width: 40,
+                                                                          padding: const EdgeInsets.all(8),
+                                                                          decoration: BoxDecoration(
+                                                                            gradient: LinearGradient(
+                                                                              begin: Alignment.topLeft,
+                                                                              end: Alignment.bottomRight,
+                                                                              colors: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
+                                                                                  ? [
+                                                                                      const Color.fromARGB(78, 0, 0, 0),
+                                                                                      const Color.fromARGB(36, 231, 139, 33),
+                                                                                    ]
+                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Invoice"
+                                                                                      ? [
+                                                                                          const Color.fromARGB(66, 0, 0, 0),
+                                                                                          const Color.fromARGB(24, 118, 253, 129),
+                                                                                        ]
+                                                                                      : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
+                                                                                          ? [
+                                                                                              const Color.fromARGB(78, 0, 0, 0),
+                                                                                              const Color.fromARGB(38, 223, 55, 55),
+                                                                                            ]
+                                                                                          : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
+                                                                                              ? [
+                                                                                                  const Color.fromARGB(78, 0, 0, 0),
+                                                                                                  const Color.fromARGB(24, 118, 253, 129),
+                                                                                                ]
+                                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
+                                                                                                      "Revised Quotation"
+                                                                                                  ? [
+                                                                                                      const Color.fromARGB(78, 0, 0, 0),
+                                                                                                      const Color.fromARGB(43, 0, 76, 240),
+                                                                                                    ]
+                                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
+                                                                                                          "Request for Quotation"
+                                                                                                      ? [
+                                                                                                          const Color.fromARGB(78, 0, 0, 0),
+                                                                                                          const Color.fromARGB(43, 253, 205, 116),
+                                                                                                        ]
+                                                                                                      : [Colors.white],
+                                                                            ),
+                                                                            border: Border.all(
+                                                                              color: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
+                                                                                  ? const Color.fromARGB(255, 243, 131, 56)
+                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
+                                                                                      ? Colors.green
+                                                                                      : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Invoice"
+                                                                                          ? Colors.green
+                                                                                          : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
+                                                                                              ? Colors.red
+                                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
+                                                                                                      "Revised Quotation"
+                                                                                                  ? Colors.blue
+                                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
+                                                                                                          "Request for Quotation"
+                                                                                                      ? const Color.fromARGB(255, 255, 191, 119)
+                                                                                                      : Colors.white,
+                                                                              width: 2,
+                                                                            ),
+                                                                            shape: BoxShape.circle,
+                                                                            // color: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
+                                                                            //     ? const Color.fromARGB(36, 231, 139, 33)
+                                                                            //     : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Invoice"
+                                                                            //         ? const Color.fromARGB(24, 118, 253, 129)
+                                                                            //         : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
+                                                                            //             ? const Color.fromARGB(38, 223, 55, 55)
+                                                                            //             : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
+                                                                            //                 ? const Color.fromARGB(24, 118, 253, 129)
+                                                                            //                 : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
+                                                                            //                     ? const Color.fromARGB(43, 0, 76, 240)
+                                                                            //                     : Colors.white,
+                                                                          ),
+                                                                          // child: const Icon(
+                                                                          //   Icons.event,
+                                                                          //   color: Colors.white,
+                                                                          // ),
+                                                                          child: Center(
+                                                                            child: Image.asset(
+                                                                              salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
+                                                                                  ? 'assets/images/request.png'
+                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Invoice"
+                                                                                      ? 'assets/images/invoice.png'
+                                                                                      : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
+                                                                                          ? 'assets/images/dc.png'
+                                                                                          : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
+                                                                                              ? 'assets/images/Estimate.png'
+                                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
+                                                                                                      "Revised Quotation"
+                                                                                                  ? 'assets/images/revision.png'
+                                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
+                                                                                                          "Request for Quotation"
+                                                                                                      ? 'assets/images/rfq.png'
+                                                                                                      : 'assets/images/Estimate.png',
+                                                                              fit: BoxFit.fill,
+                                                                              width: 30,
+                                                                              height: 30,
+                                                                            ),
+
+                                                                            // Text(
+                                                                            //   (childIndex + 1).toString(),
+                                                                            //   // (salesController.salesModel.processList[index].TimelineEvents.length - 1 - childIndex + 1).toString(),
+                                                                            //   style: const TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold),
+                                                                            // ),
+                                                                          ),
+                                                                        ),
+                                                                        onTap: () async {
+                                                                          bool success =
+                                                                              await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                          if (success) {
+                                                                            widget.showPDF(context,
+                                                                                "${salesController.salesModel.processList[index].customer_name}${salesController.salesModel.processList[index].title}${salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname}");
+                                                                          }
+                                                                        },
                                                                       ),
-                                                                      border: Border.all(
+                                                                    ),
+                                                                    if (childIndex != salesController.salesModel.processList[index].TimelineEvents.length - 1)
+                                                                      Container(
+                                                                        width: 2,
+                                                                        height: 40,
                                                                         color: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
                                                                             ? const Color.fromARGB(255, 243, 131, 56)
                                                                             : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
@@ -1224,368 +1303,385 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                                     "Request for Quotation"
                                                                                                 ? const Color.fromARGB(255, 255, 191, 119)
                                                                                                 : Colors.white,
-                                                                        width: 2,
                                                                       ),
-                                                                      shape: BoxShape.circle,
-                                                                      // color: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
-                                                                      //     ? const Color.fromARGB(36, 231, 139, 33)
-                                                                      //     : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Invoice"
-                                                                      //         ? const Color.fromARGB(24, 118, 253, 129)
-                                                                      //         : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
-                                                                      //             ? const Color.fromARGB(38, 223, 55, 55)
-                                                                      //             : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
-                                                                      //                 ? const Color.fromARGB(24, 118, 253, 129)
-                                                                      //                 : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
-                                                                      //                     ? const Color.fromARGB(43, 0, 76, 240)
-                                                                      //                     : Colors.white,
-                                                                    ),
-                                                                    // child: const Icon(
-                                                                    //   Icons.event,
-                                                                    //   color: Colors.white,
-                                                                    // ),
-                                                                    child: Center(
-                                                                      child: Image.asset(
-                                                                        salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
-                                                                            ? 'assets/images/request.png'
-                                                                            : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Invoice"
-                                                                                ? 'assets/images/invoice.png'
-                                                                                : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
-                                                                                    ? 'assets/images/dc.png'
-                                                                                    : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
-                                                                                        ? 'assets/images/Estimate.png'
-                                                                                        : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
-                                                                                            ? 'assets/images/revision.png'
-                                                                                            : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
-                                                                                                    "Request for Quotation"
-                                                                                                ? 'assets/images/rfq.png'
-                                                                                                : 'assets/images/Estimate.png',
-                                                                        fit: BoxFit.fill,
-                                                                        width: 30,
-                                                                        height: 30,
-                                                                      ),
-
-                                                                      // Text(
-                                                                      //   (childIndex + 1).toString(),
-                                                                      //   // (salesController.salesModel.processList[index].TimelineEvents.length - 1 - childIndex + 1).toString(),
-                                                                      //   style: const TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold),
-                                                                      // ),
-                                                                    ),
-                                                                  ),
-                                                                  onTap: () async {
-                                                                    bool success = await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                    if (success) {
-                                                                      widget.showPDF(context,
-                                                                          "${salesController.salesModel.processList[index].customer_name}${salesController.salesModel.processList[index].title}${salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname}");
-                                                                    }
-                                                                  },
+                                                                  ],
                                                                 ),
-                                                              ),
-                                                              if (childIndex != salesController.salesModel.processList[index].TimelineEvents.length - 1)
-                                                                Container(
-                                                                  width: 2,
-                                                                  height: 40,
-                                                                  color: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
-                                                                      ? const Color.fromARGB(255, 243, 131, 56)
-                                                                      : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
-                                                                          ? Colors.green
-                                                                          : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Invoice"
-                                                                              ? Colors.green
-                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
-                                                                                  ? Colors.red
-                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
-                                                                                      ? Colors.blue
-                                                                                      : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Request for Quotation"
-                                                                                          ? const Color.fromARGB(255, 255, 191, 119)
-                                                                                          : Colors.white,
-                                                                ),
-                                                            ],
-                                                          ),
-                                                          Expanded(
-                                                            child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                              children: [
                                                                 Expanded(
-                                                                  child: Column(
-                                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                  child: Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                     children: [
-                                                                      Padding(
-                                                                        padding: const EdgeInsets.only(top: 0, left: 10),
-                                                                        child: Row(
+                                                                      Expanded(
+                                                                        child: Column(
+                                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                                           children: [
-                                                                            Text(
-                                                                              salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname,
-                                                                              // items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
-                                                                              style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
+                                                                            Padding(
+                                                                              padding: const EdgeInsets.only(top: 0, left: 10),
+                                                                              child: Row(
+                                                                                children: [
+                                                                                  Text(
+                                                                                    salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname,
+                                                                                    // items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
+                                                                                    style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
+                                                                                  ),
+                                                                                  // if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true) &&
+                                                                                  //     salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 0)
+                                                                                  //   const Padding(
+                                                                                  //     padding: EdgeInsets.only(left: 5),
+                                                                                  //     child: Text(
+                                                                                  //       "waiting for internal approval",
+                                                                                  //       // items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
+                                                                                  //       style: TextStyle(fontSize: 10, color: Color.fromARGB(255, 141, 141, 141)),
+                                                                                  //     ),
+                                                                                  //   ),
+                                                                                  if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1 &&
+                                                                                      (salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation" ||
+                                                                                          salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"))
+                                                                                    Image.asset(
+                                                                                      'assets/images/verified.png',
+                                                                                      // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                                      width: 20, // Makes the image fill the container's width
+                                                                                      height: 20, // Makes the image fill the container's height
+                                                                                    ),
+                                                                                  if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 2 &&
+                                                                                      (salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation" ||
+                                                                                          salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"))
+                                                                                    Padding(
+                                                                                      padding: const EdgeInsets.only(left: 5),
+                                                                                      child: Image.asset(
+                                                                                        color: Colors.amberAccent,
+                                                                                        'assets/images/exclamation.png',
+                                                                                        // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                                        width: 15, // Makes the image fill the container's width
+                                                                                        height: 15, // Makes the image fill the container's height
+                                                                                      ),
+                                                                                    ),
+                                                                                  if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 3 &&
+                                                                                      (salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation" ||
+                                                                                          salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"))
+                                                                                    Padding(
+                                                                                      padding: const EdgeInsets.only(left: 2),
+                                                                                      child: Image.asset(
+                                                                                        // color: Colors.amberAccent,
+                                                                                        'assets/images/reject.png',
+                                                                                        // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                                        width: 18, // Makes the image fill the container's width
+                                                                                        height: 18, // Makes the image fill the container's height
+                                                                                      ),
+                                                                                    ),
+                                                                                ],
+                                                                              ),
                                                                             ),
-                                                                            // if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true) &&
-                                                                            //     salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 0)
-                                                                            //   const Padding(
-                                                                            //     padding: EdgeInsets.only(left: 5),
-                                                                            //     child: Text(
-                                                                            //       "waiting for internal approval",
-                                                                            //       // items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
-                                                                            //       style: TextStyle(fontSize: 10, color: Color.fromARGB(255, 141, 141, 141)),
-                                                                            //     ),
-                                                                            //   ),
-                                                                            if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1 &&
-                                                                                (salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation" ||
-                                                                                    salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"))
-                                                                              Image.asset(
-                                                                                'assets/images/verified.png',
-                                                                                // fit: BoxFit.cover, // Ensures the image covers the container
-                                                                                width: 20, // Makes the image fill the container's width
-                                                                                height: 20, // Makes the image fill the container's height
+                                                                            if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true)
+                                                                              Row(
+                                                                                children: [
+                                                                                  const SizedBox(
+                                                                                    width: 10,
+                                                                                  ),
+                                                                                  const Text(
+                                                                                    "internal approval status",
+                                                                                    style: TextStyle(color: Colors.grey, fontSize: 10),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    width: 10,
+                                                                                  ),
+                                                                                  const Text(
+                                                                                    ":",
+                                                                                    style: TextStyle(color: Colors.grey, fontSize: 10),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    width: 10,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    salesController.salesModel.processList[index].TimelineEvents[childIndex].internalStatus == 1
+                                                                                        ? "Approved"
+                                                                                        : salesController.salesModel.processList[index].TimelineEvents[childIndex].internalStatus == 2
+                                                                                            ? "Pending"
+                                                                                            : salesController.salesModel.processList[index].TimelineEvents[childIndex].internalStatus == 3
+                                                                                                ? "Rejected"
+                                                                                                : "Pending",
+                                                                                    style: const TextStyle(color: Colors.grey, fontSize: 10),
+                                                                                  ),
+                                                                                ],
                                                                               ),
-                                                                            if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 2 &&
-                                                                                (salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation" ||
-                                                                                    salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"))
-                                                                              Padding(
-                                                                                padding: const EdgeInsets.only(left: 5),
-                                                                                child: Image.asset(
-                                                                                  color: Colors.amberAccent,
-                                                                                  'assets/images/exclamation.png',
-                                                                                  // fit: BoxFit.cover, // Ensures the image covers the container
-                                                                                  width: 15, // Makes the image fill the container's width
-                                                                                  height: 15, // Makes the image fill the container's height
-                                                                                ),
-                                                                              ),
-                                                                            if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 3 &&
-                                                                                (salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation" ||
-                                                                                    salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"))
-                                                                              Padding(
-                                                                                padding: const EdgeInsets.only(left: 2),
-                                                                                child: Image.asset(
-                                                                                  // color: Colors.amberAccent,
-                                                                                  'assets/images/reject.png',
-                                                                                  // fit: BoxFit.cover, // Ensures the image covers the container
-                                                                                  width: 18, // Makes the image fill the container's width
-                                                                                  height: 18, // Makes the image fill the container's height
-                                                                                ),
-                                                                              ),
+                                                                            Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                                              children: [
+                                                                                if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation == true) &&
+                                                                                    (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                  TextButton(
+                                                                                    onPressed: () async {
+                                                                                      bool success = await widget.GetPDFfile(
+                                                                                          context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+
+                                                                                      if (success) {
+                                                                                        widget.GenerateQuote_dialougebox(
+                                                                                            context, "quotation", salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                        quoteController.setProcessID(salesController.salesModel.processList[index].processid);
+                                                                                      }
+                                                                                    },
+                                                                                    child: const Text(
+                                                                                      "Quotation",
+                                                                                      style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                    ),
+                                                                                  ),
+                                                                                if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation ==
+                                                                                        true) &&
+                                                                                    (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1) &&
+                                                                                    (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus != 1))
+                                                                                  TextButton(
+                                                                                    onPressed: () async {
+                                                                                      bool success = await widget.GetPDFfile(
+                                                                                          context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+
+                                                                                      if (success) {
+                                                                                        widget.GenerateQuote_dialougebox(context, "revisedquotation",
+                                                                                            salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                        quoteController.setProcessID(salesController.salesModel.processList[index].processid);
+                                                                                      }
+                                                                                    },
+                                                                                    child: const Text(
+                                                                                      "RevisedQuotation",
+                                                                                      style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                    ),
+                                                                                  ),
+                                                                                if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.rfq == true) &&
+                                                                                    (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                  TextButton(
+                                                                                    onPressed: () async {
+                                                                                      bool success = await widget.GetPDFfile(
+                                                                                          context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                      if (success) {
+                                                                                        widget.GenerateRfq_dialougebox(
+                                                                                            context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                        rfqController.setProcessID(salesController.salesModel.processList[index].processid);
+                                                                                        if (kDebugMode) {
+                                                                                          print(rfqController.rfqModel.processID);
+                                                                                        }
+                                                                                      }
+                                                                                    },
+                                                                                    child: const Text(
+                                                                                      "Generate RFQ",
+                                                                                      style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                    ),
+                                                                                  ),
+                                                                                if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.invoice == true) &&
+                                                                                    (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1) &&
+                                                                                    (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1))
+                                                                                  TextButton(
+                                                                                    onPressed: () async {
+                                                                                      bool success = await widget.GetPDFfile(
+                                                                                          context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                      if (success) {
+                                                                                        widget.GenerateInvoice_dialougebox(
+                                                                                            context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                        invoiceController.setProcessID(salesController.salesModel.processList[index].processid);
+                                                                                        if (kDebugMode) {
+                                                                                          print(invoiceController.invoiceModel.processID);
+                                                                                        }
+                                                                                      }
+                                                                                    },
+                                                                                    child: const Text(
+                                                                                      "Invoice",
+                                                                                      style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                    ),
+                                                                                  ),
+                                                                                if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan ==
+                                                                                        true) &&
+                                                                                    (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                  TextButton(
+                                                                                    onPressed: () async {
+                                                                                      bool success = await widget.GetPDFfile(
+                                                                                          context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                      if (success) {
+                                                                                        widget.GenerateDelivery_challan_dialougebox(
+                                                                                            context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                        dcController.setProcessID(salesController.salesModel.processList[index].processid);
+                                                                                        if (kDebugMode) {
+                                                                                          print(dcController.dcModel.processID);
+                                                                                        }
+                                                                                      }
+                                                                                    },
+                                                                                    child: const Text(
+                                                                                      "Delivery challan",
+                                                                                      style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                    ),
+                                                                                  ),
+                                                                                // if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.credit_note == true)
+                                                                                //     // &&
+
+                                                                                //     )
+                                                                                //   TextButton(
+                                                                                //     onPressed: () {
+                                                                                //       // widget.GenerateCredit_dialougebox(context);
+                                                                                //     },
+                                                                                //     child: const Text(
+                                                                                //       "Credit",
+                                                                                //       style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                //     ),
+                                                                                //   ),
+                                                                                // if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.debit_note == true)
+                                                                                //     //  &&
+                                                                                //     //     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1)
+                                                                                //     )
+                                                                                //   TextButton(
+                                                                                //     onPressed: () {
+                                                                                //       // widget.GenerateDebit_dialougebox(context);
+                                                                                //     },
+                                                                                //     child: const Text(
+                                                                                //       "Debit",
+                                                                                //       style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                                //     ),
+                                                                                //   ),
+                                                                              ],
+                                                                            )
                                                                           ],
                                                                         ),
                                                                       ),
-                                                                      if (salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true)
-                                                                        Row(
-                                                                          children: [
-                                                                            const SizedBox(
-                                                                              width: 10,
-                                                                            ),
-                                                                            const Text(
-                                                                              "internal approval status",
-                                                                              style: TextStyle(color: Colors.grey, fontSize: 10),
-                                                                            ),
-                                                                            const SizedBox(
-                                                                              width: 10,
-                                                                            ),
-                                                                            const Text(
-                                                                              ":",
-                                                                              style: TextStyle(color: Colors.grey, fontSize: 10),
-                                                                            ),
-                                                                            const SizedBox(
-                                                                              width: 10,
-                                                                            ),
-                                                                            Text(
-                                                                              salesController.salesModel.processList[index].TimelineEvents[childIndex].internalStatus == 1
-                                                                                  ? "Approved"
-                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].internalStatus == 2
-                                                                                      ? "Pending"
-                                                                                      : salesController.salesModel.processList[index].TimelineEvents[childIndex].internalStatus == 3
-                                                                                          ? "Rejected"
-                                                                                          : "Pending",
-                                                                              style: const TextStyle(color: Colors.grey, fontSize: 10),
-                                                                            ),
-                                                                          ],
-                                                                        ),
                                                                       Row(
-                                                                        mainAxisAlignment: MainAxisAlignment.start,
                                                                         children: [
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation == true) &&
-                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
-                                                                            TextButton(
-                                                                              onPressed: () async {
-                                                                                bool success =
-                                                                                    await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                          Container(
+                                                                            height: 40,
+                                                                            width: 2,
+                                                                            color: const Color.fromARGB(78, 172, 170, 170),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            width: 200,
+                                                                            child: TextFormField(
+                                                                              // maxLines: 2,
+                                                                              style: TextStyle(fontSize: Primary_font_size.Text7, color: textColor.value),
+                                                                              decoration: const InputDecoration(
+                                                                                filled: true,
+                                                                                fillColor: Primary_colors.Dark,
+                                                                                hintText: 'Enter Feedback',
+                                                                                hintStyle: TextStyle(
+                                                                                  fontSize: Primary_font_size.Text7,
+                                                                                  color: Color.fromARGB(255, 179, 178, 178),
+                                                                                ),
+                                                                                border: InputBorder.none, // Remove default border
+                                                                                contentPadding: EdgeInsets.all(10), // Adjust padding
+                                                                              ),
+                                                                              controller: salesController.salesModel.processList[index].TimelineEvents[childIndex].feedback,
 
-                                                                                if (success) {
-                                                                                  widget.GenerateQuote_dialougebox(
-                                                                                      context, "quotation", salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                                  quoteController.setProcessID(salesController.salesModel.processList[index].processid);
-                                                                                }
+                                                                              onChanged: (value) {
+                                                                                textColor.value = Colors.white;
                                                                               },
-                                                                              child: const Text(
-                                                                                "Quotation",
-                                                                                style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                              ),
-                                                                            ),
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation == true) &&
-                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1) &&
-                                                                              (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus != 1))
-                                                                            TextButton(
-                                                                              onPressed: () async {
-                                                                                bool success =
-                                                                                    await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
-
-                                                                                if (success) {
-                                                                                  widget.GenerateQuote_dialougebox(
-                                                                                      context, "revisedquotation", salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                                  quoteController.setProcessID(salesController.salesModel.processList[index].processid);
-                                                                                }
+                                                                              onFieldSubmitted: (newValue) {
+                                                                                // textColor = Colors.green;
+                                                                                widget.UpdateFeedback(
+                                                                                    context,
+                                                                                    salesController.salesModel.customerId.value!,
+                                                                                    salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                                    salesController.salesModel.processList[index].TimelineEvents[childIndex].feedback.text);
                                                                               },
-                                                                              child: const Text(
-                                                                                "RevisedQuotation",
-                                                                                style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                              ),
                                                                             ),
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.rfq == true) &&
-                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
-                                                                            TextButton(
-                                                                              onPressed: () async {
-                                                                                bool success =
-                                                                                    await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                                if (success) {
-                                                                                  widget.GenerateRfq_dialougebox(
-                                                                                      context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                                  rfqController.setProcessID(salesController.salesModel.processList[index].processid);
-                                                                                  if (kDebugMode) {
-                                                                                    print(rfqController.rfqModel.processID);
-                                                                                  }
-                                                                                }
-                                                                              },
-                                                                              child: const Text(
-                                                                                "Generate RFQ",
-                                                                                style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                              ),
-                                                                            ),
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.invoice == true) &&
-                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1) &&
-                                                                              (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1))
-                                                                            TextButton(
-                                                                              onPressed: () async {
-                                                                                bool success =
-                                                                                    await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                                if (success) {
-                                                                                  widget.GenerateInvoice_dialougebox(
-                                                                                      context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                                  invoiceController.setProcessID(salesController.salesModel.processList[index].processid);
-                                                                                  if (kDebugMode) {
-                                                                                    print(invoiceController.invoiceModel.processID);
-                                                                                  }
-                                                                                }
-                                                                              },
-                                                                              child: const Text(
-                                                                                "Invoice",
-                                                                                style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                              ),
-                                                                            ),
-                                                                          if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan == true) &&
-                                                                              (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
-                                                                            TextButton(
-                                                                              onPressed: () async {
-                                                                                bool success =
-                                                                                    await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                                if (success) {
-                                                                                  widget.GenerateDelivery_challan_dialougebox(
-                                                                                      context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                                  dcController.setProcessID(salesController.salesModel.processList[index].processid);
-                                                                                  if (kDebugMode) {
-                                                                                    print(dcController.dcModel.processID);
-                                                                                  }
-                                                                                }
-                                                                              },
-                                                                              child: const Text(
-                                                                                "Delivery challan",
-                                                                                style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                              ),
-                                                                            ),
-                                                                          // if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.credit_note == true)
-                                                                          //     // &&
-
-                                                                          //     )
-                                                                          //   TextButton(
-                                                                          //     onPressed: () {
-                                                                          //       // widget.GenerateCredit_dialougebox(context);
-                                                                          //     },
-                                                                          //     child: const Text(
-                                                                          //       "Credit",
-                                                                          //       style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                          //     ),
-                                                                          //   ),
-                                                                          // if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.debit_note == true)
-                                                                          //     //  &&
-                                                                          //     //     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                          //     )
-                                                                          //   TextButton(
-                                                                          //     onPressed: () {
-                                                                          //       // widget.GenerateDebit_dialougebox(context);
-                                                                          //     },
-                                                                          //     child: const Text(
-                                                                          //       "Debit",
-                                                                          //       style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                          //     ),
-                                                                          //   ),
+                                                                          ),
                                                                         ],
-                                                                      )
+                                                                      ),
                                                                     ],
                                                                   ),
                                                                 ),
-                                                                Row(
-                                                                  children: [
-                                                                    Container(
-                                                                      height: 40,
-                                                                      width: 2,
-                                                                      color: const Color.fromARGB(78, 172, 170, 170),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      width: 200,
-                                                                      child: TextFormField(
-                                                                        // maxLines: 2,
-                                                                        style: TextStyle(fontSize: Primary_font_size.Text7, color: textColor.value),
-                                                                        decoration: const InputDecoration(
-                                                                          filled: true,
-                                                                          fillColor: Primary_colors.Dark,
-                                                                          hintText: 'Enter Feedback',
-                                                                          hintStyle: TextStyle(
-                                                                            fontSize: Primary_font_size.Text7,
-                                                                            color: Color.fromARGB(255, 179, 178, 178),
-                                                                          ),
-                                                                          border: InputBorder.none, // Remove default border
-                                                                          contentPadding: EdgeInsets.all(10), // Adjust padding
-                                                                        ),
-                                                                        controller: salesController.salesModel.processList[index].TimelineEvents[childIndex].feedback,
-
-                                                                        onChanged: (value) {
-                                                                          textColor.value = Colors.white;
-                                                                        },
-                                                                        onFieldSubmitted: (newValue) {
-                                                                          // textColor = Colors.green;
-                                                                          widget.UpdateFeedback(
-                                                                              context,
-                                                                              salesController.salesModel.customerId.value!,
-                                                                              salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid,
-                                                                              salesController.salesModel.processList[index].TimelineEvents[childIndex].feedback.text);
-                                                                        },
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
                                                               ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      );
-                                                    },
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : salesController.salesModel.type.value == 0
+                                        ? Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.hourglass_top, // More modern icon choice
+                                                size: 64,
+                                                color: Colors.blueGrey[300],
+                                              ),
+                                              const SizedBox(height: 16),
+                                              Text(
+                                                'No Active Processes',
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.blueGrey[800],
+                                                ),
+                                              ),
+                                              const SizedBox(height: 8),
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                                                child: Text(
+                                                  'When you start a process, it will appear here',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.blueGrey[400],
+                                                    height: 1.4,
                                                   ),
                                                 ),
-                                              )
+                                              ),
+                                            ],
+                                          )
+                                        : Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.archive_outlined, // More relevant icon for archives
+                                                size: 72,
+                                                color: Colors.blueGrey[200],
+                                              ),
+                                              const SizedBox(height: 20),
+                                              Text(
+                                                'Archive is Empty',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.blueGrey[800],
+                                                ),
+                                              ),
+                                              const SizedBox(height: 12),
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                                                child: Text(
+                                                  'Completed processes will appear here once archived',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.blueGrey[500],
+                                                    height: 1.4,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(height: 24),
+                                              OutlinedButton(
+                                                style: OutlinedButton.styleFrom(
+                                                  side: BorderSide(color: Colors.blue[600]!),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(8),
+                                                  ),
+                                                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+                                                ),
+                                                onPressed: () {
+                                                  salesController.salesModel.selectedIndices.clear();
+                                                  salesController.updatetype(salesController.salesModel.type.value == 0 ? 1 : 0);
+                                                  widget.Get_salesProcessList(salesController.salesModel.customerId.value!);
+                                                },
+                                                child: Text(
+                                                  'View Active Processes',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.blue[700],
+                                                  ),
+                                                ),
+                                              ),
                                             ],
                                           ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
                               ),
                             ),
                           ],

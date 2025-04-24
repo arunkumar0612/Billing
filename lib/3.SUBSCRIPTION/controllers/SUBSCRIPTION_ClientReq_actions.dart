@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -52,19 +51,27 @@ class SUBSCRIPTION_ClientreqController extends GetxController {
     clientReqModel.Org_Controller.value = org;
   }
 
+  void updateCompanyID(int comp) {
+    clientReqModel.CompanyID_Controller.value = comp;
+  }
+
+  void update_CustomerType(String value) {
+    clientReqModel.customerType.value = value;
+  }
+
   void updateCompanyName(String comp) {
-    clientReqModel.Company_Controller.value = comp;
+    clientReqModel.Companyname_Controller.value = comp;
   }
 
   void clear_CompanyData() async {
-    clientReqModel.Company_Controller.value = null;
+    clientReqModel.CompanyID_Controller.value = null;
     clientReqModel.CompanyList.clear();
   }
 
-  void clear_BranchData() async {
-    clientReqModel.Branch_Controller.value = null;
-    clientReqModel.BranchList_valueModel.clear();
-  }
+  // void clear_BranchData() async {
+  //   clientReqModel.Branch_Controller.value = null;
+  //   clientReqModel.BranchList_valueModel.clear();
+  // }
 
   void updateTitle(String title) {
     clientReqModel.titleController.value.text = title;
@@ -342,72 +349,72 @@ class SUBSCRIPTION_ClientreqController extends GetxController {
     updateGST(gst ?? "");
   }
 
-  String branchname_via_branchID(int id) {
-    return clientReqModel.BranchList_valueModel.firstWhere(
-      (x) => x.value == id.toString(),
-    ).name;
-  }
+  // String branchname_via_branchID(int id) {
+  //   return clientReqModel.BranchList_valueModel.firstWhere(
+  //     (x) => x.value == id.toString(),
+  //   ).name;
+  // }
 
-  void update_customerID(String? compName, String? branchName) {
-    if (compName == null) {
-      clientReqModel.customer_id.value = 0;
-      var model = clientReqModel.BranchFullList.firstWhere(
-        (x) => x.Branch_name == branchName,
-      );
-      update_KYC(model.client_address, model.billing_addressname, model.billing_address, model.emailid, model.contact_number, model.gst_number);
-    } else {
-      var model = clientReqModel.CompanyList.firstWhere(
-        (x) => x.companyName == compName,
-      );
-      update_KYC(model.client_address, model.billing_addressname, model.billing_address, model.emailid, model.contact_number, model.gst_number);
-      clientReqModel.customer_id.value = model.companyId!;
-      updateClientName(compName);
-    }
-  }
+  // void update_customerID(String? compName, String? branchName) {
+  //   if (compName == null) {
+  //     clientReqModel.customer_id.value = 0;
+  //     var model = clientReqModel.BranchFullList.firstWhere(
+  //       (x) => x.Branch_name == branchName,
+  //     );
+  //     update_KYC(model.client_address, model.billing_addressname, model.billing_address, model.emailid, model.contact_number, model.gst_number);
+  //   } else {
+  //     var model = clientReqModel.CompanyList.firstWhere(
+  //       (x) => x.companyName == compName,
+  //     );
+  //     update_KYC(model.client_address, model.billing_addressname, model.billing_address, model.emailid, model.contact_number, model.gst_number);
+  //     clientReqModel.customer_id.value = model.companyId!;
+  //     updateClientName(compName);
+  //   }
+  // }
 
   void update_CompanyList(CMDlResponse value) {
     clear_CompanyData();
-    clear_BranchData();
+    // clear_BranchData();
     clear_KYC();
     for (int i = 0; i < value.data.length; i++) {
       clientReqModel.CompanyList.add(Company.fromJson(value, i));
     }
   }
 
-  void update_BranchList(CMDlResponse value) async {
-    clear_BranchData();
-    await Future.delayed(const Duration(milliseconds: 1000));
-    for (int i = 0; i < value.data.length; i++) {
-      clientReqModel.BranchFullList.add(Branch.fromJson(value, i));
-      clientReqModel.BranchList_valueModel.add(DropDownValueModel(
-        name: Branch.fromJson(value, i).Branch_name ?? "Unknown", // Provide a default label if null
-        value: Branch.fromJson(value, i).Branch_id?.toString() ?? "", // Convert ID to String
-      ));
-    }
-  }
+  // void update_BranchList(CMDlResponse value) async {
+  //   clear_BranchData();
+  //   await Future.delayed(const Duration(milliseconds: 1000));
+  //   for (int i = 0; i < value.data.length; i++) {
+  //     clientReqModel.BranchFullList.add(Branch.fromJson(value, i));
+  //     clientReqModel.BranchList_valueModel.add(DropDownValueModel(
+  //       name: Branch.fromJson(value, i).Branch_name ?? "Unknown", // Provide a default label if null
+  //       value: Branch.fromJson(value, i).Branch_id?.toString() ?? "", // Convert ID to String
+  //     ));
+  //   }
+  // }
 
-  void update_selectedBranches(List<dynamic> selectedList) {
-    if (selectedList.isEmpty) {
-      clientReqModel.selected_branchList.clear();
-    } else {
-      clientReqModel.selected_branchList.clear();
-      for (int i = 0; i < selectedList.length; i++) {
-        clientReqModel.selected_branchList.add(int.parse(selectedList[i].value));
-      }
-    }
+  // void update_selectedBranches(List<dynamic> selectedList) {
+  //   if (selectedList.isEmpty) {
+  //     clientReqModel.selected_branchList.clear();
+  //   } else {
+  //     clientReqModel.selected_branchList.clear();
+  //     for (int i = 0; i < selectedList.length; i++) {
+  //       clientReqModel.selected_branchList.add(int.parse(selectedList[i].value));
+  //     }
+  //   }
 
-    handle_customerID();
-  }
+  //   handle_customerID();
+  // }
 
-  void handle_customerID() {
-    if (clientReqModel.selected_branchList.length == 1) {
-      updateClientName(branchname_via_branchID(clientReqModel.selected_branchList[0]));
-      update_customerID(null, branchname_via_branchID(clientReqModel.selected_branchList[0]));
-    } else {
-      updateClientName(clientReqModel.Company_Controller.value!);
-      update_customerID(clientReqModel.Company_Controller.value!, null);
-    }
-  }
+  // void handle_customerID() {
+  //   if (clientReqModel.selected_branchList.length == 1) {
+  //     updateClientName(branchname_via_branchID(clientReqModel.selected_branchList[0]));
+  //     update_customerID(null, branchname_via_branchID(clientReqModel.selected_branchList[0]));
+  //   } else {
+  //     updateClientName(clientReqModel.Company_Controller.value!);
+  //     update_customerID(clientReqModel.Company_Controller.value!, null);
+  //   }
+  // }
 
   bool anyHavedata() {
     return (clientReqModel.MOR_uploadedPath.value != null ||
@@ -422,15 +429,15 @@ class SUBSCRIPTION_ClientreqController extends GetxController {
         clientReqModel.emailController.value.text.isNotEmpty ||
         clientReqModel.gstController.value.text.isNotEmpty ||
         clientReqModel.Org_Controller.value != null ||
-        clientReqModel.Company_Controller.value != null ||
+        clientReqModel.CompanyID_Controller.value != null ||
         clientReqModel.Branch_Controller.value != null ||
         clientReqModel.pickedFile.value != null ||
         clientReqModel.morFile.value != null ||
         clientReqModel.organizationList.isNotEmpty ||
         clientReqModel.CompanyList.isNotEmpty ||
-        clientReqModel.BranchFullList.isNotEmpty ||
-        clientReqModel.BranchList_valueModel.isNotEmpty ||
-        clientReqModel.selected_branchList.isNotEmpty ||
+        // clientReqModel.BranchFullList.isNotEmpty ||
+        // clientReqModel.BranchList_valueModel.isNotEmpty ||
+        // clientReqModel.selected_branchList.isNotEmpty ||
         clientReqModel.siteNameController.value.text.isNotEmpty ||
         clientReqModel.cameraquantityController.value.text.isNotEmpty ||
         clientReqModel.addressController.value.text.isNotEmpty ||
@@ -527,15 +534,16 @@ class SUBSCRIPTION_ClientreqController extends GetxController {
     clientReqModel.emailController.value.clear();
     clientReqModel.gstController.value.clear();
     clientReqModel.Org_Controller.value = null;
-    clientReqModel.Company_Controller.value = null;
+    clientReqModel.CompanyID_Controller.value = null;
+    clientReqModel.Companyname_Controller.value = null;
     clientReqModel.Branch_Controller.value = null;
     clientReqModel.pickedFile.value = null;
     clientReqModel.morFile.value = null;
     clientReqModel.organizationList.clear();
     clientReqModel.CompanyList.clear();
-    clientReqModel.BranchFullList.clear();
-    clientReqModel.BranchList_valueModel.clear();
-    clientReqModel.selected_branchList.clear();
+    // clientReqModel.BranchFullList.clear();
+    // clientReqModel.BranchList_valueModel.clear();
+    // clientReqModel.selected_branchList.clear();
 
     // SITES
     clientReqModel.siteFormkey.value = GlobalKey<FormState>();

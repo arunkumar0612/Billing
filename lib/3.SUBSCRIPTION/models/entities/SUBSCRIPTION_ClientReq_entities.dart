@@ -76,6 +76,7 @@ class SUBSCRIPTION_Post_ClientRequirement {
   List<SUBSCRIPTION_ClientreqSites>? site;
   List? notes;
   String? date;
+  int? companyid;
   // int? companyID;
   // List<int?> branchID;
   // int? customer_type;
@@ -94,6 +95,7 @@ class SUBSCRIPTION_Post_ClientRequirement {
     required this.site,
     required this.notes,
     required this.date,
+    required this.companyid,
     // required this.companyID,
     // required this.branchID,
     // required this.customer_type,
@@ -114,28 +116,30 @@ class SUBSCRIPTION_Post_ClientRequirement {
     List<SUBSCRIPTION_ClientreqSites> site,
     List notes,
     String date,
+    int? companyid,
     // int companyID,
     // List<int?> branchID,
     // int customer_type,
   ) {
     return SUBSCRIPTION_Post_ClientRequirement(
-      title: title,
-      name: name,
-      emailId: emailId,
-      phoneNo: phoneNo,
-      address: address,
-      gst: gst,
-      billingAddressName: billingAddressName,
-      billingAddress: billingAddress,
-      modeOfRequest: modeOfRequest,
-      morReference: morReference,
-      site: site,
-      notes: notes,
-      date: date,
-      // companyID: companyID,
-      // branchID: branchID,
-      // customer_type: customer_type
-    );
+        title: title,
+        name: name,
+        emailId: emailId,
+        phoneNo: phoneNo,
+        address: address,
+        gst: gst,
+        billingAddressName: billingAddressName,
+        billingAddress: billingAddress,
+        modeOfRequest: modeOfRequest,
+        morReference: morReference,
+        site: site,
+        notes: notes,
+        date: date,
+        companyid: companyid
+        // companyID: companyID,
+        // branchID: branchID,
+        // customer_type: customer_type
+        );
   }
 
   Map<String, dynamic> toJson() {
@@ -154,6 +158,7 @@ class SUBSCRIPTION_Post_ClientRequirement {
       "site": site?.map((item) => item.toJson()).toList(),
       "notes": notes,
       "date": date,
+      "companyid": companyid,
       // "companyid": companyID,
       // "branchid": branchID,
       // "customer_type": customer_type

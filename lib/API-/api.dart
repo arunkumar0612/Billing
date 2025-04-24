@@ -58,6 +58,7 @@ class API {
   static String subscription_addCustomInvoice_API = "http://192.168.0.200:8081/subscription/addcustominvoice";
   static String get_subscription_RecurringInvoiceList = "http://192.168.0.200:8081/subscription/getrecurredinvoice";
   static String get_subscription_GlobalPackageList = "http://192.168.0.200:8081/subscription/getglobalsubscription";
+  static String get_CompanyBasedPackageList = "http://192.168.0.200:8081/admin/getsubscription";
   static String create_subscription_GlobalPackage = "http://192.168.0.200:8081/admin/createsubscription";
   static String update_subscription_GlobalPackage = "http://192.168.0.200:8081/admin/updatesubscription/";
   static String delete_subscription_GlobalPackage = "http://192.168.0.200:8081/admin/deletesubscription/";

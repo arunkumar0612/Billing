@@ -68,6 +68,7 @@ class SUBSCRIPTION_QuoteGSTtotals {
 
 class SubscriptionQuoteRequiredData {
   final String eventNumber;
+  final int companyid;
   final String? title;
   final String? name;
   final String? emailId;
@@ -80,6 +81,7 @@ class SubscriptionQuoteRequiredData {
 
   SubscriptionQuoteRequiredData({
     required this.eventNumber,
+    required this.companyid,
     this.title,
     this.name,
     this.emailId,
@@ -94,6 +96,7 @@ class SubscriptionQuoteRequiredData {
   factory SubscriptionQuoteRequiredData.fromJson(CMDmResponse json) {
     return SubscriptionQuoteRequiredData(
       eventNumber: json.data['eventnumber'] as String,
+      companyid: json.data['companyid'] as int,
       title: json.data['title'] as String?,
       name: json.data['client_addressname'] as String?,
       emailId: json.data['emailid'] as String?,
@@ -109,6 +112,7 @@ class SubscriptionQuoteRequiredData {
   Map<String, dynamic> toJson() {
     return {
       'eventnumber': eventNumber,
+      'companyid': companyid,
       'title': title,
       'client_addressname': name,
       'emailid': emailId,
@@ -572,5 +576,81 @@ class FinalCalculation {
 
   Map<String, dynamic> toJson() {
     return {'subtotal': subtotal, 'IGST': igst, 'CGST': cgst, 'SGST': sgst, 'roundOff': roundOff, 'difference': differene, 'total': total, 'pendingAmount': pendingAmount, 'grandTotal': grandTotal};
+  }
+}
+
+class CompanyBasedPackages {
+  final int? subscriptionId;
+  final String? subscriptionName;
+  // final int? noOfDevices;
+  final int? noOfCameras;
+  final int? addlCameras;
+  // final dynamic addlPatrol;
+  // final dynamic patrolHours;
+  // final dynamic validMonths;
+  // final dynamic validYears;
+  // final dynamic validDays;
+  // final dynamic noOfAnalytics;
+  // final dynamic cloudStorage;
+  final int? amount;
+  final String? productDesc;
+
+  CompanyBasedPackages({
+    this.subscriptionId,
+    this.subscriptionName,
+    // this.noOfDevices,
+    this.noOfCameras,
+    this.addlCameras,
+    // this.addlPatrol,
+    // this.patrolHours,
+    // this.validMonths,
+    // this.validYears,
+    // this.validDays,
+    // this.noOfAnalytics,
+    // this.cloudStorage,
+    this.amount,
+    this.productDesc,
+  });
+
+  factory CompanyBasedPackages.fromJson(Map<String, dynamic> json) {
+    return CompanyBasedPackages(
+      subscriptionId: json['Subscription_ID'],
+      subscriptionName: json['Subscription_Name'],
+      // noOfDevices: json['No_of_Devices'],
+      noOfCameras: json['No_of_Cameras'],
+      addlCameras: json['Addl_cameras'],
+      // addlPatrol: json['Addl_patrol'],
+      // patrolHours: json['Patrol_hours'],
+      // validMonths: json['Valid_Months'],
+      // validYears: json['Valid_Years'],
+      // validDays: json['Valid_Days'],
+      // noOfAnalytics: json['No_of_Analytics'],
+      // cloudStorage: json['Cloud_Storage'],
+      amount: json['Amount'],
+      productDesc: json['product_desc'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'Subscription_ID': subscriptionId,
+      'Subscription_Name': subscriptionName,
+      // 'No_of_Devices': noOfDevices,
+      'No_of_Cameras': noOfCameras,
+      'Addl_cameras': addlCameras,
+      // 'Addl_patrol': addlPatrol,
+      // 'Patrol_hours': patrolHours,
+      // 'Valid_Months': validMonths,
+      // 'Valid_Years': validYears,
+      // 'Valid_Days': validDays,
+      // 'No_of_Analytics': noOfAnalytics,
+      // 'Cloud_Storage': cloudStorage,
+      'Amount': amount,
+      'product_desc': productDesc,
+    };
+  }
+
+  static List<CompanyBasedPackages> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((item) => CompanyBasedPackages.fromJson(item)).toList();
   }
 }

@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart' show SUBSCRIPTION_QuoteController;
+import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
 import 'package:ssipl_billing/API-/api.dart' show API;
 import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
-import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart' show CMDmResponse;
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
+import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
+import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
 
 mixin SUBSCRIPTION_QuotedetailsService {
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
@@ -29,6 +29,25 @@ mixin SUBSCRIPTION_QuotedetailsService {
           // salesController.addToCustomerList(value);
         } else {
           await Error_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
+  void get_CompanyBasedPackages(context, int companyid) async {
+    try {
+      Map<String, dynamic> body = {"companyid": 2};
+      Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.get_CompanyBasedPackageList);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          quoteController.update_companyBasedPackages(value);
+        } else {
+          await Error_dialog(context: context, title: 'Company customized packages', content: value.message ?? "", onOk: () {});
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");

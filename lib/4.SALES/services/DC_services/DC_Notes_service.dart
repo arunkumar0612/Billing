@@ -151,6 +151,7 @@ mixin DcnotesService {
       dcController.dcModel.billingAddressNameController.value.text,
       dcController.dcModel.billingAddressController.value.text,
       dcController.dcModel.Dc_no.value,
+      dcController.dcModel.invRef_no.value,
       dcController.dcModel.TitleController.value.text,
       9,
     );

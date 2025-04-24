@@ -55,6 +55,10 @@ class DcController extends GetxController {
     dcModel.Dc_no.value = text;
   }
 
+  void update_invoiceRef_number(String text) {
+    dcModel.invRef_no.value = text;
+  }
+
   void updateGSTnumber(String text) {
     dcModel.gstNumController.value.text = text;
   }
@@ -441,7 +445,8 @@ class DcController extends GetxController {
     RequiredData instance = RequiredData.fromJson(value);
     dcModel.Dc_no.value = instance.eventnumber;
     updateProducts(instance.product);
-    updateDcnumber(instance.eventnumber);
+    update_invoiceRef_number(instance.invoice_num);
+    update_invoiceRef_number(instance.invoice_num);
     updateTitle(instance.title!);
     updateEmail(instance.emailId!);
     updateGSTnumber(instance.gst!);

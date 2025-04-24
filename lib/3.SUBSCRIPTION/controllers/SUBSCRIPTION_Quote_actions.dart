@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/models/constants/SUBSCRIPTION_Quote_constants.dart';
-import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart' show SUBSCRIPTION_QuoteRecommendation, Site, SubscriptionQuoteRequiredData;
+import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Sites_entities.dart' show PackageDetails;
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
@@ -408,6 +408,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
   void update_requiredData(CMDmResponse value) {
     SubscriptionQuoteRequiredData instance = SubscriptionQuoteRequiredData.fromJson(value);
     quoteModel.Quote_no.value = instance.eventNumber;
+    quoteModel.companyid.value = instance.companyid;
     updateQuotenumber(instance.eventNumber);
     updateTitle(instance.title!);
     updateEmail(instance.emailId!);
@@ -417,6 +418,11 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     updateClientAddress(instance.address!);
     updateBillingAddressName(instance.billingAddressName!);
     updateBillingAddress(instance.billingAddress!);
+  }
+
+  void update_companyBasedPackages(CMDlResponse response) {
+    quoteModel.company_basedPackageList.value = CompanyBasedPackages.fromJsonList(response.data);
+    print(quoteModel.company_basedPackageList);
   }
 
   bool generate_Datavalidation() {

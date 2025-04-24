@@ -7,7 +7,7 @@ import 'package:ssipl_billing/4.SALES/controllers/DC_actions.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/product_entities.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 
-Future<Uint8List> generate_Dc(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, dc_num, title, gst) async {
+Future<Uint8List> generate_Dc(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, dc_num, invoice_num, title, gst) async {
   final dc = Delivery_challan(
     products: products,
     GST: gst.toDouble(),
@@ -18,6 +18,7 @@ Future<Uint8List> generate_Dc(PdfPageFormat pageFormat, products, client_addr_na
     bill_addr_name: bill_addr_name,
     bill_addr: bill_addr,
     dc_num: dc_num ?? "",
+    invoice_num: invoice_num ?? "",
     title_text: title,
     type: '',
   );
@@ -36,6 +37,7 @@ class Delivery_challan {
     required this.bill_addr_name,
     required this.bill_addr,
     required this.dc_num,
+    required this.invoice_num,
     required this.title_text,
     required this.type,
 
@@ -48,6 +50,7 @@ class Delivery_challan {
   String bill_addr_name = "";
   String bill_addr = "";
   String dc_num = "";
+  String invoice_num = '';
   String title_text = "";
   String type = "";
 
@@ -156,7 +159,7 @@ class Delivery_challan {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("AA/INST/241101", 10),
+                            child: regular(invoice_num, 10),
                           ),
                         ),
                         pw.SizedBox(height: 5),

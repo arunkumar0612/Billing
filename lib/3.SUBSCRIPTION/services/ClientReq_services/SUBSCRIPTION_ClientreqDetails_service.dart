@@ -5,7 +5,7 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_
 import 'package:ssipl_billing/API-/api.dart' show API;
 import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
-import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart' show CMDmResponse;
+import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart' show CMDlResponse, CMDmResponse;
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
 
 mixin SUBSCRIPTION_ClientreqDetailsService {
@@ -14,6 +14,68 @@ mixin SUBSCRIPTION_ClientreqDetailsService {
   final SUBSCRIPTION_ClientreqController clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
   void nextTab(context) async {
     clientreqController.nextTab();
+  }
+
+  void get_OrganizationList(context) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_fetchOrg_list);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
+          clientreqController.update_OrganizationList(value);
+        } else {
+          await Error_dialog(context: context, title: 'Fetching Organization List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
+  void get_CompanyList(context, int org_id) async {
+    try {
+      Map<String, dynamic> body = {"organizationid": org_id};
+      Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.sales_fetchCompany_list);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
+          clientreqController.update_CompanyList(value);
+        } else {
+          await Error_dialog(context: context, title: 'Fetching Company List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
+  void on_Orgselected(context, Orgname) {
+    // clientreqController.clear_CompanyName();
+    // clientreqController.clientReqModel.organizationList.clear();
+    int? id = clientreqController.clientReqModel.organizationList
+        .firstWhere(
+          (x) => x.organizationName == Orgname,
+        )
+        .organizationId;
+    get_CompanyList(context, id!);
+  }
+
+  void on_Compselected(context, Compname) {
+    int? id = clientreqController.clientReqModel.CompanyList
+        .firstWhere(
+          (x) => x.companyName == Compname,
+        )
+        .companyId;
+    clientreqController.updateCompanyID(id ?? 0);
+    clientreqController.updateCompanyName(Compname);
+    // get_BranchList(context, id!);
+    // get_CompanyList(context, id!);
   }
 
   // void on_Orgselected(context, Orgname) {

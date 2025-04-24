@@ -66,6 +66,7 @@ class DcGSTtotals {
 
 class RequiredData {
   final String eventnumber;
+  final String invoice_num;
   final String? title;
   final String? name;
   final String? emailId;
@@ -77,6 +78,7 @@ class RequiredData {
   final List<DcProduct> product;
   RequiredData(
       {required this.eventnumber,
+      required this.invoice_num,
       required this.title,
       required this.name,
       required this.emailId,
@@ -90,6 +92,7 @@ class RequiredData {
   factory RequiredData.fromJson(CMDmResponse json) {
     return RequiredData(
       eventnumber: json.data['eventnumber'] as String,
+      invoice_num: json.data['invoice_number'] as String,
       title: json.data['title'] as String,
       name: json.data['client_addressname'] as String,
       emailId: json.data['emailid'] as String,
@@ -108,6 +111,7 @@ class RequiredData {
   Map<String, dynamic> toJson() {
     return {
       'ID': eventnumber,
+      'invoice_number': invoice_num,
     };
   }
 }

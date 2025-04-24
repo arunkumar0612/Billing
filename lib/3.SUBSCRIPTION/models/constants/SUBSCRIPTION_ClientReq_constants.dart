@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +9,8 @@ import '../entities/SUBSCRIPTION_Sites_entities.dart';
 
 class SUBSCRIPTION_ClientReqModel {
   var MOR_uploadedPath = Rxn<String>();
+  var customerType = 'New'.obs;
+
   var customer_id = 0.obs;
   final Rxn<TabController> tabController = Rxn<TabController>();
   final Rx<File> selectedPdf = File('E://Client_requirement.pdf').obs;
@@ -26,16 +27,17 @@ class SUBSCRIPTION_ClientReqModel {
   var emailController = TextEditingController().obs;
   var gstController = TextEditingController().obs;
   var Org_Controller = Rxn<String>();
-  var Company_Controller = Rxn<String>();
+  var CompanyID_Controller = Rxn<int>();
+  var Companyname_Controller = Rxn<String>();
   var Branch_Controller = Rxn<String>();
   var pickedFile = Rxn<FilePickerResult>();
   var morFile = Rxn<File>();
   var organizationList = <Organization>[].obs;
   var CompanyList = <Company>[].obs;
-  var BranchFullList = <Branch>[].obs;
-  var BranchList_valueModel = <DropDownValueModel>[].obs;
-  var selected_branchList = <int>[].obs;
-  final cntMulti = MultiValueDropDownController().obs;
+  // var BranchFullList = <Branch>[].obs;
+  // var BranchList_valueModel = <DropDownValueModel>[].obs;
+  // var selected_branchList = <int>[].obs;
+  // final cntMulti = MultiValueDropDownController().obs;
 //######################################################################################################################################
 //SITES
   final siteFormkey = GlobalKey<FormState>().obs;

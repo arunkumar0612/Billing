@@ -20,6 +20,7 @@ class enquryDetailsState extends State<enquryDetails> {
   @override
   void initState() {
     super.initState();
+    widget.get_OrganizationList(context);
     // widget.getEnquiry_processID(context);
   }
 
@@ -44,6 +45,129 @@ class enquryDetailsState extends State<enquryDetails> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             const SizedBox(height: 10),
+                            SizedBox(
+                              width: 400,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: _buildCustomRadio(context, title: 'New', value: clientreqController.clientReqModel.customerType.value, groupValue: 'New'),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: _buildCustomRadio(context, title: 'Existing', value: clientreqController.clientReqModel.customerType.value, groupValue: 'Existing'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (clientreqController.clientReqModel.customerType.value == 'Existing') const SizedBox(height: 25),
+                            if (clientreqController.clientReqModel.customerType.value == 'Existing')
+                              ConstrainedBox(
+                                constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
+                                child: DropdownButtonFormField<String>(
+                                  menuMaxHeight: 350,
+                                  isExpanded: true,
+                                  dropdownColor: Primary_colors.Dark,
+                                  decoration: const InputDecoration(
+                                      label: Text(
+                                        'Select Organization Name',
+                                        style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176), fontWeight: FontWeight.normal),
+                                      ),
+                                      // hintText: 'Customer Type',hintStyle: TextStyle(),
+                                      contentPadding: EdgeInsets.all(13),
+                                      labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
+                                      filled: true,
+                                      fillColor: Primary_colors.Dark,
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(),
+                                      ),
+                                      prefixIcon: Icon(
+                                        Icons.business,
+                                        color: Colors.white,
+                                      )),
+                                  value: clientreqController.clientReqModel.Org_Controller.value == "" ? null : clientreqController.clientReqModel.Org_Controller.value,
+                                  items: clientreqController.clientReqModel.organizationList.map((organization) {
+                                    return DropdownMenuItem<String>(
+                                      value: organization.organizationName,
+                                      child: Text(
+                                        organization.organizationName ?? "Unknown",
+                                        style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1, overflow: TextOverflow.ellipsis),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    clientreqController.updateOrgName(newValue!);
+                                    widget.on_Orgselected(context, newValue);
+                                  },
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please Select customer type';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            if (clientreqController.clientReqModel.customerType.value == 'Existing') const SizedBox(height: 25),
+                            if (clientreqController.clientReqModel.customerType.value == 'Existing')
+                              ConstrainedBox(
+                                constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
+                                child: DropdownButtonFormField<String>(
+                                  menuMaxHeight: 350,
+                                  isExpanded: true,
+                                  dropdownColor: Primary_colors.Dark,
+                                  decoration: const InputDecoration(
+                                      label: Text(
+                                        'Select Company Name',
+                                        style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176), fontWeight: FontWeight.normal),
+                                      ),
+                                      // hintText: 'Customer Type',hintStyle: TextStyle(),
+                                      contentPadding: EdgeInsets.all(13),
+                                      labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
+                                      filled: true,
+                                      fillColor: Primary_colors.Dark,
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(),
+                                      ),
+                                      prefixIcon: Icon(
+                                        Icons.business_center,
+                                        color: Colors.white,
+                                      )),
+                                  value: clientreqController.clientReqModel.Companyname_Controller.value,
+                                  items: clientreqController.clientReqModel.CompanyList.map((company) {
+                                    return DropdownMenuItem<String>(
+                                      value: company.companyName,
+                                      child: Text(
+                                        company.companyName ?? "Unknown",
+                                        style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1, overflow: TextOverflow.ellipsis),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) async {
+                                    // clientreqController.updateCompanyID(newValue!);
+                                    // clientreqController.update_customerID(newValue, null);
+                                    widget.on_Compselected(context, newValue);
+                                    // setState(() {});
+                                  },
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please Select customer type';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            const SizedBox(height: 25),
                             BasicTextfield(
                               digitsOnly: false,
                               width: 400,
@@ -94,27 +218,44 @@ class enquryDetailsState extends State<enquryDetails> {
                                 return Validators.GST_validator(value);
                               },
                             ),
-                            const SizedBox(height: 25),
-                            BasicTextfield(
-                              digitsOnly: false,
-                              width: 400,
-                              readonly: false,
-                              text: 'Mode of request',
-                              controller: clientreqController.clientReqModel.morController.value,
-                              icon: Icons.price_change,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter the mode of request';
-                                }
-                                return null;
-                              },
-                            ),
+                            if (clientreqController.clientReqModel.customerType.value != 'Existing') const SizedBox(height: 25),
+                            if (clientreqController.clientReqModel.customerType.value != 'Existing')
+                              BasicTextfield(
+                                digitsOnly: false,
+                                width: 400,
+                                readonly: false,
+                                text: 'Mode of request',
+                                controller: clientreqController.clientReqModel.morController.value,
+                                icon: Icons.price_change,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter the mode of request';
+                                  }
+                                  return null;
+                                },
+                              ),
                           ],
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             const SizedBox(height: 10),
+                            if (clientreqController.clientReqModel.customerType.value == 'Existing')
+                              BasicTextfield(
+                                digitsOnly: false,
+                                width: 400,
+                                readonly: false,
+                                text: 'Mode of request',
+                                controller: clientreqController.clientReqModel.morController.value,
+                                icon: Icons.price_change,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter the mode of request';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            if (clientreqController.clientReqModel.customerType.value == 'Existing') const SizedBox(height: 25),
                             BasicTextfield(
                               digitsOnly: false,
                               width: 400,
@@ -298,6 +439,63 @@ class enquryDetailsState extends State<enquryDetails> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildCustomRadio(
+    BuildContext context, {
+    required String title,
+    required String value,
+    required String groupValue,
+  }) {
+    bool isSelected = value == groupValue;
+
+    return InkWell(
+      borderRadius: BorderRadius.circular(8),
+      onTap: () {
+        clientreqController.update_CustomerType(groupValue);
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
+        decoration: BoxDecoration(
+          color: isSelected ? Theme.of(context).primaryColor.withOpacity(0.1) : Primary_colors.Dark,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 20,
+              height: 20,
+              padding: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isSelected ? Theme.of(context).primaryColor : Colors.grey,
+                  width: 1.5,
+                ),
+              ),
+              child: isSelected
+                  ? Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    )
+                  : null,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: Primary_font_size.Text8,
+                fontWeight: FontWeight.w500,
+                color: isSelected ? Theme.of(context).primaryColor : const Color.fromARGB(255, 180, 180, 180),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

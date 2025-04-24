@@ -12,6 +12,7 @@ class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProvide
   final Rxn<TabController> tabController = Rxn<TabController>();
   var processID = Rxn<int>();
   var Quote_no = Rxn<String>();
+  var companyid = 0.obs;
   // var gst_no = Rxn<String>();
   var Quote_table_heading = "".obs;
   final gstNumController = TextEditingController().obs;
@@ -49,7 +50,7 @@ class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProvide
 
   final List<String> packageList = ['Basic Plan', 'Standard Plan', 'Premium Plan', 'Custom Package'].obs;
   Rx<String?> selectedPackage = Rx<String?>(null);
-
+  var company_basedPackageList = <CompanyBasedPackages>[].obs;
   RxBool customPackageCreated = false.obs;
   // late AnimationController animationControllers;
   // late Animation<double> fadeAnimations;

@@ -10,6 +10,7 @@ class DcModel extends GetxController with GetSingleTickerProviderStateMixin {
   final Rxn<TabController> tabController = Rxn<TabController>();
   var processID = Rxn<int>();
   var Dc_no = Rxn<String>();
+  var invRef_no = Rxn<String>();
   var Dc_table_heading = "".obs;
   final gstNumController = TextEditingController().obs;
   var dc_amount = Rxn<double>();

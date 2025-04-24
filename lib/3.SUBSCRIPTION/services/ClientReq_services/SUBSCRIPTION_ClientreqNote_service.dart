@@ -140,6 +140,7 @@ mixin SUBSCRIPTION_ClientreqNoteService {
         clientreqController.clientReqModel.clientReqSiteDetails,
         clientreqController.clientReqModel.clientReqNoteList,
         getCurrentDate(),
+        clientreqController.clientReqModel.CompanyID_Controller.value,
         // clientreqController.clientReqModel.customer_id.value,
         // clientreqController.clientReqModel.selected_branchList,
         // customer_type == "Enquiry" ? 1 : 2

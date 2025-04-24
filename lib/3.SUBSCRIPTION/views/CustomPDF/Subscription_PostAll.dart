@@ -640,7 +640,7 @@ class Subscription_PostInvoiceState extends State<SUBSCRIPTION_PostInvoice> with
                             // Download Button
                             GestureDetector(
                               onTap: () {
-                                widget.downloadPdf(path.basename(pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path ?? ""));
+                                widget.downloadPdf(context, path.basename(pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path ?? ""), pdfpopup_controller.pdfModel.value.genearatedPDF.value);
                               },
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,

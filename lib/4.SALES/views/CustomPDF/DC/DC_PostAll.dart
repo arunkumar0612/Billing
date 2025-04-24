@@ -535,7 +535,8 @@ class PostDcState extends State<PostDc> with SingleTickerProviderStateMixin {
                               cursor: SystemMouseCursors.click,
                               child: GestureDetector(
                                 onTap: () {
-                                  widget.downloadPdf(path.basename(pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path ?? ""));
+                                  widget.downloadPdf(
+                                      context, path.basename(pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path ?? ""), pdfpopup_controller.pdfModel.value.genearatedPDF.value);
                                 },
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,

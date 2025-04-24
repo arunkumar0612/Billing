@@ -30,11 +30,11 @@ class DcProduct {
       case 2:
         return hsn.toString();
       case 3:
-        return gst.toString();
+        return quantity.toString();
       case 4:
         return formatCurrency(price);
       case 5:
-        return quantity.toString();
+        return gst.toString();
       case 6:
         return formatCurrency(total);
       case 7:

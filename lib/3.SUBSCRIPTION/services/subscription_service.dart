@@ -15,6 +15,7 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_Quote/SUBSCR
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_client_req/SUBSCRIPTION_generate_clientreq.dart' show SUBSCRIPTION_Generate_clientreq;
 import 'package:ssipl_billing/API-/api.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Basic_SnackBar, Basic_dialog;
+import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -29,7 +30,7 @@ mixin SubscriptionServices {
   final SUBSCRIPTION_ClientreqController _clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
   final SUBSCRIPTION_QuoteController _quoteController = Get.find<SUBSCRIPTION_QuoteController>();
   final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
-  // final loader = LoadingOverlay();
+  final loader = LoadingOverlay();
 
   dynamic UploadSubscription(context, List<Map<String, dynamic>> excelData) async {
     try {
@@ -535,40 +536,58 @@ mixin SubscriptionServices {
 
   Future<void> downloadPdf(BuildContext context, String filename, File? pdfFile) async {
     try {
-      // final pdfFile = _subscriptionController.subscriptionModel.pdfFile.value;
+      loader.start(context);
+
+      // ✅ Let the loader show before blocking UI
+      await Future.delayed(const Duration(milliseconds: 300));
 
       if (pdfFile == null) {
+        loader.stop();
         if (kDebugMode) {
           print("No PDF file found to download.");
         }
-        return;
-      }
-
-      // Let the user pick a folder to save the file
-      String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
-
-      // Check if the user canceled folder selection
-      if (selectedDirectory == null) {
         Basic_dialog(
           context: context,
-          title: "Error",
-          content: "Cannot find the path. Please select a folder to save the PDF.",
+          title: "No PDF Found",
+          content: "There is no PDF file to download.",
           showCancel: false,
         );
         return;
       }
 
-      // Define the destination path
-      String savePath = "$selectedDirectory/$filename.pdf";
+      await Future.delayed(const Duration(milliseconds: 100));
 
-      // Copy the PDF file to the selected directory
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(lockParentWindow: true);
+
+      // ✅ Always stop loader after native call
+      loader.stop();
+
+      if (selectedDirectory == null) {
+        if (kDebugMode) {
+          print("User cancelled the folder selection.");
+        }
+        Basic_dialog(
+          context: context,
+          title: "Cancelled",
+          content: "Download cancelled. No folder was selected.",
+          showCancel: false,
+        );
+        return;
+      }
+
+      String savePath = "$selectedDirectory/$filename.pdf";
       await pdfFile.copy(savePath);
-      Basic_SnackBar(context, "PDF downloaded successfully to: $savePath");
+
+      Basic_SnackBar(context, "✅ PDF downloaded successfully to: $savePath");
     } catch (e) {
+      loader.stop();
+      if (kDebugMode) {
+        print("❌ Error while downloading PDF: $e");
+      }
       Basic_dialog(
         context: context,
         title: "Error",
-        content: "Error downloading PDF: $e",
+        content: "An error occurred while downloading the PDF:\n$e",
         showCancel: false,
       );
     }
@@ -959,23 +978,8 @@ mixin SubscriptionServices {
 
                       // If user confirms (Yes), clear data and close the dialog
                       if (proceed == true) {
-                        Navigator.of(context).pop(); // Close the dialog
-                        // Clear all the data when dialog is closed
-                        _quoteController.quoteModel.QuoteSiteDetails.clear();
-                        //  _quoteController.quoteModel.Quote_gstTotals.clear();
-                        _quoteController.quoteModel.Quote_noteList.clear();
-                        _quoteController.quoteModel.Quote_recommendationList.clear();
-                        //  _quoteController.quoteModel.iQuote_productDetails.clear();
-                        _quoteController.quoteModel.clientAddressNameController.value.clear();
-                        _quoteController.quoteModel.clientAddressController.value.clear();
-                        _quoteController.quoteModel.billingAddressNameController.value.clear();
-                        _quoteController.quoteModel.billingAddressController.value.clear();
-                        _quoteController.quoteModel.Quote_no.value = "";
-                        _quoteController.quoteModel.TitleController.value.clear();
-                        _quoteController.quoteModel.Quote_table_heading.value = "";
-                        _quoteController.quoteModel.selectedPackages.clear();
-                        _quoteController.quoteModel.selectedPackage.value = null;
-                        _quoteController.quoteModel.selectedIndices.clear;
+                        Navigator.of(context).pop();
+                        _quoteController.resetData(); // Close the dialog
                       }
                     } else {
                       // If no data, just close the dialog

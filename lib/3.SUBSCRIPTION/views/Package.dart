@@ -24,7 +24,7 @@ class _PackagepageState extends State<Packagepage> {
     final theme = Theme.of(context);
     return Obx(() {
       final selectedCount = subscriptionController.subscriptionModel.selectedPackagessubscriptionID.length;
-      final totalCount = subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList.length;
+      final totalCount = subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.length;
       final allSelected = selectedCount == totalCount && totalCount > 0;
       return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light.copyWith(
@@ -197,7 +197,7 @@ class _PackagepageState extends State<Packagepage> {
                               Expanded(
                                 child: Padding(
                                   padding: EdgeInsets.only(left: 24.0, right: 24.0, bottom: MediaQuery.of(context).viewInsets.bottom),
-                                  child: subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList.isEmpty
+                                  child: subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.isEmpty
                                       ? Center(
                                           child: Text(
                                             'No packages available',
@@ -205,9 +205,9 @@ class _PackagepageState extends State<Packagepage> {
                                           ),
                                         )
                                       : ListView.builder(
-                                          itemCount: subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList.length,
+                                          itemCount: subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.length,
                                           itemBuilder: (context, index) {
-                                            final package = subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList[index]; // Skip null items
+                                            final package = subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList[index]; // Skip null items
 
                                             final isChecked = subscriptionController.subscriptionModel.selectedPackagessubscriptionID.contains(package.subscriptionId);
                                             return Padding(
@@ -215,15 +215,15 @@ class _PackagepageState extends State<Packagepage> {
                                               child: _SubscriptionCard(
                                                 package: package,
                                                 isSelected: subscriptionController.subscriptionModel.packageselectedID.value ==
-                                                    subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList[index].subscriptionId,
+                                                    subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList[index].subscriptionId,
                                                 isChecked: isChecked,
                                                 onChecked: (value) {
                                                   _handlePackageSelection(package.subscriptionId, value);
                                                 },
                                                 onTap: () {
-                                                  if (index < subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList.length) {
+                                                  if (index < subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.length) {
                                                     subscriptionController.subscriptionModel.packageselectedID.value =
-                                                        subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList[index].subscriptionId;
+                                                        subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList[index].subscriptionId;
                                                   }
                                                 },
                                               ),
@@ -257,9 +257,9 @@ class _PackagepageState extends State<Packagepage> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 24.0),
                             child: subscriptionController.subscriptionModel.packageselectedID.value != null
-                                // &&   subscriptionController.subscriptionModel.packageselectedID.value! < subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList.length
-                                ? _buildDetailsPanel(subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList[subscriptionController
-                                    .subscriptionModel.GloabalPackage.value.globalPackageList
+                                // &&   subscriptionController.subscriptionModel.packageselectedID.value! < subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.length
+                                ? _buildDetailsPanel(subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList[subscriptionController
+                                    .subscriptionModel.GlobalPackage.value.globalPackageList
                                     .indexWhere((p) => p.subscriptionId == subscriptionController.subscriptionModel.packageselectedID.value)])
                                 : Center(
                                     child: Text(
@@ -285,7 +285,7 @@ class _PackagepageState extends State<Packagepage> {
     final controller = subscriptionController.subscriptionModel;
     if (select) {
       controller.selectedPackagessubscriptionID.addAll(
-        controller.GloabalPackage.value.globalPackageList.map((p) => p.subscriptionId).whereType<int>(),
+        controller.GlobalPackage.value.globalPackageList.map((p) => p.subscriptionId).whereType<int>(),
       );
     } else {
       controller.selectedPackagessubscriptionID.clear();
@@ -295,7 +295,7 @@ class _PackagepageState extends State<Packagepage> {
   void _handlePackageSelection(int? packageID, bool isSelected) {
     if (packageID == null) return;
 
-    final currentList = subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList;
+    final currentList = subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList;
     if (currentList.isEmpty) return;
 
     final controller = subscriptionController.subscriptionModel;

@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
+import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/CustomPDF_services/SUBSCRIPTION_CustomPDF_Invoice_services.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/subscription_service.dart';
@@ -20,6 +21,8 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/views/Recurring_Invoice/recurringIn
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Subscription_chart.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/importXL.dart';
+import 'package:ssipl_billing/NOTIFICATION-/NotificationServices.dart';
+import 'package:ssipl_billing/NOTIFICATION-/Notification_actions.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
@@ -27,7 +30,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../controllers/Subscription_actions.dart';
 
-class Subscription_Client extends StatefulWidget with SubscriptionServices {
+class Subscription_Client extends StatefulWidget with SubscriptionServices, BellIconFunction {
   Subscription_Client({super.key});
 
   @override
@@ -37,14 +40,23 @@ class Subscription_Client extends StatefulWidget with SubscriptionServices {
 class _Subscription_ClientState extends State<Subscription_Client> with TickerProviderStateMixin {
   final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
   var inst_CustomPDF_Services = SUBSCRIPTION_CustomPDF_Services();
+  final SUBSCRIPTION_ClientreqController subscription_clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
   final SUBSCRIPTION_CustomPDF_InvoiceController pdfpopup_controller = Get.find<SUBSCRIPTION_CustomPDF_InvoiceController>();
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
+  final NotificationController notificationController = Get.find<NotificationController>();
   var inst = Subscription_CustomPDF_InvoicePDF();
 
   @override
   void dispose() {
     subscriptionController.subscriptionModel.animationController.dispose();
+    resetAll();
     super.dispose();
+  }
+
+  void resetAll() {
+    subscription_clientreqController.resetData();
+    pdfpopup_controller.resetData();
+    quoteController.resetData();
   }
 
   @override
@@ -132,6 +144,63 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                       ),
                       Row(
                         children: [
+                          Obx(() {
+                            return Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: MouseRegion(
+                                    onEnter: (_) => notificationController.notificationModel.isHovered.value = true,
+                                    onExit: (_) => notificationController.notificationModel.isHovered.value = false,
+                                    cursor: SystemMouseCursors.click,
+                                    child: GestureDetector(
+                                        onTap: () => widget.showNotification(context),
+                                        child: ShaderMask(
+                                          shaderCallback: (Rect bounds) {
+                                            return const LinearGradient(
+                                              colors:
+                                                  // notificationController.notificationModel.notifications.isNotEmpty ?
+
+                                                  [Colors.black, Color.fromARGB(164, 255, 191, 0), Colors.amber],
+                                              // :  [Colors.amber],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ).createShader(bounds);
+                                          },
+                                          blendMode: BlendMode.srcIn,
+                                          child: const Icon(
+                                            Icons.notifications,
+                                            size: 30,
+                                          ),
+                                        )),
+                                  ),
+                                ),
+                                if (notificationController.notificationModel.notifications.isNotEmpty)
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: Container(
+                                      height: 15,
+                                      width: 15,
+                                      decoration: BoxDecoration(
+                                        color: notificationController.notificationModel.notifications.isNotEmpty ? Colors.red : Colors.blue,
+                                        borderRadius: BorderRadius.circular(50),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          notificationController.notificationModel.notifications.length > 9 ? '9+' : '${notificationController.notificationModel.notifications.length}',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            );
+                          }),
+                          const SizedBox(width: 10),
                           GestureDetector(
                             onTap: _startAnimation,
                             child: AnimatedBuilder(
@@ -695,9 +764,13 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                             case 'Import':
                                                               import_excel obj = import_excel(); // Remove const
                                                               import_excel.excelData.clear();
-                                                              await obj.pickExcelFile(context);
+                                                              bool success = await obj.pickExcelFile(context);
                                                               // print(import_excel.excelData);
-                                                              widget.showExcelDataPopup(context, import_excel.excelData);
+                                                              if (success) {
+                                                                widget.showExcelDataPopup(context, import_excel.excelData);
+                                                              } else {
+                                                                Basic_SnackBar(context, "ERROR while picking file, please contact administration!");
+                                                              }
 
                                                               break;
                                                           }
@@ -1362,7 +1435,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                                         context, subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
 
                                                                     if (success) {
-                                                                      // widget.GenerateQuote_dialougebox(context, "revisedquotation",
+                                                                      // widget.GenerateQuote_dialougebox(cont`ext, "revisedquotation",
                                                                       //     subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                       // quoteController.setProcessID(subscriptionController.subscriptionModel.processList[index].processid);
                                                                     }
@@ -2452,13 +2525,17 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                       // File? temp =File(path)
                                       // File? pdfFile = await widget.savePdfToTemp(subscriptionController.subscriptionModel.custom_pdfFile.value);
 
-                                      widget.Get_customPDFfile(context, subscriptionController.subscriptionModel.customPdfList[index].customPDFid);
-                                      widget.downloadPdf(
-                                          context,
-                                          subscriptionController.subscriptionModel.customPdfList[index].filePath
-                                              .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
-                                              .replaceAll(" ", ""),
-                                          subscriptionController.subscriptionModel.custom_pdfFile.value);
+                                      bool success = await widget.Get_customPDFfile(context, subscriptionController.subscriptionModel.customPdfList[index].customPDFid);
+                                      if (success) {
+                                        widget.downloadPdf(
+                                            context,
+                                            subscriptionController.subscriptionModel.customPdfList[index].filePath
+                                                .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
+                                                .replaceAll(" ", ""),
+                                            subscriptionController.subscriptionModel.custom_pdfFile.value);
+                                      } else {
+                                        Basic_SnackBar(context, "ERROR occured, Please contact administration!");
+                                      }
                                     },
                                     icon: const Icon(
                                       Icons.download,
@@ -2972,33 +3049,36 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                     alignment: Alignment.centerLeft,
                                     child: GestureDetector(
                                       onTap: () async {
-                                        await widget.Get_customPDFfile(
+                                        bool success = await widget.Get_customPDFfile(
                                           context,
                                           subscriptionController.subscriptionModel.customPdfList[index].customPDFid,
                                         );
+                                        if (success) {
+                                          File? file = subscriptionController.subscriptionModel.custom_pdfFile.value;
 
-                                        File? file = subscriptionController.subscriptionModel.custom_pdfFile.value;
-
-                                        if (await file!.exists() && await file.length() > 0) {
-                                          Uint8List? temp = await convertFileToUint8List(subscriptionController.subscriptionModel.custom_pdfFile.value!);
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) => Dialog(
-                                              insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
-                                              child: SizedBox(
-                                                width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-                                                height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
-                                                child: SfPdfViewer.memory(temp),
+                                          if (await file!.exists() && await file.length() > 0) {
+                                            Uint8List? temp = await convertFileToUint8List(subscriptionController.subscriptionModel.custom_pdfFile.value!);
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => Dialog(
+                                                insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+                                                child: SizedBox(
+                                                  width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+                                                  height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
+                                                  child: SfPdfViewer.memory(temp),
+                                                ),
                                               ),
-                                            ),
-                                          );
+                                            );
+                                          } else {
+                                            Basic_dialog(
+                                              context: context,
+                                              title: "Error",
+                                              content: "The  PDF file is empty or missing.",
+                                              showCancel: false,
+                                            );
+                                          }
                                         } else {
-                                          Basic_dialog(
-                                            context: context,
-                                            title: "Error",
-                                            content: "The  PDF file is empty or missing.",
-                                            showCancel: false,
-                                          );
+                                          Basic_SnackBar(context, "ERROR, Please contact administration!");
                                         }
                                       },
                                       child: Image.asset(height: 40, 'assets/images/pdfdownload.png'),

@@ -68,32 +68,62 @@ mixin salesCustom_PostServices {
     }
   }
 
-  Future<void> downloadPdf(String filename) async {
+  Future<void> downloadPdf(BuildContext context, String filename, File? pdfFile) async {
     try {
-      final pdfFile = pdfpopup_controller.pdfModel.value.genearatedPDF.value;
+      loader.start(context);
+
+      // ✅ Let the loader show before blocking UI
+      await Future.delayed(const Duration(milliseconds: 300));
+
       if (pdfFile == null) {
+        loader.stop();
         if (kDebugMode) {
           print("No PDF file found to download.");
         }
+        Basic_dialog(
+          context: context,
+          title: "No PDF Found",
+          content: "There is no PDF file to download.",
+          showCancel: false,
+        );
         return;
       }
 
-      // Let the user pick a folder to save the file
-      String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+      await Future.delayed(const Duration(milliseconds: 100));
 
-      // Define the destination path
-      String savePath = "$selectedDirectory/$filename";
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(lockParentWindow: true);
 
-      // Copy the PDF file to the selected directory
+      // ✅ Always stop loader after native call
+      loader.stop();
+
+      if (selectedDirectory == null) {
+        if (kDebugMode) {
+          print("User cancelled the folder selection.");
+        }
+        Basic_dialog(
+          context: context,
+          title: "Cancelled",
+          content: "Download cancelled. No folder was selected.",
+          showCancel: false,
+        );
+        return;
+      }
+
+      String savePath = "$selectedDirectory/$filename.pdf";
       await pdfFile.copy(savePath);
 
-      if (kDebugMode) {
-        print("PDF downloaded successfully to: $savePath");
-      }
+      Basic_SnackBar(context, "✅ PDF downloaded successfully to: $savePath");
     } catch (e) {
+      loader.stop();
       if (kDebugMode) {
-        print("Error downloading PDF: $e");
+        print("❌ Error while downloading PDF: $e");
       }
+      Basic_dialog(
+        context: context,
+        title: "Error",
+        content: "An error occurred while downloading the PDF:\n$e",
+        showCancel: false,
+      );
     }
   }
 

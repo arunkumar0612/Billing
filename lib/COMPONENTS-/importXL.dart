@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names, camel_case_types, constant_identifier_names, library_prefixes
-
 import 'dart:io';
 
 import 'package:excel/excel.dart' as Excel;
@@ -14,33 +12,33 @@ class import_excel {
   String? _filePath;
   final loader = LoadingOverlay();
 
-  Future<String?> pickExcelFile(context) async {
+  Future<bool> pickExcelFile(context) async {
     try {
       loader.start(context);
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['xls', 'xlsx'],
-      );
+      FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['xls', 'xlsx'], dialogTitle: "PICK EXCEL - site_package_list", lockParentWindow: true);
       loader.stop();
+
       if (result != null && result.files.single.path != null) {
         _filePath = result.files.single.path!;
-        readExcel(_filePath ?? "", context);
-        return _filePath;
-      } else {
-        return null;
+        await readExcel(_filePath!, context);
+        return excelData.isNotEmpty; // ✅ Return success if data is read
       }
     } catch (e) {
       if (kDebugMode) {
-        print(e);
+        print("❌ Error in pickExcelFile: $e");
       }
+    } finally {
+      loader.stop();
     }
-    return null;
+    return false; // ❌ Error or cancel
   }
 
   Future<void> readExcel(String filePath, context) async {
     try {
       var bytes = File(filePath).readAsBytesSync();
       var excel = Excel.Excel.decodeBytes(bytes);
+
+      excelData.clear(); // ✅ Always clear before reading
 
       List<Map<String, dynamic>> mismatchedRows = [];
 
@@ -69,10 +67,6 @@ class import_excel {
               if (cellValue != null && cellValue.toString().trim().isNotEmpty) {
                 rowData[validHeaders[i]!] = cellValue.toString();
                 hasNonNullValue = true;
-              } else {
-                if (kDebugMode) {
-                  print('⚠️ Empty cell at Row ${rows.indexOf(row) + 1}, Column "${validHeaders[i]}"');
-                }
               }
             }
 
@@ -84,10 +78,8 @@ class import_excel {
       }
 
       if (kDebugMode) {
-        print('Excel data length: ${excelData.length}');
-      }
-      if (kDebugMode) {
-        print('Mismatched rows: $mismatchedRows');
+        print('✅ Excel data length: ${excelData.length}');
+        print('⚠️ Mismatched rows: $mismatchedRows');
       }
 
       if (mismatchedRows.isNotEmpty) {
@@ -106,9 +98,7 @@ class import_excel {
               actions: <Widget>[
                 TextButton(
                   child: const Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                  onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
             );
@@ -117,7 +107,7 @@ class import_excel {
       }
     } catch (e) {
       if (kDebugMode) {
-        print(e);
+        print("❌ Error in readExcel: $e");
       }
     }
   }

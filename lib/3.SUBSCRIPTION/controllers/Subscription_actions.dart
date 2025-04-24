@@ -15,7 +15,7 @@ class SubscriptionController extends GetxController {
   }
 
   void add_GlobalPackage(CMDlResponse value) {
-    subscriptionModel.GloabalPackage.value = Global_package.fromCMDlResponse(value);
+    subscriptionModel.GlobalPackage.value = Global_package.fromCMDlResponse(value);
   }
 
   Future<void> custom_PDFfileApiData(CMDmResponse value) async {
@@ -199,11 +199,30 @@ class SubscriptionController extends GetxController {
     subscriptionModel.packagedescController.value.clear();
   }
 
+  // void resetData() {
+  //   subscriptionModel.customerList.clear();
+  //   subscriptionModel.processList.clear();
+  //   subscriptionModel.processcustomerList.clear();
+  //   subscriptionModel.showcustomerprocess.value = null;
+  //   subscriptionModel.customerId.value = null;
+  //   subscriptionModel.pdfFile.value = null;
+  //   subscriptionModel.selectedIndices.clear();
+  //   subscriptionModel.isAllSelected.value = false;
+  //   subscriptionModel.type.value = 0;
+  //   subscriptionModel.isprofilepage.value = false;
+  //   subscriptionModel.searchQuery.value = '';
+  //   subscriptionModel.subscriptiondata.value = null;
+  //   subscriptionModel.subscriptionperiod.value = 'monthly';
+  //   subscriptionModel.Clientprofile.value = null;
+  // }
+
   void resetData() {
-    subscriptionModel.processList.clear();
     subscriptionModel.reccuringInvoice_list.clear();
     subscriptionModel.recurredcustomerList.clear();
     subscriptionModel.processcustomerList.clear();
+    subscriptionModel.companyList.value = CompanyResponse(companyList: []);
+    subscriptionModel.GlobalPackage.value = Global_package(globalPackageList: []);
+    subscriptionModel.processList.clear();
     subscriptionModel.showcustomerprocess.value = null;
     subscriptionModel.customerId.value = null;
     subscriptionModel.pdfFile.value = null;
@@ -215,6 +234,36 @@ class SubscriptionController extends GetxController {
     subscriptionModel.subscriptiondata.value = null;
     subscriptionModel.subscriptionperiod.value = 'monthly';
     subscriptionModel.Clientprofile.value = null;
+    subscriptionModel.customPdfList.clear();
+    subscriptionModel.reccuringInvoice_list.clear();
+    subscriptionModel.whatsapp_selectionStatus.value = true;
+    subscriptionModel.gmail_selectionStatus.value = true;
+    subscriptionModel.phoneController.value.clear();
+    subscriptionModel.emailController.value.clear();
+    subscriptionModel.CCemailController.value.clear();
+    subscriptionModel.feedbackController.value.clear();
+    subscriptionModel.CCemailToggle.value = false;
+
+    // GLOBALPAGE VARIABLES
+    subscriptionModel.packageselectedID.value = null;
+    subscriptionModel.packageisEditing.value = false;
+    subscriptionModel.editingPackage.value = null;
+    subscriptionModel.packagesubscriptionID.value = null;
+    subscriptionModel.packagecamerasController.value.clear();
+    subscriptionModel.packageadditionalcamerasController.value.clear();
+    subscriptionModel.packagedescController.value.clear();
+    subscriptionModel.packagenameController.value.clear();
+    subscriptionModel.packagedevicesController.value.clear();
+    subscriptionModel.packageamountController.value.clear();
+    subscriptionModel.selectedPackagessubscriptionID.clear();
+    subscriptionModel.editpackagesubscriptionID.value = null;
+    subscriptionModel.editpackagecamerasController.value.clear();
+    subscriptionModel.editpackageadditionalcamerasController.value.clear();
+    subscriptionModel.editpackagedescController.value.clear();
+    subscriptionModel.editpackagenameController.value.clear();
+    subscriptionModel.editpackagedevicesController.value.clear();
+    subscriptionModel.editpackageamountController.value.clear();
   }
 }
+
 //  customername.replaceAll(RegExp(r'[^A-Z]'), '').length>=2?customername.replaceAll(RegExp(r'[^A-Z]'), '').substring(0, 2):customername.replaceAll(RegExp(r'[^A-Z]'), '').length==1?customername.replaceAll(RegExp(r'[^A-Z]'), ''):customername.isNotEmpty?customername[0].toUpperCase():"?",

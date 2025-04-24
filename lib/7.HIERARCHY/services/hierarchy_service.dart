@@ -99,7 +99,7 @@ mixin HierarchyService {
   }
 
   Future<bool> pickFile(BuildContext context, String logoType, int id) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg']);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg'], lockParentWindow: true);
     if (result != null) {
       final file = File(result.files.single.path!);
       final fileLength = await file.length();

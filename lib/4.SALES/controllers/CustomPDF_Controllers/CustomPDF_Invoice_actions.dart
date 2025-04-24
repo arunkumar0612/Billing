@@ -45,9 +45,13 @@ class CustomPDF_InvoiceController extends GetxController {
 
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf'],
-    );
+        type: FileType.custom,
+        allowedExtensions: [
+          'png',
+          'jpg',
+          'jpeg',
+        ],
+        lockParentWindow: true);
 
     if (result != null) {
       final file = File(result.files.single.path!);
@@ -87,6 +91,10 @@ class CustomPDF_InvoiceController extends GetxController {
   // Toggle loading state
   void setLoading(bool value) {
     pdfModel.value.isLoading.value = value;
+  }
+
+  void setGSTtype(bool value) {
+    pdfModel.value.isGST_local.value = value;
   }
 
   Future<void> startProgress() async {
@@ -186,6 +194,7 @@ class CustomPDF_InvoiceController extends GetxController {
 
   void finalCalc() {
     double addedSubTotal = 0.0;
+    double addedIGST = 0.0;
     double addedCGST = 0.0;
     double addedSGST = 0.0;
     double addedRoundoff = 0.0;
@@ -196,14 +205,21 @@ class CustomPDF_InvoiceController extends GetxController {
       double gst = double.tryParse(product.gst) ?? 0.0;
       double cgst = (price / 100) * gst / 2;
       double sgst = (price / 100) * gst / 2;
+      double igst = (price / 100) * gst;
 
+      addedIGST += igst;
       addedCGST += cgst;
       addedSGST += sgst;
       addedSubTotal += subTotal;
     }
-    addedRoundoff = addedSubTotal + addedCGST + addedSGST;
+    if (isGST_Local(pdfModel.value.GSTnumber.value.text)) {
+      addedRoundoff = addedSubTotal + addedCGST + addedSGST;
+    } else {
+      addedRoundoff = addedSubTotal + addedIGST;
+    }
 
     pdfModel.value.subTotal.value.text = addedSubTotal.toStringAsFixed(2);
+    pdfModel.value.IGST.value.text = addedIGST.toStringAsFixed(2);
     pdfModel.value.CGST.value.text = addedCGST.toStringAsFixed(2);
     pdfModel.value.SGST.value.text = addedSGST.toStringAsFixed(2);
     pdfModel.value.roundOff.value.text = formatCurrencyRoundedPaisa(addedRoundoff);
@@ -258,6 +274,17 @@ class CustomPDF_InvoiceController extends GetxController {
         pdfModel.value.manualinvoiceNo.value.text.isEmpty);
   }
 
+  void clear_postFields() {
+    pdfModel.value.phoneNumber.value.clear();
+    pdfModel.value.Email.value.clear();
+    pdfModel.value.feedback.value.clear();
+    pdfModel.value.whatsapp_selectionStatus.value = true;
+    pdfModel.value.gmail_selectionStatus.value = true;
+    pdfModel.value.CCemailController.value.clear();
+    pdfModel.value.CCemailToggle.value = false;
+    pdfModel.value.filePathController.value.clear();
+  }
+
   void resetData() {
     pdfModel.value.date.value.clear();
     pdfModel.value.manualinvoiceNo.value.clear();
@@ -274,6 +301,8 @@ class CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.GSTnumber.value.clear();
     pdfModel.value.CGST.value.clear();
     pdfModel.value.SGST.value.clear();
+    pdfModel.value.IGST.value.clear();
+    pdfModel.value.IGST.value.clear();
     pdfModel.value.roundOff.value.clear();
     pdfModel.value.Total.value.clear();
     pdfModel.value.roundoffDiff.value = null;
@@ -301,7 +330,7 @@ class CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.progress.value = 0.0;
     pdfModel.value.isLoading.value = false;
     pdfModel.value.CCemailToggle.value = false;
-
     pdfModel.value.allData_key.value = GlobalKey<FormState>();
+    pdfModel.value.isGST_local.value = true;
   }
 }

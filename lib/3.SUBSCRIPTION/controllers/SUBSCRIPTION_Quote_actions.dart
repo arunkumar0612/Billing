@@ -211,10 +211,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
   }
 
   Future<void> pickFile(BuildContext context) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf'],
-    );
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg'], lockParentWindow: true);
 
     if (result != null) {
       final file = File(result.files.single.path!);
@@ -436,36 +433,95 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         quoteModel.Quote_no.value == null);
   } // If any one is empty or null, then it returns true
 
+  // void resetData() {
+  //   quoteModel.tabController.value = null;
+  //   quoteModel.processID.value = null;
+  //   quoteModel.Quote_no.value = null;
+  //   quoteModel.gstNumController.value.text = "";
+  //   quoteModel.Quote_table_heading.value = "";
+
+  //   quoteModel.phoneController.value.text = "";
+  //   quoteModel.emailController.value.text = "";
+  //   quoteModel.CCemailToggle.value = false;
+  //   quoteModel.CCemailController.value.clear();
+  //   // Reset details
+  //   quoteModel.TitleController.value.text = "";
+  //   quoteModel.clientAddressNameController.value.text = "";
+  //   quoteModel.clientAddressController.value.text = "";
+  //   quoteModel.billingAddressNameController.value.text = "";
+  //   quoteModel.billingAddressController.value.text = "";
+
+  //   // Reset site details
+  //   quoteModel.site_editIndex.value = null;
+  //   quoteModel.siteNameController.value.text = "";
+
+  //   // Reset notes
+  //   quoteModel.note_editIndex.value = null;
+  //   quoteModel.notecontentController.value.text = "";
+  //   quoteModel.recommendation_editIndex.value = null;
+  //   quoteModel.recommendationHeadingController.value.text = "";
+  //   quoteModel.recommendationKeyController.value.text = "";
+  //   quoteModel.recommendationValueController.value.text = "";
+  //   quoteModel.Quote_noteList.clear();
+  //   quoteModel.Quote_recommendationList.clear();
+  // }
+
   void resetData() {
     quoteModel.tabController.value = null;
     quoteModel.processID.value = null;
     quoteModel.Quote_no.value = null;
-    quoteModel.gstNumController.value.text = "";
     quoteModel.Quote_table_heading.value = "";
+    quoteModel.gstNumController.value.clear();
 
-    quoteModel.phoneController.value.text = "";
-    quoteModel.emailController.value.text = "";
-    quoteModel.CCemailToggle.value = false;
-    quoteModel.CCemailController.value.clear();
-    // Reset details
-    quoteModel.TitleController.value.text = "";
-    quoteModel.clientAddressNameController.value.text = "";
-    quoteModel.clientAddressController.value.text = "";
-    quoteModel.billingAddressNameController.value.text = "";
-    quoteModel.billingAddressController.value.text = "";
+    // DETAILS
+    quoteModel.TitleController.value.clear();
+    quoteModel.clientAddressNameController.value.clear();
+    quoteModel.clientAddressController.value.clear();
+    quoteModel.billingAddressNameController.value.clear();
+    quoteModel.billingAddressController.value.clear();
+    quoteModel.detailsKey.value = GlobalKey<FormState>();
 
-    // Reset site details
-    quoteModel.site_editIndex.value = null;
-    quoteModel.siteNameController.value.text = "";
+    // PRODUCTS
+    // quoteModel.productKey.value = GlobalKey<FormState>();
+    // quoteModel.product_editIndex.value = null;
+    // quoteModel.productNameController.value.clear();
+    // quoteModel.hsnController.value.clear();
+    // quoteModel.priceController.value.clear();
+    // quoteModel.quantityController.value.clear();
+    // quoteModel.gstController.value.clear();
+    // quoteModel.Quote_products.clear();
+    // quoteModel.Quote_productSuggestion.clear();
+    // quoteModel.Quote_gstTotals.clear();
 
-    // Reset notes
+    // NOTES
+    quoteModel.noteformKey.value = GlobalKey<FormState>();
+    quoteModel.progress.value = 0.0;
+    quoteModel.isLoading.value = false;
     quoteModel.note_editIndex.value = null;
-    quoteModel.notecontentController.value.text = "";
+    quoteModel.notecontentController.value.clear();
     quoteModel.recommendation_editIndex.value = null;
-    quoteModel.recommendationHeadingController.value.text = "";
-    quoteModel.recommendationKeyController.value.text = "";
-    quoteModel.recommendationValueController.value.text = "";
+    quoteModel.recommendationHeadingController.value.clear();
+    quoteModel.recommendationKeyController.value.clear();
+    quoteModel.recommendationValueController.value.clear();
     quoteModel.Quote_noteList.clear();
     quoteModel.Quote_recommendationList.clear();
+    quoteModel.notecontent.value = [
+      'Delivery within 30 working days from the date of issuing the PO.',
+      'Payment terms : 100% along with PO.',
+      'Client needs to provide Ethernet cable and UPS power supply to the point where the device is proposed to install.',
+    ];
+
+    // POST
+    quoteModel.pickedFile.value = null;
+    quoteModel.selectedPdf.value = null;
+    quoteModel.ispdfLoading.value = false;
+    quoteModel.whatsapp_selectionStatus.value = true;
+    quoteModel.gmail_selectionStatus.value = true;
+    quoteModel.phoneController.value.clear();
+    quoteModel.emailController.value.clear();
+    quoteModel.CCemailController.value.clear();
+    quoteModel.feedbackController.value.clear();
+    quoteModel.filePathController.value.clear();
+    quoteModel.CCemailToggle.value = false;
   }
 }

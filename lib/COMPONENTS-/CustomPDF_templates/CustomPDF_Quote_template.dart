@@ -9,7 +9,7 @@ import '../../4.SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entit
 import '../../4.SALES/models/entities/Quote_entities.dart';
 import '../../UTILS-/helpers/support_functions.dart';
 
-Future<Uint8List> generate_CustomPDFQuote(PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, quote_gstTotals) async {
+Future<Uint8List> generate_CustomPDFQuote(PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, quote_gstTotals, isGST_local) async {
   final quotation = Quotation(
       date: date,
       products: products,
@@ -23,7 +23,9 @@ Future<Uint8List> generate_CustomPDFQuote(PdfPageFormat pageFormat, date, produc
       estimate: estimate_num ?? "",
       title_text: title,
       type: '',
-      quote_gstTotals: quote_gstTotals);
+      quote_gstTotals: quote_gstTotals,
+      isGST_local: isGST_local,
+      );
 
   return await quotation.buildPdf(pageFormat);
 }
@@ -42,7 +44,8 @@ class Quotation {
       required this.estimate,
       required this.title_text,
       required this.type,
-      required this.quote_gstTotals
+      required this.quote_gstTotals,
+      required this.isGST_local
       // required this.items,
       });
   final CustomPDF_QuoteController quoteController = Get.find<CustomPDF_QuoteController>();
@@ -55,6 +58,7 @@ class Quotation {
   String estimate = "";
   String title_text = "";
   String type = "";
+  bool isGST_local = true;
 
   final List<CustomPDF_QuoteProduct> products;
   final String GST;
@@ -94,7 +98,8 @@ class Quotation {
           pw.SizedBox(height: 10),
           _contentTable(context),
           pw.SizedBox(height: 20),
-          tax_table(context),
+          // tax_table(context),
+           isGST_local ? Local_tax_table(context) : others_tax_table(context),
         ],
       ),
     );
@@ -392,7 +397,221 @@ class Quotation {
     );
   }
 
-  pw.Widget tax_table(pw.Context context) {
+  pw.Widget Local_tax_table(pw.Context context) {
+    return pw.Column(
+      children: [
+        pw.Row(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+          children: [
+            pw.Container(
+              decoration: pw.BoxDecoration(border: pw.Border.all(color: PdfColors.grey700)),
+              // height: 200,
+              // width: 300, // Ensure the container has a defined width
+              child: pw.Column(
+                // border: pw.TableBorder.all(color: PdfColors.grey700, width: 1),
+                children: [
+                  pw.Row(
+                    children: [
+                      pw.Container(
+                        decoration: const pw.BoxDecoration(
+                          border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700)),
+                        ),
+                        height: 38,
+                        width: 80,
+                        child: pw.Center(
+                          child: pw.Text(
+                            "Taxable\nvalue",
+                            style: pw.TextStyle(
+                              font: Helvetica,
+
+                              fontSize: 10,
+                              color: PdfColors.grey700,
+                              // fontWeight: pw.FontWeight.bold,
+                            ),
+                            textAlign: pw.TextAlign.center, // Justifying the text
+                          ),
+                        ),
+                      ),
+                      pw.Container(
+                        height: 38,
+                        child: pw.Column(
+                          children: [
+                            pw.Container(
+                              width: 110,
+                              decoration: const pw.BoxDecoration(
+                                border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700)),
+                              ),
+                              height: 19, // Replace Expanded with defined height
+                              child: pw.Center(child: regular('CGST', 10)),
+                            ),
+                            pw.Container(
+                              height: 19, // Define height instead of Expanded
+                              child: pw.Row(
+                                children: [
+                                  pw.Container(
+                                    width: 40, // Define width instead of Expanded
+                                    decoration: const pw.BoxDecoration(
+                                      border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700), bottom: pw.BorderSide(color: PdfColors.grey700)),
+                                    ),
+                                    child: pw.Center(child: regular('%', 10)),
+                                  ),
+                                  pw.Container(
+                                    width: 70, // Define width instead of Expanded
+                                    decoration: const pw.BoxDecoration(
+                                      border: pw.Border(
+                                        right: pw.BorderSide(color: PdfColors.grey700),
+                                        top: pw.BorderSide(color: PdfColors.grey700),
+                                        left: pw.BorderSide(color: PdfColors.grey700),
+                                      ),
+                                    ),
+                                    child: pw.Center(child: regular('amount', 10)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      pw.Container(
+                        height: 38,
+                        child: pw.Column(
+                          children: [
+                            pw.Container(
+                              height: 19, // Replace Expanded with defined height
+                              child: pw.Center(child: regular('SGST', 10)),
+                            ),
+                            pw.Container(
+                              height: 19, // Define height instead of Expanded
+                              child: pw.Row(
+                                children: [
+                                  pw.Container(
+                                    width: 40, // Define width instead of Expanded
+                                    decoration: const pw.BoxDecoration(
+                                      border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700)),
+                                    ),
+                                    child: pw.Center(child: regular('%', 10)),
+                                  ),
+                                  pw.Container(
+                                    width: 70, // Define width instead of Expanded
+                                    decoration: const pw.BoxDecoration(
+                                      border: pw.Border(
+                                        right: pw.BorderSide(color: PdfColors.grey700),
+                                        top: pw.BorderSide(color: PdfColors.grey700),
+                                        left: pw.BorderSide(color: PdfColors.grey700),
+                                      ),
+                                    ),
+                                    child: pw.Center(child: regular('amount', 10)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  pw.ListView.builder(
+                    itemCount: quote_gstTotals.length, // Number of items in the list
+                    itemBuilder: (context, index) {
+                      return pw.Row(
+                        children: [
+                          pw.Container(
+                            decoration: const pw.BoxDecoration(
+                              border: pw.Border(
+                                right: pw.BorderSide(color: PdfColors.grey700),
+                                top: pw.BorderSide(color: PdfColors.grey700),
+                              ),
+                            ),
+                            width: 80,
+                            height: 38,
+                            child: pw.Center(child: regular(formatzero(quote_gstTotals[index].total), 10)),
+                          ),
+                          pw.Container(
+                            height: 38,
+                            child: pw.Row(
+                              children: [
+                                pw.Container(
+                                  decoration: const pw.BoxDecoration(
+                                    border: pw.Border(
+                                      top: pw.BorderSide(color: PdfColors.grey700),
+                                    ),
+                                  ),
+                                  width: 40, // Define width instead of Expanded
+                                  child: pw.Center(
+                                    child: regular((quote_gstTotals[index].gst / 2).toString(), 10),
+                                  ),
+                                ),
+                                pw.Container(
+                                  width: 70, // Define width instead of Expanded
+                                  decoration: const pw.BoxDecoration(
+                                    border: pw.Border(
+                                      right: pw.BorderSide(color: PdfColors.grey700),
+                                      top: pw.BorderSide(color: PdfColors.grey700),
+                                      left: pw.BorderSide(color: PdfColors.grey700),
+                                    ),
+                                  ),
+                                  child: pw.Center(
+                                    child: regular(
+                                        formatzero(
+                                          ((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst / 2)),
+                                        ),
+                                        10),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          pw.Container(
+                            height: 38,
+                            child: pw.Row(
+                              children: [
+                                pw.Container(
+                                  decoration: const pw.BoxDecoration(
+                                    border: pw.Border(
+                                      top: pw.BorderSide(color: PdfColors.grey700),
+                                    ),
+                                  ),
+                                  width: 40, // Define width instead of Expanded
+                                  child: pw.Center(child: regular((quote_gstTotals[index].gst / 2).toString(), 10)),
+                                ),
+                                pw.Container(
+                                  width: 70, // Define width instead of Expanded
+                                  decoration: const pw.BoxDecoration(
+                                    border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700)),
+                                  ),
+                                  child: pw.Center(child: regular(formatzero(((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst / 2))), 10)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  )
+                ],
+              ),
+            ),
+            Local_final_amount(context),
+          ],
+        ),
+        pw.Row(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
+            // pw.Expanded(child: pw.Container(), flex: 1),
+
+            notes(context),
+
+            // 995461
+            pw.SizedBox(width: 100),
+            authorized_signatory(context),
+          ],
+        ),
+      ],
+    );
+  }
+
+  pw.Widget others_tax_table(pw.Context context) {
     return pw.Column(
       children: [
         pw.Row(
@@ -468,42 +687,6 @@ class Quotation {
                           ],
                         ),
                       ),
-                      // pw.Container(
-                      //   height: 38,
-                      //   child: pw.Column(
-                      //     children: [
-                      //       pw.Container(
-                      //         height: 19, // Replace Expanded with defined height
-                      //         child: pw.Center(child: regular('SGST', 10)),
-                      //       ),
-                      //       pw.Container(
-                      //         height: 19, // Define height instead of Expanded
-                      //         child: pw.Row(
-                      //           children: [
-                      //             pw.Container(
-                      //               width: 40, // Define width instead of Expanded
-                      //               decoration: const pw.BoxDecoration(
-                      //                 border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700)),
-                      //               ),
-                      //               child: pw.Center(child: regular('%', 10)),
-                      //             ),
-                      //             pw.Container(
-                      //               width: 70, // Define width instead of Expanded
-                      //               decoration: const pw.BoxDecoration(
-                      //                 border: pw.Border(
-                      //                   right: pw.BorderSide(color: PdfColors.grey700),
-                      //                   top: pw.BorderSide(color: PdfColors.grey700),
-                      //                   left: pw.BorderSide(color: PdfColors.grey700),
-                      //                 ),
-                      //               ),
-                      //               child: pw.Center(child: regular('amount', 10)),
-                      //             ),
-                      //           ],
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                     ],
                   ),
                   pw.ListView.builder(
@@ -557,29 +740,6 @@ class Quotation {
                               ],
                             ),
                           ),
-                          // pw.Container(
-                          //   height: 38,
-                          //   child: pw.Row(
-                          //     children: [
-                          //       pw.Container(
-                          //         decoration: const pw.BoxDecoration(
-                          //           border: pw.Border(
-                          //             top: pw.BorderSide(color: PdfColors.grey700),
-                          //           ),
-                          //         ),
-                          //         width: 40, // Define width instead of Expanded
-                          //         child: pw.Center(child: regular((quote_gstTotals[index].gst / 2).toString(), 10)),
-                          //       ),
-                          //       pw.Container(
-                          //         width: 70, // Define width instead of Expanded
-                          //         decoration: const pw.BoxDecoration(
-                          //           border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700)),
-                          //         ),
-                          //         child: pw.Center(child: regular(formatzero(((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst / 2))), 10)),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
                         ],
                       );
                     },
@@ -587,7 +747,7 @@ class Quotation {
                 ],
               ),
             ),
-            final_amount(context),
+            others_final_amount(context),
           ],
         ),
         pw.Row(
@@ -606,6 +766,222 @@ class Quotation {
     );
   }
 
+
+
+  // pw.Widget tax_table(pw.Context context) {
+  //   return pw.Column(
+  //     children: [
+  //       pw.Row(
+  //         crossAxisAlignment: pw.CrossAxisAlignment.start,
+  //         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           pw.Container(
+  //             decoration: pw.BoxDecoration(border: pw.Border.all(color: PdfColors.grey700)),
+  //             // height: 200,
+  //             // width: 300, // Ensure the container has a defined width
+  //             child: pw.Column(
+  //               // border: pw.TableBorder.all(color: PdfColors.grey700, width: 1),
+  //               children: [
+  //                 pw.Row(
+  //                   children: [
+  //                     pw.Container(
+  //                       decoration: const pw.BoxDecoration(
+  //                         border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700)),
+  //                       ),
+  //                       height: 38,
+  //                       width: 80,
+  //                       child: pw.Center(
+  //                         child: pw.Text(
+  //                           "Taxable\nvalue",
+  //                           style: pw.TextStyle(
+  //                             font: Helvetica,
+
+  //                             fontSize: 10,
+  //                             color: PdfColors.grey700,
+  //                             // fontWeight: pw.FontWeight.bold,
+  //                           ),
+  //                           textAlign: pw.TextAlign.center, // Justifying the text
+  //                         ),
+  //                       ),
+  //                     ),
+  //                     pw.Container(
+  //                       height: 38,
+  //                       child: pw.Column(
+  //                         children: [
+  //                           pw.Container(
+  //                             width: 110,
+  //                             decoration: const pw.BoxDecoration(
+  //                               border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700)),
+  //                             ),
+  //                             height: 19, // Replace Expanded with defined height
+  //                             child: pw.Center(child: regular('IGST', 10)),
+  //                           ),
+  //                           pw.Container(
+  //                             height: 19, // Define height instead of Expanded
+  //                             child: pw.Row(
+  //                               children: [
+  //                                 pw.Container(
+  //                                   width: 40, // Define width instead of Expanded
+  //                                   decoration: const pw.BoxDecoration(
+  //                                     border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700), bottom: pw.BorderSide(color: PdfColors.grey700)),
+  //                                   ),
+  //                                   child: pw.Center(child: regular('%', 10)),
+  //                                 ),
+  //                                 pw.Container(
+  //                                   width: 70, // Define width instead of Expanded
+  //                                   decoration: const pw.BoxDecoration(
+  //                                     border: pw.Border(
+  //                                       right: pw.BorderSide(color: PdfColors.grey700),
+  //                                       top: pw.BorderSide(color: PdfColors.grey700),
+  //                                       left: pw.BorderSide(color: PdfColors.grey700),
+  //                                     ),
+  //                                   ),
+  //                                   child: pw.Center(child: regular('amount', 10)),
+  //                                 ),
+  //                               ],
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ),
+  //                     // pw.Container(
+  //                     //   height: 38,
+  //                     //   child: pw.Column(
+  //                     //     children: [
+  //                     //       pw.Container(
+  //                     //         height: 19, // Replace Expanded with defined height
+  //                     //         child: pw.Center(child: regular('SGST', 10)),
+  //                     //       ),
+  //                     //       pw.Container(
+  //                     //         height: 19, // Define height instead of Expanded
+  //                     //         child: pw.Row(
+  //                     //           children: [
+  //                     //             pw.Container(
+  //                     //               width: 40, // Define width instead of Expanded
+  //                     //               decoration: const pw.BoxDecoration(
+  //                     //                 border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700)),
+  //                     //               ),
+  //                     //               child: pw.Center(child: regular('%', 10)),
+  //                     //             ),
+  //                     //             pw.Container(
+  //                     //               width: 70, // Define width instead of Expanded
+  //                     //               decoration: const pw.BoxDecoration(
+  //                     //                 border: pw.Border(
+  //                     //                   right: pw.BorderSide(color: PdfColors.grey700),
+  //                     //                   top: pw.BorderSide(color: PdfColors.grey700),
+  //                     //                   left: pw.BorderSide(color: PdfColors.grey700),
+  //                     //                 ),
+  //                     //               ),
+  //                     //               child: pw.Center(child: regular('amount', 10)),
+  //                     //             ),
+  //                     //           ],
+  //                     //         ),
+  //                     //       ),
+  //                     //     ],
+  //                     //   ),
+  //                     // ),
+  //                   ],
+  //                 ),
+  //                 pw.ListView.builder(
+  //                   itemCount: quote_gstTotals.length, // Number of items in the list
+  //                   itemBuilder: (context, index) {
+  //                     return pw.Row(
+  //                       children: [
+  //                         pw.Container(
+  //                           decoration: const pw.BoxDecoration(
+  //                             border: pw.Border(
+  //                               right: pw.BorderSide(color: PdfColors.grey700),
+  //                               top: pw.BorderSide(color: PdfColors.grey700),
+  //                             ),
+  //                           ),
+  //                           width: 80,
+  //                           height: 38,
+  //                           child: pw.Center(child: regular(formatzero(quote_gstTotals[index].total), 10)),
+  //                         ),
+  //                         pw.Container(
+  //                           height: 38,
+  //                           child: pw.Row(
+  //                             children: [
+  //                               pw.Container(
+  //                                 decoration: const pw.BoxDecoration(
+  //                                   border: pw.Border(
+  //                                     top: pw.BorderSide(color: PdfColors.grey700),
+  //                                   ),
+  //                                 ),
+  //                                 width: 40, // Define width instead of Expanded
+  //                                 child: pw.Center(
+  //                                   child: regular((quote_gstTotals[index].gst).toString(), 10),
+  //                                 ),
+  //                               ),
+  //                               pw.Container(
+  //                                 width: 70, // Define width instead of Expanded
+  //                                 decoration: const pw.BoxDecoration(
+  //                                   border: pw.Border(
+  //                                     right: pw.BorderSide(color: PdfColors.grey700),
+  //                                     top: pw.BorderSide(color: PdfColors.grey700),
+  //                                     left: pw.BorderSide(color: PdfColors.grey700),
+  //                                   ),
+  //                                 ),
+  //                                 child: pw.Center(
+  //                                   child: regular(
+  //                                       formatzero(
+  //                                         ((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst)),
+  //                                       ),
+  //                                       10),
+  //                                 ),
+  //                               ),
+  //                             ],
+  //                           ),
+  //                         ),
+  //                         // pw.Container(
+  //                         //   height: 38,
+  //                         //   child: pw.Row(
+  //                         //     children: [
+  //                         //       pw.Container(
+  //                         //         decoration: const pw.BoxDecoration(
+  //                         //           border: pw.Border(
+  //                         //             top: pw.BorderSide(color: PdfColors.grey700),
+  //                         //           ),
+  //                         //         ),
+  //                         //         width: 40, // Define width instead of Expanded
+  //                         //         child: pw.Center(child: regular((quote_gstTotals[index].gst / 2).toString(), 10)),
+  //                         //       ),
+  //                         //       pw.Container(
+  //                         //         width: 70, // Define width instead of Expanded
+  //                         //         decoration: const pw.BoxDecoration(
+  //                         //           border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700)),
+  //                         //         ),
+  //                         //         child: pw.Center(child: regular(formatzero(((quote_gstTotals[index].total.toInt() / 100) * (quote_gstTotals[index].gst / 2))), 10)),
+  //                         //       ),
+  //                         //     ],
+  //                         //   ),
+  //                         // ),
+  //                       ],
+  //                     );
+  //                   },
+  //                 )
+  //               ],
+  //             ),
+  //           ),
+  //           final_amount(context),
+  //         ],
+  //       ),
+  //       pw.Row(
+  //         crossAxisAlignment: pw.CrossAxisAlignment.start,
+  //         children: [
+  //           // pw.Expanded(child: pw.Container(), flex: 1),
+
+  //           notes(context),
+
+  //           // 995461
+  //           pw.SizedBox(width: 100),
+  //           authorized_signatory(context),
+  //         ],
+  //       ),
+  //     ],
+  //   );
+  // }
+
 // Define a function to format currency to two decimal places
   String formatCurrency(double value) {
     return value.toStringAsFixed(2);
@@ -614,7 +990,7 @@ class Quotation {
 // Display the result
 // Text('Round off : ${formatCurrency(roundOffDifference)}', style: TextStyle(fontSize: 10)),
 
-  pw.Widget final_amount(pw.Context context) {
+pw.Widget Local_final_amount(pw.Context context) {
     // Calculate the rounded difference
     // double roundedTotal = double.parse(formatCurrency(_grandTotal));
     // double nearestInteger = _grandTotal.roundToDouble();
@@ -631,14 +1007,58 @@ class Quotation {
             ],
           ),
           pw.SizedBox(height: 8),
-          // pw.Row(
-          //   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     regular('CGST       :', 10),
-          //     regular(formatzero(CGST_total), 10),
-          //   ],
-          // ),
-          // pw.SizedBox(height: 8),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              regular('CGST       :', 10),
+              regular(formatzero(CGST_total), 10),
+            ],
+          ),
+          pw.SizedBox(height: 8),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              regular('SGST       :', 10),
+              regular(formatzero(CGST_total), 10),
+            ],
+          ),
+          pw.SizedBox(height: 8),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              regular(
+                'Round off : ${((double.parse(formatCurrencyRoundedPaisa(_grandTotal).replaceAll(',', '')) - _grandTotal) >= 0 ? '+' : '')}${(double.parse(formatCurrencyRoundedPaisa(_grandTotal).replaceAll(',', '')) - _grandTotal).toStringAsFixed(2)}',
+                10,
+              ),
+              regular(formatCurrencyRoundedPaisa(_grandTotal), 10),
+            ],
+          ),
+          pw.Divider(color: accentColor),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              bold('Total', 12),
+              bold("Rs.${formatCurrencyRoundedPaisa(_grandTotal)}", 12),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  others_final_amount(pw.Context context) {
+    return pw.Container(
+      width: 185, // Define width to ensure bounded constraints
+      child: pw.Column(
+        children: [
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              regular('Sub total   :', 10),
+              regular(formatzero(_total), 10),
+            ],
+          ),
+          pw.SizedBox(height: 8),
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
@@ -669,6 +1089,62 @@ class Quotation {
       ),
     );
   }
+
+  // pw.Widget final_amount(pw.Context context) {
+  //   // Calculate the rounded difference
+  //   // double roundedTotal = double.parse(formatCurrency(_grandTotal));
+  //   // double nearestInteger = _grandTotal.roundToDouble();
+  //   // double roundOffDifference = roundedTotal - nearestInteger;
+  //   return pw.Container(
+  //     width: 185, // Define width to ensure bounded constraints
+  //     child: pw.Column(
+  //       children: [
+  //         pw.Row(
+  //           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             regular('Sub total   :', 10),
+  //             regular(formatzero(_total), 10),
+  //           ],
+  //         ),
+  //         pw.SizedBox(height: 8),
+  //         // pw.Row(
+  //         //   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+  //         //   children: [
+  //         //     regular('CGST       :', 10),
+  //         //     regular(formatzero(CGST_total), 10),
+  //         //   ],
+  //         // ),
+  //         // pw.SizedBox(height: 8),
+  //         pw.Row(
+  //           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             regular('IGST       :', 10),
+  //             regular(formatzero(CGST_total * 2), 10),
+  //           ],
+  //         ),
+  //         pw.SizedBox(height: 8),
+  //         pw.Row(
+  //           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             regular(
+  //               'Round off : ${((double.parse(formatCurrencyRoundedPaisa(_grandTotal).replaceAll(',', '')) - _grandTotal) >= 0 ? '+' : '')}${(double.parse(formatCurrencyRoundedPaisa(_grandTotal).replaceAll(',', '')) - _grandTotal).toStringAsFixed(2)}',
+  //               10,
+  //             ),
+  //             regular(formatCurrencyRoundedPaisa(_grandTotal), 10),
+  //           ],
+  //         ),
+  //         pw.Divider(color: accentColor),
+  //         pw.Row(
+  //           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             bold('Total', 12),
+  //             bold("Rs.${formatCurrencyRoundedPaisa(_grandTotal)}", 12),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   pw.Widget notes(pw.Context context) {
     return pw.Container(

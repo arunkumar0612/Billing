@@ -1,4 +1,5 @@
 // ignore_for_file: deprecated_member_use
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:glassmorphism/glassmorphism.dart';
@@ -350,7 +351,9 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                   colors: hasPackages ? Colors.green : Colors.grey,
                   text: 'Submit',
                   onPressed: () {
-                    print(quoteController.quoteModel.selectedPackages.length);
+                    if (kDebugMode) {
+                      print(quoteController.quoteModel.selectedPackages.length);
+                    }
                   }
                   //  hasPackages
                   //     ? () {

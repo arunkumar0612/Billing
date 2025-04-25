@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:math';
-
+import 'package:lottie/lottie.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:animations/animations.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
@@ -1594,92 +1594,106 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                         },
                                       )
                                     : salesController.salesModel.type.value == 0
-                                        ? Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                Icons.hourglass_top, // More modern icon choice
-                                                size: 64,
-                                                color: Colors.blueGrey[300],
-                                              ),
-                                              const SizedBox(height: 16),
-                                              Text(
-                                                'No Active Processes',
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.blueGrey[800],
-                                                ),
-                                              ),
-                                              const SizedBox(height: 8),
-                                              Padding(
-                                                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                                                child: Text(
-                                                  'When you start a process, it will appear here',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.blueGrey[400],
-                                                    height: 1.4,
+                                        ? Center(
+                                            child: Stack(
+                                              alignment: Alignment.topCenter,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 0),
+                                                  child: Lottie.asset(
+                                                    'assets/animations/JSON/emptyprocesslist.json',
+                                                    // width: 264,
+                                                    height: 150,
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 164),
+                                                  child: Text(
+                                                    'No Active Processes',
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.w600,
+                                                      color: Colors.blueGrey[800],
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 204),
+                                                  child: Text(
+                                                    'When you start a process, it will appear here',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.blueGrey[400],
+                                                      height: 1.4,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           )
-                                        : Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                Icons.archive_outlined, // More relevant icon for archives
-                                                size: 72,
-                                                color: Colors.blueGrey[200],
-                                              ),
-                                              const SizedBox(height: 20),
-                                              Text(
-                                                'Archive is Empty',
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.blueGrey[800],
-                                                ),
-                                              ),
-                                              const SizedBox(height: 12),
-                                              Padding(
-                                                padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                                                child: Text(
-                                                  'Completed processes will appear here once archived',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 15,
-                                                    color: Colors.blueGrey[500],
-                                                    height: 1.4,
+                                        : Center(
+                                            child: Stack(
+                                              alignment: Alignment.topCenter,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 0),
+                                                  child: Lottie.asset(
+                                                    'assets/animations/JSON/emptyprocesslist.json',
+                                                    // width: 264,
+                                                    height: 150,
                                                   ),
                                                 ),
-                                              ),
-                                              const SizedBox(height: 24),
-                                              OutlinedButton(
-                                                style: OutlinedButton.styleFrom(
-                                                  side: BorderSide(color: Colors.blue[600]!),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(8),
-                                                  ),
-                                                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
-                                                ),
-                                                onPressed: () {
-                                                  salesController.salesModel.selectedIndices.clear();
-                                                  salesController.updatetype(salesController.salesModel.type.value == 0 ? 1 : 0);
-                                                  widget.Get_salesProcessList(salesController.salesModel.customerId.value!);
-                                                },
-                                                child: Text(
-                                                  'View Active Processes',
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.blue[700],
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 164),
+                                                  child: Text(
+                                                    'Archive is Empty',
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.w600,
+                                                      color: Colors.blueGrey[800],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 204),
+                                                  child: Text(
+                                                    'Completed processes will appear here once archived',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.blueGrey[400],
+                                                      height: 1.4,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 250),
+                                                  child: OutlinedButton(
+                                                    style: OutlinedButton.styleFrom(
+                                                      side: BorderSide(color: Colors.blue[600]!),
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.circular(8),
+                                                      ),
+                                                      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+                                                    ),
+                                                    onPressed: () {
+                                                      salesController.salesModel.selectedIndices.clear();
+                                                      salesController.updatetype(salesController.salesModel.type.value == 0 ? 1 : 0);
+                                                      widget.Get_salesProcessList(salesController.salesModel.customerId.value!);
+                                                    },
+                                                    child: Text(
+                                                      'View Active Processes',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.w500,
+                                                        color: Colors.blue[700],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                               ),
                             ),
@@ -1742,19 +1756,21 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                       return _buildSales_ClientCard(customername, customerid, index);
                                                     },
                                                   )
-                                                : Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Column(
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: [
-                                                          Icon(
-                                                            Icons.people_outline, // Appropriate icon for customers
-                                                            size: 64,
-                                                            color: Colors.blueGrey[300],
+                                                : Center(
+                                                    child: Stack(
+                                                      alignment: Alignment.topCenter,
+                                                      children: [
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(top: 40),
+                                                          child: Lottie.asset(
+                                                            'assets/animations/JSON/emptycustomerlist.json',
+                                                            // width: 264,
+                                                            height: 150,
                                                           ),
-                                                          const SizedBox(height: 16),
-                                                          Text(
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(top: 204),
+                                                          child: Text(
                                                             'No Active Customers',
                                                             style: TextStyle(
                                                               fontSize: 18,
@@ -1762,22 +1778,21 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                               color: Colors.blueGrey[800],
                                                             ),
                                                           ),
-                                                          const SizedBox(height: 8),
-                                                          Padding(
-                                                            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                                                            child: Text(
-                                                              'When you add customers, they will appear here',
-                                                              textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                fontSize: 14,
-                                                                color: Colors.blueGrey[400],
-                                                                height: 1.4,
-                                                              ),
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(top: 244),
+                                                          child: Text(
+                                                            'When you add customers, they will appear here',
+                                                            textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              color: Colors.blueGrey[400],
+                                                              height: 1.4,
                                                             ),
                                                           ),
-                                                        ],
-                                                      ),
-                                                    ],
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                           ),
                                         ),

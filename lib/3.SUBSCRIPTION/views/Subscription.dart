@@ -27,7 +27,7 @@ import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-
+import 'package:lottie/lottie.dart';
 import '../controllers/Subscription_actions.dart';
 
 class Subscription_Client extends StatefulWidget with SubscriptionServices, BellIconFunction {
@@ -772,7 +772,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                               if (success) {
                                                                 widget.showExcelDataPopup(context, import_excel.excelData);
                                                               } else {
-                                                                Basic_SnackBar(context, "ERROR while picking file, please contact administration!");
+                                                                Error_SnackBar(context, "ERROR while picking file, please contact administration!");
                                                               }
 
                                                               break;
@@ -1120,395 +1120,500 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                 Obx(
                   () => Expanded(
                     // child: Container(),
-                    child: ListView.builder(
-                      itemCount: subscriptionController.subscriptionModel.processList.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Primary_colors.Dark,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: ExpansionTile(
-                                collapsedIconColor: const Color.fromARGB(255, 135, 132, 132),
-                                iconColor: Colors.red,
-                                collapsedBackgroundColor: Primary_colors.Dark,
-                                backgroundColor: Primary_colors.Dark,
-                                title: Obx(
-                                  () => Row(
-                                    children: [
-                                      Checkbox(
-                                        value: subscriptionController.subscriptionModel.selectedIndices.contains(index),
-                                        onChanged: (bool? value) {
-                                          if (value == true) {
-                                            subscriptionController.subscriptionModel.selectedIndices.add(index);
-                                          } else {
-                                            subscriptionController.subscriptionModel.selectedIndices.remove(index);
-                                            subscriptionController
-                                                .updateisAllSelected(subscriptionController.subscriptionModel.selectedIndices.length == subscriptionController.subscriptionModel.processList.length);
-                                          }
-                                        },
-                                        activeColor: Primary_colors.Color3, // More vibrant color
-                                        checkColor: Colors.white, // White checkmark for contrast
-                                        side: const BorderSide(color: Primary_colors.Color3, width: 2), // Styled border
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(4), // Soft rounded corners
+                    child: subscriptionController.subscriptionModel.processList.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: subscriptionController.subscriptionModel.processList.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Primary_colors.Dark,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: ExpansionTile(
+                                      collapsedIconColor: const Color.fromARGB(255, 135, 132, 132),
+                                      iconColor: Colors.red,
+                                      collapsedBackgroundColor: Primary_colors.Dark,
+                                      backgroundColor: Primary_colors.Dark,
+                                      title: Obx(
+                                        () => Row(
+                                          children: [
+                                            Checkbox(
+                                              value: subscriptionController.subscriptionModel.selectedIndices.contains(index),
+                                              onChanged: (bool? value) {
+                                                if (value == true) {
+                                                  subscriptionController.subscriptionModel.selectedIndices.add(index);
+                                                } else {
+                                                  subscriptionController.subscriptionModel.selectedIndices.remove(index);
+                                                  subscriptionController.updateisAllSelected(
+                                                      subscriptionController.subscriptionModel.selectedIndices.length == subscriptionController.subscriptionModel.processList.length);
+                                                }
+                                              },
+                                              activeColor: Primary_colors.Color3, // More vibrant color
+                                              checkColor: Colors.white, // White checkmark for contrast
+                                              side: const BorderSide(color: Primary_colors.Color3, width: 2), // Styled border
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(4), // Soft rounded corners
+                                              ),
+                                            ),
+                                            const SizedBox(width: 20),
+                                            Expanded(
+                                              flex: 4,
+                                              child: Tooltip(
+                                                message: subscriptionController.subscriptionModel.processList[index].customer_name, // Show client name
+                                                textStyle: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text6),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black87,
+                                                  borderRadius: BorderRadius.circular(8),
+                                                ),
+                                                child: Text(
+                                                  subscriptionController.subscriptionModel.processList[index].processid.toString(),
+                                                  style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 15,
+                                              child: Text(
+                                                subscriptionController.subscriptionModel.processList[index].title,
+                                                // items[showcustomerprocess]['name'],
+                                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                              ),
+                                            ),
+                                            Expanded(
+                                                flex: 4,
+                                                child: Text(
+                                                  DateFormat("dd MMM yyyy").format(DateTime.parse(subscriptionController.subscriptionModel.processList[index].Process_date)),
+                                                  style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                )),
+                                            Expanded(
+                                              flex: 4,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(left: 5),
+                                                child: Text(
+                                                  subscriptionController.subscriptionModel.processList[index].age_in_days.toString(),
+                                                  // items[showcustomerprocess]['process'][index]['daycounts'],
+                                                  style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      const SizedBox(width: 20),
-                                      Expanded(
-                                        flex: 4,
-                                        child: Tooltip(
-                                          message: subscriptionController.subscriptionModel.processList[index].customer_name, // Show client name
-                                          textStyle: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text6),
-                                          decoration: BoxDecoration(
-                                            color: Colors.black87,
-                                            borderRadius: BorderRadius.circular(8),
-                                          ),
-                                          child: Text(
-                                            subscriptionController.subscriptionModel.processList[index].processid.toString(),
-                                            style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 15,
-                                        child: Text(
-                                          subscriptionController.subscriptionModel.processList[index].title,
-                                          // items[showcustomerprocess]['name'],
-                                          style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                        ),
-                                      ),
-                                      Expanded(
-                                          flex: 4,
-                                          child: Text(
-                                            DateFormat("dd MMM yyyy").format(DateTime.parse(subscriptionController.subscriptionModel.processList[index].Process_date)),
-                                            style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                          )),
-                                      Expanded(
-                                        flex: 4,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(left: 5),
-                                          child: Text(
-                                            subscriptionController.subscriptionModel.processList[index].age_in_days.toString(),
-                                            // items[showcustomerprocess]['process'][index]['daycounts'],
-                                            style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                children: [
-                                  SizedBox(
-                                    height: ((subscriptionController.subscriptionModel.processList[index].TimelineEvents.length * 80) + 20).toDouble(),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: ListView.builder(
-                                        itemCount: subscriptionController.subscriptionModel.processList[index].TimelineEvents.length, // +1 for "Add Event" button
-                                        itemBuilder: (context, childIndex) {
-                                          final Rx<Color> textColor = const Color.fromARGB(255, 199, 198, 198).obs;
-                                          return Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  MouseRegion(
-                                                    cursor: SystemMouseCursors.click,
-                                                    child: GestureDetector(
-                                                      child: Container(
-                                                        height: 40,
-                                                        width: 40,
-                                                        padding: const EdgeInsets.all(8),
-                                                        decoration: BoxDecoration(
-                                                          gradient: LinearGradient(
-                                                            begin: Alignment.topLeft,
-                                                            end: Alignment.bottomRight,
-                                                            colors: subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Client Requirement"
-                                                                ? [
-                                                                    const Color.fromARGB(78, 0, 0, 0),
-                                                                    const Color.fromARGB(36, 231, 139, 33),
-                                                                  ]
-                                                                : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
-                                                                    ? [
-                                                                        const Color.fromARGB(78, 0, 0, 0),
-                                                                        const Color.fromARGB(24, 118, 253, 129),
-                                                                      ]
-                                                                    : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
-                                                                        ? [
-                                                                            const Color.fromARGB(78, 0, 0, 0),
-                                                                            const Color.fromARGB(43, 0, 76, 240),
-                                                                          ]
-                                                                        : [Colors.white],
+                                      children: [
+                                        SizedBox(
+                                          height: ((subscriptionController.subscriptionModel.processList[index].TimelineEvents.length * 80) + 20).toDouble(),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: ListView.builder(
+                                              itemCount: subscriptionController.subscriptionModel.processList[index].TimelineEvents.length, // +1 for "Add Event" button
+                                              itemBuilder: (context, childIndex) {
+                                                final Rx<Color> textColor = const Color.fromARGB(255, 199, 198, 198).obs;
+                                                return Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Column(
+                                                      children: [
+                                                        MouseRegion(
+                                                          cursor: SystemMouseCursors.click,
+                                                          child: GestureDetector(
+                                                            child: Container(
+                                                              height: 40,
+                                                              width: 40,
+                                                              padding: const EdgeInsets.all(8),
+                                                              decoration: BoxDecoration(
+                                                                gradient: LinearGradient(
+                                                                  begin: Alignment.topLeft,
+                                                                  end: Alignment.bottomRight,
+                                                                  colors: subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Client Requirement"
+                                                                      ? [
+                                                                          const Color.fromARGB(78, 0, 0, 0),
+                                                                          const Color.fromARGB(36, 231, 139, 33),
+                                                                        ]
+                                                                      : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
+                                                                          ? [
+                                                                              const Color.fromARGB(78, 0, 0, 0),
+                                                                              const Color.fromARGB(24, 118, 253, 129),
+                                                                            ]
+                                                                          : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
+                                                                              ? [
+                                                                                  const Color.fromARGB(78, 0, 0, 0),
+                                                                                  const Color.fromARGB(43, 0, 76, 240),
+                                                                                ]
+                                                                              : [Colors.white],
+                                                                ),
+                                                                border: Border.all(
+                                                                  color: subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Client Requirement"
+                                                                      ? const Color.fromARGB(255, 243, 131, 56)
+                                                                      : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
+                                                                          ? Colors.green
+                                                                          : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
+                                                                              ? Colors.blue
+                                                                              : Colors.white,
+                                                                  width: 2,
+                                                                ),
+                                                                shape: BoxShape.circle,
+                                                                // color: subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
+                                                                //     ? const Color.fromARGB(36, 231, 139, 33)
+                                                                //     : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Invoice"
+                                                                //         ? const Color.fromARGB(24, 118, 253, 129)
+                                                                //         : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
+                                                                //             ? const Color.fromARGB(38, 223, 55, 55)
+                                                                //             : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
+                                                                //                 ? const Color.fromARGB(24, 118, 253, 129)
+                                                                //                 : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
+                                                                //                     ? const Color.fromARGB(43, 0, 76, 240)
+                                                                //                     : Colors.white,
+                                                              ),
+                                                              // child: const Icon(
+                                                              //   Icons.event,
+                                                              //   color: Colors.white,
+                                                              // ),
+                                                              child: Center(
+                                                                child: Image.asset(
+                                                                  subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Client Requirement"
+                                                                      ? 'assets/images/request.png'
+                                                                      : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
+                                                                          ? 'assets/images/Estimate.png'
+                                                                          : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
+                                                                              ? 'assets/images/revision.png'
+                                                                              : 'assets/images/Estimate.png',
+                                                                  fit: BoxFit.fill,
+                                                                  width: 30,
+                                                                  height: 30,
+                                                                ),
+
+                                                                // Text(
+                                                                //   (childIndex + 1).toString(),
+                                                                //   // (subscriptionController.subscriptionModel.processList[index].TimelineEvents.length - 1 - childIndex + 1).toString(),
+                                                                //   style: const TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold),
+                                                                // ),
+                                                              ),
+                                                            ),
+                                                            onTap: () async {
+                                                              bool success =
+                                                                  await widget.GetPDFfile(context, subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                              if (success) {
+                                                                widget.showPDF(context,
+                                                                    "${subscriptionController.subscriptionModel.processList[index].customer_name}${subscriptionController.subscriptionModel.processList[index].title}${subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname}");
+                                                              }
+                                                            },
                                                           ),
-                                                          border: Border.all(
-                                                            color: subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Client Requirement"
+                                                        ),
+                                                        if (childIndex != subscriptionController.subscriptionModel.processList[index].TimelineEvents.length - 1)
+                                                          Container(
+                                                            width: 2,
+                                                            height: 40,
+                                                            color: subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
                                                                 ? const Color.fromARGB(255, 243, 131, 56)
                                                                 : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
                                                                     ? Colors.green
                                                                     : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
                                                                         ? Colors.blue
                                                                         : Colors.white,
-                                                            width: 2,
                                                           ),
-                                                          shape: BoxShape.circle,
-                                                          // color: subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
-                                                          //     ? const Color.fromARGB(36, 231, 139, 33)
-                                                          //     : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Invoice"
-                                                          //         ? const Color.fromARGB(24, 118, 253, 129)
-                                                          //         : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
-                                                          //             ? const Color.fromARGB(38, 223, 55, 55)
-                                                          //             : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
-                                                          //                 ? const Color.fromARGB(24, 118, 253, 129)
-                                                          //                 : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
-                                                          //                     ? const Color.fromARGB(43, 0, 76, 240)
-                                                          //                     : Colors.white,
-                                                        ),
-                                                        // child: const Icon(
-                                                        //   Icons.event,
-                                                        //   color: Colors.white,
-                                                        // ),
-                                                        child: Center(
-                                                          child: Image.asset(
-                                                            subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Client Requirement"
-                                                                ? 'assets/images/request.png'
-                                                                : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
-                                                                    ? 'assets/images/Estimate.png'
-                                                                    : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
-                                                                        ? 'assets/images/revision.png'
-                                                                        : 'assets/images/Estimate.png',
-                                                            fit: BoxFit.fill,
-                                                            width: 30,
-                                                            height: 30,
-                                                          ),
-
-                                                          // Text(
-                                                          //   (childIndex + 1).toString(),
-                                                          //   // (subscriptionController.subscriptionModel.processList[index].TimelineEvents.length - 1 - childIndex + 1).toString(),
-                                                          //   style: const TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold),
-                                                          // ),
-                                                        ),
-                                                      ),
-                                                      onTap: () async {
-                                                        bool success = await widget.GetPDFfile(context, subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                        if (success) {
-                                                          widget.showPDF(context,
-                                                              "${subscriptionController.subscriptionModel.processList[index].customer_name}${subscriptionController.subscriptionModel.processList[index].title}${subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname}");
-                                                        }
-                                                      },
+                                                      ],
                                                     ),
-                                                  ),
-                                                  if (childIndex != subscriptionController.subscriptionModel.processList[index].TimelineEvents.length - 1)
-                                                    Container(
-                                                      width: 2,
-                                                      height: 40,
-                                                      color: subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
-                                                          ? const Color.fromARGB(255, 243, 131, 56)
-                                                          : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
-                                                              ? Colors.green
-                                                              : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
-                                                                  ? Colors.blue
-                                                                  : Colors.white,
-                                                    ),
-                                                ],
-                                              ),
-                                              Expanded(
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: [
                                                     Expanded(
-                                                      child: Column(
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
-                                                          Padding(
-                                                            padding: const EdgeInsets.only(top: 0, left: 10),
-                                                            child: Row(
+                                                          Expanded(
+                                                            child: Column(
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
-                                                                Text(
-                                                                  subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname,
-                                                                  // items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
-                                                                  style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
+                                                                Padding(
+                                                                  padding: const EdgeInsets.only(top: 0, left: 10),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Text(
+                                                                        subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname,
+                                                                        // items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
+                                                                        style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
+                                                                      ),
+                                                                      // if ((subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true) &&
+                                                                      //     subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 0)
+                                                                      //   const Padding(
+                                                                      //     padding: EdgeInsets.only(left: 5),
+                                                                      //     child: Text(
+                                                                      //       "waiting for internal approval",
+                                                                      //       // items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
+                                                                      //       style: TextStyle(fontSize: 10, color: Color.fromARGB(255, 141, 141, 141)),
+                                                                      //     ),
+                                                                      //   ),
+                                                                      if (subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1)
+                                                                        Image.asset(
+                                                                          'assets/images/verified.png',
+                                                                          // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                          width: 20, // Makes the image fill the container's width
+                                                                          height: 20, // Makes the image fill the container's height
+                                                                        ),
+                                                                      if (subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 2)
+                                                                        Padding(
+                                                                          padding: const EdgeInsets.only(left: 5),
+                                                                          child: Image.asset(
+                                                                            color: Colors.amberAccent,
+                                                                            'assets/images/exclamation.png',
+                                                                            // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                            width: 15, // Makes the image fill the container's width
+                                                                            height: 15, // Makes the image fill the container's height
+                                                                          ),
+                                                                        ),
+                                                                      if (subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 3)
+                                                                        Padding(
+                                                                          padding: const EdgeInsets.only(left: 2),
+                                                                          child: Image.asset(
+                                                                            // color: Colors.amberAccent,
+                                                                            'assets/images/reject.png',
+                                                                            // fit: BoxFit.cover, // Ensures the image covers the container
+                                                                            width: 18, // Makes the image fill the container's width
+                                                                            height: 18, // Makes the image fill the container's height
+                                                                          ),
+                                                                        ),
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                                // if ((subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true) &&
-                                                                //     subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 0)
-                                                                //   const Padding(
-                                                                //     padding: EdgeInsets.only(left: 5),
-                                                                //     child: Text(
-                                                                //       "waiting for internal approval",
-                                                                //       // items[showcustomerprocess]['process'][index]['child'][childIndex]["name"],
-                                                                //       style: TextStyle(fontSize: 10, color: Color.fromARGB(255, 141, 141, 141)),
-                                                                //     ),
-                                                                //   ),
-                                                                if (subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1)
-                                                                  Image.asset(
-                                                                    'assets/images/verified.png',
-                                                                    // fit: BoxFit.cover, // Ensures the image covers the container
-                                                                    width: 20, // Makes the image fill the container's width
-                                                                    height: 20, // Makes the image fill the container's height
+                                                                if (subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true)
+                                                                  Row(
+                                                                    children: [
+                                                                      const SizedBox(
+                                                                        width: 10,
+                                                                      ),
+                                                                      const Text(
+                                                                        "internal approval status",
+                                                                        style: TextStyle(color: Colors.grey, fontSize: 10),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        width: 10,
+                                                                      ),
+                                                                      const Text(
+                                                                        ":",
+                                                                        style: TextStyle(color: Colors.grey, fontSize: 10),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        width: 10,
+                                                                      ),
+                                                                      Text(
+                                                                        subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].internalStatus == 1
+                                                                            ? "Approved"
+                                                                            : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].internalStatus == 2
+                                                                                ? "Pending"
+                                                                                : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].internalStatus == 3
+                                                                                    ? "Rejected"
+                                                                                    : "Pending",
+                                                                        style: const TextStyle(color: Colors.grey, fontSize: 10),
+                                                                      ),
+                                                                    ],
                                                                   ),
-                                                                if (subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 2)
-                                                                  Padding(
-                                                                    padding: const EdgeInsets.only(left: 5),
-                                                                    child: Image.asset(
-                                                                      color: Colors.amberAccent,
-                                                                      'assets/images/exclamation.png',
-                                                                      // fit: BoxFit.cover, // Ensures the image covers the container
-                                                                      width: 15, // Makes the image fill the container's width
-                                                                      height: 15, // Makes the image fill the container's height
-                                                                    ),
-                                                                  ),
-                                                                if (subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 3)
-                                                                  Padding(
-                                                                    padding: const EdgeInsets.only(left: 2),
-                                                                    child: Image.asset(
-                                                                      // color: Colors.amberAccent,
-                                                                      'assets/images/reject.png',
-                                                                      // fit: BoxFit.cover, // Ensures the image covers the container
-                                                                      width: 18, // Makes the image fill the container's width
-                                                                      height: 18, // Makes the image fill the container's height
-                                                                    ),
-                                                                  ),
+                                                                Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                  children: [
+                                                                    if ((subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation == true)
+                                                                        // &&(subscriptionController.subscriptionModel.processList[index].TimelineEvents.length == childIndex + 1)
+                                                                        )
+                                                                      TextButton(
+                                                                        onPressed: () async {
+                                                                          bool success = await widget.GetPDFfile(
+                                                                              context, subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
+
+                                                                          if (success) {
+                                                                            widget.GenerateQuote_dialougebox(
+                                                                                context, "quotation", subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                            quoteController.setProcessID(subscriptionController.subscriptionModel.processList[index].processid);
+                                                                          }
+                                                                        },
+                                                                        child: const Text(
+                                                                          "Quotation",
+                                                                          style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                        ),
+                                                                      ),
+                                                                    if ((subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation ==
+                                                                            true)
+                                                                        //  &&                                                                              (subscriptionController.subscriptionModel.processList[index].TimelineEvents.length == childIndex + 1)
+                                                                        )
+                                                                      TextButton(
+                                                                        onPressed: () async {
+                                                                          bool success = await widget.GetPDFfile(
+                                                                              context, subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
+
+                                                                          if (success) {
+                                                                            // widget.GenerateQuote_dialougebox(cont`ext, "revisedquotation",
+                                                                            //     subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                            // quoteController.setProcessID(subscriptionController.subscriptionModel.processList[index].processid);
+                                                                          }
+                                                                        },
+                                                                        child: const Text(
+                                                                          "RevisedQuotation",
+                                                                          style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                                        ),
+                                                                      ),
+                                                                  ],
+                                                                )
                                                               ],
                                                             ),
                                                           ),
-                                                          if (subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true)
-                                                            Row(
-                                                              children: [
-                                                                const SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                                const Text(
-                                                                  "internal approval status",
-                                                                  style: TextStyle(color: Colors.grey, fontSize: 10),
-                                                                ),
-                                                                const SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                                const Text(
-                                                                  ":",
-                                                                  style: TextStyle(color: Colors.grey, fontSize: 10),
-                                                                ),
-                                                                const SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                                Text(
-                                                                  subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].internalStatus == 1
-                                                                      ? "Approved"
-                                                                      : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].internalStatus == 2
-                                                                          ? "Pending"
-                                                                          : subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].internalStatus == 3
-                                                                              ? "Rejected"
-                                                                              : "Pending",
-                                                                  style: const TextStyle(color: Colors.grey, fontSize: 10),
-                                                                ),
-                                                              ],
-                                                            ),
                                                           Row(
-                                                            mainAxisAlignment: MainAxisAlignment.start,
                                                             children: [
-                                                              if ((subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation == true)
-                                                                  // &&(subscriptionController.subscriptionModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                  )
-                                                                TextButton(
-                                                                  onPressed: () async {
-                                                                    bool success = await widget.GetPDFfile(
-                                                                        context, subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
-
-                                                                    if (success) {
-                                                                      widget.GenerateQuote_dialougebox(
-                                                                          context, "quotation", subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                      quoteController.setProcessID(subscriptionController.subscriptionModel.processList[index].processid);
-                                                                    }
-                                                                  },
-                                                                  child: const Text(
-                                                                    "Quotation",
-                                                                    style: TextStyle(color: Colors.blue, fontSize: 12),
+                                                              Container(
+                                                                height: 40,
+                                                                width: 2,
+                                                                color: const Color.fromARGB(78, 172, 170, 170),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 200,
+                                                                child: TextFormField(
+                                                                  // maxLines: 2,
+                                                                  style: TextStyle(fontSize: Primary_font_size.Text7, color: textColor.value),
+                                                                  decoration: const InputDecoration(
+                                                                    filled: true,
+                                                                    fillColor: Primary_colors.Dark,
+                                                                    hintText: 'Enter Feedback',
+                                                                    hintStyle: TextStyle(
+                                                                      fontSize: Primary_font_size.Text7,
+                                                                      color: Color.fromARGB(255, 179, 178, 178),
+                                                                    ),
+                                                                    border: InputBorder.none, // Remove default border
+                                                                    contentPadding: EdgeInsets.all(10), // Adjust padding
                                                                   ),
-                                                                ),
-                                                              if ((subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation == true)
-                                                                  //  &&                                                                              (subscriptionController.subscriptionModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                  )
-                                                                TextButton(
-                                                                  onPressed: () async {
-                                                                    bool success = await widget.GetPDFfile(
-                                                                        context, subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                  controller: subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].feedback,
 
-                                                                    if (success) {
-                                                                      // widget.GenerateQuote_dialougebox(cont`ext, "revisedquotation",
-                                                                      //     subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                      // quoteController.setProcessID(subscriptionController.subscriptionModel.processList[index].processid);
-                                                                    }
+                                                                  onChanged: (value) {
+                                                                    textColor.value = Colors.white;
                                                                   },
-                                                                  child: const Text(
-                                                                    "RevisedQuotation",
-                                                                    style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                  ),
+                                                                  onFieldSubmitted: (newValue) {
+                                                                    // textColor = Colors.green;
+                                                                    widget.UpdateFeedback(
+                                                                        context,
+                                                                        subscriptionController.subscriptionModel.customerId.value!,
+                                                                        subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                        subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].feedback.text);
+                                                                  },
                                                                 ),
+                                                              ),
                                                             ],
-                                                          )
+                                                          ),
                                                         ],
                                                       ),
                                                     ),
-                                                    Row(
-                                                      children: [
-                                                        Container(
-                                                          height: 40,
-                                                          width: 2,
-                                                          color: const Color.fromARGB(78, 172, 170, 170),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 200,
-                                                          child: TextFormField(
-                                                            // maxLines: 2,
-                                                            style: TextStyle(fontSize: Primary_font_size.Text7, color: textColor.value),
-                                                            decoration: const InputDecoration(
-                                                              filled: true,
-                                                              fillColor: Primary_colors.Dark,
-                                                              hintText: 'Enter Feedback',
-                                                              hintStyle: TextStyle(
-                                                                fontSize: Primary_font_size.Text7,
-                                                                color: Color.fromARGB(255, 179, 178, 178),
-                                                              ),
-                                                              border: InputBorder.none, // Remove default border
-                                                              contentPadding: EdgeInsets.all(10), // Adjust padding
-                                                            ),
-                                                            controller: subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].feedback,
-
-                                                            onChanged: (value) {
-                                                              textColor.value = Colors.white;
-                                                            },
-                                                            onFieldSubmitted: (newValue) {
-                                                              // textColor = Colors.green;
-                                                              widget.UpdateFeedback(
-                                                                  context,
-                                                                  subscriptionController.subscriptionModel.customerId.value!,
-                                                                  subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid,
-                                                                  subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].feedback.text);
-                                                            },
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
                                                   ],
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          )
+                        : subscriptionController.subscriptionModel.type.value == 0
+                            ? Center(
+                                child: Stack(
+                                  alignment: Alignment.topCenter,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 0),
+                                      child: Lottie.asset(
+                                        'assets/animations/JSON/emptyprocesslist.json',
+                                        // width: 264,
+                                        height: 150,
                                       ),
                                     ),
-                                  )
-                                ],
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 164),
+                                      child: Text(
+                                        'No Active Processes',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.blueGrey[800],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 204),
+                                      child: Text(
+                                        'When you start a process, it will appear here',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.blueGrey[400],
+                                          height: 1.4,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : Center(
+                                child: Stack(
+                                  alignment: Alignment.topCenter,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 0),
+                                      child: Lottie.asset(
+                                        'assets/animations/JSON/emptyprocesslist.json',
+                                        // width: 264,
+                                        height: 150,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 164),
+                                      child: Text(
+                                        'Archive is Empty',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.blueGrey[800],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 204),
+                                      child: Text(
+                                        'Completed processes will appear here once archived',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.blueGrey[400],
+                                          height: 1.4,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 250),
+                                      child: OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                          side: BorderSide(color: Colors.blue[600]!),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+                                        ),
+                                        onPressed: () {
+                                          subscriptionController.subscriptionModel.selectedIndices.clear();
+                                          subscriptionController.updatetype(subscriptionController.subscriptionModel.type.value == 0 ? 1 : 0);
+                                          widget.GetProcessList(subscriptionController.subscriptionModel.customerId.value!);
+                                        },
+                                        child: Text(
+                                          'View Active Processes',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.blue[700],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
                   ),
                 ),
               ],
@@ -1561,14 +1666,53 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                               child: Container(
                                 color: Colors.transparent,
                                 key: const ValueKey(1),
-                                child: ListView.builder(
-                                  itemCount: subscriptionController.subscriptionModel.processcustomerList.length,
-                                  itemBuilder: (context, index) {
-                                    final customername = subscriptionController.subscriptionModel.processcustomerList[index].customerName;
-                                    final customerid = subscriptionController.subscriptionModel.processcustomerList[index].customerId;
-                                    return _buildSubscription_ClientCard(customername, customerid, index);
-                                  },
-                                ),
+                                child: subscriptionController.subscriptionModel.processcustomerList.isNotEmpty
+                                    ? ListView.builder(
+                                        itemCount: subscriptionController.subscriptionModel.processcustomerList.length,
+                                        itemBuilder: (context, index) {
+                                          final customername = subscriptionController.subscriptionModel.processcustomerList[index].customerName;
+                                          final customerid = subscriptionController.subscriptionModel.processcustomerList[index].customerId;
+                                          return _buildSubscription_ClientCard(customername, customerid, index);
+                                        },
+                                      )
+                                    : Center(
+                                        child: Stack(
+                                          alignment: Alignment.topCenter,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 40),
+                                              child: Lottie.asset(
+                                                'assets/animations/JSON/emptycustomerlist.json',
+                                                // width: 264,
+                                                height: 150,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 204),
+                                              child: Text(
+                                                'No Active Customers',
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.blueGrey[800],
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 244),
+                                              child: Text(
+                                                'When you add customers, they will appear here',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.blueGrey[400],
+                                                  height: 1.4,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                               ),
                             ),
                           ],
@@ -1587,13 +1731,14 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                               child: Row(
                                 children: [
                                   IconButton(
-                                      onPressed: () {
-                                        subscriptionController.updateprofilepage(false);
-                                      },
-                                      icon: const Icon(
-                                        Icons.arrow_back_outlined,
-                                        color: Primary_colors.Color9,
-                                      )),
+                                    onPressed: () {
+                                      subscriptionController.updateprofilepage(false);
+                                    },
+                                    icon: const Icon(
+                                      Icons.arrow_back_outlined,
+                                      color: Primary_colors.Color9,
+                                    ),
+                                  ),
                                   const Text(
                                     'CLIENT PROFILE',
                                     style: TextStyle(
@@ -2537,7 +2682,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                 .replaceAll(" ", ""),
                                             subscriptionController.subscriptionModel.custom_pdfFile.value);
                                       } else {
-                                        Basic_SnackBar(context, "ERROR occured, Please contact administration!");
+                                        Error_SnackBar(context, "ERROR occured, Please contact administration!");
                                       }
                                     },
                                     icon: const Icon(
@@ -3081,7 +3226,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                             );
                                           }
                                         } else {
-                                          Basic_SnackBar(context, "ERROR, Please contact administration!");
+                                          Error_SnackBar(context, "ERROR, Please contact administration!");
                                         }
                                       },
                                       child: Image.asset(height: 40, 'assets/images/pdfdownload.png'),

@@ -52,7 +52,7 @@ mixin BranchService {
       if (response?['statusCode'] == 200) {
         CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {
-          Basic_SnackBar(context, "KYC updated successfully");
+          Success_SnackBar(context, "KYC updated successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
           await Error_dialog(context: context, title: 'Update KYC Error', content: value.message ?? "", onOk: () {});

@@ -9,23 +9,24 @@ import '../../4.SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entit
 import '../../4.SALES/models/entities/Quote_entities.dart';
 import '../../UTILS-/helpers/support_functions.dart';
 
-Future<Uint8List> generate_CustomPDFQuote(PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, quote_gstTotals, isGST_local) async {
+Future<Uint8List> generate_CustomPDFQuote(
+    PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, quote_gstTotals, isGST_local) async {
   final quotation = Quotation(
-      date: date,
-      products: products,
-      GST: gst,
-      baseColor: PdfColors.green500,
-      accentColor: PdfColors.blueGrey900,
-      client_addr_name: client_addr_name,
-      client_addr: client_addr,
-      bill_addr_name: bill_addr_name,
-      bill_addr: bill_addr,
-      estimate: estimate_num ?? "",
-      title_text: title,
-      type: '',
-      quote_gstTotals: quote_gstTotals,
-      isGST_local: isGST_local,
-      );
+    date: date,
+    products: products,
+    GST: gst,
+    baseColor: PdfColors.green500,
+    accentColor: PdfColors.blueGrey900,
+    client_addr_name: client_addr_name,
+    client_addr: client_addr,
+    bill_addr_name: bill_addr_name,
+    bill_addr: bill_addr,
+    estimate: estimate_num ?? "",
+    title_text: title,
+    type: '',
+    quote_gstTotals: quote_gstTotals,
+    isGST_local: isGST_local,
+  );
 
   return await quotation.buildPdf(pageFormat);
 }
@@ -99,7 +100,7 @@ class Quotation {
           _contentTable(context),
           pw.SizedBox(height: 20),
           // tax_table(context),
-           isGST_local ? Local_tax_table(context) : others_tax_table(context),
+          isGST_local ? Local_tax_table(context) : others_tax_table(context),
         ],
       ),
     );
@@ -375,14 +376,14 @@ class Quotation {
           color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
         );
       },
-      rowDecoration: pw.BoxDecoration(
-        border: pw.Border(
-          bottom: pw.BorderSide(
-            color: accentColor,
-            width: .5,
-          ),
-        ),
-      ),
+      // rowDecoration: pw.BoxDecoration(
+      //   border: pw.Border(
+      //     bottom: pw.BorderSide(
+      //       color: accentColor,
+      //       width: .5,
+      //     ),
+      //   ),
+      // ),
       headers: List<String>.generate(
         tableHeaders.length,
         (col) => tableHeaders[col],
@@ -766,8 +767,6 @@ class Quotation {
     );
   }
 
-
-
   // pw.Widget tax_table(pw.Context context) {
   //   return pw.Column(
   //     children: [
@@ -990,7 +989,7 @@ class Quotation {
 // Display the result
 // Text('Round off : ${formatCurrency(roundOffDifference)}', style: TextStyle(fontSize: 10)),
 
-pw.Widget Local_final_amount(pw.Context context) {
+  pw.Widget Local_final_amount(pw.Context context) {
     // Calculate the rounded difference
     // double roundedTotal = double.parse(formatCurrency(_grandTotal));
     // double nearestInteger = _grandTotal.roundToDouble();

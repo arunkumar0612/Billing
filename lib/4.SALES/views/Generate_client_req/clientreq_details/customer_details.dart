@@ -23,8 +23,8 @@ class customerDetailsState extends State<customerDetails> {
   @override
   void initState() {
     super.initState();
-    widget.get_productSuggestionList(context);
-    widget.get_OrganizationList(context);
+    // widget.get_productSuggestionList(context);
+    // widget.get_OrganizationList(context);
     // clientreqController.updateGST("33AABCC2462L1ZT");
   }
 

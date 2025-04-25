@@ -21,14 +21,14 @@ class _RfqDetailsState extends State<RfqDetails> {
 
   @override
   void initState() {
-    widget.get_VendorList(context, 0);
-    widget.get_requiredData(
-      context,
-      "requestforquotation",
-      widget.eventID,
-    );
-    widget.get_productSuggestionList(context);
-    widget.get_noteSuggestionList(context);
+    // widget.get_VendorList(context, 0);
+    // widget.get_requiredData(
+    //   context,
+    //   "requestforquotation",
+    //   widget.eventID,
+    // );
+    // widget.get_productSuggestionList(context);
+    // widget.get_noteSuggestionList(context);
     super.initState();
   }
 

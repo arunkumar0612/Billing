@@ -1,11 +1,11 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/4.SALES/services/ClientReq_services/ClientreqDetails_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
-import 'package:ssipl_billing/4.SALES/services/ClientReq_services/ClientreqDetails_service.dart';
 
 import '../../../controllers/ClientReq_actions.dart';
 
@@ -21,7 +21,7 @@ class enquryDetailsState extends State<enquryDetails> {
   @override
   void initState() {
     super.initState();
-    widget.get_productSuggestionList(context);
+    // widget.get_productSuggestionList(context);
     // widget.getEnquiry_processID(context);
   }
 

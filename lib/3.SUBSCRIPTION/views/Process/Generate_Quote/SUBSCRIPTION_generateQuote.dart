@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/Subscription_actions.dart';
+import 'package:ssipl_billing/3.SUBSCRIPTION/services/Quotation_services/SUBSCRIPTION_QuoteDetails_service.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_Quote/SUBSCRIPTION_post_Quote.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_Quote/SUBSCRIPTION_quote_package.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
@@ -13,7 +14,7 @@ import 'SUBSCRIPTION_quote_details.dart';
 import 'SUBSCRIPTION_quote_note.dart';
 import 'SUBSCRIPTION_quote_sites.dart';
 
-class SUBSCRIPTION_GenerateQuote extends StatefulWidget {
+class SUBSCRIPTION_GenerateQuote extends StatefulWidget with SUBSCRIPTION_QuotedetailsService {
   SUBSCRIPTION_GenerateQuote({super.key, required this.quoteType, required this.eventID});
   int eventID;
   String quoteType;
@@ -29,6 +30,8 @@ class _SUBSCRIPTION_GenerateQuoteState extends State<SUBSCRIPTION_GenerateQuote>
     super.initState();
     // SUBSCRIPTION_GenerateQuote._tabController = ;
     quoteController.initializeTabController(TabController(length: 5, vsync: this));
+    widget.get_requiredData(context, widget.quoteType, widget.eventID);
+    widget.get_CompanyBasedPackages(context, quoteController.quoteModel.companyid.value);
   }
 
   @override
@@ -76,7 +79,7 @@ class _SUBSCRIPTION_GenerateQuoteState extends State<SUBSCRIPTION_GenerateQuote>
                   child: GestureDetector(
                     child: Stack(
                       children: [
-                        SfPdfViewer.file(subscriptionController.subscriptionModel.pdfFile.value!),
+                        if (subscriptionController.subscriptionModel.pdfFile.value != null) SfPdfViewer.file(subscriptionController.subscriptionModel.pdfFile.value!),
                         Align(
                           alignment: AlignmentDirectional.bottomEnd,
                           child: Padding(

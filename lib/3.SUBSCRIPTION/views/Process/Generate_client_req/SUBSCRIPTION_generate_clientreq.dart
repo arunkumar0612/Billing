@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart' show SUBSCRIPTION_ClientreqController;
+import 'package:ssipl_billing/3.SUBSCRIPTION/services/ClientReq_services/SUBSCRIPTION_ClientreqDetails_service.dart';
+import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_client_req/SUBSCRIPTION_Cus_Enq_Details.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_client_req/SUBSCRIPTION_clientreq_note.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_client_req/SUBSCRIPTION_clientreq_sites.dart';
-import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_client_req/clientreq_details/enquiry_details.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-class SUBSCRIPTION_Generate_clientreq extends StatefulWidget {
+class SUBSCRIPTION_Generate_clientreq extends StatefulWidget with SUBSCRIPTION_ClientreqDetailsService {
   final String? value;
 
-  const SUBSCRIPTION_Generate_clientreq({super.key, required this.value});
+  SUBSCRIPTION_Generate_clientreq({super.key, required this.value});
 
   @override
   _GenerateclientreqState createState() => _GenerateclientreqState();
@@ -24,6 +25,7 @@ class _GenerateclientreqState extends State<SUBSCRIPTION_Generate_clientreq> wit
   void initState() {
     super.initState();
     clientreqController.initializeTabController(TabController(length: 3, vsync: this));
+    widget.get_OrganizationList(context);
   }
 
   @override

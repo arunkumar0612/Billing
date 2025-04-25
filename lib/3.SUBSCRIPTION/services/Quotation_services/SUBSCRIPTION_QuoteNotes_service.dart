@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart' show SUBSCRIPTION_QuoteController;
-import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart' show FinalCalculation, SUBSCRIPTION_Quote;
+import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart' show Package, SUBSCRIPTION_Quote, Site;
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_Quote/SUBSCRIPTION_quote_template.dart' show SUBSCRIPTION_generate_Quote;
 import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
 import 'package:ssipl_billing/API-/invoker.dart';
@@ -173,21 +173,32 @@ mixin SUBSCRIPTION_QuotenotesService {
 
   Future<void> savePdfToCache(context) async {
     // Constructing the data as a map
+    List<Package> package_details = [];
+    List<Site> siteData = [];
+    for (int i = 0; i < quoteController.quoteModel.selectedPackages.length; i++) {
+      for (int j = 0; j < quoteController.quoteModel.selectedPackages[i].sites.length; j++) {
+        Site data = quoteController.quoteModel.selectedPackages[i].sites[j];
+        Package sub = quoteController.quoteModel.selectedPackages[i];
+        siteData.add(data);
+        package_details.add(sub);
+      }
+    }
     Map<String, dynamic> quoteData = {
       "date": getCurrentDate(),
       "quoteNo": quoteController.quoteModel.Quote_no.value!.toString(),
       "gstPercent": 18,
       "GSTIN": quoteController.quoteModel.gstNumController.value.text,
       'pendingAmount': 0.0,
-      "package_Mapped_sites": quoteController.quoteModel.selectedPackages.map((package) => package.toJson()).toList(),
+      // "package_Mapped_sites": quoteController.quoteModel.selectedPackages.map((package) => package.toJson()).toList(),
       "addressDetails": {
         "clientName": quoteController.quoteModel.clientAddressNameController.value.text,
         "clientAddress": quoteController.quoteModel.clientAddressController.value.text,
         "billingName": quoteController.quoteModel.billingAddressNameController.value.text,
         "billingAddress": quoteController.quoteModel.billingAddressController.value.text,
       },
-      "siteData": quoteController.quoteModel.QuoteSiteDetails.map((site) => site.toJson()).toList(),
-      "finalCalc": FinalCalculation.fromJson(quoteController.quoteModel.QuoteSiteDetails, 18, 0).toJson(),
+      "packageMappedSites": quoteController.quoteModel.selectedPackages,
+      "siteData": siteData,
+      // "finalCalc": FinalCalculation.fromJson(quoteController.quoteModel.QuoteSiteDetails, 18, 0).toJson(),
       "notes": quoteController.quoteModel.notecontent,
     };
 
@@ -195,8 +206,20 @@ mixin SUBSCRIPTION_QuotenotesService {
     debugPrint("Generated Quote Data: ${quoteData.toString()}");
 
     // Creating SUBSCRIPTION_Quote instance from JSON map
-    SUBSCRIPTION_Quote quote = SUBSCRIPTION_Quote.fromJson(quoteData);
+    SUBSCRIPTION_Quote quote = SUBSCRIPTION_Quote.fromJson(quoteData, siteData);
+    // List<Site> sites = [];
+    // List<Package> package_details = [];
 
+    // for (int i = 0; i < quote.packageMappedSites.length; i++) {
+    //   for (int j = 0; j < quote.packageMappedSites[i].sites.length; j++) {
+    //     Site data = quote.packageMappedSites[i].sites[j];
+    //     Package sub = quote.packageMappedSites[i];
+    //     sites.add(data);
+    //     package_details.add(sub);
+    //   }
+    // }
+    print(siteData);
+    print(package_details);
     Uint8List pdfData = await SUBSCRIPTION_generate_Quote(
       PdfPageFormat.a4,
       quote,

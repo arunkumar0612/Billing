@@ -73,104 +73,104 @@ class SUBSCRIPTION_DcSite {
   }
 }
 
-class SUBSCRIPTION_QuoteSite {
-  final int sno;
-  final String siteName;
-  final String selectedPackage;
-  final PackageDetails? packageDetails;
-  final String address;
+// class SUBSCRIPTION_QuoteSite {
+//   final int sno;
+//   final String siteName;
+//   final String selectedPackage;
+//   final PackageDetails? packageDetails;
+//   final String address;
 
-  SUBSCRIPTION_QuoteSite({
-    required this.sno,
-    required this.siteName,
-    required this.selectedPackage,
-    this.packageDetails,
-    required this.address,
-  });
+//   SUBSCRIPTION_QuoteSite({
+//     required this.sno,
+//     required this.siteName,
+//     required this.selectedPackage,
+//     this.packageDetails,
+//     required this.address,
+//   });
 
-  /// Calculates the total price for the site
-  double getTotalPrice() {
-    return packageDetails?.packageAmount ?? 0.0;
-  }
+//   /// Calculates the total price for the site
+//   double getTotalPrice() {
+//     return packageDetails?.packageAmount ?? 0.0;
+//   }
 
-  /// Returns specific values based on the given index
-  String getIndex(int index) {
-    switch (index) {
-      case 0:
-        return sno.toString();
-      case 1:
-        return siteName;
-      case 2:
-        return selectedPackage;
-      case 3:
-        return address;
-      case 4:
-        return packageDetails?.cameraCount.toString() ?? '0';
-      case 5:
-        return (packageDetails?.packageAmount.toStringAsFixed(2) ?? '0.00');
-      default:
-        return '';
-    }
-  }
+//   /// Returns specific values based on the given index
+//   String getIndex(int index) {
+//     switch (index) {
+//       case 0:
+//         return sno.toString();
+//       case 1:
+//         return siteName;
+//       case 2:
+//         return selectedPackage;
+//       case 3:
+//         return address;
+//       case 4:
+//         return packageDetails?.cameraCount.toString() ?? '0';
+//       case 5:
+//         return (packageDetails?.packageAmount.toStringAsFixed(2) ?? '0.00');
+//       default:
+//         return '';
+//     }
+//   }
 
-  /// Converts object to JSON format
-  Map<String, dynamic> toJson() {
-    return {
-      'sitesno': sno,
-      'sitename': siteName,
-      'selectedPackage': selectedPackage,
-      'packageDetails': packageDetails?.toJson(),
-      'address': address,
-    };
-  }
+//   /// Converts object to JSON format
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'sitesno': sno,
+//       'sitename': siteName,
+//       'selectedPackage': selectedPackage,
+//       'packageDetails': packageDetails?.toJson(),
+//       'address': address,
+//     };
+//   }
 
-  /// Factory constructor to create an instance from JSON
-  factory SUBSCRIPTION_QuoteSite.fromJson(Map<String, dynamic> json) {
-    return SUBSCRIPTION_QuoteSite(
-      sno: json['sitesno'] as int,
-      siteName: json['sitename'] as String,
-      selectedPackage: json['selectedPackage'] as String,
-      packageDetails: json['packageDetails'] != null ? PackageDetails.fromJson(json['packageDetails']) : null,
-      address: json['address'] as String,
-    );
-  }
-}
+//   /// Factory constructor to create an instance from JSON
+//   factory SUBSCRIPTION_QuoteSite.fromJson(Map<String, dynamic> json) {
+//     return SUBSCRIPTION_QuoteSite(
+//       sno: json['sitesno'] as int,
+//       siteName: json['sitename'] as String,
+//       selectedPackage: json['selectedPackage'] as String,
+//       packageDetails: json['packageDetails'] != null ? PackageDetails.fromJson(json['packageDetails']) : null,
+//       address: json['address'] as String,
+//     );
+//   }
+// }
 
-class PackageDetails {
-  final String name;
-  final int cameraCount;
-  final double packageAmount;
-  final String additionalCharges;
-  final String description;
+// class PackageDetails {
+//   final String name;
+//   final int cameraCount;
+//   final double packageAmount;
+//   // final String additionalCharges;
+//   final String description;
 
-  PackageDetails({
-    required this.name,
-    required this.cameraCount,
-    required this.packageAmount,
-    required this.additionalCharges,
-    required this.description,
-  });
+//   PackageDetails({
+//     required this.name,
+//     required this.cameraCount,
+//     required this.packageAmount,
+//     // required this.additionalCharges,
+//     required this.description,
+//   });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'cameraCount': cameraCount,
-      'packageAmount': packageAmount,
-      'additionalCharges': additionalCharges,
-      'description': description,
-    };
-  }
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'name': name,
+//       'cameraCount': cameraCount,
+//       'packageAmount': packageAmount,
+//       // 'additionalCharges': additionalCharges,
+//       'description': description,
+//     };
+//   }
 
-  factory PackageDetails.fromJson(Map<String, dynamic> json) {
-    return PackageDetails(
-      name: json['name'] as String,
-      cameraCount: json['cameraCount'] as int,
-      packageAmount: json['packageAmount'] as double,
-      additionalCharges: json['additionalCharges'] as String,
-      description: json['description'] as String,
-    );
-  }
-}
+//   factory PackageDetails.fromJson(Map<String, dynamic> json) {
+//     return PackageDetails(
+//       name: json['name'] as String,
+//       cameraCount: json['cameraCount'] as int,
+//       packageAmount: json['packageAmount'] as double,
+//       // additionalCharges: json['additionalCharges'] as String,
+//       description: json['description'] as String,
+//     );
+//   }
+// }
 
 class SUBSCRIPTION_RFQSite {
   final int sno;

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -7,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart' show SUBSCRIPTION_QuoteController;
-import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart' show SUBSCRIPTION_PostQuotation;
+import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart' show PostSubQuote;
 import 'package:ssipl_billing/API-/api.dart' show API;
 import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Error_dialog;
@@ -74,15 +73,34 @@ mixin SUBSCRIPTION_QuotePostServices {
         return;
       }
       loader.start(context);
-      File cachedPdf = quoteController.quoteModel.selectedPdf.value!;
+      // File cachedPdf = quoteController.quoteModel.selectedPdf.value!;
       // savePdfToCache();
-      SUBSCRIPTION_PostQuotation subscriptionData = SUBSCRIPTION_PostQuotation.fromJson({
+      // SUBSCRIPTION_PostQuotation subscriptionData = SUBSCRIPTION_PostQuotation.fromJson({
+      //   "processid": quoteController.quoteModel.processID.value!,
+      //   "clientaddressname": quoteController.quoteModel.clientAddressNameController.value.text,
+      //   "clientaddress": quoteController.quoteModel.clientAddressController.value.text,
+      //   "billingaddressname": quoteController.quoteModel.billingAddressNameController.value.text,
+      //   "billingaddress": quoteController.quoteModel.billingAddressController.value.text,
+      //   "sitelist": quoteController.quoteModel.QuoteSiteDetails,
+      //   "notes": quoteController.quoteModel.Quote_noteList,
+      //   "emailid": quoteController.quoteModel.emailController.value.text,
+      //   "phoneno": quoteController.quoteModel.phoneController.value.text,
+      //   "ccemail": quoteController.quoteModel.CCemailController.value.text,
+      //   "date": getCurrentDate(),
+      //   "quotationgenid": quoteController.quoteModel.Quote_no.value!,
+      //   "messagetype": messageType,
+      //   "feedback": quoteController.quoteModel.feedbackController.value.text,
+      //   "packageid": 18, // Assuming 18 is a placeholder value for packageid
+      // });
+
+      PostSubQuote data = PostSubQuote.fromJson({
+        "companyid": quoteController.quoteModel.companyid.value,
         "processid": quoteController.quoteModel.processID.value!,
         "clientaddressname": quoteController.quoteModel.clientAddressNameController.value.text,
         "clientaddress": quoteController.quoteModel.clientAddressController.value.text,
-        "billingaddressname": quoteController.quoteModel.billingAddressNameController.value.text,
-        "billingaddress": quoteController.quoteModel.billingAddressController.value.text,
-        "sitelist": quoteController.quoteModel.QuoteSiteDetails,
+        "billingaddress": quoteController.quoteModel.billingAddressNameController.value.text,
+        "billingaddressname": quoteController.quoteModel.billingAddressController.value.text,
+        "packagedetails": quoteController.quoteModel.selectedPackages,
         "notes": quoteController.quoteModel.Quote_noteList,
         "emailid": quoteController.quoteModel.emailController.value.text,
         "phoneno": quoteController.quoteModel.phoneController.value.text,
@@ -90,18 +108,23 @@ mixin SUBSCRIPTION_QuotePostServices {
         "date": getCurrentDate(),
         "quotationgenid": quoteController.quoteModel.Quote_no.value!,
         "messagetype": messageType,
-        "feedback": quoteController.quoteModel.feedbackController.value.text,
-        "packageid": 18, // Assuming 18 is a placeholder value for packageid
+        "gstpercent": 18,
+        "gst_number": quoteController.quoteModel.gstNumController.value.text,
+        "feedback": quoteController.quoteModel.feedbackController.value.text
       });
-
-      await send_data(context, jsonEncode(subscriptionData.toJson()), cachedPdf, eventtype);
+      print(data.toJson());
+      print(data.toJson());
+      loader.stop();
+      // await send_data(context, jsonEncode(data.toJson()), cachedPdf, eventtype);
     } catch (e) {
+      loader.stop();
       await Error_dialog(
         context: context,
         title: "POST",
         content: "$e",
         onOk: () {},
       );
+      loader.stop();
     }
   }
 

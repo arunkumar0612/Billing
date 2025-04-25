@@ -22,9 +22,9 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
 
   @override
   void initState() {
-    widget.get_requiredData(context, widget.eventID, "invoice");
-    widget.get_productSuggestionList(context);
-    widget.get_noteSuggestionList(context);
+    // widget.get_requiredData(context, widget.eventID, "invoice");
+    // widget.get_productSuggestionList(context);
+    // widget.get_noteSuggestionList(context);
     super.initState();
   }
 

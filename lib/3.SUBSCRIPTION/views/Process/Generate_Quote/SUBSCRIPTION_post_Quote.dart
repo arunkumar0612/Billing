@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/Quotation_services/SUBSCRIPTION_QuotePost_services.dart';
+import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
@@ -60,6 +61,8 @@ class SUBSCRIPTION_PostQuoteState extends State<SUBSCRIPTION_PostQuote> with Sin
   final formKey1 = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final loader = LoadingOverlay();
+    loader.stop();
     return Obx(
       () {
         return SizedBox(
@@ -637,6 +640,7 @@ class SUBSCRIPTION_PostQuoteState extends State<SUBSCRIPTION_PostQuote> with Sin
                                     text: "Send",
                                     colors: Colors.blue,
                                     onPressed: () {
+                                      widget.postData(context, quoteController.fetch_messageType(), widget.eventtype);
                                       // showLoading(context, () => widget.postData(context, quoteController.fetch_messageType(), widget.eventtype));
                                     })),
                           )

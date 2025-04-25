@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/controllers/Sales_actions.dart';
+import 'package:ssipl_billing/4.SALES/services/Invoice_services/InvoiceDetails_service.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_Invoice/invoice_details.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_Invoice/invoice_note.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_Invoice/invoice_products.dart';
@@ -11,7 +12,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../controllers/Invoice_actions.dart';
 
-class GenerateInvoice extends StatefulWidget {
+class GenerateInvoice extends StatefulWidget with InvoicedetailsService {
   GenerateInvoice({super.key, required this.eventID});
   int eventID;
   @override
@@ -26,6 +27,9 @@ class _GenerateInvoiceState extends State<GenerateInvoice> with SingleTickerProv
     super.initState();
     // GenerateInvoice._tabController = ;
     invoiceController.initializeTabController(TabController(length: 4, vsync: this));
+    widget.get_requiredData(context, widget.eventID, "invoice");
+    widget.get_productSuggestionList(context);
+    widget.get_noteSuggestionList(context);
   }
 
   @override

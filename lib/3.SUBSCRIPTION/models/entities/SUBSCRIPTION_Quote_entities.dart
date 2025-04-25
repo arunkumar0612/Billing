@@ -1,5 +1,4 @@
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Sites_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 
@@ -45,26 +44,26 @@ class SUBSCRIPTION_QuoteRecommendation {
 //   }
 // }
 
-class SUBSCRIPTION_QuoteGSTtotals {
-  final double gst;
-  final double total;
+// class SUBSCRIPTION_QuoteGSTtotals {
+//   final double gst;
+//   final double total;
 
-  SUBSCRIPTION_QuoteGSTtotals({
-    required this.gst,
-    required this.total,
-  });
+//   SUBSCRIPTION_QuoteGSTtotals({
+//     required this.gst,
+//     required this.total,
+//   });
 
-  factory SUBSCRIPTION_QuoteGSTtotals.fromJson(Map<String, dynamic> json) {
-    return SUBSCRIPTION_QuoteGSTtotals(gst: json['GST'], total: json['total']);
-  }
+//   factory SUBSCRIPTION_QuoteGSTtotals.fromJson(Map<String, dynamic> json) {
+//     return SUBSCRIPTION_QuoteGSTtotals(gst: json['GST'], total: json['total']);
+//   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'GST': gst,
-      'total': total,
-    };
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'GST': gst,
+//       'total': total,
+//     };
+//   }
+// }
 
 class SubscriptionQuoteRequiredData {
   final String eventNumber;
@@ -244,7 +243,8 @@ class SUBSCRIPTION_Quote {
   final int gstPercent;
   final String GSTIN;
   final Address addressDetails;
-  final List<Map<String, dynamic>> package_Mapped_sites;
+  // final List<Map<String, dynamic>> package_Mapped_sites;
+  final List<Package> packageMappedSites;
   final List<Site> siteData;
   final FinalCalculation finalCalc;
   final List<String> notes;
@@ -254,23 +254,36 @@ class SUBSCRIPTION_Quote {
     required this.gstPercent,
     required this.GSTIN,
     required this.addressDetails,
-    required this.package_Mapped_sites,
+    // required this.package_Mapped_sites,
+    required this.packageMappedSites,
     required this.siteData,
     required this.finalCalc,
     required this.notes,
   });
 
   // Convert JSON to Invoice object
-  factory SUBSCRIPTION_Quote.fromJson(Map<String, dynamic> json) {
+  factory SUBSCRIPTION_Quote.fromJson(Map<String, dynamic> json, List<Site> sies) {
+    List<Package> packages = (json['packageMappedSites'] as List<Package>).map((item) => Package.fromJson(item.toJson())).toList();
+    List<int> amounts = packages.map((pkg) => int.parse(pkg.amount)).toList();
+    // List<Map<String, dynamic>> siteList = List<Map<String, dynamic>>.from(json['siteData']);
+    // List<Site> sites = Site.fromJson(siteList);
+    // List<Site> sites = Site.fromJson(List<Map<String, dynamic>>.from(json['siteData']));
+
     return SUBSCRIPTION_Quote(
       date: json['date'] as String,
       quoteNo: json['quoteNo'] as String,
       gstPercent: json['gstPercent'] as int,
       GSTIN: json['GSTIN'] as String,
       addressDetails: Address.fromJson(json['addressDetails']),
-      package_Mapped_sites: json['package_Mapped_sites'],
-      siteData: Site.fromJson(List<Map<String, dynamic>>.from(json['siteData'])),
-      finalCalc: FinalCalculation.fromJson(Site.fromJson(List<Map<String, dynamic>>.from(json['siteData'])), json['gstPercent'] as int, json['pendingAmount'] as double),
+      // package_Mapped_sites: json['package_Mapped_sites'],
+      packageMappedSites: (json['packageMappedSites'] as List<Package>).map((item) => Package.fromJson(item.toJson())).toList(),
+      siteData: sies,
+      finalCalc: FinalCalculation.fromJson(
+        sies,
+        amounts,
+        json['gstPercent'] as int,
+        json['pendingAmount'] as double,
+      ),
       notes: ['This is a sample note', 'This is another sample note'],
     );
   }
@@ -281,11 +294,43 @@ class SUBSCRIPTION_Quote {
       'date': date,
       'invoiceNo': quoteNo,
       'gstPercent': gstPercent,
-      'siteData': Site.toJsonList(siteData), // Corrected Site List Serialization
-      'finalCalc': finalCalc.toJson(),
+      'packageMappedSites': packageMappedSites.map((pkg) => pkg.toJson()).toList(), // Corrected Site List Serialization
+      'finalCalc': finalCalc.toJson(), 'siteData': Site.toJsonList(siteData),
       'addressDetails': addressDetails.toJson(),
       'notes': notes,
     };
+  }
+
+  dynamic getIndex(int col, int siteIndex) {
+    Package? findPackageBySiteName(String sitename) {
+      for (var package in packageMappedSites) {
+        for (var site in package.sites) {
+          if (site.sitename == sitename) {
+            return package; // Return the package name when the site is found
+          }
+        }
+      }
+      return null; // Return this if no package contains the site
+    }
+
+    switch (col) {
+      case 0:
+        return siteIndex.toString();
+      case 1:
+        return findPackageBySiteName(siteData[siteIndex].sitename)!.name;
+      case 2:
+        return siteData[siteIndex].sitename;
+      case 3:
+        return siteData[siteIndex].address;
+      case 4:
+        return findPackageBySiteName(siteData[siteIndex].sitename)!.cameracount.toString();
+      case 5:
+        return findPackageBySiteName(siteData[siteIndex].sitename)!.amount.toString();
+      // case 5:
+      //   return Price.toString();
+      default:
+        return "";
+    }
   }
 }
 
@@ -316,10 +361,10 @@ class Address {
 class Package {
   String name;
   String description;
-  String cameraCount;
+  String cameracount;
   String amount;
-  String additionalCameras;
-  String show;
+  // String additionalCameras;
+  String subscriptiontype;
   List<Site> sites;
 
   // Reactive states
@@ -330,18 +375,18 @@ class Package {
   // Temp values for editing
   RxString tempName = ''.obs;
   RxString tempDescription = ''.obs;
-  RxString tempCameraCount = ''.obs;
+  RxString tempcameracount = ''.obs;
   RxString tempAmount = ''.obs;
-  RxString tempAdditionalCameras = ''.obs;
+  // RxString tempAdditionalCameras = ''.obs;
   RxString tempShow = ''.obs;
 
   Package({
     required this.name,
     required this.description,
-    required this.cameraCount,
+    required this.cameracount,
     required this.amount,
-    required this.additionalCameras,
-    required this.show,
+    // required this.additionalCameras,
+    required this.subscriptiontype,
     required this.sites,
   }) {
     // Init reactive values
@@ -351,10 +396,10 @@ class Package {
 
     tempName = name.obs;
     tempDescription = description.obs;
-    tempCameraCount = cameraCount.obs;
+    tempcameracount = cameracount.obs;
     tempAmount = amount.obs;
-    tempAdditionalCameras = additionalCameras.obs;
-    tempShow = show.obs;
+    // tempAdditionalCameras = additionalCameras.obs;
+    tempShow = subscriptiontype.obs;
   }
 
   // JSON methods
@@ -362,10 +407,10 @@ class Package {
     return Package(
       name: json['name'] as String,
       description: json['description'] as String,
-      cameraCount: json['camera_count'] as String,
+      cameracount: json['cameracount'] as String,
       amount: json['amount'] as String,
-      additionalCameras: json['additional_cameras'] as String,
-      show: json['show'] as String,
+      // additionalCameras: json['additional_cameras'] as String,
+      subscriptiontype: json['subscriptiontype'] as String,
       sites: Site.fromJson(List<Map<String, dynamic>>.from(json['sites'])),
     );
   }
@@ -374,10 +419,10 @@ class Package {
     return {
       'name': name,
       'description': description,
-      'camera_count': cameraCount,
+      'cameracount': cameracount,
       'amount': amount,
-      'additional_cameras': additionalCameras,
-      'show': show,
+      // 'additional_cameras': additionalCameras,
+      'subscriptiontype': subscriptiontype,
       'sites': sites.map((site) => site.toJson()).toList(),
     };
   }
@@ -386,10 +431,10 @@ class Package {
   void saveChanges() {
     name = tempName.value;
     description = tempDescription.value;
-    cameraCount = tempCameraCount.value;
+    cameracount = tempcameracount.value;
     amount = tempAmount.value;
-    additionalCameras = tempAdditionalCameras.value;
-    show = tempShow.value;
+    // additionalCameras = tempAdditionalCameras.value;
+    subscriptiontype = tempShow.value;
     editingMode.value = false;
   }
 
@@ -397,10 +442,10 @@ class Package {
   void cancelEditing() {
     tempName.value = name;
     tempDescription.value = description;
-    tempCameraCount.value = cameraCount;
+    tempcameracount.value = cameracount;
     tempAmount.value = amount;
-    tempAdditionalCameras.value = additionalCameras;
-    tempShow.value = show;
+    // tempAdditionalCameras.value = additionalCameras;
+    tempShow.value = subscriptiontype;
     editingMode.value = false;
   }
 
@@ -427,7 +472,7 @@ class Package {
   Package copyWith({
     String? name,
     String? description,
-    String? cameraCount,
+    String? cameracount,
     String? amount,
     String? additionalCameras,
     String? show,
@@ -436,55 +481,61 @@ class Package {
     return Package(
       name: name ?? this.name,
       description: description ?? this.description,
-      cameraCount: cameraCount ?? this.cameraCount,
+      cameracount: cameracount ?? this.cameracount,
       amount: amount ?? this.amount,
-      additionalCameras: additionalCameras ?? this.additionalCameras,
-      show: show ?? this.show,
+      // additionalCameras: additionalCameras ?? this.additionalCameras,
+      subscriptiontype: show ?? subscriptiontype,
       sites: sites ?? List.from(this.sites),
     );
   }
 
   // Optional: validation placeholder
   bool isValid() {
-    return name.isNotEmpty && cameraCount.isNotEmpty && amount.isNotEmpty;
+    return name.isNotEmpty && cameracount.isNotEmpty && amount.isNotEmpty;
   }
 }
 
 class Site {
   static int _counter = 1;
   String serialNo;
-  String siteName;
+  String sitename;
   String address;
-  String packageName;
-  int camCount;
-  int basicPrice;
-  int specialPrice;
-  final String selectedPackage;
-  final PackageDetails? packageDetails;
+  // String packageName;
+  int cameraquantity;
+  // int basicPrice;
+  // int Price;
+  // final String selectedPackage;
+  // final PackageDetails? packageDetails;
+  final String billingType;
+  final String mailType;
 
   Site({
-    required this.siteName,
+    required this.sitename,
     required this.address,
-    required this.packageName,
-    required this.camCount,
-    required this.basicPrice,
-    required this.specialPrice,
-    required this.selectedPackage,
-    this.packageDetails,
+    // required this.packageName,
+    required this.cameraquantity,
+    // required this.basicPrice,
+    // required this.Price,
+    // required this.selectedPackage,
+    // this.packageDetails,
+    required this.billingType,
+    required this.mailType,
   }) : serialNo = (_counter++).toString();
 
   static List<Site> fromJson(List<Map<String, dynamic>> jsonList) {
     _counter = 1;
     return jsonList.map((json) {
       return Site(
-        siteName: json['siteName'] as String,
-        address: json['address'] as String,
-        packageName: json['packageName'] as String,
-        camCount: json['camCount'] as int,
-        basicPrice: json['basicPrice'] as int,
-        specialPrice: json['specialPrice'] as int,
-        selectedPackage: json['selectedPackage'] as String,
-        packageDetails: json['packageDetails'] != null ? PackageDetails.fromJson(json['packageDetails']) : null,
+        sitename: json['sitename'] as String,
+        address: json['siteaddress'] as String,
+        // packageName: json['packageName'] as String,
+        cameraquantity: json['cameraquantity'] as int,
+        // basicPrice: json['basicPrice'] as int,
+        // Price: json['specialPrice'] as int,
+        // selectedPackage: json['selectedPackage'] as String,
+        // packageDetails: json['packageDetails'] != null ? PackageDetails.fromJson(json['packageDetails']) : null,
+        billingType: json['billingType'] as String,
+        mailType: json['mailType'] as String,
       );
     }).toList();
   }
@@ -496,14 +547,16 @@ class Site {
   Map<String, dynamic> toJson() {
     return {
       'serialNo': serialNo,
-      'siteName': siteName,
-      'address': address,
-      'packageName': packageName,
-      'camCount': camCount,
-      'basicPrice': basicPrice,
-      'specialPrice': specialPrice,
-      'selectedPackage': selectedPackage,
-      'packageDetails': packageDetails?.toJson(),
+      'sitename': sitename,
+      'siteaddress': address,
+      // 'packageName': packageName,
+      'cameraquantity': cameraquantity,
+      // 'basicPrice': basicPrice,
+      // 'specialPrice': Price,
+      // 'selectedPackage': selectedPackage,
+      // 'packageDetails': packageDetails?.toJson(),
+      "billingType": billingType,
+      "mailType": mailType,
     };
   }
 
@@ -511,18 +564,18 @@ class Site {
     switch (col) {
       case 0:
         return serialNo;
+      // case 1:
+      //   return packageName;
       case 1:
-        return packageName;
+        return sitename;
       case 2:
-        return siteName;
-      case 3:
         return address;
-      case 4:
-        return camCount.toString();
-      case 5:
-        return basicPrice.toString();
-      case 6:
-        return specialPrice.toString();
+      case 3:
+        return cameraquantity.toString();
+      // case 5:
+      //   return basicPrice.toString();
+      // case 5:
+      //   return Price.toString();
       default:
         return "";
     }
@@ -552,8 +605,13 @@ class FinalCalculation {
     required this.grandTotal,
   });
 
-  factory FinalCalculation.fromJson(List<Site> sites, int gstPercent, double? pendingAmount) {
-    double subtotal = sites.fold(0.0, (sum, site) => sum + site.specialPrice);
+  factory FinalCalculation.fromJson(List<Site> sites, List<int> prices, int gstPercent, double? pendingAmount) {
+    double subtotal = 0;
+
+    for (int i = 0; i < sites.length; i++) {
+      subtotal += prices[i];
+    }
+
     double igst = (subtotal * gstPercent) / 100;
     double cgst = (subtotal * (gstPercent / 2)) / 100;
     double sgst = (subtotal * (gstPercent / 2)) / 100;
@@ -654,3 +712,159 @@ class CompanyBasedPackages {
     return jsonList.map((item) => CompanyBasedPackages.fromJson(item)).toList();
   }
 }
+
+class PostSubQuote {
+  final int companyid;
+  final int processId;
+  final String clientAddressName;
+  final String clientAddress;
+  final String billingAddress;
+  final String billingAddressName;
+  final List<Package> packageDetails;
+  final List<String> notes;
+  final String emailId;
+  final String phoneNo;
+  final String ccEmail;
+  final String date;
+  final String quotationGenId;
+  final int messageType;
+  final int gstPercent;
+  final String gstNumber;
+  final String feedback;
+
+  PostSubQuote({
+    required this.companyid,
+    required this.processId,
+    required this.clientAddressName,
+    required this.clientAddress,
+    required this.billingAddress,
+    required this.billingAddressName,
+    required this.packageDetails,
+    required this.notes,
+    required this.emailId,
+    required this.phoneNo,
+    required this.ccEmail,
+    required this.date,
+    required this.quotationGenId,
+    required this.messageType,
+    required this.gstPercent,
+    required this.gstNumber,
+    required this.feedback,
+  });
+
+  factory PostSubQuote.fromJson(Map<String, dynamic> json) {
+    return PostSubQuote(
+      companyid: json['companyid'],
+      processId: json['processid'],
+      clientAddressName: json['clientaddressname'],
+      clientAddress: json['clientaddress'],
+      billingAddress: json['billingaddress'],
+      billingAddressName: json['billingaddressname'],
+      packageDetails: (json['packagedetails'] as List<Package>).map((item) => Package.fromJson(item.toJson())).toList(),
+      notes: (json['notes'] as List).map((item) => item.toString()).toList(),
+      emailId: json['emailid'],
+      phoneNo: json['phoneno'],
+      ccEmail: json['ccemail'],
+      date: json['date'],
+      quotationGenId: json['quotationgenid'],
+      messageType: json['messagetype'],
+      gstPercent: json['gstpercent'],
+      gstNumber: json['gst_number'],
+      feedback: json['feedback'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'companyid': companyid,
+      'processid': processId,
+      'clientaddressname': clientAddressName,
+      'clientaddress': clientAddress,
+      'billingaddress': billingAddress,
+      'billingaddressname': billingAddressName,
+      'packagedetails': packageDetails.map((pkg) => pkg.toJson()).toList(),
+      'notes': notes,
+      'emailid': emailId,
+      'phoneno': phoneNo,
+      'ccemail': ccEmail,
+      'date': date,
+      'quotationgenid': quotationGenId,
+      'messagetype': messageType,
+      'gstpercent': gstPercent,
+      'gst_number': gstNumber,
+      'feedback': feedback,
+    };
+  }
+}
+
+// class PackageDetails {
+//   final String name;
+//   final String description;
+//   final int cameracount ;
+//   final int amount;
+//   final String subscriptionType;
+//   final List<Site> sites;
+//   final String subscriptionId;
+
+//   PackageDetails({
+//     required this.name,
+//     required this.description,
+//     required this.cameracount ,
+//     required this.amount,
+//     required this.subscriptionType,
+//     required this.sites,
+//     required this.subscriptionId,
+//   });
+
+//   factory PackageDetails.fromJson(Map<String, dynamic> json) {
+//     return PackageDetails(
+//       name: json['name'],
+//       description: json['description'],
+//       cameracount : json['cameracount'],
+//       amount: json['amount'],
+//       subscriptionType: json['subscriptiontype'],
+//       sites: (json['sites'] as List).map((s) => Site.fromJson(s)).toList(),
+//       subscriptionId: json['subscriptionid'].toString(),
+//     );
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'name': name,
+//       'description': description,
+//       'cameracount': cameracount ,
+//       'amount': amount,
+//       'subscriptiontype': subscriptionType,
+//       'sites': sites.map((s) => s.toJson()).toList(),
+//       'subscriptionid': subscriptionId,
+//     };
+//   }
+// }
+
+// class Site {
+//   final String siteName;
+//   final int cameraQuantity;
+//   final String siteAddress;
+
+//   Site({
+//     required this.siteName,
+//     required this.cameraQuantity,
+//     required this.siteAddress,
+//   });
+
+//   factory Site.fromJson(Map<String, dynamic> json) {
+//     return Site(
+//       siteName: json['sitename'],
+//       cameraQuantity: json['cameraquantity'],
+//       siteAddress: json['siteaddress'],
+//     );
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'sitename': siteName,
+//       'cameraquantity': cameraQuantity,
+//       'siteaddress': siteAddress,
+//     };
+//   }
+// }

@@ -20,7 +20,7 @@ class enquryDetailsState extends State<enquryDetails> {
   @override
   void initState() {
     super.initState();
-    widget.get_OrganizationList(context);
+    // widget.get_OrganizationList(context);
     // widget.getEnquiry_processID(context);
   }
 

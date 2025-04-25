@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/models/constants/SUBSCRIPTION_Quote_constants.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart';
-import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Sites_entities.dart' show PackageDetails;
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
@@ -137,9 +136,9 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     quoteModel.notecontent.add(note);
   }
 
-  void addsiteEditindex(int? index) {
-    quoteModel.site_editIndex.value = index;
-  }
+  // void addsiteEditindex(int? index) {
+  //   quoteModel.site_editIndex.value = index;
+  // }
 
   void setProcessID(int processid) {
     quoteModel.processID.value = processid;
@@ -183,21 +182,21 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     quoteModel.filePathController.value.text = filePath;
   }
 
-  void resetPackageSelection() {
-    quoteModel.selectedPackageController.value.text = '';
-    quoteModel.customPackageDetails.value = null;
-  }
+  // void resetPackageSelection() {
+  //   quoteModel.selectedPackageController.value.text = '';
+  //   quoteModel.customPackageDetails.value = null;
+  // }
 
-  void updateSelectedPackage(String? package) {
-    quoteModel.selectedPackageController.value.text = package ?? "";
-    if (package != 'Custom') {
-      quoteModel.customPackageDetails.value = null;
-    }
-  }
+  // void updateSelectedPackage(String? package) {
+  //   quoteModel.selectedPackageController.value.text = package ?? "";
+  //   if (package != 'Custom') {
+  //     quoteModel.customPackageDetails.value = null;
+  //   }
+  // }
 
-  void updateCustomPackageDetails(PackageDetails details) {
-    quoteModel.customPackageDetails.value = details;
-  }
+  // void updateCustomPackageDetails(PackageDetails details) {
+  //   quoteModel.customPackageDetails.value = details;
+  // }
 
   void removeFromsiteList(index) {
     quoteModel.QuoteSiteDetails.removeAt(index);
@@ -289,8 +288,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     }
   }
 
-  void addSite(
-      {required BuildContext context, required String siteName, required int cameraquantity, required String address, required PackageDetails? packageDetails, required String selectedPackage}) {
+  void addSite({required BuildContext context, required String siteName, required int cameraquantity, required String address, required String billingType, required String mailType}) {
     try {
       if (siteName.trim().isEmpty || cameraquantity <= 0 || address.trim().isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -301,8 +299,15 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         );
         return;
       }
-      quoteModel.QuoteSiteDetails.add(
-          Site(siteName: siteName, address: address, packageName: '', camCount: cameraquantity, specialPrice: 100, basicPrice: 150, packageDetails: packageDetails, selectedPackage: selectedPackage));
+      quoteModel.QuoteSiteDetails.add(Site(
+        sitename: siteName,
+        address: address,
+        // packageName: '',
+        cameraquantity: cameraquantity,
+        // Price: 100,
+        billingType: billingType,
+        mailType: mailType,
+      ));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -319,8 +324,9 @@ class SUBSCRIPTION_QuoteController extends GetxController {
       required String siteName,
       required int cameraquantity,
       required String address,
-      required String selectedPackage,
-      required PackageDetails? packageDetails}) {
+      // required int Price,
+      required String billingType,
+      required String mailType}) {
     try {
       // Validate input fields
       if (siteName.trim().isEmpty || cameraquantity <= 0 || address.trim().isEmpty) {
@@ -345,8 +351,15 @@ class SUBSCRIPTION_QuoteController extends GetxController {
       }
 
       // Update the product details at the specified index
-      quoteModel.QuoteSiteDetails[editIndex] =
-          Site(siteName: siteName, address: address, packageName: '', camCount: cameraquantity, specialPrice: 100, basicPrice: 150, packageDetails: packageDetails, selectedPackage: selectedPackage);
+      quoteModel.QuoteSiteDetails[editIndex] = Site(
+        sitename: siteName,
+        address: address,
+        // packageName: siteName,
+        // Price: Price,
+        cameraquantity: cameraquantity,
+        billingType: billingType,
+        mailType: mailType,
+      );
 
       // ProductDetail(
       //   productName: productName.trim(),
@@ -412,8 +425,26 @@ class SUBSCRIPTION_QuoteController extends GetxController {
   }
 
   void update_companyBasedPackages(CMDlResponse response) {
+    quoteModel.packageDetails.clear();
+    quoteModel.packageList.clear();
     quoteModel.company_basedPackageList.value = CompanyBasedPackages.fromJsonList(response.data);
     print(quoteModel.company_basedPackageList);
+
+    for (int i = 0; i < quoteModel.company_basedPackageList.length; i++) {
+      quoteModel.packageList.add(quoteModel.company_basedPackageList[i].subscriptionName ?? "");
+      quoteModel.packageDetails.add(
+        Package(
+          name: quoteModel.company_basedPackageList[i].subscriptionName ?? "",
+          description: quoteModel.company_basedPackageList[i].productDesc ?? "",
+          cameracount: (quoteModel.company_basedPackageList[i].noOfCameras ?? "").toString(),
+          amount: (quoteModel.company_basedPackageList[i].amount ?? "").toString(),
+          // additionalCameras: (quoteModel.company_basedPackageList[i].addlCameras ?? "").toString(),
+          subscriptiontype: 'Global',
+          sites: [], // Start with empty sites
+        ),
+      );
+    }
+    quoteModel.packageList.add('Custom Package');
   }
 
   bool generate_Datavalidation() {

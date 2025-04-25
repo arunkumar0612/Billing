@@ -23,8 +23,8 @@ class _QuoteDetailsState extends State<QuoteDetails> {
 
   @override
   void initState() {
-    widget.get_requiredData(context, widget.eventtype, widget.eventID);
-    widget.get_productSuggestionList(context);
+    // widget.get_requiredData(context, widget.eventtype, widget.eventID);
+    // widget.get_productSuggestionList(context);
     super.initState();
   }
 

@@ -3,10 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart' as site;
-
-import '../entities/SUBSCRIPTION_Quote_entities.dart';
-import '../entities/SUBSCRIPTION_Sites_entities.dart';
+import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart';
 
 class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProviderStateMixin {
   final Rxn<TabController> tabController = Rxn<TabController>();
@@ -26,72 +23,73 @@ class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProvide
   final detailsKey = GlobalKey<FormState>().obs;
 
 //SITES
+  var QuoteSiteDetails = <Site>[].obs;
+  RxList<Package> selectedPackages = <Package>[].obs;
+
   final siteFormkey = GlobalKey<FormState>().obs;
   final siteNameController = TextEditingController().obs;
   final addressController = TextEditingController().obs;
-  var Billingtype_Controller = Rxn<String>();
+  var Billingtype_Controller = "individual".obs;
   var BillingtypeList = <String>[
     'Individual',
     'Consolidate',
   ].obs;
-  var Mailtype_Controller = Rxn<String>();
+  var Mailtype_Controller = "individual".obs;
   var MailtypeList = <String>[
     'Individual',
     'Consolidate',
   ].obs;
   final cameraquantityController = TextEditingController().obs;
   final site_editIndex = Rxn<int>();
-  var QuoteSiteDetails = <site.Site>[].obs;
   //  var Quote_sites = <SUBSCRIPTION_QuoteSite>[].obs;
-  var selectedPackageController = TextEditingController().obs;
-  Rx<PackageDetails?> customPackageDetails = Rx<PackageDetails?>(null);
+  // var selectedPackageController = TextEditingController().obs;
+  // Rx<PackageDetails?> customPackageDetails = Rx<PackageDetails?>(null);
 
   // PACKAGE
 
-  final List<String> packageList = ['Basic Plan', 'Standard Plan', 'Premium Plan', 'Custom Package'].obs;
+  final List<String> packageList = <String>[].obs;
   Rx<String?> selectedPackage = Rx<String?>(null);
   var company_basedPackageList = <CompanyBasedPackages>[].obs;
   RxBool customPackageCreated = false.obs;
   // late AnimationController animationControllers;
   // late Animation<double> fadeAnimations;
-  RxList<Package> selectedPackages = <Package>[].obs;
 
   RxList<Package> packageDetails = <Package>[
-    Package(
-      name: 'Basic Plan',
-      description: 'Includes 5 cameras, ideal for small homes or small businesses.',
-      cameraCount: '5',
-      amount: '\$50/month',
-      additionalCameras: '\$10 per extra camera',
-      show: 'Global',
-      sites: [],
-    ),
-    Package(
-      name: 'Standard Plan',
-      description: 'Includes 10 cameras, perfect for medium offices and retail spaces.',
-      cameraCount: '10',
-      amount: '\$100/month',
-      additionalCameras: '\$8 per extra camera',
-      show: 'Global',
-      sites: [],
-    ),
-    Package(
-      name: 'Premium Plan',
-      description: 'Includes 20 cameras, designed for large buildings and enterprises.',
-      cameraCount: '20',
-      amount: '\$200/month',
-      additionalCameras: '\$5 per extra camera',
-      show: 'Global',
-      sites: [],
-    ),
+    // Package(
+    //   name: 'Basic Plan',
+    //   description: 'Includes 5 cameras, ideal for small homes or small businesses.',
+    //   cameraCount: '5',
+    //   amount: '\$50/month',
+    //   additionalCameras: '\$10 per extra camera',
+    //   show: 'Global',
+    //   sites: [],
+    // ),
+    // Package(
+    //   name: 'Standard Plan',
+    //   description: 'Includes 10 cameras, perfect for medium offices and retail spaces.',
+    //   cameraCount: '10',
+    //   amount: '\$100/month',
+    //   additionalCameras: '\$8 per extra camera',
+    //   show: 'Global',
+    //   sites: [],
+    // ),
+    // Package(
+    //   name: 'Premium Plan',
+    //   description: 'Includes 20 cameras, designed for large buildings and enterprises.',
+    //   cameraCount: '20',
+    //   amount: '\$200/month',
+    //   additionalCameras: '\$5 per extra camera',
+    //   show: 'Global',
+    //   sites: [],
+    // ),
   ].obs;
 
   final customNameControllers = TextEditingController().obs;
   final customDescControllers = TextEditingController().obs;
   final customCameraCountControllers = TextEditingController().obs;
   final customAmountControllers = TextEditingController().obs;
-  final customChargesControllers = TextEditingController().obs;
-  final showto = 'Global'.obs;
+  // final customChargesControllers = TextEditingController().obs;
+  final showto = 'company'.obs;
 
   Rx<Package?> customPackage = Rx<Package?>(null);
 

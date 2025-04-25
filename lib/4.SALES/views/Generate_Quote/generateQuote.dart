@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/controllers/Sales_actions.dart';
+import 'package:ssipl_billing/4.SALES/services/Quotation_services/QuoteDetails_service.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_Quote/post_Quote.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -12,7 +13,7 @@ import 'quote_details.dart';
 import 'quote_note.dart';
 import 'quote_products.dart';
 
-class GenerateQuote extends StatefulWidget {
+class GenerateQuote extends StatefulWidget with QuotedetailsService {
   GenerateQuote({super.key, required this.quoteType, required this.eventID});
   int eventID;
   String quoteType;
@@ -28,6 +29,8 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
     super.initState();
     // GenerateQuote._tabController = ;
     quoteController.initializeTabController(TabController(length: 4, vsync: this));
+    widget.get_requiredData(context, widget.quoteType, widget.eventID);
+    widget.get_productSuggestionList(context);
   }
 
   @override

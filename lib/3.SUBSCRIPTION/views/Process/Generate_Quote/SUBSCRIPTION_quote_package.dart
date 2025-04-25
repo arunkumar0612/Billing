@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
@@ -28,7 +29,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
   Widget build(BuildContext context) {
     return Obx(() {
       final pendingSites = quoteController.quoteModel.QuoteSiteDetails.where((site) {
-        return !quoteController.quoteModel.selectedPackages.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.siteName == site.siteName));
+        return !quoteController.quoteModel.selectedPackages.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.sitename == site.sitename));
       }).toList();
       return Padding(
         padding: const EdgeInsets.all(16.0),
@@ -182,10 +183,10 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                 Package(
                   name: package.name,
                   description: package.description,
-                  cameraCount: package.cameraCount,
+                  cameracount: package.cameracount,
                   amount: package.amount,
-                  additionalCameras: package.additionalCameras,
-                  show: package.show,
+                  // additionalCameras: package.additionalCameras,
+                  subscriptiontype: package.subscriptiontype,
                   sites: [], // Start with empty sites
                 ),
               );
@@ -233,7 +234,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
     return Obx(() {
       // Get all sites that aren't assigned to any package
       final pendingSites = quoteController.quoteModel.QuoteSiteDetails.where((site) {
-        return !quoteController.quoteModel.selectedPackages.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.siteName == site.siteName));
+        return !quoteController.quoteModel.selectedPackages.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.sitename == site.sitename));
       }).toList();
 
       // Check if all sites are assigned
@@ -295,7 +296,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        '${index + 1} . ${pendingSites[index].siteName}',
+                                        '${index + 1} . ${pendingSites[index].sitename}',
                                         style: const TextStyle(
                                           color: Color.fromARGB(255, 181, 181, 181),
                                           fontSize: Primary_font_size.Text8,
@@ -340,7 +341,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
               colors: Colors.red,
               text: 'Back',
               onPressed: () {
-                // quoteController.previousTab();
+                quoteController.backTab();
               },
             ),
             const SizedBox(width: 30),
@@ -350,7 +351,8 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                   colors: hasPackages ? Colors.green : Colors.grey,
                   text: 'Submit',
                   onPressed: () {
-                    print(quoteController.quoteModel.selectedPackages.length);
+                    quoteController.nextTab();
+                    // print(quoteController.quoteModel.selectedPackages[0].sites[0].mailType);
                   }
                   //  hasPackages
                   //     ? () {
@@ -432,12 +434,12 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
               icon: Icons.attach_money_outlined,
               isNumber: true,
             ),
-            _buildCustomTextField(
-              controller: quoteController.quoteModel.customChargesControllers.value,
-              label: 'Additional Camera',
-              icon: Icons.money_off_csred_outlined,
-              isNumber: true,
-            ),
+            // _buildCustomTextField(
+            //   controller: quoteController.quoteModel.customChargesControllers.value,
+            //   label: 'Additional Camera',
+            //   icon: Icons.money_off_csred_outlined,
+            //   isNumber: true,
+            // ),
 
             // Show to all sites radio buttons
             Padding(
@@ -455,14 +457,14 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                   _buildCustomRadio(
                     context,
                     title: 'Yes',
-                    value: 'Company',
+                    value: 'company',
                     groupValue: quoteController.quoteModel.showto.value,
                   ),
                   const SizedBox(width: 16),
                   _buildCustomRadio(
                     context,
                     title: 'No',
-                    value: 'Global',
+                    value: 'current',
                     groupValue: quoteController.quoteModel.showto.value,
                   ),
                 ],
@@ -506,6 +508,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
           color: Primary_colors.Color1,
         ),
         controller: controller,
+        inputFormatters: isNumber ? [FilteringTextInputFormatter.digitsOnly] : null,
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
         maxLines: maxLines,
         decoration: InputDecoration(
@@ -653,8 +656,8 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
               Expanded(
                 child: TabBarView(
                   children: [
-                    _buildPackageDetailsTab(package.toJson()),
-                    _buildPackageSitesTab(package.toJson()),
+                    _buildPackageDetailsTab(package),
+                    _buildPackageSitesTab(package),
                   ],
                 ),
               ),
@@ -665,20 +668,20 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
     );
   }
 
-  Widget _buildPackageDetailsTab(Map<String, dynamic> details) {
+  Widget _buildPackageDetailsTab(Package details) {
     // Check if this is a custom package
-    final isCustomPackage = quoteController.quoteModel.customPackage.value?.name == details['name'];
-    final packageIndex = quoteController.quoteModel.selectedPackages.indexWhere((p) => p.name == details['name']);
+    final isCustomPackage = quoteController.quoteModel.customPackage.value?.name == details.name;
+    final packageIndex = quoteController.quoteModel.selectedPackages.indexWhere((p) => p.name == details.name);
     final package = quoteController.quoteModel.selectedPackages[packageIndex];
 
     // Initialize edit mode controller if not exists
     if (!package.editingMode.value) {
       package.editingMode.value = false;
-      package.tempName.value = details['name'];
-      package.tempCameraCount.value = details['camera_count'];
-      package.tempAmount.value = details['amount'];
-      package.tempAdditionalCameras.value = details['additional_cameras'];
-      package.tempDescription.value = details['description'];
+      package.tempName.value = details.name;
+      package.tempcameracount.value = details.cameracount;
+      package.tempAmount.value = details.amount;
+      // package.tempAdditionalCameras.value = details['additional_cameras'];
+      package.tempDescription.value = details.description;
     }
     return Obx(() {
       return Column(
@@ -692,11 +695,11 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                     onPressed: () {
                       if (package.editingMode.value) {
                         // Cancel editing - reset temp values
-                        package.tempName.value = details['name'];
-                        package.tempCameraCount.value = details['camera_count'];
-                        package.tempAmount.value = details['amount'];
-                        package.tempAdditionalCameras.value = details['additional_cameras'];
-                        package.tempDescription.value = details['description'];
+                        package.tempName.value = details.name;
+                        package.tempcameracount.value = details.cameracount;
+                        package.tempAmount.value = details.amount;
+                        // package.tempAdditionalCameras.value = details['additional_cameras'];
+                        package.tempDescription.value = details.description;
                       }
                       package.editingMode.value = !package.editingMode.value;
                     },
@@ -751,7 +754,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                                     ),
                                   )
                                 : Text(
-                                    details['name']!,
+                                    details.name,
                                     style: const TextStyle(
                                       fontSize: Primary_font_size.Text8,
                                       fontWeight: FontWeight.bold,
@@ -764,31 +767,31 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                         _buildDetailRow(
                           icon: Icons.videocam_outlined,
                           title: 'Camera Count',
-                          value: package.editingMode.value ? package.tempCameraCount.value : details['camera_count']!,
+                          value: package.editingMode.value ? package.tempcameracount.value : details.cameracount,
                           isEditable: isCustomPackage && package.editingMode.value,
-                          onChanged: (value) => package.tempCameraCount.value = value,
+                          onChanged: (value) => package.tempcameracount.value = value,
                         ),
                         const SizedBox(height: 12),
                         _buildDetailRow(
                           icon: Icons.attach_money_outlined,
                           title: 'Package Amount',
-                          value: package.editingMode.value ? package.tempAmount.value : details['amount']!,
+                          value: package.editingMode.value ? package.tempAmount.value : details.amount,
                           isEditable: isCustomPackage && package.editingMode.value,
                           onChanged: (value) => package.tempAmount.value = value,
                         ),
                         const SizedBox(height: 12),
-                        _buildDetailRow(
-                          icon: Icons.money_off_csred_outlined,
-                          title: 'Additional Camera',
-                          value: package.editingMode.value ? package.tempAdditionalCameras.value : details['additional_cameras']!,
-                          isEditable: isCustomPackage && package.editingMode.value,
-                          onChanged: (value) => package.tempAdditionalCameras.value = value,
-                        ),
-                        const SizedBox(height: 12),
+                        // _buildDetailRow(
+                        //   icon: Icons.money_off_csred_outlined,
+                        //   title: 'Additional Camera',
+                        //   // value: package.editingMode.value ? package.tempAdditionalCameras.value : details['additional_cameras']!,
+                        //   isEditable: isCustomPackage && package.editingMode.value,
+                        //   // onChanged: (value) => package.tempAdditionalCameras.value = value,
+                        // ),
+                        // const SizedBox(height: 12),
                         _buildDetailRow(
                           icon: Icons.description_outlined,
                           title: 'Description',
-                          value: package.editingMode.value ? package.tempDescription.value : details['description']!,
+                          value: package.editingMode.value ? package.tempDescription.value : details.description,
                           isEditable: isCustomPackage && package.editingMode.value,
                           onChanged: (value) => package.tempDescription.value = value,
                         ),
@@ -823,9 +826,9 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                       onPressed: () {
                         setState(() {
                           package.name = package.tempName.value;
-                          package.cameraCount = package.tempCameraCount.value;
+                          package.cameracount = package.tempcameracount.value;
                           package.amount = package.tempAmount.value;
-                          package.additionalCameras = package.tempAdditionalCameras.value;
+                          // package.additionalCameras = package.tempAdditionalCameras.value;
                           package.description = package.tempDescription.value;
                           package.editingMode.value = false;
 
@@ -914,14 +917,14 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
     );
   }
 
-  Widget _buildPackageSitesTab(Map<String, dynamic> details) {
-    final packageIndex = quoteController.quoteModel.selectedPackages.indexWhere((p) => p.name == details['name']);
+  Widget _buildPackageSitesTab(Package details) {
+    final packageIndex = quoteController.quoteModel.selectedPackages.indexWhere((p) => p.name == details.name);
     final package = quoteController.quoteModel.selectedPackages[packageIndex];
 
     return Obx(() {
       // Get all available sites that aren't already assigned to other packages
       final availableSites = quoteController.quoteModel.QuoteSiteDetails.where((site) {
-        final isAssignedToAnyPackage = quoteController.quoteModel.selectedPackages.any((p) => p.sites.any((s) => s.siteName == site.siteName));
+        final isAssignedToAnyPackage = quoteController.quoteModel.selectedPackages.any((p) => p.sites.any((s) => s.sitename == site.sitename));
         return !isAssignedToAnyPackage;
       }).toList();
 
@@ -959,7 +962,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                               ),
                               onPressed: () {
                                 package.showSiteList.value = true;
-                                package.selectedIndices.value = package.sites.map((site) => availableSites.indexWhere((s) => s.siteName == site.siteName)).where((index) => index != -1).toList();
+                                package.selectedIndices.value = package.sites.map((site) => availableSites.indexWhere((s) => s.sitename == site.sitename)).where((index) => index != -1).toList();
                               },
                             ),
                           ],
@@ -1023,7 +1026,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                                           ),
                                         ),
                                         title: Text(
-                                          site.siteName,
+                                          site.sitename,
                                           style: const TextStyle(fontWeight: FontWeight.w500, color: Primary_colors.Color1, fontSize: Primary_font_size.Text8),
                                         ),
                                         trailing: IconButton(
@@ -1113,7 +1116,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                     visualDensity: VisualDensity.compact,
                                     title: Text(
-                                      site.siteName,
+                                      site.sitename,
                                       style: const TextStyle(
                                         color: Color.fromARGB(255, 221, 220, 220),
                                         fontSize: Primary_font_size.Text8,

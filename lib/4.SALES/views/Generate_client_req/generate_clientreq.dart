@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/4.SALES/services/ClientReq_services/ClientreqDetails_service.dart';
 // import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_details.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_client_req/clientreq_details/customer_details.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_client_req/clientreq_details/enquiry_details.dart';
@@ -10,10 +11,10 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../controllers/ClientReq_actions.dart';
 
-class Generate_clientreq extends StatefulWidget {
+class Generate_clientreq extends StatefulWidget with ClientreqDetailsService {
   final String? value;
 
-  const Generate_clientreq({super.key, required this.value});
+  Generate_clientreq({super.key, required this.value});
 
   @override
   _GenerateclientreqState createState() => _GenerateclientreqState();
@@ -27,6 +28,8 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
   void initState() {
     super.initState();
     clientreqController.initializeTabController(TabController(length: 3, vsync: this));
+    widget.get_productSuggestionList(context);
+    widget.get_OrganizationList(context);
   }
 
   // @override

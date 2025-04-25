@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/controllers/RFQ_actions.dart';
 import 'package:ssipl_billing/4.SALES/controllers/Sales_actions.dart';
+import 'package:ssipl_billing/4.SALES/services/RFQ_services/RFQ_Details_service.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_RFQ/RFQ_details.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_RFQ/RFQ_note.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_RFQ/RFQ_products.dart';
@@ -10,7 +11,7 @@ import 'package:ssipl_billing/4.SALES/views/Generate_RFQ/post_RFQ.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-class GenerateRfq extends StatefulWidget {
+class GenerateRfq extends StatefulWidget with RfqdetailsService {
   GenerateRfq({super.key, required this.eventID});
   int eventID;
   @override
@@ -25,6 +26,14 @@ class _GenerateRfqState extends State<GenerateRfq> with SingleTickerProviderStat
     super.initState();
     // GenerateRfq._tabController = ;
     rfqController.initializeTabController(TabController(length: 4, vsync: this));
+    widget.get_VendorList(context, 0);
+    widget.get_requiredData(
+      context,
+      "requestforquotation",
+      widget.eventID,
+    );
+    widget.get_productSuggestionList(context);
+    widget.get_noteSuggestionList(context);
   }
 
   @override

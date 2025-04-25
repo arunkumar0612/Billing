@@ -22,8 +22,8 @@ class _SUBSCRIPTION_QuoteDetailsState extends State<SUBSCRIPTION_QuoteDetails> {
 
   @override
   void initState() {
-    widget.get_requiredData(context, widget.eventtype, widget.eventID);
-    widget.get_CompanyBasedPackages(context, quoteController.quoteModel.companyid.value);
+    // widget.get_requiredData(context, widget.eventtype, widget.eventID);
+    // widget.get_CompanyBasedPackages(context, quoteController.quoteModel.companyid.value);
 
     super.initState();
   }

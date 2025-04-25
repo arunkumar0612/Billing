@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/Quotation_services/SUBSCRIPTION_QuoteSite_services.dart';
@@ -27,43 +26,46 @@ class _SUBSCRIPTION_QuoteSitesState extends State<SUBSCRIPTION_QuoteSites> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GestureDetector(
-                onTap: () {
-                  widget.editsite(i);
-                },
-                child: Container(
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: Primary_colors.Light),
-                  height: 40,
-                  width: 300,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 230,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              overflow: TextOverflow.ellipsis,
-                              '${i + 1}. ${quoteController.quoteModel.QuoteSiteDetails[i].siteName}', // Display camera type from map
-                              style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                quoteController.removeFromProductList(i);
-                              },
-                              icon: const Icon(
-                                Icons.close,
-                                size: 20,
+              MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: GestureDetector(
+                  onTap: () {
+                    widget.editsite(i);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: Primary_colors.Light),
+                    height: 40,
+                    width: 300,
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: 230,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                overflow: TextOverflow.ellipsis,
+                                '${i + 1}. ${quoteController.quoteModel.QuoteSiteDetails[i].sitename}', // Display camera type from map
+                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
-                          ],
-                        ),
-                      ],
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  quoteController.removeFromProductList(i);
+                                },
+                                icon: const Icon(
+                                  Icons.close,
+                                  size: 20,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -138,101 +140,133 @@ class _SUBSCRIPTION_QuoteSitesState extends State<SUBSCRIPTION_QuoteSites> {
                             },
                           ),
                           const SizedBox(height: 25),
-                          ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
-                            child: DropdownButtonFormField<String>(
-                              menuMaxHeight: 350,
-                              isExpanded: true,
-                              dropdownColor: Primary_colors.Dark,
-                              decoration: const InputDecoration(
-                                  label: Text(
-                                    'Select Billing Type',
-                                    style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176)),
-                                  ),
-                                  // hintText: 'Customer Type',hintStyle: TextStyle(),
-                                  contentPadding: EdgeInsets.all(13),
-                                  labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
-                                  filled: true,
-                                  fillColor: Primary_colors.Dark,
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.business,
-                                    color: Colors.white,
-                                  )),
-                              value: quoteController.quoteModel.Billingtype_Controller.value == "" ? null : quoteController.quoteModel.Billingtype_Controller.value,
-                              items: quoteController.quoteModel.BillingtypeList.map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value, style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7)),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                quoteController.updateBillingtype(newValue!);
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Select billing type';
-                                }
-                                return null;
-                              },
+                          SizedBox(
+                            width: 400,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child:
+                                      _buildCustomRadio(context, type: 'billType', title: 'Individual  Bill', value: quoteController.quoteModel.Billingtype_Controller.value, groupValue: 'individual'),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: _buildCustomRadio(context,
+                                      type: 'billType', title: 'Consolidate  Bill', value: quoteController.quoteModel.Billingtype_Controller.value, groupValue: 'consolidate'),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(height: 25),
-                          ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
-                            child: DropdownButtonFormField<String>(
-                              menuMaxHeight: 350,
-                              isExpanded: true,
-                              dropdownColor: Primary_colors.Dark,
-                              decoration: const InputDecoration(
-                                  label: Text(
-                                    'Select Mail Type',
-                                    style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176)),
-                                  ),
-                                  // hintText: 'Customer Type',hintStyle: TextStyle(),
-                                  contentPadding: EdgeInsets.all(13),
-                                  labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
-                                  filled: true,
-                                  fillColor: Primary_colors.Dark,
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.business,
-                                    color: Colors.white,
-                                  )),
-                              value: quoteController.quoteModel.Mailtype_Controller.value == "" ? null : quoteController.quoteModel.Mailtype_Controller.value,
-                              items: quoteController.quoteModel.MailtypeList.map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value, style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7)),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                quoteController.updateMailtype(newValue!);
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Select mail type';
-                                }
-                                return null;
-                              },
+                          SizedBox(
+                            width: 400,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: _buildCustomRadio(context, type: 'mailType', title: 'Individual Mail', value: quoteController.quoteModel.Mailtype_Controller.value, groupValue: 'individual'),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child:
+                                      _buildCustomRadio(context, type: 'mailType', title: 'Consolidate Mail', value: quoteController.quoteModel.Mailtype_Controller.value, groupValue: 'consolidate'),
+                                ),
+                              ],
                             ),
                           ),
+                          // ConstrainedBox(
+                          //   constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
+                          //   child: DropdownButtonFormField<String>(
+                          //     menuMaxHeight: 350,
+                          //     isExpanded: true,
+                          //     dropdownColor: Primary_colors.Dark,
+                          //     decoration: const InputDecoration(
+                          //         label: Text(
+                          //           'Select Billing Type',
+                          //           style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176)),
+                          //         ),
+                          //         // hintText: 'Customer Type',hintStyle: TextStyle(),
+                          //         contentPadding: EdgeInsets.all(13),
+                          //         labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
+                          //         filled: true,
+                          //         fillColor: Primary_colors.Dark,
+                          //         border: OutlineInputBorder(
+                          //           borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                          //         ),
+                          //         enabledBorder: OutlineInputBorder(
+                          //           borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                          //         ),
+                          //         focusedBorder: OutlineInputBorder(
+                          //           borderSide: BorderSide(),
+                          //         ),
+                          //         prefixIcon: Icon(
+                          //           Icons.business,
+                          //           color: Colors.white,
+                          //         )),
+                          //     value: quoteController.quoteModel.Billingtype_Controller.value == "" ? null : quoteController.quoteModel.Billingtype_Controller.value,
+                          //     items: quoteController.quoteModel.BillingtypeList.map((String value) {
+                          //       return DropdownMenuItem<String>(
+                          //         value: value,
+                          //         child: Text(value, style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7)),
+                          //       );
+                          //     }).toList(),
+                          //     onChanged: (String? newValue) {
+                          //       quoteController.updateBillingtype(newValue!);
+                          //     },
+                          //     validator: (value) {
+                          //       if (value == null || value.isEmpty) {
+                          //         return 'Please Select billing type';
+                          //       }
+                          //       return null;
+                          //     },
+                          //   ),
+                          // ),
+                          // const SizedBox(height: 25),
+                          // ConstrainedBox(
+                          //   constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
+                          //   child: DropdownButtonFormField<String>(
+                          //     menuMaxHeight: 350,
+                          //     isExpanded: true,
+                          //     dropdownColor: Primary_colors.Dark,
+                          //     decoration: const InputDecoration(
+                          //         label: Text(
+                          //           'Select Mail Type',
+                          //           style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 177, 176, 176)),
+                          //         ),
+                          //         // hintText: 'Customer Type',hintStyle: TextStyle(),
+                          //         contentPadding: EdgeInsets.all(13),
+                          //         labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
+                          //         filled: true,
+                          //         fillColor: Primary_colors.Dark,
+                          //         border: OutlineInputBorder(
+                          //           borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                          //         ),
+                          //         enabledBorder: OutlineInputBorder(
+                          //           borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                          //         ),
+                          //         focusedBorder: OutlineInputBorder(
+                          //           borderSide: BorderSide(),
+                          //         ),
+                          //         prefixIcon: Icon(
+                          //           Icons.business,
+                          //           color: Colors.white,
+                          //         )),
+                          //     value: quoteController.quoteModel.Mailtype_Controller.value == "" ? null : quoteController.quoteModel.Mailtype_Controller.value,
+                          //     items: quoteController.quoteModel.MailtypeList.map((String value) {
+                          //       return DropdownMenuItem<String>(
+                          //         value: value,
+                          //         child: Text(value, style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7)),
+                          //       );
+                          //     }).toList(),
+                          //     onChanged: (String? newValue) {
+                          //       quoteController.updateMailtype(newValue!);
+                          //     },
+                          //     validator: (value) {
+                          //       if (value == null || value.isEmpty) {
+                          //         return 'Please Select mail type';
+                          //       }
+                          //       return null;
+                          //     },
+                          //   ),
+                          // ),
                           const SizedBox(height: 30),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,6 +354,70 @@ class _SUBSCRIPTION_QuoteSitesState extends State<SUBSCRIPTION_QuoteSites> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildCustomRadio(
+    BuildContext context, {
+    required String type,
+    required String title,
+    required String value,
+    required String groupValue,
+  }) {
+    bool isSelected = value == groupValue;
+
+    return InkWell(
+      borderRadius: BorderRadius.circular(8),
+      onTap: () {
+        if (type == 'billType') {
+          quoteController.updateBillingtype(groupValue);
+        } else if (type == 'mailType') {
+          quoteController.updateMailtype(groupValue);
+        }
+        // clientreqController.update_CustomerType(groupValue);
+        false;
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
+        decoration: BoxDecoration(
+          color: isSelected ? Theme.of(context).primaryColor.withOpacity(0.1) : Primary_colors.Dark,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 20,
+              height: 20,
+              padding: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isSelected ? Theme.of(context).primaryColor : Colors.grey,
+                  width: 1.5,
+                ),
+              ),
+              child: isSelected
+                  ? Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    )
+                  : null,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: Primary_font_size.Text8,
+                fontWeight: FontWeight.w500,
+                color: isSelected ? Theme.of(context).primaryColor : const Color.fromARGB(255, 180, 180, 180),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

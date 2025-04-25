@@ -176,7 +176,7 @@ mixin PostServices {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
           loader.stop();
-          await Success_dialog(context: context, title: "Invoice", content: value.message!, onOk: () {});
+          await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
           // Navigator.of(context).pop(true);
           // invoiceController.resetData();
         } else {

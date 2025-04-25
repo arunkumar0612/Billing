@@ -109,7 +109,7 @@ mixin PostServices {
           loader.stop();
           await Success_dialog(
             context: context,
-            title: "Rfq",
+            title: "SUCCESS",
             content: value.message!,
             onOk: () {},
           );

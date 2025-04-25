@@ -178,7 +178,7 @@ mixin PostServices {
           loader.stop();
           await Success_dialog(
             context: context,
-            title: "Dc",
+            title: "SUCCESS",
             content: value.message!,
             onOk: () {},
           );

@@ -158,7 +158,7 @@ mixin SUBSCRIPTION_ClientreqNoteService {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
           loader.stop();
-          await Success_dialog(context: context, title: "CLIENT REQUIREMENT", content: value.message!, onOk: () {});
+          await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
           Navigator.of(context).pop(true);
           clientreqController.resetData();
         } else {

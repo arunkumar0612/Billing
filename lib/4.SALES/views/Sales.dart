@@ -1733,14 +1733,52 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                           child: Container(
                                             color: Colors.transparent,
                                             key: const ValueKey(1),
-                                            child: ListView.builder(
-                                              itemCount: salesController.salesModel.processcustomerList.length,
-                                              itemBuilder: (context, index) {
-                                                final customername = salesController.salesModel.processcustomerList[index].customerName;
-                                                final customerid = salesController.salesModel.processcustomerList[index].customerId;
-                                                return _buildSales_ClientCard(customername, customerid, index);
-                                              },
-                                            ),
+                                            child: salesController.salesModel.processcustomerList.isNotEmpty
+                                                ? ListView.builder(
+                                                    itemCount: salesController.salesModel.processcustomerList.length,
+                                                    itemBuilder: (context, index) {
+                                                      final customername = salesController.salesModel.processcustomerList[index].customerName;
+                                                      final customerid = salesController.salesModel.processcustomerList[index].customerId;
+                                                      return _buildSales_ClientCard(customername, customerid, index);
+                                                    },
+                                                  )
+                                                : Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Column(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          Icon(
+                                                            Icons.people_outline, // Appropriate icon for customers
+                                                            size: 64,
+                                                            color: Colors.blueGrey[300],
+                                                          ),
+                                                          const SizedBox(height: 16),
+                                                          Text(
+                                                            'No Active Customers',
+                                                            style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight: FontWeight.w600,
+                                                              color: Colors.blueGrey[800],
+                                                            ),
+                                                          ),
+                                                          const SizedBox(height: 8),
+                                                          Padding(
+                                                            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                                                            child: Text(
+                                                              'When you add customers, they will appear here',
+                                                              textAlign: TextAlign.center,
+                                                              style: TextStyle(
+                                                                fontSize: 14,
+                                                                color: Colors.blueGrey[400],
+                                                                height: 1.4,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
                                           ),
                                         ),
                                       ],

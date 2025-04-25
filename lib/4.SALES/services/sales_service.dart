@@ -74,7 +74,7 @@ mixin SalesServices {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          await Success_dialog(context: context, title: 'Customer List', content: "Customer List fetched successfully", onOk: () {});
+          await Success_dialog(context: context, title: 'SUCCESS', content: "Customer List fetched successfully", onOk: () {});
           salesController.addToCustomerList(value);
           // if (kDebugMode) {
           //   print("*****************${salesController.salesModel.customerList[1].customerId}");
@@ -910,7 +910,7 @@ mixin SalesServices {
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
-          await Success_dialog(context: context, title: "Share", content: value.message!, onOk: () {});
+          await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
           Navigator.of(context).pop(true);
           salesController.reset_shareData();
         } else {

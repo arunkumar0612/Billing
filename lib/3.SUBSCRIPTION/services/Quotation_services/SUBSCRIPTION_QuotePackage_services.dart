@@ -61,12 +61,13 @@ mixin SUBSCRIPTION_QuotepackageService {
 
       if (emptyPackages.isNotEmpty) {
         final shouldReplace = await Warning_dialog(
-                context: context,
-                title: 'Replace Empty Packages?',
-                content: 'The following packages have no sites assigned:\n'
-                    '${emptyPackages.map((p) => p.name).join(', ')}\n'
-                    'Would you like to replace them with "${customPackage.name}"?',
-                showCancel: true) ??
+              context: context,
+              title: 'Replace Empty Packages?',
+              content: 'The following packages have no sites assigned:\n'
+                  '${emptyPackages.map((p) => p.name).join(', ')}\n'
+                  'Would you like to replace them with "${customPackage.name}"?',
+              // showCancel: true
+            ) ??
             false;
 
         if (shouldReplace) {

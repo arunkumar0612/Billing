@@ -70,9 +70,9 @@ mixin PostServices {
   dynamic postData(context, int messageType) async {
     try {
       if (invoiceController.postDatavalidation()) {
-        await Success_dialog(
+        await Error_dialog(
           context: context,
-          title: "POST",
+          title: "ERROR",
           content: "All fields must be filled",
           onOk: () {},
         );
@@ -118,7 +118,7 @@ mixin PostServices {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
           loader.stop();
-          await Success_dialog(context: context, title: "Invoice", content: value.message!, onOk: () {});
+          await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
           // Navigator.of(context).pop(true);
           // invoiceController.resetData();
         } else {

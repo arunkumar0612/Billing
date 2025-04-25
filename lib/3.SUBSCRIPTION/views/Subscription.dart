@@ -961,7 +961,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                           context: context,
                                           title: 'Confirmation',
                                           content: 'Are you sure you want to Archive this process?',
-                                          showCancel: true,
+                                          // showCancel: true,
                                           onOk: () {
                                             widget.ArchiveProcesscontrol(
                                               context,
@@ -976,7 +976,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                           context: context,
                                           title: 'Confirmation',
                                           content: 'Are you sure you want to Unarchive this process?',
-                                          showCancel: true,
+                                          // showCancel: true,
                                           onOk: () {
                                             widget.ArchiveProcesscontrol(
                                               context,
@@ -991,7 +991,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                           context: context,
                                           title: 'Error',
                                           content: 'Unable to modify the process',
-                                          showCancel: true,
+                                          // showCancel: true,
                                         );
                                         break;
                                       case 'Delete':
@@ -999,7 +999,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                           context: context,
                                           title: 'Confirmation',
                                           content: 'Are you sure you want to delete this process?',
-                                          showCancel: true,
+                                          // showCancel: true,
                                           onOk: () {
                                             widget.DeleteProcess(
                                               context,

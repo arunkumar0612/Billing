@@ -130,7 +130,7 @@ mixin salesCustom_PostServices {
   dynamic postData(context, int messageType) async {
     try {
       if (pdfpopup_controller.postDatavalidation()) {
-        await Success_dialog(context: context, title: "POST", content: "All fields must be filled", onOk: () {});
+        await Error_dialog(context: context, title: "Error", content: "All fields must be filled", onOk: () {});
         return;
       }
       loader.start(context);

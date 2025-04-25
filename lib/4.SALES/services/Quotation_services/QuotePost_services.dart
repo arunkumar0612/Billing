@@ -108,7 +108,7 @@ mixin PostServices {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
           loader.stop();
-          await Error_dialog(context: context, title: "Quotation", content: value.message!, onOk: () {});
+          await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
           // Navigator.of(context).pop(true);
           // quoteController.resetData();
         } else {

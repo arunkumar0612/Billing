@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/models/constants/DC_constants.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/DC_entities.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/product_entities.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
 class DcController extends GetxController {
@@ -200,18 +201,7 @@ class DcController extends GetxController {
           print('Selected file exceeds 2MB in size.');
         }
         // Show Alert Dialog
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: const Text('Selected file exceeds 2MB in size.'),
-            actions: [
-              ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
+        Error_dialog(context: context, title: 'Error', content: 'Selected file exceeds 2MB in size.');
         dcModel.pickedFile.value = null;
         dcModel.selectedPdf.value = null;
       } else {

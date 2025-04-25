@@ -9,6 +9,7 @@ import 'package:ssipl_billing/4.SALES/models/constants/ClientReq_constants.dart'
 import 'package:ssipl_billing/4.SALES/models/entities/ClientReq_entities.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/Sales_entities.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/product_entities.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
 class ClientreqController extends GetxController {
@@ -188,18 +189,8 @@ class ClientreqController extends GetxController {
       final fileLength = await file.length();
 
       if (fileLength > 2 * 1024 * 1024) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: const Text('Selected file exceeds 2MB in size.'),
-            actions: [
-              ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
+        Error_dialog(context: context, title: 'Error', content: 'Selected file exceeds 2MB in size.');
+
         clientReqModel.pickedFile.value = null;
         clientReqModel.morFile.value = null;
       } else {

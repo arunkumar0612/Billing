@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/models/constants/CustomPDF_constants/CustomPDF_dc_constants.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entities.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 
 class CustomPDF_DcController extends GetxController {
   var pdfModel = CustomPDF_DcModel().obs;
@@ -66,18 +67,7 @@ class CustomPDF_DcController extends GetxController {
           print('Selected file exceeds 2MB in size.');
         }
         // Show Alert Dialog
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: const Text('Selected file exceeds 2MB in size.'),
-            actions: [
-              ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
+        Error_dialog(context: context, title: 'Error', content: 'Selected file exceeds 2MB in size.');
         // dcModel.pickedFile.value = null;
         pdfModel.value.genearatedPDF.value = null;
       } else {

@@ -81,7 +81,7 @@ class _PackagepageState extends State<Packagepage> {
                                       context: context,
                                       title: 'Confirmation',
                                       content: 'Are you sure you want to delete this package?',
-                                      showCancel: true,
+                                      // showCancel: true,
                                       onOk: () {
                                         widget.DeleteGlobalPackage(context, subscriptionController.subscriptionModel.selectedPackagessubscriptionID);
                                         // print('object');

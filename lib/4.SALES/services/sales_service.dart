@@ -74,7 +74,7 @@ mixin SalesServices {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          await Success_dialog(context: context, title: 'Customer List', content: "Customer List fetched successfully", onOk: () {});
+          await Success_dialog(context: context, title: 'SUCCESS', content: "Customer List fetched successfully", onOk: () {});
           salesController.addToCustomerList(value);
           // if (kDebugMode) {
           //   print("*****************${salesController.salesModel.customerList[1].customerId}");
@@ -486,33 +486,10 @@ mixin SalesServices {
                   ),
                   onPressed: () async {
                     if (clientreqController.anyHavedata()) {
-                      bool? proceed = await showDialog<bool>(
+                      bool? proceed = await Warning_dialog(
                         context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            title: const Text("Warning"),
-                            content: const Text(
-                              "The data may be lost. Do you want to proceed?",
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(false); // No action
-                                },
-                                child: const Text("No"),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(true); // Yes action
-                                },
-                                child: const Text("Yes"),
-                              ),
-                            ],
-                          );
-                        },
+                        title: 'Warning',
+                        content: "The data may be lost. Do you want to proceed?",
                       );
 
                       if (proceed == true) {
@@ -591,33 +568,10 @@ mixin SalesServices {
                         (invoiceController.invoiceModel.TitleController.value.text != "") ||
                         (invoiceController.invoiceModel.Invoice_table_heading.value != "")) {
                       // Show confirmation dialog
-                      bool? proceed = await showDialog<bool>(
+                      bool? proceed = await Warning_dialog(
                         context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            title: const Text("Warning"),
-                            content: const Text(
-                              "The data may be lost. Do you want to proceed?",
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(false); // No action
-                                },
-                                child: const Text("No"),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(true); // Yes action
-                                },
-                                child: const Text("Yes"),
-                              ),
-                            ],
-                          );
-                        },
+                        title: 'Warning',
+                        content: "The data may be lost. Do you want to proceed?",
                       );
 
                       if (proceed == true) {
@@ -705,32 +659,7 @@ mixin SalesServices {
                         (_quoteController.quoteModel.gstController.value.text != "") ||
                         (_quoteController.quoteModel.Quote_table_heading.value != "")) {
                       // Show confirmation dialog
-                      bool? proceed = await showDialog<bool>(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                            title: const Text("Warning"),
-                            content: const Text(
-                              "The data may be lost. Do you want to proceed?",
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(false); // No action
-                                },
-                                child: const Text("No"),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(true); // Yes action
-                                },
-                                child: const Text("Yes"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
 
                       // If user confirms (Yes), clear data and close the dialog
                       if (proceed == true) {
@@ -818,34 +747,7 @@ mixin SalesServices {
                         (rfqController.rfqModel.TitleController.value.text != "") ||
                         (rfqController.rfqModel.Rfq_table_heading.value != "")) {
                       // Show confirmation dialog
-                      bool? proceed = await showDialog<bool>(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            title: const Text("Warning"),
-                            content: const Text(
-                              "The data may be lost. Do you want to proceed?",
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(false); // No action
-                                },
-                                child: const Text("No"),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(true); // Yes action
-                                },
-                                child: const Text("Yes"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
 
                       if (proceed == true) {
                         Navigator.of(context).pop();
@@ -933,32 +835,7 @@ mixin SalesServices {
                         (dcController.dcModel.TitleController.value.text != "") ||
                         (dcController.dcModel.Dc_table_heading.value != "")) {
                       // Show confirmation dialog
-                      bool? proceed = await showDialog<bool>(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                            title: const Text("Warning"),
-                            content: const Text(
-                              "The data may be lost. Do you want to proceed?",
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(false); // No action
-                                },
-                                child: const Text("No"),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(true); // Yes action
-                                },
-                                child: const Text("Yes"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
 
                       if (proceed == true) {
                         Navigator.of(context).pop();
@@ -1033,7 +910,7 @@ mixin SalesServices {
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
-          await Success_dialog(context: context, title: "Share", content: value.message!, onOk: () {});
+          await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
           Navigator.of(context).pop(true);
           salesController.reset_shareData();
         } else {

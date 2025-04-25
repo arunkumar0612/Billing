@@ -179,7 +179,6 @@ Future<bool?> Warning_dialog({
   required BuildContext context,
   required String title,
   required String content,
-  bool showCancel = false,
   VoidCallback? onOk,
 }) async {
   return await showGeneralDialog<bool>(
@@ -248,36 +247,35 @@ Future<bool?> Warning_dialog({
             ),
             actionsAlignment: MainAxisAlignment.center,
             actions: [
-              if (showCancel)
-                TweenAnimationBuilder(
-                  tween: Tween(begin: 0.0, end: 1.0),
-                  duration: const Duration(milliseconds: 600),
-                  curve: Curves.easeOutBack,
-                  builder: (context, value, child) {
-                    return Transform.scale(
-                      scale: value,
-                      child: child,
-                    );
-                  },
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.orange),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+              TweenAnimationBuilder(
+                tween: Tween(begin: 0.0, end: 1.0),
+                duration: const Duration(milliseconds: 600),
+                curve: Curves.easeOutBack,
+                builder: (context, value, child) {
+                  return Transform.scale(
+                    scale: value,
+                    child: child,
+                  );
+                },
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.orange),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(
-                        color: Colors.orange,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                    padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+                  ),
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: Colors.orange,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
                     ),
                   ),
                 ),
+              ),
               const SizedBox(width: 15),
               TweenAnimationBuilder(
                 tween: Tween(begin: 0.0, end: 1.0),

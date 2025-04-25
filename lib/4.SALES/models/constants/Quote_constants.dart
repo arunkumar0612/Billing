@@ -70,6 +70,7 @@ class QuoteModel extends GetxController with GetSingleTickerProviderStateMixin {
   var filePathController = TextEditingController().obs;
   var CCemailToggle = false.obs;
   var isGST_local = true.obs;
+  final formKey1 = GlobalKey<FormState>().obs;
 
   @override
   void onInit() {

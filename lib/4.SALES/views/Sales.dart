@@ -1445,7 +1445,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                     ),
                                                                                   ),
                                                                                 if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.rfq == true) &&
-                                                                                    (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                    (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1) &&
+                                                                                    (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus != 1))
                                                                                   TextButton(
                                                                                     onPressed: () async {
                                                                                       bool success = await widget.GetPDFfile(

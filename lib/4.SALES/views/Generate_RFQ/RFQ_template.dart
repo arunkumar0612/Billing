@@ -23,8 +23,9 @@ Future<Uint8List> generate_RFQ(
     company_addr_name: "SPORADA SECURE INDIA PRIVATE LIMITED",
     company_email: 'Email : sales@sporadasecure.com',
     company_phone: "Phone : +91-422-2312363",
-    company_addr: "Address : 687/7, 3rd Floor, Sakthivel Towers, Trichy road, Ramanathapuram, Coimbatore - 641045",
-    RFQ_no: 'AA/2324D/EF',
+    company_addr:
+        "Address : 687/7, 3rd Floor, Sakthivel Towers, Trichy road, Ramanathapuram, Coimbatore - 641045",
+    RFQ_no: RFQ_num,
     to_addr_name: "PREMIER ELEKTRICALS",
     to_email: 'Email : premierelektricals@gmail.com',
     to_phone: "Phone : 04252-2311229842214563",
@@ -71,7 +72,9 @@ class Request_for_quote {
     Helvetica_bold = await loadFont_bold();
     final doc = pw.Document();
     profileImage = pw.MemoryImage(
-      (await rootBundle.load('assets/images/sporada.jpeg')).buffer.asUint8List(),
+      (await rootBundle.load('assets/images/sporada.jpeg'))
+          .buffer
+          .asUint8List(),
     );
     doc.addPage(
       pw.MultiPage(
@@ -190,7 +193,8 @@ class Request_for_quote {
                 // width: 285,
                 height: 20,
                 decoration: pw.BoxDecoration(
-                  borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)),
+                  borderRadius:
+                      const pw.BorderRadius.all(pw.Radius.circular(2)),
                   color: baseColor,
                   border: pw.Border.all(
                     color: baseColor,
@@ -316,7 +320,8 @@ class Request_for_quote {
                 // width: 285,
                 height: 20,
                 decoration: pw.BoxDecoration(
-                  borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)),
+                  borderRadius:
+                      const pw.BorderRadius.all(pw.Radius.circular(2)),
                   color: baseColor,
                   border: pw.Border.all(
                     color: baseColor,
@@ -489,7 +494,8 @@ class Request_for_quote {
           (col) {
             // Check if this is the last row and adjust the alignment
             if (row == products.length - 1 && col == 0) {
-              return products[row].getIndex(col); // Align this last row differently
+              return products[row]
+                  .getIndex(col); // Align this last row differently
             }
             return products[row].getIndex(col);
           },
@@ -557,21 +563,25 @@ class Request_for_quote {
               child: pw.Row(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  regular("${rfqController.rfqModel.Rfq_noteList.length + 1}.", 10),
+                  regular(
+                      "${rfqController.rfqModel.Rfq_noteList.length + 1}.", 10),
                   pw.SizedBox(width: 5),
                   pw.Expanded(
                     child: pw.Column(
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
-                        bold(rfqController.rfqModel.Rfq_table_heading.value, 10),
-                        ...rfqController.rfqModel.Rfq_recommendationList.map((recommendation) {
+                        bold(
+                            rfqController.rfqModel.Rfq_table_heading.value, 10),
+                        ...rfqController.rfqModel.Rfq_recommendationList
+                            .map((recommendation) {
                           return pw.Padding(
                             padding: const pw.EdgeInsets.only(left: 5, top: 5),
                             child: pw.Row(
                               children: [
                                 pw.Container(
                                   width: 120,
-                                  child: regular(recommendation.key.toString(), 10),
+                                  child: regular(
+                                      recommendation.key.toString(), 10),
                                 ),
                                 regular(":", 10),
                                 pw.SizedBox(width: 5),
@@ -591,7 +601,9 @@ class Request_for_quote {
             child: pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                regular("${rfqController.rfqModel.Rfq_noteList.length + (rfqController.rfqModel.Rfq_recommendationList.isEmpty ? 1 : 2)}.", 10),
+                regular(
+                    "${rfqController.rfqModel.Rfq_noteList.length + (rfqController.rfqModel.Rfq_recommendationList.isEmpty ? 1 : 2)}.",
+                    10),
                 pw.SizedBox(width: 5),
                 pw.Expanded(
                   child: pw.Column(
@@ -628,7 +640,9 @@ class Request_for_quote {
                                 ),
                                 regular(":", 10),
                                 pw.SizedBox(width: 5),
-                                regular("687/7, 3rd Floor, Sakthivel Towers, Trichy road, Ramanathapuram, Coimbatore - 641045", 10),
+                                regular(
+                                    "687/7, 3rd Floor, Sakthivel Towers, Trichy road, Ramanathapuram, Coimbatore - 641045",
+                                    10),
                               ],
                             ),
                           ],

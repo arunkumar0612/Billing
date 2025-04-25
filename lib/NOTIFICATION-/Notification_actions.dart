@@ -229,9 +229,9 @@ class NotificationController extends GetxController {
       if (context != null) {
         await Refresher().refreshAll();
       }
-      if (!notificationModel.notifications.contains(message)) {
-        notificationModel.notifications.add(message);
-      }
+      // if (!notificationModel.notifications.contains(message)) {
+      //   notificationModel.notifications.add(message);
+      // }
     }
   }
 

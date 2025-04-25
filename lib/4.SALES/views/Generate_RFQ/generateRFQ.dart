@@ -59,7 +59,7 @@ class _GenerateRfqState extends State<GenerateRfq> with SingleTickerProviderStat
                 const Padding(
                   padding: EdgeInsets.all(15),
                   child: Text(
-                    "APPROVED QUOTATION",
+                    "QUOTATION",
                     style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                   ),
                 ),

@@ -305,7 +305,7 @@ mixin SubscriptionServices {
     }
   }
 
-  void DeleteGlobalPackage(context, List<int> subId) async {
+  Future<void> DeleteGlobalPackage(context, List<int> subId) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({
         "subId": subId,
@@ -313,9 +313,8 @@ mixin SubscriptionServices {
       if (response?['statusCode'] == 200) {
         CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {
-          subscriptionController.subscriptionModel.packageselectedID.value =
-              subId.contains(subscriptionController.subscriptionModel.packageselectedID.value) ? null : subscriptionController.subscriptionModel.packageselectedID.value;
           subscriptionController.subscriptionModel.selectedPackagessubscriptionID.clear();
+          subscriptionController.subscriptionModel.filteredPackages.removeWhere((p) => subId.contains(p.subscriptionId));
 
           // subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList[subscriptionController.subscriptionModel.packageselectedIndex.value!].subscriptionId == subId
           //     ? null

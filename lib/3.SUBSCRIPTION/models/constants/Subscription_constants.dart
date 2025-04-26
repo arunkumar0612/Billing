@@ -39,6 +39,10 @@ class SubscriptionModel extends GetxController with GetSingleTickerProviderState
   var CCemailToggle = false.obs;
 
   //  GLOBALPAGE VARIABLES
+  // In your SubscriptionController or relevant controller
+  final packageSearchController = TextEditingController().obs;
+  final isSearchingPackages = false.obs;
+  final filteredPackages = <Global_packageList>[].obs;
   var packageselectedID = RxnInt();
   var packageisEditing = false.obs;
   final editingPackage = Rx<dynamic>(null);

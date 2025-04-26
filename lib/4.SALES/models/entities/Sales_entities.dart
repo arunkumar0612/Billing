@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
@@ -76,6 +77,7 @@ class Process {
   final String Process_date;
   final int age_in_days;
   final List<TimelineEvent> TimelineEvents;
+
   Process({
     required this.processid,
     required this.title,
@@ -86,11 +88,12 @@ class Process {
   });
 
   factory Process.fromJson(CMDlResponse json, int i) {
+    String formattedDate = DateFormat("dd MMM yyyy").format(DateTime.parse(json.data[i]['Process_date'] as String));
     return Process(
       processid: json.data[i]['processid'] as int,
       title: json.data[i]['title'] ?? '',
       customer_name: json.data[i]['customer_name'] as String,
-      Process_date: json.data[i]['Process_date'] as String,
+      Process_date: formattedDate,
       age_in_days: json.data[i]['age_in_days'] as int,
       TimelineEvents: (json.data[i]['TimelineEvents'] as List<dynamic>).map((event) => TimelineEvent.fromJson(event as Map<String, dynamic>)).toList(),
     );

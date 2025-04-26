@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:ssipl_billing/4.SALES/controllers/ClientReq_actions.dart';
 import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
 import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
@@ -1134,7 +1133,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                         Expanded(
                                                             flex: 4,
                                                             child: Text(
-                                                              DateFormat("dd MMM yyyy").format(DateTime.parse(salesController.salesModel.processList[index].Process_date)),
+                                                              salesController.salesModel.processList[index].Process_date,
                                                               style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                             )),
                                                         Expanded(
@@ -1499,7 +1498,9 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                           context: context, eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                       if (success) {
                                                                                         widget.GenerateDelivery_challan_dialougebox(
-                                                                                            context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname);
+                                                                                            context,
+                                                                                            salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                                            salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname);
                                                                                         dcController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                         if (kDebugMode) {
                                                                                           print(dcController.dcModel.processID);

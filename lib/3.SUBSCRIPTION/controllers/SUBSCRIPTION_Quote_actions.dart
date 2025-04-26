@@ -279,12 +279,8 @@ class SUBSCRIPTION_QuoteController extends GetxController {
   void addSite({required BuildContext context, required String siteName, required int cameraquantity, required String address, required String billingType, required String mailType}) {
     try {
       if (siteName.trim().isEmpty || cameraquantity <= 0 || address.trim().isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Please provide valid product details.'),
-          ),
-        );
+        Error_SnackBar(context, 'Please provide valid product details.');
+
         return;
       }
       quoteModel.QuoteSiteDetails.add(Site(
@@ -297,12 +293,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         mailType: mailType,
       ));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('An error occurred while adding the product.'),
-        ),
-      );
+      Error_SnackBar(context, 'An error occurred while adding the product.');
     }
   }
 
@@ -311,23 +302,15 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     try {
       // Validate input fields
       if (siteName.trim().isEmpty || cameraquantity <= 0 || address.trim().isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Please provide valid product details.'),
-          ),
-        );
+        Error_SnackBar(context, 'Please provide valid product details.');
+
         return;
       }
 
       // Check if the editIndex is valid
       if (editIndex < 0 || editIndex >= quoteModel.QuoteSiteDetails.length) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Invalid product index.'),
-          ),
-        );
+        Error_SnackBar(context, 'Invalid product index.');
+
         return;
       }
 
@@ -341,12 +324,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
       );
     } catch (e) {
       // Handle unexpected errors
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('An error occurred while updating the product.'),
-        ),
-      );
+      Error_SnackBar(context, 'An error occurred while updating the product.');
     }
   }
 

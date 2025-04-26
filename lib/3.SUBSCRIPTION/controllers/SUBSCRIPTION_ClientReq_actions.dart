@@ -233,22 +233,13 @@ class SUBSCRIPTION_ClientreqController extends GetxController {
   }) {
     try {
       if (siteName.trim().isEmpty || cameraquantity <= 0 || address.trim().isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Please provide valid product details.'),
-          ),
-        );
+        Error_SnackBar(context, 'Please provide valid product details.');
+
         return;
       }
       clientReqModel.clientReqSiteDetails.add(SUBSCRIPTION_ClientreqSites((clientReqModel.clientReqSiteDetails.length + 1).toString(), siteName, cameraquantity, address));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('An error occurred while adding the product.'),
-        ),
-      );
+      Error_SnackBar(context, 'An error occurred while adding the product.');
     }
   }
 
@@ -262,23 +253,15 @@ class SUBSCRIPTION_ClientreqController extends GetxController {
     try {
       // Validate input fields
       if (siteName.trim().isEmpty || cameraquantity <= 0 || address.trim().isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Please provide valid product details.'),
-          ),
-        );
+        Error_SnackBar(context, 'Please provide valid product details.');
+
         return;
       }
 
       // Check if the editIndex is valid
       if (editIndex < 0 || editIndex >= clientReqModel.clientReqSiteDetails.length) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Invalid product index.'),
-          ),
-        );
+        Error_SnackBar(context, 'Invalid product index.');
+
         return;
       }
 
@@ -305,12 +288,7 @@ class SUBSCRIPTION_ClientreqController extends GetxController {
       // .updateProductDetails(creditController.clientReqModel.clientReq_productDetails);
     } catch (e) {
       // Handle unexpected errors
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('An error occurred while updating the product.'),
-        ),
-      );
+      Error_SnackBar(context, 'An error occurred while updating the product.');
     }
   }
 

@@ -195,7 +195,7 @@ mixin SalesServices {
         CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {
           Get_salesProcessList(customerid);
-          Basic_SnackBar(context, "Feedback added successfully");
+          Success_SnackBar(context, "Feedback added successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
           await Error_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
@@ -208,9 +208,9 @@ mixin SalesServices {
     }
   }
 
-  Future<bool> GetPDFfile(context, int eventid) async {
+  Future<bool> GetSalesPDFfile({required BuildContext context, required int eventid, String? eventtype}) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid}, API.sales_getbinaryfile_API);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid, if (eventtype != null) "eventtype": eventtype}, API.sales_getbinaryfile_API);
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
@@ -320,7 +320,7 @@ mixin SalesServices {
       String savePath = "$selectedDirectory/$filename.pdf";
       await pdfFile.copy(savePath);
 
-      Basic_SnackBar(context, "✅ PDF downloaded successfully to: $savePath");
+      Success_SnackBar(context, "✅ PDF downloaded successfully to: $savePath");
     } catch (e) {
       loader.stop();
       if (kDebugMode) {
@@ -347,7 +347,7 @@ mixin SalesServices {
       if (value.code) {
         salesController.salesModel.selectedIndices.clear();
         Get_salesProcessList(salesController.salesModel.customerId.value!);
-        Basic_SnackBar(context, "Process Deleted successfully");
+        Success_SnackBar(context, "Process Deleted successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
         await Error_dialog(context: context, title: 'Delete Process Error', content: value.message ?? "", onOk: () {});
@@ -367,7 +367,7 @@ mixin SalesServices {
       if (value.code) {
         salesController.salesModel.selectedIndices.clear();
         Get_salesProcessList(salesController.salesModel.customerId.value!);
-        Basic_SnackBar(context, type == 0 ? "Process Unarchived successfully" : "Process Archived successfully");
+        Success_SnackBar(context, type == 0 ? "Process Unarchived successfully" : "Process Archived successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
         await Error_dialog(context: context, title: type == 0 ? 'Error : Failed to unarchive the process.' : 'Error : Failed to archive the process.', content: value.message ?? "", onOk: () {});
@@ -438,7 +438,7 @@ mixin SalesServices {
         CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {
           Get_salesProcessList(customerid);
-          Basic_SnackBar(context, "Approval Sent successfully");
+          Success_SnackBar(context, "Approval Sent successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
           await Error_dialog(context: context, title: 'Approval Send add Error', content: value.message ?? "", onOk: () {});

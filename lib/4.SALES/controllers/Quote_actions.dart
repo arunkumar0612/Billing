@@ -291,12 +291,8 @@ class QuoteController extends GetxController {
   }) {
     try {
       if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Please provide valid product details.'),
-          ),
-        );
+        Error_SnackBar(context, 'Please provide valid product details.');
+
         return;
       }
 
@@ -309,12 +305,7 @@ class QuoteController extends GetxController {
         quantity: quantity,
       ));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('An error occurred while adding the product.'),
-        ),
-      );
+      Error_SnackBar(context, 'An error occurred while adding the product.');
     }
   }
 
@@ -330,23 +321,15 @@ class QuoteController extends GetxController {
     try {
       // Validate input fields
       if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Please provide valid product details.'),
-          ),
-        );
+        Error_SnackBar(context, 'Please provide valid product details.');
+
         return;
       }
 
       // Check if the editIndex is valid
       if (editIndex < 0 || editIndex >= quoteModel.Quote_products.length) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Invalid product index.'),
-          ),
-        );
+        Error_SnackBar(context, 'Invalid product index.');
+
         return;
       }
 
@@ -380,12 +363,7 @@ class QuoteController extends GetxController {
       // .updateProductDetails(quoteController.quoteModel.Quote_productDetails);
     } catch (e) {
       // Handle unexpected errors
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('An error occurred while updating the product.'),
-        ),
-      );
+      Error_SnackBar(context, 'An error occurred while updating the product.');
     }
   }
 
@@ -410,7 +388,9 @@ class QuoteController extends GetxController {
     quoteModel.product_editIndex.value = null;
   }
 
-  void update_requiredData(CMDmResponse value) {
+  void update_requiredData(
+    CMDmResponse value,
+  ) {
     RequiredData instance = RequiredData.fromJson(value);
     quoteModel.Quote_no.value = instance.eventnumber;
     updateQuotenumber(instance.eventnumber);

@@ -92,6 +92,10 @@ class Request_for_quote {
           title(context),
           pw.SizedBox(height: 10),
           _contentTable(context),
+          pw.Divider(
+            color: PdfColors.grey500,
+            thickness: 0.2,
+          ),
           pw.SizedBox(height: 10),
           tax_tabl(context),
         ],

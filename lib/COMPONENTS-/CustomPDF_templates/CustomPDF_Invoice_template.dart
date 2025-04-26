@@ -9,23 +9,24 @@ import '../../4.SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entit
 import '../../4.SALES/models/entities/Invoice_entities.dart';
 import '../../UTILS-/helpers/support_functions.dart';
 
-Future<Uint8List> generate_CustomPDFInvoice(PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, invoice_num, title, gst, invoice_gstTotals, isGST_local) async {
+Future<Uint8List> generate_CustomPDFInvoice(
+    PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, invoice_num, title, gst, invoice_gstTotals, isGST_local) async {
   final invoice = MaualInvoiceTemplate(
-      date: date,
-      products: products,
-      GST: gst,
-      baseColor: PdfColors.green500,
-      accentColor: PdfColors.blueGrey900,
-      client_addr_name: client_addr_name,
-      client_addr: client_addr,
-      bill_addr_name: bill_addr_name,
-      bill_addr: bill_addr,
-      invoiceNo: invoice_num ?? "",
-      title_text: title,
-      type: '',
-      invoice_gstTotals: invoice_gstTotals,
-      isGST_local: isGST_local,
-      );
+    date: date,
+    products: products,
+    GST: gst,
+    baseColor: PdfColors.green500,
+    accentColor: PdfColors.blueGrey900,
+    client_addr_name: client_addr_name,
+    client_addr: client_addr,
+    bill_addr_name: bill_addr_name,
+    bill_addr: bill_addr,
+    invoiceNo: invoice_num ?? "",
+    title_text: title,
+    type: '',
+    invoice_gstTotals: invoice_gstTotals,
+    isGST_local: isGST_local,
+  );
 
   return await invoice.buildPdf(pageFormat);
 }
@@ -377,14 +378,14 @@ class MaualInvoiceTemplate {
           color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
         );
       },
-      rowDecoration: pw.BoxDecoration(
-        border: pw.Border(
-          bottom: pw.BorderSide(
-            color: accentColor,
-            width: .5,
-          ),
-        ),
-      ),
+      // rowDecoration: pw.BoxDecoration(
+      //   border: pw.Border(
+      //     bottom: pw.BorderSide(
+      //       color: accentColor,
+      //       width: .5,
+      //     ),
+      //   ),
+      // ),
       headers: List<String>.generate(
         tableHeaders.length,
         (col) => tableHeaders[col],
@@ -768,7 +769,6 @@ class MaualInvoiceTemplate {
     );
   }
 
-
   // pw.Widget tax_table(pw.Context context) {
   //   return pw.Column(
   //     children: [
@@ -1082,8 +1082,6 @@ class MaualInvoiceTemplate {
       ),
     );
   }
-
-  
 
   // pw.Widget final_amount(pw.Context context) {
   //   return pw.Container(

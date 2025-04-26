@@ -14,7 +14,7 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/Subscription_actions.da
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_Quote/SUBSCRIPTION_generateQuote.dart' show SUBSCRIPTION_GenerateQuote;
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_client_req/SUBSCRIPTION_generate_clientreq.dart' show SUBSCRIPTION_Generate_clientreq;
 import 'package:ssipl_billing/API-/api.dart';
-import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Basic_SnackBar, Error_dialog, Warning_dialog;
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Error_dialog, Success_SnackBar, Success_dialog, Warning_dialog;
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -72,7 +72,7 @@ mixin SubscriptionServices {
         } else {
           await Error_dialog(
             context: context,
-            title: 'Uploading Excel',
+            title: 'Error',
             content: value.message ?? "",
             onOk: () {},
           );
@@ -226,7 +226,7 @@ mixin SubscriptionServices {
       } else {
         await Error_dialog(
           context: context,
-          title: 'Fetch Company List',
+          title: 'ERROR',
           content: value.message ?? "",
           onOk: () {},
         );
@@ -263,10 +263,10 @@ mixin SubscriptionServices {
           get_GlobalPackageList(context);
           subscriptionController.reset_packageData();
           subscriptionController.update();
-          Basic_SnackBar(context, "Package Created successfully");
+          Success_SnackBar(context, "Package Created successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Error_dialog(context: context, title: 'Package created Error', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'ERROR', content: value.message ?? "", onOk: () {});
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
@@ -292,7 +292,7 @@ mixin SubscriptionServices {
         if (value.code) {
           // Navigator.pop(context);
           get_GlobalPackageList(context);
-          Basic_SnackBar(context, "Package updated successfully");
+          Success_SnackBar(context, "Package updated successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
           await Error_dialog(context: context, title: 'Package update error', content: value.message ?? "", onOk: () {});
@@ -329,10 +329,10 @@ mixin SubscriptionServices {
 
           get_GlobalPackageList(context);
           // _subscriptionController.subscriptionModel.packageselectedIndex.value = _subscriptionController.subscriptionModel.packageselectedIndex.value! - subId.length;
-          Basic_SnackBar(context, "Package deleted successfully");
+          Success_SnackBar(context, "Package deleted successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Error_dialog(context: context, title: 'Package delete Error', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'ERROR', content: value.message ?? "", onOk: () {});
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
@@ -355,15 +355,21 @@ mixin SubscriptionServices {
 
           // _subscriptionController.updatecustomerId(_subscriptionController.subscriptionModel.processcustomerList[_subscriptionController.subscriptionModel.showcustomerprocess.value!].customerId);
         } else {
-          print("error : ${value.message}");
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
           // await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        print("error : ${"please contact administration"}");
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
         // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      print("error : $e");
+      if (kDebugMode) {
+        print("error : $e");
+      }
       // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
@@ -381,15 +387,21 @@ mixin SubscriptionServices {
 
           // _subscriptionController.updatecustomerId(_subscriptionController.subscriptionModel.processcustomerList[_subscriptionController.subscriptionModel.showcustomerprocess.value!].customerId);
         } else {
-          print("error : ${value.message}");
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
           // await Basic_dialog(context: context, showCancel: false, title: 'Recurredcustomer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        print("error : ${"please contact administration"}");
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
         // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      print("error : $e");
+      if (kDebugMode) {
+        print("error : $e");
+      }
       // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
@@ -471,7 +483,7 @@ mixin SubscriptionServices {
         CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {
           GetProcessList(customerid);
-          Basic_SnackBar(context, "Feedback added successfully");
+          Success_SnackBar(context, "Feedback added successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
           await Error_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
@@ -582,7 +594,7 @@ mixin SubscriptionServices {
 
       // Copy the PDF file to the selected directory
       await pdfFile.copy(savePath);
-      Basic_SnackBar(context, "PDF downloaded successfully to: $savePath");
+      Success_SnackBar(context, "PDF downloaded successfully to: $savePath");
     } catch (e) {
       Error_dialog(
         context: context,
@@ -605,10 +617,10 @@ mixin SubscriptionServices {
       if (value.code) {
         _subscriptionController.subscriptionModel.selectedIndices.clear();
         GetProcessList(_subscriptionController.subscriptionModel.customerId.value!);
-        Basic_SnackBar(context, "Process Deleted successfully");
+        Success_SnackBar(context, "Process Deleted successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
-        await Error_dialog(context: context, title: 'Delete Process Error', content: value.message ?? "", onOk: () {});
+        await Error_dialog(context: context, title: 'ERROR', content: value.message ?? "", onOk: () {});
       }
     } else {
       Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
@@ -625,7 +637,7 @@ mixin SubscriptionServices {
       if (value.code) {
         _subscriptionController.subscriptionModel.selectedIndices.clear();
         GetProcessList(_subscriptionController.subscriptionModel.customerId.value!);
-        Basic_SnackBar(context, type == 0 ? "Process Unarchived successfully" : "Process Archived successfully");
+        Success_SnackBar(context, type == 0 ? "Process Unarchived successfully" : "Process Archived successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
         await Error_dialog(context: context, title: type == 0 ? 'Error : Failed to unarchive the process.' : 'Error : Failed to archive the process.', content: value.message ?? "", onOk: () {});
@@ -701,7 +713,7 @@ mixin SubscriptionServices {
         CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {
           GetProcessList(customerid);
-          Basic_SnackBar(context, "Approval Sent successfully");
+          Success_SnackBar(context, "Approval Sent successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
           await Error_dialog(context: context, title: 'Approval Send add Error', content: value.message ?? "", onOk: () {});
@@ -1026,7 +1038,7 @@ mixin SubscriptionServices {
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
-          await Error_dialog(context: context, title: "Invoice", content: value.message!, onOk: () {});
+          await Success_dialog(context: context, title: "Invoice", content: value.message!, onOk: () {});
           // Navigator.of(context).pop(true);
           // invoiceController.resetData();
         } else {

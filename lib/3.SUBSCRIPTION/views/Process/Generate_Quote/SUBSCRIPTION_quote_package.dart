@@ -169,12 +169,11 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
               final existingIndex = quoteController.quoteModel.selectedPackagesList.indexWhere((p) => p.name == package.name);
 
               if (existingIndex != -1) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('${package.name} package already exists'),
-                    backgroundColor: Colors.blue,
-                  ),
+                Error_SnackBar(
+                  context,
+                  '${package.name} package already exists',
                 );
+
                 return;
               }
 
@@ -193,11 +192,9 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
               );
 
               // 5. Show success feedback
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('${package.name} added to packages'),
-                  backgroundColor: Colors.green,
-                ),
+              Error_SnackBar(
+                context,
+                '${package.name} added to packages',
               );
             } else {
               // Handle Custom Package selection
@@ -845,12 +842,9 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                           if (quoteController.quoteModel.customPackage.value != null) {
                             quoteController.quoteModel.customPackage.value = package;
                           }
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Package updated successfully'),
-                              backgroundColor: Colors.green,
-                            ),
+                          Error_SnackBar(
+                            context,
+                            'Package updated successfully',
                           );
                         });
                         // Save changes

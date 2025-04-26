@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 
 mixin SUBSCRIPTION_QuotesiteService {
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
@@ -17,12 +17,8 @@ mixin SUBSCRIPTION_QuotesiteService {
       bool exists = quoteController.quoteModel.QuoteSiteDetails.any((site) => site.sitename == quoteController.quoteModel.siteNameController.value.text);
 
       if (exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.blue,
-            content: Text('This Site already exists.'),
-          ),
-        );
+        Error_SnackBar(context, 'This Site already exists.');
+
         return;
       }
       quoteController.addSite(

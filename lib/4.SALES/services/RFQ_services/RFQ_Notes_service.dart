@@ -141,7 +141,7 @@ mixin RfqnotesService {
   // }
 
   Future<void> savePdfToCache() async {
-    Uint8List pdfData = await generate_RFQ(PdfPageFormat.a4, rfqController.rfqModel.Rfq_products, "", "", "", "", "");
+    Uint8List pdfData = await generate_RFQ(PdfPageFormat.a4, rfqController.rfqModel.Rfq_products, "", "", "", "", rfqController.rfqModel.Rfq_no.value);
 
     Directory tempDir = await getTemporaryDirectory();
     String? sanitizedRfqNo = Returns.replace_Slash_hypen(rfqController.rfqModel.Rfq_no.value ?? "1234");

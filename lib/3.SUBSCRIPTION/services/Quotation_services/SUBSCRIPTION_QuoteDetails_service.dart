@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
 import 'package:ssipl_billing/API-/api.dart' show API;
@@ -23,18 +24,18 @@ mixin SUBSCRIPTION_QuotedetailsService {
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
-          // await Basic_dialog(context: context,showCancel: false, title: 'Enquiry - ID', content: value.message!, onOk: () {});
           quoteController.update_requiredData(value);
-          // print(clientreqController.clientReqModel.Enq_ID.value);
-          // salesController.addToCustomerList(value);
         } else {
           await Error_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {});
+          Navigator.of(context).pop();
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Navigator.of(context).pop();
       }
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
+      Navigator.of(context).pop();
     }
   }
 
@@ -48,12 +49,15 @@ mixin SUBSCRIPTION_QuotedetailsService {
           quoteController.update_companyBasedPackages(value);
         } else {
           await Error_dialog(context: context, title: 'Company customized packages', content: value.message ?? "", onOk: () {});
+          Navigator.of(context).pop();
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Navigator.of(context).pop();
       }
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
+      Navigator.of(context).pop();
     }
   }
 }

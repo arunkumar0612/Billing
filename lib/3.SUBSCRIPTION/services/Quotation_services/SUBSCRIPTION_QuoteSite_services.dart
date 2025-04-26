@@ -5,48 +5,11 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_
 
 mixin SUBSCRIPTION_QuotesiteService {
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
-  // final Map<String, PackageDetails> packageDetailsMap = {
-  //   'Basic': PackageDetails(
-  //     name: 'Basic',
-  //     cameraCount: 2,
-  //     packageAmount: 999.0,
-  //     additionalCharges: 'No additional charges',
-  //     description: 'Basic security package with essential features',
-  //   ),
-  //   'Standard': PackageDetails(
-  //     name: 'Standard',
-  //     cameraCount: 4,
-  //     packageAmount: 1999.0,
-  //     additionalCharges: 'Installation charges may apply',
-  //     description: 'Standard security package with advanced features',
-  //   ),
-  //   'Premium': PackageDetails(
-  //     name: 'Premium',
-  //     cameraCount: 8,
-  //     packageAmount: 2999.0,
-  //     additionalCharges: 'Includes professional installation',
-  //     description: 'Premium security package with all features',
-  //   ),
-  //   'Enterprise': PackageDetails(
-  //     name: 'Enterprise',
-  //     cameraCount: 16,
-  //     packageAmount: 4999.0,
-  //     additionalCharges: 'Custom installation available',
-  //     description: 'Enterprise-grade security solution',
-  //   ),
-  //   'Custom': PackageDetails(
-  //     name: 'Custom',
-  //     cameraCount: 0,
-  //     packageAmount: 0.0,
-  //     additionalCharges: 'To be determined',
-  //     description: 'Custom security solution tailored to your needs',
-  //   ),
-  // };
+
   void clearFields() {
     quoteController.quoteModel.siteNameController.value.clear();
     quoteController.quoteModel.cameraquantityController.value.clear();
     quoteController.quoteModel.addressController.value.clear();
-    //quoteController.quoteModel.gstController.value.clear();
   }
 
   void addsite(context) {
@@ -88,7 +51,6 @@ mixin SUBSCRIPTION_QuotesiteService {
       );
 
       clearFields();
-      // quoteController.resetPackageSelection();
       quoteController.addSiteEditindex(null);
     }
   }
@@ -98,7 +60,6 @@ mixin SUBSCRIPTION_QuotesiteService {
     quoteController.updateSiteName(site.sitename);
     quoteController.updateQuantity(site.cameraquantity);
     quoteController.updateAddressName(site.address);
-    // quoteController.updateQuantity(site.cameraquantity);
     quoteController.addSiteEditindex(index);
     quoteController.updateBillingtype(site.billingType);
     quoteController.updateMailtype(site.mailType);

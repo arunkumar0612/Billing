@@ -1,7 +1,5 @@
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
-import 'SUBSCRIPTION_Sites_entities.dart';
-
 class Recommendation {
   final String key;
   final String value;
@@ -25,24 +23,6 @@ class Recommendation {
     };
   }
 }
-
-// class Note {
-//   final String notename;
-
-//   Note({required this.notename});
-
-//   factory Note.fromJson(Map<String, dynamic> json) {
-//     return Note(
-//       notename: json['notename'] as String,
-//     );
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'notename': notename,
-//     };
-//   }
-// }
 
 class MORpath {
   final String path;
@@ -166,6 +146,45 @@ class SUBSCRIPTION_Post_ClientRequirement {
   }
 }
 
+class SUBSCRIPTION_ClientreqSites {
+  const SUBSCRIPTION_ClientreqSites(
+    this.sno,
+    this.siteName,
+    this.cameraquantity,
+    this.siteAddress,
+  );
+
+  final String sno;
+  final String siteName;
+  final int cameraquantity;
+  final String siteAddress;
+
+  String getIndex(int index) {
+    switch (index) {
+      case 0:
+        return sno;
+      case 1:
+        return siteName;
+
+      case 2:
+        return cameraquantity.toString();
+      case 3:
+        return siteAddress;
+    }
+    return '';
+  }
+
+  // Convert object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      "sno": sno,
+      "sitename": siteName,
+      "cameraquantity": cameraquantity,
+      "address": siteAddress,
+    };
+  }
+}
+
 class Organization {
   int? organizationId;
   String? organizationName;
@@ -241,63 +260,6 @@ class Company {
       "client_address": client_address,
       "billing_addressname": billing_addressname,
       "billing_address": billing_address,
-      "contact_number": contact_number,
-      "gst_number": gst_number,
-    };
-  }
-}
-
-class Branch {
-  int? Branch_id;
-  String? Branch_name;
-  String? Branch_code;
-  String? client_addressname;
-  String? client_address;
-  String? billing_addressname;
-  String? billing_address;
-  String? emailid;
-  String? contact_number;
-  String? gst_number;
-
-  Branch(
-      {required this.Branch_id,
-      required this.Branch_name,
-      required this.Branch_code,
-      required this.client_addressname,
-      required this.client_address,
-      required this.billing_addressname,
-      required this.billing_address,
-      required this.emailid,
-      required this.contact_number,
-      required this.gst_number});
-
-  // Factory method to create an instance from JSON
-  factory Branch.fromJson(CMDlResponse json, i) {
-    return Branch(
-      Branch_id: json.data[i]['Branch_id'],
-      Branch_name: json.data[i]['Branch_name'],
-      Branch_code: json.data[i]['Branch_code'],
-      client_addressname: json.data[i]['client_addressname'],
-      client_address: json.data[i]['client_address'],
-      billing_addressname: json.data[i]['billing_addressname'],
-      billing_address: json.data[i]['billing_address'],
-      emailid: json.data[i]['emailid'],
-      contact_number: json.data[i]['contact_number'],
-      gst_number: json.data[i]['gst_number'],
-    );
-  }
-
-  // Method to convert the object to JSON
-  Map<String, dynamic> toJson() {
-    return {
-      "Branch_id": Branch_id,
-      "Branch_name": Branch_name,
-      "Branch_code": Branch_code,
-      "client_addressname": client_addressname,
-      "client_address": client_address,
-      "billing_addressname": billing_addressname,
-      "billing_address": billing_address,
-      "emailid": emailid,
       "contact_number": contact_number,
       "gst_number": gst_number,
     };

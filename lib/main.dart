@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart';
-import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Invoice_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/Subscription_actions.dart';
 import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
@@ -55,7 +54,6 @@ Future<void> main() async {
   Get.lazyPut<HierarchyController>(() => HierarchyController());
 
   ////////////////////////////----SUBSCRIPTION----////////////////////////////////////
-  Get.lazyPut<SUBSCRIPTION_InvoiceController>(() => SUBSCRIPTION_InvoiceController());
   Get.lazyPut<SubscriptionController>(() => SubscriptionController());
   Get.lazyPut<SUBSCRIPTION_CustomPDF_InvoiceController>(() => SUBSCRIPTION_CustomPDF_InvoiceController());
   Get.lazyPut<SUBSCRIPTION_QuoteController>(() => SUBSCRIPTION_QuoteController());

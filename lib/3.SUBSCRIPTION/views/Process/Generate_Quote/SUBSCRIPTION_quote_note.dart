@@ -504,10 +504,11 @@ class _SUBSCRIPTION_QuoteNoteState extends State<SUBSCRIPTION_QuoteNote> {
                                             Get.snackbar("Error", "Any of the required fields is Empty!");
                                             return;
                                           }
-                                          widget.savePdfToCache(context);
-                                          // await Future.wait([
-                                          //   quoteController.startProgress(),
-                                          // ]);
+
+                                          await Future.wait([
+                                            quoteController.startProgress(),
+                                            widget.savePdfToCache(context),
+                                          ]);
                                           quoteController.nextTab();
                                         } catch (e, stackTrace) {
                                           debugPrint("Error in Future.wait: $e");

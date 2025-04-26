@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../entities/SUBSCRIPTION_ClientReq_entities.dart';
-import '../entities/SUBSCRIPTION_Sites_entities.dart';
 
 class SUBSCRIPTION_ClientReqModel {
   var MOR_uploadedPath = Rxn<String>();

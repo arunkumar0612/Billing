@@ -24,7 +24,7 @@ Future<Uint8List> generate_RFQ(
     company_email: 'Email : sales@sporadasecure.com',
     company_phone: "Phone : +91-422-2312363",
     company_addr: "Address : 687/7, 3rd Floor, Sakthivel Towers, Trichy road, Ramanathapuram, Coimbatore - 641045",
-    RFQ_no: 'AA/2324D/EF',
+    RFQ_no: RFQ_num,
     to_addr_name: "PREMIER ELEKTRICALS",
     to_email: 'Email : premierelektricals@gmail.com',
     to_phone: "Phone : 04252-2311229842214563",

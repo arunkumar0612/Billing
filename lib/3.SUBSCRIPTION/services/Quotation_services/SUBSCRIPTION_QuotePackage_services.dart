@@ -9,13 +9,13 @@ mixin SUBSCRIPTION_QuotepackageService {
 
   void removePackage(Package packageToRemove, BuildContext context) {
     // setState(() {
-    quoteController.quoteModel.selectedPackages.remove(packageToRemove);
+    quoteController.quoteModel.selectedPackagesList.remove(packageToRemove);
 
-    if (quoteController.quoteModel.selectedPackages.isEmpty) {
+    if (quoteController.quoteModel.selectedPackagesList.isEmpty) {
       quoteController.quoteModel.selectedPackage.value = null;
     } else if (quoteController.quoteModel.selectedPackage.value == packageToRemove.name) {
       // Select the first available package if we removed the currently selected one
-      quoteController.quoteModel.selectedPackage.value = quoteController.quoteModel.selectedPackages.first.name;
+      quoteController.quoteModel.selectedPackage.value = quoteController.quoteModel.selectedPackagesList.first.name;
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -31,11 +31,12 @@ mixin SUBSCRIPTION_QuotepackageService {
     if (validateCustomPackage(context)) {
       final customPackage = Package(
         name: quoteController.quoteModel.customNameControllers.value.text,
+        subscriptionid: 0,
         description: quoteController.quoteModel.customDescControllers.value.text,
         cameracount: quoteController.quoteModel.customCameraCountControllers.value.text,
         amount: quoteController.quoteModel.customAmountControllers.value.text,
         // additionalCameras: quoteController.quoteModel.customChargesControllers.value.text,
-        subscriptiontype: quoteController.quoteModel.showto.value,
+        subscriptiontype: quoteController.quoteModel.subscriptiontype.value,
         sites: [],
       );
 
@@ -57,7 +58,7 @@ mixin SUBSCRIPTION_QuotepackageService {
       quoteController.quoteModel.customPackageCreated.value = true;
 
       // Check for empty packages
-      final emptyPackages = quoteController.quoteModel.selectedPackages.where((pkg) => pkg.sites.isEmpty).toList();
+      final emptyPackages = quoteController.quoteModel.selectedPackagesList.where((pkg) => pkg.sites.isEmpty).toList();
 
       if (emptyPackages.isNotEmpty) {
         final shouldReplace = await Warning_dialog(
@@ -71,15 +72,15 @@ mixin SUBSCRIPTION_QuotepackageService {
             false;
 
         if (shouldReplace) {
-          quoteController.quoteModel.selectedPackages.removeWhere((pkg) => pkg.sites.isEmpty);
+          quoteController.quoteModel.selectedPackagesList.removeWhere((pkg) => pkg.sites.isEmpty);
         }
       }
 
       // Add or update the package
-      final existingIndex = quoteController.quoteModel.selectedPackages.indexWhere((p) => p.name == customPackage.name);
+      final existingIndex = quoteController.quoteModel.selectedPackagesList.indexWhere((p) => p.name == customPackage.name);
 
       if (existingIndex == -1) {
-        quoteController.quoteModel.selectedPackages.add(customPackage);
+        quoteController.quoteModel.selectedPackagesList.add(customPackage);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('${customPackage.name} added to packages'),
@@ -87,8 +88,8 @@ mixin SUBSCRIPTION_QuotepackageService {
           ),
         );
       } else {
-        quoteController.quoteModel.selectedPackages[existingIndex] = customPackage.copyWith(
-          sites: quoteController.quoteModel.selectedPackages[existingIndex].sites,
+        quoteController.quoteModel.selectedPackagesList[existingIndex] = customPackage.copyWith(
+          sites: quoteController.quoteModel.selectedPackagesList[existingIndex].sites,
         );
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -109,7 +110,7 @@ mixin SUBSCRIPTION_QuotepackageService {
     quoteController.quoteModel.customCameraCountControllers.value.clear();
     quoteController.quoteModel.customAmountControllers.value.clear();
     // quoteController.quoteModel.customChargesControllers.value.clear();
-    quoteController.quoteModel.showto.value = 'company';
+    quoteController.quoteModel.subscriptiontype.value = 'company';
   }
 
   bool validateCustomPackage(BuildContext context) {

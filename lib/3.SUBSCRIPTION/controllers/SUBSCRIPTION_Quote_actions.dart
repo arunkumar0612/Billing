@@ -157,6 +157,10 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     quoteModel.ispdfLoading.value = value;
   }
 
+  void update_companyID(int value) {
+    quoteModel.companyid.value = value;
+  }
+
   // Toggle WhatsApp state
   void toggleWhatsApp(bool value) {
     quoteModel.whatsapp_selectionStatus.value = value;
@@ -181,22 +185,6 @@ class SUBSCRIPTION_QuoteController extends GetxController {
   void updateFilePath(String filePath) {
     quoteModel.filePathController.value.text = filePath;
   }
-
-  // void resetPackageSelection() {
-  //   quoteModel.selectedPackageController.value.text = '';
-  //   quoteModel.customPackageDetails.value = null;
-  // }
-
-  // void updateSelectedPackage(String? package) {
-  //   quoteModel.selectedPackageController.value.text = package ?? "";
-  //   if (package != 'Custom') {
-  //     quoteModel.customPackageDetails.value = null;
-  //   }
-  // }
-
-  // void updateCustomPackageDetails(PackageDetails details) {
-  //   quoteModel.customPackageDetails.value = details;
-  // }
 
   void removeFromsiteList(index) {
     quoteModel.QuoteSiteDetails.removeAt(index);
@@ -319,14 +307,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
   }
 
   void updateSite(
-      {required BuildContext context,
-      required int editIndex,
-      required String siteName,
-      required int cameraquantity,
-      required String address,
-      // required int Price,
-      required String billingType,
-      required String mailType}) {
+      {required BuildContext context, required int editIndex, required String siteName, required int cameraquantity, required String address, required String billingType, required String mailType}) {
     try {
       // Validate input fields
       if (siteName.trim().isEmpty || cameraquantity <= 0 || address.trim().isEmpty) {
@@ -354,31 +335,10 @@ class SUBSCRIPTION_QuoteController extends GetxController {
       quoteModel.QuoteSiteDetails[editIndex] = Site(
         sitename: siteName,
         address: address,
-        // packageName: siteName,
-        // Price: Price,
         cameraquantity: cameraquantity,
         billingType: billingType,
         mailType: mailType,
       );
-
-      // ProductDetail(
-      //   productName: productName.trim(),
-      //   hsn: hsn.trim(),
-      //   price: price,
-      //   quantity: quantity,
-      //   gst: gst,
-      // );
-
-      // Notify success
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(
-      //     backgroundColor: Colors.green,
-      //     content: Text('Product updated successfully.'),
-      //   ),
-      // );
-
-      // Optional: Update UI or state if needed
-      // .updateProductDetails(creditController.quoteModel.Quote_productDetails);
     } catch (e) {
       // Handle unexpected errors
       ScaffoldMessenger.of(context).showSnackBar(
@@ -412,7 +372,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
   void update_requiredData(CMDmResponse value) {
     SubscriptionQuoteRequiredData instance = SubscriptionQuoteRequiredData.fromJson(value);
     quoteModel.Quote_no.value = instance.eventNumber;
-    quoteModel.companyid.value = instance.companyid;
+    update_companyID(instance.companyid);
     updateQuotenumber(instance.eventNumber);
     updateTitle(instance.title!);
     updateEmail(instance.emailId!);
@@ -435,6 +395,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
       quoteModel.packageDetails.add(
         Package(
           name: quoteModel.company_basedPackageList[i].subscriptionName ?? "",
+          subscriptionid: quoteModel.company_basedPackageList[i].subscriptionId ?? 0,
           description: quoteModel.company_basedPackageList[i].productDesc ?? "",
           cameracount: (quoteModel.company_basedPackageList[i].noOfCameras ?? "").toString(),
           amount: (quoteModel.company_basedPackageList[i].amount ?? "").toString(),
@@ -454,10 +415,9 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         quoteModel.clientAddressController.value.text.isEmpty ||
         quoteModel.billingAddressNameController.value.text.isEmpty ||
         quoteModel.billingAddressController.value.text.isEmpty ||
-        // (quoteModel.gmail_selectionStatus.value && quoteModel.emailController.value.text.isEmpty) ||
-        // (quoteModel.whatsapp_selectionStatus.value && quoteModel.phoneController.value.text.isEmpty) ||
         (quoteModel.gstNumController.value.text.isEmpty) || // Optional if needed later
         quoteModel.Quote_noteList.isEmpty ||
+        quoteModel.selectedPackagesList.isEmpty ||
         quoteModel.Quote_no.value == null);
   } // If any one is empty or null, then it returns true
 
@@ -472,43 +432,12 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         (quoteModel.whatsapp_selectionStatus.value && quoteModel.phoneController.value.text.isEmpty) ||
         (quoteModel.gstNumController.value.text.isEmpty) || // Optional if needed later
         quoteModel.Quote_noteList.isEmpty ||
+        quoteModel.selectedPackagesList.isEmpty ||
         quoteModel.Quote_no.value == null);
   } // If any one is empty or null, then it returns true
 
-  // void resetData() {
-  //   quoteModel.tabController.value = null;
-  //   quoteModel.processID.value = null;
-  //   quoteModel.Quote_no.value = null;
-  //   quoteModel.gstNumController.value.text = "";
-  //   quoteModel.Quote_table_heading.value = "";
-
-  //   quoteModel.phoneController.value.text = "";
-  //   quoteModel.emailController.value.text = "";
-  //   quoteModel.CCemailToggle.value = false;
-  //   quoteModel.CCemailController.value.clear();
-  //   // Reset details
-  //   quoteModel.TitleController.value.text = "";
-  //   quoteModel.clientAddressNameController.value.text = "";
-  //   quoteModel.clientAddressController.value.text = "";
-  //   quoteModel.billingAddressNameController.value.text = "";
-  //   quoteModel.billingAddressController.value.text = "";
-
-  //   // Reset site details
-  //   quoteModel.site_editIndex.value = null;
-  //   quoteModel.siteNameController.value.text = "";
-
-  //   // Reset notes
-  //   quoteModel.note_editIndex.value = null;
-  //   quoteModel.notecontentController.value.text = "";
-  //   quoteModel.recommendation_editIndex.value = null;
-  //   quoteModel.recommendationHeadingController.value.text = "";
-  //   quoteModel.recommendationKeyController.value.text = "";
-  //   quoteModel.recommendationValueController.value.text = "";
-  //   quoteModel.Quote_noteList.clear();
-  //   quoteModel.Quote_recommendationList.clear();
-  // }
-
   void resetData() {
+    // GENERAL
     quoteModel.tabController.value = null;
     quoteModel.processID.value = null;
     quoteModel.Quote_no.value = null;
@@ -523,17 +452,30 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     quoteModel.billingAddressController.value.clear();
     quoteModel.detailsKey.value = GlobalKey<FormState>();
 
-    // PRODUCTS
-    // quoteModel.productKey.value = GlobalKey<FormState>();
-    // quoteModel.product_editIndex.value = null;
-    // quoteModel.productNameController.value.clear();
-    // quoteModel.hsnController.value.clear();
-    // quoteModel.priceController.value.clear();
-    // quoteModel.quantityController.value.clear();
-    // quoteModel.gstController.value.clear();
-    // quoteModel.Quote_products.clear();
-    // quoteModel.Quote_productSuggestion.clear();
-    // quoteModel.Quote_gstTotals.clear();
+    // SITES
+    quoteModel.QuoteSiteDetails.clear();
+    quoteModel.siteFormkey.value = GlobalKey<FormState>();
+    quoteModel.siteNameController.value.clear();
+    quoteModel.addressController.value.clear();
+    quoteModel.Billingtype_Controller.value = "individual";
+    quoteModel.Mailtype_Controller.value = "individual";
+    quoteModel.cameraquantityController.value.clear();
+    quoteModel.site_editIndex.value = null;
+
+    // PACKAGE
+    quoteModel.selectedPackagesList.clear();
+    quoteModel.packageList.clear();
+    quoteModel.selectedPackage.value = null;
+    quoteModel.company_basedPackageList.clear();
+    quoteModel.customPackageCreated.value = false;
+    quoteModel.packageDetails.clear();
+
+    quoteModel.customNameControllers.value.clear();
+    quoteModel.customDescControllers.value.clear();
+    quoteModel.customCameraCountControllers.value.clear();
+    quoteModel.customAmountControllers.value.clear();
+    quoteModel.subscriptiontype.value = 'company';
+    quoteModel.customPackage.value = null;
 
     // NOTES
     quoteModel.noteformKey.value = GlobalKey<FormState>();

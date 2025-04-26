@@ -288,7 +288,7 @@ class SUBSCRIPTION_Quotation {
   // }
 
   pw.Widget _contentTable(pw.Context context) {
-    const tableHeaders = ['S.No', 'Package', 'Site', 'Address', 'Cameras', 'Price'];
+    const tableHeaders = ['S.No', 'Site', 'Address', 'Cameras', 'Package', 'Price', 'GST%', 'Total Price'];
 
     return pw.TableHelper.fromTextArray(
         border: null,
@@ -301,19 +301,21 @@ class SUBSCRIPTION_Quotation {
         headerAlignments: {
           0: pw.Alignment.centerLeft,
           1: pw.Alignment.centerLeft,
-          2: pw.Alignment.center,
+          2: pw.Alignment.centerLeft,
           3: pw.Alignment.center,
-          4: pw.Alignment.center,
-          5: pw.Alignment.centerRight,
+          4: pw.Alignment.centerLeft,
+          5: pw.Alignment.center,
+          6: pw.Alignment.center,
         },
         cellHeight: 30,
         cellAlignments: {
           0: pw.Alignment.centerLeft,
           1: pw.Alignment.centerLeft,
-          2: pw.Alignment.center,
+          2: pw.Alignment.centerLeft,
           3: pw.Alignment.center,
-          4: pw.Alignment.center,
-          5: pw.Alignment.centerRight,
+          4: pw.Alignment.centerLeft,
+          5: pw.Alignment.center,
+          6: pw.Alignment.center,
         },
         headerStyle: pw.TextStyle(
           font: Helvetica_bold,

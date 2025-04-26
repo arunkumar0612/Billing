@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -6,10 +7,10 @@ import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart' show SUBSCRIPTION_QuoteController;
-import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart' show PostSubQuote;
+import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart' show Package, PostSubQuote, Site;
 import 'package:ssipl_billing/API-/api.dart' show API;
 import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
-import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Error_dialog;
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Error_dialog, Success_dialog;
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart' show CMDmResponse;
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
@@ -73,26 +74,17 @@ mixin SUBSCRIPTION_QuotePostServices {
         return;
       }
       loader.start(context);
-      // File cachedPdf = quoteController.quoteModel.selectedPdf.value!;
-      // savePdfToCache();
-      // SUBSCRIPTION_PostQuotation subscriptionData = SUBSCRIPTION_PostQuotation.fromJson({
-      //   "processid": quoteController.quoteModel.processID.value!,
-      //   "clientaddressname": quoteController.quoteModel.clientAddressNameController.value.text,
-      //   "clientaddress": quoteController.quoteModel.clientAddressController.value.text,
-      //   "billingaddressname": quoteController.quoteModel.billingAddressNameController.value.text,
-      //   "billingaddress": quoteController.quoteModel.billingAddressController.value.text,
-      //   "sitelist": quoteController.quoteModel.QuoteSiteDetails,
-      //   "notes": quoteController.quoteModel.Quote_noteList,
-      //   "emailid": quoteController.quoteModel.emailController.value.text,
-      //   "phoneno": quoteController.quoteModel.phoneController.value.text,
-      //   "ccemail": quoteController.quoteModel.CCemailController.value.text,
-      //   "date": getCurrentDate(),
-      //   "quotationgenid": quoteController.quoteModel.Quote_no.value!,
-      //   "messagetype": messageType,
-      //   "feedback": quoteController.quoteModel.feedbackController.value.text,
-      //   "packageid": 18, // Assuming 18 is a placeholder value for packageid
-      // });
-
+      File cachedPdf = quoteController.quoteModel.selectedPdf.value!;
+      List<Package> package_details = [];
+      List<Site> siteData = [];
+      for (int i = 0; i < quoteController.quoteModel.selectedPackagesList.length; i++) {
+        for (int j = 0; j < quoteController.quoteModel.selectedPackagesList[i].sites.length; j++) {
+          Site data = quoteController.quoteModel.selectedPackagesList[i].sites[j];
+          Package sub = quoteController.quoteModel.selectedPackagesList[i];
+          siteData.add(data);
+          package_details.add(sub);
+        }
+      }
       PostSubQuote data = PostSubQuote.fromJson({
         "companyid": quoteController.quoteModel.companyid.value,
         "processid": quoteController.quoteModel.processID.value!,
@@ -100,7 +92,7 @@ mixin SUBSCRIPTION_QuotePostServices {
         "clientaddress": quoteController.quoteModel.clientAddressController.value.text,
         "billingaddress": quoteController.quoteModel.billingAddressNameController.value.text,
         "billingaddressname": quoteController.quoteModel.billingAddressController.value.text,
-        "packagedetails": quoteController.quoteModel.selectedPackages,
+        "packagedetails": quoteController.quoteModel.selectedPackagesList,
         "notes": quoteController.quoteModel.Quote_noteList,
         "emailid": quoteController.quoteModel.emailController.value.text,
         "phoneno": quoteController.quoteModel.phoneController.value.text,
@@ -111,11 +103,9 @@ mixin SUBSCRIPTION_QuotePostServices {
         "gstpercent": 18,
         "gst_number": quoteController.quoteModel.gstNumController.value.text,
         "feedback": quoteController.quoteModel.feedbackController.value.text
-      });
-      print(data.toJson());
-      print(data.toJson());
-      loader.stop();
-      // await send_data(context, jsonEncode(data.toJson()), cachedPdf, eventtype);
+      }, siteData);
+
+      await send_data(context, jsonEncode(data.toJson()), cachedPdf, eventtype);
     } catch (e) {
       loader.stop();
       await Error_dialog(
@@ -131,12 +121,12 @@ mixin SUBSCRIPTION_QuotePostServices {
   dynamic send_data(context, String jsonData, File file, String eventtype) async {
     try {
       Map<String, dynamic>? response =
-          await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, eventtype == "quotation" ? API.add_Quotation : API.add_RevisedQuotation);
+          await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, eventtype == "quotation" ? API.subscriptionadd_Quotation : API.add_RevisedQuotation);
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
           loader.stop();
-          await Error_dialog(context: context, title: "Quotation", content: value.message!, onOk: () {});
+          await Success_dialog(context: context, title: "Quotation", content: value.message!, onOk: () {});
           // Navigator.of(context).pop(true);
           // quoteController.resetData();
         } else {

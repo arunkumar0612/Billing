@@ -26,45 +26,6 @@ class SUBSCRIPTION_QuoteRecommendation {
   }
 }
 
-// class Note {
-//   final String notename;
-
-//   Note({required this.notename});
-
-//   factory Note.fromJson(Map<String, dynamic> json) {
-//     return Note(
-//       notename: json['notename'] as String,
-//     );
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'notename': notename,
-//     };
-//   }
-// }
-
-// class SUBSCRIPTION_QuoteGSTtotals {
-//   final double gst;
-//   final double total;
-
-//   SUBSCRIPTION_QuoteGSTtotals({
-//     required this.gst,
-//     required this.total,
-//   });
-
-//   factory SUBSCRIPTION_QuoteGSTtotals.fromJson(Map<String, dynamic> json) {
-//     return SUBSCRIPTION_QuoteGSTtotals(gst: json['GST'], total: json['total']);
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'GST': gst,
-//       'total': total,
-//     };
-//   }
-// }
-
 class SubscriptionQuoteRequiredData {
   final String eventNumber;
   final int companyid;
@@ -161,82 +122,6 @@ class SubscriptionItem {
   }
 }
 
-class SUBSCRIPTION_PostQuotation {
-  int? processid;
-  String? clientaddressname;
-  String? clientaddress;
-  String? billingaddressname;
-  String? billingaddress;
-  List<Site>? sitelist;
-  List? notes;
-  String? emailid;
-  String? phoneno;
-  String? ccemail;
-  String? date;
-  String? quotationgenid;
-  int? messagetype;
-  String? feedback;
-  int? packageid;
-
-  SUBSCRIPTION_PostQuotation({
-    required this.processid,
-    required this.clientaddressname,
-    required this.clientaddress,
-    required this.billingaddressname,
-    required this.billingaddress,
-    required this.sitelist,
-    required this.notes,
-    required this.emailid,
-    required this.phoneno,
-    required this.ccemail,
-    required this.date,
-    required this.quotationgenid,
-    required this.messagetype,
-    required this.feedback,
-    required this.packageid,
-  });
-
-  factory SUBSCRIPTION_PostQuotation.fromJson(Map<String, dynamic> json) {
-    return SUBSCRIPTION_PostQuotation(
-      processid: json["processid"],
-      clientaddressname: json["clientaddressname"],
-      clientaddress: json["clientaddress"],
-      billingaddressname: json["billingaddressname"],
-      billingaddress: json["billingaddress"],
-      sitelist: (json["sitelist"])?.map((item) => Site.fromJson(item)).toList(),
-      notes: json["notes"],
-      emailid: json["emailid"],
-      phoneno: json["phoneno"],
-      ccemail: json["ccemail"],
-      date: json["date"],
-      quotationgenid: json["quotationgenid"],
-      messagetype: json["messagetype"],
-      feedback: json["feedback"],
-      packageid: json["packageid"],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "processid": processid,
-      "clientaddressname": clientaddressname,
-      "clientaddress": clientaddress,
-      "billingaddressname": billingaddressname,
-      "billingaddress": billingaddress,
-      "sitelist": sitelist?.map((item) => item.toJson()).toList(),
-      "notes": notes,
-      "emailid": emailid,
-      "phoneno": phoneno,
-      "ccemail": ccemail,
-      "date": date,
-      "quotationgenid": quotationgenid,
-      "messagetype": messagetype,
-      "feedback": feedback,
-      "packageid": packageid,
-    };
-  }
-}
-
 class SUBSCRIPTION_Quote {
   final String date;
   final String quoteNo;
@@ -262,9 +147,9 @@ class SUBSCRIPTION_Quote {
   });
 
   // Convert JSON to Invoice object
-  factory SUBSCRIPTION_Quote.fromJson(Map<String, dynamic> json, List<Site> sies) {
-    List<Package> packages = (json['packageMappedSites'] as List<Package>).map((item) => Package.fromJson(item.toJson())).toList();
-    List<int> amounts = packages.map((pkg) => int.parse(pkg.amount)).toList();
+  factory SUBSCRIPTION_Quote.fromJson(Map<String, dynamic> json, List<Site> sies, List<int> amounts) {
+    List<Package> packages = (json['packageMappedSites'] as List<Package>).map((item) => Package.fromJson(item.toJson(), sies)).toList();
+    // List<int> amounts = packages.map((pkg) => int.parse(pkg.amount)).toList();
     // List<Map<String, dynamic>> siteList = List<Map<String, dynamic>>.from(json['siteData']);
     // List<Site> sites = Site.fromJson(siteList);
     // List<Site> sites = Site.fromJson(List<Map<String, dynamic>>.from(json['siteData']));
@@ -276,10 +161,9 @@ class SUBSCRIPTION_Quote {
       GSTIN: json['GSTIN'] as String,
       addressDetails: Address.fromJson(json['addressDetails']),
       // package_Mapped_sites: json['package_Mapped_sites'],
-      packageMappedSites: (json['packageMappedSites'] as List<Package>).map((item) => Package.fromJson(item.toJson())).toList(),
+      packageMappedSites: packages,
       siteData: sies,
       finalCalc: FinalCalculation.fromJson(
-        sies,
         amounts,
         json['gstPercent'] as int,
         json['pendingAmount'] as double,
@@ -313,19 +197,35 @@ class SUBSCRIPTION_Quote {
       return null; // Return this if no package contains the site
     }
 
+    String? Total_amount(String sitename) {
+      for (var package in packageMappedSites) {
+        for (var site in package.sites) {
+          if (site.sitename == sitename) {
+            return (int.parse(package.amount) / 100 * int.parse(package.gstPercent)).toString(); // Return the package name when the site is found
+          }
+        }
+      }
+      return null; // Return this if no package contains the site
+    }
+
     switch (col) {
       case 0:
         return siteIndex.toString();
       case 1:
-        return findPackageBySiteName(siteData[siteIndex].sitename)!.name;
-      case 2:
         return siteData[siteIndex].sitename;
-      case 3:
+      case 2:
         return siteData[siteIndex].address;
-      case 4:
+      case 3:
         return findPackageBySiteName(siteData[siteIndex].sitename)!.cameracount.toString();
+      case 4:
+        return findPackageBySiteName(siteData[siteIndex].sitename)!.name;
       case 5:
         return findPackageBySiteName(siteData[siteIndex].sitename)!.amount.toString();
+
+      case 6:
+        return findPackageBySiteName(siteData[siteIndex].sitename)!.gstPercent.toString();
+      case 7:
+        return Total_amount(siteData[siteIndex].sitename);
       // case 5:
       //   return Price.toString();
       default:
@@ -360,9 +260,11 @@ class Address {
 
 class Package {
   String name;
+  int? subscriptionid;
   String description;
   String cameracount;
   String amount;
+  String gstPercent;
   // String additionalCameras;
   String subscriptiontype;
   List<Site> sites;
@@ -382,9 +284,11 @@ class Package {
 
   Package({
     required this.name,
+    required this.subscriptionid,
     required this.description,
     required this.cameracount,
     required this.amount,
+    this.gstPercent = "18",
     // required this.additionalCameras,
     required this.subscriptiontype,
     required this.sites,
@@ -403,20 +307,22 @@ class Package {
   }
 
   // JSON methods
-  factory Package.fromJson(Map<String, dynamic> json) {
+  factory Package.fromJson(Map<String, dynamic> json, List<Site> sies) {
     return Package(
       name: json['name'] as String,
+      subscriptionid: json['subscriptionid'] as int,
       description: json['description'] as String,
       cameracount: json['cameracount'] as String,
       amount: json['amount'] as String,
       // additionalCameras: json['additional_cameras'] as String,
       subscriptiontype: json['subscriptiontype'] as String,
-      sites: Site.fromJson(List<Map<String, dynamic>>.from(json['sites'])),
+      sites: sies,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      "subscriptionid": subscriptionid,
       'name': name,
       'description': description,
       'cameracount': cameracount,
@@ -471,6 +377,7 @@ class Package {
 
   Package copyWith({
     String? name,
+    int? subscriptionid,
     String? description,
     String? cameracount,
     String? amount,
@@ -480,6 +387,7 @@ class Package {
   }) {
     return Package(
       name: name ?? this.name,
+      subscriptionid: subscriptionid,
       description: description ?? this.description,
       cameracount: cameracount ?? this.cameracount,
       amount: amount ?? this.amount,
@@ -605,10 +513,10 @@ class FinalCalculation {
     required this.grandTotal,
   });
 
-  factory FinalCalculation.fromJson(List<Site> sites, List<int> prices, int gstPercent, double? pendingAmount) {
+  factory FinalCalculation.fromJson(List<int> prices, int gstPercent, double? pendingAmount) {
     double subtotal = 0;
 
-    for (int i = 0; i < sites.length; i++) {
+    for (int i = 0; i < prices.length; i++) {
       subtotal += prices[i];
     }
 
@@ -752,7 +660,9 @@ class PostSubQuote {
     required this.feedback,
   });
 
-  factory PostSubQuote.fromJson(Map<String, dynamic> json) {
+  factory PostSubQuote.fromJson(Map<String, dynamic> json, List<Site> sies) {
+    List<Package> packages = (json['packagedetails'] as List<Package>).map((item) => Package.fromJson(item.toJson(), sies)).toList();
+
     return PostSubQuote(
       companyid: json['companyid'],
       processId: json['processid'],
@@ -760,7 +670,7 @@ class PostSubQuote {
       clientAddress: json['clientaddress'],
       billingAddress: json['billingaddress'],
       billingAddressName: json['billingaddressname'],
-      packageDetails: (json['packagedetails'] as List<Package>).map((item) => Package.fromJson(item.toJson())).toList(),
+      packageDetails: packages,
       notes: (json['notes'] as List).map((item) => item.toString()).toList(),
       emailId: json['emailid'],
       phoneNo: json['phoneno'],
@@ -796,75 +706,3 @@ class PostSubQuote {
     };
   }
 }
-
-// class PackageDetails {
-//   final String name;
-//   final String description;
-//   final int cameracount ;
-//   final int amount;
-//   final String subscriptionType;
-//   final List<Site> sites;
-//   final String subscriptionId;
-
-//   PackageDetails({
-//     required this.name,
-//     required this.description,
-//     required this.cameracount ,
-//     required this.amount,
-//     required this.subscriptionType,
-//     required this.sites,
-//     required this.subscriptionId,
-//   });
-
-//   factory PackageDetails.fromJson(Map<String, dynamic> json) {
-//     return PackageDetails(
-//       name: json['name'],
-//       description: json['description'],
-//       cameracount : json['cameracount'],
-//       amount: json['amount'],
-//       subscriptionType: json['subscriptiontype'],
-//       sites: (json['sites'] as List).map((s) => Site.fromJson(s)).toList(),
-//       subscriptionId: json['subscriptionid'].toString(),
-//     );
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'name': name,
-//       'description': description,
-//       'cameracount': cameracount ,
-//       'amount': amount,
-//       'subscriptiontype': subscriptionType,
-//       'sites': sites.map((s) => s.toJson()).toList(),
-//       'subscriptionid': subscriptionId,
-//     };
-//   }
-// }
-
-// class Site {
-//   final String siteName;
-//   final int cameraQuantity;
-//   final String siteAddress;
-
-//   Site({
-//     required this.siteName,
-//     required this.cameraQuantity,
-//     required this.siteAddress,
-//   });
-
-//   factory Site.fromJson(Map<String, dynamic> json) {
-//     return Site(
-//       siteName: json['sitename'],
-//       cameraQuantity: json['cameraquantity'],
-//       siteAddress: json['siteaddress'],
-//     );
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'sitename': siteName,
-//       'cameraquantity': cameraQuantity,
-//       'siteaddress': siteAddress,
-//     };
-//   }
-// }

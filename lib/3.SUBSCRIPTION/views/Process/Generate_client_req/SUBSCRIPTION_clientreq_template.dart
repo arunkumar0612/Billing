@@ -7,7 +7,7 @@ import 'package:image/image.dart' as img;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart' show SUBSCRIPTION_ClientreqController;
-import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Sites_entities.dart' show SUBSCRIPTION_ClientreqSites;
+import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_ClientReq_entities.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 
 Future<Uint8List> generateClientReq({

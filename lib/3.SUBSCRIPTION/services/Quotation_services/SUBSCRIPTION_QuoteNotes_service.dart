@@ -94,91 +94,16 @@ mixin SUBSCRIPTION_QuotenotesService {
     }
   }
 
-  // void Generate_Quote(BuildContext context) async {
-  //   // viewsendController.setLoading(false);
-  //   quoteController.nextTab();
-  //   await Future.delayed(const Duration(milliseconds: 200));
-  //   sub();
-  //   // Start generating PDF data as a Future
-  // }
-
-  // void sub() async {
-  //   final pdfData = await generate_Quote(
-  //     PdfPageFormat.a4,
-  //     quoteController.quoteModel.Quote_products,
-  //     quoteController.quoteModel.clientAddressNameController.value.text,
-  //     quoteController.quoteModel.clientAddressController.value.text,
-  //     quoteController.quoteModel.billingAddressNameController.value.text,
-  //     quoteController.quoteModel.billingAddressController.value.text,
-  //     quoteController.quoteModel.Quote_no.value,
-  //     quoteController.quoteModel.TitleController.value.text,
-  //     9,
-  //     quoteController.quoteModel.Quote_gstTotals,
-  //   );
-
-  //   // Show the dialog immediately (not awaited)
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         backgroundColor: Primary_colors.Light,
-  //         content: Generate_popup(
-  //           type: 'E://Quote.pdf', // Pass the expected file path
-  //         ),
-  //       );
-  //     },
-  //   );
-
-  //   // Wait for PDF data generation to complete
-
-  //   const filePath = 'E://Quote.pdf';
-  //   final file = File(filePath);
-
-  //   // Perform file writing and any other future tasks in parallel
-
-  //   file.writeAsBytes(pdfData); // Write PDF to file asynchronously
-  //   // Future.delayed(const Duration(seconds: )), // Simulate any other async task if needed
-
-  //   // Continue execution while the dialog is still open
-  //   viewsendController.setLoading(true);
-  // }
-
-  // Future<void> savePdfToCache() async {
-  //   // , sites, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst
-  //   Uint8List pdfData = await SUBSCRIPTION_generate_Quote(
-  //     PdfPageFormat.a4,
-  //     quoteController.quoteModel.Quote_sites,
-  //     quoteController.quoteModel.clientAddressNameController.value.text,
-  //     quoteController.quoteModel.clientAddressController.value.text,
-  //     quoteController.quoteModel.billingAddressNameController.value.text,
-  //     quoteController.quoteModel.billingAddressController.value.text,
-  //     quoteController.quoteModel.Quote_no.value,
-  //     quoteController.quoteModel.TitleController.value.text,
-  //     9,
-  //     quoteController.quoteModel.Quote_gstTotals,
-  //   );
-
-  //   Directory tempDir = await getTemporaryDirectory();
-  //   String? sanitizedQuoteNo = Returns.replace_Slash_hypen(quoteController.quoteModel.Quote_no.value!);
-  //   String filePath = '${tempDir.path}/$sanitizedQuoteNo.pdf';
-  //   File file = File(filePath);
-  //   await file.writeAsBytes(pdfData);
-
-  //   if (kDebugMode) {
-  //     print("PDF stored in cache: $filePath");
-  //   }
-  //   quoteController.quoteModel.selectedPdf.value = file;
-  //   // return file;
-  // }
-
   Future<void> savePdfToCache(context) async {
     // Constructing the data as a map
     List<Package> package_details = [];
     List<Site> siteData = [];
-    for (int i = 0; i < quoteController.quoteModel.selectedPackages.length; i++) {
-      for (int j = 0; j < quoteController.quoteModel.selectedPackages[i].sites.length; j++) {
-        Site data = quoteController.quoteModel.selectedPackages[i].sites[j];
-        Package sub = quoteController.quoteModel.selectedPackages[i];
+    List<int> amounts = [];
+    for (int i = 0; i < quoteController.quoteModel.selectedPackagesList.length; i++) {
+      for (int j = 0; j < quoteController.quoteModel.selectedPackagesList[i].sites.length; j++) {
+        Site data = quoteController.quoteModel.selectedPackagesList[i].sites[j];
+        Package sub = quoteController.quoteModel.selectedPackagesList[i];
+        amounts.add(int.parse(sub.amount));
         siteData.add(data);
         package_details.add(sub);
       }
@@ -189,37 +114,19 @@ mixin SUBSCRIPTION_QuotenotesService {
       "gstPercent": 18,
       "GSTIN": quoteController.quoteModel.gstNumController.value.text,
       'pendingAmount': 0.0,
-      // "package_Mapped_sites": quoteController.quoteModel.selectedPackages.map((package) => package.toJson()).toList(),
       "addressDetails": {
         "clientName": quoteController.quoteModel.clientAddressNameController.value.text,
         "clientAddress": quoteController.quoteModel.clientAddressController.value.text,
         "billingName": quoteController.quoteModel.billingAddressNameController.value.text,
         "billingAddress": quoteController.quoteModel.billingAddressController.value.text,
       },
-      "packageMappedSites": quoteController.quoteModel.selectedPackages,
+      "packageMappedSites": quoteController.quoteModel.selectedPackagesList,
       "siteData": siteData,
-      // "finalCalc": FinalCalculation.fromJson(quoteController.quoteModel.QuoteSiteDetails, 18, 0).toJson(),
       "notes": quoteController.quoteModel.notecontent,
     };
 
-    // Debugging: Print the map to check if data is structured correctly
-    debugPrint("Generated Quote Data: ${quoteData.toString()}");
+    SUBSCRIPTION_Quote quote = SUBSCRIPTION_Quote.fromJson(quoteData, siteData, amounts);
 
-    // Creating SUBSCRIPTION_Quote instance from JSON map
-    SUBSCRIPTION_Quote quote = SUBSCRIPTION_Quote.fromJson(quoteData, siteData);
-    // List<Site> sites = [];
-    // List<Package> package_details = [];
-
-    // for (int i = 0; i < quote.packageMappedSites.length; i++) {
-    //   for (int j = 0; j < quote.packageMappedSites[i].sites.length; j++) {
-    //     Site data = quote.packageMappedSites[i].sites[j];
-    //     Package sub = quote.packageMappedSites[i];
-    //     sites.add(data);
-    //     package_details.add(sub);
-    //   }
-    // }
-    print(siteData);
-    print(package_details);
     Uint8List pdfData = await SUBSCRIPTION_generate_Quote(
       PdfPageFormat.a4,
       quote,

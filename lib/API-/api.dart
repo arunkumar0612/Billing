@@ -40,6 +40,7 @@ class API {
   static String sales_approvedquotation_API = "http://192.168.0.200:8081/sales/approvedquotation";
 
   // SUBSCRIPTION ////////////
+  static String subscriptionadd_Quotation = "http://192.168.0.200:8081/subscription/addquotation";
   static String subscription_detailsPreLoader_API = "http://192.168.0.200:8081/subscription/detailspreloader";
   static String subscription_getprocesslist_API = "http://192.168.0.200:8081/subscription/getprocesslist";
   static String subscription_addfeedback_API = "http://192.168.0.200:8081/subscription/addfeedback";

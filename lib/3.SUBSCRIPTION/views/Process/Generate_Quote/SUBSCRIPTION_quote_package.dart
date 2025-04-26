@@ -29,7 +29,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
   Widget build(BuildContext context) {
     return Obx(() {
       final pendingSites = quoteController.quoteModel.QuoteSiteDetails.where((site) {
-        return !quoteController.quoteModel.selectedPackages.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.sitename == site.sitename));
+        return !quoteController.quoteModel.selectedPackagesList.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.sitename == site.sitename));
       }).toList();
       return Padding(
         padding: const EdgeInsets.all(16.0),
@@ -99,7 +99,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
-                color: Primary_colors.Color1,
+                color: Primary_colors.Light,
                 width: 1.0,
               ),
             ),
@@ -143,7 +143,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
               );
 
               // 1. Check for empty packages (packages with no sites)
-              final emptyPackages = quoteController.quoteModel.selectedPackages.where((pkg) => pkg.sites.isEmpty).toList();
+              final emptyPackages = quoteController.quoteModel.selectedPackagesList.where((pkg) => pkg.sites.isEmpty).toList();
 
               // 2. Show replacement dialog if empty packages exist
               if (emptyPackages.isNotEmpty) {
@@ -159,14 +159,14 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
 
                 if (shouldReplace) {
                   // Remove only empty packages
-                  quoteController.quoteModel.selectedPackages.removeWhere((pkg) => pkg.sites.isEmpty);
+                  quoteController.quoteModel.selectedPackagesList.removeWhere((pkg) => pkg.sites.isEmpty);
                 } else {
                   return; // User chose to keep empty packages
                 }
               }
 
               // 3. Check for duplicate packages
-              final existingIndex = quoteController.quoteModel.selectedPackages.indexWhere((p) => p.name == package.name);
+              final existingIndex = quoteController.quoteModel.selectedPackagesList.indexWhere((p) => p.name == package.name);
 
               if (existingIndex != -1) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -179,9 +179,10 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
               }
 
               // 4. Add the new package
-              quoteController.quoteModel.selectedPackages.add(
+              quoteController.quoteModel.selectedPackagesList.add(
                 Package(
                   name: package.name,
+                  subscriptionid: package.subscriptionid,
                   description: package.description,
                   cameracount: package.cameracount,
                   amount: package.amount,
@@ -219,9 +220,9 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: quoteController.quoteModel.selectedPackages.length,
+              itemCount: quoteController.quoteModel.selectedPackagesList.length,
               itemBuilder: (context, index) {
-                return buildPackageDetails(quoteController.quoteModel.selectedPackages[index], index);
+                return buildPackageDetails(quoteController.quoteModel.selectedPackagesList[index], index);
               },
             ),
           ),
@@ -234,7 +235,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
     return Obx(() {
       // Get all sites that aren't assigned to any package
       final pendingSites = quoteController.quoteModel.QuoteSiteDetails.where((site) {
-        return !quoteController.quoteModel.selectedPackages.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.sitename == site.sitename));
+        return !quoteController.quoteModel.selectedPackagesList.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.sitename == site.sitename));
       }).toList();
 
       // Check if all sites are assigned
@@ -346,13 +347,21 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
             ),
             const SizedBox(width: 30),
             Obx(() {
-              final hasPackages = quoteController.quoteModel.selectedPackages.isNotEmpty;
+              final pendingSites = quoteController.quoteModel.QuoteSiteDetails.where((site) {
+                return !quoteController.quoteModel.selectedPackagesList.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.sitename == site.sitename));
+              }).toList();
+              final hasPackages = quoteController.quoteModel.selectedPackagesList.isNotEmpty && pendingSites.isEmpty;
               return BasicButton(
                   colors: hasPackages ? Colors.green : Colors.grey,
                   text: 'Submit',
                   onPressed: () {
-                    quoteController.nextTab();
-                    // print(quoteController.quoteModel.selectedPackages[0].sites[0].mailType);
+                    if (hasPackages) {
+                      quoteController.nextTab();
+                    } else {
+                      Get.snackbar("WARNING", "Please ensure the all sites have mapped to packages!");
+                    }
+
+                    // print(quoteController.quoteModel.selectedPackagesList[0].sites[0].mailType);
                   }
                   //  hasPackages
                   //     ? () {
@@ -458,14 +467,14 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                     context,
                     title: 'Yes',
                     value: 'company',
-                    groupValue: quoteController.quoteModel.showto.value,
+                    groupValue: quoteController.quoteModel.subscriptiontype.value,
                   ),
                   const SizedBox(width: 16),
                   _buildCustomRadio(
                     context,
                     title: 'No',
                     value: 'current',
-                    groupValue: quoteController.quoteModel.showto.value,
+                    groupValue: quoteController.quoteModel.subscriptiontype.value,
                   ),
                 ],
               ),
@@ -551,7 +560,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: () {
-        quoteController.quoteModel.showto.value = value;
+        quoteController.quoteModel.subscriptiontype.value = value;
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -671,8 +680,8 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
   Widget _buildPackageDetailsTab(Package details) {
     // Check if this is a custom package
     final isCustomPackage = quoteController.quoteModel.customPackage.value?.name == details.name;
-    final packageIndex = quoteController.quoteModel.selectedPackages.indexWhere((p) => p.name == details.name);
-    final package = quoteController.quoteModel.selectedPackages[packageIndex];
+    final packageIndex = quoteController.quoteModel.selectedPackagesList.indexWhere((p) => p.name == details.name);
+    final package = quoteController.quoteModel.selectedPackagesList[packageIndex];
 
     // Initialize edit mode controller if not exists
     if (!package.editingMode.value) {
@@ -918,13 +927,13 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
   }
 
   Widget _buildPackageSitesTab(Package details) {
-    final packageIndex = quoteController.quoteModel.selectedPackages.indexWhere((p) => p.name == details.name);
-    final package = quoteController.quoteModel.selectedPackages[packageIndex];
+    final packageIndex = quoteController.quoteModel.selectedPackagesList.indexWhere((p) => p.name == details.name);
+    final package = quoteController.quoteModel.selectedPackagesList[packageIndex];
 
     return Obx(() {
       // Get all available sites that aren't already assigned to other packages
       final availableSites = quoteController.quoteModel.QuoteSiteDetails.where((site) {
-        final isAssignedToAnyPackage = quoteController.quoteModel.selectedPackages.any((p) => p.sites.any((s) => s.sitename == site.sitename));
+        final isAssignedToAnyPackage = quoteController.quoteModel.selectedPackagesList.any((p) => p.sites.any((s) => s.sitename == site.sitename));
         return !isAssignedToAnyPackage;
       }).toList();
 

@@ -432,7 +432,7 @@ class Quotation {
                         child: pw.Column(
                           children: [
                             pw.Container(
-                              width: 110,
+                              width: 150,
                               decoration: const pw.BoxDecoration(
                                 border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700)),
                               ),
@@ -444,14 +444,14 @@ class Quotation {
                               child: pw.Row(
                                 children: [
                                   pw.Container(
-                                    width: 40, // Define width instead of Expanded
+                                    width: 50, // Define width instead of Expanded
                                     decoration: const pw.BoxDecoration(
                                       border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700), bottom: pw.BorderSide(color: PdfColors.grey700)),
                                     ),
                                     child: pw.Center(child: regular('%', 10)),
                                   ),
                                   pw.Container(
-                                    width: 70, // Define width instead of Expanded
+                                    width: 100, // Define width instead of Expanded
                                     decoration: const pw.BoxDecoration(
                                       border: pw.Border(
                                         right: pw.BorderSide(color: PdfColors.grey700),
@@ -495,13 +495,13 @@ class Quotation {
                                       top: pw.BorderSide(color: PdfColors.grey700),
                                     ),
                                   ),
-                                  width: 40, // Define width instead of Expanded
+                                  width: 50, // Define width instead of Expanded
                                   child: pw.Center(
                                     child: regular((quote_gstTotals[index].gst).toString(), 10),
                                   ),
                                 ),
                                 pw.Container(
-                                  width: 70, // Define width instead of Expanded
+                                  width: 100, // Define width instead of Expanded
                                   decoration: const pw.BoxDecoration(
                                     border: pw.Border(
                                       right: pw.BorderSide(color: PdfColors.grey700),

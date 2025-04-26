@@ -20,7 +20,7 @@ mixin DcnotesService {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
 
   void addtable_row(context) {
-    dcController.updateRec_ValueControllerText(dcController.dcModel.recommendationHeadingController.value.text);
+    // dcController.updateRec_ValueControllerText(dcController.dcModel.recommendationHeadingController.value.text);
     bool exists = dcController.dcModel.Dc_recommendationList.any((note) => note.key == dcController.dcModel.recommendationKeyController.value.text);
     if (exists) {
       Error_SnackBar(context, 'This note Name already exists.');
@@ -149,7 +149,7 @@ mixin DcnotesService {
       dcController.dcModel.billingAddressController.value.text,
       dcController.dcModel.Dc_no.value,
       dcController.dcModel.invRef_no.value,
-      dcController.dcModel.TitleController.value.text,
+      dcController.dcModel.gstNumController.value.text,
       9,
     );
 

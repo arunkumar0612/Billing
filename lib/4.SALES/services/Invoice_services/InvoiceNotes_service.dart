@@ -19,7 +19,7 @@ mixin InvoicenotesService {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
 
   void addtable_row(context) {
-    invoiceController.updateRec_ValueControllerText(invoiceController.invoiceModel.recommendationHeadingController.value.text);
+    // invoiceController.updateRec_ValueControllerText(invoiceController.invoiceModel.recommendationHeadingController.value.text);
     bool exists = invoiceController.invoiceModel.Invoice_recommendationList.any((note) => note.key == invoiceController.invoiceModel.recommendationKeyController.value.text);
     if (exists) {
       Error_SnackBar(context, 'This note Name already exists.');

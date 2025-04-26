@@ -18,7 +18,7 @@ mixin RfqnotesService {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
 
   void addtable_row(context) {
-    rfqController.updateRec_ValueControllerText(rfqController.rfqModel.recommendationHeadingController.value.text);
+    // rfqController.updateRec_HeadingControllerText(rfqController.rfqModel.recommendationHeadingController.value.text);
     bool exists = rfqController.rfqModel.Rfq_recommendationList.any((note) => note.key == rfqController.rfqModel.recommendationKeyController.value.text);
     if (exists) {
       Error_SnackBar(context, 'This note Name already exists.');

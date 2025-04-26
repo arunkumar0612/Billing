@@ -192,10 +192,10 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
               );
 
               // 5. Show success feedback
-              Error_SnackBar(
-                context,
-                '${package.name} added to packages',
-              );
+              // Error_SnackBar(
+              //   context,
+              //   '${package.name} added to packages',
+              // );
             } else {
               // Handle Custom Package selection
               quoteController.quoteModel.customPackageCreated.value = false;

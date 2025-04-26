@@ -7,6 +7,7 @@ import 'package:ssipl_billing/4.SALES/services/CustomPDF_services/Quote/CustomPD
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
+import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
 
 class CustomPDF_QuotePDF {
   final CustomPDF_QuoteController pdfpopup_controller = Get.find<CustomPDF_QuoteController>();
@@ -59,18 +60,9 @@ class CustomPDF_QuotePDF {
                                             controller: pdfpopup_controller.pdfModel.value.GSTnumber.value,
                                             onChanged: (value) {
                                               bool val = isGST_Local(value);
-                                              pdfpopup_controller
-                                                  .setGSTtype(val);
-                                              if (pdfpopup_controller
-                                                      .pdfModel
-                                                      .value
-                                                      .GSTnumber
-                                                      .value
-                                                      .text
-                                                      .length <=
-                                                  2) {
-                                                pdfpopup_controller
-                                                    .setGSTtype(true);
+                                              pdfpopup_controller.setGSTtype(val);
+                                              if (pdfpopup_controller.pdfModel.value.GSTnumber.value.text.length <= 2) {
+                                                pdfpopup_controller.setGSTtype(true);
                                               }
                                             },
                                             decoration: const InputDecoration(
@@ -90,10 +82,7 @@ class CustomPDF_QuotePDF {
                                               ),
                                             ),
                                             validator: (value) {
-                                              if (value == null || value.isEmpty) {
-                                                return '';
-                                              }
-                                              return null;
+                                              return Validators.GST_validator(value);
                                             },
                                           ),
                                         ),
@@ -587,24 +576,18 @@ class CustomPDF_QuotePDF {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Obx(() {
-          return Expanded(
-              child: pdfpopup_controller.pdfModel.value.isGST_local.value
-                  ? gstTable()
-                  : Other_gstTable());
+          return Expanded(child: pdfpopup_controller.pdfModel.value.isGST_local.value ? gstTable() : Other_gstTable());
         }),
         const SizedBox(width: 60),
         Obx(() {
           return SizedBox(
             width: 220,
-            child: pdfpopup_controller.pdfModel.value.isGST_local.value
-                ? local_amount_data()
-                : IGST_amount_data(),
+            child: pdfpopup_controller.pdfModel.value.isGST_local.value ? local_amount_data() : IGST_amount_data(),
           );
         })
       ],
     );
   }
-
 
   Widget local_amount_data() {
     return Column(
@@ -822,7 +805,7 @@ class CustomPDF_QuotePDF {
     );
   }
 
- Widget IGST_amount_data() {
+  Widget IGST_amount_data() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -866,8 +849,7 @@ class CustomPDF_QuotePDF {
                       readOnly: true,
                       textAlign: TextAlign.end,
                       style: const TextStyle(fontSize: 12, color: Colors.black),
-                      controller:
-                          pdfpopup_controller.pdfModel.value.subTotal.value,
+                      controller: pdfpopup_controller.pdfModel.value.subTotal.value,
                       decoration: const InputDecoration(
                         errorStyle: TextStyle(height: 0, fontSize: 0),
                         isDense: true,
@@ -921,8 +903,7 @@ class CustomPDF_QuotePDF {
                       readOnly: true,
                       textAlign: TextAlign.end,
                       style: const TextStyle(fontSize: 12, color: Colors.black),
-                      controller:
-                          pdfpopup_controller.pdfModel.value.roundOff.value,
+                      controller: pdfpopup_controller.pdfModel.value.roundOff.value,
                       decoration: const InputDecoration(
                         errorStyle: TextStyle(height: 0, fontSize: 0),
                         isDense: true,
@@ -945,12 +926,7 @@ class CustomPDF_QuotePDF {
                     " ${pdfpopup_controller.pdfModel.value.roundoffDiff.value ?? ""}   ",
                     style: TextStyle(
                       fontSize: Primary_font_size.Text7,
-                      color: pdfpopup_controller
-                                  .pdfModel.value.roundoffDiff.value
-                                  ?.startsWith('-') ==
-                              true
-                          ? Colors.red
-                          : Colors.green,
+                      color: pdfpopup_controller.pdfModel.value.roundoffDiff.value?.startsWith('-') == true ? Colors.red : Colors.green,
                     ),
                   )
                 ],
@@ -968,13 +944,7 @@ class CustomPDF_QuotePDF {
             const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Total",
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 56, 61, 136)))
-              ],
+              children: [Text("Total", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 56, 61, 136)))],
             ),
             const Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -993,24 +963,16 @@ class CustomPDF_QuotePDF {
                         child: TextFormField(
                           readOnly: true,
                           textAlign: TextAlign.end,
-                          style: const TextStyle(
-                              fontSize: 15,
-                              color: Color.fromARGB(255, 56, 61, 136),
-                              fontWeight: FontWeight.bold),
-                          controller:
-                              pdfpopup_controller.pdfModel.value.Total.value,
+                          style: const TextStyle(fontSize: 15, color: Color.fromARGB(255, 56, 61, 136), fontWeight: FontWeight.bold),
+                          controller: pdfpopup_controller.pdfModel.value.Total.value,
                           decoration: const InputDecoration(
                             errorStyle: TextStyle(height: 0, fontSize: 0),
                             contentPadding: EdgeInsets.only(),
                             // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
 
                             hintText: "0.0",
-                            hintStyle: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 56, 61, 136)),
-                            border:
-                                OutlineInputBorder(borderSide: BorderSide.none),
+                            hintStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 56, 61, 136)),
+                            border: OutlineInputBorder(borderSide: BorderSide.none),
                             // focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Primary_colors.Color3, width: 2)),
                           ),
                           validator: (value) {
@@ -1031,6 +993,7 @@ class CustomPDF_QuotePDF {
       ],
     );
   }
+
   Widget signatory() {
     return Container(
       height: 90,
@@ -1306,23 +1269,13 @@ class CustomPDF_QuotePDF {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: const Color.fromARGB(255, 151, 150, 150))),
-                height: pdfpopup_controller
-                            .pdfModel.value.manualQuote_gstTotals.length >
-                        1
-                    ? 125
-                    : 90,
+                decoration: BoxDecoration(border: Border.all(color: const Color.fromARGB(255, 151, 150, 150))),
+                height: pdfpopup_controller.pdfModel.value.manualQuote_gstTotals.length > 1 ? 125 : 90,
                 child: Column(
                   children: [
                     Expanded(
                       child: Container(
-                        decoration: const BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color:
-                                        Color.fromARGB(255, 151, 150, 150)))),
+                        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
                         child: Row(
                           children: [
                             Container(
@@ -1330,9 +1283,7 @@ class CustomPDF_QuotePDF {
                               height: double.infinity,
                               decoration: const BoxDecoration(
                                 border: Border(
-                                  right: BorderSide(
-                                      color:
-                                          Color.fromARGB(255, 151, 150, 150)),
+                                  right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)),
                                 ),
                               ),
                               child: const Column(
@@ -1353,9 +1304,7 @@ class CustomPDF_QuotePDF {
                               child: Container(
                                 decoration: const BoxDecoration(
                                   border: Border(
-                                    right: BorderSide(
-                                        color:
-                                            Color.fromARGB(255, 151, 150, 150)),
+                                    right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)),
                                   ),
                                 ),
                                 child: Column(
@@ -1363,17 +1312,11 @@ class CustomPDF_QuotePDF {
                                     Expanded(
                                       child: Container(
                                         width: double.infinity,
-                                        decoration: const BoxDecoration(
-                                            border: Border(
-                                                bottom: BorderSide(
-                                                    color: Color.fromARGB(
-                                                        255, 151, 150, 150)))),
+                                        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
                                         child: const Text(
                                           textAlign: TextAlign.center,
                                           'IGST',
-                                          style: TextStyle(
-                                              fontSize: Primary_font_size.Text8,
-                                              overflow: TextOverflow.ellipsis),
+                                          style: TextStyle(fontSize: Primary_font_size.Text8, overflow: TextOverflow.ellipsis),
                                         ),
                                       ),
                                     ),
@@ -1384,22 +1327,11 @@ class CustomPDF_QuotePDF {
                                             flex: 1,
                                             child: Container(
                                               height: double.infinity,
-                                              decoration: const BoxDecoration(
-                                                  border: Border(
-                                                      right: BorderSide(
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              151,
-                                                              150,
-                                                              150)))),
+                                              decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
                                               child: const Text(
                                                 textAlign: TextAlign.center,
                                                 '%',
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        Primary_font_size.Text7,
-                                                    overflow:
-                                                        TextOverflow.ellipsis),
+                                                style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                               ),
                                             ),
                                           ),
@@ -1410,11 +1342,7 @@ class CustomPDF_QuotePDF {
                                               child: Text(
                                                 textAlign: TextAlign.center,
                                                 'amount',
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        Primary_font_size.Text7,
-                                                    overflow:
-                                                        TextOverflow.ellipsis),
+                                                style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                               ),
                                             ),
                                           ),
@@ -1434,46 +1362,26 @@ class CustomPDF_QuotePDF {
                         height: 200, // Set a fixed height (adjust as needed)
                         child: ListView.builder(
                           shrinkWrap: true, // Prevents infinite height issue
-                          itemCount: pdfpopup_controller
-                              .pdfModel.value.manualQuote_gstTotals.length,
+                          itemCount: pdfpopup_controller.pdfModel.value.manualQuote_gstTotals.length,
                           itemBuilder: (context, index) {
                             return SizedBox(
-                              height: pdfpopup_controller.pdfModel.value
-                                          .manualQuote_gstTotals.length >
-                                      1
-                                  ? 30
-                                  : 44, // Set a height for each row to prevent overflow
+                              height: pdfpopup_controller.pdfModel.value.manualQuote_gstTotals.length > 1 ? 30 : 44, // Set a height for each row to prevent overflow
                               child: Row(
                                 children: [
                                   Container(
                                     width: 90,
-                                    decoration: const BoxDecoration(
-                                        border: Border(
-                                            right: BorderSide(
-                                                color: Color.fromARGB(
-                                                    255, 151, 150, 150)))),
+                                    decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
                                     child: Center(
                                       child: Text(
-                                        pdfpopup_controller
-                                            .pdfModel
-                                            .value
-                                            .manualQuote_gstTotals[index]
-                                            .total
-                                            .toString(),
-                                        style: const TextStyle(
-                                            fontSize: Primary_font_size.Text7,
-                                            overflow: TextOverflow.ellipsis),
+                                        pdfpopup_controller.pdfModel.value.manualQuote_gstTotals[index].total.toString(),
+                                        style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                       ),
                                     ),
                                   ),
                                   Expanded(
                                       flex: 3,
                                       child: Container(
-                                        decoration: const BoxDecoration(
-                                            border: Border(
-                                                right: BorderSide(
-                                                    color: Color.fromARGB(
-                                                        255, 151, 150, 150)))),
+                                        decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
                                         child: Column(
                                           children: [
                                             Expanded(
@@ -1482,31 +1390,11 @@ class CustomPDF_QuotePDF {
                                                   Expanded(
                                                     flex: 1,
                                                     child: Container(
-                                                      decoration: const BoxDecoration(
-                                                          border: Border(
-                                                              right: BorderSide(
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          151,
-                                                                          150,
-                                                                          150)))),
+                                                      decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
                                                       child: Center(
                                                         child: Text(
-                                                          formatzero(pdfpopup_controller
-                                                                  .pdfModel
-                                                                  .value
-                                                                  .manualQuote_gstTotals[
-                                                                      index]
-                                                                  .gst)
-                                                              .toString(),
-                                                          style: const TextStyle(
-                                                              fontSize:
-                                                                  Primary_font_size
-                                                                      .Text7,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis),
+                                                          formatzero(pdfpopup_controller.pdfModel.value.manualQuote_gstTotals[index].gst).toString(),
+                                                          style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                                         ),
                                                       ),
                                                     ),
@@ -1515,28 +1403,10 @@ class CustomPDF_QuotePDF {
                                                     flex: 2,
                                                     child: Center(
                                                       child: Text(
-                                                        formatzero((pdfpopup_controller
-                                                                        .pdfModel
-                                                                        .value
-                                                                        .manualQuote_gstTotals[
-                                                                            index]
-                                                                        .total
-                                                                        .toInt() /
-                                                                    100) *
-                                                                pdfpopup_controller
-                                                                    .pdfModel
-                                                                    .value
-                                                                    .manualQuote_gstTotals[
-                                                                        index]
-                                                                    .gst)
+                                                        formatzero((pdfpopup_controller.pdfModel.value.manualQuote_gstTotals[index].total.toInt() / 100) *
+                                                                pdfpopup_controller.pdfModel.value.manualQuote_gstTotals[index].gst)
                                                             .toString(),
-                                                        style: const TextStyle(
-                                                            fontSize:
-                                                                Primary_font_size
-                                                                    .Text7,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis),
+                                                        style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                                       ),
                                                     ),
                                                   ),
@@ -1555,19 +1425,13 @@ class CustomPDF_QuotePDF {
                     ),
                   ],
                 )),
-            SizedBox(
-                height: pdfpopup_controller
-                            .pdfModel.value.manualQuote_gstTotals.length >
-                        1
-                    ? 20
-                    : 55),
+            SizedBox(height: pdfpopup_controller.pdfModel.value.manualQuote_gstTotals.length > 1 ? 20 : 55),
             notes(),
           ],
         );
       },
     );
   }
-  
 
   Widget notes() {
     return Column(
@@ -1750,6 +1614,8 @@ class CustomPDF_QuotePDF {
                                 debugPrint(stackTrace.toString());
                                 Get.snackbar("Error", "Something went wrong. Please try again.");
                               }
+                            } else {
+                              Get.snackbar("ERROR", "Check for Red Highlighted Fields!");
                             }
                           },
                           child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),

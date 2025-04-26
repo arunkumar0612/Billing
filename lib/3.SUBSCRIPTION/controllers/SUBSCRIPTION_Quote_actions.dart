@@ -276,7 +276,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     }
   }
 
-  void addSite({required BuildContext context, required String siteName, required int cameraquantity, required String address, required String billingType, required String mailType}) {
+  void addSite({required BuildContext context, required String siteName, required int cameraquantity, required String address, required String billType, required String mailType}) {
     try {
       if (siteName.trim().isEmpty || cameraquantity <= 0 || address.trim().isEmpty) {
         Error_SnackBar(context, 'Please provide valid product details.');
@@ -289,7 +289,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         // packageName: '',
         cameraquantity: cameraquantity,
         // Price: 100,
-        billingType: billingType,
+        billType: billType,
         mailType: mailType,
       ));
     } catch (e) {
@@ -298,7 +298,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
   }
 
   void updateSite(
-      {required BuildContext context, required int editIndex, required String siteName, required int cameraquantity, required String address, required String billingType, required String mailType}) {
+      {required BuildContext context, required int editIndex, required String siteName, required int cameraquantity, required String address, required String billType, required String mailType}) {
     try {
       // Validate input fields
       if (siteName.trim().isEmpty || cameraquantity <= 0 || address.trim().isEmpty) {
@@ -319,7 +319,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         sitename: siteName,
         address: address,
         cameraquantity: cameraquantity,
-        billingType: billingType,
+        billType: billType,
         mailType: mailType,
       );
     } catch (e) {

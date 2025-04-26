@@ -4,10 +4,10 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart' show SUBSCRIPTION_CustomPDF_InvoiceController;
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/CustomPDF_services/SUBSCRIPTION_CustomPDF_Invoice_services.dart';
-import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Error_dialog;
 import 'package:ssipl_billing/COMPONENTS-/button.dart' show BasicButton;
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
+import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
 
 class Subscription_CustomPDF_InvoicePDF {
   final SUBSCRIPTION_CustomPDF_InvoiceController pdfpopup_controller = Get.find<SUBSCRIPTION_CustomPDF_InvoiceController>();
@@ -816,10 +816,7 @@ class Subscription_CustomPDF_InvoicePDF {
                             ),
                           ),
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return '';
-                            }
-                            return null;
+                            return Validators.GST_validator(value);
                           },
                         ),
                       ),
@@ -2139,7 +2136,7 @@ class Subscription_CustomPDF_InvoicePDF {
                                 Get.snackbar("Error", "Something went wrong. Please try again.");
                               }
                             } else {
-                              Error_dialog(context: context, title: "ERROR", content: "Please check for empty fields before proceeding1");
+                              Get.snackbar("ERROR", "Check for Red Highlighted Fields!");
                             }
                           },
                           child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),

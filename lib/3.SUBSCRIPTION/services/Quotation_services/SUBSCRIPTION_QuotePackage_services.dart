@@ -17,7 +17,7 @@ mixin SUBSCRIPTION_QuotepackageService {
       // Select the first available package if we removed the currently selected one
       quoteController.quoteModel.selectedPackage.value = quoteController.quoteModel.selectedPackagesList.first.name;
     }
-    Error_SnackBar(context, '${packageToRemove.name} remo765ved from packages');
+    Error_SnackBar(context, '${packageToRemove.name} removed from packages');
 
     // });
   }
@@ -76,12 +76,12 @@ mixin SUBSCRIPTION_QuotepackageService {
 
       if (existingIndex == -1) {
         quoteController.quoteModel.selectedPackagesList.add(customPackage);
-        Success_SnackBar(context, '${customPackage.name} added to packages');
+        // Success_SnackBar(context, '${customPackage.name} added to packages');
       } else {
         quoteController.quoteModel.selectedPackagesList[existingIndex] = customPackage.copyWith(
           sites: quoteController.quoteModel.selectedPackagesList[existingIndex].sites,
         );
-        Success_SnackBar(context, '${customPackage.name} updated in packages');
+        // Success_SnackBar(context, '${customPackage.name} updated in packages');
       }
 
       // Clear all fields after saving

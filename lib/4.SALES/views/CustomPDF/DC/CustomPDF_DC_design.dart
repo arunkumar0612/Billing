@@ -6,6 +6,7 @@ import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPD
 import 'package:ssipl_billing/4.SALES/services/CustomPDF_services/DC/CustomPDF_DC_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
 
 class CustomPDF_DcPDF {
   final CustomPDF_DcController pdfpopup_controller = Get.find<CustomPDF_DcController>();
@@ -53,32 +54,28 @@ class CustomPDF_DcPDF {
                                           height: 35,
                                           width: 200,
                                           child: TextFormField(
-                                            textAlign: TextAlign.start,
-                                            style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black, height: 2.3),
-                                            controller: pdfpopup_controller.pdfModel.value.GSTnumber.value,
-                                            decoration: const InputDecoration(
-                                              errorStyle: TextStyle(height: -1, fontSize: 0),
-                                              contentPadding: EdgeInsets.only(
-                                                left: 5,
-                                                right: 5,
+                                              textAlign: TextAlign.start,
+                                              style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black, height: 2.3),
+                                              controller: pdfpopup_controller.pdfModel.value.GSTnumber.value,
+                                              decoration: const InputDecoration(
+                                                errorStyle: TextStyle(height: -1, fontSize: 0),
+                                                contentPadding: EdgeInsets.only(
+                                                  left: 5,
+                                                  right: 5,
+                                                ),
+                                                // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                                                hintText: "07AAACL1234C1Z5",
+                                                hintStyle: TextStyle(fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 136, 136, 136)),
+                                                // border: OutlineInputBorder(borderSide: BorderSide.none),
+                                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Primary_colors.Color3, width: 2)),
+                                                prefixIcon: Padding(
+                                                  padding: EdgeInsets.only(left: 5, top: 11),
+                                                  child: Text("GSTIN  :  ", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                                                ),
                                               ),
-                                              // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                                              hintText: "07AAACL1234C1Z5",
-                                              hintStyle: TextStyle(fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 136, 136, 136)),
-                                              // border: OutlineInputBorder(borderSide: BorderSide.none),
-                                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Primary_colors.Color3, width: 2)),
-                                              prefixIcon: Padding(
-                                                padding: EdgeInsets.only(left: 5, top: 11),
-                                                child: Text("GSTIN  :  ", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                                              ),
-                                            ),
-                                            validator: (value) {
-                                              if (value == null || value.isEmpty) {
-                                                return '';
-                                              }
-                                              return null;
-                                            },
-                                          ),
+                                              validator: (value) {
+                                                return Validators.GST_validator(value);
+                                              }),
                                         ),
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.end,
@@ -778,6 +775,8 @@ class CustomPDF_DcPDF {
                                 debugPrint(stackTrace.toString());
                                 Get.snackbar("Error", "Something went wrong. Please try again.");
                               }
+                            } else {
+                              Get.snackbar("ERROR", "Check for Red Highlighted Fields!");
                             }
                           },
                           child: const Text("Generate", style: TextStyle(fontSize: 12, color: Colors.white)),

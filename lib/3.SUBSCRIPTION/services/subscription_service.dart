@@ -27,7 +27,7 @@ mixin SubscriptionServices {
   final SessiontokenController _sessiontokenController = Get.find<SessiontokenController>();
   final SubscriptionController _subscriptionController = Get.find<SubscriptionController>();
   final SUBSCRIPTION_ClientreqController _clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
-  final SUBSCRIPTION_QuoteController _quoteController = Get.find<SUBSCRIPTION_QuoteController>();
+  final SUBSCRIPTION_QuoteController sub_quoteController = Get.find<SUBSCRIPTION_QuoteController>();
   final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
   // final loader = LoadingOverlay();
 
@@ -931,8 +931,8 @@ mixin SubscriptionServices {
                   ),
                   onPressed: () async {
                     // Check if the data has any value
-                    // || ( _quoteController.quoteModel.Quote_gstTotals.isNotEmpty)
-                    if (_quoteController.postDatavalidation()) {
+                    // || ( sub_quoteController.quoteModel.Quote_gstTotals.isNotEmpty)
+                    if (sub_quoteController.postDatavalidation()) {
                       // Show confirmation dialog
                       bool? proceed = await Warning_dialog(
                         context: context,
@@ -945,7 +945,7 @@ mixin SubscriptionServices {
                       // If user confirms (Yes), clear data and close the dialog
                       if (proceed == true) {
                         Navigator.of(context).pop(); // Close the dialog
-                        _quoteController.resetData();
+                        sub_quoteController.resetData();
                       }
                     } else {
                       // If no data, just close the dialog

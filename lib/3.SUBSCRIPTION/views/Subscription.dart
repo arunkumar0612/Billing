@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
@@ -27,7 +28,7 @@ import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:lottie/lottie.dart';
+
 import '../controllers/Subscription_actions.dart';
 
 class Subscription_Client extends StatefulWidget with SubscriptionServices, BellIconFunction {
@@ -1412,9 +1413,8 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                                 Row(
                                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                                   children: [
-                                                                    if ((subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation == true)
-                                                                        // &&(subscriptionController.subscriptionModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                        )
+                                                                    if ((subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation == true) &&
+                                                                        (subscriptionController.subscriptionModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                       TextButton(
                                                                         onPressed: () async {
                                                                           bool success = await widget.GetPDFfile(
@@ -1432,18 +1432,17 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                                         ),
                                                                       ),
                                                                     if ((subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation ==
-                                                                            true)
-                                                                        //  &&                                                                              (subscriptionController.subscriptionModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                        )
+                                                                            true) &&
+                                                                        (subscriptionController.subscriptionModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                       TextButton(
                                                                         onPressed: () async {
                                                                           bool success = await widget.GetPDFfile(
                                                                               context, subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
 
                                                                           if (success) {
-                                                                            // widget.GenerateQuote_dialougebox(cont`ext, "revisedquotation",
-                                                                            //     subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                            // quoteController.setProcessID(subscriptionController.subscriptionModel.processList[index].processid);
+                                                                            widget.GenerateQuote_dialougebox(context, "revisedquotation",
+                                                                                subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                            quoteController.setProcessID(subscriptionController.subscriptionModel.processList[index].processid);
                                                                           }
                                                                         },
                                                                         child: const Text(

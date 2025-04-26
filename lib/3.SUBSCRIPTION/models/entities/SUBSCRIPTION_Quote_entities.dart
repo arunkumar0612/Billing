@@ -148,11 +148,11 @@ class SUBSCRIPTION_Quote {
 
   // Convert JSON to Invoice object
   factory SUBSCRIPTION_Quote.fromJson(Map<String, dynamic> json, List<Site> sies, List<int> amounts) {
-    List<Package> packages = (json['packageMappedSites'] as List<Package>).map((item) => Package.fromJson(item.toJson(), sies)).toList();
     // List<int> amounts = packages.map((pkg) => int.parse(pkg.amount)).toList();
     // List<Map<String, dynamic>> siteList = List<Map<String, dynamic>>.from(json['siteData']);
     // List<Site> sites = Site.fromJson(siteList);
     // List<Site> sites = Site.fromJson(List<Map<String, dynamic>>.from(json['siteData']));
+    List<Package> packages = (json['packageMappedSites'] as List<Package>).map((item) => Package.fromJson(item.toJson())).toList();
 
     return SUBSCRIPTION_Quote(
       date: json['date'] as String,
@@ -210,7 +210,7 @@ class SUBSCRIPTION_Quote {
 
     switch (col) {
       case 0:
-        return siteIndex.toString();
+        return (siteIndex + 1).toString();
       case 1:
         return siteData[siteIndex].sitename;
       case 2:
@@ -307,16 +307,15 @@ class Package {
   }
 
   // JSON methods
-  factory Package.fromJson(Map<String, dynamic> json, List<Site> sies) {
+  factory Package.fromJson(Map<String, dynamic> json) {
     return Package(
       name: json['name'] as String,
       subscriptionid: json['subscriptionid'] as int,
       description: json['description'] as String,
       cameracount: json['cameracount'] as String,
       amount: json['amount'] as String,
-      // additionalCameras: json['additional_cameras'] as String,
       subscriptiontype: json['subscriptiontype'] as String,
-      sites: sies,
+      sites: Site.fromJson(List<Map<String, dynamic>>.from(json['sites'])),
     );
   }
 
@@ -414,7 +413,7 @@ class Site {
   // int Price;
   // final String selectedPackage;
   // final PackageDetails? packageDetails;
-  final String billingType;
+  final String billType;
   final String mailType;
 
   Site({
@@ -426,7 +425,7 @@ class Site {
     // required this.Price,
     // required this.selectedPackage,
     // this.packageDetails,
-    required this.billingType,
+    required this.billType,
     required this.mailType,
   }) : serialNo = (_counter++).toString();
 
@@ -442,7 +441,7 @@ class Site {
         // Price: json['specialPrice'] as int,
         // selectedPackage: json['selectedPackage'] as String,
         // packageDetails: json['packageDetails'] != null ? PackageDetails.fromJson(json['packageDetails']) : null,
-        billingType: json['billingType'] as String,
+        billType: json['billType'] as String,
         mailType: json['mailType'] as String,
       );
     }).toList();
@@ -457,13 +456,8 @@ class Site {
       'serialNo': serialNo,
       'sitename': sitename,
       'siteaddress': address,
-      // 'packageName': packageName,
       'cameraquantity': cameraquantity,
-      // 'basicPrice': basicPrice,
-      // 'specialPrice': Price,
-      // 'selectedPackage': selectedPackage,
-      // 'packageDetails': packageDetails?.toJson(),
-      "billingType": billingType,
+      "billType": billType,
       "mailType": mailType,
     };
   }
@@ -660,8 +654,8 @@ class PostSubQuote {
     required this.feedback,
   });
 
-  factory PostSubQuote.fromJson(Map<String, dynamic> json, List<Site> sies) {
-    List<Package> packages = (json['packagedetails'] as List<Package>).map((item) => Package.fromJson(item.toJson(), sies)).toList();
+  factory PostSubQuote.fromJson(Map<String, dynamic> json) {
+    List<Package> packages = (json['packagedetails'] as List<Package>).map((item) => Package.fromJson(item.toJson())).toList();
 
     return PostSubQuote(
       companyid: json['companyid'],

@@ -208,9 +208,9 @@ mixin SalesServices {
     }
   }
 
-  Future<bool> GetPDFfile(context, int eventid) async {
+  Future<bool> GetSalesPDFfile({required BuildContext context, required int eventid, String? eventtype}) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid}, API.sales_getbinaryfile_API);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid, if (eventtype != null) "eventtype": eventtype}, API.sales_getbinaryfile_API);
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {

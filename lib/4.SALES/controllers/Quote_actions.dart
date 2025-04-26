@@ -388,7 +388,9 @@ class QuoteController extends GetxController {
     quoteModel.product_editIndex.value = null;
   }
 
-  void update_requiredData(CMDmResponse value) {
+  void update_requiredData(
+    CMDmResponse value,
+  ) {
     RequiredData instance = RequiredData.fromJson(value);
     quoteModel.Quote_no.value = instance.eventnumber;
     updateQuotenumber(instance.eventnumber);

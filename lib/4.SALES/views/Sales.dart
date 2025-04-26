@@ -1275,8 +1275,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                           ),
                                                                         ),
                                                                         onTap: () async {
-                                                                          bool success =
-                                                                              await widget.GetPDFfile(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                          bool success = await widget.GetSalesPDFfile(
+                                                                              context: context, eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                           if (success) {
                                                                             widget.showPDF(context,
                                                                                 "${salesController.salesModel.processList[index].customer_name}${salesController.salesModel.processList[index].title}${salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname}");
@@ -1410,8 +1410,10 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                                   TextButton(
                                                                                     onPressed: () async {
-                                                                                      bool success = await widget.GetPDFfile(
-                                                                                          context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                      bool success = await widget.GetSalesPDFfile(
+                                                                                          context: context,
+                                                                                          eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                                          eventtype: "quotation");
 
                                                                                       if (success) {
                                                                                         widget.GenerateQuote_dialougebox(
@@ -1430,8 +1432,10 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                     (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus != 1))
                                                                                   TextButton(
                                                                                     onPressed: () async {
-                                                                                      bool success = await widget.GetPDFfile(
-                                                                                          context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                      bool success = await widget.GetSalesPDFfile(
+                                                                                          context: context,
+                                                                                          eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                                          eventtype: "revisedquotation");
 
                                                                                       if (success) {
                                                                                         widget.GenerateQuote_dialougebox(context, "revisedquotation",
@@ -1448,8 +1452,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                                   TextButton(
                                                                                     onPressed: () async {
-                                                                                      bool success = await widget.GetPDFfile(
-                                                                                          context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                      bool success = await widget.GetSalesPDFfile(
+                                                                                          context: context, eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                       if (success) {
                                                                                         widget.GenerateRfq_dialougebox(
                                                                                             context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
@@ -1469,8 +1473,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                     (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 1))
                                                                                   TextButton(
                                                                                     onPressed: () async {
-                                                                                      bool success = await widget.GetPDFfile(
-                                                                                          context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                      bool success = await widget.GetSalesPDFfile(
+                                                                                          context: context, eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                       if (success) {
                                                                                         widget.GenerateInvoice_dialougebox(
                                                                                             context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
@@ -1490,8 +1494,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                                   TextButton(
                                                                                     onPressed: () async {
-                                                                                      bool success = await widget.GetPDFfile(
-                                                                                          context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                      bool success = await widget.GetSalesPDFfile(
+                                                                                          context: context, eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                       if (success) {
                                                                                         widget.GenerateDelivery_challan_dialougebox(
                                                                                             context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);

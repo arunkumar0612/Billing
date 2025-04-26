@@ -119,8 +119,8 @@ mixin PostServices {
         if (value.code) {
           loader.stop();
           await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
-          // Navigator.of(context).pop(true);
-          // invoiceController.resetData();
+          Navigator.of(context).pop(true);
+          invoiceController.resetData();
         } else {
           loader.stop();
           await Error_dialog(context: context, title: 'Processing Invoice', content: value.message ?? "", onOk: () {});

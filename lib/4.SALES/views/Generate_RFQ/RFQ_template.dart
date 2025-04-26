@@ -557,7 +557,7 @@ class Request_for_quote {
           }),
           if (rfqController.rfqModel.Rfq_recommendationList.isNotEmpty)
             pw.Padding(
-              padding: const pw.EdgeInsets.only(left: 0, top: 5),
+              padding: const pw.EdgeInsets.only(left: 0, top: 8),
               child: pw.Row(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
@@ -567,7 +567,7 @@ class Request_for_quote {
                     child: pw.Column(
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
-                        bold(rfqController.rfqModel.Rfq_table_heading.value, 10),
+                        bold(rfqController.rfqModel.recommendationHeadingController.value.text, 10),
                         ...rfqController.rfqModel.Rfq_recommendationList.map((recommendation) {
                           return pw.Padding(
                             padding: const pw.EdgeInsets.only(left: 5, top: 5),
@@ -591,7 +591,7 @@ class Request_for_quote {
               ),
             ),
           pw.Padding(
-            padding: const pw.EdgeInsets.only(left: 0, top: 5),
+            padding: const pw.EdgeInsets.only(left: 0, top: 8),
             child: pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [

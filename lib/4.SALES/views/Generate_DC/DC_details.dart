@@ -10,8 +10,9 @@ import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
 
 class DcDetails extends StatefulWidget with DcdetailsService {
-  DcDetails({super.key, required this.eventID});
+  DcDetails({super.key, required this.eventID, required this.eventName});
   int eventID;
+  String eventName;
   @override
   State<DcDetails> createState() => _DcDetailsState();
 }
@@ -169,12 +170,14 @@ class _DcDetailsState extends State<DcDetails> {
                           ],
                         )),
                     const SizedBox(height: 25),
-                    const SizedBox(
+                     SizedBox(
                       width: 660,
                       child: Text(
                         textAlign: TextAlign.center,
-                        'The approved Quotation shown beside can be used as a reference for generating the Dc. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
-                        style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
+                        widget.eventName=='Invoice'?
+                        'The Invoice shown beside can be used as a reference for generating the Dc. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.'
+                        :'The Delivery challan shown beside can be used as a reference for generating the Dc. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
+                        style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7), 
                       ),
                     )
                   ],

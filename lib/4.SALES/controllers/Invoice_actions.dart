@@ -55,9 +55,9 @@ class InvoiceController extends GetxController {
     invoiceModel.note_editIndex.value = index;
   }
 
-  void updateChallanTableHeading(String tableHeading) {
-    invoiceModel.Invoice_table_heading.value = tableHeading;
-  }
+  // void updateChallanTableHeading(String tableHeading) {
+  //   invoiceModel.Invoice_table_heading.value = tableHeading;
+  // }
 
   void updateNoteList(String value, int index) {
     invoiceModel.Invoice_noteList[invoiceModel.note_editIndex.value!] = invoiceModel.notecontentController.value.text;
@@ -485,7 +485,7 @@ class InvoiceController extends GetxController {
     invoiceModel.tabController.value = null;
     invoiceModel.processID.value = null;
     invoiceModel.Invoice_no.value = null;
-    invoiceModel.Invoice_table_heading.value = '';
+    // invoiceModel.Invoice_table_heading.value = '';
     invoiceModel.gstNumController.value.clear();
     invoiceModel.invoice_amount.value = null;
 

@@ -973,7 +973,7 @@ class Quotation {
                     child: pw.Column(
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
-                        bold(quoteController.quoteModel.Quote_table_heading.value, 10),
+                        bold(quoteController.quoteModel.recommendationHeadingController.value.text, 10),
                         ...quoteController.quoteModel.Quote_recommendationList.map((recommendation) {
                           return pw.Padding(
                             padding: const pw.EdgeInsets.only(left: 5, top: 5),

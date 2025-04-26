@@ -41,9 +41,9 @@ class RfqController extends GetxController {
     rfqModel.note_editIndex.value = index;
   }
 
-  void updateChallanTableHeading(String tableHeading) {
-    rfqModel.Rfq_table_heading.value = tableHeading;
-  }
+  // void updateChallanTableHeading(String tableHeading) {
+  //   rfqModel.Rfq_table_heading.value = tableHeading;
+  // }
 
   void updateNoteList(String value, int index) {
     rfqModel.Rfq_noteList[rfqModel.note_editIndex.value!] = rfqModel.notecontentController.value.text;
@@ -268,14 +268,23 @@ class RfqController extends GetxController {
   }) {
     try {
       if (productName.trim().isEmpty || quantity <= 0) {
-        Error_SnackBar(context, 'Please provide valid product details.');
-
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text('Please provide valid product details.'),
+          ),
+        );
         return;
       }
 
       rfqModel.Rfq_products.add(RFQProduct(sno: (rfqModel.Rfq_products.length + 1), productName: productName, quantity: quantity));
     } catch (e) {
-      Error_SnackBar(context, 'An error occurred while adding the product.');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('An error occurred while adding the product.'),
+        ),
+      );
     }
   }
 
@@ -291,15 +300,23 @@ class RfqController extends GetxController {
     try {
       // Validate input fields
       if (productName.trim().isEmpty || quantity <= 0) {
-        Error_SnackBar(context, 'Please provide valid product details.');
-
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text('Please provide valid product details.'),
+          ),
+        );
         return;
       }
 
       // Check if the editIndex is valid
       if (editIndex < 0 || editIndex >= rfqModel.Rfq_products.length) {
-        Error_SnackBar(context, 'Invalid product index.');
-
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text('Invalid product index.'),
+          ),
+        );
         return;
       }
 
@@ -326,7 +343,12 @@ class RfqController extends GetxController {
       // .updateProductDetails(rfqController.rfqModel.Rfq_productDetails);
     } catch (e) {
       // Handle unexpected errors
-      Error_SnackBar(context, 'An error occurred while updating the product.');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('An error occurred while updating the product.'),
+        ),
+      );
     }
   }
 
@@ -481,7 +503,7 @@ class RfqController extends GetxController {
     rfqModel.vendorID.value = null;
     rfqModel.vendorName.value = null;
     rfqModel.Rfq_no.value = null;
-    rfqModel.Rfq_table_heading.value = '';
+    // rfqModel.Rfq_table_heading.value = '';
     rfqModel.vendorList.clear();
 
     // DETAILS

@@ -566,7 +566,7 @@ mixin SalesServices {
                         (invoiceController.invoiceModel.billingAddressController.value.text != "") ||
                         (invoiceController.invoiceModel.Invoice_no.value != "") ||
                         (invoiceController.invoiceModel.TitleController.value.text != "") ||
-                        (invoiceController.invoiceModel.Invoice_table_heading.value != "")) {
+                        (invoiceController.invoiceModel.recommendationHeadingController.value.text != "")) {
                       // Show confirmation dialog
                       bool? proceed = await Warning_dialog(
                         context: context,
@@ -657,7 +657,8 @@ mixin SalesServices {
                         (_quoteController.quoteModel.billingAddressController.value.text != "") ||
                         (_quoteController.quoteModel.Quote_no.value != "") ||
                         (_quoteController.quoteModel.gstController.value.text != "") ||
-                        (_quoteController.quoteModel.Quote_table_heading.value != "")) {
+                        (_quoteController.quoteModel.recommendationHeadingController.value.text != "")
+                        ) {
                       // Show confirmation dialog
                       bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
 
@@ -745,7 +746,7 @@ mixin SalesServices {
                         // (rfqController.rfqModel.billingAddressController.value.text != "") ||
                         (rfqController.rfqModel.Rfq_no.value != "") ||
                         (rfqController.rfqModel.TitleController.value.text != "") ||
-                        (rfqController.rfqModel.Rfq_table_heading.value != "")) {
+                        (rfqController.rfqModel.recommendationHeadingController.value.text != "")) {
                       // Show confirmation dialog
                       bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
 
@@ -790,7 +791,7 @@ mixin SalesServices {
 
 // // ##################################################################################################################################################################################################################################################################################################################################################################
 
-  dynamic GenerateDelivery_challan_dialougebox(context, eventID) async {
+  dynamic GenerateDelivery_challan_dialougebox(context, eventID, eventName) async {
     await showDialog(
       context: context,
       barrierDismissible: false, // Prevents closing the dialog by clicking outside
@@ -805,7 +806,7 @@ mixin SalesServices {
                 height: 650,
                 width: 1300,
                 child: GenerateDc(
-                  eventID: eventID,
+                  eventID: eventID,eventName:  eventName
                 ),
               ),
               Positioned(

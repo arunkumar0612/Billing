@@ -134,7 +134,6 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
     super.dispose();
   }
 
-  final formKey1 = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -256,7 +255,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
               const SizedBox(width: 10),
               Expanded(
                   child: Form(
-                key: formKey1,
+                key: quoteController.quoteModel.formKey1.value,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -714,7 +713,9 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                                     text: "Send",
                                     colors: Colors.blue,
                                     onPressed: () {
+                                      if(quoteController.quoteModel.formKey1.value.currentState?.validate() ?? false){
                                       widget.postData(context, quoteController.fetch_messageType(), widget.eventtype);
+                                      }
                                     })),
                           )
                       ],

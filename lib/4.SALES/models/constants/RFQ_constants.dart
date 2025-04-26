@@ -13,7 +13,7 @@ class RfqModel extends GetxController with GetSingleTickerProviderStateMixin {
   var vendorName = Rxn<String>();
   var Rfq_no = Rxn<String>();
   // var gst_no = Rxn<String>();
-  var Rfq_table_heading = "".obs;
+  // var Rfq_table_heading = "".obs;
   // var rfq_amount = Rxn<double>();
 
   // DETAILS

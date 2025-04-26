@@ -189,7 +189,7 @@ class _RfqDetailsState extends State<RfqDetails> {
                       width: 660,
                       child: Text(
                         textAlign: TextAlign.center,
-                        'The approved Quotation shown beside can be used as a reference for generating the Rfq. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
+                        'The Quotation shown beside can be used as a reference for generating the RFQ. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
                         style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                       ),
                     )

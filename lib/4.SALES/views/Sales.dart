@@ -1449,7 +1449,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                     ),
                                                                                   ),
                                                                                 if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.rfq == true) &&
-                                                                                    (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
+                                                                                    (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1) &&
+                                                                                    (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus != 1))
                                                                                   TextButton(
                                                                                     onPressed: () async {
                                                                                       bool success = await widget.GetSalesPDFfile(
@@ -1498,7 +1499,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                           context: context, eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                       if (success) {
                                                                                         widget.GenerateDelivery_challan_dialougebox(
-                                                                                            context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                            context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname);
                                                                                         dcController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                         if (kDebugMode) {
                                                                                           print(dcController.dcModel.processID);

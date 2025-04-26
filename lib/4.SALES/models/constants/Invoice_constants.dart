@@ -12,7 +12,7 @@ class InvoiceModel extends GetxController with GetSingleTickerProviderStateMixin
   var processID = Rxn<int>();
   var Invoice_no = Rxn<String>();
   // var gst_no = Rxn<String>();
-  var Invoice_table_heading = "".obs;
+  // var Invoice_table_heading = "".obs;
   final gstNumController = TextEditingController().obs;
   var invoice_amount = Rxn<double>();
 

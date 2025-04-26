@@ -95,6 +95,10 @@ class Request_for_quote {
           title(context),
           pw.SizedBox(height: 10),
           _contentTable(context),
+          pw.Divider(
+            color: PdfColors.grey500,
+            thickness: 0.2,
+          ),
           pw.SizedBox(height: 10),
           tax_tabl(context),
         ],
@@ -559,7 +563,7 @@ class Request_for_quote {
           }),
           if (rfqController.rfqModel.Rfq_recommendationList.isNotEmpty)
             pw.Padding(
-              padding: const pw.EdgeInsets.only(left: 0, top: 5),
+              padding: const pw.EdgeInsets.only(left: 0, top: 8),
               child: pw.Row(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
@@ -571,7 +575,7 @@ class Request_for_quote {
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
                         bold(
-                            rfqController.rfqModel.Rfq_table_heading.value, 10),
+                            rfqController.rfqModel.recommendationHeadingController.value, 10),
                         ...rfqController.rfqModel.Rfq_recommendationList
                             .map((recommendation) {
                           return pw.Padding(
@@ -597,7 +601,7 @@ class Request_for_quote {
               ),
             ),
           pw.Padding(
-            padding: const pw.EdgeInsets.only(left: 0, top: 5),
+            padding: const pw.EdgeInsets.only(left: 0, top: 8),
             child: pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [

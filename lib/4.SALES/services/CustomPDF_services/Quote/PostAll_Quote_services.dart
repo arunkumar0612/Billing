@@ -112,7 +112,7 @@ mixin salesCustom_PostServices {
       String savePath = "$selectedDirectory/$filename.pdf";
       await pdfFile.copy(savePath);
 
-      Basic_SnackBar(context, "✅ PDF downloaded successfully to: $savePath");
+      Success_SnackBar(context, "✅ PDF downloaded successfully to: $savePath");
     } catch (e) {
       loader.stop();
       if (kDebugMode) {

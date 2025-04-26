@@ -265,7 +265,7 @@ class PostRfqState extends State<PostRfq> with SingleTickerProviderStateMixin {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Rfq',
+                          'RFQ',
                           style: TextStyle(fontSize: 20, color: Primary_colors.Color1, fontWeight: FontWeight.bold),
                         ),
                       ],

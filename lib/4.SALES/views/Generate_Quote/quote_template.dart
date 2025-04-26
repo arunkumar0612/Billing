@@ -369,14 +369,14 @@ class Quotation {
           color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
         );
       },
-      rowDecoration: pw.BoxDecoration(
-        border: pw.Border(
-          bottom: pw.BorderSide(
-            color: accentColor,
-            width: .5,
-          ),
-        ),
-      ),
+      // rowDecoration: pw.BoxDecoration(
+      //   border: pw.Border(
+      //     bottom: pw.BorderSide(
+      //       color: accentColor,
+      //       width: .5,
+      //     ),
+      //   ),
+      // ),
       headers: List<String>.generate(
         tableHeaders.length,
         (col) => tableHeaders[col],
@@ -973,7 +973,7 @@ class Quotation {
                     child: pw.Column(
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
-                        bold(quoteController.quoteModel.Quote_table_heading.value, 10),
+                        bold(quoteController.quoteModel.recommendationHeadingController.value.text, 10),
                         ...quoteController.quoteModel.Quote_recommendationList.map((recommendation) {
                           return pw.Padding(
                             padding: const pw.EdgeInsets.only(left: 5, top: 5),

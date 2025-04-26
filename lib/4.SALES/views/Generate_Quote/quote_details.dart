@@ -176,7 +176,7 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                       width: 660,
                       child: Text(
                         textAlign: TextAlign.center,
-                        'The approved Quotation shown beside can be used as a reference for generating the Quote. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
+                        'The Client request shown beside can be used as a reference for generating the Quote. Ensure that all details inherited are accurate and thoroughly verified before generating the PDF documents.',
                         style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                       ),
                     )

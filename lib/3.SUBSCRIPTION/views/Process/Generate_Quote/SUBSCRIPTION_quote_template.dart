@@ -334,14 +334,14 @@ class SUBSCRIPTION_Quotation {
           color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
         );
       },
-      rowDecoration: pw.BoxDecoration(
-        border: pw.Border(
-          bottom: pw.BorderSide(
-            color: accentColor,
-            width: .5,
-          ),
-        ),
-      ),
+      // rowDecoration: pw.BoxDecoration(
+      //   border: pw.Border(
+      //     bottom: pw.BorderSide(
+      //       color: accentColor,
+      //       width: .5,
+      //     ),
+      //   ),
+      // ),
       headers: List<String>.generate(
         tableHeaders.length,
         (col) => tableHeaders[col],

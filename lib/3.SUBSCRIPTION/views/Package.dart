@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/Subscription_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/subscription_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
@@ -199,9 +200,41 @@ class _PackagepageState extends State<Packagepage> {
                                   padding: EdgeInsets.only(left: 24.0, right: 24.0, bottom: MediaQuery.of(context).viewInsets.bottom),
                                   child: subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.isEmpty
                                       ? Center(
-                                          child: Text(
-                                            'No packages available',
-                                            style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white70),
+                                          child: Stack(
+                                            alignment: Alignment.topCenter,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 0),
+                                                child: Lottie.asset(
+                                                  'assets/animations/JSON/emptysubscriptionlist.json',
+                                                  // width: 264,
+                                                  height: 250,
+                                                ),
+                                              ),
+                                              const Padding(
+                                                padding: EdgeInsets.only(top: 194),
+                                                child: Text(
+                                                  'No packages available',
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color.fromARGB(255, 101, 110, 114),
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 234),
+                                                child: Text(
+                                                  'When you add a packages, it will appear here',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.blueGrey[400],
+                                                    height: 1.4,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         )
                                       : ListView.builder(
@@ -255,19 +288,49 @@ class _PackagepageState extends State<Packagepage> {
                         // Details panel (right panel)
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                            child: subscriptionController.subscriptionModel.packageselectedID.value != null
-                                // &&   subscriptionController.subscriptionModel.packageselectedID.value! < subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.length
-                                ? _buildDetailsPanel(subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList[subscriptionController
-                                    .subscriptionModel.GlobalPackage.value.globalPackageList
-                                    .indexWhere((p) => p.subscriptionId == subscriptionController.subscriptionModel.packageselectedID.value)])
-                                : Center(
-                                    child: Text(
-                                      'Select a package to view details',
-                                      style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white70),
-                                    ),
-                                  ),
-                          ),
+                              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: subscriptionController.subscriptionModel.packageselectedID.value != null
+                                  // &&   subscriptionController.subscriptionModel.packageselectedID.value! < subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.length
+                                  ? _buildDetailsPanel(subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList[subscriptionController
+                                      .subscriptionModel.GlobalPackage.value.globalPackageList
+                                      .indexWhere((p) => p.subscriptionId == subscriptionController.subscriptionModel.packageselectedID.value)])
+                                  : Center(
+                                      child: Stack(
+                                        alignment: Alignment.topCenter,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 50),
+                                            child: Lottie.asset(
+                                              'assets/animations/JSON/packageview.json',
+                                              height: 250,
+                                            ),
+                                          ),
+                                          const Padding(
+                                            padding: EdgeInsets.only(top: 244),
+                                            child: Text(
+                                              'Select a package to view',
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color.fromARGB(255, 101, 110, 114),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 274),
+                                            child: Text(
+                                              'Once selected, package details will appear here.',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.blueGrey[400],
+                                                height: 1.4,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
                         ),
                       ],
                     ),

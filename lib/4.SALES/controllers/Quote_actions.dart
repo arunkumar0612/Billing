@@ -61,9 +61,9 @@ class QuoteController extends GetxController {
     quoteModel.note_editIndex.value = index;
   }
 
-  void updateChallanTableHeading(String tableHeading) {
-    quoteModel.Quote_table_heading.value = tableHeading;
-  }
+  // void updateChallanTableHeading(String tableHeading) {
+  //   quoteModel.Quote_table_heading.value = tableHeading;
+  // }
 
   void updateNoteList(String value, int index) {
     quoteModel.Quote_noteList[quoteModel.note_editIndex.value!] = quoteModel.notecontentController.value.text;
@@ -497,7 +497,7 @@ class QuoteController extends GetxController {
     quoteModel.tabController.value = null;
     quoteModel.processID.value = null;
     quoteModel.Quote_no.value = null;
-    quoteModel.Quote_table_heading.value = '';
+    // quoteModel.Quote_table_heading.value = '';
     quoteModel.gstNumController.value.clear();
 
     // DETAILS

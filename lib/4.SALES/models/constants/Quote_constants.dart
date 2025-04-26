@@ -12,7 +12,7 @@ class QuoteModel extends GetxController with GetSingleTickerProviderStateMixin {
   var processID = Rxn<int>();
   var Quote_no = Rxn<String>();
   // var gst_no = Rxn<String>();
-  var Quote_table_heading = "".obs;
+  // var Quote_table_heading = "".obs;
 
   // DETAILS
   final TitleController = TextEditingController().obs;

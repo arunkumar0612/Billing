@@ -40,7 +40,7 @@ mixin SUBSCRIPTION_QuotepackageService {
       );
 
       // Update or create the custom package
-      this.quoteController.quoteModel.customPackage.value = customPackage;
+      quoteController.quoteModel.customPackage.value = customPackage;
 
       // Add to package details if not already present
       if (!quoteController.quoteModel.packageDetails.any((p) => p.name == customPackage.name)) {

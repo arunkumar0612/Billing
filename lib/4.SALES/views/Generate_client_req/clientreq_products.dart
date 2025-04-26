@@ -191,7 +191,7 @@ class _clientreqProductsState extends State<clientreqProducts> {
                             // width: 750,
                             child: Text(
                               textAlign: TextAlign.center,
-                              "The client requirement product details play a crucial role in the procurement process. Please ensure accuracy when entering product names and quantities, as these details directly impact order processing, inventory management, and subsequent workflows.",
+                              "Product details in client requirement play a crucial role in the procurement process. Please ensure accuracy when entering product names and quantities, as these details directly impact order processing, inventory management, and subsequent workflows.",
                               style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                             ),
                           )

@@ -268,23 +268,14 @@ class RfqController extends GetxController {
   }) {
     try {
       if (productName.trim().isEmpty || quantity <= 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Please provide valid product details.'),
-          ),
-        );
+        Error_SnackBar(context, 'Please provide valid product details.');
+
         return;
       }
 
       rfqModel.Rfq_products.add(RFQProduct(sno: (rfqModel.Rfq_products.length + 1), productName: productName, quantity: quantity));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('An error occurred while adding the product.'),
-        ),
-      );
+      Error_SnackBar(context, 'An error occurred while adding the product.');
     }
   }
 
@@ -300,23 +291,15 @@ class RfqController extends GetxController {
     try {
       // Validate input fields
       if (productName.trim().isEmpty || quantity <= 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Please provide valid product details.'),
-          ),
-        );
+        Error_SnackBar(context, 'Please provide valid product details.');
+
         return;
       }
 
       // Check if the editIndex is valid
       if (editIndex < 0 || editIndex >= rfqModel.Rfq_products.length) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Invalid product index.'),
-          ),
-        );
+        Error_SnackBar(context, 'Invalid product index.');
+
         return;
       }
 
@@ -343,12 +326,7 @@ class RfqController extends GetxController {
       // .updateProductDetails(rfqController.rfqModel.Rfq_productDetails);
     } catch (e) {
       // Handle unexpected errors
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('An error occurred while updating the product.'),
-        ),
-      );
+      Error_SnackBar(context, 'An error occurred while updating the product.');
     }
   }
 

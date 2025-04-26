@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/product_entities.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 
 import '../../controllers/ClientReq_actions.dart';
 
@@ -17,12 +18,13 @@ mixin ClientreqProductService {
       bool exists = clientreqController.clientReqModel.clientReqProductDetails.any((product) => product.productName == clientreqController.clientReqModel.productNameController.value.text);
 
       if (exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.blue,
-            content: Text('This product already exists.'),
-          ),
-        );
+        Error_SnackBar(context, 'This product already exists.');
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   const SnackBar(
+        //     backgroundColor: Colors.blue,
+        //     content: Text('This product already exists.'),
+        //   ),
+        // );
         return;
       }
       clientreqController.addProduct(

@@ -281,24 +281,15 @@ class SUBSCRIPTION_InvoiceController extends GetxController {
   }) {
     try {
       if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Please provide valid product details.'),
-          ),
-        );
+        Error_SnackBar(context, 'Please provide valid product details.');
+
         return;
       }
 
       invoiceModel.Invoice_products.add(
           SUBSCRIPTION_InvoiceSite(sno: (invoiceModel.Invoice_products.length + 1), siteName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('An error occurred while adding the product.'),
-        ),
-      );
+      Error_SnackBar(context, 'An error occurred while adding the product.');
     }
   }
 
@@ -314,23 +305,15 @@ class SUBSCRIPTION_InvoiceController extends GetxController {
     try {
       // Validate input fields
       if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Please provide valid product details.'),
-          ),
-        );
+        Error_SnackBar(context, 'Please provide valid product details.');
+
         return;
       }
 
       // Check if the editIndex is valid
       if (editIndex < 0 || editIndex >= invoiceModel.Invoice_products.length) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Invalid product index.'),
-          ),
-        );
+        Error_SnackBar(context, 'Invalid product index.');
+
         return;
       }
 
@@ -357,12 +340,7 @@ class SUBSCRIPTION_InvoiceController extends GetxController {
       // .updateProductDetails(invoiceController.invoiceModel.Invoice_productDetails);
     } catch (e) {
       // Handle unexpected errors
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('An error occurred while updating the product.'),
-        ),
-      );
+      Error_SnackBar(context, 'An error occurred while updating the product.');
     }
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Sites_entities.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 
 mixin SUBSCRIPTION_ClientreqSiteService {
   final SUBSCRIPTION_ClientreqController clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
@@ -17,12 +18,8 @@ mixin SUBSCRIPTION_ClientreqSiteService {
       bool exists = clientreqController.clientReqModel.clientReqSiteDetails.any((site) => site.siteName == clientreqController.clientReqModel.siteNameController.value.text);
 
       if (exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.blue,
-            content: Text('This Site already exists.'),
-          ),
-        );
+        Error_SnackBar(context, 'This Site already exists.');
+
         return;
       }
       clientreqController.addSite(

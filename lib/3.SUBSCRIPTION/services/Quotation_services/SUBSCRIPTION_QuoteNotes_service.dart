@@ -10,6 +10,7 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_Quote/SUBSCRIPTION_quote_template.dart' show SUBSCRIPTION_generate_Quote;
 import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
 import 'package:ssipl_billing/API-/invoker.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
 import 'package:ssipl_billing/UTILS-/helpers/returns.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
@@ -23,12 +24,8 @@ mixin SUBSCRIPTION_QuotenotesService {
     quoteController.updateRec_ValueControllerText(quoteController.quoteModel.recommendationHeadingController.value.text);
     bool exists = quoteController.quoteModel.Quote_recommendationList.any((note) => note.key == quoteController.quoteModel.recommendationKeyController.value.text);
     if (exists) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.blue,
-          content: Text('This note Name already exists.'),
-        ),
-      );
+      Error_SnackBar(context, 'This note Name already exists.');
+
       return;
     }
     quoteController.addRecommendation(key: quoteController.quoteModel.recommendationKeyController.value.text, value: quoteController.quoteModel.recommendationValueController.value.text);

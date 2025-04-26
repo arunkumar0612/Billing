@@ -8,6 +8,7 @@ import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/4.SALES/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_Quote/quote_template.dart';
 import 'package:ssipl_billing/API-/invoker.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/UTILS-/helpers/returns.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
@@ -21,12 +22,8 @@ mixin QuotenotesService {
     quoteController.updateRec_ValueControllerText(quoteController.quoteModel.recommendationHeadingController.value.text);
     bool exists = quoteController.quoteModel.Quote_recommendationList.any((note) => note.key == quoteController.quoteModel.recommendationKeyController.value.text);
     if (exists) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.blue,
-          content: Text('This note Name already exists.'),
-        ),
-      );
+      Error_SnackBar(context, 'This note Name already exists.');
+
       return;
     }
     quoteController.addRecommendation(key: quoteController.quoteModel.recommendationKeyController.value.text, value: quoteController.quoteModel.recommendationValueController.value.text);

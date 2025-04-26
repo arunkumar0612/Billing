@@ -575,7 +575,7 @@ class Request_for_quote {
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
                         bold(
-                            rfqController.rfqModel.recommendationHeadingController.value, 10),
+                            rfqController.rfqModel.recommendationHeadingController.value.text, 10),
                         ...rfqController.rfqModel.Rfq_recommendationList
                             .map((recommendation) {
                           return pw.Padding(

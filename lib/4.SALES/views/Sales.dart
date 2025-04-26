@@ -1495,7 +1495,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                           context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                       if (success) {
                                                                                         widget.GenerateDelivery_challan_dialougebox(
-                                                                                            context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                            context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname);
                                                                                         dcController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                         if (kDebugMode) {
                                                                                           print(dcController.dcModel.processID);

@@ -17,13 +17,8 @@ mixin SUBSCRIPTION_QuotepackageService {
       // Select the first available package if we removed the currently selected one
       quoteController.quoteModel.selectedPackage.value = quoteController.quoteModel.selectedPackages.first.name;
     }
+    Error_SnackBar(context, '${packageToRemove.name} remo765ved from packages');
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${packageToRemove.name} removed from packages'),
-        backgroundColor: Colors.red,
-      ),
-    );
     // });
   }
 
@@ -80,22 +75,12 @@ mixin SUBSCRIPTION_QuotepackageService {
 
       if (existingIndex == -1) {
         quoteController.quoteModel.selectedPackages.add(customPackage);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${customPackage.name} added to packages'),
-            backgroundColor: Colors.green,
-          ),
-        );
+        Success_SnackBar(context, '${customPackage.name} added to packages');
       } else {
         quoteController.quoteModel.selectedPackages[existingIndex] = customPackage.copyWith(
           sites: quoteController.quoteModel.selectedPackages[existingIndex].sites,
         );
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${customPackage.name} package updated'),
-            backgroundColor: Colors.blue,
-          ),
-        );
+        Success_SnackBar(context, '${customPackage.name} updated in packages');
       }
 
       // Clear all fields after saving
@@ -118,16 +103,8 @@ mixin SUBSCRIPTION_QuotepackageService {
         quoteController.quoteModel.customCameraCountControllers.value.text.isEmpty ||
         quoteController.quoteModel.customAmountControllers.value.text.isEmpty ||
         quoteController.quoteModel.customChargesControllers.value.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Please fill all fields'),
-          backgroundColor: Colors.red.shade400,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-      );
+      Error_SnackBar(context, 'Please fill all fields');
+
       return false;
     }
     return true;

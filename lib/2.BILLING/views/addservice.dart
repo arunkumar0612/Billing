@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 
 import '../../../../THEMES-/style.dart';
 import '../../COMPONENTS-/button.dart';
@@ -32,9 +33,8 @@ class addservice_pageState extends State<addservice_page> {
       bool exists = servicelist.any((service) => service['servicename'] == nameController.text);
 
       if (exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(backgroundColor: Colors.blue, content: Text('This service Name already exists.')),
-        );
+        Error_SnackBar(context, 'This service Name already exists.');
+
         return; // Exit the method without adding the camera
       }
 

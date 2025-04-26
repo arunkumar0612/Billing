@@ -8,6 +8,7 @@ import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/4.SALES/controllers/DC_actions.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_DC/DC_template.dart';
 import 'package:ssipl_billing/API-/invoker.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/UTILS-/helpers/returns.dart';
 
@@ -22,12 +23,8 @@ mixin DcnotesService {
     dcController.updateRec_ValueControllerText(dcController.dcModel.recommendationHeadingController.value.text);
     bool exists = dcController.dcModel.Dc_recommendationList.any((note) => note.key == dcController.dcModel.recommendationKeyController.value.text);
     if (exists) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.blue,
-          content: Text('This note Name already exists.'),
-        ),
-      );
+      Error_SnackBar(context, 'This note Name already exists.');
+
       return;
     }
     dcController.addRecommendation(key: dcController.dcModel.recommendationKeyController.value.text, value: dcController.dcModel.recommendationValueController.value.text);

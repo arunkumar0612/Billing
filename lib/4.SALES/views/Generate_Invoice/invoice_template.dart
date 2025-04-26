@@ -950,13 +950,13 @@ class Invoice {
             child: pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                // regular("${invoice_noteList.length + 2}.", 10),
+                 regular("${invoiceController.invoiceModel.Invoice_noteList.length + 2}.", 10),
                 pw.SizedBox(width: 5),
                 pw.Expanded(
                   child: pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                      bold(invoiceController.invoiceModel.Invoice_table_heading.value, 10),
+                      bold(invoiceController.invoiceModel.recommendationHeadingController.value.text, 10),
                       ...invoiceController.invoiceModel.Invoice_recommendationList.map((recommendation) {
                         return pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 5, top: 5),

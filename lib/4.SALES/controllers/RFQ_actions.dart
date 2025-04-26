@@ -41,9 +41,9 @@ class RfqController extends GetxController {
     rfqModel.note_editIndex.value = index;
   }
 
-  void updateChallanTableHeading(String tableHeading) {
-    rfqModel.Rfq_table_heading.value = tableHeading;
-  }
+  // void updateChallanTableHeading(String tableHeading) {
+  //   rfqModel.Rfq_table_heading.value = tableHeading;
+  // }
 
   void updateNoteList(String value, int index) {
     rfqModel.Rfq_noteList[rfqModel.note_editIndex.value!] = rfqModel.notecontentController.value.text;
@@ -503,7 +503,7 @@ class RfqController extends GetxController {
     rfqModel.vendorID.value = null;
     rfqModel.vendorName.value = null;
     rfqModel.Rfq_no.value = null;
-    rfqModel.Rfq_table_heading.value = '';
+    // rfqModel.Rfq_table_heading.value = '';
     rfqModel.vendorList.clear();
 
     // DETAILS

@@ -55,9 +55,9 @@ class InvoiceController extends GetxController {
     invoiceModel.note_editIndex.value = index;
   }
 
-  void updateChallanTableHeading(String tableHeading) {
-    invoiceModel.Invoice_table_heading.value = tableHeading;
-  }
+  // void updateChallanTableHeading(String tableHeading) {
+  //   invoiceModel.Invoice_table_heading.value = tableHeading;
+  // }
 
   void updateNoteList(String value, int index) {
     invoiceModel.Invoice_noteList[invoiceModel.note_editIndex.value!] = invoiceModel.notecontentController.value.text;
@@ -289,23 +289,14 @@ class InvoiceController extends GetxController {
   }) {
     try {
       if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Please provide valid product details.'),
-          ),
-        );
+        Error_SnackBar(context, 'Please provide valid product details.');
+
         return;
       }
 
       invoiceModel.Invoice_products.add(InvoiceProduct(sno: (invoiceModel.Invoice_products.length + 1), productName: productName, hsn: int.parse(hsn), gst: gst, price: price, quantity: quantity));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('An error occurred while adding the product.'),
-        ),
-      );
+      Error_SnackBar(context, 'An error occurred while adding the product.');
     }
   }
 
@@ -321,23 +312,15 @@ class InvoiceController extends GetxController {
     try {
       // Validate input fields
       if (productName.trim().isEmpty || hsn.trim().isEmpty || price <= 0 || quantity <= 0 || gst < 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Please provide valid product details.'),
-          ),
-        );
+        Error_SnackBar(context, 'Please provide valid product details.');
+
         return;
       }
 
       // Check if the editIndex is valid
       if (editIndex < 0 || editIndex >= invoiceModel.Invoice_products.length) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Invalid product index.'),
-          ),
-        );
+        Error_SnackBar(context, 'Invalid product index.');
+
         return;
       }
 
@@ -364,12 +347,7 @@ class InvoiceController extends GetxController {
       // .updateProductDetails(invoiceController.invoiceModel.Invoice_productDetails);
     } catch (e) {
       // Handle unexpected errors
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('An error occurred while updating the product.'),
-        ),
-      );
+      Error_SnackBar(context, 'An error occurred while updating the product.');
     }
   }
 
@@ -507,7 +485,7 @@ class InvoiceController extends GetxController {
     invoiceModel.tabController.value = null;
     invoiceModel.processID.value = null;
     invoiceModel.Invoice_no.value = null;
-    invoiceModel.Invoice_table_heading.value = '';
+    // invoiceModel.Invoice_table_heading.value = '';
     invoiceModel.gstNumController.value.clear();
     invoiceModel.invoice_amount.value = null;
 

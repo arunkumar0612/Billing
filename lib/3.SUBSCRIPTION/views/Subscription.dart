@@ -9,7 +9,6 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart';
@@ -1187,7 +1186,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                             Expanded(
                                                 flex: 4,
                                                 child: Text(
-                                                  DateFormat("dd MMM yyyy").format(DateTime.parse(subscriptionController.subscriptionModel.processList[index].Process_date)),
+                                                  subscriptionController.subscriptionModel.processList[index].Process_date,
                                                   style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                 )),
                                             Expanded(

@@ -150,7 +150,7 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                             Expanded(
                                               flex: 2,
                                               child: Text(
-                                                formatDate(DateTime.parse(subscriptionController.subscriptionModel.reccuringInvoice_list[index].date)),
+                                                subscriptionController.subscriptionModel.reccuringInvoice_list[index].date,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -974,21 +974,21 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
               //     color: subscriptionController.subscriptionModel.showcustomerprocess.value == index ? Colors.red : Colors.amber,
               //   ),
               // ),
-              trailing: GestureDetector(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(0, 233, 4, 4),
-                    // shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.info_rounded,
-                    color: subscriptionController.subscriptionModel.showcustomerprocess.value == index ? Primary_colors.Dark : Primary_colors.Color3,
-                  ),
-                ),
-                onTap: () {
-                  widget.Getclientprofile(context, customerid);
-                },
-              ),
+              // trailing: GestureDetector(
+              //   child: Container(
+              //     decoration: const BoxDecoration(
+              //       color: Color.fromARGB(0, 233, 4, 4),
+              //       // shape: BoxShape.circle,
+              //     ),
+              //     child: Icon(
+              //       Icons.info_rounded,
+              //       color: subscriptionController.subscriptionModel.showcustomerprocess.value == index ? Primary_colors.Dark : Primary_colors.Color3,
+              //     ),
+              //   ),
+              //   onTap: () {
+              //     widget.Getclientprofile(context, customerid);
+              //   },
+              // ),
               onTap: subscriptionController.subscriptionModel.showcustomerprocess.value != index
                   ? () {
                       subscriptionController.updateshowcustomerprocess(index);

@@ -395,7 +395,9 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     quoteModel.packageDetails.clear();
     quoteModel.packageList.clear();
     quoteModel.company_basedPackageList.value = CompanyBasedPackages.fromJsonList(response.data);
-    print(quoteModel.company_basedPackageList);
+    if (kDebugMode) {
+      print(quoteModel.company_basedPackageList);
+    }
 
     for (int i = 0; i < quoteModel.company_basedPackageList.length; i++) {
       quoteModel.packageList.add(quoteModel.company_basedPackageList[i].subscriptionName ?? "");

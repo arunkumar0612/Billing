@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -174,7 +176,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               readonly: false,
                               text: 'Title',
                               controller: clientreqController.clientReqModel.titleController.value,
-                              icon: Icons.person,
+                              icon: Icons.title,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter client name';
@@ -189,7 +191,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               readonly: false,
                               text: 'Contact Number',
                               controller: clientreqController.clientReqModel.phoneController.value,
-                              icon: Icons.people,
+                              icon: Icons.phone,
                               validator: (value) {
                                 return Validators.phnNo_validator(value);
                               },
@@ -201,7 +203,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               readonly: false,
                               text: 'Email',
                               controller: clientreqController.clientReqModel.emailController.value,
-                              icon: Icons.people,
+                              icon: Icons.email,
                               validator: (value) {
                                 return Validators.email_validator(value);
                               },
@@ -213,7 +215,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               readonly: false,
                               text: 'GST',
                               controller: clientreqController.clientReqModel.gstController.value,
-                              icon: Icons.people,
+                              icon: Icons.receipt,
                               validator: (value) {
                                 return Validators.GST_validator(value);
                               },
@@ -226,7 +228,7 @@ class enquryDetailsState extends State<enquryDetails> {
                                 readonly: false,
                                 text: 'Mode of request',
                                 controller: clientreqController.clientReqModel.morController.value,
-                                icon: Icons.price_change,
+                                icon: Icons.request_page,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter the mode of request';
@@ -247,7 +249,7 @@ class enquryDetailsState extends State<enquryDetails> {
                                 readonly: false,
                                 text: 'Mode of request',
                                 controller: clientreqController.clientReqModel.morController.value,
-                                icon: Icons.price_change,
+                                icon: Icons.request_page,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter the mode of request';
@@ -262,7 +264,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               readonly: false,
                               text: 'Client Name',
                               controller: clientreqController.clientReqModel.clientNameController.value,
-                              icon: Icons.person,
+                              icon: Icons.person_outline,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter client name';
@@ -277,7 +279,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               readonly: false,
                               text: 'Client Address ',
                               controller: clientreqController.clientReqModel.clientAddressController.value,
-                              icon: Icons.location_history_outlined,
+                              icon: Icons.location_on,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter Client Address';
@@ -292,7 +294,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               readonly: false,
                               text: 'Billing name',
                               controller: clientreqController.clientReqModel.billingAddressNameController.value,
-                              icon: Icons.price_change,
+                              icon: Icons.credit_card,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter Billing Address name';
@@ -307,7 +309,7 @@ class enquryDetailsState extends State<enquryDetails> {
                               readonly: false,
                               text: 'Billing Address',
                               controller: clientreqController.clientReqModel.billingAddressController.value,
-                              icon: Icons.price_change,
+                              icon: Icons.home_work,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter Billing Address';
@@ -341,7 +343,7 @@ class enquryDetailsState extends State<enquryDetails> {
                                             child: Row(
                                               children: [
                                                 const SizedBox(width: 10),
-                                                const Icon(Icons.file_copy, color: Primary_colors.Color1), // Change icon color if error
+                                                const Icon(Icons.attach_file, color: Primary_colors.Color1), // Change icon color if error
                                                 const SizedBox(width: 8),
                                                 SizedBox(
                                                   width: 246,

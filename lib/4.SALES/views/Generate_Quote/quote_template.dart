@@ -332,7 +332,15 @@ class Quotation {
   }
 
   pw.Widget _contentTable(pw.Context context) {
-    const tableHeaders = ['S.No', 'Item Description', 'HSN', ' GST', 'Price   ', 'Quantity', 'Total   '];
+    const tableHeaders = [
+      'S.No',
+      'Item Description',
+      'HSN',
+      'GST',
+      'Price',
+      'Quantity',
+      'Total',
+    ];
 
     return pw.TableHelper.fromTextArray(
       border: null,
@@ -343,6 +351,18 @@ class Quotation {
       ),
       headerHeight: 22,
       cellHeight: 30,
+
+      // ✅ Column width added
+      columnWidths: {
+        0: const pw.FlexColumnWidth(1), // S.No (small)
+        1: const pw.FlexColumnWidth(5), // Item Description (large)
+        2: const pw.FlexColumnWidth(2), // HSN Code
+        3: const pw.FlexColumnWidth(2), // GST
+        4: const pw.FlexColumnWidth(3), // Price
+        5: const pw.FlexColumnWidth(2), // Quantity
+        6: const pw.FlexColumnWidth(3), // Total
+      },
+
       cellAlignments: {
         0: pw.Alignment.centerLeft,
         1: pw.Alignment.centerLeft,
@@ -352,35 +372,31 @@ class Quotation {
         5: pw.Alignment.center,
         6: pw.Alignment.centerRight,
       },
+
       headerStyle: pw.TextStyle(
         font: Helvetica_bold,
         color: PdfColors.white,
         fontSize: 10,
         fontWeight: pw.FontWeight.bold,
       ),
+
       cellStyle: pw.TextStyle(
         font: Helvetica,
         color: _darkColor,
         fontSize: 10,
       ),
+
       cellDecoration: (int rowIndex, dynamic cellData, int colIndex) {
-        // Apply different colors for even and odd columns
         return pw.BoxDecoration(
           color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
         );
       },
-      // rowDecoration: pw.BoxDecoration(
-      //   border: pw.Border(
-      //     bottom: pw.BorderSide(
-      //       color: accentColor,
-      //       width: .5,
-      //     ),
-      //   ),
-      // ),
+
       headers: List<String>.generate(
         tableHeaders.length,
         (col) => tableHeaders[col],
       ),
+
       data: List<List<String>>.generate(
         products.length,
         (row) => List<String>.generate(

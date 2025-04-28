@@ -459,8 +459,12 @@ class Request_for_quote {
       ),
       headerHeight: 25,
       cellHeight: 30,
+      columnWidths: {
+        0: const pw.FlexColumnWidth(1), // S.No
+        1: const pw.FlexColumnWidth(5), // Item Description
+        2: const pw.FlexColumnWidth(2), // Quantity
+      },
       cellAlignments: {
-        // Default alignments for each column
         0: pw.Alignment.centerLeft,
         1: pw.Alignment.centerLeft,
         2: pw.Alignment.center,
@@ -477,26 +481,16 @@ class Request_for_quote {
         fontSize: 10,
       ),
       cellDecoration: (int rowIndex, dynamic cellData, int colIndex) {
-        // Apply different colors for even and odd columns
         return pw.BoxDecoration(
           color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
         );
       },
-      headers: List<String>.generate(
-        tableHeaders.length,
-        (col) => tableHeaders[col],
-      ),
+      headers: List<String>.from(tableHeaders),
       data: List<List<String>>.generate(
         products.length,
         (row) => List<String>.generate(
           tableHeaders.length,
-          (col) {
-            // Check if this is the last row and adjust the alignment
-            if (row == products.length - 1 && col == 0) {
-              return products[row].getIndex(col); // Align this last row differently
-            }
-            return products[row].getIndex(col);
-          },
+          (col) => products[row].getIndex(col),
         ),
       ),
     );

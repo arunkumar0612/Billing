@@ -111,8 +111,8 @@ mixin SUBSCRIPTION_QuotePostServices {
 
   dynamic send_data(context, String jsonData, File file, String eventtype) async {
     try {
-      Map<String, dynamic>? response =
-          await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, eventtype == "quotation" ? API.subscriptionadd_Quotation : API.add_RevisedQuotation);
+      Map<String, dynamic>? response = await apiController.Multer(
+          sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, eventtype == "quotation" ? API.subscriptionadd_Quotation : API.subscription_add_RevisedQuotation);
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {

@@ -303,70 +303,82 @@ class SUBSCRIPTION_Quotation {
     const tableHeaders = ['S.No', 'Site', 'Address', 'Cameras', 'Package', 'Price', 'GST%', 'Total Price'];
 
     return pw.TableHelper.fromTextArray(
-        border: null,
-        cellAlignment: pw.Alignment.centerLeft,
-        headerDecoration: pw.BoxDecoration(
-          borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)),
-          color: baseColor,
-        ),
-        headerHeight: 22,
-        headerAlignments: {
-          0: pw.Alignment.centerLeft,
-          1: pw.Alignment.centerLeft,
-          2: pw.Alignment.centerLeft,
-          3: pw.Alignment.center,
-          4: pw.Alignment.centerLeft,
-          5: pw.Alignment.center,
-          6: pw.Alignment.center,
-          7: pw.Alignment.centerRight,
-        },
-        cellHeight: 30,
-        cellAlignments: {
-          0: pw.Alignment.centerLeft,
-          1: pw.Alignment.centerLeft,
-          2: pw.Alignment.centerLeft,
-          3: pw.Alignment.center,
-          4: pw.Alignment.centerLeft,
-          5: pw.Alignment.center,
-          6: pw.Alignment.center,
-          7: pw.Alignment.centerRight,
-        },
-        headerStyle: pw.TextStyle(
-          font: Helvetica_bold,
-          color: PdfColors.white,
-          fontSize: 10,
-          fontWeight: pw.FontWeight.bold,
-        ),
-        cellStyle: pw.TextStyle(
-          font: Helvetica,
-          color: _darkColor,
-          fontSize: 10,
-        ),
-        cellDecoration: (int rowIndex, dynamic cellData, int colIndex) {
-          // Apply different colors for even and odd columns
-          return pw.BoxDecoration(
-            color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
-          );
-        },
-        rowDecoration: pw.BoxDecoration(
-          border: pw.Border(
-            bottom: pw.BorderSide(
-              color: accentColor,
-              width: .5,
-            ),
+      border: null,
+      cellAlignment: pw.Alignment.centerLeft,
+      headerDecoration: pw.BoxDecoration(
+        borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)),
+        color: baseColor,
+      ),
+      headerHeight: 22,
+      headerAlignments: {
+        0: pw.Alignment.centerLeft,
+        1: pw.Alignment.centerLeft,
+        2: pw.Alignment.centerLeft,
+        3: pw.Alignment.center,
+        4: pw.Alignment.centerLeft,
+        5: pw.Alignment.center,
+        6: pw.Alignment.center,
+        7: pw.Alignment.centerRight,
+      },
+      cellHeight: 30,
+      cellAlignments: {
+        0: pw.Alignment.centerLeft,
+        1: pw.Alignment.centerLeft,
+        2: pw.Alignment.centerLeft,
+        3: pw.Alignment.center,
+        4: pw.Alignment.centerLeft,
+        5: pw.Alignment.center,
+        6: pw.Alignment.center,
+        7: pw.Alignment.centerRight,
+      },
+      headerStyle: pw.TextStyle(
+        font: Helvetica_bold,
+        color: PdfColors.white,
+        fontSize: 10,
+        fontWeight: pw.FontWeight.bold,
+      ),
+      cellStyle: pw.TextStyle(
+        font: Helvetica,
+        color: _darkColor,
+        fontSize: 10,
+      ),
+      cellDecoration: (int rowIndex, dynamic cellData, int colIndex) {
+        return pw.BoxDecoration(
+          color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
+        );
+      },
+      rowDecoration: pw.BoxDecoration(
+        border: pw.Border(
+          bottom: pw.BorderSide(
+            color: accentColor,
+            width: .5,
           ),
         ),
-        headers: List<String>.generate(
+      ),
+      headers: List<String>.generate(
+        tableHeaders.length,
+        (col) => tableHeaders[col],
+      ),
+      data: List<List<String>>.generate(
+        instQuote.siteData.length,
+        (row) => List<String>.generate(
           tableHeaders.length,
-          (col) => tableHeaders[col],
+          (col) => instQuote.getIndex(col, row),
         ),
-        data: List<List<String>>.generate(
-          instQuote.siteData.length,
-          (row) => List<String>.generate(
-            tableHeaders.length,
-            (col) => instQuote.getIndex(col, row), // Use `row` as the index here
-          ),
-        ));
+      ),
+
+      // 👇 ADD THIS for flex control
+      columnWidths: {
+        0: const pw.FlexColumnWidth(1), // S.No (small)
+        1: const pw.FlexColumnWidth(2), // Site (medium)
+        2: const pw.FlexColumnWidth(3), // Address (larger)
+        3: const pw.FlexColumnWidth(1.5), // Cameras
+        4: const pw.FlexColumnWidth(2), // Package
+        5: const pw.FlexColumnWidth(1.5), // Price
+        6: const pw.FlexColumnWidth(1), // GST%
+        7: const pw.FlexColumnWidth(2), // Total Price
+      },
+    );
   }
 
   pw.Widget Local_tax_table(pw.Context context) {

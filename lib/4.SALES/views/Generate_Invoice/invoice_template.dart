@@ -332,7 +332,15 @@ class Invoice {
   }
 
   pw.Widget _contentTable(pw.Context context) {
-    const tableHeaders = ['S.No', 'Item Description', 'HSN', ' GST', 'Price   ', 'Quantity', 'Total   '];
+    const tableHeaders = [
+      'S.No',
+      'Item Description',
+      'HSN',
+      'GST',
+      'Price',
+      'Quantity',
+      'Total',
+    ];
 
     return pw.TableHelper.fromTextArray(
       border: null,
@@ -343,15 +351,28 @@ class Invoice {
       ),
       headerHeight: 22,
       cellHeight: 30,
-      cellAlignments: {
-        0: pw.Alignment.centerLeft,
-        1: pw.Alignment.centerLeft,
-        2: pw.Alignment.center,
-        3: pw.Alignment.center,
-        4: pw.Alignment.centerRight,
-        5: pw.Alignment.center,
-        6: pw.Alignment.centerRight,
+
+      // ✅ Added flex here
+      columnWidths: {
+        0: const pw.FlexColumnWidth(1), // S.No (small)
+        1: const pw.FlexColumnWidth(5), // Item Description (big)
+        2: const pw.FlexColumnWidth(2), // HSN (medium)
+        3: const pw.FlexColumnWidth(2), // GST (small-medium)
+        4: const pw.FlexColumnWidth(3), // Price (medium, number)
+        5: const pw.FlexColumnWidth(2), // Quantity (small-medium)
+        6: const pw.FlexColumnWidth(3), // Total (medium, number)
       },
+
+      cellAlignments: {
+        0: pw.Alignment.center, // S.No center
+        1: pw.Alignment.centerLeft, // Item Desc left
+        2: pw.Alignment.center, // HSN center
+        3: pw.Alignment.center, // GST center
+        4: pw.Alignment.centerRight, // Price right
+        5: pw.Alignment.center, // Quantity center
+        6: pw.Alignment.centerRight, // Total right
+      },
+
       headerStyle: pw.TextStyle(
         font: Helvetica_bold,
         color: PdfColors.white,
@@ -363,24 +384,18 @@ class Invoice {
         color: _darkColor,
         fontSize: 10,
       ),
+
       cellDecoration: (int rowIndex, dynamic cellData, int colIndex) {
-        // Apply different colors for even and odd columns
         return pw.BoxDecoration(
           color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
         );
       },
-      // rowDecoration: pw.BoxDecoration(
-      //   border: pw.Border(
-      //     bottom: pw.BorderSide(
-      //       color: accentColor,
-      //       width: .5,
-      //     ),
-      //   ),
-      // ),
+
       headers: List<String>.generate(
         tableHeaders.length,
         (col) => tableHeaders[col],
       ),
+
       data: List<List<String>>.generate(
         products.length,
         (row) => List<String>.generate(
@@ -950,7 +965,7 @@ class Invoice {
             child: pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                 regular("${invoiceController.invoiceModel.Invoice_noteList.length + 2}.", 10),
+                regular("${invoiceController.invoiceModel.Invoice_noteList.length + 2}.", 10),
                 pw.SizedBox(width: 5),
                 pw.Expanded(
                   child: pw.Column(

@@ -12,7 +12,7 @@ import '../../COMPONENTS-/Response_entities.dart';
 class SalesController extends GetxController {
   var salesModel = SalesModel();
   final Invoker apiController = Get.find<Invoker>();
-  final SalesController salesController = Get.find<SalesController>();
+  // final SalesController salesController = Get.find<SalesController>();
   var salesfilteredModel = SalesModel();
   void addToCustomerList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
@@ -166,7 +166,7 @@ class SalesController extends GetxController {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          salesController.addToCustompdfList(value);
+          addToCustompdfList(value);
         } else {
           if (kDebugMode) {
             print("error : ${value.message}");

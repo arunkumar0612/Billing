@@ -2712,7 +2712,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                               Expanded(
                                 flex: 1,
                                 child: Text(
-                                  formatDate(salesController.salesModel.customPdfList[index].date),
+                                  // formatDate(salesController.salesModel.customPdfList[index].date),
+                                  salesController.salesModel.customPdfList[index].date,
                                   // documentlist[index]['date'],
                                   style: const TextStyle(
                                     color: Primary_colors.Color1,

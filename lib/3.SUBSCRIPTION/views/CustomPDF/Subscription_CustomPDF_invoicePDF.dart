@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart' show SUBSCRIPTION_CustomPDF_InvoiceController;
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/CustomPDF_services/SUBSCRIPTION_CustomPDF_Invoice_services.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart' show BasicButton;
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
@@ -126,28 +127,14 @@ class Subscription_CustomPDF_InvoicePDF {
                       child: const Icon(Icons.close, color: Colors.red),
                     ),
                     onPressed: () async {
-                      showDialog(
+                      Warning_dialog(
                         context: context,
-                        builder: (_) {
-                          return AlertDialog(
-                            title: const Text('Are you sure you want to close this pop-up?'),
-                            actions: [
-                              TextButton(
-                                child: const Text('No'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              TextButton(
-                                child: const Text('Yes'),
-                                onPressed: () {
-                                  pdfpopup_controller.resetData();
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
+                        title: 'Warning',
+                        content: 'Are you sure you want to close this pop-up?',
+                        onOk: () {
+                          pdfpopup_controller.resetData();
+
+                          Navigator.of(context).pop();
                         },
                       );
                     },

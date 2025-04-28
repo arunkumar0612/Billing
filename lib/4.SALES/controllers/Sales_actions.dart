@@ -132,6 +132,7 @@ class SalesController extends GetxController {
       // salesModel.processcustomerList.assignAll(salesfilteredModel.processcustomerList);
     } else {
       var filteredList = salesfilteredModel.customPdfList.where((process) =>
+          process.date.toLowerCase().contains(query.toLowerCase()) ||
           process.customerAddressName.toLowerCase().contains(query.toLowerCase()) ||
           process.customerAddress.toLowerCase().contains(query.toLowerCase()) ||
           process.genId.toLowerCase().contains(query.toLowerCase()));

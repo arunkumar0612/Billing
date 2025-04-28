@@ -99,13 +99,16 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
 
   void initializeTextControllers() {
     pdfModel.value.textControllers.assignAll(
-      pdfModel.value.manualInvoicesites.map((site) {
+      pdfModel.value.manualInvoicesites.asMap().entries.map((entry) {
+        int index = entry.key + 1; // index starts from 1
+        Site site = entry.value;
+
         return [
-          TextEditingController(text: 1.toString()), // S.No is read-only
+          TextEditingController(text: index.toString()), // S.No (Serial Number)
           TextEditingController(text: site.siteName),
           TextEditingController(text: site.address),
           TextEditingController(text: site.siteID),
-          TextEditingController(text: site.monthlyCharges.toString()), // Total is read-only
+          TextEditingController(text: site.monthlyCharges.toString()), // Monthly charges
         ];
       }).toList(),
     );

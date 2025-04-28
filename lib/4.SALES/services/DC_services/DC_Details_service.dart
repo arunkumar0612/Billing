@@ -40,6 +40,7 @@ mixin DcdetailsService {
           title: "SERVER DOWN",
           content: "Please contact administration!",
         );
+        Navigator.of(context).pop();
       }
     } catch (e) {
       Error_dialog(
@@ -47,6 +48,7 @@ mixin DcdetailsService {
         title: "ERROR",
         content: "$e",
       );
+      Navigator.of(context).pop();
     }
   }
 
@@ -72,6 +74,7 @@ mixin DcdetailsService {
             content: value.message ?? "",
             onOk: () {},
           );
+          Navigator.of(context).pop();
         }
       } else {
         Error_dialog(
@@ -79,9 +82,11 @@ mixin DcdetailsService {
           title: "SERVER DOWN",
           content: "Please contact administration!",
         );
+        Navigator.of(context).pop();
       }
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
+      Navigator.of(context).pop();
     }
   }
 }

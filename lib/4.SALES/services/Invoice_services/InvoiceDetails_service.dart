@@ -38,6 +38,7 @@ mixin InvoicedetailsService {
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Navigator.of(context).pop();
       }
     } catch (e) {
       Error_dialog(
@@ -45,6 +46,7 @@ mixin InvoicedetailsService {
         title: "ERROR",
         content: "$e",
       );
+      Navigator.of(context).pop();
     }
   }
 
@@ -57,9 +59,11 @@ mixin InvoicedetailsService {
           invoiceController.add_productSuggestion(value.data);
         } else {
           await Error_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {});
+          Navigator.of(context).pop();
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Navigator.of(context).pop();
       }
     } catch (e) {
       Error_dialog(
@@ -67,6 +71,7 @@ mixin InvoicedetailsService {
         title: "ERROR",
         content: "$e",
       );
+      Navigator.of(context).pop();
     }
   }
 
@@ -87,9 +92,11 @@ mixin InvoicedetailsService {
           // salesController.addToCustomerList(value);
         } else {
           await Error_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {});
+          Navigator.of(context).pop();
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Navigator.of(context).pop();
       }
     } catch (e) {
       Error_dialog(
@@ -97,6 +104,7 @@ mixin InvoicedetailsService {
         title: "ERROR",
         content: "$e",
       );
+      Navigator.of(context).pop();
     }
   }
 }

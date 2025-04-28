@@ -201,7 +201,7 @@ class SUBSCRIPTION_Quote {
       for (var package in packageMappedSites) {
         for (var site in package.sites) {
           if (site.sitename == sitename) {
-            return (int.parse(package.amount) / 100 * int.parse(package.gstPercent)).toString(); // Return the package name when the site is found
+            return (int.parse(package.amount) / 100 * int.parse(package.gstPercent) + int.parse(package.amount)).toString(); // Return the package name when the site is found
           }
         }
       }
@@ -216,12 +216,11 @@ class SUBSCRIPTION_Quote {
       case 2:
         return siteData[siteIndex].address;
       case 3:
-        return findPackageBySiteName(siteData[siteIndex].sitename)!.cameracount.toString();
+        return (siteData[siteIndex].cameraquantity).toString();
       case 4:
         return findPackageBySiteName(siteData[siteIndex].sitename)!.name;
       case 5:
         return findPackageBySiteName(siteData[siteIndex].sitename)!.amount.toString();
-
       case 6:
         return findPackageBySiteName(siteData[siteIndex].sitename)!.gstPercent.toString();
       case 7:

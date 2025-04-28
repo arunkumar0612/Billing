@@ -339,6 +339,8 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
               colors: Colors.red,
               text: 'Back',
               onPressed: () {
+                quoteController.quoteModel.selectedPackagesList.clear();
+                quoteController.quoteModel.selectedPackage.value = null;
                 quoteController.backTab();
               },
             ),

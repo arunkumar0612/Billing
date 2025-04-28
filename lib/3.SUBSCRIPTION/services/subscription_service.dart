@@ -932,7 +932,7 @@ mixin SubscriptionServices {
                   onPressed: () async {
                     // Check if the data has any value
                     // || ( sub_quoteController.quoteModel.Quote_gstTotals.isNotEmpty)
-                    if (sub_quoteController.postDatavalidation()) {
+                    if (sub_quoteController.anyHavedata()) {
                       // Show confirmation dialog
                       bool? proceed = await Warning_dialog(
                         context: context,

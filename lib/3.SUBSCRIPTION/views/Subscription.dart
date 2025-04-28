@@ -2550,30 +2550,38 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                         // const SizedBox(width: 10),
                         Expanded(
                           flex: 1,
-                          child: Text(
-                            'Date',
-                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                          child: Center(
+                            child: Text(
+                              'Date',
+                              style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                         Expanded(
-                          flex: 3,
-                          child: Text(
-                            'Client Name',
-                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                          flex: 2,
+                          child: Center(
+                            child: Text(
+                              'Client Name',
+                              style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                         Expanded(
                           flex: 1,
-                          child: Text(
-                            'Reference no',
-                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                          child: Center(
+                            child: Text(
+                              'Reference no',
+                              style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                         Expanded(
                           flex: 5,
-                          child: Text(
-                            'path',
-                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                          child: Center(
+                            child: Text(
+                              'path',
+                              style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
 
@@ -2628,24 +2636,28 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                 ),
                               ),
                               Expanded(
-                                flex: 3,
-                                child: Text(
-                                  subscriptionController.subscriptionModel.customPdfList[index].customerAddressName,
-                                  // documentlist[index]['clientname'],
-                                  style: const TextStyle(
-                                    color: Primary_colors.Color1,
-                                    fontSize: Primary_font_size.Text8,
+                                flex: 2,
+                                child: Center(
+                                  child: Text(
+                                    subscriptionController.subscriptionModel.customPdfList[index].customerAddressName,
+                                    // documentlist[index]['clientname'],
+                                    style: const TextStyle(
+                                      color: Primary_colors.Color1,
+                                      fontSize: Primary_font_size.Text8,
+                                    ),
                                   ),
                                 ),
                               ),
                               Expanded(
                                 flex: 1,
-                                child: Text(
-                                  subscriptionController.subscriptionModel.customPdfList[index].genId,
-                                  // documentlist[index]['title'],
-                                  style: const TextStyle(
-                                    color: Primary_colors.Color1,
-                                    fontSize: Primary_font_size.Text8,
+                                child: Center(
+                                  child: Text(
+                                    subscriptionController.subscriptionModel.customPdfList[index].genId,
+                                    // documentlist[index]['title'],
+                                    style: const TextStyle(
+                                      color: Primary_colors.Color1,
+                                      fontSize: Primary_font_size.Text8,
+                                    ),
                                   ),
                                 ),
                               ),

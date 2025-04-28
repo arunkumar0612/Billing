@@ -70,9 +70,7 @@ class _PackagepageState extends State<Packagepage> {
                             fontSize: Primary_font_size.Heading,
                             letterSpacing: 1.2,
                           ),
-                        ), // In your Packagepage build method, add this below the header Row:
-
-// Add this after the header Row
+                        ), // In your Packagepage build method, add this below the header Row:// Add this after the header Row
                         Expanded(
                           child: Align(
                             alignment: Alignment.centerRight,
@@ -98,7 +96,7 @@ class _PackagepageState extends State<Packagepage> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
                         Row(

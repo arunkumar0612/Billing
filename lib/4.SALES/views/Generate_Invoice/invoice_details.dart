@@ -63,21 +63,21 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               // const SizedBox(height: 25),
-                              BasicTextfield(
-                                digitsOnly: false,
-                                width: 400,
-                                readonly: false,
-                                text: 'Title',
-                                controller: invoiceController.invoiceModel.TitleController.value,
-                                icon: Icons.title,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter Title number';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(height: 25),
+                              // BasicTextfield(
+                              //   digitsOnly: false,
+                              //   width: 400,
+                              //   readonly: false,
+                              //   text: 'Title',
+                              //   controller: invoiceController.invoiceModel.TitleController.value,
+                              //   icon: Icons.title,
+                              //   validator: (value) {
+                              //     if (value == null || value.isEmpty) {
+                              //       return 'Please enter Title number';
+                              //     }
+                              //     return null;
+                              //   },
+                              // ),
+                              // const SizedBox(height: 25),
                               BasicTextfield(
                                 digitsOnly: false,
                                 width: 400,
@@ -105,6 +105,18 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                                     return 'Please enter Client Address';
                                   }
                                   return null;
+                                },
+                              ),
+                              const SizedBox(height: 25),
+                              BasicTextfield(
+                                digitsOnly: false,
+                                width: 400,
+                                readonly: false,
+                                text: 'GST number',
+                                controller: invoiceController.invoiceModel.gstNumController.value,
+                                icon: Icons.receipt_long,
+                                validator: (value) {
+                                  return Validators.GST_validator(value);
                                 },
                               ),
                             ],
@@ -142,18 +154,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                                   return null;
                                 },
                               ),
-                              const SizedBox(height: 25),
-                              BasicTextfield(
-                                digitsOnly: false,
-                                width: 400,
-                                readonly: false,
-                                text: 'GST number',
-                                controller: invoiceController.invoiceModel.gstNumController.value,
-                                icon: Icons.receipt_long,
-                                validator: (value) {
-                                  return Validators.GST_validator(value);
-                                },
-                              ),
+
                               const SizedBox(height: 30),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,

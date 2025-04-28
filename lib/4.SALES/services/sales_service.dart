@@ -657,8 +657,7 @@ mixin SalesServices {
                         (_quoteController.quoteModel.billingAddressController.value.text != "") ||
                         (_quoteController.quoteModel.Quote_no.value != "") ||
                         (_quoteController.quoteModel.gstController.value.text != "") ||
-                        (_quoteController.quoteModel.recommendationHeadingController.value.text != "")
-                        ) {
+                        (_quoteController.quoteModel.recommendationHeadingController.value.text != "")) {
                       // Show confirmation dialog
                       bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
 
@@ -805,9 +804,7 @@ mixin SalesServices {
               SizedBox(
                 height: 650,
                 width: 1300,
-                child: GenerateDc(
-                  eventID: eventID,eventName:  eventName
-                ),
+                child: GenerateDc(eventID: eventID, eventName: eventName),
               ),
               Positioned(
                 top: 3,

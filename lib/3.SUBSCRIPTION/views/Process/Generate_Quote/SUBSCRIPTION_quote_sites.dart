@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
@@ -101,7 +103,7 @@ class _SUBSCRIPTION_QuoteSitesState extends State<SUBSCRIPTION_QuoteSites> {
                             readonly: false,
                             text: 'Site Name',
                             controller: quoteController.quoteModel.siteNameController.value,
-                            icon: Icons.home,
+                            icon: Icons.business,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Site name';
@@ -116,7 +118,7 @@ class _SUBSCRIPTION_QuoteSitesState extends State<SUBSCRIPTION_QuoteSites> {
                             readonly: false,
                             text: 'Camera Quantity',
                             controller: quoteController.quoteModel.cameraquantityController.value,
-                            icon: Icons.production_quantity_limits,
+                            icon: Icons.photo_camera,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Camera Quantity';
@@ -131,7 +133,7 @@ class _SUBSCRIPTION_QuoteSitesState extends State<SUBSCRIPTION_QuoteSites> {
                             readonly: false,
                             text: 'Address',
                             controller: quoteController.quoteModel.addressController.value,
-                            icon: Icons.location_city,
+                            icon: Icons.location_on,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Site Address';

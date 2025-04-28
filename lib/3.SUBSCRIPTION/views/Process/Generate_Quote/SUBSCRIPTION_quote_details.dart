@@ -64,21 +64,21 @@ class _SUBSCRIPTION_QuoteDetailsState extends State<SUBSCRIPTION_QuoteDetails> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 // const SizedBox(height: 25),
-                                BasicTextfield(
-                                  digitsOnly: false,
-                                  width: 400,
-                                  readonly: false,
-                                  text: 'Title',
-                                  controller: quoteController.quoteModel.TitleController.value,
-                                  icon: Icons.title,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter Title number';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                const SizedBox(height: 25),
+                                // BasicTextfield(
+                                //   digitsOnly: false,
+                                //   width: 400,
+                                //   readonly: false,
+                                //   text: 'Title',
+                                //   controller: quoteController.quoteModel.TitleController.value,
+                                //   icon: Icons.title,
+                                //   validator: (value) {
+                                //     if (value == null || value.isEmpty) {
+                                //       return 'Please enter Title number';
+                                //     }
+                                //     return null;
+                                //   },
+                                // ),
+                                // const SizedBox(height: 25),
                                 BasicTextfield(
                                   digitsOnly: false,
                                   width: 400,
@@ -106,6 +106,18 @@ class _SUBSCRIPTION_QuoteDetailsState extends State<SUBSCRIPTION_QuoteDetails> {
                                       return 'Please enter Client Address';
                                     }
                                     return null;
+                                  },
+                                ),
+                                const SizedBox(height: 25),
+                                BasicTextfield(
+                                  digitsOnly: false,
+                                  width: 400,
+                                  readonly: false,
+                                  text: 'GST number',
+                                  controller: quoteController.quoteModel.gstNumController.value,
+                                  icon: Icons.price_change,
+                                  validator: (value) {
+                                    return Validators.GST_validator(value);
                                   },
                                 ),
                               ],
@@ -143,18 +155,7 @@ class _SUBSCRIPTION_QuoteDetailsState extends State<SUBSCRIPTION_QuoteDetails> {
                                     return null;
                                   },
                                 ),
-                                const SizedBox(height: 25),
-                                BasicTextfield(
-                                  digitsOnly: false,
-                                  width: 400,
-                                  readonly: false,
-                                  text: 'GST number',
-                                  controller: quoteController.quoteModel.gstNumController.value,
-                                  icon: Icons.price_change,
-                                  validator: (value) {
-                                    return Validators.GST_validator(value);
-                                  },
-                                ),
+
                                 const SizedBox(height: 30),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,

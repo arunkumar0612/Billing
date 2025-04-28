@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
+import 'package:ssipl_billing/4.SALES/controllers/Sales_actions.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entities.dart';
 import 'package:ssipl_billing/API-/api.dart';
 import 'package:ssipl_billing/API-/invoker.dart';
@@ -23,6 +24,8 @@ mixin PostServices {
   final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
   final loader = LoadingOverlay();
   final Invoker apiController = Get.find<Invoker>();
+  final SalesController salesController = Get.find<SalesController>();
+
   void animation_control() async {
     // await Future.delayed(const Duration(milliseconds: 200));
     pdfpopup_controller.setpdfLoading(false);
@@ -177,6 +180,8 @@ mixin PostServices {
         if (value.code) {
           loader.stop();
           await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
+          salesController.Get_salesCustomPDFLsit();
+
           // Navigator.of(context).pop(true);
           // invoiceController.resetData();
         } else {

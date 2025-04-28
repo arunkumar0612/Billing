@@ -1327,7 +1327,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
         children: [
           pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('Sub total   :', 10), regular(formatzero(instInvoice.finalCalc.subtotal), 10)]),
           pw.SizedBox(height: 8),
-          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('IGST       :', 10), regular(formatzero(instInvoice.finalCalc.cgst), 10)]),
+          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('IGST       :', 10), regular(formatzero(instInvoice.finalCalc.igst), 10)]),
           // pw.SizedBox(height: 8),
           // pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('SGST       :', 10), regular(formatzero(instInvoice.finalCalc.sgst), 10)]),
           pw.SizedBox(height: 8),

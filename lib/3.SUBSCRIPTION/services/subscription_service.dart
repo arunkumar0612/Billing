@@ -1004,6 +1004,7 @@ mixin SubscriptionServices {
     await get_CompanyList();
     await GetProcessList(0);
     await GetSubscriptionData(_subscriptionController.subscriptionModel.subscriptionperiod.value);
+    await Get_subscriptionCustomPDFLsit();
   }
 
   int fetch_messageType() {

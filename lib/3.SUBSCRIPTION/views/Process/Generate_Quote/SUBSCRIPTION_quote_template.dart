@@ -1035,7 +1035,7 @@ class SUBSCRIPTION_Quotation {
         children: [
           pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('Sub total   :', 10), regular(formatzero(instQuote.finalCalc.subtotal), 10)]),
           pw.SizedBox(height: 8),
-          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('IGST       :', 10), regular(formatzero(instQuote.finalCalc.cgst), 10)]),
+          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('IGST       :', 10), regular(formatzero(instQuote.finalCalc.igst), 10)]),
           // pw.SizedBox(height: 8),
           // pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('SGST       :', 10), regular(formatzero(instQuote.finalCalc.sgst), 10)]),
           pw.SizedBox(height: 8),

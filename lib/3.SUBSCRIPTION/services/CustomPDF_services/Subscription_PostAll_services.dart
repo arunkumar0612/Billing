@@ -8,12 +8,13 @@ import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
+import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/Subscription_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/CustomPDF_entities/CustomPDF_invoice_entities.dart';
 import 'package:ssipl_billing/API-/api.dart' show API;
 import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
-import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart' show CMDmResponse;
+import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart' show CMDlResponse, CMDmResponse;
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -22,6 +23,7 @@ mixin SUBSCRIPTION_PostServices {
   final SUBSCRIPTION_CustomPDF_InvoiceController pdfpopup_controller = Get.find<SUBSCRIPTION_CustomPDF_InvoiceController>();
   final loader = LoadingOverlay();
   final Invoker apiController = Get.find<Invoker>();
+  final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
   void animation_control() async {
     // await Future.delayed(const Duration(milliseconds: 200));
     pdfpopup_controller.setpdfLoading(false);
@@ -157,6 +159,33 @@ mixin SUBSCRIPTION_PostServices {
     }
   }
 
+  Future<void> Get_subscriptionCustomPDFLsit() async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_subscriptionCustompdf);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          subscriptionController.addToCustompdfList(value);
+        } else {
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
+          // await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
+        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("error : $e");
+      }
+      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
+
   dynamic send_data(context, String jsonData, File file) async {
     try {
       Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.subscription_addCustomInvoice_API);
@@ -164,7 +193,8 @@ mixin SUBSCRIPTION_PostServices {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
           loader.stop();
-          await Error_dialog(context: context, title: "Invoice", content: value.message!, onOk: () {});
+          await Success_dialog(context: context, title: "Invoice", content: value.message!, onOk: () {});
+          Get_subscriptionCustomPDFLsit();
           // Navigator.of(context).pop(true);
           // invoiceController.resetData();
         } else {

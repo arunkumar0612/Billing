@@ -350,7 +350,7 @@ class CustomerPDF_List {
   final String customerEmail;
   final String customerPhone;
   final String customerGst;
-  final DateTime date;
+  final String date;
   final String customType;
   final String genId;
   final int customPDFid;
@@ -374,6 +374,7 @@ class CustomerPDF_List {
   });
 
   factory CustomerPDF_List.fromJson(Map<String, dynamic> json) {
+    String formattedDate = DateFormat("dd MMM yyyy").format(DateTime.parse(json['date'] as String));
     return CustomerPDF_List(
       customerAddressName: json['customeraddress_name'] ?? '',
       customerAddress: json['customeraddress'] ?? '',
@@ -382,7 +383,7 @@ class CustomerPDF_List {
       customerEmail: json['customer_mailid'] ?? '',
       customerPhone: json['customer_phoneno'] ?? '',
       customerGst: json['customer_gstno'] ?? '',
-      date: DateTime.parse(json['date']),
+      date: formattedDate,
       customType: json['custom_type'] ?? '',
       customPDFid: json['custompdfid'] ?? 0,
       genId: json['gen_id'] ?? '',
@@ -400,7 +401,7 @@ class CustomerPDF_List {
       'customer_mailid': customerEmail,
       'customer_phoneno': customerPhone,
       'customer_gstno': customerGst,
-      'date': date.toIso8601String(),
+      'date': date,
       'custom_type': customType,
       'customPDFid': customPDFid,
       'gen_id': genId,

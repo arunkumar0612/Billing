@@ -7,7 +7,7 @@ import 'package:ssipl_billing/4.SALES/controllers/DC_actions.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/product_entities.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 
-Future<Uint8List> generate_Dc(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, dc_num, invoice_num, title, gst) async {
+Future<Uint8List> generate_Dc(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, dc_num, invoice_num, gst, GSTIN) async {
   final dc = Delivery_challan(
     products: products,
     GST: gst.toDouble(),
@@ -19,7 +19,7 @@ Future<Uint8List> generate_Dc(PdfPageFormat pageFormat, products, client_addr_na
     bill_addr: bill_addr,
     dc_num: dc_num ?? "",
     invoice_num: invoice_num ?? "",
-    title_text: title,
+    GSTIN:GSTIN,
     type: '',
   );
 
@@ -38,8 +38,8 @@ class Delivery_challan {
     required this.bill_addr,
     required this.dc_num,
     required this.invoice_num,
-    required this.title_text,
     required this.type,
+    required this.GSTIN
 
     // required this.items,
   });
@@ -51,8 +51,8 @@ class Delivery_challan {
   String bill_addr = "";
   String dc_num = "";
   String invoice_num = '';
-  String title_text = "";
   String type = "";
+  String GSTIN="";
 
   final List<DcProduct> products;
   final double GST;
@@ -336,7 +336,7 @@ class Delivery_challan {
   }
 
   pw.Widget title(pw.Context context) {
-    return pw.Center(child: bold(title_text, 12));
+    return pw.Center(child: bold(GSTIN, 12));
   }
 
   pw.Widget _contentTable(pw.Context context) {

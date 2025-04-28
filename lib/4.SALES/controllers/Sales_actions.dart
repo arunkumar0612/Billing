@@ -127,6 +127,7 @@ class SalesController extends GetxController {
       // salesModel.processcustomerList.assignAll(salesfilteredModel.processcustomerList);
     } else {
       var filteredList = salesfilteredModel.customPdfList.where((process) =>
+          process.date.toLowerCase().contains(query.toLowerCase()) ||
           process.customerAddressName.toLowerCase().contains(query.toLowerCase()) ||
           process.customerAddress.toLowerCase().contains(query.toLowerCase()) ||
           process.genId.toLowerCase().contains(query.toLowerCase()));
@@ -172,33 +173,32 @@ class SalesController extends GetxController {
   // }
 
   void resetData() {
-  // CLIENT DATA
-  salesModel.customerList.clear();
-  salesModel.processcustomerList.clear();
-  salesModel.customPdfList.clear();
-  salesModel.processList.clear();
-  salesModel.showcustomerprocess.value = null;
-  salesModel.customerId.value = null;
-  salesModel.pdfFile.value = null;
-  salesModel.custom_pdfFile.value = null;
-  salesModel.selectedIndices.clear();
-  salesModel.isAllSelected.value = false;
-  salesModel.type.value = 0;
-  salesModel.isprofilepage.value = false;
-  salesModel.searchQuery.value = '';
-  salesModel.salesdata.value = null;
-  salesModel.salesperiod.value = 'monthly';
-  salesModel.Clientprofile.value = null;
+    // CLIENT DATA
+    salesModel.customerList.clear();
+    salesModel.processcustomerList.clear();
+    salesModel.customPdfList.clear();
+    salesModel.processList.clear();
+    salesModel.showcustomerprocess.value = null;
+    salesModel.customerId.value = null;
+    salesModel.pdfFile.value = null;
+    salesModel.custom_pdfFile.value = null;
+    salesModel.selectedIndices.clear();
+    salesModel.isAllSelected.value = false;
+    salesModel.type.value = 0;
+    salesModel.isprofilepage.value = false;
+    salesModel.searchQuery.value = '';
+    salesModel.salesdata.value = null;
+    salesModel.salesperiod.value = 'monthly';
+    salesModel.Clientprofile.value = null;
 
-  // POST / CONTACT
-  salesModel.whatsapp_selectionStatus.value = true;
-  salesModel.gmail_selectionStatus.value = true;
-  salesModel.phoneController.value.clear();
-  salesModel.emailController.value.clear();
-  salesModel.CCemailController.value.clear();
-  salesModel.feedbackController.value.clear();
-  salesModel.CCemailToggle.value = false;
-}
-
+    // POST / CONTACT
+    salesModel.whatsapp_selectionStatus.value = true;
+    salesModel.gmail_selectionStatus.value = true;
+    salesModel.phoneController.value.clear();
+    salesModel.emailController.value.clear();
+    salesModel.CCemailController.value.clear();
+    salesModel.feedbackController.value.clear();
+    salesModel.CCemailToggle.value = false;
+  }
 }
 //  customername.replaceAll(RegExp(r'[^A-Z]'), '').length>=2?customername.replaceAll(RegExp(r'[^A-Z]'), '').substring(0, 2):customername.replaceAll(RegExp(r'[^A-Z]'), '').length==1?customername.replaceAll(RegExp(r'[^A-Z]'), ''):customername.isNotEmpty?customername[0].toUpperCase():"?",

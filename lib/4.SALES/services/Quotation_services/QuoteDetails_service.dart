@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/API-/api.dart';
@@ -34,12 +35,15 @@ mixin QuotedetailsService {
             content: value.message ?? "",
             onOk: () {},
           );
+          Navigator.of(context).pop();
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Navigator.of(context).pop();
       }
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
+      Navigator.of(context).pop();
     }
   }
 
@@ -53,12 +57,15 @@ mixin QuotedetailsService {
           quoteController.add_productSuggestion(value.data);
         } else {
           await Error_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {});
+          Navigator.of(context).pop();
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Navigator.of(context).pop();
       }
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
+      Navigator.of(context).pop();
     }
   }
 }

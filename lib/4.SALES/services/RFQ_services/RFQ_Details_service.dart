@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/controllers/RFQ_actions.dart';
 import 'package:ssipl_billing/API-/api.dart';
@@ -30,12 +31,15 @@ mixin RfqdetailsService {
           // salesController.addToCustomerList(value);
         } else {
           await Error_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {});
+          Navigator.of(context).pop();
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Navigator.of(context).pop();
       }
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
+      Navigator.of(context).pop();
     }
   }
 
@@ -61,12 +65,15 @@ mixin RfqdetailsService {
             content: value.message ?? "",
             onOk: () {},
           );
+          Navigator.of(context).pop();
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Navigator.of(context).pop();
       }
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
+      Navigator.of(context).pop();
     }
   }
 
@@ -82,12 +89,15 @@ mixin RfqdetailsService {
           // clientreqController.update_CompanyList(value);
         } else {
           await Error_dialog(context: context, title: 'Fetching Vendor List Error', content: value.message ?? "", onOk: () {});
+          Navigator.of(context).pop();
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Navigator.of(context).pop();
       }
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
+      Navigator.of(context).pop();
     }
   }
 
@@ -105,7 +115,9 @@ mixin RfqdetailsService {
             title: 'PRE - LOADER',
             content: value.message ?? "",
             onOk: () {},
+            
           );
+          Navigator.of(context).pop();
         }
       } else {
         Error_dialog(
@@ -113,6 +125,7 @@ mixin RfqdetailsService {
           title: "SERVER DOWN",
           content: "Please contact administration!",
         );
+        Navigator.of(context).pop();
       }
     } catch (e) {
       Error_dialog(
@@ -120,6 +133,7 @@ mixin RfqdetailsService {
         title: "ERROR",
         content: "$e",
       );
+      Navigator.of(context).pop();
     }
   }
 }

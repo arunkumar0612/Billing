@@ -9,6 +9,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
@@ -26,7 +27,7 @@ import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:lottie/lottie.dart';
+
 import '../controllers/Subscription_actions.dart';
 
 class Subscription_Client extends StatefulWidget with SubscriptionServices, BellIconFunction {
@@ -1411,9 +1412,8 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                                 Row(
                                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                                   children: [
-                                                                    if ((subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation == true)
-                                                                        // &&(subscriptionController.subscriptionModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                        )
+                                                                    if ((subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Allowed_process.quotation == true) &&
+                                                                        (subscriptionController.subscriptionModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                       TextButton(
                                                                         onPressed: () async {
                                                                           bool success = await widget.GetPDFfile(
@@ -1431,18 +1431,17 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                                         ),
                                                                       ),
                                                                     if ((subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation ==
-                                                                            true)
-                                                                        //  &&                                                                              (subscriptionController.subscriptionModel.processList[index].TimelineEvents.length == childIndex + 1)
-                                                                        )
+                                                                            true) &&
+                                                                        (subscriptionController.subscriptionModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                       TextButton(
                                                                         onPressed: () async {
                                                                           bool success = await widget.GetPDFfile(
                                                                               context, subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
 
                                                                           if (success) {
-                                                                            // widget.GenerateQuote_dialougebox(cont`ext, "revisedquotation",
-                                                                            //     subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
-                                                                            // quoteController.setProcessID(subscriptionController.subscriptionModel.processList[index].processid);
+                                                                            widget.GenerateQuote_dialougebox(context, "revisedquotation",
+                                                                                subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                            quoteController.setProcessID(subscriptionController.subscriptionModel.processList[index].processid);
                                                                           }
                                                                         },
                                                                         child: const Text(
@@ -2550,30 +2549,38 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                         // const SizedBox(width: 10),
                         Expanded(
                           flex: 1,
-                          child: Text(
-                            'Date',
-                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                          child: Center(
+                            child: Text(
+                              'Date',
+                              style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                         Expanded(
-                          flex: 3,
-                          child: Text(
-                            'Client Name',
-                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                          flex: 2,
+                          child: Center(
+                            child: Text(
+                              'Client Name',
+                              style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                         Expanded(
                           flex: 1,
-                          child: Text(
-                            'Reference no',
-                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                          child: Center(
+                            child: Text(
+                              'Reference no',
+                              style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                         Expanded(
                           flex: 5,
-                          child: Text(
-                            'path',
-                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                          child: Center(
+                            child: Text(
+                              'path',
+                              style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
 
@@ -2628,24 +2635,28 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                 ),
                               ),
                               Expanded(
-                                flex: 3,
-                                child: Text(
-                                  subscriptionController.subscriptionModel.customPdfList[index].customerAddressName,
-                                  // documentlist[index]['clientname'],
-                                  style: const TextStyle(
-                                    color: Primary_colors.Color1,
-                                    fontSize: Primary_font_size.Text8,
+                                flex: 2,
+                                child: Center(
+                                  child: Text(
+                                    subscriptionController.subscriptionModel.customPdfList[index].customerAddressName,
+                                    // documentlist[index]['clientname'],
+                                    style: const TextStyle(
+                                      color: Primary_colors.Color1,
+                                      fontSize: Primary_font_size.Text8,
+                                    ),
                                   ),
                                 ),
                               ),
                               Expanded(
                                 flex: 1,
-                                child: Text(
-                                  subscriptionController.subscriptionModel.customPdfList[index].genId,
-                                  // documentlist[index]['title'],
-                                  style: const TextStyle(
-                                    color: Primary_colors.Color1,
-                                    fontSize: Primary_font_size.Text8,
+                                child: Center(
+                                  child: Text(
+                                    subscriptionController.subscriptionModel.customPdfList[index].genId,
+                                    // documentlist[index]['title'],
+                                    style: const TextStyle(
+                                      color: Primary_colors.Color1,
+                                      fontSize: Primary_font_size.Text8,
+                                    ),
                                   ),
                                 ),
                               ),

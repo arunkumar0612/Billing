@@ -48,8 +48,20 @@ class SUBSCRIPTION_Quotation {
           pw.SizedBox(height: 10),
           _contentTable(context),
           pw.SizedBox(height: 20),
+          pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              // pw.Expanded(child: pw.Container(), flex: 1),
+
+              notes(context),
+
+              // 995461
+              pw.SizedBox(width: 100),
+              authorized_signatory(context),
+            ],
+          ),
           // tax_table(context),
-          isGST_Local(instQuote.GSTIN) ? Local_tax_table(context) : others_tax_table(context),
+          // isGST_Local(instQuote.GSTIN) ? Local_tax_table(context) : others_tax_table(context),
         ],
       ),
     );
@@ -306,6 +318,7 @@ class SUBSCRIPTION_Quotation {
           4: pw.Alignment.centerLeft,
           5: pw.Alignment.center,
           6: pw.Alignment.center,
+          7: pw.Alignment.centerRight,
         },
         cellHeight: 30,
         cellAlignments: {
@@ -316,6 +329,7 @@ class SUBSCRIPTION_Quotation {
           4: pw.Alignment.centerLeft,
           5: pw.Alignment.center,
           6: pw.Alignment.center,
+          7: pw.Alignment.centerRight,
         },
         headerStyle: pw.TextStyle(
           font: Helvetica_bold,

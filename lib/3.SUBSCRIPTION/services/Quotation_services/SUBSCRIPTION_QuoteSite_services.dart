@@ -26,7 +26,7 @@ mixin SUBSCRIPTION_QuotesiteService {
         siteName: quoteController.quoteModel.siteNameController.value.text,
         cameraquantity: int.parse(quoteController.quoteModel.cameraquantityController.value.text),
         address: quoteController.quoteModel.addressController.value.text,
-        billingType: quoteController.quoteModel.Billingtype_Controller.value,
+        billType: quoteController.quoteModel.Billingtype_Controller.value,
         mailType: quoteController.quoteModel.Mailtype_Controller.value,
       );
 
@@ -41,7 +41,7 @@ mixin SUBSCRIPTION_QuotesiteService {
         cameraquantity: int.parse(quoteController.quoteModel.cameraquantityController.value.text),
         editIndex: quoteController.quoteModel.site_editIndex.value!,
         siteName: quoteController.quoteModel.siteNameController.value.text,
-        billingType: quoteController.quoteModel.Billingtype_Controller.value,
+        billType: quoteController.quoteModel.Billingtype_Controller.value,
         mailType: quoteController.quoteModel.Mailtype_Controller.value,
         address: quoteController.quoteModel.addressController.value.text,
       );
@@ -57,7 +57,7 @@ mixin SUBSCRIPTION_QuotesiteService {
     quoteController.updateQuantity(site.cameraquantity);
     quoteController.updateAddressName(site.address);
     quoteController.addSiteEditindex(index);
-    quoteController.updateBillingtype(site.billingType);
+    quoteController.updateBillingtype(site.billType);
     quoteController.updateMailtype(site.mailType);
   }
 

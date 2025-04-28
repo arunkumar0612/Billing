@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/4.SALES/services/CustomPDF_services/Invoice/CustomPDF_Invoice_services.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
+import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
 
 class CustomPDF_InvoicePDF {
   final CustomPDF_InvoiceController pdfpopup_controller = Get.find<CustomPDF_InvoiceController>();
@@ -81,10 +83,7 @@ class CustomPDF_InvoicePDF {
                                               ),
                                             ),
                                             validator: (value) {
-                                              if (value == null || value.isEmpty) {
-                                                return '';
-                                              }
-                                              return null;
+                                              return Validators.GST_validator(value);
                                             },
                                           ),
                                         ),
@@ -167,30 +166,40 @@ class CustomPDF_InvoicePDF {
                       child: const Icon(Icons.close, color: Colors.red),
                     ),
                     onPressed: () async {
-                      showDialog(
+                      Warning_dialog(
                         context: context,
-                        builder: (_) {
-                          return AlertDialog(
-                            title: const Text('Are you sure you want to close this pop-up?'),
-                            actions: [
-                              TextButton(
-                                child: const Text('No'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              TextButton(
-                                child: const Text('Yes'),
-                                onPressed: () {
-                                  pdfpopup_controller.resetData();
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
+                        title: 'Warning',
+                        content: "Are you sure you want to close this pop-up?",
+                        onOk: () {
+                          pdfpopup_controller.resetData();
+
+                          Navigator.of(context).pop();
                         },
                       );
+                      // showDialog(
+                      //   context: context,
+                      //   builder: (_) {
+                      //     return AlertDialog(
+                      //       title: const Text('Are you sure you want to close this pop-up?'),
+                      //       actions: [
+                      //         TextButton(
+                      //           child: const Text('No'),
+                      //           onPressed: () {
+                      //             Navigator.of(context).pop();
+                      //           },
+                      //         ),
+                      //         TextButton(
+                      //           child: const Text('Yes'),
+                      //           onPressed: () {
+                      //             pdfpopup_controller.resetData();
+                      //             Navigator.of(context).pop();
+                      //             Navigator.of(context).pop();
+                      //           },
+                      //         ),
+                      //       ],
+                      //     );
+                      //   },
+                      // );
                     },
                   ),
                 ),
@@ -1609,18 +1618,18 @@ class CustomPDF_InvoicePDF {
                         child: TextButton(
                           onPressed: () async {
                             if (pdfpopup_controller.pdfModel.value.allData_key.value.currentState?.validate() ?? false) {
-                              // try {
-                              await Future.wait(
-                                [
-                                  pdfpopup_controller.startProgress(),
-                                  inst.savePdfToCache(context),
-                                ],
-                              );
-                              // } catch (e, stackTrace) {
-                              //   debugPrint("Error in Future.wait: $e");
-                              //   debugPrint(stackTrace.toString());
-                              //   Get.snackbar("Error", "Something went wrong. Please try again.");
-                              // }
+                              try {
+                                await Future.wait(
+                                  [
+                                    pdfpopup_controller.startProgress(),
+                                    inst.savePdfToCache(context),
+                                  ],
+                                );
+                              } catch (e, stackTrace) {
+                                debugPrint("Error in Future.wait: $e");
+                                debugPrint(stackTrace.toString());
+                                Get.snackbar("Error", "Something went wrong. Please try again.");
+                              }
                             } else {
                               Get.snackbar("ERROR", "Check for Red Highlighted Fields!");
                             }

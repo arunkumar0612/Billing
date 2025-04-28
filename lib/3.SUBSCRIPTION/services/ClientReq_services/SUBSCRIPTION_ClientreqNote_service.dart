@@ -24,7 +24,7 @@ mixin SUBSCRIPTION_ClientreqNoteService {
   final loader = LoadingOverlay();
   void addtable_row(context) {
     if (clientreqController.clientReqModel.noteFormKey.value.currentState?.validate() ?? false) {
-      clientreqController.updateRec_ValueControllerText(clientreqController.clientReqModel.Rec_HeadingController.value.text);
+      // clientreqController.updateRe(clientreqController.clientReqModel.Rec_HeadingController.value.text);
       bool exists = clientreqController.clientReqModel.clientReqRecommendationList.any((note) => note.key == clientreqController.clientReqModel.Rec_KeyController.value.text);
       if (exists) {
         Get.snackbar("Note", 'This note Name already exists.');

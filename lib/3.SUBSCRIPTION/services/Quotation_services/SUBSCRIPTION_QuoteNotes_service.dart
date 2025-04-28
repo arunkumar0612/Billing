@@ -21,7 +21,7 @@ mixin SUBSCRIPTION_QuotenotesService {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
 
   void addtable_row(context) {
-    quoteController.updateRec_ValueControllerText(quoteController.quoteModel.recommendationHeadingController.value.text);
+    // quoteController.updateRec_ValueControllerText(quoteController.quoteModel.recommendationHeadingController.value.text);
     bool exists = quoteController.quoteModel.Quote_recommendationList.any((note) => note.key == quoteController.quoteModel.recommendationKeyController.value.text);
     if (exists) {
       Error_SnackBar(context, 'This note Name already exists.');

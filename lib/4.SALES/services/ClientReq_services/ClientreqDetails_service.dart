@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/controllers/ClientReq_actions.dart';
 import 'package:ssipl_billing/API-/api.dart';
@@ -80,12 +81,15 @@ mixin ClientreqDetailsService {
           clientreqController.update_OrganizationList(value);
         } else {
           await Error_dialog(context: context, title: 'Fetching Organization List Error', content: value.message ?? "", onOk: () {});
+          Navigator.of(context).pop();
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Navigator.of(context).pop();
       }
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
+      Navigator.of(context).pop();
     }
   }
 
@@ -144,6 +148,7 @@ mixin ClientreqDetailsService {
             content: value.message ?? "",
             onOk: () {},
           );
+          Navigator.of(context).pop();
         }
       } else {
         Error_dialog(
@@ -151,6 +156,7 @@ mixin ClientreqDetailsService {
           title: "SERVER DOWN",
           content: "Please contact administration!",
         );
+        Navigator.of(context).pop();
       }
     } catch (e) {
       Error_dialog(
@@ -158,6 +164,7 @@ mixin ClientreqDetailsService {
         title: "ERROR",
         content: "$e",
       );
+      Navigator.of(context).pop();
     }
   }
 }

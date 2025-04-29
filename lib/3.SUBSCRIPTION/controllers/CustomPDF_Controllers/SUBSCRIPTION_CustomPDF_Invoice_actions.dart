@@ -319,10 +319,10 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.plancharges.value.clear();
     pdfModel.value.internetcharges.value.clear();
     pdfModel.value.billperiod.value.clear();
-    pdfModel.value.billdate.value.clear();
+    // pdfModel.value.billdate.value.clear();
     pdfModel.value.duedate.value.clear();
     pdfModel.value.relationshipID.value.clear();
-    pdfModel.value.billnumber.value.clear();
+    // pdfModel.value.billnumber.value.clear();
     pdfModel.value.customerGSTIN.value.clear();
     pdfModel.value.customerPO.value.clear();
     pdfModel.value.HSNcode.value.clear();

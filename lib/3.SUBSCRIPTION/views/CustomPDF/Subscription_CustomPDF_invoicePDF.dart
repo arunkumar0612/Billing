@@ -606,38 +606,38 @@ class Subscription_CustomPDF_InvoicePDF {
                         ),
                       ),
 
-                      SizedBox(
-                        height: 35,
-                        child: TextFormField(
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black, height: 2.3),
-                          controller: pdfpopup_controller.pdfModel.value.billdate.value,
-                          decoration: const InputDecoration(
-                            errorStyle: TextStyle(height: -1, fontSize: 0),
-                            contentPadding: EdgeInsets.only(
-                              left: 5,
-                              right: 5,
-                            ),
-                            // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                            hintText: "01 / 01 / 2025",
-                            hintStyle: TextStyle(fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 136, 136, 136)),
-                            // border: OutlineInputBorder(borderSide: BorderSide.none),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Primary_colors.Color3, width: 2),
-                            ),
-                            prefixIcon: Padding(
-                              padding: EdgeInsets.only(left: 5, top: 11),
-                              child: Text("Bill date                   :  ", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return '';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
+                      // SizedBox(
+                      //   height: 35,
+                      //   child: TextFormField(
+                      //     textAlign: TextAlign.start,
+                      //     style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black, height: 2.3),
+                      //     controller: pdfpopup_controller.pdfModel.value.billdate.value,
+                      //     decoration: const InputDecoration(
+                      //       errorStyle: TextStyle(height: -1, fontSize: 0),
+                      //       contentPadding: EdgeInsets.only(
+                      //         left: 5,
+                      //         right: 5,
+                      //       ),
+                      //       // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                      //       hintText: "01 / 01 / 2025",
+                      //       hintStyle: TextStyle(fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 136, 136, 136)),
+                      //       // border: OutlineInputBorder(borderSide: BorderSide.none),
+                      //       focusedBorder: UnderlineInputBorder(
+                      //         borderSide: BorderSide(color: Primary_colors.Color3, width: 2),
+                      //       ),
+                      //       prefixIcon: Padding(
+                      //         padding: EdgeInsets.only(left: 5, top: 11),
+                      //         child: Text("Bill date                   :  ", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                      //       ),
+                      //     ),
+                      //     validator: (value) {
+                      //       if (value == null || value.isEmpty) {
+                      //         return '';
+                      //       }
+                      //       return null;
+                      //     },
+                      //   ),
+                      // ),
 
                       SizedBox(
                         height: 35,
@@ -739,38 +739,38 @@ class Subscription_CustomPDF_InvoicePDF {
                           },
                         ),
                       ),
-                      SizedBox(
-                        height: 35,
-                        child: TextFormField(
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black, height: 2.3),
-                          controller: pdfpopup_controller.pdfModel.value.billnumber.value,
-                          decoration: const InputDecoration(
-                            errorStyle: TextStyle(height: -1, fontSize: 0),
-                            contentPadding: EdgeInsets.only(
-                              left: 5,
-                              right: 5,
-                            ),
-                            // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                            hintText: "KVCIAR/250101",
-                            hintStyle: TextStyle(fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 136, 136, 136)),
-                            // border: OutlineInputBorder(borderSide: BorderSide.none),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Primary_colors.Color3, width: 2),
-                            ),
-                            prefixIcon: Padding(
-                              padding: EdgeInsets.only(left: 5, top: 11),
-                              child: Text("Bill number            :  ", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return '';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
+                      // SizedBox(
+                      //   height: 35,
+                      //   child: TextFormField(
+                      //     textAlign: TextAlign.start,
+                      //     style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black, height: 2.3),
+                      //     controller: pdfpopup_controller.pdfModel.value.billnumber.value,
+                      //     decoration: const InputDecoration(
+                      //       errorStyle: TextStyle(height: -1, fontSize: 0),
+                      //       contentPadding: EdgeInsets.only(
+                      //         left: 5,
+                      //         right: 5,
+                      //       ),
+                      //       // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                      //       hintText: "KVCIAR/250101",
+                      //       hintStyle: TextStyle(fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 136, 136, 136)),
+                      //       // border: OutlineInputBorder(borderSide: BorderSide.none),
+                      //       focusedBorder: UnderlineInputBorder(
+                      //         borderSide: BorderSide(color: Primary_colors.Color3, width: 2),
+                      //       ),
+                      //       prefixIcon: Padding(
+                      //         padding: EdgeInsets.only(left: 5, top: 11),
+                      //         child: Text("Bill number            :  ", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                      //       ),
+                      //     ),
+                      //     validator: (value) {
+                      //       if (value == null || value.isEmpty) {
+                      //         return '';
+                      //       }
+                      //       return null;
+                      //     },
+                      //   ),
+                      // ),
                       SizedBox(
                         height: 35,
                         child: TextFormField(

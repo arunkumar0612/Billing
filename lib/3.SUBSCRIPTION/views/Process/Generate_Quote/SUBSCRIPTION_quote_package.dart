@@ -810,6 +810,9 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
               ),
             ),
           ),
+          const SizedBox(
+            height: 15,
+          ),
           if (isCustomPackage && package.editingMode.value) ...[
             Align(
               alignment: Alignment.bottomRight,

@@ -111,6 +111,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Primary_colors.Dark,
       body: Center(
@@ -888,6 +889,14 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                   ),
                                   Obx(() => Row(
                                         children: [
+                                          Text(
+                                            salesController.salesModel.searchQuery.value.isNotEmpty
+                                                ? 'Found: ${salesController.salesModel.processList.length} Process | Selected: ${salesController.salesModel.selectedIndices.length}'
+                                                : 'Total: ${salesController.salesModel.processList.length} Process | Selected: ${salesController.salesModel.selectedIndices.length}',
+                                            style: theme.textTheme.bodyLarge
+                                                ?.copyWith(color: Colors.white, fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text8, letterSpacing: 1.0, overflow: TextOverflow.ellipsis),
+                                          ),
+                                          const SizedBox(width: 10),
                                           if (salesController.salesModel.selectedIndices.isNotEmpty)
                                             PopupMenuButton<String>(
                                               splashRadius: 20,

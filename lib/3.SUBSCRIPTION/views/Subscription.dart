@@ -108,375 +108,332 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
     // print("$screenHeight,             $screenWidth");
 
     return DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          backgroundColor: Primary_colors.Dark,
-          body: Center(
-            child: SizedBox(
-              // width: 1500,
-              child: Column(
-                children: [
-                  // const SizedBox(height: 185, child: cardview()),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          ShaderMask(
-                            shaderCallback: (bounds) => const LinearGradient(
-                              colors: [Primary_colors.Color3, Primary_colors.Color4], // Example gradient
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ).createShader(bounds),
-                            child: const Icon(
-                              Icons.subscriptions,
-                              size: 25.0,
-                            ),
+      length: 2,
+      child: Scaffold(
+        backgroundColor: Primary_colors.Dark,
+        body: Center(
+          child: SizedBox(
+            // width: 1500,
+            child: Column(
+              children: [
+                // const SizedBox(height: 185, child: cardview()),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        ShaderMask(
+                          shaderCallback: (bounds) => const LinearGradient(
+                            colors: [Primary_colors.Color3, Primary_colors.Color4], // Example gradient
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ).createShader(bounds),
+                          child: const Icon(
+                            Icons.subscriptions,
+                            size: 25.0,
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Text(
-                            'Subscription',
-                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text13),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Obx(() {
-                            return Stack(
-                              children: [
-                                Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: MouseRegion(
-                                    onEnter: (_) => notificationController.notificationModel.isHovered.value = true,
-                                    onExit: (_) => notificationController.notificationModel.isHovered.value = false,
-                                    cursor: SystemMouseCursors.click,
-                                    child: GestureDetector(
-                                        onTap: () => widget.showNotification(context),
-                                        child: ShaderMask(
-                                          shaderCallback: (Rect bounds) {
-                                            return const LinearGradient(
-                                              colors:
-                                                  // notificationController.notificationModel.notifications.isNotEmpty ?
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'Subscription',
+                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text13),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Obx(() {
+                          return Stack(
+                            children: [
+                              Align(
+                                alignment: Alignment.bottomLeft,
+                                child: MouseRegion(
+                                  onEnter: (_) => notificationController.notificationModel.isHovered.value = true,
+                                  onExit: (_) => notificationController.notificationModel.isHovered.value = false,
+                                  cursor: SystemMouseCursors.click,
+                                  child: GestureDetector(
+                                      onTap: () => widget.showNotification(context),
+                                      child: ShaderMask(
+                                        shaderCallback: (Rect bounds) {
+                                          return const LinearGradient(
+                                            colors:
+                                                // notificationController.notificationModel.notifications.isNotEmpty ?
 
-                                                  [Colors.black, Color.fromARGB(164, 255, 191, 0), Colors.amber],
-                                              // :  [Colors.amber],
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                            ).createShader(bounds);
-                                          },
-                                          blendMode: BlendMode.srcIn,
-                                          child: const Icon(
-                                            Icons.notifications,
-                                            size: 30,
-                                          ),
-                                        )),
+                                                [Colors.black, Color.fromARGB(164, 255, 191, 0), Colors.amber],
+                                            // :  [Colors.amber],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          ).createShader(bounds);
+                                        },
+                                        blendMode: BlendMode.srcIn,
+                                        child: const Icon(
+                                          Icons.notifications,
+                                          size: 30,
+                                        ),
+                                      )),
+                                ),
+                              ),
+                              if (notificationController.notificationModel.notifications.isNotEmpty)
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Container(
+                                    height: 15,
+                                    width: 15,
+                                    decoration: BoxDecoration(
+                                      color: notificationController.notificationModel.notifications.isNotEmpty ? Colors.red : Colors.blue,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        notificationController.notificationModel.notifications.length > 9 ? '9+' : '${notificationController.notificationModel.notifications.length}',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                if (notificationController.notificationModel.notifications.isNotEmpty)
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: Container(
-                                      height: 15,
-                                      width: 15,
-                                      decoration: BoxDecoration(
-                                        color: notificationController.notificationModel.notifications.isNotEmpty ? Colors.red : Colors.blue,
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          notificationController.notificationModel.notifications.length > 9 ? '9+' : '${notificationController.notificationModel.notifications.length}',
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                            ],
+                          );
+                        }),
+                        const SizedBox(width: 10),
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: _startAnimation,
+                            child: AnimatedBuilder(
+                              animation: subscriptionController.subscriptionModel.animationController,
+                              builder: (context, child) {
+                                return Transform.rotate(
+                                  angle: -subscriptionController.subscriptionModel.animationController.value * 2 * pi, // Counterclockwise rotation
+                                  child: Transform.scale(
+                                    scale: TweenSequence([
+                                      TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 1.2), weight: 50),
+                                      TweenSequenceItem(tween: Tween<double>(begin: 1.2, end: 1.0), weight: 50),
+                                    ]).animate(CurvedAnimation(parent: subscriptionController.subscriptionModel.animationController, curve: Curves.easeInOut)).value, // Zoom in and return to normal
+                                    child: Opacity(
+                                      opacity: TweenSequence([
+                                        TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.5), weight: 50),
+                                        TweenSequenceItem(tween: Tween<double>(begin: 0.5, end: 1.0), weight: 50),
+                                      ]).animate(CurvedAnimation(parent: subscriptionController.subscriptionModel.animationController, curve: Curves.easeInOut)).value, // Fade and return to normal
+                                      child: ClipOval(
+                                        child: Image.asset(
+                                          'assets/images/reload.png',
+                                          fit: BoxFit.cover,
+                                          width: 30,
+                                          height: 30,
                                         ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Obx(
+                          () => SizedBox(
+                            width: 400,
+                            height: 40,
+                            child: Stack(
+                              alignment: Alignment.centerLeft,
+                              children: [
+                                TextFormField(
+                                  controller: TextEditingController(text: subscriptionController.subscriptionModel.searchQuery.value)
+                                    ..selection = TextSelection.fromPosition(
+                                      TextPosition(offset: subscriptionController.subscriptionModel.searchQuery.value.length),
+                                    ),
+                                  onChanged: (value) => subscriptionController.search(value), // ✅ Updates GetX state
+                                  style: const TextStyle(fontSize: 13, color: Colors.white),
+                                  decoration: const InputDecoration(
+                                    contentPadding: EdgeInsets.all(10),
+                                    filled: true,
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Color.fromARGB(226, 89, 147, 255)),
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Color.fromARGB(255, 104, 93, 255)),
+                                    ),
+                                    hintText: "", // Hide default hintText
+                                    border: UnderlineInputBorder(borderSide: BorderSide.none),
+                                    prefixIcon: Icon(
+                                      Icons.search,
+                                      color: Color.fromARGB(255, 151, 151, 151),
+                                    ),
+                                  ),
+                                ),
+                                if (subscriptionController.subscriptionModel.searchQuery.value.isEmpty)
+                                  Positioned(
+                                    left: 40,
+                                    child: IgnorePointer(
+                                      child: AnimatedTextKit(
+                                        repeatForever: true,
+                                        animatedTexts: [
+                                          TypewriterAnimatedText(
+                                            "Search from the list...",
+                                            textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
+                                            speed: const Duration(milliseconds: 100),
+                                          ),
+                                          TypewriterAnimatedText(
+                                            "Enter customer name...",
+                                            textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
+                                            speed: const Duration(milliseconds: 100),
+                                          ),
+                                          TypewriterAnimatedText(
+                                            "Find an invoice...",
+                                            textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
+                                            speed: const Duration(milliseconds: 100),
+                                          ),
+                                          TypewriterAnimatedText(
+                                            "Find a Quotation...",
+                                            textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
+                                            speed: const Duration(milliseconds: 100),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
                               ],
-                            );
-                          }),
-                          const SizedBox(width: 10),
-                          MouseRegion(
-                            cursor: SystemMouseCursors.click,
-                            child: GestureDetector(
-                              onTap: _startAnimation,
-                              child: AnimatedBuilder(
-                                animation: subscriptionController.subscriptionModel.animationController,
-                                builder: (context, child) {
-                                  return Transform.rotate(
-                                    angle: -subscriptionController.subscriptionModel.animationController.value * 2 * pi, // Counterclockwise rotation
-                                    child: Transform.scale(
-                                      scale: TweenSequence([
-                                        TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 1.2), weight: 50),
-                                        TweenSequenceItem(tween: Tween<double>(begin: 1.2, end: 1.0), weight: 50),
-                                      ]).animate(CurvedAnimation(parent: subscriptionController.subscriptionModel.animationController, curve: Curves.easeInOut)).value, // Zoom in and return to normal
-                                      child: Opacity(
-                                        opacity: TweenSequence([
-                                          TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.5), weight: 50),
-                                          TweenSequenceItem(tween: Tween<double>(begin: 0.5, end: 1.0), weight: 50),
-                                        ]).animate(CurvedAnimation(parent: subscriptionController.subscriptionModel.animationController, curve: Curves.easeInOut)).value, // Fade and return to normal
-                                        child: ClipOval(
-                                          child: Image.asset(
-                                            'assets/images/reload.png',
-                                            fit: BoxFit.cover,
-                                            width: 30,
-                                            height: 30,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  height: 235,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                elevation: 10,
+                                color: Primary_colors.Light,
+                                // decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Primary_colors.Light),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.only(left: 15),
+                                            child: Text(
+                                              'SUBSCRIPTION DATA',
+                                              style: TextStyle(letterSpacing: 1, wordSpacing: 3, color: Primary_colors.Color3, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Obx(
-                            () => SizedBox(
-                              width: 400,
-                              height: 40,
-                              child: Stack(
-                                alignment: Alignment.centerLeft,
-                                children: [
-                                  TextFormField(
-                                    controller: TextEditingController(text: subscriptionController.subscriptionModel.searchQuery.value)
-                                      ..selection = TextSelection.fromPosition(
-                                        TextPosition(offset: subscriptionController.subscriptionModel.searchQuery.value.length),
-                                      ),
-                                    onChanged: (value) => subscriptionController.search(value), // ✅ Updates GetX state
-                                    style: const TextStyle(fontSize: 13, color: Colors.white),
-                                    decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.all(10),
-                                      filled: true,
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Color.fromARGB(226, 89, 147, 255)),
-                                      ),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Color.fromARGB(255, 104, 93, 255)),
-                                      ),
-                                      hintText: "", // Hide default hintText
-                                      border: UnderlineInputBorder(borderSide: BorderSide.none),
-                                      prefixIcon: Icon(
-                                        Icons.search,
-                                        color: Color.fromARGB(255, 151, 151, 151),
-                                      ),
-                                    ),
-                                  ),
-                                  if (subscriptionController.subscriptionModel.searchQuery.value.isEmpty)
-                                    Positioned(
-                                      left: 40,
-                                      child: IgnorePointer(
-                                        child: AnimatedTextKit(
-                                          repeatForever: true,
-                                          animatedTexts: [
-                                            TypewriterAnimatedText(
-                                              "Search from the list...",
-                                              textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
-                                              speed: const Duration(milliseconds: 100),
-                                            ),
-                                            TypewriterAnimatedText(
-                                              "Enter customer name...",
-                                              textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
-                                              speed: const Duration(milliseconds: 100),
-                                            ),
-                                            TypewriterAnimatedText(
-                                              "Find an invoice...",
-                                              textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
-                                              speed: const Duration(milliseconds: 100),
-                                            ),
-                                            TypewriterAnimatedText(
-                                              "Find a Quotation...",
-                                              textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
-                                              speed: const Duration(milliseconds: 100),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    height: 235,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  elevation: 10,
-                                  color: Primary_colors.Light,
-                                  // decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Primary_colors.Light),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(0),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Padding(
-                                              padding: EdgeInsets.only(left: 15),
-                                              child: Text(
-                                                'SUBSCRIPTION DATA',
-                                                style: TextStyle(letterSpacing: 1, wordSpacing: 3, color: Primary_colors.Color3, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(right: 10),
-                                              child: SizedBox(
-                                                width: 200,
-                                                height: 35,
-                                                child: Obx(
-                                                  () => DropdownButtonFormField<String>(
-                                                    value: subscriptionController.subscriptionModel.subscriptionperiod.value == 'monthly'
-                                                        ? "Monthly view"
-                                                        : "Yearly view", // Use the state variable for the selected value
-                                                    items: [
-                                                      "Monthly view",
-                                                      "Yearly view",
-                                                    ]
-                                                        .map((String value) => DropdownMenuItem<String>(
-                                                              value: value,
-                                                              child: Text(value, style: const TextStyle(fontSize: 13, color: Colors.white)),
-                                                            ))
-                                                        .toList(),
-                                                    onChanged: (String? newValue) {
-                                                      if (newValue != null) {
-                                                        subscriptionController.updatesubscriptionperiod(newValue == "Monthly view" ? 'monthly' : 'yearly');
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 10),
+                                            child: SizedBox(
+                                              width: 200,
+                                              height: 35,
+                                              child: Obx(
+                                                () => DropdownButtonFormField<String>(
+                                                  value: subscriptionController.subscriptionModel.subscriptionperiod.value == 'monthly'
+                                                      ? "Monthly view"
+                                                      : "Yearly view", // Use the state variable for the selected value
+                                                  items: [
+                                                    "Monthly view",
+                                                    "Yearly view",
+                                                  ]
+                                                      .map((String value) => DropdownMenuItem<String>(
+                                                            value: value,
+                                                            child: Text(value, style: const TextStyle(fontSize: 13, color: Colors.white)),
+                                                          ))
+                                                      .toList(),
+                                                  onChanged: (String? newValue) {
+                                                    if (newValue != null) {
+                                                      subscriptionController.updatesubscriptionperiod(newValue == "Monthly view" ? 'monthly' : 'yearly');
 
-                                                        if (newValue == "Monthly view") {
-                                                          widget.GetSubscriptionData('monthly');
-                                                        } else if (newValue == "Yearly view") {
-                                                          widget.GetSubscriptionData('yearly');
-                                                        }
+                                                      if (newValue == "Monthly view") {
+                                                        widget.GetSubscriptionData('monthly');
+                                                      } else if (newValue == "Yearly view") {
+                                                        widget.GetSubscriptionData('yearly');
                                                       }
-                                                    },
-                                                    decoration: InputDecoration(
-                                                      alignLabelWithHint: false,
-                                                      contentPadding: const EdgeInsets.all(10),
-                                                      filled: true,
-                                                      fillColor: Primary_colors.Dark,
-                                                      focusedBorder: OutlineInputBorder(
-                                                        borderRadius: BorderRadius.circular(30),
-                                                        borderSide: const BorderSide(color: Color.fromARGB(226, 50, 50, 50)),
-                                                      ),
-                                                      enabledBorder: OutlineInputBorder(
-                                                        borderRadius: BorderRadius.circular(30),
-                                                        borderSide: const BorderSide(color: Color.fromARGB(255, 51, 50, 50)),
-                                                      ),
-                                                      hintText: 'Data View',
-                                                      hintStyle: const TextStyle(
-                                                        fontSize: Primary_font_size.Text7,
-                                                        color: Primary_colors.Color1,
-                                                        letterSpacing: 1,
-                                                      ),
+                                                    }
+                                                  },
+                                                  decoration: InputDecoration(
+                                                    alignLabelWithHint: false,
+                                                    contentPadding: const EdgeInsets.all(10),
+                                                    filled: true,
+                                                    fillColor: Primary_colors.Dark,
+                                                    focusedBorder: OutlineInputBorder(
+                                                      borderRadius: BorderRadius.circular(30),
+                                                      borderSide: const BorderSide(color: Color.fromARGB(226, 50, 50, 50)),
                                                     ),
-                                                    dropdownColor: Primary_colors.Dark,
+                                                    enabledBorder: OutlineInputBorder(
+                                                      borderRadius: BorderRadius.circular(30),
+                                                      borderSide: const BorderSide(color: Color.fromARGB(255, 51, 50, 50)),
+                                                    ),
+                                                    hintText: 'Data View',
+                                                    hintStyle: const TextStyle(
+                                                      fontSize: Primary_font_size.Text7,
+                                                      color: Primary_colors.Color1,
+                                                      letterSpacing: 1,
+                                                    ),
                                                   ),
+                                                  dropdownColor: Primary_colors.Dark,
                                                 ),
                                               ),
-                                            )
-                                          ],
-                                        ),
-                                        Expanded(
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(16),
-                                              // gradient: const LinearGradient(
-                                              //   colors: [Primary_colors.Light, Color.fromARGB(255, 40, 39, 59), Primary_colors.Light],
-                                              //   begin: Alignment.topLeft,
-                                              //   end: Alignment.bottomRight,
-                                              // ),
-                                              // boxShadow: const [
-                                              //   BoxShadow(
-                                              //     color: Colors.black12,
-                                              //     offset: Offset(0, 10),
-                                              //     blurRadius: 20,
-                                              //   ),
-                                              // ],
                                             ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(16),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets.only(left: 10),
-                                                    child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      children: [
-                                                        const Text(
-                                                          'TOTAL',
-                                                          style: TextStyle(
-                                                            color: Color.fromARGB(255, 186, 185, 185),
-                                                            fontSize: 12,
-                                                            fontWeight: FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                        Obx(
-                                                          () => Text(
-                                                            widget.formatNumber(int.tryParse(subscriptionController.subscriptionModel.subscriptiondata.value?.totalamount ?? "0") ?? 0),
-                                                            style: const TextStyle(
-                                                              color: Primary_colors.Color1,
-                                                              fontSize: 28,
-                                                              fontWeight: FontWeight.bold,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(10),
-                                                            color: const Color.fromARGB(255, 202, 227, 253),
-                                                          ),
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.all(4),
-                                                            child: Obx(
-                                                              () => Text(
-                                                                // '210 invoices',
-
-                                                                "${subscriptionController.subscriptionModel.subscriptiondata.value?.totalinvoices.toString() ?? "0"} ${((subscriptionController.subscriptionModel.subscriptiondata.value?.totalinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
-                                                                style: const TextStyle(
-                                                                    fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 1, 53, 92), letterSpacing: 1, fontWeight: FontWeight.bold),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Column(
+                                          )
+                                        ],
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(16),
+                                            // gradient: const LinearGradient(
+                                            //   colors: [Primary_colors.Light, Color.fromARGB(255, 40, 39, 59), Primary_colors.Light],
+                                            //   begin: Alignment.topLeft,
+                                            //   end: Alignment.bottomRight,
+                                            // ),
+                                            // boxShadow: const [
+                                            //   BoxShadow(
+                                            //     color: Colors.black12,
+                                            //     offset: Offset(0, 10),
+                                            //     blurRadius: 20,
+                                            //   ),
+                                            // ],
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(16),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 10),
+                                                  child: Column(
                                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                     crossAxisAlignment: CrossAxisAlignment.center,
                                                     children: [
                                                       const Text(
-                                                        'RECEIVED',
+                                                        'TOTAL',
                                                         style: TextStyle(
                                                           color: Color.fromARGB(255, 186, 185, 185),
                                                           fontSize: 12,
@@ -485,8 +442,96 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                       ),
                                                       Obx(
                                                         () => Text(
-                                                          // "₹ 18,6232",
-                                                          widget.formatNumber(int.tryParse(subscriptionController.subscriptionModel.subscriptiondata.value?.paidamount ?? "0") ?? 0),
+                                                          widget.formatNumber(int.tryParse(subscriptionController.subscriptionModel.subscriptiondata.value?.totalamount ?? "0") ?? 0),
+                                                          style: const TextStyle(
+                                                            color: Primary_colors.Color1,
+                                                            fontSize: 28,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(10),
+                                                          color: const Color.fromARGB(255, 202, 227, 253),
+                                                        ),
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.all(4),
+                                                          child: Obx(
+                                                            () => Text(
+                                                              // '210 invoices',
+
+                                                              "${subscriptionController.subscriptionModel.subscriptiondata.value?.totalinvoices.toString() ?? "0"} ${((subscriptionController.subscriptionModel.subscriptiondata.value?.totalinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
+                                                              style: const TextStyle(
+                                                                  fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 1, 53, 92), letterSpacing: 1, fontWeight: FontWeight.bold),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Column(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    const Text(
+                                                      'RECEIVED',
+                                                      style: TextStyle(
+                                                        color: Color.fromARGB(255, 186, 185, 185),
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                    Obx(
+                                                      () => Text(
+                                                        // "₹ 18,6232",
+                                                        widget.formatNumber(int.tryParse(subscriptionController.subscriptionModel.subscriptiondata.value?.paidamount ?? "0") ?? 0),
+
+                                                        style: const TextStyle(
+                                                          color: Primary_colors.Color1,
+                                                          fontSize: 28,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(10),
+                                                        color: const Color.fromARGB(255, 202, 253, 223),
+                                                      ),
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(4),
+                                                        child: Obx(
+                                                          () => Text(
+                                                            // '210 invoices',
+                                                            "${subscriptionController.subscriptionModel.subscriptiondata.value?.paidinvoices.toString() ?? "0"} ${((subscriptionController.subscriptionModel.subscriptiondata.value?.paidinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
+                                                            style:
+                                                                const TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 2, 87, 4), letterSpacing: 1, fontWeight: FontWeight.bold),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(right: 10),
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      const Text(
+                                                        'PENDING',
+                                                        style: TextStyle(
+                                                          color: Color.fromARGB(255, 186, 185, 185),
+                                                          fontSize: 12,
+                                                          fontWeight: FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                      Obx(
+                                                        () => Text(
+                                                          // "₹ 6,232",
+                                                          widget.formatNumber(int.tryParse(subscriptionController.subscriptionModel.subscriptiondata.value?.unpaidamount ?? "0") ?? 0),
 
                                                           style: const TextStyle(
                                                             color: Primary_colors.Color1,
@@ -498,81 +543,331 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                       Container(
                                                         decoration: BoxDecoration(
                                                           borderRadius: BorderRadius.circular(10),
-                                                          color: const Color.fromARGB(255, 202, 253, 223),
+                                                          color: const Color.fromARGB(255, 253, 206, 202),
                                                         ),
                                                         child: Padding(
                                                           padding: const EdgeInsets.all(4),
                                                           child: Obx(
                                                             () => Text(
-                                                              // '210 invoices',
-                                                              "${subscriptionController.subscriptionModel.subscriptiondata.value?.paidinvoices.toString() ?? "0"} ${((subscriptionController.subscriptionModel.subscriptiondata.value?.paidinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
+                                                              // '110 invoices',
+                                                              "${subscriptionController.subscriptionModel.subscriptiondata.value?.unpaidinvoices.toString() ?? "0"} ${((subscriptionController.subscriptionModel.subscriptiondata.value?.unpaidinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
                                                               style: const TextStyle(
-                                                                  fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 2, 87, 4), letterSpacing: 1, fontWeight: FontWeight.bold),
+                                                                  fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 118, 9, 1), fontWeight: FontWeight.bold, letterSpacing: 1),
                                                             ),
                                                           ),
                                                         ),
                                                       ),
                                                     ],
                                                   ),
-                                                  Padding(
-                                                    padding: const EdgeInsets.only(right: 10),
-                                                    child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      children: [
-                                                        const Text(
-                                                          'PENDING',
-                                                          style: TextStyle(
-                                                            color: Color.fromARGB(255, 186, 185, 185),
-                                                            fontSize: 12,
-                                                            fontWeight: FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                        Obx(
-                                                          () => Text(
-                                                            // "₹ 6,232",
-                                                            widget.formatNumber(int.tryParse(subscriptionController.subscriptionModel.subscriptiondata.value?.unpaidamount ?? "0") ?? 0),
-
-                                                            style: const TextStyle(
-                                                              color: Primary_colors.Color1,
-                                                              fontSize: 28,
-                                                              fontWeight: FontWeight.bold,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(10),
-                                                            color: const Color.fromARGB(255, 253, 206, 202),
-                                                          ),
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.all(4),
-                                                            child: Obx(
-                                                              () => Text(
-                                                                // '110 invoices',
-                                                                "${subscriptionController.subscriptionModel.subscriptiondata.value?.unpaidinvoices.toString() ?? "0"} ${((subscriptionController.subscriptionModel.subscriptiondata.value?.unpaidinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
-                                                                style: const TextStyle(
-                                                                    fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 118, 9, 1), fontWeight: FontWeight.bold, letterSpacing: 1),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        )
-                                      ],
-                                    ),
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 ),
                               ),
-                              const SizedBox(
-                                width: 15,
+                            ),
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            Expanded(
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                elevation: 10,
+                                color: Primary_colors.Light,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      // First row of icons and labels
+
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: MouseRegion(
+                                              cursor: SystemMouseCursors.click,
+                                              child: _buildIconWithLabel(
+                                                  image: 'assets/images/addprocess.png',
+                                                  label: 'Add Process',
+                                                  color: Primary_colors.Color5,
+                                                  onPressed: () {
+                                                    widget.Generate_client_reqirement_dialougebox('Enquiry', context);
+                                                  }),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: MouseRegion(
+                                              cursor: SystemMouseCursors.click,
+                                              child: _buildIconWithLabel(
+                                                image: 'assets/images/subscription.png',
+                                                label: 'Package',
+                                                color: Primary_colors.Color4,
+                                                onPressed: () {
+                                                  showModalBottomSheet(
+                                                    context: context,
+                                                    isScrollControlled: true, // This allows the bottom sheet to take full screen height
+                                                    barrierColor: const Color.fromARGB(244, 11, 15, 26),
+                                                    enableDrag: true,
+                                                    backgroundColor: Colors.transparent,
+                                                    shape: const RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.vertical(
+                                                        top: Radius.circular(20),
+                                                      ),
+                                                    ),
+                                                    builder: (BuildContext context) {
+                                                      return Container(
+                                                        height: screenHeight - 100, // Full screen height
+                                                        padding: const EdgeInsets.symmetric(horizontal: 70),
+                                                        child: Packagepage(),
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 20),
+                                      // Second row of icons and labels
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Obx(
+                                              () => AnimatedSwitcher(
+                                                duration: const Duration(milliseconds: 300), // Animation duration
+                                                transitionBuilder: (Widget child, Animation<double> animation) {
+                                                  return FadeTransition(
+                                                    opacity: animation,
+                                                    child: SlideTransition(
+                                                      position: animation.drive(
+                                                        Tween<Offset>(
+                                                          begin: const Offset(1.0, 0.0), // Slide in from right
+                                                          end: Offset.zero,
+                                                        ).chain(CurveTween(curve: Curves.easeInOut)),
+                                                      ),
+                                                      child: child,
+                                                    ),
+                                                  );
+                                                },
+                                                child: MouseRegion(
+                                                  cursor: SystemMouseCursors.click,
+                                                  child: _buildIconWithLabel(
+                                                    // key: ValueKey(subscriptionController.subscriptionModel.type.value), // Ensures re-build
+                                                    image: subscriptionController.subscriptionModel.type.value == 0 ? 'assets/images/viewarchivelist.png' : 'assets/images/mainlist.png',
+                                                    label: subscriptionController.subscriptionModel.type.value == 0 ? 'Archive List' : 'Main List',
+                                                    color: Primary_colors.Color8,
+                                                    onPressed: () {
+                                                      subscriptionController.subscriptionModel.selectedIndices.clear();
+                                                      subscriptionController.updatetype(subscriptionController.subscriptionModel.type.value == 0 ? 1 : 0);
+                                                      widget.GetProcessList(subscriptionController.subscriptionModel.customerId.value!);
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          // Expanded(
+                                          //   child: _buildIconWithLabel(
+                                          //     image: 'assets/images/article.png',
+                                          //     label: 'Options',
+                                          //     color: Primary_colors.Dark,
+                                          //     onPressed: () {
+                                          //       widget.pdfpopup_controller.initializeTextControllers();
+                                          //       widget.pdfpopup_controller.initializeCheckboxes();
+                                          //       widget.showA4StyledPopup(context);
+                                          //     },
+                                          //   ),
+                                          // ),
+                                          Expanded(
+                                            child: Column(
+                                              children: [
+                                                MouseRegion(
+                                                    cursor: SystemMouseCursors.click,
+                                                    child: PopupMenuButton<String>(
+                                                      splashRadius: 20,
+                                                      padding: const EdgeInsets.all(0),
+                                                      icon: Image.asset(
+                                                        'assets/images/options.png',
+                                                      ),
+                                                      iconSize: 50,
+                                                      shape: const RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                                        // side: const BorderSide(color: Primary_colors.Color3, width: 2),
+                                                      ),
+                                                      color: Colors.white,
+                                                      elevation: 6,
+                                                      offset: const Offset(170, 60),
+                                                      onSelected: (String item) async {
+                                                        // Handle menu item selection
+
+                                                        switch (item) {
+                                                          case 'Invoice':
+                                                            pdfpopup_controller.intAll();
+                                                            // inst_CustomPDF_Services.assign_GSTtotals();
+                                                            inst.showA4StyledPopup(context);
+                                                            break;
+                                                          case 'Custom PDF List':
+                                                            () async {
+                                                              // Show Bottom Sheet with a loading message initially
+                                                              // showModalBottomSheet(
+                                                              //   barrierColor: const Color.fromARGB(244, 11, 15, 26),
+                                                              //   enableDrag: true,
+                                                              //   backgroundColor: Colors.transparent,
+                                                              //   context: context,
+                                                              //   shape: const RoundedRectangleBorder(
+                                                              //     borderRadius: BorderRadius.vertical(
+                                                              //       top: Radius.circular(20),
+                                                              //     ),
+                                                              //   ),
+                                                              //   builder: (BuildContext context) {
+                                                              //     return const SizedBox(
+                                                              //       child: Padding(
+                                                              //         padding: EdgeInsets.only(left: 70, right: 70),
+                                                              //         child: Center(child: CircularProgressIndicator()), // Show loader initially
+                                                              //       ),
+                                                              //     );
+                                                              //   },
+                                                              // );
+                                                              // loader.start(context);
+                                                              // // Call the API after showing the bottom sheet
+                                                              // loader.stop();
+                                                              // Close the previous bottom sheet
+                                                              // Navigator.pop(context);
+
+                                                              // Show a new bottom sheet based on API response
+                                                              showModalBottomSheet(
+                                                                barrierColor: const Color.fromARGB(244, 11, 15, 26),
+                                                                enableDrag: true,
+                                                                backgroundColor: Colors.transparent,
+                                                                context: context,
+                                                                shape: const RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.vertical(
+                                                                    top: Radius.circular(20),
+                                                                  ),
+                                                                ),
+                                                                builder: (BuildContext context) {
+                                                                  return SizedBox(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.only(left: 70, right: 70),
+                                                                      child: customPDF_list(),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              );
+                                                            }();
+                                                            break;
+                                                          case 'Import':
+                                                            import_excel obj = import_excel(); // Remove const
+                                                            import_excel.excelData.clear();
+                                                            bool success = await obj.pickExcelFile(context);
+                                                            // print(import_excel.excelData);
+                                                            if (success) {
+                                                              widget.showExcelDataPopup(context, import_excel.excelData);
+                                                            } else {
+                                                              Error_SnackBar(context, "ERROR while picking file, please contact administration!");
+                                                            }
+
+                                                            break;
+                                                        }
+                                                      },
+                                                      itemBuilder: (BuildContext context) {
+                                                        // Determine the label for the archive/unarchive action
+
+                                                        return [
+                                                          PopupMenuItem<String>(
+                                                            value: "Invoice",
+                                                            child: ListTile(
+                                                              leading: Obx(
+                                                                () => Icon(
+                                                                  subscriptionController.subscriptionModel.type.value != 0
+                                                                      ? Icons.receipt_long // Used for invoices or bills
+                                                                      : Icons.archive_outlined, // Fallback to archive icon
+                                                                  color: Colors.blueAccent,
+                                                                ),
+                                                              ),
+                                                              title: const Text(
+                                                                'Invoice',
+                                                                style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const PopupMenuItem<String>(
+                                                            value: 'Custom PDF List',
+                                                            child: ListTile(
+                                                              leading: Icon(Icons.picture_as_pdf, color: Colors.redAccent), // Better represents a custom list
+                                                              title: Text(
+                                                                'Custom PDF List',
+                                                                style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const PopupMenuItem<String>(
+                                                            value: 'Import',
+                                                            child: ListTile(
+                                                              leading: Icon(Icons.file_download_outlined, color: Colors.green), // Represents import action
+                                                              title: Text(
+                                                                'Import',
+                                                                style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ];
+                                                      },
+                                                    )),
+                                                const SizedBox(height: 8),
+                                                const Text(
+                                                  "Options",
+                                                  style: TextStyle(
+                                                    letterSpacing: 1,
+                                                    fontSize: Primary_font_size.Text5,
+                                                    color: Primary_colors.Color1,
+                                                    fontWeight: FontWeight.w600,
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                          // Expanded(
+                                          //   child: MouseRegion(
+                                          //     cursor: SystemMouseCursors.click,
+                                          //     child: _buildIconWithLabel(
+                                          //       image: 'assets/images/quotation.png',
+                                          //       label: 'Create Quotation',
+                                          //       color: Primary_colors.Color4,
+                                          //       onPressed: () {
+                                          //         // widget.Generate_client_reqirement_dialougebox('Customer', context);
+                                          //       },
+                                          //     ),
+                                          //   ),
+                                          // ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
+
+                              // Reusable function to build icon with label for consistency
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.all(0),
+                          child: Column(
+                            children: [
                               Expanded(
                                 child: Card(
                                   shape: RoundedRectangleBorder(
@@ -580,335 +875,49 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                   ),
                                   elevation: 10,
                                   color: Primary_colors.Light,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        // First row of icons and labels
-
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: MouseRegion(
-                                                cursor: SystemMouseCursors.click,
-                                                child: _buildIconWithLabel(
-                                                    image: 'assets/images/addprocess.png',
-                                                    label: 'Add Process',
-                                                    color: Primary_colors.Color5,
-                                                    onPressed: () {
-                                                      widget.Generate_client_reqirement_dialougebox('Enquiry', context);
-                                                    }),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: MouseRegion(
-                                                cursor: SystemMouseCursors.click,
-                                                child: _buildIconWithLabel(
-                                                  image: 'assets/images/subscription.png',
-                                                  label: 'Package',
-                                                  color: Primary_colors.Color4,
-                                                  onPressed: () {
-                                                    showModalBottomSheet(
-                                                      context: context,
-                                                      isScrollControlled: true, // This allows the bottom sheet to take full screen height
-                                                      barrierColor: const Color.fromARGB(244, 11, 15, 26),
-                                                      enableDrag: true,
-                                                      backgroundColor: Colors.transparent,
-                                                      shape: const RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.vertical(
-                                                          top: Radius.circular(20),
-                                                        ),
-                                                      ),
-                                                      builder: (BuildContext context) {
-                                                        return Container(
-                                                          height: screenHeight - 100, // Full screen height
-                                                          padding: const EdgeInsets.symmetric(horizontal: 70),
-                                                          child: Packagepage(),
-                                                        );
-                                                      },
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 20),
-                                        // Second row of icons and labels
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: Obx(
-                                                () => AnimatedSwitcher(
-                                                  duration: const Duration(milliseconds: 300), // Animation duration
-                                                  transitionBuilder: (Widget child, Animation<double> animation) {
-                                                    return FadeTransition(
-                                                      opacity: animation,
-                                                      child: SlideTransition(
-                                                        position: animation.drive(
-                                                          Tween<Offset>(
-                                                            begin: const Offset(1.0, 0.0), // Slide in from right
-                                                            end: Offset.zero,
-                                                          ).chain(CurveTween(curve: Curves.easeInOut)),
-                                                        ),
-                                                        child: child,
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: MouseRegion(
-                                                    cursor: SystemMouseCursors.click,
-                                                    child: _buildIconWithLabel(
-                                                      // key: ValueKey(subscriptionController.subscriptionModel.type.value), // Ensures re-build
-                                                      image: subscriptionController.subscriptionModel.type.value == 0 ? 'assets/images/viewarchivelist.png' : 'assets/images/mainlist.png',
-                                                      label: subscriptionController.subscriptionModel.type.value == 0 ? 'Archive List' : 'Main List',
-                                                      color: Primary_colors.Color8,
-                                                      onPressed: () {
-                                                        subscriptionController.subscriptionModel.selectedIndices.clear();
-                                                        subscriptionController.updatetype(subscriptionController.subscriptionModel.type.value == 0 ? 1 : 0);
-                                                        widget.GetProcessList(subscriptionController.subscriptionModel.customerId.value!);
-                                                      },
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            // Expanded(
-                                            //   child: _buildIconWithLabel(
-                                            //     image: 'assets/images/article.png',
-                                            //     label: 'Options',
-                                            //     color: Primary_colors.Dark,
-                                            //     onPressed: () {
-                                            //       widget.pdfpopup_controller.initializeTextControllers();
-                                            //       widget.pdfpopup_controller.initializeCheckboxes();
-                                            //       widget.showA4StyledPopup(context);
-                                            //     },
-                                            //   ),
-                                            // ),
-                                            Expanded(
-                                              child: Column(
-                                                children: [
-                                                  MouseRegion(
-                                                      cursor: SystemMouseCursors.click,
-                                                      child: PopupMenuButton<String>(
-                                                        splashRadius: 20,
-                                                        padding: const EdgeInsets.all(0),
-                                                        icon: Image.asset(
-                                                          'assets/images/options.png',
-                                                        ),
-                                                        iconSize: 50,
-                                                        shape: const RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                                                          // side: const BorderSide(color: Primary_colors.Color3, width: 2),
-                                                        ),
-                                                        color: Colors.white,
-                                                        elevation: 6,
-                                                        offset: const Offset(170, 20),
-                                                        onSelected: (String item) async {
-                                                          // Handle menu item selection
-
-                                                          switch (item) {
-                                                            case 'Invoice':
-                                                              pdfpopup_controller.intAll();
-                                                              // inst_CustomPDF_Services.assign_GSTtotals();
-                                                              inst.showA4StyledPopup(context);
-                                                              break;
-                                                            case 'Custom PDF List':
-                                                              () async {
-                                                                // Show Bottom Sheet with a loading message initially
-                                                                // showModalBottomSheet(
-                                                                //   barrierColor: const Color.fromARGB(244, 11, 15, 26),
-                                                                //   enableDrag: true,
-                                                                //   backgroundColor: Colors.transparent,
-                                                                //   context: context,
-                                                                //   shape: const RoundedRectangleBorder(
-                                                                //     borderRadius: BorderRadius.vertical(
-                                                                //       top: Radius.circular(20),
-                                                                //     ),
-                                                                //   ),
-                                                                //   builder: (BuildContext context) {
-                                                                //     return const SizedBox(
-                                                                //       child: Padding(
-                                                                //         padding: EdgeInsets.only(left: 70, right: 70),
-                                                                //         child: Center(child: CircularProgressIndicator()), // Show loader initially
-                                                                //       ),
-                                                                //     );
-                                                                //   },
-                                                                // );
-                                                                // loader.start(context);
-                                                                // // Call the API after showing the bottom sheet
-                                                                // loader.stop();
-                                                                // Close the previous bottom sheet
-                                                                // Navigator.pop(context);
-
-                                                                // Show a new bottom sheet based on API response
-                                                                showModalBottomSheet(
-                                                                  barrierColor: const Color.fromARGB(244, 11, 15, 26),
-                                                                  enableDrag: true,
-                                                                  backgroundColor: Colors.transparent,
-                                                                  context: context,
-                                                                  shape: const RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.vertical(
-                                                                      top: Radius.circular(20),
-                                                                    ),
-                                                                  ),
-                                                                  builder: (BuildContext context) {
-                                                                    return SizedBox(
-                                                                      child: Padding(
-                                                                        padding: const EdgeInsets.only(left: 70, right: 70),
-                                                                        child: customPDF_list(),
-                                                                      ),
-                                                                    );
-                                                                  },
-                                                                );
-                                                              }();
-                                                              break;
-                                                            case 'Import':
-                                                              import_excel obj = import_excel(); // Remove const
-                                                              import_excel.excelData.clear();
-                                                              bool success = await obj.pickExcelFile(context);
-                                                              // print(import_excel.excelData);
-                                                              if (success) {
-                                                                widget.showExcelDataPopup(context, import_excel.excelData);
-                                                              } else {
-                                                                Error_SnackBar(context, "ERROR while picking file, please contact administration!");
-                                                              }
-
-                                                              break;
-                                                          }
-                                                        },
-                                                        itemBuilder: (BuildContext context) {
-                                                          // Determine the label for the archive/unarchive action
-
-                                                          return [
-                                                            PopupMenuItem<String>(
-                                                              value: "Invoice",
-                                                              child: ListTile(
-                                                                leading: Obx(
-                                                                  () => Icon(
-                                                                    subscriptionController.subscriptionModel.type.value != 0
-                                                                        ? Icons.receipt_long // Used for invoices or bills
-                                                                        : Icons.archive_outlined, // Fallback to archive icon
-                                                                    color: Colors.blueAccent,
-                                                                  ),
-                                                                ),
-                                                                title: const Text(
-                                                                  'Invoice',
-                                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            const PopupMenuItem<String>(
-                                                              value: 'Custom PDF List',
-                                                              child: ListTile(
-                                                                leading: Icon(Icons.picture_as_pdf, color: Colors.redAccent), // Better represents a custom list
-                                                                title: Text(
-                                                                  'Custom PDF List',
-                                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            const PopupMenuItem<String>(
-                                                              value: 'Import',
-                                                              child: ListTile(
-                                                                leading: Icon(Icons.file_download_outlined, color: Colors.green), // Represents import action
-                                                                title: Text(
-                                                                  'Import',
-                                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ];
-                                                        },
-                                                      )),
-                                                  const SizedBox(height: 8),
-                                                  const Text(
-                                                    "Options",
-                                                    style: TextStyle(
-                                                      letterSpacing: 1,
-                                                      fontSize: Primary_font_size.Text5,
-                                                      color: Primary_colors.Color1,
-                                                      fontWeight: FontWeight.w600,
-                                                      overflow: TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                            // Expanded(
-                                            //   child: MouseRegion(
-                                            //     cursor: SystemMouseCursors.click,
-                                            //     child: _buildIconWithLabel(
-                                            //       image: 'assets/images/quotation.png',
-                                            //       label: 'Create Quotation',
-                                            //       color: Primary_colors.Color4,
-                                            //       onPressed: () {
-                                            //         // widget.Generate_client_reqirement_dialougebox('Customer', context);
-                                            //       },
-                                            //     ),
-                                            //   ),
-                                            // ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  child: const Padding(padding: EdgeInsets.all(16), child: SubscriptionChart()),
                                 ),
-
-                                // Reusable function to build icon with label for consistency
-                              )
+                              ),
                             ],
                           ),
                         ),
-                        const SizedBox(width: 15),
-                        Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.all(0),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    elevation: 10,
-                                    color: Primary_colors.Light,
-                                    child: const Padding(padding: EdgeInsets.all(16), child: SubscriptionChart()),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: SizedBox(
+                    width: 250,
+                    child: TabBar(
+                      indicatorColor: Primary_colors.Color5,
+                      tabs: [
+                        Text('Invoice'),
+                        Text('Process'),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: SizedBox(
-                      width: 250,
-                      child: TabBar(
-                        indicatorColor: Primary_colors.Color5,
-                        tabs: [
-                          Text('Invoice'),
-                          Text('Process'),
-                        ],
-                      ),
-                    ),
+                ),
+                const SizedBox(height: 5),
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      Recurringinvoice(),
+                      SubscriptionProcess(),
+                    ],
                   ),
-                  const SizedBox(height: 5),
-                  Expanded(child: TabBarView(children: [Recurringinvoice(), SubscriptionProcess()]))
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget SubscriptionProcess() {
+    final theme = Theme.of(context);
     return Row(
       children: [
         Expanded(
@@ -940,6 +949,14 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                       ),
                       Obx(() => Row(
                             children: [
+                              Text(
+                                subscriptionController.subscriptionModel.searchQuery.value.isNotEmpty
+                                    ? 'Found: ${subscriptionController.subscriptionModel.processList.length} Process | Selected: ${subscriptionController.subscriptionModel.selectedIndices.length}'
+                                    : 'Total: ${subscriptionController.subscriptionModel.processList.length} Process | Selected: ${subscriptionController.subscriptionModel.selectedIndices.length}',
+                                style: theme.textTheme.bodyLarge
+                                    ?.copyWith(color: Colors.white, fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text8, letterSpacing: 1.0, overflow: TextOverflow.ellipsis),
+                              ),
+                              const SizedBox(width: 10),
                               if (subscriptionController.subscriptionModel.selectedIndices.isNotEmpty)
                                 PopupMenuButton<String>(
                                   splashRadius: 20,
@@ -1184,11 +1201,12 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                               ),
                                             ),
                                             Expanded(
-                                                flex: 4,
-                                                child: Text(
-                                                  subscriptionController.subscriptionModel.processList[index].Process_date,
-                                                  style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                                )),
+                                              flex: 4,
+                                              child: Text(
+                                                subscriptionController.subscriptionModel.processList[index].Process_date,
+                                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                              ),
+                                            ),
                                             Expanded(
                                               flex: 4,
                                               child: Padding(

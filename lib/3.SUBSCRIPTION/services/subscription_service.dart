@@ -995,7 +995,7 @@ mixin SubscriptionServices {
   }
 
   Future<void> subscription_refresh() async {
-    _subscriptionController.resetData();
+    // _subscriptionController.resetData();
     _subscriptionController.updateshowcustomerprocess(null);
     _subscriptionController.updatecustomerId(0);
     await Get_RecurringInvoiceList(null);

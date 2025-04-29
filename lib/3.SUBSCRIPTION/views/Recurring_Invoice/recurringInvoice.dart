@@ -57,6 +57,7 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                 style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                               ),
                             ),
+                            SizedBox(width: 5),
                             Expanded(
                               flex: 4,
                               child: Text(
@@ -64,6 +65,7 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                 style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                               ),
                             ),
+                            SizedBox(width: 5),
                             Expanded(
                               flex: 2,
                               child: Text(
@@ -71,6 +73,7 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                 style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                               ),
                             ),
+                            SizedBox(width: 5),
                             Expanded(
                               flex: 2,
                               child: Text(
@@ -78,6 +81,7 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                 style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                               ),
                             ),
+                            SizedBox(width: 5),
                             // Expanded(
                             //   flex: 2,
                             //   child: Text(
@@ -140,6 +144,7 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
+                                            const SizedBox(width: 5),
                                             Expanded(
                                               flex: 4,
                                               child: Text(
@@ -147,6 +152,7 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
+                                            const SizedBox(width: 5),
                                             Expanded(
                                               flex: 2,
                                               child: Text(
@@ -154,6 +160,7 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
+                                            const SizedBox(width: 5),
                                             Expanded(
                                               flex: 2,
                                               child: Text(
@@ -161,6 +168,7 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
+                                            const SizedBox(width: 5),
                                             // Expanded(
                                             //     flex: 2,
                                             //     child: Row(
@@ -823,7 +831,7 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                 ),
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 20),
             Expanded(
               flex: 1,
               child: Obx(

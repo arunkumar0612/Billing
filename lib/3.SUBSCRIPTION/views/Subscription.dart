@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:animations/animations.dart';
 // import 'package:dropdown_textfield/dropdown_textfield.dart';d

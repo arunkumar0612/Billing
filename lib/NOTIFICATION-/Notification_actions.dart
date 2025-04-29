@@ -219,7 +219,7 @@ class NotificationController extends GetxController {
     final context = Get.context;
     if (topic == "Notification") {
       if (context != null) {
-        // await Refresher().refreshAll();
+        // await Refresher().refreshAll(context);
       }
       if (!notificationModel.notifications.contains(message)) {
         notificationModel.notifications.add(message);
@@ -227,7 +227,7 @@ class NotificationController extends GetxController {
       }
     } else if (topic == "refresh") {
       if (context != null) {
-        await Refresher().refreshAll();
+        // await Refresher().refreshAll(context);
       }
       // if (!notificationModel.notifications.contains(message)) {
       //   notificationModel.notifications.add(message);

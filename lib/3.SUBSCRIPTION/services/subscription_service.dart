@@ -469,9 +469,6 @@ mixin SubscriptionServices {
         // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      if (kDebugMode) {
-        print("error : $e");
-      }
       // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }

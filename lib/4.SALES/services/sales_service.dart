@@ -748,7 +748,6 @@ mixin SalesServices {
                         (rfqController.rfqModel.recommendationHeadingController.value.text != "")) {
                       // Show confirmation dialog
                       bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
-
                       if (proceed == true) {
                         Navigator.of(context).pop();
                         rfqController.resetData();
@@ -868,9 +867,7 @@ mixin SalesServices {
     // salesController.resetData();
     salesController.updateshowcustomerprocess(null);
     salesController.updatecustomerId(0);
-
     await Get_salesProcesscustomerList();
-
     await GetSalesData(salesController.salesModel.salesperiod.value);
     await Get_salesCustomPDFLsit();
     await Get_salesProcessList(0);

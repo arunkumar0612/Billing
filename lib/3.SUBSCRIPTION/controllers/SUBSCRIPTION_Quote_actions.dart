@@ -348,7 +348,9 @@ class SUBSCRIPTION_QuoteController extends GetxController {
   }
 
   void update_requiredData(CMDmResponse value, String eventtype) {
-    print(value.data);
+    if (kDebugMode) {
+      print(value.data);
+    }
     if (eventtype == 'revisedquotation') {
       storeFetchedPackages(value.data);
     }
@@ -386,7 +388,9 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         }
       }
 
-      print(quoteModel.QuoteSiteDetails);
+      if (kDebugMode) {
+        print(quoteModel.QuoteSiteDetails);
+      }
       quoteModel.update();
     }
   }

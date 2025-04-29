@@ -25,7 +25,7 @@ mixin QuotedetailsService {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
           // await Basic_dialog(context: context,showCancel: false, title: 'Enquiry - ID', content: value.message!, onOk: () {});
-          quoteController.update_requiredData(value);
+          quoteController.update_requiredData(value, eventtype);
           // print(clientreqController.clientReqModel.Enq_ID.value);
           // salesController.addToCustomerList(value);
         } else {

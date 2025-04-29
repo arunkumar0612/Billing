@@ -53,7 +53,7 @@ class _SUBSCRIPTION_clientreqSitesState extends State<SUBSCRIPTION_clientreqSite
                           children: [
                             IconButton(
                               onPressed: () {
-                                clientreqController.removeFromProductList(i);
+                                clientreqController.removeFromSiteList(i);
                               },
                               icon: const Icon(
                                 Icons.close,
@@ -98,7 +98,7 @@ class _SUBSCRIPTION_clientreqSitesState extends State<SUBSCRIPTION_clientreqSite
                             readonly: false,
                             text: 'Site Name',
                             controller: clientreqController.clientReqModel.siteNameController.value,
-                            icon: Icons.home,
+                            icon: Icons.business,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Site name';
@@ -113,7 +113,7 @@ class _SUBSCRIPTION_clientreqSitesState extends State<SUBSCRIPTION_clientreqSite
                             readonly: false,
                             text: 'Camera Quantity',
                             controller: clientreqController.clientReqModel.cameraquantityController.value,
-                            icon: Icons.production_quantity_limits,
+                            icon: Icons.photo_camera,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Camera Quantity';
@@ -128,7 +128,7 @@ class _SUBSCRIPTION_clientreqSitesState extends State<SUBSCRIPTION_clientreqSite
                             readonly: false,
                             text: 'Address',
                             controller: clientreqController.clientReqModel.addressController.value,
-                            icon: Icons.location_city,
+                            icon: Icons.location_on,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter Site Address';

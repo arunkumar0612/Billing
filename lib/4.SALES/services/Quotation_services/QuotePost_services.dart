@@ -93,7 +93,6 @@ mixin PostServices {
           messageType: messageType,
           feedback: quoteController.quoteModel.feedbackController.value.text,
           ccEmail: quoteController.quoteModel.CCemailController.value.text);
-
       await send_data(context, jsonEncode(salesData.toJson()), cachedPdf, eventtype);
     } catch (e) {
       await Error_dialog(context: context, title: "POST", content: "$e", onOk: () {});

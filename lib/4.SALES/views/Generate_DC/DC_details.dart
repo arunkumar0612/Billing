@@ -60,21 +60,21 @@ class _DcDetailsState extends State<DcDetails> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 // const SizedBox(height: 25),
-                                BasicTextfield(
-                                  digitsOnly: false,
-                                  width: 400,
-                                  readonly: false,
-                                  text: 'Title',
-                                  controller: dcController.dcModel.TitleController.value,
-                                  icon: Icons.title,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter Title number';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                const SizedBox(height: 25),
+                                // BasicTextfield(
+                                //   digitsOnly: false,
+                                //   width: 400,
+                                //   readonly: false,
+                                //   text: 'Title',
+                                //   controller: dcController.dcModel.TitleController.value,
+                                //   icon: Icons.title,
+                                //   validator: (value) {
+                                //     if (value == null || value.isEmpty) {
+                                //       return 'Please enter Title number';
+                                //     }
+                                //     return null;
+                                //   },
+                                // ),
+                                // const SizedBox(height: 25),
                                 BasicTextfield(
                                   digitsOnly: false,
                                   width: 400,
@@ -102,6 +102,18 @@ class _DcDetailsState extends State<DcDetails> {
                                       return 'Please enter Client Address';
                                     }
                                     return null;
+                                  },
+                                ),
+                                const SizedBox(height: 25),
+                                BasicTextfield(
+                                  digitsOnly: false,
+                                  width: 400,
+                                  readonly: false,
+                                  text: 'GST number',
+                                  controller: dcController.dcModel.gstNumController.value,
+                                  icon: Icons.receipt_long,
+                                  validator: (value) {
+                                    return Validators.GST_validator(value);
                                   },
                                 ),
                               ],
@@ -139,18 +151,7 @@ class _DcDetailsState extends State<DcDetails> {
                                     return null;
                                   },
                                 ),
-                                const SizedBox(height: 25),
-                                BasicTextfield(
-                                  digitsOnly: false,
-                                  width: 400,
-                                  readonly: false,
-                                  text: 'GST number',
-                                  controller: dcController.dcModel.gstNumController.value,
-                                  icon: Icons.receipt_long,
-                                  validator: (value) {
-                                    return Validators.GST_validator(value);
-                                  },
-                                ),
+
                                 const SizedBox(height: 30),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,14 +171,14 @@ class _DcDetailsState extends State<DcDetails> {
                           ],
                         )),
                     const SizedBox(height: 25),
-                     SizedBox(
+                    SizedBox(
                       width: 660,
                       child: Text(
                         textAlign: TextAlign.center,
-                        widget.eventName=='Invoice'?
-                        'The Invoice shown beside can be used as a reference for generating the Dc. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.'
-                        :'The Delivery challan shown beside can be used as a reference for generating the Dc. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
-                        style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7), 
+                        widget.eventName == 'Invoice'
+                            ? 'The Invoice shown beside can be used as a reference for generating the Dc. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.'
+                            : 'The Delivery challan shown beside can be used as a reference for generating the Dc. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
+                        style: const TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                       ),
                     )
                   ],

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
@@ -76,6 +77,7 @@ class Process {
   final String Process_date;
   final int age_in_days;
   final List<TimelineEvent> TimelineEvents;
+
   Process({
     required this.processid,
     required this.title,
@@ -86,11 +88,12 @@ class Process {
   });
 
   factory Process.fromJson(CMDlResponse json, int i) {
+    String formattedDate = DateFormat("dd MMM yyyy").format(DateTime.parse(json.data[i]['Process_date'] as String));
     return Process(
       processid: json.data[i]['processid'] as int,
       title: json.data[i]['title'] ?? '',
       customer_name: json.data[i]['customer_name'] as String,
-      Process_date: json.data[i]['Process_date'] as String,
+      Process_date: formattedDate,
       age_in_days: json.data[i]['age_in_days'] as int,
       TimelineEvents: (json.data[i]['TimelineEvents'] as List<dynamic>).map((event) => TimelineEvent.fromJson(event as Map<String, dynamic>)).toList(),
     );
@@ -347,7 +350,7 @@ class CustomerPDF_List {
   final String customerEmail;
   final String customerPhone;
   final String customerGst;
-  final DateTime date;
+  final String date;
   final String customType;
   final String genId;
   final int customPDFid;
@@ -371,6 +374,7 @@ class CustomerPDF_List {
   });
 
   factory CustomerPDF_List.fromJson(Map<String, dynamic> json) {
+    String formattedDate = DateFormat("dd MMM yyyy").format(DateTime.parse(json['date'] as String));
     return CustomerPDF_List(
       customerAddressName: json['customeraddress_name'] ?? '',
       customerAddress: json['customeraddress'] ?? '',
@@ -379,7 +383,7 @@ class CustomerPDF_List {
       customerEmail: json['customer_mailid'] ?? '',
       customerPhone: json['customer_phoneno'] ?? '',
       customerGst: json['customer_gstno'] ?? '',
-      date: DateTime.parse(json['date']),
+      date: formattedDate,
       customType: json['custom_type'] ?? '',
       customPDFid: json['custompdfid'] ?? 0,
       genId: json['gen_id'] ?? '',
@@ -397,7 +401,7 @@ class CustomerPDF_List {
       'customer_mailid': customerEmail,
       'customer_phoneno': customerPhone,
       'customer_gstno': customerGst,
-      'date': date.toIso8601String(),
+      'date': date,
       'custom_type': customType,
       'customPDFid': customPDFid,
       'gen_id': genId,

@@ -390,6 +390,7 @@ class QuoteController extends GetxController {
 
   void update_requiredData(
     CMDmResponse value,
+    String eventtype,
   ) {
     RequiredData instance = RequiredData.fromJson(value);
     quoteModel.Quote_no.value = instance.eventnumber;
@@ -402,6 +403,7 @@ class QuoteController extends GetxController {
     updateClientAddress(instance.address!);
     updateBillingAddressName(instance.billingAddressName!);
     updateBillingAddress(instance.billingAddress!);
+    if (eventtype == 'revisedquotation') updateProducts(instance.product!);
   }
 
   bool generate_Datavalidation() {

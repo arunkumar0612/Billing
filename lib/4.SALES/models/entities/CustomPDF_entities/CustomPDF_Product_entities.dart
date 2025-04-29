@@ -468,7 +468,7 @@ class Post_CustomQuote {
       "billingaddress": billingAddress,
       "emailid": emailId,
       "phoneno": phoneNo,
-      "gstnumber": gst,
+      "gst_number": gst,
       "date": date,
       "quotationgenid": QuoteGenID,
       "messagetype": messageType,

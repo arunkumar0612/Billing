@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:ssipl_billing/4.SALES/controllers/ClientReq_actions.dart';
 import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
 import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
@@ -112,6 +111,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Primary_colors.Dark,
       body: Center(
@@ -889,6 +889,14 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                   ),
                                   Obx(() => Row(
                                         children: [
+                                          Text(
+                                            salesController.salesModel.searchQuery.value.isNotEmpty
+                                                ? 'Found: ${salesController.salesModel.processList.length} Process | Selected: ${salesController.salesModel.selectedIndices.length}'
+                                                : 'Total: ${salesController.salesModel.processList.length} Process | Selected: ${salesController.salesModel.selectedIndices.length}',
+                                            style: theme.textTheme.bodyLarge
+                                                ?.copyWith(color: Colors.white, fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text8, letterSpacing: 1.0, overflow: TextOverflow.ellipsis),
+                                          ),
+                                          const SizedBox(width: 10),
                                           if (salesController.salesModel.selectedIndices.isNotEmpty)
                                             PopupMenuButton<String>(
                                               splashRadius: 20,
@@ -1134,7 +1142,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                         Expanded(
                                                             flex: 4,
                                                             child: Text(
-                                                              DateFormat("dd MMM yyyy").format(DateTime.parse(salesController.salesModel.processList[index].Process_date)),
+                                                              salesController.salesModel.processList[index].Process_date,
                                                               style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                             )),
                                                         Expanded(
@@ -1499,7 +1507,9 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                           context: context, eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                       if (success) {
                                                                                         widget.GenerateDelivery_challan_dialougebox(
-                                                                                            context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname);
+                                                                                            context,
+                                                                                            salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid,
+                                                                                            salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname);
                                                                                         dcController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                         if (kDebugMode) {
                                                                                           print(dcController.dcModel.processID);
@@ -2708,7 +2718,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                               Expanded(
                                 flex: 1,
                                 child: Text(
-                                  formatDate(salesController.salesModel.customPdfList[index].date),
+                                  // formatDate(salesController.salesModel.customPdfList[index].date),
+                                  salesController.salesModel.customPdfList[index].date,
                                   // documentlist[index]['date'],
                                   style: const TextStyle(
                                     color: Primary_colors.Color1,

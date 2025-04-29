@@ -27,7 +27,7 @@ mixin SubscriptionServices {
   final SessiontokenController _sessiontokenController = Get.find<SessiontokenController>();
   final SubscriptionController _subscriptionController = Get.find<SubscriptionController>();
   final SUBSCRIPTION_ClientreqController _clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
-  final SUBSCRIPTION_QuoteController _quoteController = Get.find<SUBSCRIPTION_QuoteController>();
+  final SUBSCRIPTION_QuoteController sub_quoteController = Get.find<SUBSCRIPTION_QuoteController>();
   final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
   // final loader = LoadingOverlay();
 
@@ -305,7 +305,7 @@ mixin SubscriptionServices {
     }
   }
 
-  void DeleteGlobalPackage(context, List<int> subId) async {
+  Future<void> DeleteGlobalPackage(context, List<int> subId) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({
         "subId": subId,
@@ -313,9 +313,8 @@ mixin SubscriptionServices {
       if (response?['statusCode'] == 200) {
         CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {
-          subscriptionController.subscriptionModel.packageselectedID.value =
-              subId.contains(subscriptionController.subscriptionModel.packageselectedID.value) ? null : subscriptionController.subscriptionModel.packageselectedID.value;
           subscriptionController.subscriptionModel.selectedPackagessubscriptionID.clear();
+          subscriptionController.subscriptionModel.filteredPackages.removeWhere((p) => subId.contains(p.subscriptionId));
 
           // subscriptionController.subscriptionModel.GloabalPackage.value.globalPackageList[subscriptionController.subscriptionModel.packageselectedIndex.value!].subscriptionId == subId
           //     ? null
@@ -928,8 +927,8 @@ mixin SubscriptionServices {
                   ),
                   onPressed: () async {
                     // Check if the data has any value
-                    // || ( _quoteController.quoteModel.Quote_gstTotals.isNotEmpty)
-                    if (_quoteController.postDatavalidation()) {
+                    // || ( sub_quoteController.quoteModel.Quote_gstTotals.isNotEmpty)
+                    if (sub_quoteController.anyHavedata()) {
                       // Show confirmation dialog
                       bool? proceed = await Warning_dialog(
                         context: context,
@@ -942,7 +941,7 @@ mixin SubscriptionServices {
                       // If user confirms (Yes), clear data and close the dialog
                       if (proceed == true) {
                         Navigator.of(context).pop(); // Close the dialog
-                        _quoteController.resetData();
+                        sub_quoteController.resetData();
                       }
                     } else {
                       // If no data, just close the dialog
@@ -993,7 +992,7 @@ mixin SubscriptionServices {
   }
 
   Future<void> subscription_refresh() async {
-    _subscriptionController.resetData();
+    // _subscriptionController.resetData();
     _subscriptionController.updateshowcustomerprocess(null);
     _subscriptionController.updatecustomerId(0);
     await Get_RecurringInvoiceList(null);

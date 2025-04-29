@@ -192,10 +192,10 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
               );
 
               // 5. Show success feedback
-              Error_SnackBar(
-                context,
-                '${package.name} added to packages',
-              );
+              // Error_SnackBar(
+              //   context,
+              //   '${package.name} added to packages',
+              // );
             } else {
               // Handle Custom Package selection
               quoteController.quoteModel.customPackageCreated.value = false;
@@ -339,6 +339,8 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
               colors: Colors.red,
               text: 'Back',
               onPressed: () {
+                quoteController.quoteModel.selectedPackagesList.clear();
+                quoteController.quoteModel.selectedPackage.value = null;
                 quoteController.backTab();
               },
             ),
@@ -807,6 +809,9 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                 ),
               ),
             ),
+          ),
+          const SizedBox(
+            height: 15,
           ),
           if (isCustomPackage && package.editingMode.value) ...[
             Align(

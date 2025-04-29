@@ -74,6 +74,8 @@ class RequiredData {
   final String? gst;
   final String? billingAddressName;
   final String? billingAddress;
+  final List<QuoteProduct>? product; // made nullable ✅
+
   RequiredData({
     required this.eventnumber,
     required this.title,
@@ -84,21 +86,24 @@ class RequiredData {
     required this.gst,
     required this.billingAddressName,
     required this.billingAddress,
+    required this.product,
   });
 
   factory RequiredData.fromJson(CMDmResponse json) {
     return RequiredData(
       eventnumber: json.data['eventnumber'] as String,
-      title: json.data['title'] as String,
-      name: json.data['client_addressname'] as String,
-      emailId: json.data['emailid'] as String,
-      phoneNo: json.data['contact_number'] as String,
-      address: json.data['client_address'] as String,
-      gst: json.data['gstnumber'] as String,
-      billingAddressName: json.data['billingaddress_name'] as String,
-      billingAddress: json.data['billing_address'] as String,
+      title: json.data['title'] as String?,
+      name: json.data['client_addressname'] as String?,
+      emailId: json.data['emailid'] as String?,
+      phoneNo: json.data['contact_number'] as String?,
+      address: json.data['client_address'] as String?,
+      gst: json.data['gstnumber'] as String?,
+      billingAddressName: json.data['billingaddress_name'] as String?,
+      billingAddress: json.data['billing_address'] as String?,
+      product: (json.data['product'] as List<dynamic>?)?.map((e) => QuoteProduct.fromJson(e)).toList(),
     );
   }
+
   Map<String, dynamic> toJson() {
     return {
       'ID': eventnumber,

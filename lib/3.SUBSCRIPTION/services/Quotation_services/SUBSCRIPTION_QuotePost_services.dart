@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart' show SUBSCRIPTION_QuoteController;
-import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart' show Package, PostSubQuote, Site;
+import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart' show PostSubQuote;
 import 'package:ssipl_billing/API-/api.dart' show API;
 import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Error_dialog, Success_dialog;
@@ -75,16 +75,7 @@ mixin SUBSCRIPTION_QuotePostServices {
       }
       loader.start(context);
       File cachedPdf = quoteController.quoteModel.selectedPdf.value!;
-      List<Package> package_details = [];
-      List<Site> siteData = [];
-      for (int i = 0; i < quoteController.quoteModel.selectedPackagesList.length; i++) {
-        for (int j = 0; j < quoteController.quoteModel.selectedPackagesList[i].sites.length; j++) {
-          Site data = quoteController.quoteModel.selectedPackagesList[i].sites[j];
-          Package sub = quoteController.quoteModel.selectedPackagesList[i];
-          siteData.add(data);
-          package_details.add(sub);
-        }
-      }
+
       PostSubQuote data = PostSubQuote.fromJson({
         "companyid": quoteController.quoteModel.companyid.value,
         "processid": quoteController.quoteModel.processID.value!,
@@ -103,7 +94,7 @@ mixin SUBSCRIPTION_QuotePostServices {
         "gstpercent": 18,
         "gst_number": quoteController.quoteModel.gstNumController.value.text,
         "feedback": quoteController.quoteModel.feedbackController.value.text
-      }, siteData);
+      });
 
       await send_data(context, jsonEncode(data.toJson()), cachedPdf, eventtype);
     } catch (e) {
@@ -127,8 +118,8 @@ mixin SUBSCRIPTION_QuotePostServices {
         if (value.code) {
           loader.stop();
           await Success_dialog(context: context, title: "Quotation", content: value.message!, onOk: () {});
-          // Navigator.of(context).pop(true);
-          // quoteController.resetData();
+          Navigator.of(context).pop(true);
+          quoteController.resetData();
         } else {
           loader.stop();
           await Error_dialog(context: context, title: 'Processing Quotation', content: value.message ?? "", onOk: () {});

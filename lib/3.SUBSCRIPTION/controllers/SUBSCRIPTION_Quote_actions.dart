@@ -276,7 +276,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     }
   }
 
-  void addSite({required BuildContext context, required String siteName, required int cameraquantity, required String address, required String billingType, required String mailType}) {
+  void addSite({required BuildContext context, required String siteName, required int cameraquantity, required String address, required String billType, required String mailType}) {
     try {
       if (siteName.trim().isEmpty || cameraquantity <= 0 || address.trim().isEmpty) {
         Error_SnackBar(context, 'Please provide valid product details.');
@@ -289,7 +289,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         // packageName: '',
         cameraquantity: cameraquantity,
         // Price: 100,
-        billingType: billingType,
+        billType: billType,
         mailType: mailType,
       ));
     } catch (e) {
@@ -298,7 +298,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
   }
 
   void updateSite(
-      {required BuildContext context, required int editIndex, required String siteName, required int cameraquantity, required String address, required String billingType, required String mailType}) {
+      {required BuildContext context, required int editIndex, required String siteName, required int cameraquantity, required String address, required String billType, required String mailType}) {
     try {
       // Validate input fields
       if (siteName.trim().isEmpty || cameraquantity <= 0 || address.trim().isEmpty) {
@@ -319,7 +319,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         sitename: siteName,
         address: address,
         cameraquantity: cameraquantity,
-        billingType: billingType,
+        billType: billType,
         mailType: mailType,
       );
     } catch (e) {
@@ -347,7 +347,14 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     quoteModel.Quote_recommendationList.isEmpty ? quoteModel.recommendationHeadingController.value.clear() : null;
   }
 
-  void update_requiredData(CMDmResponse value) {
+  void update_requiredData(CMDmResponse value, String eventtype) {
+    if (kDebugMode) {
+      print(value.data);
+    }
+    if (eventtype == 'revisedquotation') {
+      storeFetchedPackages(value.data);
+    }
+
     SubscriptionQuoteRequiredData instance = SubscriptionQuoteRequiredData.fromJson(value);
     quoteModel.Quote_no.value = instance.eventNumber;
     update_companyID(instance.companyid);
@@ -362,11 +369,39 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     updateBillingAddress(instance.billingAddress!);
   }
 
+  void storeFetchedPackages(Map<String, dynamic> data) {
+    if (data['packagedetails'] != null) {
+      quoteModel.selectedPackagesList.value = List<Map<String, dynamic>>.from(data['packagedetails']).map((packageJson) => Package.fromJson(packageJson)).toList();
+      quoteModel.selectedPackage.value = quoteModel.selectedPackagesList[0].name;
+
+      for (int i = 0; i < quoteModel.selectedPackagesList.length; i++) {
+        for (int j = 0; j < quoteModel.selectedPackagesList[i].sites.length; j++) {
+          Site siteData = quoteModel.selectedPackagesList[i].sites[j];
+          // quoteModel.QuoteSiteDetails.value = (Site.fromJson(List<Map<String, dynamic>>.from(json['sites']))
+          quoteModel.QuoteSiteDetails.add(Site(
+            sitename: siteData.sitename,
+            address: siteData.address,
+            cameraquantity: siteData.cameraquantity,
+            billType: siteData.billType,
+            mailType: siteData.mailType,
+          ));
+        }
+      }
+
+      if (kDebugMode) {
+        print(quoteModel.QuoteSiteDetails);
+      }
+      quoteModel.update();
+    }
+  }
+
   void update_companyBasedPackages(CMDlResponse response) {
     quoteModel.packageDetails.clear();
     quoteModel.packageList.clear();
     quoteModel.company_basedPackageList.value = CompanyBasedPackages.fromJsonList(response.data);
-    print(quoteModel.company_basedPackageList);
+    if (kDebugMode) {
+      print(quoteModel.company_basedPackageList);
+    }
 
     for (int i = 0; i < quoteModel.company_basedPackageList.length; i++) {
       quoteModel.packageList.add(quoteModel.company_basedPackageList[i].subscriptionName ?? "");
@@ -378,7 +413,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
           cameracount: (quoteModel.company_basedPackageList[i].noOfCameras ?? "").toString(),
           amount: (quoteModel.company_basedPackageList[i].amount ?? "").toString(),
           // additionalCameras: (quoteModel.company_basedPackageList[i].addlCameras ?? "").toString(),
-          subscriptiontype: 'Global',
+          subscriptiontype: 'global',
           sites: [], // Start with empty sites
         ),
       );
@@ -398,6 +433,21 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         quoteModel.selectedPackagesList.isEmpty ||
         quoteModel.Quote_no.value == null);
   } // If any one is empty or null, then it returns true
+
+  bool anyHavedata() {
+    return (quoteModel.TitleController.value.text.isNotEmpty ||
+        quoteModel.processID.value != null ||
+        quoteModel.clientAddressNameController.value.text.isNotEmpty ||
+        quoteModel.clientAddressController.value.text.isNotEmpty ||
+        quoteModel.billingAddressNameController.value.text.isNotEmpty ||
+        quoteModel.billingAddressController.value.text.isNotEmpty ||
+        (quoteModel.gmail_selectionStatus.value && quoteModel.emailController.value.text.isNotEmpty) ||
+        (quoteModel.whatsapp_selectionStatus.value && quoteModel.phoneController.value.text.isNotEmpty) ||
+        quoteModel.gstNumController.value.text.isNotEmpty ||
+        quoteModel.Quote_noteList.isNotEmpty ||
+        quoteModel.selectedPackagesList.isNotEmpty ||
+        quoteModel.Quote_no.value != null);
+  }
 
   bool postDatavalidation() {
     return (quoteModel.TitleController.value.text.isEmpty ||

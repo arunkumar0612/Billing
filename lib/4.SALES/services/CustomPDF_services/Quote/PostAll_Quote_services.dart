@@ -171,7 +171,7 @@ mixin salesCustom_PostServices {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
           loader.stop();
-          await Error_dialog(
+          await Success_dialog(
             context: context,
             title: "Quote",
             content: value.message!,

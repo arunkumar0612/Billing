@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
@@ -86,11 +87,12 @@ class Process {
   });
 
   factory Process.fromJson(CMDlResponse json, int i) {
+    String formattedDate = DateFormat("dd MMM yyyy").format(DateTime.parse(json.data[i]['Process_date'] as String));
     return Process(
       processid: json.data[i]['processid'] as int,
       title: json.data[i]['title'] ?? '',
       customer_name: json.data[i]['customer_name'] as String,
-      Process_date: json.data[i]['Process_date'] as String,
+      Process_date: formattedDate,
       age_in_days: json.data[i]['age_in_days'] as int,
       TimelineEvents: (json.data[i]['TimelineEvents'] as List<dynamic>).map((event) => TimelineEvent.fromJson(event as Map<String, dynamic>)).toList(),
     );
@@ -434,6 +436,7 @@ class RecurringInvoice_List {
   });
 
   factory RecurringInvoice_List.fromJson(Map<String, dynamic> json) {
+    String formattedDate = DateFormat("dd MMM yyyy").format(DateTime.parse(json['date'] as String));
     return RecurringInvoice_List(
       recurredbillid: json['recurredbillid'],
       subscriptionBillId: json['subscription_billid'],
@@ -449,7 +452,7 @@ class RecurringInvoice_List {
       emailId: json['email_id'],
       phoneNo: json['phone_no'].toString(),
       ccEmail: json['ccemail'],
-      date: json['date'] ?? '',
+      date: formattedDate,
     );
   }
 

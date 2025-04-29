@@ -37,16 +37,13 @@ mixin SalesServices {
   final InvoiceController invoiceController = Get.find<InvoiceController>();
   final QuoteController _quoteController = Get.find<QuoteController>();
   final RfqController rfqController = Get.find<RfqController>();
-  final SessiontokenController sessiontokenController =
-      Get.find<SessiontokenController>();
+  final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final SalesController salesController = Get.find<SalesController>();
-  final ClientreqController clientreqController =
-      Get.find<ClientreqController>();
+  final ClientreqController clientreqController = Get.find<ClientreqController>();
   final loader = LoadingOverlay();
   Future<void> Get_salesCustomPDFLsit() async {
     try {
-      Map<String, dynamic>? response =
-          await apiController.GetbyToken(API.get_salesCustompdf);
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_salesCustompdf);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
@@ -73,32 +70,20 @@ mixin SalesServices {
 
   void GetCustomerList(context) async {
     try {
-      Map<String, dynamic>? response =
-          await apiController.GetbyToken(API.sales_getcustomerlist_API);
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getcustomerlist_API);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          await Success_dialog(
-              context: context,
-              title: 'SUCCESS',
-              content: "Customer List fetched successfully",
-              onOk: () {});
+          await Success_dialog(context: context, title: 'SUCCESS', content: "Customer List fetched successfully", onOk: () {});
           salesController.addToCustomerList(value);
           // if (kDebugMode) {
           //   print("*****************${salesController.salesModel.customerList[1].customerId}");
           // }
         } else {
-          await Error_dialog(
-              context: context,
-              title: 'Customer List Error',
-              content: value.message ?? "",
-              onOk: () {});
+          await Error_dialog(context: context, title: 'Customer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Error_dialog(
-            context: context,
-            title: "SERVER DOWN",
-            content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
       if (kDebugMode) {
         print(response);
@@ -110,8 +95,7 @@ mixin SalesServices {
 
   Future<bool> Get_customPDFfile(context, int customPDFid) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyQueryString(
-          {"custompdfid": customPDFid}, API.sales_getcustombinaryfile_API);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"custompdfid": customPDFid}, API.sales_getcustombinaryfile_API);
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
@@ -146,8 +130,7 @@ mixin SalesServices {
 
   Future<void> Get_salesProcesscustomerList() async {
     try {
-      Map<String, dynamic>? response =
-          await apiController.GetbyToken(API.sales_getprocesscustomer_API);
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getprocesscustomer_API);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
@@ -178,10 +161,7 @@ mixin SalesServices {
 
   Future<void> Get_salesProcessList(int customerid) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyQueryString({
-        "customerid": customerid,
-        "listtype": salesController.salesModel.type.value
-      }, API.sales_getprocesslist_API);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"customerid": customerid, "listtype": salesController.salesModel.type.value}, API.sales_getprocesslist_API);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
@@ -210,9 +190,7 @@ mixin SalesServices {
 
   void UpdateFeedback(context, int customerid, int eventid, feedback) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyQueryString(
-          {"eventid": eventid, "feedback": feedback},
-          API.sales_addfeedback_API);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid, "feedback": feedback}, API.sales_addfeedback_API);
       if (response?['statusCode'] == 200) {
         CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {
@@ -220,31 +198,19 @@ mixin SalesServices {
           Success_SnackBar(context, "Feedback added successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Error_dialog(
-              context: context,
-              title: 'Feedback add Error',
-              content: value.message ?? "",
-              onOk: () {});
+          await Error_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Error_dialog(
-            context: context,
-            title: "SERVER DOWN",
-            content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
-  Future<bool> GetSalesPDFfile(
-      {required BuildContext context,
-      required int eventid,
-      String? eventtype}) async {
+  Future<bool> GetSalesPDFfile({required BuildContext context, required int eventid, String? eventtype}) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyQueryString(
-          {"eventid": eventid, if (eventtype != null) "eventtype": eventtype},
-          API.sales_getbinaryfile_API);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid, if (eventtype != null) "eventtype": eventtype}, API.sales_getbinaryfile_API);
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
@@ -252,17 +218,10 @@ mixin SalesServices {
           return true;
           // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Error_dialog(
-              context: context,
-              title: 'PDF file Error',
-              content: value.message ?? "",
-              onOk: () {});
+          await Error_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Error_dialog(
-            context: context,
-            title: "SERVER DOWN",
-            content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
       return false;
     } catch (e) {
@@ -276,13 +235,10 @@ mixin SalesServices {
       await showDialog(
         context: context,
         builder: (context) => Dialog(
-          insetPadding: const EdgeInsets.all(
-              20), // Adjust padding to keep it from being full screen
+          insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
           child: SizedBox(
-              width: MediaQuery.of(context).size.width *
-                  0.35, // 85% of screen width
-              height: MediaQuery.of(context).size.height *
-                  0.95, // 80% of screen height
+              width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+              height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
               child: Stack(
                 children: [
                   SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
@@ -296,8 +252,7 @@ mixin SalesServices {
                                 context,
                                 path
                                     .basename(filename)
-                                    .replaceAll(RegExp(r'[\/\\:*?"<>|.]'),
-                                        '') // Removes invalid symbols
+                                    .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
                                     .replaceAll(" ", ""),
                                 salesController.salesModel.pdfFile.value);
                           },
@@ -321,8 +276,7 @@ mixin SalesServices {
     return tempFile;
   }
 
-  Future<void> downloadPdf(
-      BuildContext context, String filename, File? pdfFile) async {
+  Future<void> downloadPdf(BuildContext context, String filename, File? pdfFile) async {
     try {
       loader.start(context);
 
@@ -345,8 +299,7 @@ mixin SalesServices {
 
       await Future.delayed(const Duration(milliseconds: 100));
 
-      String? selectedDirectory =
-          await FilePicker.platform.getDirectoryPath(lockParentWindow: true);
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(lockParentWindow: true);
 
       // ✅ Always stop loader after native call
       loader.stop();
@@ -397,17 +350,10 @@ mixin SalesServices {
         Success_SnackBar(context, "Process Deleted successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
-        await Error_dialog(
-            context: context,
-            title: 'Delete Process Error',
-            content: value.message ?? "",
-            onOk: () {});
+        await Error_dialog(context: context, title: 'Delete Process Error', content: value.message ?? "", onOk: () {});
       }
     } else {
-      Error_dialog(
-          context: context,
-          title: "SERVER DOWN",
-          content: "Please contact administration!");
+      Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
     }
   }
 
@@ -415,40 +361,25 @@ mixin SalesServices {
     if (kDebugMode) {
       print(processid.toString());
     }
-    Map<String, dynamic>? response = await apiController.GetbyQueryString(
-        {"processid": processid, "type": type}, API.sales_archiveprocess_API);
+    Map<String, dynamic>? response = await apiController.GetbyQueryString({"processid": processid, "type": type}, API.sales_archiveprocess_API);
     if (response?['statusCode'] == 200) {
       CMResponse value = CMResponse.fromJson(response ?? {});
       if (value.code) {
         salesController.salesModel.selectedIndices.clear();
         Get_salesProcessList(salesController.salesModel.customerId.value!);
-        Success_SnackBar(
-            context,
-            type == 0
-                ? "Process Unarchived successfully"
-                : "Process Archived successfully");
+        Success_SnackBar(context, type == 0 ? "Process Unarchived successfully" : "Process Archived successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
-        await Error_dialog(
-            context: context,
-            title: type == 0
-                ? 'Error : Failed to unarchive the process.'
-                : 'Error : Failed to archive the process.',
-            content: value.message ?? "",
-            onOk: () {});
+        await Error_dialog(context: context, title: type == 0 ? 'Error : Failed to unarchive the process.' : 'Error : Failed to archive the process.', content: value.message ?? "", onOk: () {});
       }
     } else {
-      Error_dialog(
-          context: context,
-          title: "SERVER DOWN",
-          content: "Please contact administration!");
+      Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
     }
   }
 
   Future<bool> GetSalesData(String salesperiod) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyQueryString(
-          {"salesperiod": salesperiod}, API.sales_getsalesdata_API);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"salesperiod": salesperiod}, API.sales_getsalesdata_API);
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
@@ -477,25 +408,17 @@ mixin SalesServices {
 
   Future<bool> Getclientprofile(context, int customerid) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyQueryString(
-          {"customerid": customerid}, API.sales_clientprofile_API);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"customerid": customerid}, API.sales_clientprofile_API);
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
           salesController.updateclientprofileData(value);
           salesController.updateprofilepage(true);
         } else {
-          await Error_dialog(
-              context: context,
-              title: 'Client Profile Error',
-              content: value.message ?? "",
-              onOk: () {});
+          await Error_dialog(context: context, title: 'Client Profile Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Error_dialog(
-            context: context,
-            title: "SERVER DOWN",
-            content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
       return false;
     } catch (e) {
@@ -510,8 +433,7 @@ mixin SalesServices {
 
   void GetApproval(context, int customerid, int eventid) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyQueryString(
-          {"eventid": eventid}, API.sales_approvedquotation_API);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid}, API.sales_approvedquotation_API);
       if (response?['statusCode'] == 200) {
         CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {
@@ -519,17 +441,10 @@ mixin SalesServices {
           Success_SnackBar(context, "Approval Sent successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
-          await Error_dialog(
-              context: context,
-              title: 'Approval Send add Error',
-              content: value.message ?? "",
-              onOk: () {});
+          await Error_dialog(context: context, title: 'Approval Send add Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Error_dialog(
-            context: context,
-            title: "SERVER DOWN",
-            content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
@@ -539,12 +454,10 @@ mixin SalesServices {
   dynamic Generate_client_reqirement_dialougebox(String value, context) async {
     await showDialog(
       context: context,
-      barrierDismissible:
-          false, // Prevents closing the dialog by clicking outside
+      barrierDismissible: false, // Prevents closing the dialog by clicking outside
       builder: (context) {
         return AlertDialog(
-          contentPadding:
-              const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -576,8 +489,7 @@ mixin SalesServices {
                       bool? proceed = await Warning_dialog(
                         context: context,
                         title: 'Warning',
-                        content:
-                            "The data may be lost. Do you want to proceed?",
+                        content: "The data may be lost. Do you want to proceed?",
                       );
 
                       if (proceed == true) {
@@ -614,14 +526,11 @@ mixin SalesServices {
   dynamic GenerateInvoice_dialougebox(context, eventID) async {
     await showDialog(
       context: context,
-      barrierDismissible:
-          false, // Prevents closing the dialog by clicking outside
+      barrierDismissible: false, // Prevents closing the dialog by clicking outside
       builder: (context) {
         return AlertDialog(
-          contentPadding:
-              const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           backgroundColor: Primary_colors.Dark,
           content: Stack(
             children: [
@@ -649,36 +558,20 @@ mixin SalesServices {
                     // Check if the data has any value
                     // || ( invoiceController.invoiceModel.Invoice_gstTotals.isNotEmpty)
                     if ((invoiceController.invoiceModel.Invoice_products.isNotEmpty) ||
-                        (invoiceController
-                            .invoiceModel.Invoice_noteList.isNotEmpty) ||
-                        (invoiceController.invoiceModel
-                            .Invoice_recommendationList.isNotEmpty) ||
-                        (invoiceController.invoiceModel
-                                .clientAddressNameController.value.text !=
-                            "") ||
-                        (invoiceController.invoiceModel.clientAddressController
-                                .value.text !=
-                            "") ||
-                        (invoiceController.invoiceModel
-                                .billingAddressNameController.value.text !=
-                            "") ||
-                        (invoiceController.invoiceModel.billingAddressController
-                                .value.text !=
-                            "") ||
-                        (invoiceController.invoiceModel.Invoice_no.value !=
-                            "") ||
-                        (invoiceController
-                                .invoiceModel.TitleController.value.text !=
-                            "") ||
-                        (invoiceController.invoiceModel
-                                .recommendationHeadingController.value.text !=
-                            "")) {
+                        (invoiceController.invoiceModel.Invoice_noteList.isNotEmpty) ||
+                        (invoiceController.invoiceModel.Invoice_recommendationList.isNotEmpty) ||
+                        (invoiceController.invoiceModel.clientAddressNameController.value.text != "") ||
+                        (invoiceController.invoiceModel.clientAddressController.value.text != "") ||
+                        (invoiceController.invoiceModel.billingAddressNameController.value.text != "") ||
+                        (invoiceController.invoiceModel.billingAddressController.value.text != "") ||
+                        (invoiceController.invoiceModel.Invoice_no.value != "") ||
+                        (invoiceController.invoiceModel.TitleController.value.text != "") ||
+                        (invoiceController.invoiceModel.recommendationHeadingController.value.text != "")) {
                       // Show confirmation dialog
                       bool? proceed = await Warning_dialog(
                         context: context,
                         title: 'Warning',
-                        content:
-                            "The data may be lost. Do you want to proceed?",
+                        content: "The data may be lost. Do you want to proceed?",
                       );
 
                       if (proceed == true) {
@@ -720,18 +613,14 @@ mixin SalesServices {
     // }
   }
 
-  dynamic GenerateQuote_dialougebox(
-      context, String quoteType, int eventID) async {
+  dynamic GenerateQuote_dialougebox(context, String quoteType, int eventID) async {
     await showDialog(
       context: context,
-      barrierDismissible:
-          false, // Prevents closing the dialog by clicking outside
+      barrierDismissible: false, // Prevents closing the dialog by clicking outside
       builder: (context) {
         return AlertDialog(
-          contentPadding:
-              const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           backgroundColor: Primary_colors.Dark,
           content: Stack(
             children: [
@@ -760,34 +649,17 @@ mixin SalesServices {
                     // Check if the data has any value
                     // || ( _quoteController.quoteModel.Quote_gstTotals.isNotEmpty)
                     if ((_quoteController.quoteModel.Quote_products.isNotEmpty) ||
-                        (_quoteController
-                            .quoteModel.Quote_noteList.isNotEmpty) ||
-                        (_quoteController
-                            .quoteModel.Quote_recommendationList.isNotEmpty) ||
-                        (_quoteController.quoteModel.clientAddressNameController
-                                .value.text !=
-                            "") ||
-                        (_quoteController.quoteModel.clientAddressController
-                                .value.text !=
-                            "") ||
-                        (_quoteController.quoteModel
-                                .billingAddressNameController.value.text !=
-                            "") ||
-                        (_quoteController.quoteModel.billingAddressController
-                                .value.text !=
-                            "") ||
+                        (_quoteController.quoteModel.Quote_noteList.isNotEmpty) ||
+                        (_quoteController.quoteModel.Quote_recommendationList.isNotEmpty) ||
+                        (_quoteController.quoteModel.clientAddressNameController.value.text != "") ||
+                        (_quoteController.quoteModel.clientAddressController.value.text != "") ||
+                        (_quoteController.quoteModel.billingAddressNameController.value.text != "") ||
+                        (_quoteController.quoteModel.billingAddressController.value.text != "") ||
                         (_quoteController.quoteModel.Quote_no.value != "") ||
-                        (_quoteController.quoteModel.gstController.value.text !=
-                            "") ||
-                        (_quoteController.quoteModel
-                                .recommendationHeadingController.value.text !=
-                            "")) {
+                        (_quoteController.quoteModel.gstController.value.text != "") ||
+                        (_quoteController.quoteModel.recommendationHeadingController.value.text != "")) {
                       // Show confirmation dialog
-                      bool? proceed = await Warning_dialog(
-                          context: context,
-                          title: 'Warning',
-                          content:
-                              "The data may be lost. Do you want to proceed?");
+                      bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
 
                       // If user confirms (Yes), clear data and close the dialog
                       if (proceed == true) {
@@ -833,14 +705,11 @@ mixin SalesServices {
   dynamic GenerateRfq_dialougebox(context, eventID) async {
     await showDialog(
       context: context,
-      barrierDismissible:
-          false, // Prevents closing the dialog by clicking outside
+      barrierDismissible: false, // Prevents closing the dialog by clicking outside
       builder: (context) {
         return AlertDialog(
-          contentPadding:
-              const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           backgroundColor: Primary_colors.Dark,
           content: Stack(
             children: [
@@ -869,26 +738,16 @@ mixin SalesServices {
                     // || ( rfqController.rfqModel.Invoice_gstTotals.isNotEmpty)
                     if ((rfqController.rfqModel.Rfq_products.isNotEmpty) ||
                         (rfqController.rfqModel.Rfq_noteList.isNotEmpty) ||
-                        (rfqController
-                            .rfqModel.Rfq_recommendationList.isNotEmpty) ||
+                        (rfqController.rfqModel.Rfq_recommendationList.isNotEmpty) ||
                         // (rfqController.rfqModel.clientAddressNameController.value.text != "") ||
-                        (rfqController.rfqModel.AddressController.value.text !=
-                            "") ||
+                        (rfqController.rfqModel.AddressController.value.text != "") ||
                         // (rfqController.rfqModel.billingAddressNameController.value.text != "") ||
                         // (rfqController.rfqModel.billingAddressController.value.text != "") ||
                         (rfqController.rfqModel.Rfq_no.value != "") ||
-                        (rfqController.rfqModel.TitleController.value.text !=
-                            "") ||
-                        (rfqController.rfqModel.recommendationHeadingController
-                                .value.text !=
-                            "")) {
+                        (rfqController.rfqModel.TitleController.value.text != "") ||
+                        (rfqController.rfqModel.recommendationHeadingController.value.text != "")) {
                       // Show confirmation dialog
-                      bool? proceed = await Warning_dialog(
-                          context: context,
-                          title: 'Warning',
-                          content:
-                              "The data may be lost. Do you want to proceed?");
-
+                      bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
                       if (proceed == true) {
                         Navigator.of(context).pop();
                         rfqController.resetData();
@@ -930,18 +789,14 @@ mixin SalesServices {
 
 // // ##################################################################################################################################################################################################################################################################################################################################################################
 
-  dynamic GenerateDelivery_challan_dialougebox(
-      context, eventID, eventName) async {
+  dynamic GenerateDelivery_challan_dialougebox(context, eventID, eventName) async {
     await showDialog(
       context: context,
-      barrierDismissible:
-          false, // Prevents closing the dialog by clicking outside
+      barrierDismissible: false, // Prevents closing the dialog by clicking outside
       builder: (context) {
         return AlertDialog(
-          contentPadding:
-              const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           backgroundColor: Primary_colors.Dark,
           content: Stack(
             children: [
@@ -968,29 +823,16 @@ mixin SalesServices {
                     // || ( invoiceController.invoiceModel.Dc_gstTotals.isNotEmpty)
                     if ((dcController.dcModel.Dc_products.isNotEmpty) ||
                         (dcController.dcModel.Dc_noteList.isNotEmpty) ||
-                        (dcController
-                            .dcModel.Dc_recommendationList.isNotEmpty) ||
-                        (dcController
-                                .dcModel.clientAddressNameController.value.text !=
-                            "") ||
-                        (dcController.dcModel.clientAddressController.value.text !=
-                            "") ||
-                        (dcController.dcModel.billingAddressNameController.value
-                                .text !=
-                            "") ||
-                        (dcController
-                                .dcModel.billingAddressController.value.text !=
-                            "") ||
+                        (dcController.dcModel.Dc_recommendationList.isNotEmpty) ||
+                        (dcController.dcModel.clientAddressNameController.value.text != "") ||
+                        (dcController.dcModel.clientAddressController.value.text != "") ||
+                        (dcController.dcModel.billingAddressNameController.value.text != "") ||
+                        (dcController.dcModel.billingAddressController.value.text != "") ||
                         (dcController.dcModel.Dc_no.value != "") ||
-                        (dcController.dcModel.TitleController.value.text !=
-                            "") ||
+                        (dcController.dcModel.TitleController.value.text != "") ||
                         (dcController.dcModel.Dc_table_heading.value != "")) {
                       // Show confirmation dialog
-                      bool? proceed = await Warning_dialog(
-                          context: context,
-                          title: 'Warning',
-                          content:
-                              "The data may be lost. Do you want to proceed?");
+                      bool? proceed = await Warning_dialog(context: context, title: 'Warning', content: "The data may be lost. Do you want to proceed?");
 
                       if (proceed == true) {
                         Navigator.of(context).pop();
@@ -1025,9 +867,7 @@ mixin SalesServices {
     // salesController.resetData();
     salesController.updateshowcustomerprocess(null);
     salesController.updatecustomerId(0);
-
     await Get_salesProcesscustomerList();
-
     await GetSalesData(salesController.salesModel.salesperiod.value);
     await Get_salesCustomPDFLsit();
     await Get_salesProcessList(0);
@@ -1035,8 +875,7 @@ mixin SalesServices {
   }
 
   int fetch_messageType() {
-    if (salesController.salesModel.whatsapp_selectionStatus.value &&
-        salesController.salesModel.gmail_selectionStatus.value) return 3;
+    if (salesController.salesModel.whatsapp_selectionStatus.value && salesController.salesModel.gmail_selectionStatus.value) return 3;
     if (salesController.salesModel.whatsapp_selectionStatus.value) return 2;
     if (salesController.salesModel.gmail_selectionStatus.value) return 1;
 
@@ -1054,8 +893,7 @@ mixin SalesServices {
       };
       await sendPDFdata(context, jsonEncode(queryString), pdf);
     } catch (e) {
-      await Error_dialog(
-          context: context, title: "POST", content: "$e", onOk: () {});
+      await Error_dialog(context: context, title: "POST", content: "$e", onOk: () {});
     }
   }
 
@@ -1063,27 +901,15 @@ mixin SalesServices {
 // arunkumar.m@sporadasecure.com
   dynamic sendPDFdata(context, String jsonData, File file) async {
     try {
-      Map<String, dynamic>? response = await apiController.Multer(
-          sessiontokenController.sessiontokenModel.sessiontoken.value,
-          jsonData,
-          file,
-          API.send_anyPDF);
+      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.send_anyPDF);
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
-          await Success_dialog(
-              context: context,
-              title: "SUCCESS",
-              content: value.message!,
-              onOk: () {});
+          await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
           Navigator.of(context).pop(true);
           salesController.reset_shareData();
         } else {
-          await Error_dialog(
-              context: context,
-              title: 'Share',
-              content: value.message ?? "",
-              onOk: () {});
+          await Error_dialog(context: context, title: 'Share', content: value.message ?? "", onOk: () {});
         }
       } else {
         Error_dialog(

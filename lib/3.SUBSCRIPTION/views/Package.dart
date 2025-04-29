@@ -70,6 +70,34 @@ class _PackagepageState extends State<Packagepage> {
                             fontSize: Primary_font_size.Heading,
                             letterSpacing: 1.2,
                           ),
+                        ), // In your Packagepage build method, add this below the header Row:// Add this after the header Row
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Container(
+                              height: 40,
+                              width: 600,
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(0, 255, 255, 255).withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(22),
+                              ),
+                              child: TextField(
+                                controller: subscriptionController.subscriptionModel.packageSearchController.value,
+                                onChanged: (value) => subscriptionController.filterPackages(value),
+                                style: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text8),
+                                decoration: InputDecoration(
+                                  hintText: 'Search packages...',
+                                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: Primary_font_size.Text8, letterSpacing: 1),
+                                  prefixIcon: Icon(Icons.search, color: Colors.white.withOpacity(0.7)),
+                                  border: InputBorder.none,
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20,
                         ),
                         Row(
                           children: [
@@ -82,10 +110,16 @@ class _PackagepageState extends State<Packagepage> {
                                       context: context,
                                       title: 'Confirmation',
                                       content: 'Are you sure you want to delete this package?',
-                                      // showCancel: true,
                                       onOk: () {
-                                        widget.DeleteGlobalPackage(context, subscriptionController.subscriptionModel.selectedPackagessubscriptionID);
-                                        // print('object');
+                                        widget.DeleteGlobalPackage(context, subscriptionController.subscriptionModel.selectedPackagessubscriptionID).then((_) {
+                                          // Clear selection after deletion
+                                          subscriptionController.subscriptionModel.selectedPackagessubscriptionID.clear();
+                                          // Reset search if needed
+                                          if (subscriptionController.subscriptionModel.isSearchingPackages.value) {
+                                            subscriptionController.subscriptionModel.packageSearchController.value.clear();
+                                            subscriptionController.filterPackages('');
+                                          }
+                                        });
                                       },
                                     );
                                   },
@@ -155,7 +189,22 @@ class _PackagepageState extends State<Packagepage> {
                                             child: Checkbox(
                                               value: allSelected,
                                               onChanged: (value) {
-                                                _toggleSelectAll(value ?? false);
+                                                final select = value ?? false;
+                                                if (subscriptionController.subscriptionModel.isSearchingPackages.value) {
+                                                  // Handle select all for search results
+                                                  if (select) {
+                                                    subscriptionController.subscriptionModel.selectedPackagessubscriptionID.addAll(
+                                                      subscriptionController.subscriptionModel.filteredPackages.map((p) => p.subscriptionId).whereType<int>(),
+                                                    );
+                                                  } else {
+                                                    // Only remove items that are in the current search results
+                                                    subscriptionController.subscriptionModel.selectedPackagessubscriptionID.removeWhere(
+                                                      (id) => subscriptionController.subscriptionModel.filteredPackages.any((p) => p.subscriptionId == id),
+                                                    );
+                                                  }
+                                                } else {
+                                                  _toggleSelectAll(select);
+                                                }
                                               },
                                               activeColor: Colors.blueAccent,
                                               fillColor: MaterialStateProperty.resolveWith<Color>((states) {
@@ -167,6 +216,7 @@ class _PackagepageState extends State<Packagepage> {
                                               shape: RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.circular(4),
                                               ),
+                                              // ... rest of your checkbox properties
                                             ),
                                           ),
                                           const SizedBox(width: 5),
@@ -183,7 +233,9 @@ class _PackagepageState extends State<Packagepage> {
                                         child: Align(
                                           alignment: Alignment.centerRight,
                                           child: Text(
-                                            'Total: $totalCount Packages | Selected: $selectedCount',
+                                            subscriptionController.subscriptionModel.isSearchingPackages.value
+                                                ? 'Found: ${subscriptionController.subscriptionModel.filteredPackages.length} Packages | Selected: $selectedCount'
+                                                : 'Total: $totalCount Packages | Selected: $selectedCount',
                                             style: theme.textTheme.bodyLarge
                                                 ?.copyWith(color: Colors.white, fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text8, letterSpacing: 1.0, overflow: TextOverflow.ellipsis),
                                           ),
@@ -197,73 +249,72 @@ class _PackagepageState extends State<Packagepage> {
                               // Subscription list
                               Expanded(
                                 child: Padding(
-                                  padding: EdgeInsets.only(left: 24.0, right: 24.0, bottom: MediaQuery.of(context).viewInsets.bottom),
-                                  child: subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.isEmpty
-                                      ? Center(
-                                          child: Stack(
-                                            alignment: Alignment.topCenter,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(top: 0),
-                                                child: Lottie.asset(
-                                                  'assets/animations/JSON/emptysubscriptionlist.json',
-                                                  // width: 264,
-                                                  height: 250,
-                                                ),
-                                              ),
-                                              const Padding(
-                                                padding: EdgeInsets.only(top: 194),
-                                                child: Text(
-                                                  'No packages available',
-                                                  style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color.fromARGB(255, 101, 110, 114),
+                                    padding: EdgeInsets.only(left: 24.0, right: 24.0, bottom: MediaQuery.of(context).viewInsets.bottom),
+                                    child: subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.isEmpty
+                                        ? Center(
+                                            child: Stack(
+                                              alignment: Alignment.topCenter,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 0),
+                                                  child: Lottie.asset(
+                                                    'assets/animations/JSON/emptysubscriptionlist.json',
+                                                    // width: 264,
+                                                    height: 250,
                                                   ),
                                                 ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(top: 234),
-                                                child: Text(
-                                                  'When you add a packages, it will appear here',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.blueGrey[400],
-                                                    height: 1.4,
+                                                const Padding(
+                                                  padding: EdgeInsets.only(top: 194),
+                                                  child: Text(
+                                                    'No packages available',
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.w600,
+                                                      color: Color.fromARGB(255, 101, 110, 114),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      : ListView.builder(
-                                          itemCount: subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.length,
-                                          itemBuilder: (context, index) {
-                                            final package = subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList[index]; // Skip null items
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 234),
+                                                  child: Text(
+                                                    'When you add a packages, it will appear here',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.blueGrey[400],
+                                                      height: 1.4,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        : ListView.builder(
+                                            itemCount: subscriptionController.subscriptionModel.isSearchingPackages.value
+                                                ? subscriptionController.subscriptionModel.filteredPackages.length
+                                                : subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.length,
+                                            itemBuilder: (context, index) {
+                                              final package = subscriptionController.subscriptionModel.isSearchingPackages.value
+                                                  ? subscriptionController.subscriptionModel.filteredPackages[index]
+                                                  : subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList[index];
 
-                                            final isChecked = subscriptionController.subscriptionModel.selectedPackagessubscriptionID.contains(package.subscriptionId);
-                                            return Padding(
-                                              padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                              child: _SubscriptionCard(
-                                                package: package,
-                                                isSelected: subscriptionController.subscriptionModel.packageselectedID.value ==
-                                                    subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList[index].subscriptionId,
-                                                isChecked: isChecked,
-                                                onChecked: (value) {
-                                                  _handlePackageSelection(package.subscriptionId, value);
-                                                },
-                                                onTap: () {
-                                                  if (index < subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.length) {
-                                                    subscriptionController.subscriptionModel.packageselectedID.value =
-                                                        subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList[index].subscriptionId;
-                                                  }
-                                                },
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                ),
+                                              final isChecked = subscriptionController.subscriptionModel.selectedPackagessubscriptionID.contains(package.subscriptionId);
+                                              return Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                                child: _SubscriptionCard(
+                                                  package: package,
+                                                  isSelected: subscriptionController.subscriptionModel.packageselectedID.value == package.subscriptionId,
+                                                  isChecked: isChecked,
+                                                  onChecked: (value) {
+                                                    _handlePackageSelection(package.subscriptionId, value);
+                                                  },
+                                                  onTap: () {
+                                                    subscriptionController.subscriptionModel.packageselectedID.value = package.subscriptionId;
+                                                  },
+                                                ),
+                                              );
+                                            },
+                                          )),
                               )
                             ],
                           ),
@@ -289,11 +340,11 @@ class _PackagepageState extends State<Packagepage> {
                         Expanded(
                           child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                              child: subscriptionController.subscriptionModel.packageselectedID.value != null
-                                  // &&   subscriptionController.subscriptionModel.packageselectedID.value! < subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.length
-                                  ? _buildDetailsPanel(subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList[subscriptionController
-                                      .subscriptionModel.GlobalPackage.value.globalPackageList
-                                      .indexWhere((p) => p.subscriptionId == subscriptionController.subscriptionModel.packageselectedID.value)])
+                              child: subscriptionController.subscriptionModel.packageselectedID.value != null &&
+                                      subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList
+                                          .any((p) => p.subscriptionId == subscriptionController.subscriptionModel.packageselectedID.value)
+                                  ? _buildDetailsPanel(subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList
+                                      .firstWhere((p) => p.subscriptionId == subscriptionController.subscriptionModel.packageselectedID.value))
                                   : Center(
                                       child: Stack(
                                         alignment: Alignment.topCenter,

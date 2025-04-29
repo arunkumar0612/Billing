@@ -150,17 +150,20 @@ class SUBSCRIPTION_ClientreqController extends GetxController {
     clientReqModel.Rec_KeyController.value.text = text;
   }
 
-  void removeFromProductList(index) {
+  void removeFromSiteList(index) {
     clientReqModel.clientReqSiteDetails.removeAt(index);
+    clientReqModel.site_editIndex.value = null;
   }
 
   void removeFromNoteList(int index) {
     clientReqModel.clientReqNoteList.removeAt(index);
+    clientReqModel.noteEditIndex.value = null;
   }
 
   void removeFromRecommendationList(int index) {
     clientReqModel.clientReqRecommendationList.removeAt(index);
-    clientReqModel.clientReqRecommendationList.isEmpty ? clientReqModel.Rec_HeadingController.value.clear() : null;
+    // clientReqModel.clientReqRecommendationList.isEmpty ? clientReqModel.Rec_HeadingController.value.clear() : null;
+    clientReqModel.Rec_EditIndex.value = null;
   }
 
   void updateMOR_uploadedPath(CMDmResponse value) {

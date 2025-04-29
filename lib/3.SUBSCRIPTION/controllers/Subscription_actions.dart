@@ -190,6 +190,18 @@ class SubscriptionController extends GetxController {
     subscriptionModel.CCemailToggle.value = value;
   }
 
+  void filterPackages(String query) {
+    if (query.isEmpty) {
+      subscriptionModel.isSearchingPackages.value = false;
+      subscriptionModel.filteredPackages.clear();
+      return;
+    }
+
+    subscriptionModel.isSearchingPackages.value = true;
+    subscriptionModel.filteredPackages.value =
+        subscriptionModel.GlobalPackage.value.globalPackageList.where((package) => package.subscriptionName?.toLowerCase().contains(query.toLowerCase()) ?? false).toList();
+  }
+
   void reset_packageData() {
     subscriptionModel.packagenameController.value.clear();
     subscriptionModel.packageamountController.value.clear();

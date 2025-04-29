@@ -63,21 +63,21 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                BasicTextfield(
-                                  digitsOnly: false,
-                                  width: 400,
-                                  readonly: false,
-                                  text: 'Title',
-                                  controller: quoteController.quoteModel.TitleController.value,
-                                  icon: Icons.title,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter Title number';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                const SizedBox(height: 25),
+                                // BasicTextfield(
+                                //   digitsOnly: false,
+                                //   width: 400,
+                                //   readonly: false,
+                                //   text: 'Title',
+                                //   controller: quoteController.quoteModel.TitleController.value,
+                                //   icon: Icons.title,
+                                //   validator: (value) {
+                                //     if (value == null || value.isEmpty) {
+                                //       return 'Please enter Title number';
+                                //     }
+                                //     return null;
+                                //   },
+                                // ),
+                                // const SizedBox(height: 25),
                                 BasicTextfield(
                                   digitsOnly: false,
                                   width: 400,
@@ -105,6 +105,18 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                                       return 'Please enter Client Address';
                                     }
                                     return null;
+                                  },
+                                ),
+                                const SizedBox(height: 25),
+                                BasicTextfield(
+                                  digitsOnly: false,
+                                  width: 400,
+                                  readonly: false,
+                                  text: 'GST number',
+                                  controller: quoteController.quoteModel.gstNumController.value,
+                                  icon: Icons.receipt_long, // changed from price_change
+                                  validator: (value) {
+                                    return Validators.GST_validator(value);
                                   },
                                 ),
                               ],
@@ -141,18 +153,6 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                                     return null;
                                   },
                                 ),
-                                const SizedBox(height: 25),
-                                BasicTextfield(
-                                  digitsOnly: false,
-                                  width: 400,
-                                  readonly: false,
-                                  text: 'GST number',
-                                  controller: quoteController.quoteModel.gstNumController.value,
-                                  icon: Icons.receipt_long, // changed from price_change
-                                  validator: (value) {
-                                    return Validators.GST_validator(value);
-                                  },
-                                ),
                                 const SizedBox(height: 30),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,9 +176,9 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                       width: 660,
                       child: Text(
                         textAlign: TextAlign.center,
-                        widget.eventtype == 'quotation' ?
-                        'The Client request shown beside can be used as a reference for generating the Quote. Ensure that all details inherited are accurate and thoroughly verified before generating the PDF documents.'
-                        : 'The Quotation shown beside can be used as a reference for generating the Quote. Ensure that all details inherited are accurate and thoroughly verified before generating the PDF documents.',
+                        widget.eventtype == 'quotation'
+                            ? 'The Client request shown beside can be used as a reference for generating the Quote. Ensure that all details inherited are accurate and thoroughly verified before generating the PDF documents.'
+                            : 'The Quotation shown beside can be used as a reference for generating the Quote. Ensure that all details inherited are accurate and thoroughly verified before generating the PDF documents.',
                         style: const TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                       ),
                     )

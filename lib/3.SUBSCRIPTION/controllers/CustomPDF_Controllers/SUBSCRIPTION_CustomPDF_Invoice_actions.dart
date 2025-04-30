@@ -240,8 +240,8 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
   // void resetData() {
   //   pdfModel.value.date.value.clear();
   //   pdfModel.value.manualinvoiceNo.value.clear();
-  //   pdfModel.value.clientName.value.clear();
-  //   pdfModel.value.clientAddress.value.clear();
+  //   pdfModel.value.billingName.value.clear();
+  //   pdfModel.value.billingAddress.value.clear();
   //   pdfModel.value.billingName.value.clear();
   //   pdfModel.value.billingAddres.value.clear();
   //   pdfModel.value.phoneNumber.value.clear();
@@ -285,10 +285,10 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
   // }
 
   bool postDatavalidation() {
-    return (pdfModel.value.clientName.value.text.isEmpty ||
-        pdfModel.value.clientAddress.value.text.isEmpty ||
-        pdfModel.value.billingName.value.text.isEmpty ||
-        pdfModel.value.billingAddres.value.text.isEmpty ||
+    return (pdfModel.value.billingName.value.text.isEmpty ||
+        pdfModel.value.billingAddress.value.text.isEmpty ||
+        pdfModel.value.installation_serviceName.value.text.isEmpty ||
+        pdfModel.value.installation_serviceAddres.value.text.isEmpty ||
         pdfModel.value.planname.value.text.isEmpty ||
         (pdfModel.value.gmail_selectionStatus.value && pdfModel.value.Email.value.text.isEmpty) ||
         (pdfModel.value.whatsapp_selectionStatus.value && pdfModel.value.phoneNumber.value.text.isEmpty) ||
@@ -300,10 +300,10 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
   void resetData() {
     pdfModel.value.date.value.clear();
     pdfModel.value.manualinvoiceNo.value.clear();
-    pdfModel.value.clientName.value.clear();
-    pdfModel.value.clientAddress.value.clear();
     pdfModel.value.billingName.value.clear();
-    pdfModel.value.billingAddres.value.clear();
+    pdfModel.value.billingAddress.value.clear();
+    pdfModel.value.installation_serviceName.value.clear();
+    pdfModel.value.installation_serviceAddres.value.clear();
     pdfModel.value.phoneNumber.value.clear();
     pdfModel.value.Email.value.clear();
     pdfModel.value.feedback.value.clear();
@@ -319,16 +319,20 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.plancharges.value.clear();
     pdfModel.value.internetcharges.value.clear();
     pdfModel.value.billperiod.value.clear();
-    pdfModel.value.billdate.value.clear();
+    // pdfModel.value.billdate.value.clear();
     pdfModel.value.duedate.value.clear();
     pdfModel.value.relationshipID.value.clear();
-    pdfModel.value.billnumber.value.clear();
+    // pdfModel.value.billnumber.value.clear();
     pdfModel.value.customerGSTIN.value.clear();
     pdfModel.value.customerPO.value.clear();
     pdfModel.value.HSNcode.value.clear();
     pdfModel.value.contactperson.value.clear();
     pdfModel.value.contactnumber.value.clear();
-
+    pdfModel.value.previousdues.value.clear();
+    pdfModel.value.payment.value.clear();
+    pdfModel.value.adjustments_deduction.value.clear();
+    pdfModel.value.totaldueamount.value.clear();
+    pdfModel.value.ispendingamount.value = false;
     pdfModel.value.roundoffDiff.value = null;
 
     // Clear individual note controllers

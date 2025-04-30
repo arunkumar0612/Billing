@@ -7,10 +7,9 @@ import 'package:ssipl_billing/4.SALES/controllers/DC_actions.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/product_entities.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 
-Future<Uint8List> generate_Dc(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, dc_num, invoice_num, gst, GSTIN) async {
+Future<Uint8List> generate_Dc(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, dc_num, invoice_num, GSTIN) async {
   final dc = Delivery_challan(
     products: products,
-    GST: gst.toDouble(),
     baseColor: PdfColors.green500,
     accentColor: PdfColors.blueGrey900,
     client_addr_name: client_addr_name,
@@ -29,7 +28,6 @@ Future<Uint8List> generate_Dc(PdfPageFormat pageFormat, products, client_addr_na
 class Delivery_challan {
   Delivery_challan(
       {required this.products,
-      required this.GST,
       required this.baseColor,
       required this.accentColor,
       required this.client_addr_name,
@@ -55,7 +53,7 @@ class Delivery_challan {
   String GSTIN = "";
 
   final List<DcProduct> products;
-  final double GST;
+
   final PdfColor baseColor;
   final PdfColor accentColor;
   static const _darkColor = PdfColors.blueGrey800;

@@ -387,10 +387,11 @@ class SUBSCRIPTION_QuoteController extends GetxController {
           ));
         }
       }
+      List<Package> packages = quoteModel.packageDetails;
+      List<Package> selected = quoteModel.selectedPackagesList;
+      print("***************************${packages.map((p) => p.toJson()).toList()}");
+      print("***************************${selected.map((p) => p.toJson()).toList()}");
 
-      if (kDebugMode) {
-        print(quoteModel.QuoteSiteDetails);
-      }
       quoteModel.update();
     }
   }

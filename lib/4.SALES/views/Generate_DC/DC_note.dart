@@ -105,28 +105,40 @@ class _DcNoteState extends State<DcNote> {
                                   Icons.circle,
                                   size: 5,
                                 )),
+                            Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      dcController.dcModel.Dc_recommendationList[index].key,
+                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
+                                    ),
+                                  ],
+                                )),
                             Expanded(
                               child: Padding(
                                   padding: const EdgeInsets.only(left: 10),
-                                  child: Column(
+                                  child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
-                                        dcController.dcModel.Dc_recommendationList[index].key,
+                                        " -  ${dcController.dcModel.Dc_recommendationList[index].value}",
                                         style: const TextStyle(color: Primary_colors.Color1, fontSize: 10),
                                       ),
                                     ],
                                   )),
                             ),
-                            IconButton(
-                              onPressed: () {
-                                dcController.removeFromRecommendationList(index);
-                              },
-                              icon: const Icon(
-                                Icons.close,
-                                size: 15,
-                              ),
-                            ),
+                            // IconButton(
+                            //   onPressed: () {
+                            //     dcController.removeFromRecommendationList(index);
+                            //   },
+                            //   icon: const Icon(
+                            //     Icons.close,
+                            //     size: 15,
+                            //   ),
+                            // ),
                           ],
                         ),
                       )),

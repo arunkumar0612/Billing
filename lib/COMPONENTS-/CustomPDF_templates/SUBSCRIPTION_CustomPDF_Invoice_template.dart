@@ -48,9 +48,24 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
         build: (context) => [
           // pw.Container(child: to_addr(context)),
           // pw.SizedBox(height: 10),
+          pw.Container(
+            color: baseColor,
+            height: 20,
+            child: pw.Center(
+              child: pw.Text('Your e - Surveillance bill', style: pw.TextStyle(fontSize: 12, color: PdfColors.white, fontWeight: pw.FontWeight.bold)),
+            ),
+          ),
           pw.SizedBox(height: 10),
           pw.Container(child: to_addr(context)),
-          pw.SizedBox(height: 20),
+          pw.SizedBox(height: 15),
+          pw.Container(
+            color: baseColor,
+            height: 20,
+            child: pw.Center(
+              child: pw.Text('Account Summary', style: pw.TextStyle(fontSize: 12, color: PdfColors.white, fontWeight: pw.FontWeight.bold)),
+            ),
+          ),
+          pw.SizedBox(height: 10),
           pw.Container(child: account_details(context)),
           pw.SizedBox(height: 20),
           TotalcaculationTable(),
@@ -61,7 +76,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
           contentTable(context),
           pw.Divider(height: 1, color: baseColor),
           pw.Padding(
-            padding: pw.EdgeInsets.all(5),
+            padding: const pw.EdgeInsets.all(5),
             child: pw.Align(
                 alignment: pw.Alignment.centerRight,
                 child: pw.SizedBox(
@@ -88,57 +103,21 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                 height: 120,
                 child: pw.Image(profileImage),
               ),
-              pw.Text(
-                'INVOICE',
-                style: pw.TextStyle(
-                  font: Helvetica_bold,
-                  fontSize: 15,
-                  color: PdfColors.blueGrey800,
-                  // fontWeight: pw.FontWeight.bold,
-                ),
+              pw.Column(
+                mainAxisAlignment: pw.MainAxisAlignment.center,
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  bold('Sporada Secure India Private Limited', 10),
+                  pw.SizedBox(height: 5),
+                  regular('687/7, 3rd Floor, Sakthivel tower', 10),
+                  pw.SizedBox(height: 5),
+                  regular('Trichy road, Ramanathapuram,', 10),
+                  pw.SizedBox(height: 5),
+                  regular('Coimbatore – 641045', 10),
+                  pw.SizedBox(height: 5),
+                  regular('Tamilnadu, India', 10),
+                ],
               ),
-              pw.Container(
-                  height: 120,
-                  child: pw.Row(children: [
-                    pw.Column(
-                      mainAxisAlignment: pw.MainAxisAlignment.center,
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        regular('Date', 10),
-                        pw.SizedBox(height: 5),
-                        regular('Invoice no', 10),
-                      ],
-                    ),
-                    pw.Column(
-                      mainAxisAlignment: pw.MainAxisAlignment.center,
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        regular('  :  ', 10),
-                        pw.SizedBox(height: 5),
-                        regular('  :  ', 10),
-                      ],
-                    ),
-                    pw.Column(
-                      mainAxisAlignment: pw.MainAxisAlignment.center,
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        pw.Container(
-                          child: pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: regular(instInvoice.date, 10),
-                            // formatDate(DateTime.now()), 10
-                          ),
-                        ),
-                        pw.SizedBox(height: 5),
-                        pw.Container(
-                          child: pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: regular(instInvoice.invoiceNo, 10),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ])),
             ],
           ),
         ],
@@ -152,217 +131,237 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
         pw.Expanded(
-          child: pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.Container(
-                // width: 285,
-                height: 20,
-                decoration: pw.BoxDecoration(borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)), color: baseColor, border: pw.Border.all(color: baseColor, width: 1)),
-                child: pw.Row(
-                  crossAxisAlignment: pw.CrossAxisAlignment.center,
-                  children: [
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.only(
-                        // top: 3,
-                        left: 10,
+          child: pw.Container(
+            decoration: pw.BoxDecoration(
+              borderRadius: const pw.BorderRadius.all(pw.Radius.circular(1)),
+              // color: baseColor,
+              border: pw.Border.all(
+                color: _darkColor,
+                width: 1,
+              ),
+            ),
+            child: pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Container(
+                  // width: 285,
+                  height: 20,
+                  color: baseColor,
+                  child: pw.Row(
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.only(
+                          // top: 3,
+                          left: 10,
+                        ),
+                        child: pw.Text('BILL PLAN DETAILS', style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, color: PdfColors.white)),
                       ),
-                      child: pw.Text('BILL PLAN DETAILS', style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, color: PdfColors.white)),
+                    ],
+                  ),
+                ),
+                pw.SizedBox(height: 10),
+                pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 2,
+                      child: pw.Padding(
+                        padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                        child: pw.Text('Plan name ', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
+                      ),
+                    ),
+                    regular('  : ', 12),
+                    pw.Expanded(
+                      flex: 3,
+                      child: pw.Padding(
+                        padding: const pw.EdgeInsets.symmetric(horizontal: 0),
+                        child: pw.Text(
+                          // 'Secure - 360°',
+                          instInvoice.billPlanDetails.planName,
+                          textAlign: pw.TextAlign.start,
+                          style: pw.TextStyle(font: Helvetica_bold, fontSize: 8, lineSpacing: 3, color: _darkColor),
+                          softWrap: true, // Ensure text wraps within the container
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
-              pw.SizedBox(height: 10),
-              pw.Row(
-                children: [
-                  pw.Expanded(
-                    flex: 2,
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text('Plan name ', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
-                    ),
-                  ),
-                  regular('  : ', 12),
-                  pw.Expanded(
-                    flex: 3,
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text(
-                        // 'Secure - 360°',
-                        instInvoice.billPlanDetails.planName,
-                        textAlign: pw.TextAlign.start,
-                        style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
-                        softWrap: true, // Ensure text wraps within the container
+                pw.SizedBox(height: 4),
+                pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 2,
+                      child: pw.Padding(
+                        padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                        child: pw.Text('Customer type', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              pw.SizedBox(height: 4),
-              pw.Row(
-                children: [
-                  pw.Expanded(
-                    flex: 2,
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text('Customer type', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
-                    ),
-                  ),
-                  regular('  : ', 12),
-                  pw.Expanded(
-                    flex: 3,
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text(
-                        // 'Corporate',
-                        instInvoice.billPlanDetails.customerType,
-                        textAlign: pw.TextAlign.start,
-                        style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
-                        softWrap: true, // Ensure text wraps within the container
+                    regular('  : ', 12),
+                    pw.Expanded(
+                      flex: 3,
+                      child: pw.Padding(
+                        padding: const pw.EdgeInsets.symmetric(horizontal: 0),
+                        child: pw.Text(
+                          // 'Corporate',
+                          instInvoice.billPlanDetails.customerType,
+                          textAlign: pw.TextAlign.start,
+                          style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
+                          softWrap: true, // Ensure text wraps within the container
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              pw.SizedBox(height: 4),
-              pw.Row(
-                children: [
-                  pw.Expanded(
-                    flex: 2,
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text('Plan charges', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
-                    ),
-                  ),
-                  regular('  : ', 12),
-                  pw.Expanded(
-                    flex: 3,
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text(
-                        // 'Annexed',
-                        instInvoice.billPlanDetails.planCharges,
-                        textAlign: pw.TextAlign.start,
-                        style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
-                        softWrap: true, // Ensure text wraps within the container
+                  ],
+                ),
+                pw.SizedBox(height: 4),
+                pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 2,
+                      child: pw.Padding(
+                        padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                        child: pw.Text('Plan charges', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              pw.SizedBox(height: 4),
-              pw.Row(
-                children: [
-                  pw.Expanded(
-                    flex: 2,
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text('Internet charges', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
-                    ),
-                  ),
-                  regular('  : ', 12),
-                  pw.Expanded(
-                    flex: 3,
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text(
-                        // '0.00°',
-                        instInvoice.billPlanDetails.internetCharges.toString(),
-                        textAlign: pw.TextAlign.start,
-                        style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
-                        softWrap: true, // Ensure text wraps within the container
+                    regular('  : ', 12),
+                    pw.Expanded(
+                      flex: 3,
+                      child: pw.Padding(
+                        padding: const pw.EdgeInsets.symmetric(horizontal: 0),
+                        child: pw.Text(
+                          // 'Annexed',
+                          instInvoice.billPlanDetails.planCharges,
+                          textAlign: pw.TextAlign.start,
+                          style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
+                          softWrap: true, // Ensure text wraps within the container
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              pw.SizedBox(height: 4),
-              pw.Row(
-                children: [
-                  pw.Expanded(
-                    flex: 2,
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text('Bill Period', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
-                    ),
-                  ),
-                  regular('  : ', 12),
-                  pw.Expanded(
-                    flex: 3,
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text(
-                        // '01/ 01 / 2025 - 31 / 01 /2025',
-                        instInvoice.billPlanDetails.billPeriod,
-                        textAlign: pw.TextAlign.start,
-                        style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
-                        softWrap: true, // Ensure text wraps within the container
+                  ],
+                ),
+                pw.SizedBox(height: 4),
+                pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 2,
+                      child: pw.Padding(
+                        padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                        child: pw.Text('Internet charges', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              // pw.SizedBox(height: 4),
-              // pw.Row(
-              //   children: [
-              //     pw.Expanded(
-              //       child: pw.Padding(
-              //         padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-              //         child: pw.Text('Bill date', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
-              //       ),
-              //     ),
-              //     pw.Expanded(
-              //       child: pw.Padding(
-              //         padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-              //         child: pw.Text(
-              //           // '01 / 01 / 2025',
-              //           instInvoice.billPlanDetails.billDate,
-              //           textAlign: pw.TextAlign.start,
-              //           style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
-              //           softWrap: true, // Ensure text wraps within the container
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              pw.SizedBox(height: 4),
-              pw.Row(
-                children: [
-                  pw.Expanded(
-                    flex: 2,
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text('Due date', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
-                    ),
-                  ),
-                  regular('  : ', 12),
-                  pw.Expanded(
-                    flex: 3,
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text(
-                        // '07 / 01 / 2025',
-                        instInvoice.billPlanDetails.dueDate,
-                        textAlign: pw.TextAlign.start,
-                        style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
-                        softWrap: true, // Ensure text wraps within the container
+                    regular('  : ', 12),
+                    pw.Expanded(
+                      flex: 3,
+                      child: pw.Padding(
+                        padding: const pw.EdgeInsets.symmetric(horizontal: 0),
+                        child: pw.Text(
+                          // '0.00°',
+                          instInvoice.billPlanDetails.internetCharges.toString(),
+                          textAlign: pw.TextAlign.start,
+                          style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
+                          softWrap: true, // Ensure text wraps within the container
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+                pw.SizedBox(height: 4),
+                pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 2,
+                      child: pw.Padding(
+                        padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                        child: pw.Text('Bill Period', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
+                      ),
+                    ),
+                    regular('  : ', 12),
+                    pw.Expanded(
+                      flex: 3,
+                      child: pw.Padding(
+                        padding: const pw.EdgeInsets.symmetric(horizontal: 0),
+                        child: pw.Text(
+                          // '01/ 01 / 2025 - 31 / 01 /2025',
+                          instInvoice.billPlanDetails.billPeriod,
+                          textAlign: pw.TextAlign.start,
+                          style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
+                          softWrap: true, // Ensure text wraps within the container
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // pw.SizedBox(height: 4),
+                // pw.Row(
+                //   children: [
+                //     pw.Expanded(
+                //       child: pw.Padding(
+                //         padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                //         child: pw.Text('Bill date', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
+                //       ),
+                //     ),
+                //     pw.Expanded(
+                //       child: pw.Padding(
+                //         padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                //         child: pw.Text(
+                //           // '01 / 01 / 2025',
+                //           instInvoice.billPlanDetails.billDate,
+                //           textAlign: pw.TextAlign.start,
+                //           style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
+                //           softWrap: true, // Ensure text wraps within the container
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                pw.SizedBox(height: 4),
+                pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 2,
+                      child: pw.Padding(
+                        padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                        child: pw.Text('Due date', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
+                      ),
+                    ),
+                    regular('  : ', 12),
+                    pw.Expanded(
+                      flex: 3,
+                      child: pw.Padding(
+                        padding: const pw.EdgeInsets.symmetric(horizontal: 0),
+                        child: pw.Text(
+                          // '07 / 01 / 2025',
+                          instInvoice.billPlanDetails.dueDate,
+                          textAlign: pw.TextAlign.start,
+                          style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
+                          softWrap: true, // Ensure text wraps within the container
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                pw.SizedBox(height: 10),
+              ],
+            ),
           ),
         ),
-        pw.SizedBox(width: 10),
+        pw.SizedBox(width: 20),
         pw.Expanded(
+            child: pw.Container(
+          decoration: pw.BoxDecoration(
+            borderRadius: const pw.BorderRadius.all(pw.Radius.circular(1)),
+            // color: baseColor,
+            border: pw.Border.all(
+              color: _darkColor,
+              width: 1,
+            ),
+          ),
           child: pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Container(
                 // width: 285,
                 height: 20,
-                decoration: pw.BoxDecoration(borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)), color: baseColor, border: pw.Border.all(color: baseColor, width: 1)),
+                color: baseColor,
                 child: pw.Row(
                   crossAxisAlignment: pw.CrossAxisAlignment.center,
                   children: [
@@ -383,19 +382,19 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                     flex: 2,
                     child: pw.Padding(
                       padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text('Relationship ID', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
+                      child: pw.Text('Relationship ID', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
                     ),
                   ),
                   regular('  : ', 12),
                   pw.Expanded(
                     flex: 3,
                     child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                      padding: const pw.EdgeInsets.symmetric(horizontal: 0),
                       child: pw.Text(
                         // 'KV-CI-AR',
                         instInvoice.customerAccountDetails.relationshipId,
                         textAlign: pw.TextAlign.start,
-                        style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
+                        style: pw.TextStyle(font: Helvetica_bold, fontSize: 8, lineSpacing: 3, color: _darkColor),
                         softWrap: true, // Ensure text wraps within the container
                       ),
                     ),
@@ -432,14 +431,14 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                     flex: 2,
                     child: pw.Padding(
                       padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text('Customer GSTIN', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
+                      child: pw.Text('Customer GSTIN', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
                     ),
                   ),
                   regular('  : ', 12),
                   pw.Expanded(
                     flex: 3,
                     child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                      padding: const pw.EdgeInsets.symmetric(horizontal: 0),
                       child: pw.Text(
                         // '33AADCK2098J1ZF',
                         instInvoice.customerAccountDetails.customerGSTIN,
@@ -458,19 +457,19 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                     flex: 2,
                     child: pw.Padding(
                       padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text('HSN / SAC Code', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
+                      child: pw.Text('HSN / SAC Code', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
                     ),
                   ),
                   regular('  : ', 12),
                   pw.Expanded(
                     flex: 3,
                     child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                      padding: const pw.EdgeInsets.symmetric(horizontal: 0),
                       child: pw.Text(
                         // '998319',
                         instInvoice.customerAccountDetails.hsnSacCode,
                         textAlign: pw.TextAlign.start,
-                        style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
+                        style: pw.TextStyle(font: Helvetica_bold, fontSize: 8, lineSpacing: 3, color: _darkColor),
                         softWrap: true, // Ensure text wraps within the container
                       ),
                     ),
@@ -484,14 +483,14 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                     flex: 2,
                     child: pw.Padding(
                       padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text('Customer PO', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
+                      child: pw.Text('Customer PO', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
                     ),
                   ),
                   regular('  : ', 12),
                   pw.Expanded(
                     flex: 3,
                     child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                      padding: const pw.EdgeInsets.symmetric(horizontal: 0),
                       child: pw.Text(
                         // 'AAAAAAAAAAAAAAA',
                         instInvoice.customerAccountDetails.customerPO,
@@ -510,14 +509,14 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                     flex: 2,
                     child: pw.Padding(
                       padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text('Contact person', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
+                      child: pw.Text('Contact person', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
                     ),
                   ),
                   regular('  : ', 12),
                   pw.Expanded(
                     flex: 3,
                     child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                      padding: const pw.EdgeInsets.symmetric(horizontal: 0),
                       child: pw.Text(
                         // ' Mr. Thulasinathan',
                         instInvoice.customerAccountDetails.contactPerson,
@@ -536,14 +535,14 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                     flex: 2,
                     child: pw.Padding(
                       padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text('Contact number', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
+                      child: pw.Text('Contact number', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
                     ),
                   ),
                   regular('  : ', 12),
                   pw.Expanded(
                     flex: 3,
                     child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                      padding: const pw.EdgeInsets.symmetric(horizontal: 0),
                       child: pw.Text(
                         // '+91-984-145-6250',
                         instInvoice.customerAccountDetails.contactNumber,
@@ -555,9 +554,10 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                   ),
                 ],
               ),
+              pw.SizedBox(height: 10),
             ],
           ),
-        ),
+        )),
       ],
     );
   }
@@ -568,148 +568,156 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
         pw.Expanded(
-          child: pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.Container(
-                // width: 285,
-                height: 20,
-                decoration: pw.BoxDecoration(
-                  borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)),
+          child: pw.Container(
+            decoration: pw.BoxDecoration(
+              borderRadius: const pw.BorderRadius.all(pw.Radius.circular(1)),
+              // color: baseColor,
+              border: pw.Border.all(
+                color: _darkColor,
+                width: 1,
+              ),
+            ),
+            child: pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Container(
+                  // width: 285,
+                  height: 20,
                   color: baseColor,
-                  border: pw.Border.all(
-                    color: baseColor,
-                    width: 1,
-                  ),
-                ),
-                child: pw.Row(
-                  crossAxisAlignment: pw.CrossAxisAlignment.center,
-                  children: [
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.only(
-                        top: 3,
-                        left: 15,
-                      ),
-                      child: pw.Text(
-                        'REGISTERED / BILLING ADDRESS',
-                        style: pw.TextStyle(
-                          font: Helvetica_bold,
-                          fontSize: 10,
-                          color: PdfColors.white,
+                  child: pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.center,
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.only(
+                          top: 3,
+                          // left: 15,
+                        ),
+                        child: pw.Text(
+                          'REGISTERED / BILLING ADDRESS',
+                          style: pw.TextStyle(
+                            font: Helvetica_bold,
+                            fontSize: 10,
+                            color: PdfColors.white,
+                          ),
                         ),
                       ),
+                    ],
+                  ),
+                ),
+                pw.SizedBox(
+                  height: 10,
+                ),
+                pw.Padding(
+                  padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                  child: pw.Text(
+                    instInvoice.addressDetails.billingName,
+                    textAlign: pw.TextAlign.start,
+                    style: pw.TextStyle(
+                      font: Helvetica_bold,
+                      fontSize: 10,
+                      lineSpacing: 2,
+                      color: _darkColor,
                     ),
-                  ],
-                ),
-              ),
-              pw.SizedBox(
-                height: 10,
-              ),
-              pw.Padding(
-                padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                child: pw.Text(
-                  instInvoice.addressDetails.billingName,
-                  textAlign: pw.TextAlign.start,
-                  style: pw.TextStyle(
-                    font: Helvetica_bold,
-                    fontSize: 10,
-                    lineSpacing: 2,
-                    color: _darkColor,
+                    softWrap: true,
                   ),
-                  softWrap: true,
                 ),
-              ),
-              pw.SizedBox(
-                height: 4,
-              ),
-              pw.Padding(
-                padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                child: pw.Text(
-                  instInvoice.addressDetails.billingAddress,
-                  textAlign: pw.TextAlign.start,
-                  style: pw.TextStyle(
-                    font: Helvetica,
-                    fontSize: 8,
-                    lineSpacing: 3,
-                    color: _darkColor,
+                pw.SizedBox(
+                  height: 10,
+                ),
+                pw.Padding(
+                  padding: const pw.EdgeInsets.only(left: 10, bottom: 10),
+                  child: pw.Text(
+                    instInvoice.addressDetails.billingAddress,
+                    textAlign: pw.TextAlign.start,
+                    style: pw.TextStyle(
+                      font: Helvetica,
+                      fontSize: 8,
+                      lineSpacing: 3,
+                      color: _darkColor,
+                    ),
+                    softWrap: true, // Ensure text wraps within the container
                   ),
-                  softWrap: true, // Ensure text wraps within the container
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-        pw.SizedBox(width: 10),
+        pw.SizedBox(width: 20),
         pw.Expanded(
-          child: pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.Container(
-                // width: 285,
-                height: 20,
-                decoration: pw.BoxDecoration(
-                  borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)),
+          child: pw.Container(
+            decoration: pw.BoxDecoration(
+              borderRadius: const pw.BorderRadius.all(pw.Radius.circular(1)),
+              // color: baseColor,
+              border: pw.Border.all(
+                color: _darkColor,
+                width: 1,
+              ),
+            ),
+            child: pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Container(
+                  // width: 285,
+                  height: 20,
                   color: baseColor,
-                  border: pw.Border.all(
-                    color: baseColor,
-                    width: 1,
-                  ),
-                ),
-                child: pw.Row(
-                  crossAxisAlignment: pw.CrossAxisAlignment.center,
-                  children: [
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.only(
-                        top: 3,
-                        left: 15,
-                      ),
-                      child: pw.Text(
-                        'INSTALLATION / SERVICE ADDRESS',
-                        style: pw.TextStyle(
-                          font: Helvetica_bold,
-                          fontSize: 10,
-                          color: PdfColors.white,
+                  child: pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.center,
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.only(
+                          top: 3,
+                          // left: 15,
+                        ),
+                        child: pw.Text(
+                          'INSTALLATION / SERVICE ADDRESS',
+                          style: pw.TextStyle(
+                            font: Helvetica_bold,
+                            fontSize: 10,
+                            color: PdfColors.white,
+                          ),
                         ),
                       ),
+                    ],
+                  ),
+                ),
+                pw.SizedBox(
+                  height: 10,
+                ),
+                pw.Padding(
+                  padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                  child: pw.Text(
+                    instInvoice.addressDetails.installation_serviceName,
+                    textAlign: pw.TextAlign.start,
+                    style: pw.TextStyle(
+                      font: Helvetica_bold,
+                      fontSize: 10,
+                      lineSpacing: 2,
+                      color: _darkColor,
                     ),
-                  ],
-                ),
-              ),
-              pw.SizedBox(
-                height: 10,
-              ),
-              pw.Padding(
-                padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                child: pw.Text(
-                  instInvoice.addressDetails.installation_serviceName,
-                  textAlign: pw.TextAlign.start,
-                  style: pw.TextStyle(
-                    font: Helvetica_bold,
-                    fontSize: 10,
-                    lineSpacing: 2,
-                    color: _darkColor,
+                    softWrap: true,
                   ),
-                  softWrap: true,
                 ),
-              ),
-              pw.SizedBox(
-                height: 4,
-              ),
-              pw.Padding(
-                padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                child: pw.Text(
-                  instInvoice.addressDetails.installation_serviceAddress,
-                  textAlign: pw.TextAlign.start,
-                  style: pw.TextStyle(
-                    font: Helvetica,
-                    fontSize: 8,
-                    lineSpacing: 2,
-                    color: _darkColor,
+                pw.SizedBox(
+                  height: 10,
+                ),
+                pw.Padding(
+                  padding: const pw.EdgeInsets.only(left: 10, bottom: 10),
+                  child: pw.Text(
+                    instInvoice.addressDetails.installation_serviceAddress,
+                    textAlign: pw.TextAlign.start,
+                    style: pw.TextStyle(
+                      font: Helvetica,
+                      fontSize: 8,
+                      lineSpacing: 3,
+                      color: _darkColor,
+                    ),
+                    softWrap: true, // Ensure text wraps within the container
                   ),
-                  softWrap: true,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ],
@@ -745,21 +753,25 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
           }).toList(),
         ),
         // Data Rows
-        ...List.generate(instInvoice.siteData.length, (row) {
-          return pw.TableRow(
-            decoration: pw.BoxDecoration(
-              color: row % 2 == 0 ? PdfColors.green50 : PdfColors.white, // Alternate row colors
-            ),
-            children: List.generate(
-              tableHeaders.length,
-              (col) => pw.Container(
-                padding: const pw.EdgeInsets.all(5),
-                alignment: _getAlignment(col),
-                child: pw.Text(instInvoice.siteData[row].getIndex(col).toString(), style: pw.TextStyle(font: Helvetica, color: _darkColor, fontSize: 10)),
+        ...List.generate(
+          instInvoice.siteData.length,
+          (row) {
+            return pw.TableRow(
+              verticalAlignment: pw.TableCellVerticalAlignment.middle,
+              decoration: pw.BoxDecoration(
+                color: row % 2 == 0 ? PdfColors.green50 : PdfColors.white, // Alternate row colors
               ),
-            ),
-          );
-        }),
+              children: List.generate(
+                tableHeaders.length,
+                (col) => pw.Container(
+                  padding: const pw.EdgeInsets.all(5),
+                  alignment: _getAlignment(col),
+                  child: pw.Text(instInvoice.siteData[row].getIndex(col).toString(), style: pw.TextStyle(font: Helvetica, color: _darkColor, fontSize: 10)),
+                ),
+              ),
+            );
+          },
+        ),
       ],
     );
   }
@@ -952,7 +964,9 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
           ),
 
         pw.Expanded(
-          child: pw.Container(
+            child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
+          pw.Container(
+            width: instInvoice.ispendingamount ? null : 200,
             height: 60,
             decoration: pw.BoxDecoration(
                 border: pw.Border.all(
@@ -994,7 +1008,12 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                           textAlign: pw.TextAlign.center,
                           // '156745765476456000',
                           instInvoice.finalCalc.total.toString(),
-                          style: const pw.TextStyle(fontSize: 8, color: _darkColor, height: 2.3),
+                          style: pw.TextStyle(
+                            fontSize: 8,
+                            color: _darkColor,
+                            height: 2.3,
+                            fontWeight: pw.FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
@@ -1003,7 +1022,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
               ),
             ),
           ),
-        ),
+        ])),
         // ignore: prefer_const_constructors
         pw.Padding(
           padding: const pw.EdgeInsets.all(8.0),
@@ -1013,54 +1032,61 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
           ),
         ),
         pw.Expanded(
-          flex: instInvoice.ispendingamount ? 2 : 1,
-          child: pw.Container(
-            height: 60,
-            decoration: pw.BoxDecoration(
-                border: pw.Border.all(
-                  color: _darkColor,
+            flex: instInvoice.ispendingamount ? 2 : 1,
+            child: pw.Row(children: [
+              pw.Container(
+                width: instInvoice.ispendingamount ? null : 200,
+                height: 60,
+                decoration: pw.BoxDecoration(
+                    border: pw.Border.all(
+                      color: _darkColor,
+                    ),
+                    borderRadius: pw.BorderRadius.circular(2)),
+                // color: Colors.amber,
+                child: pw.Padding(
+                  padding: const pw.EdgeInsets.all(0),
+                  child: pw.Column(
+                    children: [
+                      pw.Expanded(
+                        child: pw.Center(
+                          child: pw.Text(
+                            'Total amount Due',
+                            style: pw.TextStyle(
+                              fontSize: 8,
+                              fontWeight: pw.FontWeight.bold,
+                              color: _darkColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      pw.Container(
+                        height: 0.5,
+                        color: _darkColor,
+                      ),
+                      pw.Expanded(
+                        child: pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.SizedBox(
+                            height: 25,
+                            child: pw.Text(
+                              textAlign: pw.TextAlign.center,
+                              pdfpopup_controller.pdfModel.value.totaldueamount.value.text,
+                              // '156745765476456000',
+                              style: pw.TextStyle(
+                                fontSize: 8,
+                                color: _darkColor,
+                                height: 2.3,
+                                fontWeight: pw.FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                borderRadius: pw.BorderRadius.circular(2)),
-            // color: Colors.amber,
-            child: pw.Padding(
-              padding: const pw.EdgeInsets.all(0),
-              child: pw.Column(
-                children: [
-                  pw.Expanded(
-                    child: pw.Center(
-                      child: pw.Text(
-                        'Total amount Due',
-                        style: pw.TextStyle(
-                          fontSize: 8,
-                          fontWeight: pw.FontWeight.bold,
-                          color: _darkColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                  pw.Container(
-                    height: 0.5,
-                    color: _darkColor,
-                  ),
-                  pw.Expanded(
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.all(8.0),
-                      child: pw.SizedBox(
-                        height: 25,
-                        child: pw.Text(
-                          textAlign: pw.TextAlign.center,
-                          pdfpopup_controller.pdfModel.value.totaldueamount.value.text,
-                          // '156745765476456000',
-                          style: const pw.TextStyle(fontSize: 8, color: _darkColor, height: 2.3),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
               ),
-            ),
-          ),
-        ),
+            ])),
         // ignore: prefer_const_constructors
       ],
     );
@@ -1074,207 +1100,20 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
   }
 
   pw.Widget Local_tax_table(pw.Context context) {
-    return pw.Column(
+    return pw.Row(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
-        pw.Row(
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
-          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-          children: [
-            pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
-              pw.Text('GST BREAKDOWN', style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, color: PdfColors.grey700)),
-              pw.SizedBox(height: 5),
-              pw.Container(
-                decoration: pw.BoxDecoration(border: pw.Border.all(color: PdfColors.grey700)),
-                // height: 200,
-                // width: 300, // Ensure the container has a defined width
-                child: pw.Column(
-                  // border: pw.TableBorder.all(color: PdfColors.grey700, width: 1),
-                  children: [
-                    pw.Row(
-                      children: [
-                        pw.Container(
-                          decoration: const pw.BoxDecoration(
-                            border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700)),
-                          ),
-                          height: 38,
-                          width: 80,
-                          child: pw.Center(
-                            child: pw.Text(
-                              "Taxable\nvalue",
-                              style: pw.TextStyle(
-                                font: Helvetica,
-
-                                fontSize: 10,
-                                color: PdfColors.grey700,
-                                // fontWeight: pw.FontWeight.bold,
-                              ),
-                              textAlign: pw.TextAlign.center, // Justifying the text
-                            ),
-                          ),
-                        ),
-                        pw.Container(
-                          height: 38,
-                          child: pw.Column(
-                            children: [
-                              pw.Container(
-                                width: 110,
-                                decoration: const pw.BoxDecoration(
-                                  border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700)),
-                                ),
-                                height: 19, // Replace Expanded with defined height
-                                child: pw.Center(child: regular('CGST', 10)),
-                              ),
-                              pw.Container(
-                                height: 19, // Define height instead of Expanded
-                                child: pw.Row(
-                                  children: [
-                                    pw.Container(
-                                      width: 40, // Define width instead of Expanded
-                                      decoration: const pw.BoxDecoration(
-                                        border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700), bottom: pw.BorderSide(color: PdfColors.grey700)),
-                                      ),
-                                      child: pw.Center(child: regular('%', 10)),
-                                    ),
-                                    pw.Container(
-                                      width: 70, // Define width instead of Expanded
-                                      decoration: const pw.BoxDecoration(
-                                        border: pw.Border(
-                                          right: pw.BorderSide(color: PdfColors.grey700),
-                                          top: pw.BorderSide(color: PdfColors.grey700),
-                                          left: pw.BorderSide(color: PdfColors.grey700),
-                                        ),
-                                      ),
-                                      child: pw.Center(child: regular('amount', 10)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-//                       instInvoice.finalCalc.subtotal
-// instInvoice.gstPercent
-// instInvoice.finalCalc.cgst
-                        pw.Container(
-                          height: 38,
-                          child: pw.Column(
-                            children: [
-                              pw.Container(
-                                height: 19, // Replace Expanded with defined height
-                                child: pw.Center(child: regular('SGST', 10)),
-                              ),
-                              pw.Container(
-                                height: 19, // Define height instead of Expanded
-                                child: pw.Row(
-                                  children: [
-                                    pw.Container(
-                                      width: 40, // Define width instead of Expanded
-                                      decoration: const pw.BoxDecoration(
-                                        border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700)),
-                                      ),
-                                      child: pw.Center(child: regular('%', 10)),
-                                    ),
-                                    pw.Container(
-                                      width: 70, // Define width instead of Expanded
-                                      decoration: const pw.BoxDecoration(
-                                        border: pw.Border(
-                                          right: pw.BorderSide(color: PdfColors.grey700),
-                                          top: pw.BorderSide(color: PdfColors.grey700),
-                                          left: pw.BorderSide(color: PdfColors.grey700),
-                                        ),
-                                      ),
-                                      child: pw.Center(child: regular('amount', 10)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    pw.Row(
-                      children: [
-                        pw.Container(
-                          decoration: const pw.BoxDecoration(
-                            border: pw.Border(
-                              right: pw.BorderSide(color: PdfColors.grey700),
-                              top: pw.BorderSide(color: PdfColors.grey700),
-                            ),
-                          ),
-                          width: 80,
-                          height: 38,
-                          child: pw.Center(child: regular(formatzero(instInvoice.finalCalc.subtotal), 10)),
-                        ),
-                        pw.Container(
-                          height: 38,
-                          child: pw.Row(
-                            children: [
-                              pw.Container(
-                                decoration: const pw.BoxDecoration(
-                                  border: pw.Border(
-                                    top: pw.BorderSide(color: PdfColors.grey700),
-                                  ),
-                                ),
-                                width: 40, // Define width instead of Expanded
-                                child: pw.Center(
-                                  child: regular((instInvoice.gstPercent / 2).toString(), 10),
-                                ),
-                              ),
-                              pw.Container(
-                                width: 70, // Define width instead of Expanded
-                                decoration: const pw.BoxDecoration(
-                                  border: pw.Border(
-                                    right: pw.BorderSide(color: PdfColors.grey700),
-                                    top: pw.BorderSide(color: PdfColors.grey700),
-                                    left: pw.BorderSide(color: PdfColors.grey700),
-                                  ),
-                                ),
-                                child: pw.Center(
-                                  child: regular(
-                                      formatzero(
-                                        ((instInvoice.finalCalc.subtotal / 100) * (instInvoice.gstPercent / 2)),
-                                      ),
-                                      10),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        pw.Container(
-                          height: 38,
-                          child: pw.Row(
-                            children: [
-                              pw.Container(
-                                decoration: const pw.BoxDecoration(
-                                  border: pw.Border(
-                                    top: pw.BorderSide(color: PdfColors.grey700),
-                                  ),
-                                ),
-                                width: 40, // Define width instead of Expanded
-                                child: pw.Center(child: regular((instInvoice.gstPercent / 2).toString(), 10)),
-                              ),
-                              pw.Container(
-                                width: 70, // Define width instead of Expanded
-                                decoration: const pw.BoxDecoration(
-                                  border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700)),
-                                ),
-                                child: pw.Center(child: regular(formatzero(((instInvoice.finalCalc.subtotal / 100) * (instInvoice.gstPercent / 2))), 10)),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ]),
-            Local_final_amount(context),
-          ],
+        pw.Expanded(
+          child: Local_final_amount(context),
         ),
-        pw.SizedBox(height: 15),
-        notes(context),
+        pw.SizedBox(width: 10),
+        pw.Container(
+          padding: const pw.EdgeInsets.only(bottom: 0, left: 0),
+          height: 170,
+          // width: 180,
+          child: pw.Image(secureshutterImage),
+        ),
       ],
     );
   }
@@ -1633,45 +1472,188 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
 
   pw.Widget Local_final_amount(pw.Context context) {
     return pw.Container(
-      width: 185, // Define width to ensure bounded constraints
-      child: pw.Column(
-        mainAxisAlignment: pw.MainAxisAlignment.start,
-        children: [
-          pw.Container(
-            // width: 285,
-            height: 20,
-            decoration: pw.BoxDecoration(borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)), color: baseColor, border: pw.Border.all(color: baseColor, width: 1)),
-            child: pw.Row(
-              crossAxisAlignment: pw.CrossAxisAlignment.center,
+        // width: 185, // Define width to ensure bounded constraints
+        decoration: pw.BoxDecoration(borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)), border: pw.Border.all(color: _darkColor, width: 1)),
+        child: pw.Row(children: [
+          pw.Expanded(
+            flex: 3,
+            child: pw.Column(
+              mainAxisAlignment: pw.MainAxisAlignment.start,
               children: [
-                pw.Padding(
-                  padding: const pw.EdgeInsets.only(
-                    // top: 3,
-                    left: 10,
+                pw.Container(
+                  // width: 285,
+                  height: 20,
+                  color: baseColor,
+                  child: pw.Row(
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.Expanded(
+                        flex: 3,
+                        child: pw.Padding(
+                          padding: const pw.EdgeInsets.only(
+                            // top: 3,
+                            left: 10,
+                          ),
+                          child: pw.Text('Current summary of Charges', style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, color: PdfColors.white)),
+                        ),
+                      ),
+                      // pw.Expanded(
+                      //   flex: 1,
+                      //   child: pw.Padding(
+                      //     padding: const pw.EdgeInsets.only(
+                      //       // top: 3,
+                      //       right: 10,
+                      //     ),
+                      //     child: pw.Text('Amount', style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, color: PdfColors.white)),
+                      //   ),
+                      // )
+                    ],
                   ),
-                  child: pw.Text('CURRENT MONTH SUMMARY', style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, color: PdfColors.white)),
                 ),
+                pw.SizedBox(height: 8),
+                pw.Padding(
+                  padding: const pw.EdgeInsets.only(left: 10, right: 10),
+                  child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+                    regular('Sub total   :', 10),
+                    // regular(formatzero(instInvoice.finalCalc.subtotal), 10),
+                  ]),
+                ),
+                pw.Divider(color: accentColor),
+                // pw.SizedBox(height: 8),
+                pw.Padding(
+                  padding: const pw.EdgeInsets.only(left: 10, right: 10),
+                  child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+                    regular('CGST       :', 10),
+                    // regular(formatzero(instInvoice.finalCalc.cgst), 10),
+                  ]),
+                ),
+                pw.Divider(color: accentColor),
+                // pw.SizedBox(height: 8),
+                pw.Padding(
+                  padding: const pw.EdgeInsets.only(left: 10, right: 10),
+                  child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+                    regular('SGST       :', 10),
+                    // regular(formatzero(instInvoice.finalCalc.sgst), 10),
+                  ]),
+                ),
+                pw.Divider(color: accentColor),
+                // pw.SizedBox(height: 8),
+                pw.Padding(
+                  padding: const pw.EdgeInsets.only(left: 10, right: 10),
+                  child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+                    regular('Round off : ${instInvoice.finalCalc.differene}', 10),
+                    // regular(instInvoice.finalCalc.roundOff, 10),
+                  ]),
+                ),
+                pw.Divider(color: accentColor),
+                pw.Padding(
+                  padding: const pw.EdgeInsets.only(left: 10, right: 10),
+                  child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+                    bold('Total', 12),
+                    // bold("Rs.${formatCurrencyRoundedPaisa(instInvoice.finalCalc.total)}", 12),
+                  ]),
+                ),
+                pw.SizedBox(height: 10),
+                // pw.SizedBox(height: 8),
+                // pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('Pending', 12), regular("Rs. ${instInvoice.finalCalc.pendingAmount.toString()}", 12)]),
+                // pw.SizedBox(height: 8),
+                // pw.Divider(color: accentColor),
+                // pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [bold('Grand Total', 12), bold("Rs. ${formatCurrencyRoundedPaisa(instInvoice.finalCalc.grandTotal)}", 12)]),
               ],
             ),
           ),
-          pw.SizedBox(height: 8),
-          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('Sub total   :', 10), regular(formatzero(instInvoice.finalCalc.subtotal), 10)]),
-          pw.SizedBox(height: 8),
-          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('CGST       :', 10), regular(formatzero(instInvoice.finalCalc.cgst), 10)]),
-          pw.SizedBox(height: 8),
-          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('SGST       :', 10), regular(formatzero(instInvoice.finalCalc.sgst), 10)]),
-          pw.SizedBox(height: 8),
-          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('Round off : ${instInvoice.finalCalc.differene}', 10), regular(instInvoice.finalCalc.roundOff, 10)]),
-          pw.Divider(color: accentColor),
-          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [bold('Total', 12), bold("Rs.${formatCurrencyRoundedPaisa(instInvoice.finalCalc.total)}", 12)]),
-          // pw.SizedBox(height: 8),
-          // pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('Pending', 12), regular("Rs. ${instInvoice.finalCalc.pendingAmount.toString()}", 12)]),
-          // pw.SizedBox(height: 8),
-          // pw.Divider(color: accentColor),
-          // pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [bold('Grand Total', 12), bold("Rs. ${formatCurrencyRoundedPaisa(instInvoice.finalCalc.grandTotal)}", 12)]),
-        ],
-      ),
-    );
+          pw.Expanded(
+              flex: 1,
+              child: pw.Container(
+                decoration: const pw.BoxDecoration(border: pw.Border(left: pw.BorderSide(color: _darkColor))),
+                child: pw.Column(
+                  mainAxisAlignment: pw.MainAxisAlignment.start,
+                  children: [
+                    pw.Container(
+                      // width: 285,
+                      height: 20,
+                      color: baseColor,
+                      child: pw.Row(
+                        crossAxisAlignment: pw.CrossAxisAlignment.center,
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+                          // pw.Expanded(
+                          //   flex: 3,
+                          //   child: pw.Padding(
+                          //     padding: const pw.EdgeInsets.only(
+                          //       // top: 3,
+                          //       left: 10,
+                          //     ),
+                          //     child: pw.Text('Current summary of Charges', style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, color: PdfColors.white)),
+                          //   ),
+                          // ),
+                          pw.Expanded(
+                            flex: 1,
+                            child: pw.Padding(
+                              padding: const pw.EdgeInsets.only(
+                                // top: 3,
+                                left: 10,
+                              ),
+                              child: pw.Text('Amount', style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, color: PdfColors.white)),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    pw.SizedBox(height: 8),
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.only(left: 10, right: 10),
+                      child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+                        // regular('Sub total   :', 10),
+                        regular(formatzero(instInvoice.finalCalc.subtotal), 10),
+                      ]),
+                    ),
+                    pw.Divider(color: accentColor),
+                    // pw.SizedBox(height: 8),
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.only(left: 10, right: 10),
+                      child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+                        // regular('CGST       :', 10),
+                        regular(formatzero(instInvoice.finalCalc.cgst), 10),
+                      ]),
+                    ),
+                    pw.Divider(color: accentColor),
+                    // pw.SizedBox(height: 8),
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.only(left: 10, right: 10),
+                      child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+                        // regular('SGST       :', 10),
+                        regular(formatzero(instInvoice.finalCalc.sgst), 10),
+                      ]),
+                    ),
+                    pw.Divider(color: accentColor),
+                    // pw.SizedBox(height: 8),
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.only(left: 10, right: 10),
+                      child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+                        // regular('Round off : ${instInvoice.finalCalc.differene}', 10),
+                        regular(instInvoice.finalCalc.roundOff, 10),
+                      ]),
+                    ),
+                    pw.Divider(color: accentColor),
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.only(left: 10, right: 10),
+                      child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+                        // bold('Total', 12),
+                        bold("Rs.${formatCurrencyRoundedPaisa(instInvoice.finalCalc.total)}", 12),
+                      ]),
+                    ),
+                    pw.SizedBox(height: 10),
+                    // pw.SizedBox(height: 8),
+                    // pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('Pending', 12), regular("Rs. ${instInvoice.finalCalc.pendingAmount.toString()}", 12)]),
+                    // pw.SizedBox(height: 8),
+                    // pw.Divider(color: accentColor),
+                    // pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [bold('Grand Total', 12), bold("Rs. ${formatCurrencyRoundedPaisa(instInvoice.finalCalc.grandTotal)}", 12)]),
+                  ],
+                ),
+              ))
+        ]));
   }
 
   pw.Widget others_final_amount(pw.Context context) {

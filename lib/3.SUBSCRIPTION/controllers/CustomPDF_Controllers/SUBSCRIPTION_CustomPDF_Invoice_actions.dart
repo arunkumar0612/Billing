@@ -146,7 +146,7 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
         site.address = value;
         break;
       case 4:
-        site.monthlyCharges = value.isNotEmpty ? int.parse(value) : 0;
+        site.monthlyCharges = int.parse(value);
         break;
     }
 
@@ -209,7 +209,22 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.roundOff.value.text = formatCurrencyRoundedPaisa(addedRoundoff);
     pdfModel.value.roundoffDiff.value = calculateFormattedDifference(addedRoundoff);
     pdfModel.value.Total.value.text = formatCurrencyRoundedPaisa(addedRoundoff);
+    // totalcaculationTable();
+    pdfModel.refresh();
+  }
 
+  void totalcaculationTable() {
+    final previousdues = double.tryParse(pdfModel.value.previousdues.value.text) ?? 0;
+    final payment = double.tryParse(pdfModel.value.payment.value.text) ?? 0;
+    final adjustments = double.tryParse(pdfModel.value.adjustments_deduction.value.text) ?? 0;
+    final currentcharges = double.tryParse(pdfModel.value.Total.value.text) ?? 0;
+
+    final total = (previousdues - payment + adjustments + currentcharges).toStringAsFixed(2);
+
+    // Update the value - make sure totaldueamount is a TextEditingController
+    pdfModel.value.totaldueamount.value.text = total;
+
+    // Force UI update
     pdfModel.refresh();
   }
 

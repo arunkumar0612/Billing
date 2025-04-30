@@ -371,6 +371,32 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                       flex: 2,
                       child: pw.Padding(
                         padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                        child: pw.Text('Bill date', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
+                      ),
+                    ),
+                    regular('  : ', 12),
+                    pw.Expanded(
+                      flex: 3,
+                      child: pw.Padding(
+                        padding: const pw.EdgeInsets.symmetric(horizontal: 0),
+                        child: pw.Text(
+                          // '07 / 01 / 2025',
+                          instInvoice.date,
+                          textAlign: pw.TextAlign.start,
+                          style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
+                          softWrap: true, // Ensure text wraps within the container
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                pw.SizedBox(height: 4),
+                pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 2,
+                      child: pw.Padding(
+                        padding: const pw.EdgeInsets.symmetric(horizontal: 10),
                         child: pw.Text('Due date', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
                       ),
                     ),
@@ -444,6 +470,32 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                       child: pw.Text(
                         // 'KV-CI-AR',
                         instInvoice.customerAccountDetails.relationshipId,
+                        textAlign: pw.TextAlign.start,
+                        style: pw.TextStyle(font: Helvetica_bold, fontSize: 8, lineSpacing: 3, color: _darkColor),
+                        softWrap: true, // Ensure text wraps within the container
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              pw.SizedBox(height: 4),
+              pw.Row(
+                children: [
+                  pw.Expanded(
+                    flex: 2,
+                    child: pw.Padding(
+                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+                      child: pw.Text('Bill number', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
+                    ),
+                  ),
+                  regular('  : ', 12),
+                  pw.Expanded(
+                    flex: 3,
+                    child: pw.Padding(
+                      padding: const pw.EdgeInsets.symmetric(horizontal: 0),
+                      child: pw.Text(
+                        // 'KV-CI-AR',
+                        instInvoice.invoiceNo,
                         textAlign: pw.TextAlign.start,
                         style: pw.TextStyle(font: Helvetica_bold, fontSize: 8, lineSpacing: 3, color: _darkColor),
                         softWrap: true, // Ensure text wraps within the container

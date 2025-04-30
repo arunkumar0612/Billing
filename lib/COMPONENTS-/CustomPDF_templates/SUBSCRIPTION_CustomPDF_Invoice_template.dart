@@ -1544,7 +1544,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                     pw.Padding(
                       padding: const pw.EdgeInsets.only(left: 10, right: 10),
                       child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
-                        bold('Total Current Charges', 12),
+                        bold('Total Current Charges', 10),
                         // bold("Rs.${formatCurrencyRoundedPaisa(instInvoice.finalCalc.total)}", 12),
                       ]),
                     ),

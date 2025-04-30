@@ -33,7 +33,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
     Helvetica_bold = await loadFont_bold();
 
     // Load profile image
-    final imageData = await rootBundle.load('assets/images/sporada.jpeg');
+    final imageData = await rootBundle.load('assets/images/sporadaResized.jpeg');
     profileImage = pw.MemoryImage(imageData.buffer.asUint8List());
     final secureshutterimageData = await rootBundle.load('assets/images/secureshutter.jpeg');
     secureshutterImage = pw.MemoryImage(secureshutterimageData.buffer.asUint8List());
@@ -67,7 +67,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
             ),
           ),
 
-          pw.SizedBox(height: 10),
+          pw.SizedBox(height: 5),
           pw.Padding(
             padding: const pw.EdgeInsets.only(
               left: 20,
@@ -75,7 +75,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
             ),
             child: pw.Container(child: to_addr(context)),
           ),
-          pw.SizedBox(height: 15),
+          pw.SizedBox(height: 5),
           pw.Padding(
             padding: const pw.EdgeInsets.only(
               left: 20,
@@ -89,7 +89,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
               ),
             ),
           ),
-          pw.SizedBox(height: 10),
+          pw.SizedBox(height: 5),
           pw.Padding(
             padding: const pw.EdgeInsets.only(
               left: 20,
@@ -97,7 +97,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
             ),
             child: pw.Container(child: account_details(context)),
           ),
-          pw.SizedBox(height: 20),
+          pw.SizedBox(height: 5),
           pw.Padding(
             padding: const pw.EdgeInsets.only(
               left: 20,
@@ -105,7 +105,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
             ),
             child: TotalcaculationTable(),
           ),
-          pw.SizedBox(height: 20),
+          pw.SizedBox(height: 5),
           // tax_table(context),
           pw.Padding(
             padding: const pw.EdgeInsets.only(
@@ -114,7 +114,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
             ),
             child: Local_tax_table(context),
           ),
-          pw.SizedBox(height: 10),
+          pw.SizedBox(height: 5),
           pw.Center(
             child: regular('*** This is a system generated invoice hence do not require signature. ***', 12),
           ),
@@ -122,6 +122,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
             padding: const pw.EdgeInsets.only(
               left: 20,
               right: 20,
+              top: 40,
             ),
             child: contentTable(context),
           ),
@@ -150,8 +151,8 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
             crossAxisAlignment: pw.CrossAxisAlignment.center,
             children: [
               pw.Container(
-                padding: const pw.EdgeInsets.only(bottom: 0, left: 0),
-                height: 120,
+                padding: const pw.EdgeInsets.only(bottom: 5, left: 5, top: 10),
+                height: 100,
                 child: pw.Image(profileImage),
               ),
               pw.Column(
@@ -1281,10 +1282,10 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
         pw.Expanded(
           child: Local_final_amount(context),
         ),
-        pw.SizedBox(width: 10),
+        pw.SizedBox(width: 2),
         pw.Container(
           padding: const pw.EdgeInsets.only(bottom: 0, left: 0),
-          height: 205,
+          height: 260,
           // width: 180,
           child: pw.Image(secureshutterImage),
         ),
@@ -1546,7 +1547,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                     pw.Padding(
                       padding: const pw.EdgeInsets.only(left: 10, right: 10),
                       child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
-                        bold('Total Current Charges', 12),
+                        bold('Total Current Charges', 10),
                         // bold("Rs.${formatCurrencyRoundedPaisa(instInvoice.finalCalc.total)}", 12),
                       ]),
                     ),
@@ -1645,42 +1646,33 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                   ))
             ],
           ),
-        )
-      ],
-    );
-  }
-
-  pw.Widget footer(pw.Context context) {
-    return pw.Column(
-      mainAxisAlignment: pw.MainAxisAlignment.end,
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
-      children: [
-        pw.SizedBox(height: 20),
-        if (context.pagesCount > 1)
-          if (context.pageNumber < context.pagesCount) pw.Column(children: [pw.Padding(padding: const pw.EdgeInsets.only(top: 20), child: regular('continue...', 12))]),
-        pw.Align(
-          alignment: pw.Alignment.center,
-          child: pw.Column(
-            children: [
-              pw.Container(padding: const pw.EdgeInsets.only(top: 10, bottom: 2), child: bold('SPORADA SECURE INDIA PRIVATE LIMITED', 12)),
-              regular('687/7, 3rd Floor, Sakthivel Towers, Trichy road, Ramanathapuram, Coimbatore - 641045', 8),
-              regular('Telephone: +91-422-2312363, E-mail: sales@sporadasecure.com, Website: www.sporadasecure.com', 8),
-              pw.SizedBox(height: 2),
-              regular('CIN: U30007TZ2020PTC03414  |  GSTIN: 33ABECS0625B1Z0', 8),
-            ],
-          ),
         ),
+        pw.Container(
+            height: 50,
+            // width: 185, // Define width to ensure bounded constraints
+            decoration: pw.BoxDecoration(borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)), border: pw.Border.all(color: _darkColor, width: 1)),
+            child: pw.Padding(
+              padding: const pw.EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+              child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
+                regular('This invoice is generated by Sporada Secure India Private Limited  ', 7),
+                regular('You can make payment through RTGS / NEFT / IMPS to below bank     ', 7),
+                regular('details : Account name : Sporada Secure India Private Limited     ', 7),
+                regular('Account type : Current account Account Number : 257399850001     ', 7),
+                regular('IFS Code : INDB0000521 Bank name : IndusInd Bank Limited     ', 7),
+                regular('Branch : R.S. Puram branch, Coimbatore.', 7),
+              ]),
+            ))
       ],
     );
   }
 
   pw.Widget footerSpare(pw.Context context) {
     return pw.Column(mainAxisAlignment: pw.MainAxisAlignment.end, crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
-      if (context.pagesCount > 1 && context.pageNumber < context.pagesCount)
-        pw.Padding(
-          padding: const pw.EdgeInsets.only(bottom: 10),
-          child: regular('continue...', 12),
-        ),
+      // if (context.pagesCount > 1 && context.pageNumber < context.pagesCount)
+      //   pw.Padding(
+      //     padding: const pw.EdgeInsets.only(bottom: 10),
+      //     child: regular('continue...', 12),
+      //   ),
       pw.Container(
         color: const PdfColor.fromInt(0xFF9EDA67), // Lime green background              decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xFF9EDA67)),
         padding: const pw.EdgeInsets.all(5),

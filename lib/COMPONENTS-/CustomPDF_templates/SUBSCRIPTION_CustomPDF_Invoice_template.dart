@@ -791,6 +791,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                 pw.Padding(
                   padding: const pw.EdgeInsets.symmetric(horizontal: 10),
                   child: pw.Text(
+                    // maxLines: 3,
                     instInvoice.addressDetails.installation_serviceName,
                     textAlign: pw.TextAlign.start,
                     style: pw.TextStyle(
@@ -808,6 +809,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                 pw.Padding(
                   padding: const pw.EdgeInsets.only(left: 10, bottom: 10),
                   child: pw.Text(
+                    // maxLines: 3,
                     instInvoice.addressDetails.installation_serviceAddress,
                     textAlign: pw.TextAlign.start,
                     style: pw.TextStyle(

@@ -55,6 +55,7 @@ Future<void> main() async {
 
   ////////////////////////////----SUBSCRIPTION----////////////////////////////////////
   Get.lazyPut<SubscriptionController>(() => SubscriptionController());
+
   Get.lazyPut<SUBSCRIPTION_CustomPDF_InvoiceController>(() => SUBSCRIPTION_CustomPDF_InvoiceController());
   Get.lazyPut<SUBSCRIPTION_QuoteController>(() => SUBSCRIPTION_QuoteController());
   Get.lazyPut<SUBSCRIPTION_ClientreqController>(() => SUBSCRIPTION_ClientreqController());

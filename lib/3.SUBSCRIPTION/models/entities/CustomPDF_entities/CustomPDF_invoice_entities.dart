@@ -41,12 +41,11 @@ class Site {
       case 0:
         return serialNo;
       case 1:
-        return siteID;
+        return "$siteName||$address"; // Using '||' as a separator
+
       case 2:
-        return siteName;
+        return "KVROHAR";
       case 3:
-        return address;
-      case 4:
         return monthlyCharges;
       default:
         return "";

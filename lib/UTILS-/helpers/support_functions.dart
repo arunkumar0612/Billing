@@ -36,8 +36,7 @@ Future<pw.Font> loadFont_regular() async {
 }
 
 Future<pw.Font> loadFont_bold() async {
-  final helveticaBold =
-      await rootBundle.load('assets/fonts/Helvetica-Bold.ttf');
+  final helveticaBold = await rootBundle.load('assets/fonts/Helvetica-Bold.ttf');
   return pw.Font.ttf(helveticaBold);
 }
 
@@ -49,6 +48,19 @@ pw.Widget regular(String value, int size) {
       font: Helvetica,
       fontSize: size.toDouble(),
       color: PdfColors.blueGrey800,
+      // fontWeight: pw.FontWeight.bold,
+    ),
+  );
+}
+
+pw.Widget footerRegular(String value, int size) {
+  // loadFont();
+  return pw.Text(
+    value,
+    style: pw.TextStyle(
+      font: Helvetica,
+      fontSize: size.toDouble(),
+      color: PdfColors.black,
       // fontWeight: pw.FontWeight.bold,
     ),
   );
@@ -67,33 +79,42 @@ pw.Widget bold(value, size) {
   );
 }
 
+pw.Widget footerBold(value, size) {
+  // loadFont();
+  return pw.Text(
+    value,
+    style: pw.TextStyle(
+      font: Helvetica_bold,
+      fontSize: size.toDouble(),
+      color: PdfColors.black,
+      // fontWeight: pw.FontWeight.bold,
+    ),
+  );
+}
+
 String formatCurrencyRoundedPaisa(double amount) {
   // Round the paisa (decimal) values to the nearest integer
   double roundedAmount = amount.roundToDouble();
 
   // Format the amount with comma separation and two decimal places
-  final formatter =
-      NumberFormat.currency(locale: 'en_IN', symbol: '', decimalDigits: 2);
+  final formatter = NumberFormat.currency(locale: 'en_IN', symbol: '', decimalDigits: 2);
   return formatter.format(roundedAmount);
 }
 
 String calculateFormattedDifference(double grandTotal) {
-  double formattedValue =
-      double.parse(formatCurrencyRoundedPaisa(grandTotal).replaceAll(',', ''));
+  double formattedValue = double.parse(formatCurrencyRoundedPaisa(grandTotal).replaceAll(',', ''));
   double difference = formattedValue - grandTotal;
 
   return "${difference >= 0 ? '+' : ''}${difference.toStringAsFixed(2)}";
 }
 
 String formatCurrency(double amount) {
-  final formatter =
-      NumberFormat.currency(locale: 'en_IN', symbol: '', decimalDigits: 2);
+  final formatter = NumberFormat.currency(locale: 'en_IN', symbol: '', decimalDigits: 2);
   return formatter.format(amount);
 }
 
 String formatzero(double amount) {
-  final formatter =
-      NumberFormat.currency(locale: 'en_IN', symbol: '', decimalDigits: 2);
+  final formatter = NumberFormat.currency(locale: 'en_IN', symbol: '', decimalDigits: 2);
   return formatter.format(amount);
 }
 
@@ -108,12 +129,10 @@ String getCurrentDate() {
 }
 
 String generateRandomString(int length) {
-  const String chars =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   Random random = Random();
 
-  return List.generate(length, (index) => chars[random.nextInt(chars.length)])
-      .join('');
+  return List.generate(length, (index) => chars[random.nextInt(chars.length)]).join('');
 }
 
 Future<Uint8List> convertFileToUint8List(File file) async {

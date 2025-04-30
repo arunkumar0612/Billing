@@ -1049,9 +1049,9 @@ class Subscription_CustomPDF_InvoicePDF {
               ),
             // ignore: prefer_const_constructors
             if (pdfpopup_controller.pdfModel.value.ispendingamount.value)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: const Text(
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
                   '-',
                   style: TextStyle(color: Colors.black54, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
                 ),
@@ -1126,9 +1126,9 @@ class Subscription_CustomPDF_InvoicePDF {
               ),
             // ignore: prefer_const_constructors
             if (pdfpopup_controller.pdfModel.value.ispendingamount.value)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: const Text(
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
                   '+',
                   style: TextStyle(color: Colors.black54, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
                 ),
@@ -1202,9 +1202,9 @@ class Subscription_CustomPDF_InvoicePDF {
               ),
             // ignore: prefer_const_constructors
             if (pdfpopup_controller.pdfModel.value.ispendingamount.value)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: const Text(
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
                   '+',
                   style: TextStyle(color: Colors.black54, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
                 ),

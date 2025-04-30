@@ -42,9 +42,9 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
 
     doc.addPage(
       pw.MultiPage(
-        pageTheme: const pw.PageTheme(pageFormat: PdfPageFormat.a4, margin: pw.EdgeInsets.only(left: 20, right: 20, bottom: 20)),
+        pageTheme: const pw.PageTheme(pageFormat: PdfPageFormat.a4, margin: pw.EdgeInsets.only(left: 0, right: 0, bottom: 0)),
         header: (context) => header(context),
-        footer: (context) => footer(context),
+        footer: (context) => footerSpare(context),
         build: (context) => [
           // pw.Container(child: to_addr(context)),
           // pw.SizedBox(height: 10),
@@ -59,14 +59,14 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
           isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? Local_tax_table(context) : others_tax_table(context),
           pw.SizedBox(height: 50),
           contentTable(context),
-          pw.Divider(height: 1, color: baseColor),
-          pw.Padding(
-            padding: pw.EdgeInsets.all(5),
-            child: pw.Align(
-                alignment: pw.Alignment.centerRight,
-                child: pw.SizedBox(
-                    width: 150, child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [bold('Sub total   :', 10), bold(formatzero(instInvoice.finalCalc.subtotal), 10)]))),
-          )
+          // pw.Divider(height: 1, color: baseColor),
+          // pw.Padding(
+          //   padding: const pw.EdgeInsets.all(5),
+          //   child: pw.Align(
+          //       alignment: pw.Alignment.centerRight,
+          //       child: pw.SizedBox(
+          //           width: 150, child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [bold('Sub total   :', 10), bold(formatzero(instInvoice.finalCalc.subtotal), 10)]))),
+          // )
         ],
       ),
     );
@@ -721,45 +721,118 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
   // }
 
   pw.Widget contentTable(pw.Context context) {
-    const tableHeaders = ['S.No', 'Site ID', 'Site Name', 'Address', 'Monthly Charges'];
+    const tableHeaders = ['S.No', 'SITE NAME & ADDRESS', 'CUSTOMER ID', 'MONTHLY CHARGES'];
 
-    return pw.Table(
-      border: null,
-      columnWidths: {
-        0: const pw.FlexColumnWidth(1), // S.No (Small width)
-        1: const pw.FlexColumnWidth(2), // Site Name (Medium width)
-        2: const pw.FlexColumnWidth(3), // Address (Larger width)
-        3: const pw.FlexColumnWidth(4), // Customer ID (Medium width)
-        4: const pw.FlexColumnWidth(2), // Monthly Charges (Medium width)
-      },
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        // Header Row
-        pw.TableRow(
-          decoration: pw.BoxDecoration(borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)), color: baseColor),
-          children: tableHeaders.map((header) {
-            return pw.Container(
-              padding: const pw.EdgeInsets.all(5),
-              alignment: pw.Alignment.centerLeft,
-              child: pw.Text(header, style: pw.TextStyle(font: Helvetica_bold, color: PdfColors.white, fontSize: 10, fontWeight: pw.FontWeight.bold)),
-            );
-          }).toList(),
-        ),
-        // Data Rows
-        ...List.generate(instInvoice.siteData.length, (row) {
-          return pw.TableRow(
-            decoration: pw.BoxDecoration(
-              color: row % 2 == 0 ? PdfColors.green50 : PdfColors.white, // Alternate row colors
+        // Main table with full border
+        pw.Table(
+          border: pw.TableBorder.all(color: PdfColors.black, width: 1),
+          columnWidths: {
+            0: const pw.FlexColumnWidth(1),
+            1: const pw.FlexColumnWidth(4),
+            2: const pw.FlexColumnWidth(2),
+            3: const pw.FlexColumnWidth(2),
+          },
+          children: [
+            pw.TableRow(
+              decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xFF9EDA67)),
+              children: tableHeaders.map((header) {
+                return pw.Container(
+                  padding: const pw.EdgeInsets.all(5),
+                  alignment: pw.Alignment.centerLeft,
+                  child: pw.Text(
+                    header,
+                    style: pw.TextStyle(
+                      font: Helvetica_bold,
+                      color: PdfColors.black,
+                      fontSize: 10,
+                      fontWeight: pw.FontWeight.bold,
+                    ),
+                  ),
+                );
+              }).toList(),
             ),
-            children: List.generate(
-              tableHeaders.length,
-              (col) => pw.Container(
+            ...List.generate(instInvoice.siteData.length, (row) {
+              return pw.TableRow(
+                verticalAlignment: pw.TableCellVerticalAlignment.middle,
+                decoration: const pw.BoxDecoration(color: PdfColors.white),
+                children: List.generate(
+                  tableHeaders.length,
+                  (col) {
+                    final content = instInvoice.siteData[row].getIndex(col);
+                    return pw.Container(
+                      padding: const pw.EdgeInsets.all(5),
+                      alignment: _getAlignment(col),
+                      child: col == 1 && content is String && content.contains('||')
+                          ? _buildRichSiteText(content)
+                          : pw.Text(
+                              content.toString(),
+                              style: pw.TextStyle(
+                                font: Helvetica,
+                                color: _darkColor,
+                                fontSize: 10,
+                              ),
+                            ),
+                    );
+                  },
+                ),
+              );
+            }),
+          ],
+        ),
+
+        // Final row aligned with last two columns
+        pw.Row(
+          children: [
+            pw.Expanded(flex: 5, child: pw.Container()), // Spacer to align
+            pw.Expanded(
+              flex: 2,
+              child: pw.Container(
                 padding: const pw.EdgeInsets.all(5),
-                alignment: _getAlignment(col),
-                child: pw.Text(instInvoice.siteData[row].getIndex(col).toString(), style: pw.TextStyle(font: Helvetica, color: _darkColor, fontSize: 10)),
+                decoration: const pw.BoxDecoration(
+                  border: pw.Border(
+                    left: pw.BorderSide(color: PdfColors.black, width: 1),
+                    right: pw.BorderSide(color: PdfColors.black, width: 1),
+                    bottom: pw.BorderSide(color: PdfColors.black, width: 1),
+                  ),
+                ),
+                alignment: _getAlignment(2),
+                child: pw.Text(
+                  'TOTAL',
+                  style: pw.TextStyle(
+                    font: Helvetica_bold,
+                    color: _darkColor,
+                    fontSize: 10,
+                  ),
+                ),
               ),
             ),
-          );
-        }),
+            pw.Expanded(
+              flex: 2,
+              child: pw.Container(
+                padding: const pw.EdgeInsets.all(5),
+                decoration: const pw.BoxDecoration(
+                  border: pw.Border(
+                    // left: pw.BorderSide(color: PdfColors.black, width: 1),
+                    right: pw.BorderSide(color: PdfColors.black, width: 1),
+                    bottom: pw.BorderSide(color: PdfColors.black, width: 1),
+                  ),
+                ),
+                alignment: _getAlignment(3),
+                child: pw.Text(
+                  formatzero(instInvoice.finalCalc.subtotal),
+                  style: pw.TextStyle(
+                    font: Helvetica_bold,
+                    color: _darkColor,
+                    fontSize: 10,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -1423,214 +1496,6 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
     );
   }
 
-  // pw.Widget tax_table(pw.Context context) {
-  //   return pw.Column(
-  //     children: [
-  //       pw.Row(
-  //         crossAxisAlignment: pw.CrossAxisAlignment.center,
-  //         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-  //         children: [
-  //           pw.Container(
-  //             decoration: pw.BoxDecoration(border: pw.Border.all(color: PdfColors.grey700)),
-  //             // height: 200,
-  //             // width: 300, // Ensure the container has a defined width
-  //             child: pw.Column(
-  //               // border: pw.TableBorder.all(color: PdfColors.grey700, width: 1),
-  //               children: [
-  //                 pw.Row(
-  //                   children: [
-  //                     pw.Container(
-  //                       decoration: const pw.BoxDecoration(border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700))),
-  //                       height: 38,
-  //                       width: 80,
-  //                       child: pw.Center(
-  //                         child: pw.Text(
-  //                           "Taxable\nvalue",
-  //                           style: pw.TextStyle(
-  //                             font: Helvetica,
-
-  //                             fontSize: 10,
-  //                             color: PdfColors.grey700,
-  //                             // fontWeight: pw.FontWeight.bold,
-  //                           ),
-  //                           textAlign: pw.TextAlign.center, // Justifying the text
-  //                         ),
-  //                       ),
-  //                     ),
-  //                     pw.Container(
-  //                       height: 38,
-  //                       child: pw.Column(
-  //                         children: [
-  //                           pw.Container(
-  //                             width: 110,
-  //                             decoration: const pw.BoxDecoration(border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700))),
-  //                             height: 19, // Replace Expanded with defined height
-  //                             child: pw.Center(child: regular('CGST', 10)),
-  //                           ),
-  //                           pw.Container(
-  //                             height: 19, // Define height instead of Expanded
-  //                             child: pw.Row(
-  //                               children: [
-  //                                 pw.Container(
-  //                                   width: 40, // Define width instead of Expanded
-  //                                   decoration: const pw.BoxDecoration(border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700), bottom: pw.BorderSide(color: PdfColors.grey700))),
-  //                                   child: pw.Center(child: regular('%', 10)),
-  //                                 ),
-  //                                 pw.Container(
-  //                                   width: 70, // Define width instead of Expanded
-  //                                   decoration: const pw.BoxDecoration(
-  //                                     border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700), left: pw.BorderSide(color: PdfColors.grey700)),
-  //                                   ),
-  //                                   child: pw.Center(child: regular('amount', 10)),
-  //                                 ),
-  //                               ],
-  //                             ),
-  //                           ),
-  //                         ],
-  //                       ),
-  //                     ),
-  //                     pw.Container(
-  //                       height: 38,
-  //                       child: pw.Column(
-  //                         children: [
-  //                           pw.Container(
-  //                             height: 19, // Replace Expanded with defined height
-  //                             child: pw.Center(child: regular('SGST', 10)),
-  //                           ),
-  //                           pw.Container(
-  //                             height: 19, // Define height instead of Expanded
-  //                             child: pw.Row(
-  //                               children: [
-  //                                 pw.Container(
-  //                                   width: 40, // Define width instead of Expanded
-  //                                   decoration: const pw.BoxDecoration(border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700))),
-  //                                   child: pw.Center(child: regular('%', 10)),
-  //                                 ),
-  //                                 pw.Container(
-  //                                   width: 70, // Define width instead of Expanded
-  //                                   decoration: const pw.BoxDecoration(
-  //                                     border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700), left: pw.BorderSide(color: PdfColors.grey700)),
-  //                                   ),
-  //                                   child: pw.Center(child: regular('amount', 10)),
-  //                                 ),
-  //                               ],
-  //                             ),
-  //                           ),
-  //                         ],
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-
-  //                 pw.Row(
-  //                   children: [
-  //                     pw.Container(
-  //                       decoration: const pw.BoxDecoration(border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700))),
-  //                       width: 80,
-  //                       height: 38,
-  //                       child: pw.Center(child: regular(formatzero(instInvoice.finalCalc.subtotal), 10)),
-  //                     ),
-  //                     pw.Container(
-  //                       height: 38,
-  //                       child: pw.Row(
-  //                         children: [
-  //                           pw.Container(
-  //                             decoration: const pw.BoxDecoration(border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700))),
-  //                             width: 40, // Define width instead of Expanded
-  //                             child: pw.Center(child: regular((instInvoice.gstPercent / 2).toString(), 10)),
-  //                           ),
-  //                           pw.Container(
-  //                             width: 70, // Define width instead of Expanded
-  //                             decoration: const pw.BoxDecoration(
-  //                               border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700), left: pw.BorderSide(color: PdfColors.grey700)),
-  //                             ),
-  //                             child: pw.Center(child: regular(formatzero(instInvoice.finalCalc.cgst), 10)),
-  //                           ),
-  //                         ],
-  //                       ),
-  //                     ),
-  //                     pw.Container(
-  //                       height: 38,
-  //                       child: pw.Row(
-  //                         children: [
-  //                           pw.Container(
-  //                             decoration: const pw.BoxDecoration(border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700))),
-  //                             width: 40, // Define width instead of Expanded
-  //                             child: pw.Center(child: regular((instInvoice.gstPercent / 2).toString(), 10)),
-  //                           ),
-  //                           pw.Container(
-  //                             width: 70, // Define width instead of Expanded
-  //                             decoration: const pw.BoxDecoration(border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700))),
-  //                             child: pw.Center(child: regular(formatzero(instInvoice.finalCalc.sgst), 10)),
-  //                           ),
-  //                         ],
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-
-  //                 // pw.ListView.builder(
-  //                 //   itemCount: invoice_gstTotals.length, // Number of items in the list
-  //                 //   itemBuilder: (context, index) {
-  //                 //     return pw.Row(
-  //                 //       children: [
-  //                 //         pw.Container(
-  //                 //           decoration: const pw.BoxDecoration(border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700))),
-  //                 //           width: 80,
-  //                 //           height: 38,
-  //                 //           child: pw.Center(child: regular(formatzero(instInvoice.siteData[index].monthlyCharges), 10)),
-  //                 //         ),
-  //                 //         pw.Container(
-  //                 //           height: 38,
-  //                 //           child: pw.Row(
-  //                 //             children: [
-  //                 //               pw.Container(
-  //                 //                 decoration: const pw.BoxDecoration(border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700))),
-  //                 //                 width: 40, // Define width instead of Expanded
-  //                 //                 child: pw.Center(child: regular((invoice_gstTotals[index].gst / 2).toString(), 10)),
-  //                 //               ),
-  //                 //               pw.Container(
-  //                 //                 width: 70, // Define width instead of Expanded
-  //                 //                 decoration: const pw.BoxDecoration(
-  //                 //                   border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700), left: pw.BorderSide(color: PdfColors.grey700)),
-  //                 //                 ),
-  //                 //                 child: pw.Center(child: regular(formatzero(((invoice_gstTotals[index].total.toInt() / 100) * (invoice_gstTotals[index].gst / 2))), 10)),
-  //                 //               ),
-  //                 //             ],
-  //                 //           ),
-  //                 //         ),
-  //                 //         pw.Container(
-  //                 //           height: 38,
-  //                 //           child: pw.Row(
-  //                 //             children: [
-  //                 //               pw.Container(
-  //                 //                 decoration: const pw.BoxDecoration(border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700))),
-  //                 //                 width: 40, // Define width instead of Expanded
-  //                 //                 child: pw.Center(child: regular((invoice_gstTotals[index].gst / 2).toString(), 10)),
-  //                 //               ),
-  //                 //               pw.Container(
-  //                 //                 width: 70, // Define width instead of Expanded
-  //                 //                 decoration: const pw.BoxDecoration(border: pw.Border(left: pw.BorderSide(color: PdfColors.grey700), top: pw.BorderSide(color: PdfColors.grey700))),
-  //                 //                 child: pw.Center(child: regular(formatzero(((invoice_gstTotals[index].total.toInt() / 100) * (invoice_gstTotals[index].gst / 2))), 10)),
-  //                 //               ),
-  //                 //             ],
-  //                 //           ),
-  //                 //         ),
-  //                 //       ],
-  //                 //     );
-  //                 //   },
-  //                 // ),
-  //               ],
-  //             ),
-  //           ),
-  //           pw.Padding(padding: const pw.EdgeInsets.only(right: 5), child: final_amount(context)),
-  //         ],
-  //       ),
-  //       pw.Row(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [notes(context), pw.SizedBox(width: 100)]),
-  //     ],
-  //   );
-  // }
-
   pw.Widget Local_final_amount(pw.Context context) {
     return pw.Container(
       width: 185, // Define width to ensure bounded constraints
@@ -1806,6 +1671,92 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
           ),
         ),
       ],
+    );
+  }
+
+  pw.Widget footerSpare(pw.Context context) {
+    return pw.Column(mainAxisAlignment: pw.MainAxisAlignment.end, crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
+      if (context.pagesCount > 1 && context.pageNumber < context.pagesCount)
+        pw.Padding(
+          padding: const pw.EdgeInsets.only(bottom: 10),
+          child: regular('continue...', 12),
+        ),
+      pw.Container(
+        color: const PdfColor.fromInt(0xFF9EDA67), // Lime green background              decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xFF9EDA67)),
+        padding: const pw.EdgeInsets.all(5),
+        child: pw.Align(
+          alignment: pw.Alignment.center,
+          child: pw.Column(
+            children: [
+              pw.Container(
+                padding: const pw.EdgeInsets.only(top: 10, bottom: 2),
+                child: pw.RichText(
+                  text: pw.TextSpan(
+                    children: [
+                      pw.TextSpan(
+                        text: 'CIN Number: U30007TZ2020PTC03414 - ',
+                        style: pw.TextStyle(
+                          font: Helvetica_bold,
+                          fontSize: 12,
+                          color: PdfColors.black,
+                        ),
+                      ),
+                      pw.WidgetSpan(
+                        child: pw.Container(
+                          color: PdfColors.yellow,
+                          padding: const pw.EdgeInsets.symmetric(horizontal: 2, vertical: 1),
+                          child: pw.Text(
+                            'GSTIN: 33ABECS0625B1Z0',
+                            style: pw.TextStyle(
+                              font: Helvetica_bold,
+                              fontSize: 12,
+                              color: PdfColors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              footerRegular('Telephone: +91-422-2312363, E-mail: support@ sporadasecure.com, Website: www.sporadasecure.com', 10),
+              // footerRegular('Telephone: +91-422-2312363, E-mail: sales@sporadasecure.com, Website: www.sporadasecure.com', 8),
+              // pw.SizedBox(height: 2),
+              // footerRegular('CIN: U30007TZ2020PTC03414  |  GSTIN: 33ABECS0625B1Z0', 8),
+            ],
+          ),
+        ),
+      ),
+    ]);
+  }
+
+  pw.Widget _buildRichSiteText(String combined) {
+    final parts = combined.split('||');
+    final siteName = parts[0];
+    final address = parts.length > 1 ? parts[1] : '';
+
+    return pw.RichText(
+      text: pw.TextSpan(
+        children: [
+          pw.TextSpan(
+            text: siteName,
+            style: pw.TextStyle(
+              font: Helvetica_bold,
+              fontSize: 10,
+              color: _darkColor,
+            ),
+          ),
+          pw.TextSpan(
+            text: '\n$address',
+            style: pw.TextStyle(
+              font: Helvetica,
+              fontSize: 10,
+              color: _darkColor,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

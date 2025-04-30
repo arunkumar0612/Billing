@@ -137,10 +137,10 @@ mixin SUBSCRIPTION_PostServices {
       PostInvoice subscriptionData = PostInvoice(
           siteIds: [], // Provide a valid list of integers
           subscriptionBillId: "0", // Provide a valid subscription bill ID
-          clientAddressName: pdfpopup_controller.pdfModel.value.clientName.value.text, // Provide client address name
-          clientAddress: pdfpopup_controller.pdfModel.value.clientAddress.value.text, // Provide client address
           billingAddressName: pdfpopup_controller.pdfModel.value.billingName.value.text, // Provide billing address name
-          billingAddress: pdfpopup_controller.pdfModel.value.billingAddres.value.text, // Provide billing address
+          billingAddress: pdfpopup_controller.pdfModel.value.billingAddress.value.text, // Provide billing address
+          installation_serviceAddressName: pdfpopup_controller.pdfModel.value.installation_serviceName.value.text, // Provide billing address name
+          installation_serviceAddress: pdfpopup_controller.pdfModel.value.installation_serviceAddres.value.text, // Provide billing address
           gst: pdfpopup_controller.pdfModel.value.customerGSTIN.value.text,
           planName: pdfpopup_controller.pdfModel.value.planname.value.text, // Provide the plan name
           emailId: pdfpopup_controller.pdfModel.value.Email.value.text, // Provide email ID

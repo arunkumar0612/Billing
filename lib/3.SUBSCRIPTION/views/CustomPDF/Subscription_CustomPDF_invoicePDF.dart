@@ -1018,27 +1018,30 @@ class Subscription_CustomPDF_InvoicePDF {
                             child: SizedBox(
                               height: 25,
                               child: TextFormField(
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black, height: 2.3),
-                                controller: pdfpopup_controller.pdfModel.value.previousdues.value,
-                                decoration: const InputDecoration(
-                                  errorStyle: TextStyle(height: -1, fontSize: 0),
-                                  contentPadding: EdgeInsets.only(bottom: 15),
-                                  // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                                  hintText: "100.00",
-                                  hintStyle: TextStyle(fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 136, 136, 136)),
-                                  // border: OutlineInputBorder(borderSide: BorderSide.none),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Primary_colors.Color3, width: 2),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                                  ],
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black, height: 2.3),
+                                  controller: pdfpopup_controller.pdfModel.value.previousdues.value,
+                                  decoration: const InputDecoration(
+                                    errorStyle: TextStyle(height: -1, fontSize: 0),
+                                    contentPadding: EdgeInsets.only(bottom: 15),
+                                    // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                                    hintText: "100.00",
+                                    hintStyle: TextStyle(fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 136, 136, 136)),
+                                    // border: OutlineInputBorder(borderSide: BorderSide.none),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Primary_colors.Color3, width: 2),
+                                    ),
                                   ),
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return '';
-                                  }
-                                  return null;
-                                },
-                              ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return '';
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) => pdfpopup_controller.totalcaculationTable()),
                             ),
                           ),
                         ),
@@ -1095,6 +1098,9 @@ class Subscription_CustomPDF_InvoicePDF {
                             child: SizedBox(
                               height: 25,
                               child: TextFormField(
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                                ],
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black, height: 2.3),
                                 controller: pdfpopup_controller.pdfModel.value.payment.value,
@@ -1114,6 +1120,9 @@ class Subscription_CustomPDF_InvoicePDF {
                                     return '';
                                   }
                                   return null;
+                                },
+                                onChanged: (value) {
+                                  pdfpopup_controller.totalcaculationTable();
                                 },
                               ),
                             ),
@@ -1171,6 +1180,9 @@ class Subscription_CustomPDF_InvoicePDF {
                             child: SizedBox(
                               height: 25,
                               child: TextFormField(
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                                ],
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black, height: 2.3),
                                 controller: pdfpopup_controller.pdfModel.value.adjustments_deduction.value,
@@ -1190,6 +1202,9 @@ class Subscription_CustomPDF_InvoicePDF {
                                     return '';
                                   }
                                   return null;
+                                },
+                                onChanged: (value) {
+                                  pdfpopup_controller.totalcaculationTable();
                                 },
                               ),
                             ),
@@ -1248,12 +1263,15 @@ class Subscription_CustomPDF_InvoicePDF {
                           padding: const EdgeInsets.all(8.0),
                           child: SizedBox(
                             // height: 25,
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              // '156745765476456000',
-                              pdfpopup_controller.pdfModel.value.Total.value.text,
-                              style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black, height: 2.3),
-                            ),
+                            child: Obx(() => Text(
+                                  pdfpopup_controller.pdfModel.value.Total.value.text,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: Primary_font_size.Text7,
+                                    color: Colors.black,
+                                    height: 2.3,
+                                  ),
+                                )),
                           ),
                         ),
                       ),
@@ -1305,12 +1323,15 @@ class Subscription_CustomPDF_InvoicePDF {
                           padding: const EdgeInsets.all(8.0),
                           child: SizedBox(
                             height: 25,
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              pdfpopup_controller.pdfModel.value.totaldueamount.value.text,
-                              // '156745765476456000',
-                              style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black, height: 2.3),
-                            ),
+                            child: Obx(() => Text(
+                                  pdfpopup_controller.pdfModel.value.totaldueamount.value.text,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: Primary_font_size.Text7,
+                                    color: Colors.black,
+                                    height: 2.3,
+                                  ),
+                                )),
                           ),
                         ),
                       ),
@@ -1343,11 +1364,15 @@ class Subscription_CustomPDF_InvoicePDF {
             child: Row(
               children: tableHeaders.map((header) {
                 return Expanded(
-                  // flex: header == "Description" ? 3 : 1,
-                  child: Text(
-                    header,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12, overflow: TextOverflow.ellipsis),
-                    textAlign: header == tableHeaders.last ? TextAlign.end : TextAlign.center,
+                  // flex: 2,
+                  flex: header == "✔" ? 1 : 2,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(
+                      header,
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12, overflow: TextOverflow.ellipsis),
+                      textAlign: header == tableHeaders.last ? TextAlign.end : TextAlign.center,
+                    ),
                   ),
                 );
               }).toList(),
@@ -1368,6 +1393,7 @@ class Subscription_CustomPDF_InvoicePDF {
                         children: [
                           // Checkbox Column
                           Expanded(
+                            flex: 1,
                             child: SizedBox(
                               width: 20,
                               child: Obx(
@@ -1386,16 +1412,17 @@ class Subscription_CustomPDF_InvoicePDF {
                           ...List.generate(
                             tableHeaders.length - 1,
                             (colIndex) {
-                              bool isNumericField = [5].contains(colIndex);
-
+                              // bool isNumericField = [5].contains(colIndex);
+                              // bool isNumericField = colIndex == 4;
                               return Expanded(
+                                flex: 2,
                                 // flex: colIndex == 1 ? 3 : 1, // Make "Description" column wider
                                 child: Padding(
-                                  padding: const EdgeInsets.only(right: 0),
+                                  padding: const EdgeInsets.only(left: 10),
                                   child: TextFormField(
-                                    maxLines: null,
+                                    // maxLines: null,
                                     controller: controller.pdfModel.value.textControllers[rowIndex][colIndex],
-                                    textAlign: isNumericField ? TextAlign.end : TextAlign.center,
+                                    textAlign: colIndex == 3 ? TextAlign.center : TextAlign.center,
                                     style: const TextStyle(fontSize: 12),
                                     onChanged: (value) {
                                       // if (!isTotalField) {
@@ -1404,8 +1431,8 @@ class Subscription_CustomPDF_InvoicePDF {
                                       // inst.assign_GSTtotals();
                                     },
                                     readOnly: false,
-                                    inputFormatters: isNumericField ? [FilteringTextInputFormatter.digitsOnly] : null,
-                                    keyboardType: isNumericField ? TextInputType.number : TextInputType.text,
+                                    inputFormatters: colIndex == 3 ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*'))] : null,
+                                    // keyboardType: colIndex == 4 ? TextInputType.number : TextInputType.text,
                                     decoration: InputDecoration(
                                       errorStyle: const TextStyle(height: -1, fontSize: 0),
                                       hintText: tableHeaders[colIndex + 1],

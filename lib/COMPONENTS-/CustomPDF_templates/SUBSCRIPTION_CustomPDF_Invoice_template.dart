@@ -112,9 +112,12 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
               left: 20,
               right: 20,
             ),
-            child: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? Local_tax_table(context) : others_tax_table(context),
+            child: Local_tax_table(context),
           ),
-          pw.SizedBox(height: 50),
+          pw.SizedBox(height: 10),
+          pw.Center(
+            child: regular('*** This is a system generated invoice hence do not require signature. ***', 12),
+          ),
           pw.Padding(
             padding: const pw.EdgeInsets.only(
               left: 20,
@@ -1227,154 +1230,10 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
         pw.SizedBox(width: 10),
         pw.Container(
           padding: const pw.EdgeInsets.only(bottom: 0, left: 0),
-          height: 170,
+          height: 205,
           // width: 180,
           child: pw.Image(secureshutterImage),
         ),
-      ],
-    );
-  }
-
-  pw.Widget others_tax_table(pw.Context context) {
-    return pw.Column(
-      children: [
-        pw.Row(
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
-          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-          children: [
-            pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
-              pw.Text('GST BREAKDOWN', style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, color: PdfColors.grey700)),
-              pw.SizedBox(height: 5),
-              pw.Container(
-                decoration: pw.BoxDecoration(border: pw.Border.all(color: PdfColors.grey700)),
-                // height: 200,
-                // width: 300, // Ensure the container has a defined width
-                child: pw.Column(
-                  // border: pw.TableBorder.all(color: PdfColors.grey700, width: 1),
-                  children: [
-                    pw.Row(
-                      children: [
-                        pw.Container(
-                          decoration: const pw.BoxDecoration(
-                            border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700)),
-                          ),
-                          height: 38,
-                          width: 80,
-                          child: pw.Center(
-                            child: pw.Text(
-                              "Taxable\nvalue",
-                              style: pw.TextStyle(
-                                font: Helvetica,
-
-                                fontSize: 10,
-                                color: PdfColors.grey700,
-                                // fontWeight: pw.FontWeight.bold,
-                              ),
-                              textAlign: pw.TextAlign.center, // Justifying the text
-                            ),
-                          ),
-                        ),
-                        pw.Container(
-                          height: 38,
-                          child: pw.Column(
-                            children: [
-                              pw.Container(
-                                width: 110,
-                                decoration: const pw.BoxDecoration(
-                                  border: pw.Border(right: pw.BorderSide(color: PdfColors.grey700)),
-                                ),
-                                height: 19, // Replace Expanded with defined height
-                                child: pw.Center(child: regular('IGST', 10)),
-                              ),
-                              pw.Container(
-                                height: 19, // Define height instead of Expanded
-                                child: pw.Row(
-                                  children: [
-                                    pw.Container(
-                                      width: 40, // Define width instead of Expanded
-                                      decoration: const pw.BoxDecoration(
-                                        border: pw.Border(top: pw.BorderSide(color: PdfColors.grey700), bottom: pw.BorderSide(color: PdfColors.grey700)),
-                                      ),
-                                      child: pw.Center(child: regular('%', 10)),
-                                    ),
-                                    pw.Container(
-                                      width: 70, // Define width instead of Expanded
-                                      decoration: const pw.BoxDecoration(
-                                        border: pw.Border(
-                                          right: pw.BorderSide(color: PdfColors.grey700),
-                                          top: pw.BorderSide(color: PdfColors.grey700),
-                                          left: pw.BorderSide(color: PdfColors.grey700),
-                                        ),
-                                      ),
-                                      child: pw.Center(child: regular('amount', 10)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    pw.Row(
-                      children: [
-                        pw.Container(
-                          decoration: const pw.BoxDecoration(
-                            border: pw.Border(
-                              right: pw.BorderSide(color: PdfColors.grey700),
-                              top: pw.BorderSide(color: PdfColors.grey700),
-                            ),
-                          ),
-                          width: 80,
-                          height: 38,
-                          child: pw.Center(child: regular(formatzero(instInvoice.finalCalc.subtotal), 10)),
-                        ),
-                        pw.Container(
-                          height: 38,
-                          child: pw.Row(
-                            children: [
-                              pw.Container(
-                                decoration: const pw.BoxDecoration(
-                                  border: pw.Border(
-                                    top: pw.BorderSide(color: PdfColors.grey700),
-                                  ),
-                                ),
-                                width: 40, // Define width instead of Expanded
-                                child: pw.Center(
-                                  child: regular((instInvoice.gstPercent).toString(), 10),
-                                ),
-                              ),
-                              pw.Container(
-                                width: 70, // Define width instead of Expanded
-                                decoration: const pw.BoxDecoration(
-                                  border: pw.Border(
-                                    right: pw.BorderSide(color: PdfColors.grey700),
-                                    top: pw.BorderSide(color: PdfColors.grey700),
-                                    left: pw.BorderSide(color: PdfColors.grey700),
-                                  ),
-                                ),
-                                child: pw.Center(
-                                  child: regular(
-                                      formatzero(
-                                        ((instInvoice.finalCalc.subtotal / 100) * (instInvoice.gstPercent)),
-                                      ),
-                                      10),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ]),
-            others_final_amount(context),
-          ],
-        ),
-        pw.SizedBox(height: 10),
-        notes(context),
       ],
     );
   }
@@ -1396,7 +1255,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                     pw.Container(
                       // width: 285,
                       height: 20,
-                      color: baseColor,
+                      color: const PdfColor.fromInt(0xFF808080),
                       child: pw.Row(
                         crossAxisAlignment: pw.CrossAxisAlignment.center,
                         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -1408,7 +1267,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                                 // top: 3,
                                 left: 10,
                               ),
-                              child: pw.Text('Current summary of Charges', style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, color: PdfColors.white)),
+                              child: pw.Center(child: pw.Text('Current summary of Charges', style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, color: PdfColors.white))),
                             ),
                           ),
                           // pw.Expanded(
@@ -1480,7 +1339,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                         pw.Container(
                           // width: 285,
                           height: 20,
-                          color: baseColor,
+                          color: const PdfColor.fromInt(0xFF808080),
                           child: pw.Row(
                             crossAxisAlignment: pw.CrossAxisAlignment.center,
                             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -1557,7 +1416,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
           ),
         ),
         pw.Container(
-          height: 120,
+          height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 120 : 100,
           // width: 185, // Define width to ensure bounded constraints
           decoration: pw.BoxDecoration(borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)), border: pw.Border.all(color: _darkColor, width: 1)),
           child: pw.Row(
@@ -1570,7 +1429,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                     pw.Container(
                       // width: 285,
                       height: 20,
-                      color: baseColor,
+                      color: const PdfColor.fromInt(0xFF808080),
                       child: pw.Row(
                         crossAxisAlignment: pw.CrossAxisAlignment.center,
                         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -1582,7 +1441,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                                 // top: 3,
                                 left: 10,
                               ),
-                              child: pw.Text('Current summary of Charges', style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, color: PdfColors.white)),
+                              child: pw.Center(child: pw.Text('Taxes', style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, color: PdfColors.white))),
                             ),
                           ),
                           // pw.Expanded(
@@ -1604,19 +1463,22 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                     pw.Padding(
                       padding: const pw.EdgeInsets.only(left: 10, right: 10),
                       child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
-                        bold('CGST       :', 10),
+                        isGST_Local(instInvoice.customerAccountDetails.customerGSTIN)
+                            ? bold('CGST - ${(instInvoice.gstPercent / 2).toString()} %', 10)
+                            : bold('IGST - ${(instInvoice.gstPercent).toString()} %', 10),
                         // regular(formatzero(instInvoice.finalCalc.cgst), 10),
                       ]),
                     ),
-                    pw.Divider(color: accentColor),
+                    if (isGST_Local(instInvoice.customerAccountDetails.customerGSTIN)) pw.Divider(color: accentColor),
                     // pw.SizedBox(height: 8),
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.only(left: 10, right: 10),
-                      child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
-                        bold('SGST       :', 10),
-                        // regular(formatzero(instInvoice.finalCalc.sgst), 10),
-                      ]),
-                    ),
+                    if (isGST_Local(instInvoice.customerAccountDetails.customerGSTIN))
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.only(left: 10, right: 10),
+                        child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+                          bold('SGST - ${(instInvoice.gstPercent / 2).toString()} %', 10),
+                          // regular(formatzero(instInvoice.finalCalc.sgst), 10),
+                        ]),
+                      ),
                     pw.Divider(color: accentColor),
                     // pw.SizedBox(height: 8),
                     pw.Padding(
@@ -1630,7 +1492,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                     pw.Padding(
                       padding: const pw.EdgeInsets.only(left: 10, right: 10),
                       child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
-                        bold('Total', 12),
+                        bold('Total Current Charges', 12),
                         // bold("Rs.${formatCurrencyRoundedPaisa(instInvoice.finalCalc.total)}", 12),
                       ]),
                     ),
@@ -1653,7 +1515,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                         pw.Container(
                           // width: 285,
                           height: 20,
-                          color: baseColor,
+                          color: const PdfColor.fromInt(0xFF808080),
                           child: pw.Row(
                             crossAxisAlignment: pw.CrossAxisAlignment.center,
                             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -1675,7 +1537,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                                     // top: 3,
                                     left: 10,
                                   ),
-                                  child: pw.Text('Amount', style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, color: PdfColors.white)),
+                                  child: pw.Text('', style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, color: PdfColors.white)),
                                 ),
                               )
                             ],
@@ -1688,18 +1550,19 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                           padding: const pw.EdgeInsets.only(left: 10, right: 10),
                           child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
                             // regular('CGST       :', 10),
-                            bold(formatzero(instInvoice.finalCalc.cgst), 10),
+                            isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? bold(formatzero(instInvoice.finalCalc.cgst), 10) : bold(formatzero(instInvoice.finalCalc.igst), 10),
                           ]),
                         ),
-                        pw.Divider(color: accentColor),
+                        if (isGST_Local(instInvoice.customerAccountDetails.customerGSTIN)) pw.Divider(color: accentColor),
                         // pw.SizedBox(height: 8),
-                        pw.Padding(
-                          padding: const pw.EdgeInsets.only(left: 10, right: 10),
-                          child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
-                            // regular('SGST       :', 10),
-                            bold(formatzero(instInvoice.finalCalc.sgst), 10),
-                          ]),
-                        ),
+                        if (isGST_Local(instInvoice.customerAccountDetails.customerGSTIN))
+                          pw.Padding(
+                            padding: const pw.EdgeInsets.only(left: 10, right: 10),
+                            child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+                              // regular('SGST       :', 10),
+                              bold(formatzero(instInvoice.finalCalc.sgst), 10),
+                            ]),
+                          ),
                         pw.Divider(color: accentColor),
                         // pw.SizedBox(height: 8),
                         pw.Padding(
@@ -1729,117 +1592,6 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
             ],
           ),
         )
-      ],
-    );
-  }
-
-  pw.Widget others_final_amount(pw.Context context) {
-    return pw.Container(
-      width: 185, // Define width to ensure bounded constraints
-      child: pw.Column(
-        mainAxisAlignment: pw.MainAxisAlignment.start,
-        children: [
-          pw.Container(
-            // width: 285,
-            height: 20,
-            decoration: pw.BoxDecoration(borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)), color: baseColor, border: pw.Border.all(color: baseColor, width: 1)),
-            child: pw.Row(
-              crossAxisAlignment: pw.CrossAxisAlignment.center,
-              children: [
-                pw.Padding(
-                  padding: const pw.EdgeInsets.only(
-                    // top: 3,
-                    left: 10,
-                  ),
-                  child: pw.Text('CURRENT MONTH SUMMARY', style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, color: PdfColors.white)),
-                ),
-              ],
-            ),
-          ),
-          pw.SizedBox(height: 8),
-          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('Sub total   :', 10), regular(formatzero(instInvoice.finalCalc.subtotal), 10)]),
-          pw.SizedBox(height: 8),
-          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('IGST       :', 10), regular(formatzero(instInvoice.finalCalc.igst), 10)]),
-          // pw.SizedBox(height: 8),
-          // pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('SGST       :', 10), regular(formatzero(instInvoice.finalCalc.sgst), 10)]),
-          pw.SizedBox(height: 8),
-          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('Round off : ${instInvoice.finalCalc.differene}', 10), regular(instInvoice.finalCalc.roundOff, 10)]),
-          pw.Divider(color: accentColor),
-          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('Total', 12), regular("Rs.${formatCurrencyRoundedPaisa(instInvoice.finalCalc.total)}", 12)]),
-          // pw.SizedBox(height: 8),
-          // pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('Pending', 12), regular("Rs. ${instInvoice.finalCalc.pendingAmount.toString()}", 12)]),
-          // pw.SizedBox(height: 8),
-          // pw.Divider(color: accentColor),
-          // pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [bold('Grand Total', 12), bold("Rs. ${formatCurrencyRoundedPaisa(instInvoice.finalCalc.grandTotal)}", 12)]),
-        ],
-      ),
-    );
-  }
-
-  pw.Widget notes(pw.Context context) {
-    return pw.Row(
-      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
-      children: [
-        pw.Container(
-          width: 280,
-          child: pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.SizedBox(height: 5),
-              // pw.SizedBox(height: 30),
-              pw.Padding(child: bold("Note", 12), padding: const pw.EdgeInsets.only(left: 0, bottom: 10)),
-              ...List.generate(instInvoice.notes.length, (index) {
-                return pw.Padding(
-                  padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
-                  child: pw.Row(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    children: [
-                      regular("${index + 1}.", 10),
-                      pw.SizedBox(width: 5),
-                      pw.Expanded(
-                        child: pw.Text(instInvoice.notes[index], textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: PdfColors.blueGrey800)),
-                      ),
-                    ],
-                  ),
-                );
-              }),
-              pw.Padding(
-                padding: const pw.EdgeInsets.only(left: 0, top: 5),
-                child: pw.Row(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    regular("${instInvoice.notes.length + 1}.", 10),
-                    pw.SizedBox(width: 5),
-                    pw.Expanded(
-                      child: pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: [
-                          bold("Bank Account Details:", 10),
-                          pw.SizedBox(height: 5), // Adds a small space between the lines
-                          pw.Row(children: [regular("Current a/c:", 10), pw.SizedBox(width: 5), regular("257399850001", 10)]),
-                          pw.SizedBox(height: 5),
-                          pw.Row(children: [regular("IFSC code:", 10), pw.SizedBox(width: 5), regular("INDB0000521", 10)]),
-                          pw.SizedBox(height: 5),
-                          pw.Row(children: [regular("Bank name:", 10), pw.SizedBox(width: 5), regular(": IndusInd Bank Limited", 10)]),
-                          pw.SizedBox(height: 5),
-                          pw.Row(children: [regular("Branch name:", 10), pw.SizedBox(width: 5), regular("R.S. Puram, Coimbatore.", 10)]),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        pw.SizedBox(width: 90),
-        pw.Container(
-          padding: const pw.EdgeInsets.only(bottom: 0, left: 0),
-          height: 155,
-          width: 200,
-          child: pw.Image(secureshutterImage),
-        ),
       ],
     );
   }

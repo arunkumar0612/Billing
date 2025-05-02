@@ -160,7 +160,7 @@ mixin SUBSCRIPTION_ClientreqNoteService {
         if (value.code) {
           loader.stop();
           await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
-          Navigator.of(context).pop(true);
+           Navigator.of(context).pop(true);
           clientreqController.resetData();
         } else {
           loader.stop();

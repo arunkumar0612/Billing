@@ -53,6 +53,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
   }
 
   void resetAll() {
+    subscriptionController.resetData();
     subscription_clientreqController.resetData();
     pdfpopup_controller.resetData();
     quoteController.resetData();

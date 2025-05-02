@@ -19,7 +19,7 @@ Future<Uint8List> generate_Dc(PdfPageFormat pageFormat, products, client_addr_na
     bill_addr: bill_addr,
     dc_num: dc_num ?? "",
     invoice_num: invoice_num ?? "",
-    GSTIN:GSTIN,
+    GSTIN: GSTIN,
     type: '',
   );
 
@@ -27,22 +27,22 @@ Future<Uint8List> generate_Dc(PdfPageFormat pageFormat, products, client_addr_na
 }
 
 class Delivery_challan {
-  Delivery_challan({
-    required this.products,
-    required this.GST,
-    required this.baseColor,
-    required this.accentColor,
-    required this.client_addr_name,
-    required this.client_addr,
-    required this.bill_addr_name,
-    required this.bill_addr,
-    required this.dc_num,
-    required this.invoice_num,
-    required this.type,
-    required this.GSTIN
+  Delivery_challan(
+      {required this.products,
+      required this.GST,
+      required this.baseColor,
+      required this.accentColor,
+      required this.client_addr_name,
+      required this.client_addr,
+      required this.bill_addr_name,
+      required this.bill_addr,
+      required this.dc_num,
+      required this.invoice_num,
+      required this.type,
+      required this.GSTIN
 
-    // required this.items,
-  });
+      // required this.items,
+      });
   final DcController dcController = Get.find<DcController>();
 
   String client_addr_name = "";
@@ -52,7 +52,7 @@ class Delivery_challan {
   String dc_num = "";
   String invoice_num = '';
   String type = "";
-  String GSTIN="";
+  String GSTIN = "";
 
   final List<DcProduct> products;
   final double GST;
@@ -356,12 +356,22 @@ class Delivery_challan {
       ),
       headerHeight: 22,
       cellHeight: 30,
-      cellAlignments: {
-        0: pw.Alignment.centerLeft,
-        1: pw.Alignment.centerLeft,
-        2: pw.Alignment.centerLeft,
-        3: pw.Alignment.center,
+
+      // ✅ FlexColumnWidth added
+      columnWidths: {
+        0: const pw.FlexColumnWidth(1), // S.No (small)
+        1: const pw.FlexColumnWidth(5), // Item Description (big)
+        2: const pw.FlexColumnWidth(2), // HSN (medium)
+        3: const pw.FlexColumnWidth(2), // Quantity (medium)
       },
+
+      cellAlignments: {
+        0: pw.Alignment.center, // S.No center
+        1: pw.Alignment.centerLeft, // Item Description left
+        2: pw.Alignment.center, // HSN center
+        3: pw.Alignment.center, // Quantity center
+      },
+
       headerStyle: pw.TextStyle(
         font: Helvetica_bold,
         color: PdfColors.white,
@@ -373,24 +383,30 @@ class Delivery_challan {
         color: _darkColor,
         fontSize: 10,
       ),
+
       cellDecoration: (int rowIndex, dynamic cellData, int colIndex) {
-        // Apply different colors for even and odd columns
         return pw.BoxDecoration(
           color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
         );
       },
-      // rowDecoration: pw.BoxDecoration(
-      //   border: pw.Border(
-      //     bottom: pw.BorderSide(
-      //       color: accentColor,
-      //       width: .5,
-      //     ),
-      //   ),
-      // ),
+
+      // Optional Row Border (uncomment if needed)
+      /*
+    rowDecoration: pw.BoxDecoration(
+      border: pw.Border(
+        bottom: pw.BorderSide(
+          color: accentColor,
+          width: 0.5,
+        ),
+      ),
+    ),
+    */
+
       headers: List<String>.generate(
         tableHeaders.length,
         (col) => tableHeaders[col],
       ),
+
       data: List<List<String>>.generate(
         products.length,
         (row) => List<String>.generate(

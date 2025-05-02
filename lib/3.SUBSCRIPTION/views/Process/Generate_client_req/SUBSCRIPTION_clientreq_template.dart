@@ -239,18 +239,23 @@ class SUBSCRIPTION_Client_requirement {
       ),
       headerHeight: 22,
       cellHeight: 30,
+
+      // ✅ Column Widths (Flex system)
       columnWidths: {
-        0: const pw.FlexColumnWidth(1), // S.No (Smaller width)
-        1: const pw.FlexColumnWidth(3), // Site Name
-        2: const pw.FlexColumnWidth(2), // Camera Quantity
-        3: const pw.FlexColumnWidth(4), // Site Address (Wider)
+        0: const pw.FlexColumnWidth(1), // S.No (small)
+        1: const pw.FlexColumnWidth(3), // Site Name (larger)
+        2: const pw.FlexColumnWidth(2), // Camera Quantity (medium)
+        3: const pw.FlexColumnWidth(4), // Site Address (widest)
       },
+
+      // ✅ Cell Alignments
       cellAlignments: {
-        0: pw.Alignment.center, // Align numbers to center
-        1: pw.Alignment.centerLeft,
-        2: pw.Alignment.center, // Align quantity to center
-        3: pw.Alignment.centerLeft,
+        0: pw.Alignment.center, // S.No - Center
+        1: pw.Alignment.centerLeft, // Site Name - Left
+        2: pw.Alignment.center, // Camera Quantity - Center
+        3: pw.Alignment.centerLeft, // Site Address - Left
       },
+
       headerStyle: pw.TextStyle(
         font: Helvetica_bold,
         color: PdfColors.white,
@@ -262,24 +267,32 @@ class SUBSCRIPTION_Client_requirement {
         color: _darkColor,
         fontSize: 10,
       ),
+
+      // ✅ Optional Cell Decoration
       cellDecoration: (int rowIndex, dynamic cellData, int colIndex) {
-        // Apply different colors for even and odd columns
         return pw.BoxDecoration(
           color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
         );
       },
-      // rowDecoration: pw.BoxDecoration(
-      //   border: pw.Border(
-      //     bottom: pw.BorderSide(
-      //       color: accentColor,
-      //       width: .5,
-      //     ),
-      //   ),
-      // ),
+
+      // ✅ Row Decoration (Optional)
+      // If you want bottom border, uncomment below:
+      /*
+    rowDecoration: pw.BoxDecoration(
+      border: pw.Border(
+        bottom: pw.BorderSide(
+          color: accentColor,
+          width: 0.5,
+        ),
+      ),
+    ),
+    */
+
       headers: List<String>.generate(
         tableHeaders.length,
         (col) => tableHeaders[col],
       ),
+
       data: List<List<String>>.generate(
         sites.length,
         (row) => [

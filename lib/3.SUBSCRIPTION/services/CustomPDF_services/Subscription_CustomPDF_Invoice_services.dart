@@ -37,11 +37,11 @@ class SUBSCRIPTION_CustomPDF_Services {
             planCharges: pdfpopup_controller.pdfModel.value.plancharges.value.text,
             internetCharges: double.tryParse(pdfpopup_controller.pdfModel.value.internetcharges.value.text) ?? 0.0,
             billPeriod: pdfpopup_controller.pdfModel.value.billperiod.value.text,
-            billDate: pdfpopup_controller.pdfModel.value.billdate.value.text,
+            // billDate: pdfpopup_controller.pdfModel.value.billdate.value.text,
             dueDate: pdfpopup_controller.pdfModel.value.duedate.value.text),
         customerAccountDetails: CustomerAccountDetails(
             relationshipId: pdfpopup_controller.pdfModel.value.relationshipID.value.text,
-            billNumber: pdfpopup_controller.pdfModel.value.billnumber.value.text,
+            // billNumber: pdfpopup_controller.pdfModel.value.billnumber.value.text,
             customerGSTIN: pdfpopup_controller.pdfModel.value.customerGSTIN.value.text,
             hsnSacCode: pdfpopup_controller.pdfModel.value.HSNcode.value.text,
             customerPO: pdfpopup_controller.pdfModel.value.customerPO.value.text,

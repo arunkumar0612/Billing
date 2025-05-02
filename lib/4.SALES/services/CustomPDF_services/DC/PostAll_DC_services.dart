@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
+import 'package:ssipl_billing/4.SALES/controllers/Sales_actions.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entities.dart';
 import 'package:ssipl_billing/API-/api.dart';
 import 'package:ssipl_billing/API-/invoker.dart';
@@ -23,6 +24,8 @@ mixin PostServices {
   final CustomPDF_DcController pdfpopup_controller = Get.find<CustomPDF_DcController>();
   final loader = LoadingOverlay();
   final Invoker apiController = Get.find<Invoker>();
+  final SalesController salesController = Get.find<SalesController>();
+
   void animation_control() async {
     // await Future.delayed(const Duration(milliseconds: 200));
     pdfpopup_controller.setpdfLoading(false);
@@ -169,6 +172,33 @@ mixin PostServices {
     }
   }
 
+  Future<void> Get_salesCustomPDFLsit() async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_salesCustompdf);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          salesController.addToCustompdfList(value);
+        } else {
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
+          // await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
+        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("error : $e");
+      }
+      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
+
   dynamic send_data(context, String jsonData, File file) async {
     try {
       Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.add_salesCustomDc);
@@ -182,6 +212,7 @@ mixin PostServices {
             content: value.message!,
             onOk: () {},
           );
+          Get_salesCustomPDFLsit();
           // Navigator.of(context).pop(true);
           // pdfpopup_controller.pdfModel.value.resetData();
         } else {

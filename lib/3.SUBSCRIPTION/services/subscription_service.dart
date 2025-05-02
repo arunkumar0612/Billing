@@ -996,11 +996,13 @@ mixin SubscriptionServices {
     _subscriptionController.updateshowcustomerprocess(null);
     _subscriptionController.updatecustomerId(0);
     await Get_RecurringInvoiceList(null);
+    await GetProcessList(0);
     await GetProcesscustomerList();
     await GetReccuredcustomerList();
     await get_CompanyList();
-    await GetProcessList(0);
+
     await GetSubscriptionData(_subscriptionController.subscriptionModel.subscriptionperiod.value);
+    await Get_subscriptionCustomPDFLsit();
   }
 
   int fetch_messageType() {

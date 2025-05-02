@@ -871,6 +871,8 @@ mixin SalesServices {
     await GetSalesData(salesController.salesModel.salesperiod.value);
     await Get_salesCustomPDFLsit();
     await Get_salesProcessList(0);
+    Get_salesCustomPDFLsit();
+
     salesController.update();
   }
 

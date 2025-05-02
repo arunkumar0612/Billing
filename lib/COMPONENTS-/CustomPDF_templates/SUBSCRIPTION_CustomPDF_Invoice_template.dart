@@ -276,29 +276,29 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                   ),
                 ],
               ),
-              pw.SizedBox(height: 4),
-              pw.Row(
-                children: [
-                  pw.Expanded(
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text('Bill date', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
-                    ),
-                  ),
-                  pw.Expanded(
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text(
-                        // '01 / 01 / 2025',
-                        instInvoice.billPlanDetails.billDate,
-                        textAlign: pw.TextAlign.start,
-                        style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
-                        softWrap: true, // Ensure text wraps within the container
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // pw.SizedBox(height: 4),
+              // pw.Row(
+              //   children: [
+              //     pw.Expanded(
+              //       child: pw.Padding(
+              //         padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+              //         child: pw.Text('Bill date', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
+              //       ),
+              //     ),
+              //     pw.Expanded(
+              //       child: pw.Padding(
+              //         padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+              //         child: pw.Text(
+              //           // '01 / 01 / 2025',
+              //           instInvoice.billPlanDetails.billDate,
+              //           textAlign: pw.TextAlign.start,
+              //           style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
+              //           softWrap: true, // Ensure text wraps within the container
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               pw.SizedBox(height: 4),
               pw.Row(
                 children: [
@@ -371,29 +371,29 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                 ],
               ),
               pw.SizedBox(height: 4),
-              pw.Row(
-                children: [
-                  pw.Expanded(
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text('Bill number', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
-                    ),
-                  ),
-                  pw.Expanded(
-                    child: pw.Padding(
-                      padding: const pw.EdgeInsets.symmetric(horizontal: 10),
-                      child: pw.Text(
-                        // 'KVCIAR/250101',
-                        instInvoice.customerAccountDetails.billNumber,
-                        textAlign: pw.TextAlign.start,
-                        style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
-                        softWrap: true, // Ensure text wraps within the container
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              pw.SizedBox(height: 4),
+              // pw.Row(
+              //   children: [
+              //     pw.Expanded(
+              //       child: pw.Padding(
+              //         padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+              //         child: pw.Text('Bill number', textAlign: pw.TextAlign.start, style: pw.TextStyle(font: Helvetica_bold, fontSize: 10, lineSpacing: 2, color: _darkColor), softWrap: true),
+              //       ),
+              //     ),
+              //     pw.Expanded(
+              //       child: pw.Padding(
+              //         padding: const pw.EdgeInsets.symmetric(horizontal: 10),
+              //         child: pw.Text(
+              //           // 'KVCIAR/250101',
+              //           instInvoice.customerAccountDetails.billNumber,
+              //           textAlign: pw.TextAlign.start,
+              //           style: pw.TextStyle(font: Helvetica, fontSize: 8, lineSpacing: 3, color: _darkColor),
+              //           softWrap: true, // Ensure text wraps within the container
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // pw.SizedBox(height: 4),
               pw.Row(
                 children: [
                   pw.Expanded(
@@ -1327,7 +1327,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
         children: [
           pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('Sub total   :', 10), regular(formatzero(instInvoice.finalCalc.subtotal), 10)]),
           pw.SizedBox(height: 8),
-          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('IGST       :', 10), regular(formatzero(instInvoice.finalCalc.cgst), 10)]),
+          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('IGST       :', 10), regular(formatzero(instInvoice.finalCalc.igst), 10)]),
           // pw.SizedBox(height: 8),
           // pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('SGST       :', 10), regular(formatzero(instInvoice.finalCalc.sgst), 10)]),
           pw.SizedBox(height: 8),

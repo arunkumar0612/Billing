@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:math';
-import 'package:lottie/lottie.dart';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:animations/animations.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:ssipl_billing/4.SALES/controllers/ClientReq_actions.dart';
 import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
 import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
@@ -2670,9 +2671,11 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                         ),
                         Expanded(
                           flex: 5,
-                          child: Text(
-                            'path',
-                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                          child: Center(
+                            child: Text(
+                              'path',
+                              style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text8, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
 

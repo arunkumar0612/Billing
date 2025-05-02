@@ -1,13 +1,18 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/models/constants/Sales_constants.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/Sales_entities.dart';
+import 'package:ssipl_billing/API-/api.dart';
+import 'package:ssipl_billing/API-/invoker.dart';
 
 import '../../COMPONENTS-/Response_entities.dart';
 
 class SalesController extends GetxController {
   var salesModel = SalesModel();
+  final Invoker apiController = Get.find<Invoker>();
+  // final SalesController salesController = Get.find<SalesController>();
   var salesfilteredModel = SalesModel();
   void addToCustomerList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
@@ -155,6 +160,32 @@ class SalesController extends GetxController {
     salesModel.CCemailController.value.clear();
   }
 
+  Future<void> Get_salesCustomPDFLsit() async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_salesCustompdf);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          addToCustompdfList(value);
+        } else {
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
+          // await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
+        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("error : $e");
+      }
+      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
   // void resetData() {
   //   // salesModel.customerList.clear();
   //   // salesModel.processList.clear();

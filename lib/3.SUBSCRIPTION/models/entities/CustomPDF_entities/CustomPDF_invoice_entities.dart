@@ -84,7 +84,7 @@ class BillPlanDetails {
   final String planCharges;
   final double internetCharges;
   final String billPeriod;
-  final String billDate;
+  // final String billDate;
   final String dueDate;
 
   BillPlanDetails({
@@ -93,7 +93,7 @@ class BillPlanDetails {
     required this.planCharges,
     required this.internetCharges,
     required this.billPeriod,
-    required this.billDate,
+    // required this.billDate,
     required this.dueDate,
   });
 
@@ -105,20 +105,28 @@ class BillPlanDetails {
       planCharges: json['planCharges'] as String,
       internetCharges: (json['internetCharges'] as num).toDouble(),
       billPeriod: json['billPeriod'] as String,
-      billDate: json['billDate'] as String,
+      // billDate: json['billDate'] as String,
       dueDate: json['dueDate'] as String,
     );
   }
 
   // Convert BillPlanDetails object to JSON
   Map<String, dynamic> toJson() {
-    return {'planName': planName, 'customerType': customerType, 'planCharges': planCharges, 'internetCharges': internetCharges, 'billPeriod': billPeriod, 'billDate': billDate, 'dueDate': dueDate};
+    return {
+      'planName': planName,
+      'customerType': customerType,
+      'planCharges': planCharges,
+      'internetCharges': internetCharges,
+      'billPeriod': billPeriod,
+      // 'billDate': billDate,
+      'dueDate': dueDate,
+    };
   }
 }
 
 class CustomerAccountDetails {
   final String relationshipId;
-  final String billNumber;
+  // final String billNumber;
   final String customerGSTIN;
   final String hsnSacCode;
   final String customerPO;
@@ -127,7 +135,7 @@ class CustomerAccountDetails {
 
   CustomerAccountDetails({
     required this.relationshipId,
-    required this.billNumber,
+    // required this.billNumber,
     required this.customerGSTIN,
     required this.hsnSacCode,
     required this.customerPO,
@@ -139,7 +147,7 @@ class CustomerAccountDetails {
   factory CustomerAccountDetails.fromJson(Map<String, dynamic> json) {
     return CustomerAccountDetails(
       relationshipId: json['relationshipId'] as String,
-      billNumber: json['billNumber'] as String,
+      // billNumber: json['billNumber'] as String,
       customerGSTIN: json['customerGSTIN'] as String,
       hsnSacCode: json['hsnSacCode'] as String,
       customerPO: json['customerPO'] as String,
@@ -152,7 +160,7 @@ class CustomerAccountDetails {
   Map<String, dynamic> toJson() {
     return {
       'relationshipId': relationshipId,
-      'billNumber': billNumber,
+      // 'billNumber': billNumber,
       'customerGSTIN': customerGSTIN,
       'hsnSacCode': hsnSacCode,
       'customerPO': customerPO,

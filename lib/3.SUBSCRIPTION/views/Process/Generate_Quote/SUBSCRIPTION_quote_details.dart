@@ -175,12 +175,14 @@ class _SUBSCRIPTION_QuoteDetailsState extends State<SUBSCRIPTION_QuoteDetails> {
                           ],
                         )),
                     const SizedBox(height: 25),
-                    const SizedBox(
+                    SizedBox(
                       width: 660,
                       child: Text(
                         textAlign: TextAlign.center,
-                        'The approved Quotation shown beside can be used as a reference for generating the Quote. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
-                        style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
+                        widget.eventtype == 'revisedquotation' ?
+                        'The Quotation shown beside can be used as a reference for generating the Quote. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.'
+                        : 'The client request shown beside can be used as a reference for generating the Quote. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
+                        style: const TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                       ),
                     )
                   ],

@@ -354,6 +354,12 @@ class Quotation {
       ),
       headerHeight: 22,
       cellHeight: 30,
+      columnWidths: {
+        0: const pw.FlexColumnWidth(1), // S.No
+        1: const pw.FlexColumnWidth(5), // Item Description
+        2: const pw.FlexColumnWidth(3), // HSN
+        3: const pw.FlexColumnWidth(2), // Quantity
+      },
       cellAlignments: {
         0: pw.Alignment.centerLeft,
         1: pw.Alignment.centerLeft,
@@ -372,29 +378,19 @@ class Quotation {
         fontSize: 10,
       ),
       cellDecoration: (int rowIndex, dynamic cellData, int colIndex) {
-        // Apply different colors for even and odd columns
         return pw.BoxDecoration(
           color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
         );
       },
-      // rowDecoration: pw.BoxDecoration(
-      //   border: pw.Border(
-      //     bottom: pw.BorderSide(
-      //       color: accentColor,
-      //       width: .5,
-      //     ),
-      //   ),
-      // ),
-      headers: List<String>.generate(
-        tableHeaders.length,
-        (col) => tableHeaders[col],
-      ),
+      headers: tableHeaders,
       data: List<List<String>>.generate(
         products.length,
-        (row) => List<String>.generate(
-          tableHeaders.length,
-          (col) => products[row].getIndex(col),
-        ),
+        (row) => [
+          products[row].getIndex(0),
+          products[row].getIndex(1),
+          products[row].getIndex(2),
+          products[row].getIndex(3),
+        ],
       ),
     );
   }

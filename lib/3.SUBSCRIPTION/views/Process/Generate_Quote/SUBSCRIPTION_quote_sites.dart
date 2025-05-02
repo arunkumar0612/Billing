@@ -296,7 +296,7 @@ class _SUBSCRIPTION_QuoteSitesState extends State<SUBSCRIPTION_QuoteSites> {
                             // width: 750,
                             child: Text(
                               textAlign: TextAlign.center,
-                              "The client requirement Site details play a crucial role in the procurement process. Please ensure accuracy when entering Site names and quantities, as these details directly impact order processing, inventory management, and subsequent workflows.",
+                              "Site details in quotation  play a crucial role in the procurement process. Please ensure accuracy when entering Site names and camera quantities, as these details directly impact order processing, inventory management, and subsequent workflows.",
                               style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                             ),
                           )

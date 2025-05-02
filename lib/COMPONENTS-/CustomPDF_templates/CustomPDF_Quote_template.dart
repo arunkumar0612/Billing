@@ -339,7 +339,7 @@ class Quotation {
   }
 
   pw.Widget _contentTable(pw.Context context) {
-    const tableHeaders = ['S.No', 'Item Description', 'HSN', ' GST', 'Price   ', 'Quantity', 'Total   '];
+    const tableHeaders = ['S.No', 'Item Description', 'HSN', 'GST', 'Price', 'Quantity', 'Total'];
 
     return pw.TableHelper.fromTextArray(
       border: null,
@@ -371,19 +371,11 @@ class Quotation {
         fontSize: 10,
       ),
       cellDecoration: (int rowIndex, dynamic cellData, int colIndex) {
-        // Apply different colors for even and odd columns
         return pw.BoxDecoration(
           color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
         );
       },
-      // rowDecoration: pw.BoxDecoration(
-      //   border: pw.Border(
-      //     bottom: pw.BorderSide(
-      //       color: accentColor,
-      //       width: .5,
-      //     ),
-      //   ),
-      // ),
+      // Row decoration can be added if required (border or background styling)
       headers: List<String>.generate(
         tableHeaders.length,
         (col) => tableHeaders[col],
@@ -395,6 +387,15 @@ class Quotation {
           (col) => products[row].getIndex(col),
         ),
       ),
+      columnWidths: {
+        0: const pw.FlexColumnWidth(1), // S.No (narrow column)
+        1: const pw.FlexColumnWidth(3), // Item Description (wider column)
+        2: const pw.FlexColumnWidth(2), // HSN (medium width)
+        3: const pw.FlexColumnWidth(1.5), // GST (narrow column)
+        4: const pw.FlexColumnWidth(2), // Price (medium width)
+        5: const pw.FlexColumnWidth(1.5), // Quantity (narrow column)
+        6: const pw.FlexColumnWidth(2), // Total (medium width)
+      },
     );
   }
 

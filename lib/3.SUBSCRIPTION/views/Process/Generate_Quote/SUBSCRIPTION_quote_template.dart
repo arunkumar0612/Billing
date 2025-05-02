@@ -44,7 +44,7 @@ class SUBSCRIPTION_Quotation {
         header: header,
         build: (context) => [
           // pw.SizedBox(height: 10),
-          // title(context),
+          GSTIN(context),
           pw.SizedBox(height: 10),
           _contentTable(context),
           pw.SizedBox(height: 20),
@@ -295,78 +295,91 @@ class SUBSCRIPTION_Quotation {
     );
   }
 
-  // pw.Widget title(pw.Context context) {
-  //   return pw.Center(child: bold(instQuote., 12));
-  // }
+  pw.Widget GSTIN(pw.Context context) {
+    return pw.Center(child: bold(instQuote.GSTIN, 12));
+  }
 
   pw.Widget _contentTable(pw.Context context) {
     const tableHeaders = ['S.No', 'Site', 'Address', 'Cameras', 'Package', 'Price', 'GST%', 'Total Price'];
 
     return pw.TableHelper.fromTextArray(
-        border: null,
-        cellAlignment: pw.Alignment.centerLeft,
-        headerDecoration: pw.BoxDecoration(
-          borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)),
-          color: baseColor,
-        ),
-        headerHeight: 22,
-        headerAlignments: {
-          0: pw.Alignment.centerLeft,
-          1: pw.Alignment.centerLeft,
-          2: pw.Alignment.centerLeft,
-          3: pw.Alignment.center,
-          4: pw.Alignment.centerLeft,
-          5: pw.Alignment.center,
-          6: pw.Alignment.center,
-          7: pw.Alignment.centerRight,
-        },
-        cellHeight: 30,
-        cellAlignments: {
-          0: pw.Alignment.centerLeft,
-          1: pw.Alignment.centerLeft,
-          2: pw.Alignment.centerLeft,
-          3: pw.Alignment.center,
-          4: pw.Alignment.centerLeft,
-          5: pw.Alignment.center,
-          6: pw.Alignment.center,
-          7: pw.Alignment.centerRight,
-        },
-        headerStyle: pw.TextStyle(
-          font: Helvetica_bold,
-          color: PdfColors.white,
-          fontSize: 10,
-          fontWeight: pw.FontWeight.bold,
-        ),
-        cellStyle: pw.TextStyle(
-          font: Helvetica,
-          color: _darkColor,
-          fontSize: 10,
-        ),
-        cellDecoration: (int rowIndex, dynamic cellData, int colIndex) {
-          // Apply different colors for even and odd columns
-          return pw.BoxDecoration(
-            color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
-          );
-        },
-        rowDecoration: pw.BoxDecoration(
-          border: pw.Border(
-            bottom: pw.BorderSide(
-              color: accentColor,
-              width: .5,
-            ),
-          ),
-        ),
-        headers: List<String>.generate(
+      border: null,
+      cellAlignment: pw.Alignment.centerLeft,
+      headerDecoration: pw.BoxDecoration(
+        borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)),
+        color: baseColor,
+      ),
+      headerHeight: 22,
+      headerAlignments: {
+        0: pw.Alignment.centerLeft,
+        1: pw.Alignment.centerLeft,
+        2: pw.Alignment.centerLeft,
+        3: pw.Alignment.center,
+        4: pw.Alignment.centerLeft,
+        5: pw.Alignment.center,
+        6: pw.Alignment.center,
+        7: pw.Alignment.centerRight,
+      },
+      cellHeight: 30,
+      cellAlignments: {
+        0: pw.Alignment.centerLeft,
+        1: pw.Alignment.centerLeft,
+        2: pw.Alignment.centerLeft,
+        3: pw.Alignment.center,
+        4: pw.Alignment.centerLeft,
+        5: pw.Alignment.center,
+        6: pw.Alignment.center,
+        7: pw.Alignment.centerRight,
+      },
+      headerStyle: pw.TextStyle(
+        font: Helvetica_bold,
+        color: PdfColors.white,
+        fontSize: 10,
+        fontWeight: pw.FontWeight.bold,
+      ),
+      cellStyle: pw.TextStyle(
+        font: Helvetica,
+        color: _darkColor,
+        fontSize: 10,
+      ),
+      cellDecoration: (int rowIndex, dynamic cellData, int colIndex) {
+        return pw.BoxDecoration(
+          color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
+        );
+      },
+      // rowDecoration: pw.BoxDecoration(
+      //   border: pw.Border(
+      //     bottom: pw.BorderSide(
+      //       color: accentColor,
+      //       width: .5,
+      //     ),
+      //   ),
+      // ),
+
+      headers: List<String>.generate(
+        tableHeaders.length,
+        (col) => tableHeaders[col],
+      ),
+      data: List<List<String>>.generate(
+        instQuote.siteData.length,
+        (row) => List<String>.generate(
           tableHeaders.length,
-          (col) => tableHeaders[col],
+          (col) => instQuote.getIndex(col, row),
         ),
-        data: List<List<String>>.generate(
-          instQuote.siteData.length,
-          (row) => List<String>.generate(
-            tableHeaders.length,
-            (col) => instQuote.getIndex(col, row), // Use `row` as the index here
-          ),
-        ));
+      ),
+
+      // 👇 ADD THIS for flex control
+      columnWidths: {
+        0: const pw.FlexColumnWidth(1), // S.No (small)
+        1: const pw.FlexColumnWidth(2), // Site (medium)
+        2: const pw.FlexColumnWidth(3), // Address (larger)
+        3: const pw.FlexColumnWidth(1.5), // Cameras
+        4: const pw.FlexColumnWidth(2), // Package
+        5: const pw.FlexColumnWidth(1.5), // Price
+        6: const pw.FlexColumnWidth(1), // GST%
+        7: const pw.FlexColumnWidth(2), // Total Price
+      },
+    );
   }
 
   pw.Widget Local_tax_table(pw.Context context) {
@@ -1035,7 +1048,7 @@ class SUBSCRIPTION_Quotation {
         children: [
           pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('Sub total   :', 10), regular(formatzero(instQuote.finalCalc.subtotal), 10)]),
           pw.SizedBox(height: 8),
-          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('IGST       :', 10), regular(formatzero(instQuote.finalCalc.cgst), 10)]),
+          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('IGST       :', 10), regular(formatzero(instQuote.finalCalc.igst), 10)]),
           // pw.SizedBox(height: 8),
           // pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [regular('SGST       :', 10), regular(formatzero(instQuote.finalCalc.sgst), 10)]),
           pw.SizedBox(height: 8),
@@ -1065,7 +1078,7 @@ class SUBSCRIPTION_Quotation {
           ),
           ...List.generate(quoteController.quoteModel.Quote_noteList.length, (index) {
             return pw.Padding(
-              padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
+              padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 5),
               child: pw.Row(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
@@ -1088,7 +1101,7 @@ class SUBSCRIPTION_Quotation {
             );
           }),
           pw.Padding(
-            padding: const pw.EdgeInsets.only(left: 0, top: 5),
+            padding: const pw.EdgeInsets.only(left: 0, top: 7),
             child: pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
@@ -1147,7 +1160,7 @@ class SUBSCRIPTION_Quotation {
           ),
           if (quoteController.quoteModel.Quote_recommendationList.isNotEmpty)
             pw.Padding(
-              padding: const pw.EdgeInsets.only(left: 0, top: 5),
+              padding: const pw.EdgeInsets.only(left: 0, top: 7),
               child: pw.Row(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
@@ -1157,14 +1170,14 @@ class SUBSCRIPTION_Quotation {
                     child: pw.Column(
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
-                        bold(quoteController.quoteModel.Quote_table_heading.value, 10),
+                        bold(quoteController.quoteModel.recommendationHeadingController.value.text, 10),
                         ...quoteController.quoteModel.Quote_recommendationList.map((recommendation) {
                           return pw.Padding(
                             padding: const pw.EdgeInsets.only(left: 5, top: 5),
                             child: pw.Row(
                               children: [
                                 pw.Container(
-                                  width: 120,
+                                  width:80,
                                   child: regular(recommendation.key.toString(), 10),
                                 ),
                                 regular(":", 10),

@@ -453,6 +453,7 @@ class _SUBSCRIPTION_ClientreqNoteState extends State<SUBSCRIPTION_ClientreqNote>
                                 onPressed: () async {
                                   // showLoading(context, () => widget.postData(context, widget.customer_type));
                                   await widget.postData(context, widget.customer_type);
+                                  await Future.delayed(const Duration(milliseconds: 1000));
                                 },
                               ),
                           ],

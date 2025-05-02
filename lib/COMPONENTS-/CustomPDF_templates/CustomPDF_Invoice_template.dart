@@ -341,7 +341,7 @@ class MaualInvoiceTemplate {
   }
 
   pw.Widget _contentTable(pw.Context context) {
-    const tableHeaders = ['S.No', 'Item Description', 'HSN', ' GST', 'Price   ', 'Quantity', 'Total   '];
+    const tableHeaders = ['S.No', 'Item Description', 'HSN', 'GST', 'Price', 'Quantity', 'Total'];
 
     return pw.TableHelper.fromTextArray(
       border: null,
@@ -373,23 +373,33 @@ class MaualInvoiceTemplate {
         fontSize: 10,
       ),
       cellDecoration: (int rowIndex, dynamic cellData, int colIndex) {
-        // Apply different colors for even and odd columns
         return pw.BoxDecoration(
           color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
         );
       },
-      // rowDecoration: pw.BoxDecoration(
-      //   border: pw.Border(
-      //     bottom: pw.BorderSide(
-      //       color: accentColor,
-      //       width: .5,
+      // rowDecoration: (int rowIndex, dynamic rowData) {
+      //   // Apply a thin border at the bottom of each row
+      //   return pw.BoxDecoration(
+      //     border: pw.Border(
+      //       bottom: pw.BorderSide(
+      //         color: PdfColors.grey,
+      //         width: 0.5,
+      //       ),
       //     ),
-      //   ),
-      // ),
-      headers: List<String>.generate(
-        tableHeaders.length,
-        (col) => tableHeaders[col],
-      ),
+      //     // Special styling for the last row (for totals or summary)
+      //     color: rowIndex == products.length - 1 ? PdfColors.blue50 : PdfColors.transparent,
+      //   );
+      // },
+      columnWidths: {
+        0: const pw.FlexColumnWidth(1), // S.No (narrow)
+        1: const pw.FlexColumnWidth(3), // Item Description (wider)
+        2: const pw.FlexColumnWidth(2), // HSN (medium)
+        3: const pw.FlexColumnWidth(1.5), // GST (narrow)
+        4: const pw.FlexColumnWidth(2), // Price (medium)
+        5: const pw.FlexColumnWidth(1.5), // Quantity (narrow)
+        6: const pw.FlexColumnWidth(2), // Total (medium)
+      },
+      headers: tableHeaders,
       data: List<List<String>>.generate(
         products.length,
         (row) => List<String>.generate(

@@ -925,14 +925,14 @@ class _BillingState extends State<Billing> {
                                               children: [
                                                 _buildIconWithLabel(
                                                     icon: Icons.book_outlined,
-                                                    label: 'View Ledger',
+                                                    label: 'Ledgers',
                                                     color: Primary_colors.Color4,
                                                     onPressed: () {
                                                       Navigator.of(context).push(
                                                         _createCustomPageRoute(() => const ViewLedger()),
                                                       );
                                                     }),
-                                                _buildIconWithLabel(icon: Icons.receipt_long_outlined, label: 'View Transaction', color: Primary_colors.Color5, onPressed: () {}),
+                                                _buildIconWithLabel(icon: Icons.receipt_long_outlined, label: 'Vouchers', color: Primary_colors.Color5, onPressed: () {}),
                                               ],
                                             ),
                                             const SizedBox(height: 20),

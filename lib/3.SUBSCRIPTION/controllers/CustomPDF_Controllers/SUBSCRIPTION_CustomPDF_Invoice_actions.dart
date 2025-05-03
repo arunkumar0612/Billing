@@ -127,11 +127,6 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
   void updateCell(int rowIndex, int colIndex, dynamic value) {
     final site = pdfModel.value.manualInvoicesites[rowIndex];
 
-    // Allow only numeric values for specific columns
-    if ([0, 2, 3, 4, 5].contains(colIndex) && !RegExp(r'^[0-9]*$').hasMatch(value)) {
-      return;
-    }
-
     switch (colIndex) {
       case 0:
         site.serialNo = value;
@@ -145,8 +140,14 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
       case 3:
         site.address = value;
         break;
-      case 4:
-        site.monthlyCharges = int.parse(value);
+      case 4: // Monthly Charges (numeric)
+        if (value.isEmpty) {
+          site.monthlyCharges = 0.0; // Default value
+        } else {
+          // Use `double.tryParse` for decimals, or `int.tryParse` for whole numbers
+          final parsedValue = double.tryParse(value) ?? 0.0;
+          site.monthlyCharges = parsedValue;
+        }
         break;
     }
 

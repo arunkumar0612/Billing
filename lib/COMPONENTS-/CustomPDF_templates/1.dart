@@ -75,7 +75,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
           //   ),
           // ),
 
-          pw.SizedBox(height: 15),
+          pw.SizedBox(height: 10),
           pw.Padding(
             padding: const pw.EdgeInsets.only(
               left: 20,
@@ -105,7 +105,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
             ),
             child: pw.Container(child: account_details(context)),
           ),
-          pw.SizedBox(height: 15),
+          pw.SizedBox(height: 10),
           pw.Padding(
             padding: const pw.EdgeInsets.only(
               left: 20,
@@ -113,7 +113,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
             ),
             child: TotalcaculationTable(),
           ),
-          pw.SizedBox(height: 15),
+          pw.SizedBox(height: 10),
           // tax_table(context),
           pw.Padding(
             padding: const pw.EdgeInsets.only(
@@ -122,7 +122,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
             ),
             child: Local_tax_table(context),
           ),
-          pw.SizedBox(height: 15),
+          pw.SizedBox(height: 10),
           pw.Padding(
             padding: const pw.EdgeInsets.only(
               left: 20,
@@ -146,7 +146,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                   ]),
                 )),
           ),
-          pw.SizedBox(height: 15),
+          pw.SizedBox(height: 10),
           pw.Center(
             child: regular('*** This is a system generated invoice hence do not require signature. ***', 10),
           ),
@@ -187,7 +187,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                 crossAxisAlignment: pw.CrossAxisAlignment.end,
                 children: [
                   pw.Container(
-                    padding: const pw.EdgeInsets.only(bottom: 0, left: 2),
+                    padding: const pw.EdgeInsets.only(bottom: 0, left: 0),
                     height: 90,
                     child: pw.Image(profileImage),
                   ),
@@ -690,8 +690,18 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
 
   pw.Widget to_addr(pw.Context context) {
     // Calculate approximate height needed for each side
+    final leftContentHeight = _calculateContentHeight(
+      instInvoice.addressDetails.billingName,
+      instInvoice.addressDetails.billingAddress,
+    );
+
+    final rightContentHeight = _calculateContentHeight(
+      instInvoice.addressDetails.installation_serviceName,
+      instInvoice.addressDetails.installation_serviceAddress,
+    );
 
     // Use the larger height
+    final containerHeight = (leftContentHeight > rightContentHeight ? leftContentHeight : rightContentHeight);
 
     return pw.Row(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -699,7 +709,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
       children: [
         pw.Expanded(
           child: pw.SizedBox(
-            height: 120,
+            height: containerHeight,
             child: pw.Container(
               decoration: pw.BoxDecoration(
                 borderRadius: const pw.BorderRadius.all(pw.Radius.circular(1)),
@@ -716,7 +726,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
         pw.SizedBox(width: 20),
         pw.Expanded(
           child: pw.SizedBox(
-            height: 120,
+            height: containerHeight,
             child: pw.Container(
               decoration: pw.BoxDecoration(
                 borderRadius: const pw.BorderRadius.all(pw.Radius.circular(1)),
@@ -747,18 +757,13 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
           height: 20,
           color: baseColor,
           child: pw.Center(
-            child: pw.Row(
-              children: [
-                pw.SizedBox(width: 10),
-                pw.Text(
-                  title,
-                  style: pw.TextStyle(
-                    font: Helvetica_bold,
-                    fontSize: 10,
-                    color: PdfColors.white,
-                  ),
-                ),
-              ],
+            child: pw.Text(
+              title,
+              style: pw.TextStyle(
+                font: Helvetica_bold,
+                fontSize: 10,
+                color: PdfColors.white,
+              ),
             ),
           ),
         ),
@@ -793,6 +798,14 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
   }
 
 // Helper function to estimate content height
+  double _calculateContentHeight(String name, String address) {
+    // Simple estimation - adjust these values based on your font sizes and line spacing
+    final nameLines = (name.length / 40).ceil(); // ~30 chars per line
+    final addressLines = (address.length / 40).ceil(); // ~40 chars per line
+
+    // 20px for header, 10px padding, 10px per line of text
+    return 20 + 10 + (nameLines * 10) + 20 + (addressLines * 10) + 10;
+  }
 
   // pw.Widget title(pw.Context context) {
   //   return pw.Center(child: bold("GSTIN : $GST", 12));
@@ -800,6 +813,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
 
   pw.Widget contentTable(pw.Context context) {
     const tableHeaders = ['S.No', 'SITE NAME & ADDRESS', 'CUSTOMER ID', 'MONTHLY CHARGES'];
+
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -1314,7 +1328,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                   mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
                   children: [
                     pw.Container(
-                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                       color: baseColor,
                       child: pw.Row(
                         crossAxisAlignment: pw.CrossAxisAlignment.center,
@@ -1334,7 +1348,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                       ),
                     ),
                     pw.Container(
-                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                       decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide(width: 0.5))),
                       child: pw.Padding(
                         padding: const pw.EdgeInsets.only(left: 10),
@@ -1348,7 +1362,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                       ),
                     ),
                     pw.Container(
-                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                       decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide(width: 0.5))),
                       child: pw.Padding(
                         padding: const pw.EdgeInsets.only(left: 10),
@@ -1361,7 +1375,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                       ),
                     ),
                     pw.Container(
-                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                       decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide(width: 0.5))),
                       child: pw.Padding(
                         padding: const pw.EdgeInsets.only(left: 10),
@@ -1374,7 +1388,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                       ),
                     ),
                     pw.Container(
-                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                       decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide(width: 0.5))),
                       child: pw.Padding(
                         padding: const pw.EdgeInsets.only(left: 10),
@@ -1385,7 +1399,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                       ),
                     ),
                     pw.Container(
-                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                       color: baseColor,
                       child: pw.Row(
                         crossAxisAlignment: pw.CrossAxisAlignment.center,
@@ -1405,7 +1419,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                       ),
                     ),
                     pw.Container(
-                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                       decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide(width: 0.5))),
                       child: pw.Padding(
                         padding: const pw.EdgeInsets.only(left: 10),
@@ -1422,7 +1436,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                     ),
                     if (isGST_Local(instInvoice.customerAccountDetails.customerGSTIN))
                       pw.Container(
-                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                         decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide(width: 0.5))),
                         child: pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 10),
@@ -1435,7 +1449,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                         ),
                       ),
                     pw.Container(
-                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                       decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide(width: 0.5))),
                       child: pw.Padding(
                         padding: const pw.EdgeInsets.only(left: 10),
@@ -1448,7 +1462,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                       ),
                     ),
                     pw.Container(
-                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                      height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                       // decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide())),
                       child: pw.Padding(
                         padding: const pw.EdgeInsets.only(left: 10),
@@ -1469,7 +1483,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                     mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
                     children: [
                       pw.Container(
-                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                         color: baseColor,
                         child: pw.Row(
                           crossAxisAlignment: pw.CrossAxisAlignment.center,
@@ -1489,7 +1503,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                         ),
                       ),
                       pw.Container(
-                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                         decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide(width: 0.5))),
                         child: pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 10),
@@ -1503,7 +1517,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                         ),
                       ),
                       pw.Container(
-                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                         decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide(width: 0.5))),
                         child: pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 10),
@@ -1516,7 +1530,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                         ),
                       ),
                       pw.Container(
-                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                         decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide(width: 0.5))),
                         child: pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 10),
@@ -1529,7 +1543,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                         ),
                       ),
                       pw.Container(
-                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                         decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide(width: 0.5))),
                         child: pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 10),
@@ -1542,7 +1556,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                         ),
                       ),
                       pw.Container(
-                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                         color: baseColor,
                         child: pw.Row(
                           crossAxisAlignment: pw.CrossAxisAlignment.center,
@@ -1564,7 +1578,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                         ),
                       ),
                       pw.Container(
-                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                         decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide(width: 0.5))),
                         child: pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 10),
@@ -1579,7 +1593,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                       ),
                       if (isGST_Local(instInvoice.customerAccountDetails.customerGSTIN))
                         pw.Container(
-                          height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                          height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                           decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide(width: 0.5))),
                           child: pw.Padding(
                             padding: const pw.EdgeInsets.only(left: 10),
@@ -1592,7 +1606,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                           ),
                         ),
                       pw.Container(
-                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                         decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide(width: 0.5))),
                         child: pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 10),
@@ -1605,7 +1619,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                         ),
                       ),
                       pw.Container(
-                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 20,
+                        height: isGST_Local(instInvoice.customerAccountDetails.customerGSTIN) ? 18 : 23,
                         // decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide())),
                         child: pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 10),

@@ -55,7 +55,7 @@ class Subscription_CustomPDF_InvoicePDF {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         BasicButton(
-                                          text: "Add Site",
+                                          text: "Add product",
                                           colors: const Color.fromARGB(202, 33, 149, 243),
                                           onPressed: () {
                                             pdfpopup_controller.addRow();
@@ -1413,7 +1413,7 @@ class Subscription_CustomPDF_InvoicePDF {
                             tableHeaders.length - 1,
                             (colIndex) {
                               // bool isNumericField = [5].contains(colIndex);
-                              // bool isNumericField = colIndex == 4;
+                              bool isMonthlyCharge = colIndex == 4;
                               return Expanded(
                                 flex: 2,
                                 // flex: colIndex == 1 ? 3 : 1, // Make "Description" column wider
@@ -1426,12 +1426,14 @@ class Subscription_CustomPDF_InvoicePDF {
                                     onChanged: (value) {
                                       controller.updateCell(rowIndex, colIndex, value);
                                     },
-                                    // keyboardType: TextInputType.numberWithOptions(decimal: true), // Allow decimals
-                                    // inputFormatters: colIndex == 4
-                                    //     ? [
-                                    //         FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')), // Allow 2 decimal places
-                                    //       ]
-                                    //     : null,
+                                    keyboardType: isMonthlyCharge ? const TextInputType.numberWithOptions(decimal: true) : TextInputType.text, // Allow decimals
+                                    inputFormatters: isMonthlyCharge ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}'))] : null,
+                                    onTap: () {
+                                      final controller = pdfpopup_controller.pdfModel.value.textControllers[rowIndex][colIndex];
+                                      controller.selection = TextSelection.collapsed(
+                                        offset: controller.text.length,
+                                      );
+                                    },
                                     decoration: InputDecoration(
                                       errorStyle: const TextStyle(height: -1, fontSize: 0),
                                       hintText: tableHeaders[colIndex + 1],

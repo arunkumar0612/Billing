@@ -18,6 +18,7 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     initializeCheckboxes();
     add_Note();
     finalCalc();
+    totalcaculationTable();
   }
 
   void initializeCheckboxes() {
@@ -124,35 +125,33 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     pdfModel.refresh();
   }
 
-  void updateCell(int rowIndex, int colIndex, dynamic value) {
+  void updateCell(int rowIndex, int colIndex, String value) {
     final site = pdfModel.value.manualInvoicesites[rowIndex];
 
     switch (colIndex) {
-      case 0:
+      case 0: // S.No
         site.serialNo = value;
         break;
-      case 1:
+      case 1: // Site ID
         site.siteID = value;
         break;
-      case 2:
+      case 2: // Site Name
         site.siteName = value;
         break;
-      case 3:
+      case 3: // Address
         site.address = value;
         break;
-      case 4: // Monthly Charges (numeric)
-        if (value.isEmpty) {
-          site.monthlyCharges = 0.0; // Default value
-        } else {
-          // Use `double.tryParse` for decimals, or `int.tryParse` for whole numbers
-          final parsedValue = double.tryParse(value) ?? 0.0;
-          site.monthlyCharges = parsedValue;
-        }
+      case 4: // Monthly Charges
+        final parsedValue = double.tryParse(value) ?? 0.0;
+        site.monthlyCharges = parsedValue;
+        // Don't update the controller text here to avoid cursor jumping
         break;
     }
 
+    // Only recalculate if monthly charges changed
     if (colIndex == 4) {
-      calculateTotal(rowIndex);
+      finalCalc();
+      totalcaculationTable();
     }
 
     pdfModel.refresh();
@@ -166,6 +165,7 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     site.monthlyCharges = newTotal;
     pdfModel.value.textControllers[rowIndex][4].text = newTotal.toString();
     finalCalc();
+    totalcaculationTable();
     pdfModel.refresh();
   }
 
@@ -210,22 +210,24 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.roundOff.value.text = formatCurrencyRoundedPaisa(addedRoundoff);
     pdfModel.value.roundoffDiff.value = calculateFormattedDifference(addedRoundoff);
     pdfModel.value.Total.value.text = formatCurrencyRoundedPaisa(addedRoundoff);
-    // totalcaculationTable();
+    totalcaculationTable();
     pdfModel.refresh();
   }
 
   void totalcaculationTable() {
-    final previousdues = double.tryParse(pdfModel.value.previousdues.value.text) ?? 0;
-    final payment = double.tryParse(pdfModel.value.payment.value.text) ?? 0;
-    final adjustments = double.tryParse(pdfModel.value.adjustments_deduction.value.text) ?? 0;
-    final currentcharges = double.tryParse(pdfModel.value.Total.value.text) ?? 0;
+    // Parse values with proper error handling
+    final previousdues = double.tryParse(pdfModel.value.previousdues.value.text.replaceAll(',', '')) ?? 0;
+    final payment = double.tryParse(pdfModel.value.payment.value.text.replaceAll(',', '')) ?? 0;
+    final adjustments = double.tryParse(pdfModel.value.adjustments_deduction.value.text.replaceAll(',', '')) ?? 0;
+    final currentcharges = double.tryParse(pdfModel.value.Total.value.text.replaceAll(',', '')) ?? 0;
 
-    final total = (previousdues - payment + adjustments + currentcharges).toStringAsFixed(2);
+    // Calculate total with proper rounding
+    final total = (previousdues - payment + adjustments + currentcharges);
 
-    // Update the value - make sure totaldueamount is a TextEditingController
-    pdfModel.value.totaldueamount.value.text = total;
+    // Format the result properly
+    pdfModel.value.totaldueamount.value.text = formatCurrency(total); // Or total.toStringAsFixed(2)
 
-    // Force UI update
+    // Update UI
     pdfModel.refresh();
   }
 
@@ -238,6 +240,7 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
       }
     }
     finalCalc();
+    totalcaculationTable();
     pdfModel.refresh(); // Ensure UI updates
   }
 

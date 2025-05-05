@@ -21,7 +21,7 @@ class Site {
         siteName: json['sitename'] as String, // Fix key casing
         address: json['address'] as String,
         siteID: json['customerid'] as String,
-        monthlyCharges: (json['monthlycharges'] as num).toDouble(),
+        monthlyCharges: json['monthlycharges'] as double,
       );
     }).toList();
   }

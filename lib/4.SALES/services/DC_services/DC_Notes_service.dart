@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -150,7 +149,6 @@ mixin DcnotesService {
       dcController.dcModel.Dc_no.value,
       dcController.dcModel.invRef_no.value,
       dcController.dcModel.gstNumController.value.text,
-      9,
     );
 
     Directory tempDir = await getTemporaryDirectory();

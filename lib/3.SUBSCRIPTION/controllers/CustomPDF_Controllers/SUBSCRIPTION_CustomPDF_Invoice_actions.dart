@@ -146,7 +146,7 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
         site.address = value;
         break;
       case 4:
-        site.monthlyCharges = value.isNotEmpty ? int.parse(value) : 0;
+        site.monthlyCharges = int.parse(value);
         break;
     }
 
@@ -209,7 +209,22 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.roundOff.value.text = formatCurrencyRoundedPaisa(addedRoundoff);
     pdfModel.value.roundoffDiff.value = calculateFormattedDifference(addedRoundoff);
     pdfModel.value.Total.value.text = formatCurrencyRoundedPaisa(addedRoundoff);
+    // totalcaculationTable();
+    pdfModel.refresh();
+  }
 
+  void totalcaculationTable() {
+    final previousdues = double.tryParse(pdfModel.value.previousdues.value.text) ?? 0;
+    final payment = double.tryParse(pdfModel.value.payment.value.text) ?? 0;
+    final adjustments = double.tryParse(pdfModel.value.adjustments_deduction.value.text) ?? 0;
+    final currentcharges = double.tryParse(pdfModel.value.Total.value.text) ?? 0;
+
+    final total = (previousdues - payment + adjustments + currentcharges).toStringAsFixed(2);
+
+    // Update the value - make sure totaldueamount is a TextEditingController
+    pdfModel.value.totaldueamount.value.text = total;
+
+    // Force UI update
     pdfModel.refresh();
   }
 
@@ -240,8 +255,8 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
   // void resetData() {
   //   pdfModel.value.date.value.clear();
   //   pdfModel.value.manualinvoiceNo.value.clear();
-  //   pdfModel.value.clientName.value.clear();
-  //   pdfModel.value.clientAddress.value.clear();
+  //   pdfModel.value.billingName.value.clear();
+  //   pdfModel.value.billingAddress.value.clear();
   //   pdfModel.value.billingName.value.clear();
   //   pdfModel.value.billingAddres.value.clear();
   //   pdfModel.value.phoneNumber.value.clear();
@@ -285,10 +300,10 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
   // }
 
   bool postDatavalidation() {
-    return (pdfModel.value.clientName.value.text.isEmpty ||
-        pdfModel.value.clientAddress.value.text.isEmpty ||
-        pdfModel.value.billingName.value.text.isEmpty ||
-        pdfModel.value.billingAddres.value.text.isEmpty ||
+    return (pdfModel.value.billingName.value.text.isEmpty ||
+        pdfModel.value.billingAddress.value.text.isEmpty ||
+        pdfModel.value.installation_serviceName.value.text.isEmpty ||
+        pdfModel.value.installation_serviceAddres.value.text.isEmpty ||
         pdfModel.value.planname.value.text.isEmpty ||
         (pdfModel.value.gmail_selectionStatus.value && pdfModel.value.Email.value.text.isEmpty) ||
         (pdfModel.value.whatsapp_selectionStatus.value && pdfModel.value.phoneNumber.value.text.isEmpty) ||
@@ -300,10 +315,10 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
   void resetData() {
     pdfModel.value.date.value.clear();
     pdfModel.value.manualinvoiceNo.value.clear();
-    pdfModel.value.clientName.value.clear();
-    pdfModel.value.clientAddress.value.clear();
     pdfModel.value.billingName.value.clear();
-    pdfModel.value.billingAddres.value.clear();
+    pdfModel.value.billingAddress.value.clear();
+    pdfModel.value.installation_serviceName.value.clear();
+    pdfModel.value.installation_serviceAddres.value.clear();
     pdfModel.value.phoneNumber.value.clear();
     pdfModel.value.Email.value.clear();
     pdfModel.value.feedback.value.clear();
@@ -328,7 +343,11 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.HSNcode.value.clear();
     pdfModel.value.contactperson.value.clear();
     pdfModel.value.contactnumber.value.clear();
-
+    pdfModel.value.previousdues.value.clear();
+    pdfModel.value.payment.value.clear();
+    pdfModel.value.adjustments_deduction.value.clear();
+    pdfModel.value.totaldueamount.value.clear();
+    pdfModel.value.ispendingamount.value = false;
     pdfModel.value.roundoffDiff.value = null;
 
     // Clear individual note controllers

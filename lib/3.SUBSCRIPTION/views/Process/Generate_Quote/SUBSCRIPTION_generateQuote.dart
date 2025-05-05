@@ -30,8 +30,8 @@ class _SUBSCRIPTION_GenerateQuoteState extends State<SUBSCRIPTION_GenerateQuote>
     super.initState();
     // SUBSCRIPTION_GenerateQuote._tabController = ;
     quoteController.initializeTabController(TabController(length: 5, vsync: this));
-    widget.get_requiredData(context, widget.quoteType, widget.eventID);
     widget.get_CompanyBasedPackages(context, quoteController.quoteModel.companyid.value);
+    widget.get_requiredData(context, widget.quoteType, widget.eventID);
   }
 
   @override

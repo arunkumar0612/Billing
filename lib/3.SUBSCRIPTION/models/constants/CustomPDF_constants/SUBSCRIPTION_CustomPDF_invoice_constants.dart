@@ -8,10 +8,10 @@ import '../../entities/CustomPDF_entities/CustomPDF_invoice_entities.dart';
 class SUBSCRIPTION_CustomPDF_InvoiceModel {
   final date = TextEditingController().obs;
   final manualinvoiceNo = TextEditingController().obs;
-  final clientName = TextEditingController().obs;
-  final clientAddress = TextEditingController().obs;
   final billingName = TextEditingController().obs;
-  final billingAddres = TextEditingController().obs;
+  final billingAddress = TextEditingController().obs;
+  final installation_serviceName = TextEditingController().obs;
+  final installation_serviceAddres = TextEditingController().obs;
   final phoneNumber = TextEditingController().obs;
   final Email = TextEditingController().obs;
   final feedback = TextEditingController().obs;
@@ -38,7 +38,11 @@ class SUBSCRIPTION_CustomPDF_InvoiceModel {
   final HSNcode = TextEditingController().obs;
   final contactperson = TextEditingController().obs;
   final contactnumber = TextEditingController().obs;
-
+  final previousdues = TextEditingController().obs;
+  final payment = TextEditingController().obs;
+  final adjustments_deduction = TextEditingController().obs;
+  var ispendingamount = false.obs;
+  final totaldueamount = TextEditingController().obs;
   var roundoffDiff = Rxn<String>();
   var textControllers = <List<TextEditingController>>[].obs;
   // var manualInvoice_gstTotals = <SUBSCRIPTION_invoiceInvoiceGSTtotals>[].obs;

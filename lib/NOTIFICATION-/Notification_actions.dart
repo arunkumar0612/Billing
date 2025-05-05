@@ -219,7 +219,7 @@ class NotificationController extends GetxController {
     final context = Get.context;
     if (topic == "Notification") {
       if (context != null) {
-        // await Refresher().refreshAll(context);
+        // await Refresher().refreshAll();
       }
       if (!notificationModel.notifications.contains(message)) {
         notificationModel.notifications.add(message);

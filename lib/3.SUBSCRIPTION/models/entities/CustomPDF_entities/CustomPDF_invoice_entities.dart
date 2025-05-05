@@ -41,12 +41,11 @@ class Site {
       case 0:
         return serialNo;
       case 1:
-        return siteID;
+        return "$siteName||$address"; // Using '||' as a separator
+
       case 2:
-        return siteName;
+        return "KVROHAR";
       case 3:
-        return address;
-      case 4:
         return monthlyCharges;
       default:
         return "";
@@ -55,26 +54,26 @@ class Site {
 }
 
 class Address {
-  final String clientName;
-  final String clientAddress;
   final String billingName;
   final String billingAddress;
+  final String installation_serviceName;
+  final String installation_serviceAddress;
 
-  Address({required this.clientName, required this.clientAddress, required this.billingName, required this.billingAddress});
+  Address({required this.billingName, required this.billingAddress, required this.installation_serviceName, required this.installation_serviceAddress});
 
   // Convert JSON to Address object
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
-      clientName: json['clientName'] as String,
-      clientAddress: json['clientAddress'] as String,
       billingName: json['billingName'] as String,
       billingAddress: json['billingAddress'] as String,
+      installation_serviceName: json['installation_serviceName'] as String,
+      installation_serviceAddress: json['installation_serviceAddress'] as String,
     );
   }
 
   // Convert Address object to JSON
   Map<String, dynamic> toJson() {
-    return {'clientName': clientName, 'clientAddress': clientAddress, 'billingName': billingName, 'billingAddress': billingAddress};
+    return {'billingName': billingName, 'billingAddress': billingAddress, 'installation_serviceName': installation_serviceName, 'installation_serviceAddress': installation_serviceAddress};
   }
 }
 
@@ -170,6 +169,31 @@ class CustomerAccountDetails {
   }
 }
 
+class TotalcaculationTable {
+  final String previousdues;
+  final String payment;
+  final String adjustments_deduction;
+  final String currentcharges;
+  final String totalamountdue;
+  TotalcaculationTable({required this.previousdues, required this.payment, required this.adjustments_deduction, required this.currentcharges, required this.totalamountdue});
+
+  // Convert JSON to Address object
+  factory TotalcaculationTable.fromJson(Map<String, dynamic> json) {
+    return TotalcaculationTable(
+      previousdues: json['previousdues'] as String,
+      payment: json['payment'] as String,
+      adjustments_deduction: json['adjustments_deduction'] as String,
+      currentcharges: json['currentcharges'] as String,
+      totalamountdue: json['totalamountdue'] as String,
+    );
+  }
+
+  // Convert Address object to JSON
+  Map<String, dynamic> toJson() {
+    return {'previousdues': previousdues, 'payment': payment, 'adjustments_deduction': adjustments_deduction, 'currentcharges': currentcharges, 'totalamountdue': totalamountdue};
+  }
+}
+
 class SUBSCRIPTION_Custom_Invoice {
   final String date;
   final String invoiceNo;
@@ -182,6 +206,8 @@ class SUBSCRIPTION_Custom_Invoice {
   final FinalCalculation finalCalc;
   final List<String> notes;
   final List<PendingInvoices> pendingInvoices;
+  final TotalcaculationTable totalcaculationtable;
+  final bool ispendingamount;
   SUBSCRIPTION_Custom_Invoice({
     required this.date,
     required this.invoiceNo,
@@ -194,6 +220,8 @@ class SUBSCRIPTION_Custom_Invoice {
     required this.finalCalc,
     required this.notes,
     required this.pendingInvoices,
+    required this.totalcaculationtable,
+    required this.ispendingamount,
   });
 
   // Convert JSON to Invoice object
@@ -210,6 +238,8 @@ class SUBSCRIPTION_Custom_Invoice {
       finalCalc: FinalCalculation.fromJson(Site.fromJson(List<Map<String, dynamic>>.from(json['siteData'])), json['gstPercent'] as int, json['pendingAmount'] as double),
       notes: ['This is a sample note', 'This is another sample note'],
       pendingInvoices: [],
+      totalcaculationtable: TotalcaculationTable.fromJson(json['totalcaculationtable']),
+      ispendingamount: json['ispendingamount'] as bool,
     );
   }
 
@@ -226,6 +256,8 @@ class SUBSCRIPTION_Custom_Invoice {
       'finalCalc': finalCalc.toJson(),
       'addressDetails': addressDetails.toJson(),
       'notes': notes,
+      'totalcaculationtable': totalcaculationtable,
+      'ispendingamount': ispendingamount
     };
   }
 }
@@ -325,10 +357,10 @@ class FinalCalculation {
 class PostInvoice {
   List<int> siteIds;
   String subscriptionBillId;
-  String clientAddressName;
-  String clientAddress;
   String billingAddressName;
   String billingAddress;
+  String installation_serviceAddressName;
+  String installation_serviceAddress;
   String? gst;
   String planName;
   String emailId;
@@ -343,10 +375,10 @@ class PostInvoice {
   PostInvoice({
     required this.siteIds,
     required this.subscriptionBillId,
-    required this.clientAddressName,
-    required this.clientAddress,
     required this.billingAddressName,
     required this.billingAddress,
+    required this.installation_serviceAddressName,
+    required this.installation_serviceAddress,
     required this.gst,
     required this.planName,
     required this.emailId,
@@ -363,10 +395,10 @@ class PostInvoice {
     return PostInvoice(
       siteIds: List<int>.from(json["siteids"] ?? []),
       subscriptionBillId: json["subscriptionbillid"] ?? "",
-      clientAddressName: json["clientaddressname"] ?? "",
-      clientAddress: json["clientaddress"] ?? "",
       billingAddressName: json["billingaddressname"] ?? "",
       billingAddress: json["billingaddress"] ?? "",
+      installation_serviceAddressName: json["installation_serviceaddressname"] ?? "",
+      installation_serviceAddress: json["installation_serviceaddress"] ?? "",
       gst: json["gst_number"] ?? "",
       planName: json["planname"] ?? "",
       emailId: json["emailid"] ?? "",
@@ -384,10 +416,10 @@ class PostInvoice {
     return {
       "siteids": siteIds,
       "subscriptionbillid": subscriptionBillId,
-      "clientaddressname": clientAddressName,
-      "clientaddress": clientAddress,
       "billingaddressname": billingAddressName,
       "billingaddress": billingAddress,
+      "installation_serviceaddressname": installation_serviceAddressName,
+      "installation_serviceaddress": installation_serviceAddress,
       "gstnumber": gst,
       "planname": planName,
       "emailid": emailId,

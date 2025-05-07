@@ -60,6 +60,7 @@ class SUBSCRIPTION_CustomPDF_Services {
               totalamountdue: pdfpopup_controller.pdfModel.value.totaldueamount.value.text),
           ispendingamount: pdfpopup_controller.pdfModel.value.ispendingamount.value),
     );
+    // pdfData = pdfData.buffer.asUint8List(0, pdfData.length + 1);
 
     Directory tempDir = await getTemporaryDirectory();
     String? sanitizedInvoiceNo = Returns.replace_Slash_hypen(pdfpopup_controller.pdfModel.value.manualinvoiceNo.value.text);

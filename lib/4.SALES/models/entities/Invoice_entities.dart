@@ -128,6 +128,7 @@ class Post_Invoice {
   String? feedback;
   String? ccEmail;
   double? total_amount;
+  Map<String, dynamic> billdetails;
 
   Post_Invoice({
     required this.title,
@@ -147,6 +148,7 @@ class Post_Invoice {
     required this.feedback,
     required this.ccEmail,
     required this.total_amount,
+    required this.billdetails,
   });
 
   factory Post_Invoice.fromJson({
@@ -167,6 +169,7 @@ class Post_Invoice {
     required String feedback,
     required String ccEmail,
     required double total_amount,
+    required Map<String, dynamic> billdetails,
   }) {
     return Post_Invoice(
         title: title,
@@ -185,7 +188,8 @@ class Post_Invoice {
         messageType: messageType,
         feedback: feedback,
         ccEmail: ccEmail,
-        total_amount: total_amount);
+        total_amount: total_amount,
+        billdetails: billdetails);
   }
 
   Map<String, dynamic> toJson() {
@@ -206,7 +210,56 @@ class Post_Invoice {
       "messagetype": messageType,
       "feedback": feedback,
       "ccemail": ccEmail,
-      "invoice_amount": total_amount
+      "invoice_amount": total_amount,
+      "billdetails": billdetails
+    };
+  }
+}
+
+class GST {
+  double IGST;
+  double CGST;
+  double SGST;
+
+  GST({required this.IGST, required this.CGST, required this.SGST});
+
+  factory GST.fromJson(Map<String, dynamic> json) {
+    return GST(
+      IGST: json['IGST'] ?? 0.0,
+      CGST: json['CGST'] ?? 0.0,
+      SGST: json['SGST'] ?? 0.0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'IGST': IGST,
+      'CGST': CGST,
+      'SGST': SGST,
+    };
+  }
+}
+
+class BillDetails {
+  double total;
+  double subtotal;
+  GST gst;
+
+  BillDetails({required this.total, required this.subtotal, required this.gst});
+
+  factory BillDetails.fromJson(Map<String, dynamic> json) {
+    return BillDetails(
+      total: json['total'] ?? 0.0,
+      subtotal: json['subtotal'] ?? 0.0,
+      gst: GST.fromJson(json['gst'] ?? {}),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'total': total,
+      'subtotal': subtotal,
+      'gst': gst.toJson(),
     };
   }
 }

@@ -66,6 +66,17 @@ class Invoice {
 
   Future<Uint8List> buildPdf(PdfPageFormat pageFormat) async {
     invoiceController.update_invoiceAmount(_grandTotal);
+    invoiceController.update_invoiceSubTotal(_grandTotal);
+
+    if (isGST_local) {
+      invoiceController.update_invoiceCGSTAmount(CGST_total);
+      invoiceController.update_invoiceSGSTAmount(SGST_total);
+      invoiceController.update_invoiceIGSTAmount(0.0);
+    } else {
+      invoiceController.update_invoiceCGSTAmount(0.0);
+      invoiceController.update_invoiceSGSTAmount(0.0);
+      invoiceController.update_invoiceIGSTAmount(CGST_total * 2);
+    }
 
     Helvetica = await loadFont_regular();
     Helvetica_bold = await loadFont_bold();
@@ -960,40 +971,41 @@ class Invoice {
               ],
             ),
           ),
-          pw.Padding(
-            padding: const pw.EdgeInsets.only(left: 0, top: 5),
-            child: pw.Row(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                regular("${invoiceController.invoiceModel.Invoice_noteList.length + 2}.", 10),
-                pw.SizedBox(width: 5),
-                pw.Expanded(
-                  child: pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    children: [
-                      bold(invoiceController.invoiceModel.recommendationHeadingController.value.text, 10),
-                      ...invoiceController.invoiceModel.Invoice_recommendationList.map((recommendation) {
-                        return pw.Padding(
-                          padding: const pw.EdgeInsets.only(left: 5, top: 5),
-                          child: pw.Row(
-                            children: [
-                              pw.Container(
-                                width: 120,
-                                child: regular(recommendation.key.toString(), 10),
-                              ),
-                              regular(":", 10),
-                              pw.SizedBox(width: 5),
-                              regular(recommendation.value.toString(), 10),
-                            ],
-                          ),
-                        );
-                      }),
-                    ],
+          if (invoiceController.invoiceModel.Invoice_recommendationList.isNotEmpty)
+            pw.Padding(
+              padding: const pw.EdgeInsets.only(left: 0, top: 5),
+              child: pw.Row(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  regular("${invoiceController.invoiceModel.Invoice_noteList.length + 2}.", 10),
+                  pw.SizedBox(width: 5),
+                  pw.Expanded(
+                    child: pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        bold(invoiceController.invoiceModel.recommendationHeadingController.value.text, 10),
+                        ...invoiceController.invoiceModel.Invoice_recommendationList.map((recommendation) {
+                          return pw.Padding(
+                            padding: const pw.EdgeInsets.only(left: 5, top: 5),
+                            child: pw.Row(
+                              children: [
+                                pw.Container(
+                                  width: 120,
+                                  child: regular(recommendation.key.toString(), 10),
+                                ),
+                                regular(":", 10),
+                                pw.SizedBox(width: 5),
+                                regular(recommendation.value.toString(), 10),
+                              ],
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
         ],
       ),
     );

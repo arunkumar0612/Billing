@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 
-import '../../../../THEMES-/style.dart';
-import '../../COMPONENTS-/button.dart';
-import '../../COMPONENTS-/textfield.dart';
+import '../../../../../THEMES-/style.dart';
+import '../../../COMPONENTS-/button.dart';
+import '../../../COMPONENTS-/textfield.dart';
 
 class addservice_page extends StatefulWidget {
   const addservice_page({super.key});

@@ -79,5 +79,6 @@ class API {
   static String updateBranch_KYC = "http://192.168.0.200:8081/admin/updatebranch";
 
   /////////////////////-----------BILLING-------------//////////////////////////////////
-  static String billing_subscriptionInvoice = "http://192.168.0.200:8080/billing/getsubscriptioninvoice";
+  static String billing_subscriptionInvoice = "http://192.168.0.200:8081/billing/getsubscriptioninvoice";
+  static String billing_salesInvoice = "http://192.168.0.200:8081/billing/getsalesinvoice";
 }

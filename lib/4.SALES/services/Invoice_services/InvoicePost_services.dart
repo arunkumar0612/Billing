@@ -80,25 +80,36 @@ mixin PostServices {
       }
       loader.start(context);
       File cachedPdf = invoiceController.invoiceModel.selectedPdf.value!;
+      var bill = BillDetails(
+        total: invoiceController.invoiceModel.invoice_amount.value!,
+        subtotal: invoiceController.invoiceModel.invoice_subTotal.value!,
+        gst: GST(
+          IGST: double.parse((invoiceController.invoiceModel.invoice_IGSTamount.value ?? 0).toStringAsFixed(2)),
+          CGST: double.parse((invoiceController.invoiceModel.invoice_CGSTamount.value ?? 0).toStringAsFixed(2)),
+          SGST: double.parse((invoiceController.invoiceModel.invoice_SGSTamount.value ?? 0).toStringAsFixed(2)),
+        ),
+      );
       // savePdfToCache();
       Post_Invoice salesData = Post_Invoice.fromJson(
-          title: invoiceController.invoiceModel.TitleController.value.text,
-          processid: invoiceController.invoiceModel.processID.value!,
-          ClientAddressname: invoiceController.invoiceModel.clientAddressNameController.value.text,
-          ClientAddress: invoiceController.invoiceModel.clientAddressController.value.text,
-          billingAddressName: invoiceController.invoiceModel.billingAddressNameController.value.text,
-          billingAddress: invoiceController.invoiceModel.billingAddressController.value.text,
-          emailId: invoiceController.invoiceModel.emailController.value.text,
-          phoneNo: invoiceController.invoiceModel.phoneController.value.text,
-          gst: invoiceController.invoiceModel.gstController.value.text,
-          product: invoiceController.invoiceModel.Invoice_products,
-          notes: invoiceController.invoiceModel.Invoice_noteList,
-          date: getCurrentDate(),
-          invoiceGenID: invoiceController.invoiceModel.Invoice_no.value!,
-          messageType: messageType,
-          feedback: invoiceController.invoiceModel.feedbackController.value.text,
-          ccEmail: invoiceController.invoiceModel.CCemailController.value.text,
-          total_amount: invoiceController.invoiceModel.invoice_amount.value!);
+        title: invoiceController.invoiceModel.TitleController.value.text,
+        processid: invoiceController.invoiceModel.processID.value!,
+        ClientAddressname: invoiceController.invoiceModel.clientAddressNameController.value.text,
+        ClientAddress: invoiceController.invoiceModel.clientAddressController.value.text,
+        billingAddressName: invoiceController.invoiceModel.billingAddressNameController.value.text,
+        billingAddress: invoiceController.invoiceModel.billingAddressController.value.text,
+        emailId: invoiceController.invoiceModel.emailController.value.text,
+        phoneNo: invoiceController.invoiceModel.phoneController.value.text,
+        gst: invoiceController.invoiceModel.gstController.value.text,
+        product: invoiceController.invoiceModel.Invoice_products,
+        notes: invoiceController.invoiceModel.Invoice_noteList,
+        date: getCurrentDate(),
+        invoiceGenID: invoiceController.invoiceModel.Invoice_no.value!,
+        messageType: messageType,
+        feedback: invoiceController.invoiceModel.feedbackController.value.text,
+        ccEmail: invoiceController.invoiceModel.CCemailController.value.text,
+        total_amount: invoiceController.invoiceModel.invoice_amount.value!,
+        billdetails: bill.toJson(),
+      );
 
       await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
     } catch (e) {

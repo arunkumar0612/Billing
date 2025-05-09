@@ -1,19 +1,19 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/2.BILLING/views/LEDGER/ViewLedger.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 
 import '../../../../THEMES-/style.dart';
 
-class Outward extends StatefulWidget {
-  const Outward({super.key});
+class Inward extends StatefulWidget {
+  const Inward({super.key});
 
   @override
-  State<Outward> createState() => _OutwardState();
+  State<Inward> createState() => _InwardState();
 }
 
-class _OutwardState extends State<Outward> {
-  final List<Map<String, dynamic>> Outward_list = [
+class _InwardState extends State<Inward> {
+  final List<Map<String, dynamic>> Inward_list = [
     {
       'date': '2024-12-01',
       'reference_no': '12345',
@@ -412,7 +412,7 @@ class _OutwardState extends State<Outward> {
               height: 1,
               color: const Color.fromARGB(94, 125, 125, 125),
             ),
-            itemCount: Outward_list.length,
+            itemCount: Inward_list.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(top: 0),
@@ -449,7 +449,7 @@ class _OutwardState extends State<Outward> {
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                Outward_list[index]['date'],
+                                Inward_list[index]['date'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -461,7 +461,7 @@ class _OutwardState extends State<Outward> {
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                Outward_list[index]['reference_no'],
+                                Inward_list[index]['reference_no'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -471,16 +471,17 @@ class _OutwardState extends State<Outward> {
                           Expanded(
                             flex: 3,
                             child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      Outward_list[index]['particulars'],
-                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                    ),
-                                  ],
-                                )),
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    Inward_list[index]['particulars'],
+                                    style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                           // Vertical line after 'particulars' column
                           Expanded(
@@ -488,7 +489,7 @@ class _OutwardState extends State<Outward> {
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                Outward_list[index]['notes'],
+                                Inward_list[index]['notes'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -498,7 +499,7 @@ class _OutwardState extends State<Outward> {
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                Outward_list[index]['quantity'],
+                                Inward_list[index]['quantity'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),

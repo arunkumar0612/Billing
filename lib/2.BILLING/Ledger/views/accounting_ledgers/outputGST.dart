@@ -1,19 +1,19 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/2.BILLING/views/LEDGER/ViewLedger.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 
 import '../../../../THEMES-/style.dart';
 
-class payableTDS extends StatefulWidget {
-  const payableTDS({super.key});
+class outputGST extends StatefulWidget {
+  const outputGST({super.key});
 
   @override
-  State<payableTDS> createState() => _payableTDSState();
+  State<outputGST> createState() => _outputGSTState();
 }
 
-class _payableTDSState extends State<payableTDS> {
-  final List<Map<String, dynamic>> payableTDS_list = [
+class _outputGSTState extends State<outputGST> {
+  final List<Map<String, dynamic>> outputGST_list = [
     {
       'date': '2024-12-01',
       'reference_no': '12345',
@@ -572,7 +572,7 @@ class _payableTDSState extends State<payableTDS> {
               height: 1,
               color: const Color.fromARGB(94, 125, 125, 125),
             ),
-            itemCount: payableTDS_list.length,
+            itemCount: outputGST_list.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(top: 0),
@@ -609,7 +609,7 @@ class _payableTDSState extends State<payableTDS> {
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                payableTDS_list[index]['date'],
+                                outputGST_list[index]['date'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -621,7 +621,7 @@ class _payableTDSState extends State<payableTDS> {
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                payableTDS_list[index]['reference_no'],
+                                outputGST_list[index]['reference_no'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -636,7 +636,7 @@ class _payableTDSState extends State<payableTDS> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      payableTDS_list[index]['clientname'],
+                                      outputGST_list[index]['clientname'],
                                       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                     ),
                                   ],
@@ -648,7 +648,7 @@ class _payableTDSState extends State<payableTDS> {
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                payableTDS_list[index]['notes'],
+                                outputGST_list[index]['notes'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -658,7 +658,7 @@ class _payableTDSState extends State<payableTDS> {
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                payableTDS_list[index]['debit'],
+                                outputGST_list[index]['debit'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -670,7 +670,7 @@ class _payableTDSState extends State<payableTDS> {
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                payableTDS_list[index]['credit'],
+                                outputGST_list[index]['credit'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),

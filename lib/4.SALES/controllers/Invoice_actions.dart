@@ -185,6 +185,22 @@ class InvoiceController extends GetxController {
     invoiceModel.invoice_amount.value = amount;
   }
 
+  void update_invoiceSubTotal(double amount) {
+    invoiceModel.invoice_subTotal.value = amount;
+  }
+
+  void update_invoiceCGSTAmount(double amount) {
+    invoiceModel.invoice_CGSTamount.value = amount;
+  }
+
+  void update_invoiceSGSTAmount(double amount) {
+    invoiceModel.invoice_SGSTamount.value = amount;
+  }
+
+  void update_invoiceIGSTAmount(double amount) {
+    invoiceModel.invoice_IGSTamount.value = amount;
+  }
+
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -488,6 +504,10 @@ class InvoiceController extends GetxController {
     // invoiceModel.Invoice_table_heading.value = '';
     invoiceModel.gstNumController.value.clear();
     invoiceModel.invoice_amount.value = null;
+    invoiceModel.invoice_subTotal.value = null;
+    invoiceModel.invoice_CGSTamount.value = null;
+    invoiceModel.invoice_SGSTamount.value = null;
+    invoiceModel.invoice_IGSTamount.value = null;
 
     // DETAILS
     invoiceModel.TitleController.value.clear();

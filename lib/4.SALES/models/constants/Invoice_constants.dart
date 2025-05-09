@@ -15,6 +15,10 @@ class InvoiceModel extends GetxController with GetSingleTickerProviderStateMixin
   // var Invoice_table_heading = "".obs;
   final gstNumController = TextEditingController().obs;
   var invoice_amount = Rxn<double>();
+  var invoice_subTotal = Rxn<double>();
+  var invoice_CGSTamount = Rxn<double>();
+  var invoice_SGSTamount = Rxn<double>();
+  var invoice_IGSTamount = Rxn<double>();
 
   // DETAILS
   final TitleController = TextEditingController().obs;
@@ -65,7 +69,7 @@ class InvoiceModel extends GetxController with GetSingleTickerProviderStateMixin
   var feedbackController = TextEditingController().obs;
   var filePathController = TextEditingController().obs;
   var CCemailToggle = false.obs;
- var isGST_local = true.obs;
+  var isGST_local = true.obs;
 
   @override
   void onInit() {

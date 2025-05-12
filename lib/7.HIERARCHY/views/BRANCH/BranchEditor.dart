@@ -319,6 +319,7 @@ class _BranchEditorState extends State<BranchEditor> {
                               widget.controller.hierarchyModel.branch_NameController.value.text,
                               widget.controller.hierarchyModel.branch_emailIdController.value.text,
                               widget.controller.hierarchyModel.branch_contactNumberController.value.text,
+                              widget.controller.hierarchyModel.branch_clientAddressNameController.value.text,
                               widget.controller.hierarchyModel.branch_clientAddressController.value.text,
                               widget.controller.hierarchyModel.branch_gstNumberController.value.text,
                               widget.controller.hierarchyModel.branch_billingAddressNameController.value.text,

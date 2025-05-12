@@ -1,7 +1,8 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ssipl_billing/1.DASHBOARD/views/dashboard.dart';
-import 'package:ssipl_billing/2.BILLING/_main_BILLING/views/Billing.dart';
+import 'package:ssipl_billing/2.BILLING/_main_BILLING/views/Billing.dart' show Billing;
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Subscription.dart';
 import 'package:ssipl_billing/4.SALES/views/Sales.dart';
 import 'package:ssipl_billing/5.VENDOR/views/vendors.dart';
@@ -80,25 +81,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   fontSize: Primary_font_size.Text7, // Decrease font size for unselected items
                 ),
                 unselectedIconColor: Primary_colors.Color1,
-                // decoration: const BoxDecoration(
-                //   borderRadius: BorderRadius.all(Radius.circular(30)),
-                //   image: DecorationImage(
-                //     image: AssetImage('assets/images/bottom.jpg'), // ✅ Your image here
-                //     fit: BoxFit.fill, // Covers the entire background
-                //   ),
-                // ),
               ),
-              // title: Container(
-              //   height: 70,
-              //   // color: Primary_colors.Color3,
-              //   child: IconButton(
-              //       onPressed: () {
-              //         setState(() {
-              //           showfull = showfull ? false : true;
-              //         });
-              //       },
-              //       icon: Icon(Icons.abc)),
-              // ),
+
               title: Container(
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
@@ -116,41 +100,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         maxWidth: 150,
                       ),
                       child: Image.asset(width: 20, 'assets/images/white.jpg'),
-                      // child: TextButton.icon(
-                      //   onPressed: () {
-                      //     setState(() {
-                      //       showfull = showfull ? false : true;
-                      //     });
-                      //   },
-                      //   label: Text(
-                      //     showfull ? '' : 'Collapse',
-                      //     style: const TextStyle(color: Primary_colors.Color1),
-                      //   ),
-                      //   icon: showfull
-                      //       ? Image.asset(
-                      //           width: 20,
-                      //           'assets/images/unhide.png',
-                      //           color: Primary_colors.Color1,
-                      //         )
-                      //       : Image.asset(width: 20, 'assets/images/hide.png'),
-                      // ),
-
-                      //  Row(
-                      //   children: [
-                      //     IconButton(
-                      //         onPressed: () {
-                      //           setState(() {
-                      //             showfull = showfull ? false : true;
-                      //           });
-                      //         },
-                      //         icon: showfull
-                      //             ? Image.asset(
-                      //                 'assets/images/hide.png',
-                      //                 color: Primary_colors.Color5,
-                      //               )
-                      //             : Image.asset('assets/images/unhide.png'))
-                      //   ],
-                      // ),
                     ),
                     const Divider(
                       color: Colors.transparent,
@@ -212,7 +161,34 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 SideMenuItem(
                   title: 'LOGOUT',
-                  onTap: (index, _) {},
+                  onTap: (index, _) {
+                    showDialog(
+                      context: context,
+                      builder: (_) {
+                        return AlertDialog(
+                          title: const Text('Are you sure you want to Logout?'),
+                          actions: [
+                            TextButton(
+                              child: const Text('No'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: const Text('Yes'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                Get.back();
+                                // windowManager.destroy();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+
+                    // Navigator.of(context).pop();
+                  },
                   icon: const Icon(Icons.exit_to_app), // Inventory Icon
                 ),
               ],

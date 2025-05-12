@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:glowy_borders/glowy_borders.dart';
-// import 'package:ssipl_billing/views/screens/IAM/IAM.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ssipl_billing/Initialize.dart';
 
 import '../../THEMES-/style.dart';
 import '../controllers/IAM_actions.dart';
@@ -17,15 +17,18 @@ class Loginpage extends StatefulWidget with LoginServices {
 }
 
 class _LoginpageState extends State<Loginpage> {
-  final LoginController loginController = Get.find<LoginController>();
-  final IAMController IamController = Get.find<IAMController>();
   @override
   void initState() {
     super.initState();
+    ////////////////////////////---IAM-----////////////////////////////////////
+    initialize_IAM();
     widget.load_login_details();
   }
 
+  final LoginController loginController = Get.find<LoginController>();
+  final IAMController IamController = Get.find<IAMController>();
   final formKey1 = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -129,7 +132,7 @@ class _LoginpageState extends State<Loginpage> {
                           ),
                         ),
                         controller: loginController.loginModel.passwordController.value,
-                        obscureText: loginController.loginModel.passwordVisibility.value,
+                        obscureText: !loginController.loginModel.passwordVisibility.value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter the password';
@@ -148,9 +151,9 @@ class _LoginpageState extends State<Loginpage> {
                             children: [
                               Checkbox(
                                 side: BorderSide(color: const Color.fromARGB(255, 192, 191, 191)),
-                                activeColor: Color.fromARGB(255, 118, 219, 222),
+                                activeColor: Primary_colors.Color3,
                                 checkColor: Colors.white,
-                                focusColor: Color.fromARGB(255, 19, 151, 135),
+                                focusColor: Primary_colors.Color3,
                                 value: loginController.loginModel.isCheckedRememberMe.value,
                                 onChanged: (value) {
                                   widget.actionRememberMe(value!);
@@ -192,6 +195,7 @@ class _LoginpageState extends State<Loginpage> {
                           onPressed: () async {
                             if (formKey1.currentState?.validate() ?? false) {
                               SharedPreferences prefs = await SharedPreferences.getInstance();
+                              initialize_others();
                               widget.Login(context);
 
                               widget.actionRememberMe(prefs.getBool('remember_me')!);

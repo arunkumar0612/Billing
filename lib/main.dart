@@ -1,6 +1,8 @@
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/2.BILLING/controllers/voucher_action.dart';
+import 'package:ssipl_billing/2.BILLING/models/constants/voucher_contants.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
@@ -47,34 +49,23 @@ Future<void> main() async {
   Get.lazyPut<QuoteController>(() => QuoteController());
   Get.lazyPut<RfqController>(() => RfqController());
   Get.lazyPut<DcController>(() => DcController());
-  Get.lazyPut<CustomPDF_InvoiceController>(
-    () => CustomPDF_InvoiceController(),
-  );
-  Get.lazyPut<CustomPDF_QuoteController>(
-    () => CustomPDF_QuoteController(),
-  );
-  Get.lazyPut<CustomPDF_DcController>(
-    () => CustomPDF_DcController(),
-  );
+  Get.lazyPut<CustomPDF_InvoiceController>(() => CustomPDF_InvoiceController());
+  Get.lazyPut<CustomPDF_QuoteController>(() => CustomPDF_QuoteController());
+  Get.lazyPut<CustomPDF_DcController>(() => CustomPDF_DcController());
 
   ////////////////////////--------HIERARCHY-------/////////////////////////////
-  Get.lazyPut<HierarchyController>(
-    () => HierarchyController(),
-  );
+  Get.lazyPut<HierarchyController>(() => HierarchyController());
   ////////////////////////////----SUBSCRIPTION----////////////////////////////////////
-  Get.lazyPut<SubscriptionController>(
-    () => SubscriptionController(),
-  );
+  Get.lazyPut<SubscriptionController>(() => SubscriptionController());
 
-  Get.lazyPut<SUBSCRIPTION_CustomPDF_InvoiceController>(
-    () => SUBSCRIPTION_CustomPDF_InvoiceController(),
-  );
-  Get.lazyPut<SUBSCRIPTION_QuoteController>(
-    () => SUBSCRIPTION_QuoteController(),
-  );
-  Get.lazyPut<SUBSCRIPTION_ClientreqController>(
-    () => SUBSCRIPTION_ClientreqController(),
-  );
+  Get.lazyPut<SUBSCRIPTION_CustomPDF_InvoiceController>(() => SUBSCRIPTION_CustomPDF_InvoiceController());
+  Get.lazyPut<SUBSCRIPTION_QuoteController>(() => SUBSCRIPTION_QuoteController());
+  Get.lazyPut<SUBSCRIPTION_ClientreqController>(() => SUBSCRIPTION_ClientreqController());
+
+  ////////////////////////////----Billing----////////////////////////////////////
+  Get.lazyPut<VoucherController>(() => VoucherController());
+  Get.lazyPut<VoucherModel>(() => VoucherModel());
+
   // Get.lazyPut<ViewsendController>(() => ViewsendController());
   // if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux)) {
   //   await windowManager.ensureInitialized();

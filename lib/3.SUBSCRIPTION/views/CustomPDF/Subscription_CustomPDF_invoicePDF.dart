@@ -55,7 +55,7 @@ class Subscription_CustomPDF_InvoicePDF {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         BasicButton(
-                                          text: "Add product",
+                                          text: "Add Site",
                                           colors: const Color.fromARGB(202, 33, 149, 243),
                                           onPressed: () {
                                             pdfpopup_controller.addRow();

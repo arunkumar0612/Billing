@@ -1299,7 +1299,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
         pw.Expanded(
-          child: pw.Padding(padding: pw.EdgeInsets.only(right: 2), child: Local_final_amount(context)),
+          child: pw.Padding(padding: const pw.EdgeInsets.only(right: 2), child: Local_final_amount(context)),
         ),
         pw.SizedBox(width: 20),
         pw.Expanded(

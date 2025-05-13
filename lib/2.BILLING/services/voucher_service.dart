@@ -3,8 +3,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/controllers/voucher_action.dart';
-import 'package:ssipl_billing/2.BILLING/models/entities/voucher_entities.dart';
+import 'package:ssipl_billing/API-/api.dart';
+
 import 'package:ssipl_billing/API-/invoker.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
+import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 
@@ -12,6 +15,36 @@ mixin VoucherService {
   final VoucherController voucherController = Get.find<VoucherController>();
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
+
+  Future<void> get_VoucherList(context) async {
+    // loader.start(context);
+    await Future.delayed(const Duration(milliseconds: 1000));
+    Map<String, dynamic>? response;
+    response = await apiController.GetbyToken(API.getvoucherlist);
+    if (response?['statusCode'] == 200) {
+      CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+      if (value.code) {
+        voucherController.add_Voucher(value);
+        print(voucherController.voucherModel.voucherlist.value);
+        print('object');
+      } else {
+        await Error_dialog(
+          context: context,
+          title: 'ERROR',
+          content: value.message ?? "",
+          onOk: () {},
+        );
+      }
+    } else {
+      Error_dialog(
+        context: context,
+        title: "SERVER DOWN",
+        content: "Please contact administration!",
+      );
+    }
+    // loader.stop();
+  }
+
   void applySearchFilter(String query) {
     try {
       if (query.isEmpty) {
@@ -32,51 +65,9 @@ mixin VoucherService {
     }
   }
 
-  void applyFilters() {
-    try {
-      List<Voucherdata> filtered = voucherController.voucherModel.voucher_list.where((voucher) {
-        // Date filter
-        if (voucherController.voucherModel.startDateController.text.isNotEmpty && voucherController.voucherModel.endDateController.text.isNotEmpty) {
-          final voucherDate = DateTime.parse(voucher.date!);
-          final startDate = DateTime.parse(voucherController.voucherModel.startDateController.text);
-          final endDate = DateTime.parse(voucherController.voucherModel.endDateController.text);
-
-          if (voucherDate.isBefore(startDate) || voucherDate.isAfter(endDate)) {
-            return false;
-          }
-        }
-
-        // Product type filter
-        if (voucherController.voucherModel.selectedProductType.value != 'All' && voucher.productType != voucherController.voucherModel.selectedProductType.value) {
-          return false;
-        }
-
-        // Status filter
-        if (voucherController.voucherModel.selectedStatus.value != 'All') {
-          // Assuming 'note' field contains status information in your data
-          // Adjust this according to your actual data structure
-          final status = voucher.note!.contains('Closed') ? 'Closed' : 'Open';
-          if (status != voucherController.voucherModel.selectedStatus.value) {
-            return false;
-          }
-        }
-
-        return true;
-      }).toList();
-
-      voucherController.voucherModel.filteredVouchers.assignAll(filtered);
-
-      // Update selectedItems to match the new filtered list length
-      voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false);
-      voucherController.voucherModel.selectAll.value = false;
-      voucherController.voucherModel.showDeleteButton.value = false;
-    } catch (e) {
-      debugPrint('Error in applyFilters: $e');
-    }
-  }
-
   Future<void> selectDate(BuildContext context, TextEditingController controller) async {
-    final DateTime? picked = await showDatePicker(
+    // Step 1: Show Date Picker
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
@@ -105,8 +96,48 @@ mixin VoucherService {
       },
     );
 
-    if (picked != null) {
-      controller.text = "${picked.toLocal()}".split(' ')[0];
+    if (pickedDate != null) {
+      // Step 2: Show Time Picker
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              timePickerTheme: const TimePickerThemeData(
+                dialHandColor: Primary_colors.Color3,
+                entryModeIconColor: Primary_colors.Color3,
+              ),
+              colorScheme: const ColorScheme.light(
+                primary: Primary_colors.Color3,
+                onPrimary: Colors.white,
+                onSurface: Colors.black87,
+              ),
+            ),
+            child: child!,
+          );
+        },
+      );
+
+      if (pickedTime != null) {
+        // Combine date and time
+        final DateTime fullDateTime = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
+
+        // Format it to a readable string (e.g., yyyy-MM-dd HH:mm)
+        final formatted = "${fullDateTime.year.toString().padLeft(4, '0')}-"
+            "${fullDateTime.month.toString().padLeft(2, '0')}-"
+            "${fullDateTime.day.toString().padLeft(2, '0')} "
+            "${pickedTime.hour.toString().padLeft(2, '0')}:"
+            "${pickedTime.minute.toString().padLeft(2, '0')}";
+
+        controller.text = formatted;
+      }
     }
   }
 
@@ -157,35 +188,19 @@ mixin VoucherService {
     );
   }
 
-  void setQuickDateFilter(int value, String unit) {
-    final now = DateTime.now();
-    DateTime startDate;
-
-    if (unit == 'hour') {
-      startDate = now.subtract(Duration(hours: value));
-    } else {
-      startDate = now.subtract(Duration(days: value));
-    }
-
-    voucherController.voucherModel.startDateController.text = "${startDate.toLocal()}".split(' ')[0];
-    voucherController.voucherModel.endDateController.text = "${now.toLocal()}".split(' ')[0];
-
-    voucherController.voucherModel.showCustomDateRange.value = false;
-    applyFilters();
-  }
-
   void showCustomDateRangePicker() {
     voucherController.voucherModel.showCustomDateRange.value = true;
     voucherController.voucherModel.selectedQuickFilter.value = 'Custom range';
   }
 
   void resetFilters() {
-    voucherController.voucherModel.endDateController.clear();
-    voucherController.voucherModel.selectedClients.clear();
-    voucherController.voucherModel.selectedProductTypes.clear();
-    voucherController.voucherModel.selectedStatus.value = 'All';
-    voucherController.voucherModel.filteredVouchers.value = voucherController.voucherModel.voucher_list;
     voucherController.voucherModel.startDateController.clear();
+    voucherController.voucherModel.endDateController.clear();
+    voucherController.voucherModel.selectedpaymentStatus.value = 'Show All';
+    voucherController.voucherModel.selectedInvoiceType.value = 'Show All';
+    voucherController.voucherModel.selectedQuickFilter.value = 'Show All';
+    voucherController.voucherModel.showCustomDateRange.value = false;
+    voucherController.voucherModel.filteredVouchers.value = voucherController.voucherModel.voucher_list;
     voucherController.voucherModel.selectedItems.value = List.filled(voucherController.voucherModel.voucher_list.length, false);
     voucherController.voucherModel.selectAll.value = false;
     voucherController.voucherModel.showDeleteButton.value = false;

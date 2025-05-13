@@ -7,6 +7,9 @@ import 'package:ssipl_billing/2.BILLING/models/entities/voucher_entities.dart';
 class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin {
   var voucher_list = <Voucherdata>[].obs;
   var filteredVouchers = <Voucherdata>[].obs;
+
+  var voucherlist = Voucher_List(VoucherList: []).obs;
+
   var selectedItems = <bool>[].obs;
   var selectAll = false.obs;
   var showDeleteButton = false.obs;
@@ -14,12 +17,11 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   // Filter related variables
   var clientNames = <String>[].obs;
   var productTypes = <String>[].obs;
-  var selectedClients = <String>[].obs;
-  var selectedProductTypes = <String>[].obs;
-  var selectedStatus = 'All'.obs;
-  var selectedQuickFilter = 'Last week'.obs;
+
+  var selectedpaymentStatus = 'Show All'.obs;
+  var selectedQuickFilter = 'Show All'.obs;
+  var selectedInvoiceType = 'Show All'.obs;
   var showCustomDateRange = false.obs;
-  var selectedProductType = 'All'.obs;
   final TextEditingController dateController = TextEditingController();
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();

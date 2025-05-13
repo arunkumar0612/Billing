@@ -1084,12 +1084,14 @@ class _BillingState extends State<Billing> {
                                           Selected_billingtype = newValue; // Update the selected value
                                         });
                                       },
-                                      items: billing_type.map<DropdownMenuItem<String>>((String customer) {
-                                        return DropdownMenuItem<String>(
-                                          value: customer,
-                                          child: Text(customer),
-                                        );
-                                      }).toList(),
+                                      items: billing_type.map<DropdownMenuItem<String>>(
+                                        (String customer) {
+                                          return DropdownMenuItem<String>(
+                                            value: customer,
+                                            child: Text(customer),
+                                          );
+                                        },
+                                      ).toList(),
                                     ),
                                   ),
                                   const SizedBox(
@@ -1108,7 +1110,7 @@ class _BillingState extends State<Billing> {
                                   ),
                                 ],
                               ),
-                            )
+                            ),
                           ],
                         ),
                         const SizedBox(height: 15),

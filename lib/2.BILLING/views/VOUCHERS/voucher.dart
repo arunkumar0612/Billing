@@ -21,6 +21,7 @@ class _VoucherState extends State<Voucher> {
   @override
   void initState() {
     super.initState();
+    widget.get_VoucherList(context);
     // Ensure data is loaded
     WidgetsBinding.instance.addPostFrameCallback((_) {
       voucherController.voucherModel.selectedItems = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false).obs;
@@ -158,7 +159,6 @@ class _VoucherState extends State<Voucher> {
       ),
     ]);
     voucherController.voucherModel.filteredVouchers.assignAll(voucherController.voucherModel.voucher_list);
-    widget.setQuickDateFilter(7, 'day');
   }
 
   void _showCloseVoucherPopup(int index) {
@@ -1040,6 +1040,10 @@ class _VoucherState extends State<Voucher> {
 
   Widget _buildFilterDrawer() {
     return Drawer(
+      backgroundColor: Primary_colors.Light,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.horizontal(right: Radius.circular(16)),
+      ),
       width: 350,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -1054,162 +1058,228 @@ class _VoucherState extends State<Voucher> {
                 color: Primary_colors.Color3,
               ),
             ),
-            const Divider(height: 20, thickness: 1),
-
+            const Divider(
+              height: 30,
+              thickness: 1,
+              color: Color.fromARGB(255, 97, 97, 97),
+            ),
+            const SizedBox(height: 35),
             // Quick Date Filters
-            const Text('Quick Date Filters', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            const SizedBox(height: 8),
+            const Text('Quick Date Filters', style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192))),
+            const SizedBox(height: 12),
             Wrap(
               spacing: 8,
               runSpacing: 8,
               children: [
-                _buildDateFilterChip('Last 1 hour', () => widget.setQuickDateFilter(1, 'hour')),
-                _buildDateFilterChip('Last 24 hours', () => widget.setQuickDateFilter(24, 'hour')),
-                _buildDateFilterChip('Last week', () => widget.setQuickDateFilter(7, 'day')),
-                _buildDateFilterChip('Last month', () => widget.setQuickDateFilter(30, 'day')),
-                _buildDateFilterChip('Custom range', widget.showCustomDateRangePicker),
+                Obx(
+                  () => _buildDateFilterChip('Show All'),
+                ),
+                Obx(() => _buildDateFilterChip('Last 1 hour  ')),
+                Obx(() => _buildDateFilterChip('Last 24 hours')),
+                Obx(() => _buildDateFilterChip('Last week')),
+                Obx(() => _buildDateFilterChip('Last month')),
+                Obx(() => _buildDateFilterChip('Custom range')),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 35),
 
             // Custom Date Range (visible when custom range is selected)
             Obx(() => voucherController.voucherModel.showCustomDateRange.value
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Custom Date Range', style: TextStyle(fontWeight: FontWeight.bold)),
+                      const Text('Custom Date Range', style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192))),
                       const SizedBox(height: 8),
                       Row(
                         children: [
                           Expanded(
-                            child: TextFormField(
+                            child: SizedBox(
+                              height: 35,
+                              child: TextFormField(
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 154, 152, 152),
+                                  fontSize: Primary_font_size.Text7,
+                                ),
                                 controller: voucherController.voucherModel.startDateController,
                                 readOnly: true,
                                 onTap: () => widget.selectDate(context, voucherController.voucherModel.startDateController),
                                 decoration: InputDecoration(
                                   labelText: 'From',
-                                  suffixIcon: const Icon(Icons.calendar_today, size: 20),
+                                  labelStyle: const TextStyle(
+                                    color: Color.fromARGB(255, 154, 152, 152),
+                                    fontSize: Primary_font_size.Text7,
+                                  ),
+                                  suffixIcon: const Icon(
+                                    Icons.calendar_today,
+                                    size: 20,
+                                    color: const Color.fromARGB(255, 85, 84, 84),
+                                  ),
                                   contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                )),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                           const SizedBox(width: 10),
                           Expanded(
+                            child: SizedBox(
+                              height: 35,
                               child: TextFormField(
-                            controller: voucherController.voucherModel.endDateController,
-                            readOnly: true,
-                            onTap: () => widget.selectDate(context, voucherController.voucherModel.endDateController),
-                            decoration: InputDecoration(
-                              labelText: 'To',
-                              suffixIcon: const Icon(Icons.calendar_today, size: 20),
-                              contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 154, 152, 152),
+                                  fontSize: Primary_font_size.Text7,
+                                ),
+                                controller: voucherController.voucherModel.endDateController,
+                                readOnly: true,
+                                onTap: () => widget.selectDate(context, voucherController.voucherModel.endDateController),
+                                decoration: InputDecoration(
+                                  labelText: 'To',
+                                  labelStyle: const TextStyle(
+                                    color: Color.fromARGB(255, 154, 152, 152),
+                                    fontSize: Primary_font_size.Text7,
+                                  ),
+                                  suffixIcon: const Icon(
+                                    Icons.calendar_today,
+                                    size: 20,
+                                    color: const Color.fromARGB(255, 85, 84, 84),
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
                               ),
                             ),
-                          )),
+                          ),
                         ],
                       ),
                     ],
                   )
                 : const SizedBox()),
-            const SizedBox(height: 20),
-
+            Obx(() => SizedBox(height: voucherController.voucherModel.showCustomDateRange.value ? 35 : 0)),
             // Product Type Filter
-            const Text('Product Type', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('Invoice Type', style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192))),
             const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              children: [
-                FilterChip(
-                  label: const Text('All'),
-                  selected: voucherController.voucherModel.selectedProductType.value == 'All',
-                  onSelected: (_) {
-                    voucherController.voucherModel.selectedProductType.value = 'All';
-                    widget.applyFilters();
-                  },
-                  backgroundColor: Colors.grey[200],
-                  selectedColor: Primary_colors.Color3.withOpacity(0.2),
-                  labelStyle: TextStyle(
-                    color: voucherController.voucherModel.selectedProductType.value == 'All' ? Primary_colors.Color3 : Colors.black,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    side: BorderSide(
-                      color: voucherController.voucherModel.selectedProductType.value == 'All' ? Primary_colors.Color3 : Colors.grey[300]!,
+            Obx(
+              () => Wrap(
+                spacing: 8,
+                children: [
+                  FilterChip(
+                    showCheckmark: false,
+                    label: const Text('Show All'),
+                    selected: voucherController.voucherModel.selectedInvoiceType.value == 'Show All',
+                    onSelected: (_) {
+                      voucherController.voucherModel.selectedInvoiceType.value = 'Show All';
+                    },
+                    backgroundColor: Primary_colors.Dark,
+                    selectedColor: Primary_colors.Dark,
+                    labelStyle: TextStyle(
+                      fontSize: Primary_font_size.Text7,
+                      color: voucherController.voucherModel.selectedInvoiceType.value == 'Show All' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(
+                        color: voucherController.voucherModel.selectedInvoiceType.value == 'Show All' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
+                      ),
                     ),
                   ),
-                ),
-                FilterChip(
-                  label: const Text('Sales'),
-                  selected: voucherController.voucherModel.selectedProductType.value == 'Sales',
-                  onSelected: (_) {
-                    voucherController.voucherModel.selectedProductType.value = 'Sales';
-                    widget.applyFilters();
-                  },
-                  backgroundColor: Colors.grey[200],
-                  selectedColor: Primary_colors.Color3.withOpacity(0.2),
-                  labelStyle: TextStyle(
-                    color: voucherController.voucherModel.selectedProductType.value == 'Sales' ? Primary_colors.Color3 : Colors.black,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    side: BorderSide(
-                      color: voucherController.voucherModel.selectedProductType.value == 'Sales' ? Primary_colors.Color3 : Colors.grey[300]!,
+                  FilterChip(
+                    label: const Text('Sales'),
+                    selected: voucherController.voucherModel.selectedInvoiceType.value == 'Sales',
+                    onSelected: (_) {
+                      voucherController.voucherModel.selectedInvoiceType.value = 'Sales';
+                    },
+                    backgroundColor: Primary_colors.Dark,
+                    showCheckmark: false,
+                    selectedColor: Primary_colors.Dark,
+                    labelStyle: TextStyle(
+                      fontSize: Primary_font_size.Text7,
+                      color: voucherController.voucherModel.selectedInvoiceType.value == 'Sales' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(
+                        color: voucherController.voucherModel.selectedInvoiceType.value == 'Sales' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
+                      ),
                     ),
                   ),
-                ),
-                FilterChip(
-                  label: const Text('Subscription'),
-                  selected: voucherController.voucherModel.selectedProductType.value == 'Subscription',
-                  onSelected: (_) {
-                    voucherController.voucherModel.selectedProductType.value = 'Subscription';
-                    widget.applyFilters();
-                  },
-                  backgroundColor: Colors.grey[200],
-                  selectedColor: Primary_colors.Color3.withOpacity(0.2),
-                  labelStyle: TextStyle(
-                    color: voucherController.voucherModel.selectedProductType.value == 'Subscription' ? Primary_colors.Color3 : Colors.black,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    side: BorderSide(
-                      color: voucherController.voucherModel.selectedProductType.value == 'Subscription' ? Primary_colors.Color3 : Colors.grey[300]!,
+                  FilterChip(
+                    label: const Text('Subscription'),
+                    selected: voucherController.voucherModel.selectedInvoiceType.value == 'Subscription',
+                    onSelected: (_) {
+                      voucherController.voucherModel.selectedInvoiceType.value = 'Subscription';
+                    },
+                    backgroundColor: Primary_colors.Dark,
+                    showCheckmark: false,
+                    selectedColor: Primary_colors.Dark,
+                    labelStyle: TextStyle(
+                      fontSize: Primary_font_size.Text7,
+                      color: voucherController.voucherModel.selectedInvoiceType.value == 'Subscription' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(
+                        color: voucherController.voucherModel.selectedInvoiceType.value == 'Subscription' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 35),
 
             // Status Filter
-            const Text('Status', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('Payment Status', style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192))),
             const SizedBox(height: 8),
             Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey[300]!),
+                border: Border.all(color: const Color.fromARGB(255, 85, 84, 84)),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: DropdownButtonFormField<String>(
-                value: voucherController.voucherModel.selectedStatus.value,
-                items: ['All', 'Open', 'Closed'].map((String value) {
+                value: voucherController.voucherModel.selectedpaymentStatus.value,
+                items: ['Show All', 'Paid', 'Pending', 'Unpaid'].map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
                   );
                 }).toList(),
                 onChanged: (value) {
-                  voucherController.voucherModel.selectedStatus.value = value!;
-                  widget.applyFilters();
+                  voucherController.voucherModel.selectedpaymentStatus.value = value!;
                 },
                 decoration: const InputDecoration(
                   contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   border: InputBorder.none,
                 ),
-                style: const TextStyle(fontSize: 14),
-                dropdownColor: Colors.white,
+                style: const TextStyle(fontSize: Primary_font_size.Text7, color: const Color.fromARGB(255, 154, 152, 152)),
+                dropdownColor: Primary_colors.Dark,
               ),
             ),
 
@@ -1237,7 +1307,6 @@ class _VoucherState extends State<Voucher> {
                 const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    widget.applyFilters();
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
@@ -1260,23 +1329,58 @@ class _VoucherState extends State<Voucher> {
     );
   }
 
-  Widget _buildDateFilterChip(String label, VoidCallback onSelected) {
+  // Widget _buildDateFilterChip(String label, VoidCallback onSelected) {
+  //   final isSelected = voucherController.voucherModel.selectedQuickFilter.value == label;
+
+  //   return ChoiceChip(
+  //     label: Text(
+  //       label,
+  //       style: TextStyle(color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152)),
+  //     ),
+  //     selected: isSelected,
+  //     onSelected: (_) {
+  //       voucherController.voucherModel.selectedQuickFilter.value = label;
+  //       onSelected();
+  //     },
+  //     backgroundColor: Primary_colors.Dark,
+  //     selectedColor: Primary_colors.Color3.withOpacity(0.2),
+  //     labelStyle: TextStyle(
+  //       color: isSelected ? Primary_colors.Color3 : Colors.black,
+  //     ),
+  //     shape: RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.circular(8),
+  //       side: BorderSide(
+  //         color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84)!,
+  //       ),
+  //     ),
+  //   );
+  // }
+  Widget _buildDateFilterChip(
+    String label,
+  ) {
+    final isSelected = voucherController.voucherModel.selectedQuickFilter.value == label;
+
     return ChoiceChip(
-      label: Text(label),
-      selected: voucherController.voucherModel.selectedQuickFilter.value == label,
+      label: Text(
+        label == 'Show All' ? 'Show All   ' : label,
+        style: TextStyle(color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+      ),
+      selected: isSelected,
       onSelected: (_) {
         voucherController.voucherModel.selectedQuickFilter.value = label;
-        onSelected();
+        if (label == 'Custom range') {
+          voucherController.voucherModel.showCustomDateRange.value = true;
+        }
       },
-      backgroundColor: Colors.grey[200],
-      selectedColor: Primary_colors.Color3.withOpacity(0.2),
+      backgroundColor: Primary_colors.Dark,
+      selectedColor: Primary_colors.Dark,
       labelStyle: TextStyle(
-        color: voucherController.voucherModel.selectedQuickFilter.value == label ? Primary_colors.Color3 : Colors.black,
+        color: isSelected ? Primary_colors.Color3 : Colors.black,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
         side: BorderSide(
-          color: voucherController.voucherModel.selectedQuickFilter.value == label ? Primary_colors.Color3 : Colors.grey[300]!,
+          color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
         ),
       ),
     );

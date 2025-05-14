@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entities.dart';
 
 class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin {
@@ -26,6 +27,11 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController searchController = TextEditingController();
+  final amountCleared_controller = TextEditingController().obs;
+  final transactionDetails_controller = TextEditingController().obs;
+  final feedback_controller = TextEditingController().obs;
+  final TextEditingController closedDateController = TextEditingController();
+  final RxString closedDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
   var fileName = RxnString();
   var selectedFile = Rxn<File>();
 
@@ -39,5 +45,18 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
     // Extract unique client names and product types for filters
     clientNames.value = voucher_list.map((v) => v.clientName).toSet().toList();
     productTypes.value = voucher_list.map((v) => v.voucherType).toSet().toList();
+    closedDateController.text = closedDate.value;
+
+    // Sync RxString when controller changes (optional)
+    closedDateController.addListener(() {
+      closedDate.value = closedDateController.text;
+    });
+
+    // Sync controller when RxString changes
+    ever(closedDate, (_) {
+      if (closedDateController.text != closedDate.value) {
+        closedDateController.text = closedDate.value;
+      }
+    });
   }
 }

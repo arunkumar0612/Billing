@@ -32,12 +32,12 @@ class _VoucherState extends State<Voucher> {
 
   final GlobalKey _copyIconKey = GlobalKey();
   void _showCloseVoucherPopup(int index) {
-    final TextEditingController _closedDateController = TextEditingController(
-      text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
-    );
-    final TextEditingController _referenceIdController = TextEditingController();
-    final TextEditingController _amountController = TextEditingController();
-    final TextEditingController _feedbackController = TextEditingController();
+    // final TextEditingController _closedDateController = TextEditingController(
+    //   text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+    // );
+    // final TextEditingController _referenceIdController = TextEditingController();
+    // final TextEditingController _amountController = TextEditingController();
+    // final TextEditingController _feedbackController = TextEditingController();
 
     showDialog(
       context: context,
@@ -345,15 +345,15 @@ class _VoucherState extends State<Voucher> {
                                   child: Column(
                                     children: [
                                       _buildEditableField(
-                                        controller: _closedDateController,
+                                        controller: voucherController.voucherModel.closedDateController,
                                         label: 'Closed Date',
                                         hint: 'Select closed date',
                                         icon: Icons.calendar_today,
-                                        onTap: () => widget.selectDate(context, _closedDateController),
+                                        onTap: () => widget.selectDate(context, voucherController.voucherModel.closedDateController),
                                       ),
                                       const SizedBox(height: 16),
                                       _buildEditableField(
-                                        controller: _amountController,
+                                        controller: voucherController.voucherModel.amountCleared_controller.value,
                                         label: 'Amount Received',
                                         hint: 'Enter received amount',
                                         icon: Icons.attach_money,
@@ -369,14 +369,14 @@ class _VoucherState extends State<Voucher> {
                                       ),
                                       const SizedBox(height: 16),
                                       _buildEditableField(
-                                        controller: _referenceIdController,
+                                        controller: voucherController.voucherModel.transactionDetails_controller.value,
                                         label: 'Transaction Reference',
                                         hint: 'Enter transaction ID/bank reference',
                                         icon: Icons.credit_card,
                                       ),
                                       const SizedBox(height: 16),
                                       _buildEditableField(
-                                        controller: _feedbackController,
+                                        controller: voucherController.voucherModel.feedback_controller.value,
                                         label: 'Payment Notes',
                                         hint: 'Any additional notes about this payment',
                                         icon: Icons.note,
@@ -596,7 +596,8 @@ class _VoucherState extends State<Voucher> {
                                   ),
                                   elevation: 2,
                                 ),
-                                onPressed: () {
+                                onPressed: () async {
+                                  await widget.clearVoucher(context, index);
                                   Navigator.of(context).pop();
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

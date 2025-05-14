@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
+import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entities.dart';
 // import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
 import 'package:ssipl_billing/API-/api.dart';
 import 'package:ssipl_billing/API-/invoker.dart';
@@ -41,6 +43,50 @@ mixin VoucherService {
       Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
     }
     // loader.stop();
+  }
+
+  dynamic clearVoucher(context, int index) async {
+    try {
+      final mapData = {
+        "date": voucherController.voucherModel.closedDate.value,
+        "voucherid": voucherController.voucherModel.voucher_list[index].voucher_id,
+        "vouchernumber": voucherController.voucherModel.voucher_list[index].voucherNumber,
+        "paymentstatus": 'partial',
+        "IGST": voucherController.voucherModel.voucher_list[index].igst,
+        "SGST": voucherController.voucherModel.voucher_list[index].sgst,
+        "CGST": voucherController.voucherModel.voucher_list[index].cgst,
+        "tds": voucherController.voucherModel.voucher_list[index].tdsCalculationAmount,
+        "grossamount": voucherController.voucherModel.voucher_list[index].totalAmount,
+        "subtotal": voucherController.voucherModel.voucher_list[index].subTotal,
+        "paidamount": double.parse(voucherController.voucherModel.amountCleared_controller.value.text),
+        "clientaddressname": voucherController.voucherModel.voucher_list[index].clientName,
+        "clientaddress": voucherController.voucherModel.voucher_list[index].clientAddress,
+        "invoicenumber": voucherController.voucherModel.voucher_list[index].invoiceNumber,
+        "emailid": voucherController.voucherModel.voucher_list[index].emailId,
+        "phoneno": voucherController.voucherModel.voucher_list[index].phoneNumber,
+        "tdsstatus": true,
+        "invoicetype": voucherController.voucherModel.voucher_list[index].invoiceType,
+        "gstnumber": voucherController.voucherModel.voucher_list[index].gstNumber,
+        "feedback": voucherController.voucherModel.feedback_controller.value.text,
+        "transactiondetails": voucherController.voucherModel.transactionDetails_controller.value.text,
+      };
+      ClearVoucher voucherdata = ClearVoucher.fromJson(mapData);
+
+      String encodedData = json.encode(voucherdata.toJson());
+      Map<String, dynamic>? response = await apiController.SendByQuerystring(encodedData, API.clearVoucher);
+      if (response['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response);
+        if (value.code) {
+          await Success_dialog(context: context, title: "LOGO", content: value.message!, onOk: () {});
+        } else {
+          await Error_dialog(context: context, title: 'Uploading Logo', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+    }
   }
 
   void applySearchFilter(String query) {

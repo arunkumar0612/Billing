@@ -1,4 +1,5 @@
 class InvoicePaymentVoucher {
+  int voucher_id;
   String invoiceNumber;
   String voucherType;
   String emailId;
@@ -23,6 +24,7 @@ class InvoicePaymentVoucher {
   List<Map<String, dynamic>>? paymentDetails;
 
   InvoicePaymentVoucher({
+    required this.voucher_id,
     required this.invoiceNumber,
     required this.voucherType,
     required this.emailId,
@@ -49,6 +51,7 @@ class InvoicePaymentVoucher {
 
   factory InvoicePaymentVoucher.fromJson(Map<String, dynamic> json) {
     return InvoicePaymentVoucher(
+      voucher_id: json['voucher_id'] ?? 0,
       invoiceNumber: json['invoice_number'] ?? '',
       voucherType: json['voucher_type'] ?? '',
       emailId: json['email_id'] ?? '',
@@ -76,6 +79,7 @@ class InvoicePaymentVoucher {
 
   Map<String, dynamic> toJson() {
     return {
+      'voucher_id': voucher_id,
       'invoice_number': invoiceNumber,
       'voucher_type': voucherType,
       'email_id': emailId,
@@ -98,6 +102,106 @@ class InvoicePaymentVoucher {
       'tdscalculation_amount': tdsCalculationAmount,
       'date': date.toIso8601String(),
       'payment_details': paymentDetails,
+    };
+  }
+}
+
+class ClearVoucher {
+  final DateTime date;
+  final int voucherId;
+  final String voucherNumber;
+  final String paymentStatus;
+  final double igst;
+  final double sgst;
+  final double cgst;
+  final double tds;
+  final double grossAmount;
+  final double subtotal;
+  final double paidAmount;
+  final String clientAddressName;
+  final String clientAddress;
+  final String invoiceNumber;
+  final String emailId;
+  final String phoneNo;
+  final bool tdsStatus;
+  final String invoiceType;
+  final String gstNumber;
+  final String feedback;
+  final String transactionDetails;
+
+  ClearVoucher({
+    required this.date,
+    required this.voucherId,
+    required this.voucherNumber,
+    required this.paymentStatus,
+    required this.igst,
+    required this.sgst,
+    required this.cgst,
+    required this.tds,
+    required this.grossAmount,
+    required this.subtotal,
+    required this.paidAmount,
+    required this.clientAddressName,
+    required this.clientAddress,
+    required this.invoiceNumber,
+    required this.emailId,
+    required this.phoneNo,
+    required this.tdsStatus,
+    required this.invoiceType,
+    required this.gstNumber,
+    required this.feedback,
+    required this.transactionDetails,
+  });
+
+  factory ClearVoucher.fromJson(Map<String, dynamic> json) {
+    return ClearVoucher(
+      date: DateTime.tryParse(json['date'] ?? '') ?? DateTime.now(),
+      voucherId: json['voucherid'] ?? 0,
+      voucherNumber: json['vouchernumber'] ?? '',
+      paymentStatus: json['paymentstatus'] ?? '',
+      igst: (json['IGST'] ?? 0).toDouble(),
+      sgst: (json['SGST'] ?? 0).toDouble(),
+      cgst: (json['CGST'] ?? 0).toDouble(),
+      tds: (json['tds'] ?? 0).toDouble(),
+      grossAmount: (json['grossamount'] ?? 0).toDouble(),
+      subtotal: (json['subtotal'] ?? 0).toDouble(),
+      paidAmount: (json['paidamount'] ?? 0).toDouble(),
+      clientAddressName: json['clientaddressname'] ?? '',
+      clientAddress: json['clientaddress'] ?? '',
+      invoiceNumber: json['invoicenumber'] ?? '',
+      emailId: json['emailid'] ?? '',
+      phoneNo: json['phoneno'] ?? '',
+      tdsStatus: json['tdsstatus'] ?? false,
+      invoiceType: json['invoicetype'] ?? '',
+      gstNumber: json['gstnumber'] ?? '',
+      feedback: json['feedback'] ?? '',
+      transactionDetails: json['transactiondetails'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'date': date.toIso8601String(),
+      'voucherid': voucherId,
+      'vouchernumber': voucherNumber,
+      'paymentstatus': paymentStatus,
+      'IGST': igst,
+      'SGST': sgst,
+      'CGST': cgst,
+      'tds': tds,
+      'grossamount': grossAmount,
+      'subtotal': subtotal,
+      'paidamount': paidAmount,
+      'clientaddressname': clientAddressName,
+      'clientaddress': clientAddress,
+      'invoicenumber': invoiceNumber,
+      'emailid': emailId,
+      'phoneno': phoneNo,
+      'tdsstatus': tdsStatus,
+      'invoicetype': invoiceType,
+      'gstnumber': gstNumber,
+      'feedback': feedback,
+      'transactiondetails': transactionDetails,
     };
   }
 }

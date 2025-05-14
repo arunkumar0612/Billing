@@ -1679,7 +1679,7 @@ class _VoucherState extends State<Voucher> {
                                             OverlayEntry? overlayEntry;
 
                                             void showPopup() {
-                                              if (overlayEntry != null) return; // avoid duplicate popups
+                                              if (overlayEntry != null) return;
 
                                               final RenderBox renderBox = context.findRenderObject() as RenderBox;
                                               final Offset offset = renderBox.localToGlobal(Offset.zero);
@@ -1687,37 +1687,76 @@ class _VoucherState extends State<Voucher> {
                                               overlayEntry = OverlayEntry(
                                                 builder: (_) => Positioned(
                                                   left: offset.dx - 80,
-                                                  top: offset.dy + 30,
-                                                  child: MouseRegion(
-                                                    onExit: (_) {
-                                                      overlayEntry?.remove();
-                                                      overlayEntry = null;
-                                                    },
-                                                    child: Material(
-                                                      elevation: 4,
-                                                      borderRadius: BorderRadius.circular(12),
-                                                      child: Container(
-                                                        width: 200,
-                                                        padding: const EdgeInsets.all(12),
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.white,
-                                                          borderRadius: BorderRadius.circular(12),
-                                                        ),
-                                                        child: Column(
-                                                          mainAxisSize: MainAxisSize.min,
-                                                          children: [
-                                                            const CircleAvatar(
-                                                              radius: 20,
-                                                              backgroundColor: Colors.blue,
-                                                              child: Icon(Icons.person, color: Colors.white),
+                                                  top: offset.dy - 320,
+                                                  child: TweenAnimationBuilder(
+                                                    duration: const Duration(milliseconds: 200),
+                                                    tween: Tween<double>(begin: 0.9, end: 1.0),
+                                                    builder: (_, double scale, __) => Transform.scale(
+                                                      scale: scale,
+                                                      child: MouseRegion(
+                                                        onExit: (_) {
+                                                          overlayEntry?.remove();
+                                                          overlayEntry = null;
+                                                        },
+                                                        child: Material(
+                                                          elevation: 8,
+                                                          borderRadius: BorderRadius.circular(16),
+                                                          color: Colors.transparent,
+                                                          child: Container(
+                                                            width: 340,
+                                                            padding: const EdgeInsets.all(16),
+                                                            decoration: BoxDecoration(
+                                                              color: Colors.white,
+                                                              borderRadius: BorderRadius.circular(16),
+                                                              gradient: LinearGradient(
+                                                                colors: [Colors.white, Colors.grey[50]!],
+                                                                begin: Alignment.topCenter,
+                                                                end: Alignment.bottomCenter,
+                                                              ),
+                                                              boxShadow: [
+                                                                BoxShadow(
+                                                                  color: Colors.black.withOpacity(0.1),
+                                                                  blurRadius: 20,
+                                                                  spreadRadius: 2,
+                                                                ),
+                                                              ],
                                                             ),
-                                                            const SizedBox(height: 8),
-                                                            Text(
-                                                              "GST: ${voucher.gstNumber}\nEmail: ${voucher.emailId}",
-                                                              style: const TextStyle(fontSize: 14),
-                                                              textAlign: TextAlign.center,
+                                                            child: Column(
+                                                              mainAxisSize: MainAxisSize.min,
+                                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                              children: [
+                                                                Container(
+                                                                  decoration: BoxDecoration(
+                                                                    shape: BoxShape.circle,
+                                                                    border: Border.all(
+                                                                      color: Colors.blue.shade100,
+                                                                      width: 2,
+                                                                    ),
+                                                                    boxShadow: [
+                                                                      BoxShadow(
+                                                                        color: Colors.blue.withOpacity(0.2),
+                                                                        blurRadius: 10,
+                                                                        spreadRadius: 2,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  child: const CircleAvatar(
+                                                                    radius: 15,
+                                                                    backgroundColor: Colors.blue,
+                                                                    child: Icon(Icons.person, color: Colors.white, size: 24),
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(height: 12),
+                                                                _buildInfoItem(Icons.credit_card, "Customer ID", voucher.customerId),
+                                                                const Divider(height: 16, thickness: 0.5),
+                                                                _buildInfoItem(Icons.email, "Email", voucher.emailId),
+                                                                const Divider(height: 16, thickness: 0.5),
+                                                                _buildInfoItem(Icons.phone, "Phone", voucher.phoneNumber),
+                                                                const Divider(height: 16, thickness: 0.5),
+                                                                _buildInfoItem(Icons.location_on, "Address", voucher.clientAddress),
+                                                              ],
                                                             ),
-                                                          ],
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
@@ -1812,6 +1851,42 @@ class _VoucherState extends State<Voucher> {
                   ),
                 ],
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoItem(IconData icon, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 16, color: Colors.blue),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

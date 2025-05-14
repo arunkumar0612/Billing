@@ -2,7 +2,9 @@
 
 import 'package:dashed_rect/dashed_rect.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/services/voucher_service.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
@@ -26,143 +28,16 @@ class _VoucherState extends State<Voucher> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       voucherController.voucherModel.selectedItems = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false).obs;
     });
-    // voucherController.voucherModel.voucher_list.assignAll([
-    //   Voucherdata(
-    //     voucherId: 'V001',
-    //     clientName: 'Client A',
-    //     invoiceId: 'INV001',
-    //     productType: 'Product A',
-    //     refNo: 'REF001',
-    //     date: '2023-10-01',
-    //     particulars: 'Particulars A',
-    //     netAmount: '100.00',
-    //     gstAmount: '18.00',
-    //     total: '118.00',
-    //     note: 'Note A',
-    //   ),
-    //   Voucherdata(
-    //     voucherId: 'V002',
-    //     clientName: 'Client B',
-    //     invoiceId: 'INV002',
-    //     productType: 'Product B',
-    //     refNo: 'REF002',
-    //     date: '2023-10-02',
-    //     particulars: 'Particulars B',
-    //     netAmount: '200.00',
-    //     gstAmount: '36.00',
-    //     total: '236.00',
-    //     note: 'Note B',
-    //   ),
-    //   Voucherdata(
-    //     voucherId: 'V003',
-    //     clientName: 'Client B',
-    //     invoiceId: 'INV002',
-    //     productType: 'Product B',
-    //     refNo: 'REF003',
-    //     date: '2023-10-02',
-    //     particulars: 'Particulars B',
-    //     netAmount: '200.00',
-    //     gstAmount: '36.00',
-    //     total: '236.00',
-    //     note: 'Note B',
-    //   ),
-    //   Voucherdata(
-    //     voucherId: 'V004',
-    //     clientName: 'Client C',
-    //     invoiceId: 'INV003',
-    //     productType: 'Product C',
-    //     refNo: 'REF004',
-    //     date: '2023-10-03',
-    //     particulars: 'Particulars C',
-    //     netAmount: '300.00',
-    //     gstAmount: '54.00',
-    //     total: '354.00',
-    //     note: 'Note C',
-    //   ),
-    //   Voucherdata(
-    //     voucherId: 'V005',
-    //     clientName: 'Client D',
-    //     invoiceId: 'INV004',
-    //     productType: 'Product D',
-    //     refNo: 'REF005',
-    //     date: '2023-10-04',
-    //     particulars: 'Particulars D',
-    //     netAmount: '400.00',
-    //     gstAmount: '72.00',
-    //     total: '472.00',
-    //     note: 'Note D',
-    //   ),
-    //   Voucherdata(
-    //     voucherId: 'V006',
-    //     clientName: 'Client E',
-    //     invoiceId: 'INV005',
-    //     productType: 'Product E',
-    //     refNo: 'REF006',
-    //     date: '2023-10-05',
-    //     particulars: 'Particulars E',
-    //     netAmount: '500.00',
-    //     gstAmount: '90.00',
-    //     total: '590.00',
-    //     note: 'Note E',
-    //   ),
-    //   Voucherdata(
-    //     voucherId: 'V007',
-    //     clientName: 'Client F',
-    //     invoiceId: 'INV006',
-    //     productType: 'Product F',
-    //     refNo: 'REF007',
-    //     date: '2023-10-06',
-    //     particulars: 'Particulars F',
-    //     netAmount: '600.00',
-    //     gstAmount: '108.00',
-    //     total: '708.00',
-    //     note: 'Note F',
-    //   ),
-    //   Voucherdata(
-    //     voucherId: 'V008',
-    //     clientName: 'Client G',
-    //     invoiceId: 'INV007',
-    //     productType: 'Product G',
-    //     refNo: 'REF008',
-    //     date: '2023-10-07',
-    //     particulars: 'Particulars G',
-    //     netAmount: '700.00',
-    //     gstAmount: '126.00',
-    //     total: '826.00',
-    //     note: 'Note G',
-    //   ),
-    //   Voucherdata(
-    //     voucherId: 'V009',
-    //     clientName: 'Client H',
-    //     invoiceId: 'INV008',
-    //     productType: 'Product H',
-    //     refNo: 'REF009',
-    //     date: '2023-10-08',
-    //     particulars: 'Particulars H',
-    //     netAmount: '800.00',
-    //     gstAmount: '144.00',
-    //     total: '944.00',
-    //     note: 'Note H',
-    //   ),
-    //   Voucherdata(
-    //     voucherId: 'V010',
-    //     clientName: 'Client I',
-    //     invoiceId: 'INV009',
-    //     productType: 'Product I',
-    //     refNo: 'REF010',
-    //     date: '2023-10-09',
-    //     particulars: 'Particulars I',
-    //     netAmount: '900.00',
-    //     gstAmount: '162.00',
-    //     total: '1062.00',
-    //     note: 'Note I',
-    //   ),
-    // ]);
   }
 
-  void _showhariCloseVoucherPopup(int index) {
-    final TextEditingController _closedDateController = TextEditingController(text: "${DateTime.now().toLocal()}".split(' ')[0]);
+  final GlobalKey _copyIconKey = GlobalKey();
+  void _showCloseVoucherPopup(int index) {
+    final TextEditingController _closedDateController = TextEditingController(
+      text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+    );
     final TextEditingController _referenceIdController = TextEditingController();
+    final TextEditingController _amountController = TextEditingController();
+    final TextEditingController _feedbackController = TextEditingController();
 
     showDialog(
       context: context,
@@ -172,9 +47,9 @@ class _VoucherState extends State<Voucher> {
           insetPadding: const EdgeInsets.all(20),
           child: Obx(
             () => Container(
-              width: 600,
+              width: 850,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Primary_colors.Light,
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
@@ -188,477 +63,473 @@ class _VoucherState extends State<Voucher> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Header
+                    // Header with gradient
                     Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: const BoxDecoration(
-                        color: Primary_colors.Color3,
-                        borderRadius: BorderRadius.only(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Primary_colors.Color3,
+                            Primary_colors.Color3.withOpacity(0.8),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(16),
                           topRight: Radius.circular(16),
                         ),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.receipt_long, color: Colors.white, size: 24),
+                          Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(Icons.receipt_long, color: Colors.white, size: 20),
+                          ),
                           const SizedBox(width: 12),
                           const Text(
-                            'VCH_LAO90765',
+                            'UPDATE VOUCHER PAYMENT',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: Primary_font_size.SubHeading,
+                              fontSize: Primary_font_size.Text10,
                               fontWeight: FontWeight.bold,
+                              letterSpacing: 1.2,
                             ),
                           ),
                           const Spacer(),
-                          IconButton(
-                            icon: const Icon(Icons.close, color: Colors.white),
-                            onPressed: () => Navigator.of(context).pop(),
-                          ),
+                          // Container(
+                          //   decoration: BoxDecoration(
+                          //     color: Colors.white.withOpacity(0.2),
+                          //     shape: BoxShape.circle,
+                          //   ),
+                          //   child: IconButton(
+                          //     icon: const Icon(Icons.close, color: Colors.white),
+                          //     onPressed: () => Navigator.of(context).pop(),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
 
                     // Form Content
                     Padding(
-                      padding: const EdgeInsets.all(14),
+                      padding: const EdgeInsets.all(20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
+                          // Warning banner
                           Container(
-                            width: 600,
-                            padding: const EdgeInsets.only(top: 16, bottom: 16, left: 5, right: 5),
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 255, 225, 89),
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
+                              color: Primary_colors.Dark,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: const Color.fromARGB(55, 243, 208, 96),
+                                width: 1,
+                              ),
                             ),
-                            child: const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            child: const Row(
                               children: [
-                                Text(
-                                  "Anaamalis agencies have exceeded the transaction of 1 Lakh, so this invoice is TDS Deductable!",
-                                  style: TextStyle(
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                    letterSpacing: 0.5,
+                                Icon(Icons.warning_amber_rounded, color: Color.fromARGB(255, 236, 190, 64), size: 20),
+                                SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    "Client have exceeded the transaction of 1 Lakh, so this invoice is TDS Deductable!",
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 236, 190, 64),
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          // First Row - Non-editable fields
-                          SizedBox(
-                            height: 150,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Left Column
-                                Expanded(
-                                  child: Container(
-                                    padding: const EdgeInsets.all(12),
-                                    // decoration: BoxDecoration(
-                                    //   color: const Color.fromARGB(0, 85, 110, 255),
-                                    //   borderRadius: BorderRadius.circular(12),
-                                    //   boxShadow: [
-                                    //     BoxShadow(
-                                    //       color: Colors.grey.withOpacity(0.15),
-                                    //       blurRadius: 6,
-                                    //       offset: const Offset(0, 3),
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const CircleAvatar(
-                                          radius: 24,
-                                          backgroundColor: Colors.blue,
-                                          child: Icon(Icons.person, color: Colors.white, size: 24),
-                                        ),
-                                        const SizedBox(height: 12),
-                                        Text(
-                                          overflow: TextOverflow.ellipsis,
-                                          voucherController.voucherModel.voucher_list[index].clientName,
-                                          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          voucherController.voucherModel.voucher_list[index].clientAddress,
-                                          style: const TextStyle(color: Colors.grey, fontSize: 10),
-                                        ),
-                                        // _infoRow(Icons.location_on_outlined, "23, MG Road, Bengaluru"),
-                                        // _infoRow(Icons.phone_android, "+91 9876543210"),
-                                        // _infoRow(Icons.email_outlined, "hari@example.com"),
-                                        // _infoRow(Icons.account_balance_wallet_outlined, "GSTIN: 29ABCDE1234F2Z5"),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
+                          const SizedBox(height: 20),
 
-                                // Right Column
+                          // Client and Invoice Info
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Primary_colors.Dark,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Primary_colors.Dark,
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // Client Info
                                 Expanded(
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      const SizedBox(
-                                        height: 5,
+                                      Row(
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(4),
+                                            decoration: BoxDecoration(
+                                              color: Primary_colors.Color3.withOpacity(0.1),
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: const CircleAvatar(
+                                              radius: 20,
+                                              backgroundColor: Primary_colors.Color3,
+                                              child: Icon(Icons.person, color: Colors.white, size: 20),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Tooltip(
+                                                  message: voucherController.voucherModel.voucher_list[index].clientName,
+                                                  child: Text(
+                                                    voucherController.voucherModel.voucher_list[index].clientName,
+                                                    style: const TextStyle(overflow: TextOverflow.ellipsis, color: Colors.white, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text9),
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 4),
+                                                Text(
+                                                  "Client ID: ${voucherController.voucherModel.voucher_list[index].customerId}",
+                                                  style: const TextStyle(color: Colors.grey, fontSize: 11),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       ),
+                                      const SizedBox(height: 12),
+                                      _infoRow(Icons.location_on_outlined, voucherController.voucherModel.voucher_list[index].clientAddress),
+                                      const SizedBox(height: 6),
+                                      _infoRow(Icons.phone_android, voucherController.voucherModel.voucher_list[index].phoneNumber),
+                                    ],
+                                  ),
+                                ),
+
+                                // Vertical divider
+                                Container(
+                                  height: 120,
+                                  width: 0.5,
+                                  color: Colors.grey[500],
+                                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                                ),
+
+                                // Invoice Info
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          const SizedBox(
-                                            width: 1,
+                                          const Text(
+                                            "Invoice Number",
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                           ),
+                                          // Define a GlobalKey in your widget's state
+
+// Inside your Row widget
                                           Row(
                                             children: [
                                               Text(
                                                 voucherController.voucherModel.voucher_list[index].invoiceNumber,
-                                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: Primary_font_size.Text8,
+                                                ),
                                               ),
-                                              const SizedBox(width: 7),
-                                              const Icon(
-                                                Icons.copy,
-                                                color: Colors.grey,
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          Container(
-                                            // padding: const EdgeInsets.all(16),
-                                            // decoration: BoxDecoration(
-                                            //   color: Colors.grey[50],
-                                            //   borderRadius: BorderRadius.circular(12),
-                                            //   boxShadow: [
-                                            //     BoxShadow(
-                                            //       color: Colors.black.withOpacity(0.05),
-                                            //       blurRadius: 8,
-                                            //       offset: const Offset(0, 3),
-                                            //     ),
-                                            //   ],
-                                            // ),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                const SizedBox(height: 20),
-                                                _amountRow("Invoice Amount:", "₹${voucherController.voucherModel.voucher_list[index].totalAmount}"),
-                                                const SizedBox(height: 12),
-                                                _amountRow("Receivable Amount:", "₹${voucherController.voucherModel.voucher_list[index].totalAmount}"),
-                                              ],
-                                            ),
-                                          ),
-                                          const SizedBox(height: 12),
-                                          // _buildReadOnlyField(
-                                          //   label: 'Invoice No',
-                                          //   value: voucherController.voucherModel.voucher_list[index].invoiceNumber,
-                                          //   icon: Icons.numbers,
-                                          // ),
-                                          // const SizedBox(height: 16),
-                                          // _buildReadOnlyField(
-                                          //   label: 'Amount',
-                                          //   value: '₹${voucherController.voucherModel.voucher_list[index].totalAmount}',
-                                          //   icon: Icons.attach_money,
-                                          // ),
-                                          // const SizedBox(height: 5),
-                                          Builder(
-                                            builder: (context) {
-                                              OverlayEntry? overlayEntry;
+                                              const SizedBox(width: 8),
+                                              MouseRegion(
+                                                cursor: SystemMouseCursors.click,
+                                                child: GestureDetector(
+                                                  key: _copyIconKey, // Attach the key here
+                                                  onTap: () async {
+                                                    await Clipboard.setData(ClipboardData(
+                                                      text: voucherController.voucherModel.voucher_list[index].invoiceNumber,
+                                                    ));
 
-                                              void showPopup() {
-                                                if (overlayEntry != null) return; // avoid duplicate popups
+                                                    final renderBox = _copyIconKey.currentContext?.findRenderObject() as RenderBox?;
+                                                    if (renderBox == null || !mounted) return; // Early exit if not rendered
 
-                                                final RenderBox renderBox = context.findRenderObject() as RenderBox;
-                                                final Offset offset = renderBox.localToGlobal(Offset.zero);
-
-                                                overlayEntry = OverlayEntry(
-                                                  builder: (_) => Positioned(
-                                                    left: offset.dx + 80,
-                                                    top: offset.dy + 80,
-                                                    child: MouseRegion(
-                                                      onExit: (_) {
-                                                        overlayEntry?.remove();
-                                                        overlayEntry = null;
-                                                      },
-                                                      child: Material(
-                                                        elevation: 4,
-                                                        borderRadius: BorderRadius.circular(12),
-                                                        child: Container(
-                                                          width: 200,
-                                                          padding: const EdgeInsets.all(12),
-                                                          decoration: BoxDecoration(
-                                                            color: const Color.fromARGB(255, 112, 112, 112),
-                                                            borderRadius: BorderRadius.circular(12),
-                                                          ),
-                                                          child: const Column(
-                                                            mainAxisSize: MainAxisSize.min,
-                                                            children: [
-                                                              Row(
-                                                                children: [
-                                                                  // Text(
-                                                                  //   'Date         :   ',
-                                                                  //   style: TextStyle(color: Colors.white),
-                                                                  // ),
-                                                                  Text(
-                                                                    '12.05.2025   -   ',
-                                                                    style: TextStyle(color: Colors.white),
-                                                                  ),
-
-                                                                  Text(
-                                                                    'RS. 1,05,12',
-                                                                    style: TextStyle(color: Colors.white),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              Row(
-                                                                children: [
-                                                                  Text(
-                                                                    '12.05.2025   -   ',
-                                                                    style: TextStyle(color: Colors.white),
-                                                                  ),
-                                                                  Text(
-                                                                    'RS. 1,05,12',
-                                                                    style: TextStyle(color: Colors.white),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            ],
+                                                    final overlay = Overlay.of(context);
+                                                    final overlayEntry = OverlayEntry(
+                                                      builder: (context) => Positioned(
+                                                        left: renderBox.localToGlobal(Offset.zero).dx + renderBox.size.width,
+                                                        top: renderBox.localToGlobal(Offset.zero).dy,
+                                                        child: Material(
+                                                          color: Colors.transparent,
+                                                          child: Container(
+                                                            padding: const EdgeInsets.all(6),
+                                                            decoration: BoxDecoration(
+                                                              color: const Color.fromARGB(119, 33, 149, 243).withOpacity(0.8),
+                                                              borderRadius: BorderRadius.circular(8),
+                                                            ),
+                                                            child: const Text(
+                                                              "Copied!",
+                                                              style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text5),
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ),
-                                                );
+                                                    );
 
-                                                Overlay.of(context).insert(overlayEntry!);
-                                              }
-
-                                              void removePopup() {
-                                                overlayEntry?.remove();
-                                                overlayEntry = null;
-                                              }
-
-                                              return Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: [
-                                                  const Text(
-                                                    "Last paid",
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight: FontWeight.w600,
-                                                      color: Colors.black87,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 3),
-                                                  MouseRegion(
-                                                    cursor: SystemMouseCursors.click,
-                                                    onEnter: (_) => showPopup(),
-                                                    onExit: (_) => removePopup(),
-                                                    child: const Icon(
-                                                      Icons.info_outline,
-                                                      color: Primary_colors.Color2,
-                                                      size: 15,
-                                                    ),
-                                                  ),
-                                                ],
-                                              );
-                                            },
+                                                    overlay.insert(overlayEntry);
+                                                    Future.delayed(const Duration(seconds: 1), overlayEntry.remove);
+                                                  },
+                                                  child: const Icon(Icons.copy, color: Colors.grey, size: 18),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
+                                      const SizedBox(height: 16),
+                                      _amountRow(
+                                        "Invoice Amount:",
+                                        "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].totalAmount)}",
+                                        Colors.green,
+                                      ),
+                                      const SizedBox(height: 12),
+                                      _amountRow(
+                                        "Receivable Amount:",
+                                        "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].totalAmount)}",
+                                        Colors.green,
+                                      ),
+                                      const SizedBox(height: 12),
+                                      _amountRow(
+                                        "Pending Amount:",
+                                        "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].pendingAmount)}",
+                                        voucherController.voucherModel.voucher_list[index].pendingAmount > 0 ? const Color.fromARGB(255, 253, 206, 64) : Colors.grey,
+                                      ),
+                                      const SizedBox(height: 12),
+                                      _buildLastPaymentInfo(),
                                     ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          // Second Row - Non-editable fields
-                          // Row(
-                          //   children: [
-                          //     // Client Name
-                          //     Expanded(
-                          //       child: _buildReadOnlyField(
-                          //         label: 'Client Name',
-                          //         value: voucherController.voucherModel.voucher_list[index].clientName,
-                          //         icon: Icons.person,
-                          //       ),
-                          //     ),
-                          //     const SizedBox(width: 16),
-                          //     // Amount
-                          //     Expanded(
-                          //       child: _buildReadOnlyField(
-                          //         label: 'Amount',
-                          //         value: '₹${voucherController.voucherModel.voucher_list[index].totalAmount}',
-                          //         icon: Icons.attach_money,
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
                           const SizedBox(height: 24),
 
-                          // Divider
-                          const Divider(height: 1, color: Colors.grey),
-                          const SizedBox(height: 14),
-
-                          // Editable Fields
-                          // Closed Date
-                          SizedBox(
-                            height: 250,
-                            width: 600,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        _buildEditableField(
-                                          controller: _closedDateController,
-                                          label: 'Closed Date',
-                                          hint: 'Select closed date',
-                                          icon: Icons.calendar_today,
-                                          onTap: () => widget.selectDate(context, _closedDateController),
-                                        ),
-                                        const SizedBox(height: 16),
-
-                                        // Reference ID
-                                        _buildEditableField(
-                                          controller: _referenceIdController,
-                                          label: 'Amount',
-                                          hint: 'Enter recievable amount',
-                                          icon: Icons.credit_card,
-                                        ),
-                                        const SizedBox(height: 16),
-                                        _buildEditableField(
-                                          controller: _referenceIdController,
-                                          label: 'TDS',
-                                          hint: 'Enter TDS status(dropdown)',
-                                          icon: Icons.credit_card,
-                                        ),
-                                        const SizedBox(height: 16),
-                                        _buildEditableField(
-                                          controller: _referenceIdController,
-                                          label: 'Transaction details',
-                                          hint: 'Enter Transaction Details',
-                                          icon: Icons.credit_card,
-                                        ),
-                                        const SizedBox(height: 16),
-                                        _buildEditableField(
-                                          controller: _referenceIdController,
-                                          label: 'Feedback',
-                                          hint: 'Enter Feedback',
-                                          icon: Icons.credit_card,
-                                        ),
-                                        const SizedBox(height: 16),
-                                      ],
+                          // Form Fields and Payment Breakdown
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Form Fields
+                              Expanded(
+                                flex: 3,
+                                child: Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: Primary_colors.Dark,
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: Primary_colors.Dark,
+                                      width: 1,
                                     ),
                                   ),
+                                  child: Column(
+                                    children: [
+                                      _buildEditableField(
+                                        controller: _closedDateController,
+                                        label: 'Closed Date',
+                                        hint: 'Select closed date',
+                                        icon: Icons.calendar_today,
+                                        onTap: () => widget.selectDate(context, _closedDateController),
+                                      ),
+                                      const SizedBox(height: 16),
+                                      _buildEditableField(
+                                        controller: _amountController,
+                                        label: 'Amount Received',
+                                        hint: 'Enter received amount',
+                                        icon: Icons.attach_money,
+                                        keyboardType: TextInputType.number,
+                                      ),
+                                      const SizedBox(height: 16),
+                                      _buildDropdownField(
+                                        label: 'TDS Status',
+                                        hint: 'Select TDS status',
+                                        icon: Icons.percent,
+                                        items: ['Deducted', 'Not Applicable', 'Pending'],
+                                        onChanged: (value) {},
+                                      ),
+                                      const SizedBox(height: 16),
+                                      _buildEditableField(
+                                        controller: _referenceIdController,
+                                        label: 'Transaction Reference',
+                                        hint: 'Enter transaction ID/bank reference',
+                                        icon: Icons.credit_card,
+                                      ),
+                                      const SizedBox(height: 16),
+                                      _buildEditableField(
+                                        controller: _feedbackController,
+                                        label: 'Payment Notes',
+                                        hint: 'Any additional notes about this payment',
+                                        icon: Icons.note,
+                                        maxLines: 3,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Container(
-                                    padding: const EdgeInsets.all(16),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.shade100,
-                                      borderRadius: BorderRadius.circular(12),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.05),
-                                          blurRadius: 8,
-                                          offset: const Offset(0, 2),
+                              ),
+                              const SizedBox(width: 20),
+
+                              // Payment Breakdown
+                              Expanded(
+                                flex: 2,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(16),
+                                      decoration: BoxDecoration(
+                                        color: Primary_colors.Dark,
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: Primary_colors.Dark,
+                                          width: 1,
                                         ),
-                                      ],
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            "PAYMENT BREAKUP",
+                                            style: TextStyle(
+                                              color: Primary_colors.Color3,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                              letterSpacing: 0.5,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 16),
+                                          _buildBreakupLine("Net Amount", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].subTotal)}"),
+                                          _buildBreakupDivider(),
+                                          _buildBreakupLine("CGST (9%)", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].cgst)}"),
+                                          _buildBreakupDivider(),
+                                          _buildBreakupLine("SGST (9%)", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].sgst)}"),
+                                          _buildBreakupDivider(),
+                                          _buildBreakupLine("IGST", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].igst)}"),
+                                          _buildBreakupDivider(),
+                                          _buildBreakupLine(
+                                              "TDS (2%)", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].tdsCalculationAmount)}"),
+                                          const SizedBox(height: 16),
+                                          Container(
+                                            padding: const EdgeInsets.all(12),
+                                            decoration: BoxDecoration(
+                                              color: Primary_colors.Color3.withOpacity(0.1),
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                const Text(
+                                                  "Total Amount",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].totalAmount)}",
+                                                  style: const TextStyle(
+                                                    color: Primary_colors.Color3,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    child: Column(
+                                    const SizedBox(height: 24),
+
+                                    // Receipt Upload
+                                    Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         const Text(
-                                          "PAYMENT BREAKUP",
+                                          "UPLOAD PAYMENT RECEIPT",
                                           style: TextStyle(
-                                            color: Colors.black87,
+                                            color: Primary_colors.Color3,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 16,
+                                            fontSize: 12,
                                             letterSpacing: 0.5,
                                           ),
                                         ),
-                                        const SizedBox(height: 12),
-                                        _buildBreakupLine("Net Amount", "₹${voucherController.voucherModel.voucher_list[index].subTotal}"),
-                                        _buildBreakupLine("CGST Amount", "₹${voucherController.voucherModel.voucher_list[index].cgst}"),
-                                        _buildBreakupLine("SGST Amount", "₹${voucherController.voucherModel.voucher_list[index].sgst}"),
-                                        _buildBreakupLine("IGST Amount", "₹${voucherController.voucherModel.voucher_list[index].igst}"),
-                                        _buildBreakupLine("TDS Amount", "₹${voucherController.voucherModel.voucher_list[index].tdsCalculationAmount}"),
+                                        const SizedBox(height: 8),
+                                        SizedBox(
+                                          height: 118,
+                                          child: MouseRegion(
+                                            cursor: SystemMouseCursors.click,
+                                            child: GestureDetector(
+                                              onTap: widget.pickFile,
+                                              child: DashedRect(
+                                                color: Primary_colors.Color3.withOpacity(0.5),
+                                                strokeWidth: 1.5,
+                                                gap: 3.0,
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  padding: const EdgeInsets.all(12),
+                                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: Primary_colors.Dark),
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.cloud_upload,
+                                                        size: 40,
+                                                        color: Primary_colors.Color3.withOpacity(0.7),
+                                                      ),
+                                                      const SizedBox(height: 8),
+                                                      Text(
+                                                        voucherController.voucherModel.fileName.value ?? 'Click to upload receipt',
+                                                        style: TextStyle(
+                                                          overflow: TextOverflow.ellipsis,
+                                                          color: voucherController.voucherModel.fileName.value != null ? Primary_colors.Color3 : Colors.grey[600],
+                                                          fontWeight: FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                      if (voucherController.voucherModel.fileName.value != null) ...[
+                                                        const SizedBox(height: 4),
+                                                        Text(
+                                                          '${(voucherController.voucherModel.selectedFile.value?.lengthSync() ?? 0) / 1024} KB',
+                                                          style: const TextStyle(
+                                                            overflow: TextOverflow.ellipsis,
+                                                            fontSize: 12,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 30),
-                          GestureDetector(
-                            onTap: widget.pickFile,
-                            child: DashedRect(
-                              color: const Color.fromARGB(255, 173, 171, 171),
-                              strokeWidth: 2.0,
-                              gap: 2.0,
-                              child: Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.cloud_upload,
-                                      size: 40,
-                                      color: Primary_colors.Color3,
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      voucherController.voucherModel.fileName.value ?? '               Click to upload               ',
-                                      style: TextStyle(
-                                        color: voucherController.voucherModel.fileName.value != null ? Primary_colors.Color3 : Colors.grey,
-                                        fontWeight: voucherController.voucherModel.fileName.value != null ? FontWeight.bold : FontWeight.normal,
-                                      ),
-                                    ),
-                                    if (voucherController.voucherModel.fileName.value != null) ...[
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        '${(voucherController.voucherModel.selectedFile.value?.lengthSync() ?? 0) / 1024} KB',
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ],
                                   ],
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                          // Upload Section
-                          // const Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Text(
-                          //     'Upload Payment Receipt',
-                          //     style: TextStyle(
-                          //       fontSize: 14,
-                          //       fontWeight: FontWeight.bold,
-                          //       color: Colors.black87,
-                          //     ),
-                          //   ),
-                          // ),
 
                           const SizedBox(height: 24),
 
@@ -666,9 +537,10 @@ class _VoucherState extends State<Voucher> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              TextButton(
-                                style: TextButton.styleFrom(
+                              OutlinedButton(
+                                style: OutlinedButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                  side: const BorderSide(color: Colors.grey),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
@@ -677,263 +549,7 @@ class _VoucherState extends State<Voucher> {
                                 child: const Text(
                                   'CANCEL',
                                   style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.redAccent,
-                                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  elevation: 2,
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: const Text('Voucher closed successfully'),
-                                      behavior: SnackBarBehavior.floating,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      backgroundColor: Colors.green,
-                                    ),
-                                  );
-                                },
-                                child: const Text(
-                                  'partially clear',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void _showCloseVoucherPopup(int index) {
-    final TextEditingController _closedDateController = TextEditingController(text: "${DateTime.now().toLocal()}".split(' ')[0]);
-    final TextEditingController _referenceIdController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          insetPadding: const EdgeInsets.all(20),
-          child: Obx(
-            () => Container(
-              width: 600,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 20,
-                    offset: const Offset(0, 10),
-                  ),
-                ],
-              ),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Header
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: const BoxDecoration(
-                        color: Primary_colors.Color3,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(16),
-                          topRight: Radius.circular(16),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.receipt_long, color: Colors.white, size: 24),
-                          const SizedBox(width: 12),
-                          const Text(
-                            'Close Voucher',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: Primary_font_size.SubHeading,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const Spacer(),
-                          IconButton(
-                            icon: const Icon(Icons.close, color: Colors.white),
-                            onPressed: () => Navigator.of(context).pop(),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    // Form Content
-                    Padding(
-                      padding: const EdgeInsets.all(14),
-                      child: Column(
-                        children: [
-                          // First Row - Non-editable fields
-                          Row(
-                            children: [
-                              // Voucher ID
-                              Expanded(
-                                child: _buildReadOnlyField(
-                                  label: 'Voucher ID',
-                                  value: voucherController.voucherModel.voucher_list[index].voucherNumber,
-                                  icon: Icons.confirmation_number,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              // Invoice ID
-                              Expanded(
-                                child: _buildReadOnlyField(
-                                  label: 'Invoice ID',
-                                  value: voucherController.voucherModel.voucher_list[index].invoiceNumber,
-                                  icon: Icons.receipt,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-
-                          // Second Row - Non-editable fields
-                          Row(
-                            children: [
-                              // Client Name
-                              Expanded(
-                                child: _buildReadOnlyField(
-                                  label: 'Client Name',
-                                  value: voucherController.voucherModel.voucher_list[index].clientName,
-                                  icon: Icons.person,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              // Amount
-                              Expanded(
-                                child: _buildReadOnlyField(
-                                  label: 'Amount',
-                                  value: '₹${voucherController.voucherModel.voucher_list[index].totalAmount}',
-                                  icon: Icons.attach_money,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 24),
-
-                          // Divider
-                          const Divider(height: 1, color: Colors.grey),
-                          const SizedBox(height: 14),
-
-                          // Editable Fields
-                          // Closed Date
-                          _buildEditableField(
-                            controller: _closedDateController,
-                            label: 'Closed Date',
-                            hint: 'Select closed date',
-                            icon: Icons.calendar_today,
-                            onTap: () => widget.selectDate(context, _closedDateController),
-                          ),
-                          const SizedBox(height: 16),
-
-                          // Reference ID
-                          _buildEditableField(
-                            controller: _referenceIdController,
-                            label: 'Reference ID',
-                            hint: 'Enter payment reference ID',
-                            icon: Icons.credit_card,
-                          ),
-                          const SizedBox(height: 16),
-
-                          // Upload Section
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Upload Payment Receipt',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          GestureDetector(
-                            onTap: widget.pickFile,
-                            child: DashedRect(
-                              color: const Color.fromARGB(255, 173, 171, 171),
-                              strokeWidth: 2.0,
-                              gap: 5.0,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.cloud_upload,
-                                      size: 40,
-                                      color: Primary_colors.Color3,
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      voucherController.voucherModel.fileName.value ?? '               Click to upload               ',
-                                      style: TextStyle(
-                                        color: voucherController.voucherModel.fileName.value != null ? Primary_colors.Color3 : Colors.grey,
-                                        fontWeight: voucherController.voucherModel.fileName.value != null ? FontWeight.bold : FontWeight.normal,
-                                      ),
-                                    ),
-                                    if (voucherController.voucherModel.fileName.value != null) ...[
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        '${(voucherController.voucherModel.selectedFile.value?.lengthSync() ?? 0) / 1024} KB',
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ],
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-
-                          // Action Buttons
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: const Text(
-                                  'CANCEL',
-                                  style: TextStyle(
-                                    color: Colors.red,
+                                    color: Colors.grey,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -947,6 +563,7 @@ class _VoucherState extends State<Voucher> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   elevation: 2,
+                                  shadowColor: Primary_colors.Color3.withOpacity(0.3),
                                 ),
                                 onPressed: () {
                                   Navigator.of(context).pop();
@@ -962,7 +579,38 @@ class _VoucherState extends State<Voucher> {
                                   );
                                 },
                                 child: const Text(
-                                  'CONFIRM CLOSE',
+                                  'MARK AS PAID',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.orange,
+                                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  elevation: 2,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text('Voucher partially cleared'),
+                                      behavior: SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      backgroundColor: Colors.blue,
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  'PARTIALLY CLEAR',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -984,45 +632,19 @@ class _VoucherState extends State<Voucher> {
     );
   }
 
-  Widget _buildReadOnlyField({
-    required String label,
-    required String value,
-    required IconData icon,
-  }) {
-    return Column(
+  Widget _infoRow(IconData icon, String text) {
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          maxLines: 5,
-          label,
-          style: const TextStyle(
-            fontSize: 13,
-            color: Colors.black54,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey[300]!),
-          ),
-          child: Row(
-            children: [
-              Icon(icon, size: 20, color: Colors.grey[600]),
-              const SizedBox(width: 12),
-              Text(
-                maxLines: 4,
-                value,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
+        Icon(icon, color: Colors.grey, size: 16),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            text,
+            style: const TextStyle(
+              color: Colors.grey,
+              fontSize: 12,
+            ),
           ),
         ),
       ],
@@ -1035,6 +657,8 @@ class _VoucherState extends State<Voucher> {
     required String hint,
     required IconData icon,
     VoidCallback? onTap,
+    TextInputType? keyboardType,
+    int maxLines = 1,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1043,65 +667,644 @@ class _VoucherState extends State<Voucher> {
           label,
           style: const TextStyle(
             fontSize: 13,
-            color: Colors.black54,
+            color: Colors.grey,
             fontWeight: FontWeight.w500,
+            letterSpacing: 0.5,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 6),
         TextFormField(
           controller: controller,
           readOnly: onTap != null,
           onTap: onTap,
+          keyboardType: keyboardType,
+          maxLines: maxLines,
           decoration: InputDecoration(
+            filled: true,
+            fillColor: Primary_colors.Light,
             hintText: hint,
-            hintStyle: TextStyle(color: Colors.grey[400]),
-            prefixIcon: Icon(icon, color: Primary_colors.Color3),
+            hintStyle: TextStyle(
+              color: Colors.grey[400],
+              fontSize: Primary_font_size.Text8,
+            ),
+            prefixIcon: Icon(
+              icon,
+              color: Primary_colors.Color3,
+              size: 20,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey[400]!),
+              borderSide: const BorderSide(color: Colors.transparent),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey[400]!),
+              borderSide: const BorderSide(color: Colors.transparent),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: Primary_colors.Color3, width: 1.5),
             ),
-            contentPadding: const EdgeInsets.symmetric(vertical: 14),
+            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
           ),
           style: const TextStyle(
-            fontSize: 14,
-            color: Colors.black87,
+            fontSize: Primary_font_size.Text8,
+            color: Colors.white,
           ),
         ),
       ],
     );
   }
 
-  Widget _amountRow(String label, String value) {
+  Widget _buildDropdownField({
+    required String label,
+    required String hint,
+    required IconData icon,
+    required List<String> items,
+    required Function(String?) onChanged,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 13,
+            color: Colors.grey,
+            letterSpacing: 0.5,
+          ),
+        ),
+        const SizedBox(height: 6),
+        DropdownButtonFormField<String>(
+          hint: Text(
+            hint,
+            style: TextStyle(
+              fontSize: Primary_font_size.Text8,
+              color: Colors.grey[400],
+              letterSpacing: 0.5,
+            ),
+          ),
+          dropdownColor: Primary_colors.Light,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Primary_colors.Light,
+            prefixIcon: Icon(
+              icon,
+              color: Primary_colors.Color3,
+              size: 20,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Colors.transparent),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Colors.transparent),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Primary_colors.Color3, width: 1.5),
+            ),
+            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+          ),
+          items: items.map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(
+                value,
+                style: const TextStyle(color: Colors.white),
+              ),
+            );
+          }).toList(),
+          onChanged: onChanged,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.white,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _amountRow(String label, String value, Color color) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
           style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Colors.black87,
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+            color: Colors.grey,
           ),
         ),
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: Colors.green, // or Colors.blueGrey depending on your theme
+            color: color,
           ),
         ),
       ],
     );
   }
+
+  Widget _buildLastPaymentInfo() {
+    OverlayEntry? overlayEntry;
+    bool isOverlayVisible = false;
+
+    void removePopup() {
+      if (!isOverlayVisible) return;
+      overlayEntry?.remove();
+      overlayEntry = null;
+      isOverlayVisible = false;
+    }
+
+    void showPopup(BuildContext context) {
+      if (isOverlayVisible) return;
+      isOverlayVisible = true;
+
+      final RenderBox renderBox = context.findRenderObject() as RenderBox;
+      final Offset offset = renderBox.localToGlobal(Offset.zero);
+
+      overlayEntry = OverlayEntry(
+        builder: (_) => GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            removePopup();
+          },
+          child: Stack(
+            children: [
+              Positioned(
+                left: offset.dx,
+                top: offset.dy + 30,
+                child: Material(
+                  color: Colors.transparent,
+                  child: GestureDetector(
+                    onTap: () {}, // Prevent tap from bubbling up
+                    child: Container(
+                      width: 220,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "PAYMENT HISTORY",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          _buildPaymentHistoryItem("12.05.2025", "₹1,05,000"),
+                          _buildPaymentHistoryItem("28.04.2025", "₹50,000"),
+                          _buildPaymentHistoryItem("15.03.2025", "₹75,000"),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      Overlay.of(context).insert(overlayEntry!);
+    }
+
+    return Builder(
+      builder: (context) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Text(
+              "Last payment: ",
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(width: 4),
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              onEnter: (_) => showPopup(context),
+              child: GestureDetector(
+                onTap: () {
+                  if (isOverlayVisible) {
+                    removePopup();
+                  } else {
+                    showPopup(context);
+                  }
+                },
+                child: const Row(
+                  children: [
+                    Text(
+                      "12.05.2025 - ₹1,05,000",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Primary_colors.Color3,
+                      ),
+                    ),
+                    SizedBox(width: 4),
+                    Icon(
+                      Icons.info_outline,
+                      color: Primary_colors.Color3,
+                      size: 14,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildPaymentHistoryItem(String date, String amount) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            date,
+            style: const TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
+            ),
+          ),
+          Row(
+            children: [
+              Text(
+                amount,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
+              ),
+              IconButton(onPressed: () {}, icon: Image.asset(height: 30, 'assets/images/pdfdownload.png')),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBreakupLine(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.w500,
+              fontSize: 12,
+            ),
+          ),
+          Text(
+            value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBreakupDivider() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 4),
+      child: Divider(
+        height: 1,
+        color: Colors.grey,
+        thickness: 0.2,
+      ),
+    );
+  }
+
+  // void _showCloseVoucherPopup(int index) {
+  //   final TextEditingController _closedDateController = TextEditingController(text: "${DateTime.now().toLocal()}".split(' ')[0]);
+  //   final TextEditingController _referenceIdController = TextEditingController();
+
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return Dialog(
+  //         backgroundColor: Colors.transparent,
+  //         insetPadding: const EdgeInsets.all(20),
+  //         child: Obx(
+  //           () => Container(
+  //             width: 600,
+  //             decoration: BoxDecoration(
+  //               color: Colors.white,
+  //               borderRadius: BorderRadius.circular(16),
+  //               boxShadow: [
+  //                 BoxShadow(
+  //                   color: Colors.black.withOpacity(0.2),
+  //                   blurRadius: 20,
+  //                   offset: const Offset(0, 10),
+  //                 ),
+  //               ],
+  //             ),
+  //             child: SingleChildScrollView(
+  //               child: Column(
+  //                 mainAxisSize: MainAxisSize.min,
+  //                 children: [
+  //                   // Header
+  //                   Container(
+  //                     padding: const EdgeInsets.all(16),
+  //                     decoration: const BoxDecoration(
+  //                       color: Primary_colors.Color3,
+  //                       borderRadius: BorderRadius.only(
+  //                         topLeft: Radius.circular(16),
+  //                         topRight: Radius.circular(16),
+  //                       ),
+  //                     ),
+  //                     child: Row(
+  //                       children: [
+  //                         const Icon(Icons.receipt_long, color: Colors.white, size: 24),
+  //                         const SizedBox(width: 12),
+  //                         const Text(
+  //                           'Close Voucher',
+  //                           style: TextStyle(
+  //                             color: Colors.white,
+  //                             fontSize: Primary_font_size.SubHeading,
+  //                             fontWeight: FontWeight.bold,
+  //                           ),
+  //                         ),
+  //                         const Spacer(),
+  //                         IconButton(
+  //                           icon: const Icon(Icons.close, color: Colors.white),
+  //                           onPressed: () => Navigator.of(context).pop(),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+
+  //                   // Form Content
+  //                   Padding(
+  //                     padding: const EdgeInsets.all(14),
+  //                     child: Column(
+  //                       children: [
+  //                         // First Row - Non-editable fields
+  //                         Row(
+  //                           children: [
+  //                             // Voucher ID
+  //                             Expanded(
+  //                               child: _buildReadOnlyField(
+  //                                 label: 'Voucher ID',
+  //                                 value: voucherController.voucherModel.voucher_list[index].voucherNumber,
+  //                                 icon: Icons.confirmation_number,
+  //                               ),
+  //                             ),
+  //                             const SizedBox(width: 16),
+  //                             // Invoice ID
+  //                             Expanded(
+  //                               child: _buildReadOnlyField(
+  //                                 label: 'Invoice ID',
+  //                                 value: voucherController.voucherModel.voucher_list[index].invoiceNumber,
+  //                                 icon: Icons.receipt,
+  //                               ),
+  //                             ),
+  //                           ],
+  //                         ),
+  //                         const SizedBox(height: 16),
+
+  //                         // Second Row - Non-editable fields
+  //                         Row(
+  //                           children: [
+  //                             // Client Name
+  //                             Expanded(
+  //                               child: _buildReadOnlyField(
+  //                                 label: 'Client Name',
+  //                                 value: voucherController.voucherModel.voucher_list[index].clientName,
+  //                                 icon: Icons.person,
+  //                               ),
+  //                             ),
+  //                             const SizedBox(width: 16),
+  //                             // Amount
+  //                             Expanded(
+  //                               child: _buildReadOnlyField(
+  //                                 label: 'Amount',
+  //                                 value: '₹${voucherController.voucherModel.voucher_list[index].totalAmount}',
+  //                                 icon: Icons.attach_money,
+  //                               ),
+  //                             ),
+  //                           ],
+  //                         ),
+  //                         const SizedBox(height: 24),
+
+  //                         // Divider
+  //                         const Divider(height: 1, color: Colors.grey),
+  //                         const SizedBox(height: 14),
+
+  //                         // Editable Fields
+  //                         // Closed Date
+  //                         _buildEditableField(
+  //                           controller: _closedDateController,
+  //                           label: 'Closed Date',
+  //                           hint: 'Select closed date',
+  //                           icon: Icons.calendar_today,
+  //                           onTap: () => widget.selectDate(context, _closedDateController),
+  //                         ),
+  //                         const SizedBox(height: 16),
+
+  //                         // Reference ID
+  //                         _buildEditableField(
+  //                           controller: _referenceIdController,
+  //                           label: 'Reference ID',
+  //                           hint: 'Enter payment reference ID',
+  //                           icon: Icons.credit_card,
+  //                         ),
+  //                         const SizedBox(height: 16),
+
+  //                         // Upload Section
+  //                         const Align(
+  //                           alignment: Alignment.centerLeft,
+  //                           child: Text(
+  //                             'Upload Payment Receipt',
+  //                             style: TextStyle(
+  //                               fontSize: 14,
+  //                               fontWeight: FontWeight.bold,
+  //                               color: Colors.black87,
+  //                             ),
+  //                           ),
+  //                         ),
+  //                         const SizedBox(height: 8),
+  //                         GestureDetector(
+  //                           onTap: widget.pickFile,
+  //                           child: DashedRect(
+  //                             color: const Color.fromARGB(255, 173, 171, 171),
+  //                             strokeWidth: 2.0,
+  //                             gap: 5.0,
+  //                             child: Padding(
+  //                               padding: const EdgeInsets.all(8.0),
+  //                               child: Column(
+  //                                 mainAxisAlignment: MainAxisAlignment.center,
+  //                                 children: [
+  //                                   const Icon(
+  //                                     Icons.cloud_upload,
+  //                                     size: 40,
+  //                                     color: Primary_colors.Color3,
+  //                                   ),
+  //                                   const SizedBox(height: 8),
+  //                                   Text(
+  //                                     voucherController.voucherModel.fileName.value ?? '               Click to upload               ',
+  //                                     style: TextStyle(
+  //                                       color: voucherController.voucherModel.fileName.value != null ? Primary_colors.Color3 : Colors.grey,
+  //                                       fontWeight: voucherController.voucherModel.fileName.value != null ? FontWeight.bold : FontWeight.normal,
+  //                                     ),
+  //                                   ),
+  //                                   if (voucherController.voucherModel.fileName.value != null) ...[
+  //                                     const SizedBox(height: 4),
+  //                                     Text(
+  //                                       '${(voucherController.voucherModel.selectedFile.value?.lengthSync() ?? 0) / 1024} KB',
+  //                                       style: const TextStyle(
+  //                                         fontSize: 12,
+  //                                         color: Colors.grey,
+  //                                       ),
+  //                                     ),
+  //                                   ],
+  //                                 ],
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                         const SizedBox(height: 24),
+
+  //                         // Action Buttons
+  //                         Row(
+  //                           mainAxisAlignment: MainAxisAlignment.end,
+  //                           children: [
+  //                             TextButton(
+  //                               style: TextButton.styleFrom(
+  //                                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+  //                                 shape: RoundedRectangleBorder(
+  //                                   borderRadius: BorderRadius.circular(8),
+  //                                 ),
+  //                               ),
+  //                               onPressed: () => Navigator.of(context).pop(),
+  //                               child: const Text(
+  //                                 'CANCEL',
+  //                                 style: TextStyle(
+  //                                   color: Colors.red,
+  //                                   fontWeight: FontWeight.bold,
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                             const SizedBox(width: 16),
+  //                             ElevatedButton(
+  //                               style: ElevatedButton.styleFrom(
+  //                                 backgroundColor: Primary_colors.Color3,
+  //                                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+  //                                 shape: RoundedRectangleBorder(
+  //                                   borderRadius: BorderRadius.circular(8),
+  //                                 ),
+  //                                 elevation: 2,
+  //                               ),
+  //                               onPressed: () {
+  //                                 Navigator.of(context).pop();
+  //                                 ScaffoldMessenger.of(context).showSnackBar(
+  //                                   SnackBar(
+  //                                     content: const Text('Voucher closed successfully'),
+  //                                     behavior: SnackBarBehavior.floating,
+  //                                     shape: RoundedRectangleBorder(
+  //                                       borderRadius: BorderRadius.circular(8),
+  //                                     ),
+  //                                     backgroundColor: Colors.green,
+  //                                   ),
+  //                                 );
+  //                               },
+  //                               child: const Text(
+  //                                 'CONFIRM CLOSE',
+  //                                 style: TextStyle(
+  //                                   color: Colors.white,
+  //                                   fontWeight: FontWeight.bold,
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                           ],
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+
+  // Widget _buildReadOnlyField({
+  //   required String label,
+  //   required String value,
+  //   required IconData icon,
+  // }) {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Text(
+  //         maxLines: 5,
+  //         label,
+  //         style: const TextStyle(
+  //           fontSize: 13,
+  //           color: Colors.black54,
+  //           fontWeight: FontWeight.w500,
+  //         ),
+  //       ),
+  //       const SizedBox(height: 4),
+  //       Container(
+  //         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+  //         decoration: BoxDecoration(
+  //           color: Colors.grey[100],
+  //           borderRadius: BorderRadius.circular(8),
+  //           border: Border.all(color: Colors.grey[300]!),
+  //         ),
+  //         child: Row(
+  //           children: [
+  //             Icon(icon, size: 20, color: Colors.grey[600]),
+  //             const SizedBox(width: 12),
+  //             Text(
+  //               maxLines: 4,
+  //               value,
+  //               style: const TextStyle(
+  //                 fontSize: 14,
+  //                 color: Colors.black87,
+  //                 fontWeight: FontWeight.w500,
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -1364,7 +1567,7 @@ class _VoucherState extends State<Voucher> {
                             ),
                           ),
                           const SizedBox(width: 3),
-                          const SizedBox(width: 70),
+                          const SizedBox(width: 125),
                         ],
                       ),
                     ),
@@ -1537,7 +1740,7 @@ class _VoucherState extends State<Voucher> {
                                                   cursor: SystemMouseCursors.click,
                                                   onEnter: (_) => showPopup(),
                                                   onExit: (_) => removePopup(),
-                                                  child: const Icon(Icons.info_outline),
+                                                  child: const Icon(Icons.info_outline, size: 20, color: Colors.blue),
                                                 ),
                                                 const SizedBox(width: 3),
                                                 Expanded(
@@ -1579,9 +1782,9 @@ class _VoucherState extends State<Voucher> {
                                       ),
                                       const SizedBox(width: 3),
                                       SizedBox(
-                                        width: 70,
+                                        width: 125,
                                         child: ElevatedButton(
-                                          onPressed: () => _showhariCloseVoucherPopup(index),
+                                          onPressed: () => _showCloseVoucherPopup(index),
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: const Color.fromARGB(255, 107, 183, 109),
                                             shape: RoundedRectangleBorder(
@@ -1589,7 +1792,7 @@ class _VoucherState extends State<Voucher> {
                                             ),
                                           ),
                                           child: const Text(
-                                            'Close',
+                                            'Update Payment',
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontSize: Primary_font_size.Text6,
@@ -1960,33 +2163,6 @@ class _VoucherState extends State<Voucher> {
         side: BorderSide(
           color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
         ),
-      ),
-    );
-  }
-
-  Widget _buildBreakupLine(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(
-              color: Colors.black87,
-              fontWeight: FontWeight.w500,
-              fontSize: 12,
-            ),
-          ),
-          Text(
-            value,
-            style: const TextStyle(
-              color: Colors.blueAccent,
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-          ),
-        ],
       ),
     );
   }

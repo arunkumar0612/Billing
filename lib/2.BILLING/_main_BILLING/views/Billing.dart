@@ -332,7 +332,9 @@ class _BillingState extends State<Billing> {
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                   children: [
-                                                    _buildIconWithLabel(
+                                                    MouseRegion(
+                                                      cursor: SystemMouseCursors.click,
+                                                    child: _buildIconWithLabel(
                                                         icon: Icons.book_outlined,
                                                         label: 'View Ledger',
                                                         color: Primary_colors.Color4,
@@ -341,7 +343,17 @@ class _BillingState extends State<Billing> {
                                                             _createCustomPageRoute(() => const ViewLedger()),
                                                           );
                                                         }),
-                                                    _buildIconWithLabel(icon: Icons.receipt_long_outlined, label: 'View Transaction', color: Primary_colors.Color5, onPressed: () {}),
+                                                    ),
+                                                    MouseRegion(
+                                                      cursor: SystemMouseCursors.click,
+                                                      child:_buildIconWithLabel(
+                                                      icon: Icons.receipt_long_outlined, 
+                                                      label: 'View Transaction', color:
+                                                       Primary_colors.Color5,
+                                                        onPressed: () {}
+                                                       ),
+                                                    )
+                                                    
                                                   ],
                                                 ),
                                                 const SizedBox(height: 20),
@@ -349,7 +361,9 @@ class _BillingState extends State<Billing> {
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                   children: [
-                                                    _buildIconWithLabel(
+                                                    MouseRegion(
+                                                      cursor: SystemMouseCursors.click,
+                                                      child: _buildIconWithLabel(
                                                       icon: Icons.info_outline,
                                                       label: 'Voucher',
                                                       color: Primary_colors.Color6,
@@ -359,7 +373,16 @@ class _BillingState extends State<Billing> {
                                                         );
                                                       },
                                                     ),
-                                                    _buildIconWithLabel(icon: Icons.person_outline, label: 'View Customer', color: Primary_colors.Color8, onPressed: () {}),
+                                                    ),
+                                                    MouseRegion(
+                                                      cursor: SystemMouseCursors.click,
+                                                      child: _buildIconWithLabel(
+                                                      icon: Icons.person_outline,
+                                                       label: 'Balance Sheet', 
+                                                       color: Primary_colors.Color8, 
+                                                       onPressed: () {}
+                                                       ),
+                                                    ),                                                    
                                                   ],
                                                 ),
                                               ],

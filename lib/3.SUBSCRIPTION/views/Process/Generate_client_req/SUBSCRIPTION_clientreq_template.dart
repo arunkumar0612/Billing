@@ -271,7 +271,7 @@ class SUBSCRIPTION_Client_requirement {
       // ✅ Optional Cell Decoration
       cellDecoration: (int rowIndex, dynamic cellData, int colIndex) {
         return pw.BoxDecoration(
-          color: rowIndex.isEven ? PdfColors.grey100 : PdfColors.white,
+          color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
         );
       },
 

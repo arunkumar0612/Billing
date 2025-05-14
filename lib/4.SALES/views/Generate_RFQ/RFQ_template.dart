@@ -568,7 +568,7 @@ class Request_for_quote {
                             child: pw.Row(
                               children: [
                                 pw.Container(
-                                  width: 120,
+                                  width: 80,
                                   child: regular(recommendation.key.toString(), 10),
                                 ),
                                 regular(":", 10),

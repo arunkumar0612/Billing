@@ -2446,6 +2446,7 @@ class Subscription_CustomPDF_InvoicePDF {
         const Expanded(
           child: Text(
             "This is a custom invoice generator designed to ensure accuracy and professionalism in your billing process. Please make sure that all details entered are valid and correct, as any discrepancies may affect the accuracy of your invoice and financial records.",
+            textAlign: TextAlign.justify,
             style: TextStyle(fontSize: Primary_font_size.Text7),
           ),
         ),

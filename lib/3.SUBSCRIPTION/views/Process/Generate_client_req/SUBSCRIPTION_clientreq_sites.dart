@@ -163,7 +163,7 @@ class _SUBSCRIPTION_clientreqSitesState extends State<SUBSCRIPTION_clientreqSite
                             // width: 750,
                             child: Text(
                               textAlign: TextAlign.center,
-                              "The client requirement Site details play a crucial role in the procurement process. Please ensure accuracy when entering Site names and quantities, as these details directly impact order processing, inventory management, and subsequent workflows.",
+                              "Site details in client requirement play a crucial role in the procurement process. Please ensure accuracy when entering Site names, camera quantities and physical addresses, as these details directly impact order processing, inventory management, and subsequent workflows.",
                               style: TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                             ),
                           )

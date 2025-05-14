@@ -448,7 +448,6 @@ class _Client_ledgerState extends State<Client_ledger> {
                                   ),
                                 ),
                                 // Vertical line after 'Debit' column
-
                                 Expanded(
                                   flex: 2,
                                   child: Padding(

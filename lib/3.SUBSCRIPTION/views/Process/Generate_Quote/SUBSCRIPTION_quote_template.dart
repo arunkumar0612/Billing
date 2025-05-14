@@ -44,7 +44,7 @@ class SUBSCRIPTION_Quotation {
         header: header,
         build: (context) => [
           // pw.SizedBox(height: 10),
-          // title(context),
+          GSTIN(context),
           pw.SizedBox(height: 10),
           _contentTable(context),
           pw.SizedBox(height: 20),
@@ -295,9 +295,9 @@ class SUBSCRIPTION_Quotation {
     );
   }
 
-  // pw.Widget title(pw.Context context) {
-  //   return pw.Center(child: bold(instQuote., 12));
-  // }
+  pw.Widget GSTIN(pw.Context context) {
+    return pw.Center(child: bold(instQuote.GSTIN, 12));
+  }
 
   pw.Widget _contentTable(pw.Context context) {
     const tableHeaders = ['S.No', 'Site', 'Address', 'Cameras', 'Package', 'Price', 'GST%', 'Total Price'];
@@ -347,14 +347,15 @@ class SUBSCRIPTION_Quotation {
           color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
         );
       },
-      rowDecoration: pw.BoxDecoration(
-        border: pw.Border(
-          bottom: pw.BorderSide(
-            color: accentColor,
-            width: .5,
-          ),
-        ),
-      ),
+      // rowDecoration: pw.BoxDecoration(
+      //   border: pw.Border(
+      //     bottom: pw.BorderSide(
+      //       color: accentColor,
+      //       width: .5,
+      //     ),
+      //   ),
+      // ),
+
       headers: List<String>.generate(
         tableHeaders.length,
         (col) => tableHeaders[col],
@@ -1077,7 +1078,7 @@ class SUBSCRIPTION_Quotation {
           ),
           ...List.generate(quoteController.quoteModel.Quote_noteList.length, (index) {
             return pw.Padding(
-              padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 8),
+              padding: pw.EdgeInsets.only(left: 0, top: index == 0 ? 0 : 5),
               child: pw.Row(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
@@ -1100,7 +1101,7 @@ class SUBSCRIPTION_Quotation {
             );
           }),
           pw.Padding(
-            padding: const pw.EdgeInsets.only(left: 0, top: 5),
+            padding: const pw.EdgeInsets.only(left: 0, top: 7),
             child: pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
@@ -1159,7 +1160,7 @@ class SUBSCRIPTION_Quotation {
           ),
           if (quoteController.quoteModel.Quote_recommendationList.isNotEmpty)
             pw.Padding(
-              padding: const pw.EdgeInsets.only(left: 0, top: 5),
+              padding: const pw.EdgeInsets.only(left: 0, top: 7),
               child: pw.Row(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
@@ -1169,14 +1170,14 @@ class SUBSCRIPTION_Quotation {
                     child: pw.Column(
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
-                        bold(quoteController.quoteModel.Quote_table_heading.value, 10),
+                        bold(quoteController.quoteModel.recommendationHeadingController.value.text, 10),
                         ...quoteController.quoteModel.Quote_recommendationList.map((recommendation) {
                           return pw.Padding(
                             padding: const pw.EdgeInsets.only(left: 5, top: 5),
                             child: pw.Row(
                               children: [
                                 pw.Container(
-                                  width: 120,
+                                  width:80,
                                   child: regular(recommendation.key.toString(), 10),
                                 ),
                                 regular(":", 10),

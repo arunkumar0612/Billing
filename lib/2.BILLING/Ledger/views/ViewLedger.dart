@@ -4,16 +4,17 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/views/accounting_ledgers/clientledger.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/views/accounting_ledgers/consolidated.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/views/accounting_ledgers/inputGST.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/views/accounting_ledgers/outputGST.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/views/accounting_ledgers/payableTDS.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/views/accounting_ledgers/receivableTDS.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/views/accounting_ledgers/vendorledger.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/views/inventory_ledgers/inward.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/views/inventory_ledgers/outward.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/views/inventory_ledgers/pettycase.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/GST_ledgers/consolidated_GST.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/account_ledgers/client_ledger.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/account_ledgers/consolidated_ledger.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/GST_ledgers/inputGST.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/GST_ledgers/outputGST.dart';
+// import 'package:ssipl_billing/2.BILLING/Ledger/views/TDS_ledgers/payableTDS.dart';
+// import 'package:ssipl_billing/2.BILLING/Ledger/views/TDS_ledgers/receivableTDS.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/account_ledgers/vendor_ledger.dart';
+// import 'package:ssipl_billing/2.BILLING/Ledger/views/other_ledgers/inward.dart';
+// import 'package:ssipl_billing/2.BILLING/Ledger/views/other_ledgers/outward.dart';
+// import 'package:ssipl_billing/2.BILLING/Ledger/views/other_ledgers/pettycase.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../THEMES-/style.dart'; // import 'package:ssipl_billing/views/screens/vouchers/sales_voucher.dart';
@@ -44,13 +45,13 @@ class _ViewLedgerState extends State<ViewLedger> {
     const ValueItem(label: 'Option 6', value: '6')
   ];
   final List<ValueItem> _selectedvendor = [];
-  String? Selected_ledger_type = 'Client';
+  String? Selected_ledger_type = 'Consolidated Ledger';
   List<String> amounttype_list = ['Debit', 'Credit', 'All'];
   String? Selected_amounte_type = 'All';
-  List<String> accounting_ledger_type_list = ['Client', 'Vendor', 'Output GST', 'Input GST', 'Receivable TDS', 'Payable TDS', 'Consolidated'];
-  List<String> Inventory_ledger_type_list = ['Petty Cash', 'Inward', 'Outward'];
+  List<String> account_ledger_type_list = ['Consolidated Ledger', 'Client Ledger', 'Vendor Ledger'];
+  List<String> gst_ledger_type_list = ['Consolidated GST', 'Input GST', 'Output GST'];
   String selectedContent = "Consolidated Ledger"; // Default content
-  String selectedMenu = "Accounting Ledger"; // Tracks the currently selected menu item
+  String selectedMenu = "Account Ledger"; // Tracks the currently selected menu item
   final TextEditingController _fromDateController = TextEditingController();
   final TextEditingController _toDateController = TextEditingController();
   bool showFromCalendar = true;
@@ -179,8 +180,8 @@ class _ViewLedgerState extends State<ViewLedger> {
                                             Selected_ledger_type = newValue; // Update the selected value
                                           });
                                         },
-                                        items: selectedMenu == "Accounting Ledger"
-                                            ? accounting_ledger_type_list.map<DropdownMenuItem<String>>(
+                                        items: selectedMenu == "Account Ledger"
+                                            ? account_ledger_type_list.map<DropdownMenuItem<String>>(
                                                 (String customer) {
                                                   return DropdownMenuItem<String>(
                                                     value: customer,
@@ -188,7 +189,7 @@ class _ViewLedgerState extends State<ViewLedger> {
                                                   );
                                                 },
                                               ).toList()
-                                            : Inventory_ledger_type_list.map<DropdownMenuItem<String>>(
+                                            : gst_ledger_type_list.map<DropdownMenuItem<String>>(
                                                 (String customer) {
                                                   return DropdownMenuItem<String>(
                                                     value: customer,
@@ -206,46 +207,46 @@ class _ViewLedgerState extends State<ViewLedger> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      if (selectedMenu == 'Accounting Ledger' && Selected_ledger_type == 'Client')
-                        const Expanded(
-                          child: Client_ledger(),
-                        ),
-                      if (selectedMenu == 'Accounting Ledger' && Selected_ledger_type == 'Vendor')
-                        const Expanded(
-                          child: Vendorledger(),
-                        ),
-                      if (selectedMenu == 'Accounting Ledger' && Selected_ledger_type == 'Output GST')
-                        const Expanded(
-                          child: outputGST(),
-                        ),
-                      if (selectedMenu == 'Accounting Ledger' && Selected_ledger_type == 'Input GST')
-                        const Expanded(
-                          child: inputGST(),
-                        ),
-                      if (selectedMenu == 'Accounting Ledger' && Selected_ledger_type == 'Receivable TDS')
-                        const Expanded(
-                          child: receivableTDS(),
-                        ),
-                      if (selectedMenu == 'Accounting Ledger' && Selected_ledger_type == 'Payable TDS')
-                        const Expanded(
-                          child: payableTDS(),
-                        ),
-                      if (selectedMenu == 'Accounting Ledger' && Selected_ledger_type == 'Consolidated')
+                      if (selectedMenu == 'Account Ledger' && Selected_ledger_type == 'Consolidated Ledger')
                         const Expanded(
                           child: consolidated(),
                         ),
-                      if (selectedMenu == 'Inventory Ledger' && Selected_ledger_type == 'Petty Cash')
+                      if (selectedMenu == 'Account Ledger' && Selected_ledger_type == 'Client Ledger')
                         const Expanded(
-                          child: pettyCase(),
+                          child: Client_ledger(),
                         ),
-                      if (selectedMenu == 'Inventory Ledger' && Selected_ledger_type == 'Inward')
+                      if (selectedMenu == 'Account Ledger' && Selected_ledger_type == 'Vendor Ledger')
                         const Expanded(
-                          child: Inward(),
+                          child: Vendorledger(),
                         ),
-                      if (selectedMenu == 'Inventory Ledger' && Selected_ledger_type == 'Outward')
+                      if (selectedMenu == 'GST Ledger' && Selected_ledger_type == 'Consolidated GST')
                         const Expanded(
-                          child: Outward(),
+                          child: consolidatedGST(),
                         ),
+                      if (selectedMenu == 'GST Ledger' && Selected_ledger_type == 'Input GST')
+                        const Expanded(
+                          child: inputGST(),
+                        ),
+                      if (selectedMenu == 'GST Ledger' && Selected_ledger_type == 'Output GST')
+                        const Expanded(
+                          child: outputGST(),
+                        ),
+                      // if (selectedMenu == 'Accounting Ledger' && Selected_ledger_type == 'Consolidated')
+                      //   const Expanded(
+                      //     child: consolidated(),
+                      //   ),
+                      // if (selectedMenu == 'Inventory Ledger' && Selected_ledger_type == 'Petty Cash')
+                      //   const Expanded(
+                      //     child: pettyCase(),
+                      //   ),
+                      // if (selectedMenu == 'Inventory Ledger' && Selected_ledger_type == 'Inward')
+                      //   const Expanded(
+                      //     child: Inward(),
+                      //   ),
+                      // if (selectedMenu == 'Inventory Ledger' && Selected_ledger_type == 'Outward')
+                      //   const Expanded(
+                      //     child: Outward(),
+                      //   ),
                     ],
                   ),
                 ),
@@ -266,40 +267,42 @@ class _ViewLedgerState extends State<ViewLedger> {
                   children: [
                     ExpansionTile(
                       tilePadding: const EdgeInsets.all(0),
-                      collapsedIconColor: Primary_colors.Color1, iconColor: Primary_colors.Color3,
+                      collapsedIconColor: Primary_colors.Color1, iconColor: Primary_colors.Color7,
+                      collapsedTextColor:  Primary_colors.Color1, textColor: Primary_colors.Color7,
                       // leading: Icon(Icons.dashboard, color: selectedMenu == "Dashboard" || selectedMenu == "Settings" ? Colors.blue : Primary_colors.Color1),
-                      title: Text(
-                        "Ledger",
+                      title: const Text(
+                        " Ledger Types",
                         style: TextStyle(
                           fontSize: Primary_font_size.Text10,
-                          color: selectedMenu == "Accounting Ledger" || selectedMenu == "Inventory Ledger" ? Primary_colors.Color3 : Primary_colors.Color1,
+                          // color: selectedMenu == "Account Ledger" || selectedMenu == "GST Ledger" ? Primary_colors.Color3 : Primary_colors.Color1,
+                          
                         ),
                       ),
                       children: [
                         ListTile(
                           // leading: icon != null ? Icon(icon, color: isSelected ? Colors.blue : Primary_colors.Color1) : null,
                           title: Text(
-                            "          Accounting Ledger",
-                            style: TextStyle(color: selectedMenu == "Accounting Ledger" ? Primary_colors.Color8 : Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                            "          Account Ledger",
+                            style: TextStyle(color: selectedMenu == "Account Ledger" ? Primary_colors.Color3 : Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                           ),
                           // tileColor: selectedMenu == "Accounting Ledger" ? Colors.blue.withOpacity(0.1) : Colors.transparent,
                           hoverColor: Colors.blue.withOpacity(0.05),
                           onTap: () {
                             setState(() {
-                              selectedMenu = "Accounting Ledger";
-                              selectedContent = "Accounting Ledger";
-                              Selected_ledger_type = 'Client';
+                              selectedMenu = "Account Ledger";
+                              selectedContent = "Account Ledger";
+                              Selected_ledger_type = 'Consolidated Ledger';
                             });
                           },
                         ),
                         ListTile(
                           // leading: icon != null ? Icon(icon, color: isSelected ? Colors.blue : Primary_colors.Color1) : null,
                           title: Text(
-                            "          Inventory Ledger",
+                            "          GST Ledger",
                             style: TextStyle(
                               fontSize: Primary_font_size.Text7,
-                              color: selectedMenu == "Inventory Ledger" ? Primary_colors.Color8 : Primary_colors.Color1,
-                              fontWeight: selectedMenu == "Inventory Ledger" ? FontWeight.bold : FontWeight.normal,
+                              color: selectedMenu == "GST Ledger" ? Primary_colors.Color3 : Primary_colors.Color1,
+                              fontWeight: selectedMenu == "GST Ledger" ? FontWeight.bold : FontWeight.normal,
                             ),
                           ),
                           // tileColor: selectedMenu == "Inventory Ledger" ? Colors.blue.withOpacity(0.1) : Colors.transparent,
@@ -307,87 +310,87 @@ class _ViewLedgerState extends State<ViewLedger> {
                           onTap: () {
                             setState(
                               () {
-                                selectedMenu = "Inventory Ledger";
-                                selectedContent = "Inventory Ledger";
-                                Selected_ledger_type = 'Petty Cash';
+                                selectedMenu = "GST Ledger";
+                                selectedContent = "GST Ledger";
+                                Selected_ledger_type = 'Consolidated GST';
                               },
                             );
                           },
                         ),
                       ],
                     ),
-                    ExpansionTile(
-                      tilePadding: const EdgeInsets.all(0),
-                      collapsedIconColor: Primary_colors.Color1, iconColor: Primary_colors.Color3,
-                      // leading: Icon(Icons.account_circle, color: selectedMenu == "Create voucher" || selectedMenu == "View voucher" ? Colors.blue : Primary_colors.Color1),
-                      title: Text(
-                        "Voucher",
-                        style: TextStyle(fontSize: Primary_font_size.Text10, color: selectedMenu == "Create voucher" || selectedMenu == "View voucher" ? Primary_colors.Color3 : Primary_colors.Color1),
-                      ),
-                      children: [
-                        ListTile(
-                          // leading: icon != null ? Icon(icon, color: isSelected ? Colors.blue : Primary_colors.Color1) : null,
-                          title: Text(
-                            "          Create voucher",
-                            style: TextStyle(
-                              fontSize: Primary_font_size.Text7,
-                              color: selectedMenu == "Create voucher" ? Primary_colors.Color8 : Primary_colors.Color1,
-                              // fontWeight: selectedMenu == "Create voucher" ? FontWeight.bold : FontWeight.normal,
-                            ),
-                          ),
-                          // tileColor: selectedMenu == "Create voucher" ? Colors.blue.withOpacity(0.1) : Colors.transparent,
-                          hoverColor: Colors.blue.withOpacity(0.05),
-                          onTap: () {
-                            // setState(() {
-                            //   selectedMenu = "Create voucher";
-                            //   selectedContent = "Create voucher";
-                            // });
-                            // showCustomBottomSheet();
-                          },
-                        ),
-                        ListTile(
-                          // leading: icon != null ? Icon(icon, color: isSelected ? Colors.blue : Primary_colors.Color1) : null,
-                          title: Text(
-                            "          View voucher",
-                            style: TextStyle(
-                                color: selectedMenu == "View voucher" ? Primary_colors.Color8 : Primary_colors.Color1,
-                                // fontWeight: selectedMenu == "View voucher" ? FontWeight.bold : FontWeight.normal,
-                                fontSize: Primary_font_size.Text7),
-                          ),
-                          // tileColor: selectedMenu == "View voucher" ? Colors.blue.withOpacity(0.1) : Colors.transparent,
-                          hoverColor: Colors.blue.withOpacity(0.05),
-                          onTap: () {
-                            setState(() {
-                              selectedMenu = "View voucher";
-                              selectedContent = "View voucher";
-                            });
-                          },
-                        ),
-                      ],
-                    ),
+                    // ExpansionTile(
+                    //   tilePadding: const EdgeInsets.all(0),
+                    //   collapsedIconColor: Primary_colors.Color1, iconColor: Primary_colors.Color3,
+                    //   // leading: Icon(Icons.account_circle, color: selectedMenu == "Create voucher" || selectedMenu == "View voucher" ? Colors.blue : Primary_colors.Color1),
+                    //   title: Text(
+                    //     "Voucher",
+                    //     style: TextStyle(fontSize: Primary_font_size.Text10, color: selectedMenu == "Create voucher" || selectedMenu == "View voucher" ? Primary_colors.Color3 : Primary_colors.Color1),
+                    //   ),
+                    //   children: [
+                    //     ListTile(
+                    //       // leading: icon != null ? Icon(icon, color: isSelected ? Colors.blue : Primary_colors.Color1) : null,
+                    //       title: Text(
+                    //         "          Create voucher",
+                    //         style: TextStyle(
+                    //           fontSize: Primary_font_size.Text7,
+                    //           color: selectedMenu == "Create voucher" ? Primary_colors.Color8 : Primary_colors.Color1,
+                    //           // fontWeight: selectedMenu == "Create voucher" ? FontWeight.bold : FontWeight.normal,
+                    //         ),
+                    //       ),
+                    //       // tileColor: selectedMenu == "Create voucher" ? Colors.blue.withOpacity(0.1) : Colors.transparent,
+                    //       hoverColor: Colors.blue.withOpacity(0.05),
+                    //       onTap: () {
+                    //         // setState(() {
+                    //         //   selectedMenu = "Create voucher";
+                    //         //   selectedContent = "Create voucher";
+                    //         // });
+                    //         // showCustomBottomSheet();
+                    //       },
+                    //     ),
+                    //     ListTile(
+                    //       // leading: icon != null ? Icon(icon, color: isSelected ? Colors.blue : Primary_colors.Color1) : null,
+                    //       title: Text(
+                    //         "          View voucher",
+                    //         style: TextStyle(
+                    //             color: selectedMenu == "View voucher" ? Primary_colors.Color8 : Primary_colors.Color1,
+                    //             // fontWeight: selectedMenu == "View voucher" ? FontWeight.bold : FontWeight.normal,
+                    //             fontSize: Primary_font_size.Text7),
+                    //       ),
+                    //       // tileColor: selectedMenu == "View voucher" ? Colors.blue.withOpacity(0.1) : Colors.transparent,
+                    //       hoverColor: Colors.blue.withOpacity(0.05),
+                    //       onTap: () {
+                    //         setState(() {
+                    //           selectedMenu = "View voucher";
+                    //           selectedContent = "View voucher";
+                    //         });
+                    //       },
+                    //     ),
+                    //   ],
+                    // ),
                     // Divider(),
                     // // Static Menu Item 1
 
-                    ListTile(
-                      contentPadding: const EdgeInsets.all(0),
-                      // leading: Icon(Icons.notifications, color: selectedMenu == "Notifications" ? Colors.blue : Primary_colors.Color1),
-                      title: Text(
-                        "Balance sheet",
-                        style: TextStyle(
-                          fontSize: Primary_font_size.Text10,
-                          color: selectedMenu == "Balance sheet" ? Primary_colors.Color3 : Primary_colors.Color1,
-                          fontWeight: selectedMenu == "Balance sheet" ? FontWeight.bold : FontWeight.normal,
-                        ),
-                      ),
-                      // tileColor: selectedMenu == "Balance sheet" ? Colors.blue.withOpacity(0.1) : Colors.transparent,
-                      hoverColor: Colors.blue.withOpacity(0.05),
-                      onTap: () {
-                        setState(() {
-                          selectedMenu = "Balance sheet";
-                          selectedContent = "Balance sheet";
-                        });
-                      },
-                    ),
+                    // ListTile(
+                    //   contentPadding: const EdgeInsets.all(0),
+                    //   // leading: Icon(Icons.notifications, color: selectedMenu == "Notifications" ? Colors.blue : Primary_colors.Color1),
+                    //   title: Text(
+                    //     "Balance sheet",
+                    //     style: TextStyle(
+                    //       fontSize: Primary_font_size.Text10,
+                    //       color: selectedMenu == "Balance sheet" ? Primary_colors.Color3 : Primary_colors.Color1,
+                    //       fontWeight: selectedMenu == "Balance sheet" ? FontWeight.bold : FontWeight.normal,
+                    //     ),
+                    //   ),
+                    //   // tileColor: selectedMenu == "Balance sheet" ? Colors.blue.withOpacity(0.1) : Colors.transparent,
+                    //   hoverColor: Colors.blue.withOpacity(0.05),
+                    //   onTap: () {
+                    //     setState(() {
+                    //       selectedMenu = "Balance sheet";
+                    //       selectedContent = "Balance sheet";
+                    //     });
+                    //   },
+                    // ),
                     // Static Menu Item 2
 
                     // ListTile(

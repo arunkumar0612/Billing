@@ -82,9 +82,9 @@ class Invoker extends GetxController {
     }
   }
 
-  Future<Map<String, dynamic>?> multiPart(File file, String API) async {
+  Future<Map<String, dynamic>?> multiPart(File? file, String API) async {
     FormData formData = FormData({
-      "file": MultipartFile(file, filename: file.path.split('/').last), // Attach file
+      if (file != null) "file": MultipartFile(file, filename: file.path.split('/').last), // Attach file
       "STOKEN": sessiontokenController.sessiontokenModel.sessiontoken.value,
     });
     final response = await apiService.postMulter(API, formData);

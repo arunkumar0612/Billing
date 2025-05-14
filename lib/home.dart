@@ -213,18 +213,46 @@ class _MyHomePageState extends State<MyHomePage> {
               width: 5,
             ),
             Expanded(
-              child: PageView(
-                controller: pageController,
-                children: [
-                  const Dashboard(),
-                  Billing(),
-                  Subscription_Client(),
-                  Sales_Client(),
-                  const Vendor(),
-                  const Inventory(),
-                  Enterprise_Hierarchy(),
-                  Container(),
-                ],
+              child: MaterialApp(
+                title: 'ERP',
+                // home: const IAM(),
+                initialRoute: '/IAM', // Set the initial route
+                // getPages: AppRoutes.routes,
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                  iconTheme: const IconThemeData(color: Colors.white),
+                  primaryColor: Primary_colors.Color3,
+                  useMaterial3: false,
+                  textSelectionTheme: const TextSelectionThemeData(
+                    cursorColor: Primary_colors.Color3,
+                    selectionColor: Color.fromARGB(255, 130, 223, 230),
+                  ),
+                  scrollbarTheme: ScrollbarThemeData(
+                    trackColor: WidgetStateProperty.all(
+                      const Color.fromARGB(255, 229, 204, 10),
+                    ),
+                    trackBorderColor: WidgetStateProperty.all(
+                      Primary_colors.Color3,
+                    ),
+                    thumbColor: const WidgetStatePropertyAll(
+                      Color.fromARGB(255, 90, 90, 90),
+                    ),
+                  ),
+                  fontFamily: 'Poppins',
+                ),
+                home: PageView(
+                  controller: pageController,
+                  children: [
+                    const Dashboard(),
+                    Billing(),
+                    Subscription_Client(),
+                    Sales_Client(),
+                    const Vendor(),
+                    const Inventory(),
+                    Enterprise_Hierarchy(),
+                    Container(),
+                  ],
+                ),
               ),
             ),
           ],

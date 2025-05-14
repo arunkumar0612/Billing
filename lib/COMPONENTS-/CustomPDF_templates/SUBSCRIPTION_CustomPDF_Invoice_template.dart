@@ -1158,9 +1158,11 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
           ),
         ),
         pw.Expanded(
-            flex: instInvoice.ispendingamount ? 2 : 1,
-            // flex: instInvoice.ispendingamount ? 2 : 1,
-            child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
+          flex: instInvoice.ispendingamount ? 2 : 1,
+          // flex: instInvoice.ispendingamount ? 2 : 1,
+          child: pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.center,
+            children: [
               pw.Expanded(
                 child: pw.Container(
                   // width: instInvoice.ispendingamount ? null : 200,
@@ -1267,7 +1269,9 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                   ),
                 ),
               ),
-            ])),
+            ],
+          ),
+        ),
         // ignore: prefer_const_constructors
       ],
     );
@@ -1293,7 +1297,10 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
           // padding: const pw.EdgeInsets.only(bottom: 0, left: 0),
           // height: 200,
           // width: 180,
-          child: pw.SizedBox(height: 190, child: pw.Image(secureshutterImage, fit: pw.BoxFit.cover)),
+          child: pw.SizedBox(
+            height: 190,
+            child: pw.Image(secureshutterImage, fit: pw.BoxFit.cover),
+          ),
         ),
       ],
     );

@@ -17,7 +17,7 @@ import 'package:ssipl_billing/2.BILLING/Ledger/views/inventory_ledgers/pettycase
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../THEMES-/style.dart'; // import 'package:ssipl_billing/views/screens/vouchers/sales_voucher.dart';
-import '../../Vouchers/views/sales_voucher.dart';
+// import '../../Vouchers/views/create_voucher.dart';
 
 class ViewLedger extends StatefulWidget {
   const ViewLedger({super.key});
@@ -342,7 +342,7 @@ class _ViewLedgerState extends State<ViewLedger> {
                             //   selectedMenu = "Create voucher";
                             //   selectedContent = "Create voucher";
                             // });
-                            showCustomBottomSheet();
+                            // showCustomBottomSheet();
                           },
                         ),
                         ListTile(
@@ -679,20 +679,20 @@ class _ViewLedgerState extends State<ViewLedger> {
     );
   }
 
-  void showCustomBottomSheet() {
-    showModalBottomSheet(
-      backgroundColor: Colors.transparent,
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder: (BuildContext context) {
-        return const SalesVoucher();
-      },
-    );
-  }
+  // void showCustomBottomSheet() {
+  //   showModalBottomSheet(
+  //     backgroundColor: Colors.transparent,
+  //     context: context,
+  //     shape: const RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.vertical(
+  //         top: Radius.circular(20),
+  //       ),
+  //     ),
+  //     builder: (BuildContext context) {
+  //       return const SalesVoucher();
+  //     },
+  //   );
+  // }
 }
 
 class DottedLinePainter extends CustomPainter {

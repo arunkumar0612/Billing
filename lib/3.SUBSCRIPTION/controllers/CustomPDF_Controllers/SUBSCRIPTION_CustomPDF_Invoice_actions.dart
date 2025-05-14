@@ -52,7 +52,6 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
           'jpeg',
         ],
         lockParentWindow: true);
-
     if (result != null) {
       final file = File(result.files.single.path!);
       final fileLength = await file.length();

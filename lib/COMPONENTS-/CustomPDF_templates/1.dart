@@ -1293,24 +1293,24 @@
 //     return pw.Alignment.centerLeft; // Default left alignment
 //   }
 
-//   pw.Widget Local_tax_table(pw.Context context) {
-//     return pw.Row(
-//       crossAxisAlignment: pw.CrossAxisAlignment.start,
-//       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-//       children: [
-//         pw.Expanded(
-//           child: pw.Padding(padding: pw.EdgeInsets.only(right: 2), child: Local_final_amount(context)),
-//         ),
-//         pw.SizedBox(width: 20),
-//         pw.Expanded(
-//           // padding: const pw.EdgeInsets.only(bottom: 0, left: 0),
-//           // height: 200,
-//           // width: 180,
-//           child: pw.SizedBox(height: 190, child: pw.Image(secureshutterImage, fit: pw.BoxFit.cover)),
-//         ),
-//       ],
-//     );
-//   }
+  // pw.Widget Local_tax_table(pw.Context context) {
+  //   return pw.Row(
+  //     crossAxisAlignment: pw.CrossAxisAlignment.start,
+  //     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+  //     children: [
+  //       pw.Expanded(
+  //         child: pw.Padding(padding: pw.EdgeInsets.only(right: 2), child: Local_final_amount(context)),
+  //       ),
+  //       pw.SizedBox(width: 20),
+  //       pw.Expanded(
+  //         // padding: const pw.EdgeInsets.only(bottom: 0, left: 0),
+  //         // height: 200,
+  //         // width: 180,
+  //         child: pw.SizedBox(height: 190, child: pw.Image(secureshutterImage, fit: pw.BoxFit.cover)),
+  //       ),
+  //     ],
+  //   );
+  // }
 
 //   pw.Widget Local_final_amount(pw.Context context) {
 //     return pw.Column(

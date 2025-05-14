@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/7.HIERARCHY/controllers/Hierarchy_actions.dart';
@@ -71,7 +70,7 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
                       ),
                     ],
                   ),
-                  Row(
+                  const Row(
                     children: [
                       // GestureDetector(
                       //   onTap: _startAnimation,
@@ -104,77 +103,77 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
                       //     },
                       //   ),
                       // ),
-                      const SizedBox(width: 10),
-                      SizedBox(
-                        width: 400,
-                        height: 40,
-                        child: Stack(
-                          alignment: Alignment.centerLeft,
-                          children: [
-                            TextFormField(
-                              // controller: TextEditingController(text: salesController.salesModel.searchQuery.value)
-                              //   ..selection = TextSelection.fromPosition(
-                              //     TextPosition(offset: salesController.salesModel.searchQuery.value.length),
-                              //   ),
-                              // onChanged: (value) => salesController.search(value), // ✅ Updates GetX state
-                              style: const TextStyle(fontSize: 13, color: Colors.white),
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.all(10),
-                                filled: true,
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color.fromARGB(226, 89, 147, 255),
-                                  ),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 104, 93, 255),
-                                  ),
-                                ),
-                                hintText: "", // Hide default hintText
-                                border: UnderlineInputBorder(borderSide: BorderSide.none),
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: Color.fromARGB(255, 151, 151, 151),
-                                ),
-                              ),
-                            ),
-                            // if (salesController.salesModel.searchQuery.value.isEmpty)
-                            Positioned(
-                              left: 40,
-                              child: IgnorePointer(
-                                child: AnimatedTextKit(
-                                  repeatForever: true,
-                                  animatedTexts: [
-                                    TypewriterAnimatedText(
-                                      "Search from the list...",
-                                      textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
-                                      speed: const Duration(milliseconds: 100),
-                                    ),
-                                    TypewriterAnimatedText(
-                                      "Enter customer name...",
-                                      textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
-                                      speed: const Duration(milliseconds: 100),
-                                    ),
-                                    TypewriterAnimatedText(
-                                      "Find an invoice...",
-                                      textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
-                                      speed: const Duration(milliseconds: 100),
-                                    ),
-                                    TypewriterAnimatedText(
-                                      "Find a Quotation...",
-                                      textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
-                                      speed: const Duration(milliseconds: 100),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // const SizedBox(width: 10),
+                      // SizedBox(
+                      //   width: 400,
+                      //   height: 40,
+                      //   child: Stack(
+                      //     alignment: Alignment.centerLeft,
+                      //     children: [
+                      //       TextFormField(
+                      //         // controller: TextEditingController(text: salesController.salesModel.searchQuery.value)
+                      //         //   ..selection = TextSelection.fromPosition(
+                      //         //     TextPosition(offset: salesController.salesModel.searchQuery.value.length),
+                      //         //   ),
+                      //         // onChanged: (value) => salesController.search(value), // ✅ Updates GetX state
+                      //         style: const TextStyle(fontSize: 13, color: Colors.white),
+                      //         decoration: const InputDecoration(
+                      //           contentPadding: EdgeInsets.all(10),
+                      //           filled: true,
+                      //           focusedBorder: UnderlineInputBorder(
+                      //             borderSide: BorderSide(
+                      //               color: Color.fromARGB(226, 89, 147, 255),
+                      //             ),
+                      //           ),
+                      //           enabledBorder: UnderlineInputBorder(
+                      //             borderSide: BorderSide(
+                      //               color: Color.fromARGB(255, 104, 93, 255),
+                      //             ),
+                      //           ),
+                      //           hintText: "", // Hide default hintText
+                      //           border: UnderlineInputBorder(borderSide: BorderSide.none),
+                      //           prefixIcon: Icon(
+                      //             Icons.search,
+                      //             color: Color.fromARGB(255, 151, 151, 151),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //       // if (salesController.salesModel.searchQuery.value.isEmpty)
+                      //       Positioned(
+                      //         left: 40,
+                      //         child: IgnorePointer(
+                      //           child: AnimatedTextKit(
+                      //             repeatForever: true,
+                      //             animatedTexts: [
+                      //               TypewriterAnimatedText(
+                      //                 "Search from the list...",
+                      //                 textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
+                      //                 speed: const Duration(milliseconds: 100),
+                      //               ),
+                      //               TypewriterAnimatedText(
+                      //                 "Enter customer name...",
+                      //                 textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
+                      //                 speed: const Duration(milliseconds: 100),
+                      //               ),
+                      //               TypewriterAnimatedText(
+                      //                 "Find an invoice...",
+                      //                 textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
+                      //                 speed: const Duration(milliseconds: 100),
+                      //               ),
+                      //               TypewriterAnimatedText(
+                      //                 "Find a Quotation...",
+                      //                 textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
+                      //                 speed: const Duration(milliseconds: 100),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
 
-                      const SizedBox(
+                      SizedBox(
                         width: 10,
                       ),
                     ],

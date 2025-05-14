@@ -81,4 +81,7 @@ class API {
   /////////////////////-----------BILLING-------------//////////////////////////////////
   static String billing_subscriptionInvoice = "http://192.168.0.200:8081/billing/getsubscriptioninvoice";
   static String billing_salesInvoice = "http://192.168.0.200:8081/billing/getsalesinvoice";
+
+  /////////////////////-----------BILLING-------------//////////////////////////////////
+  static String getvoucherlist = "http://192.168.0.200:8081/billing/getvoucher";
 }

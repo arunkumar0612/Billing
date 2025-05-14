@@ -1,7 +1,7 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:ssipl_billing/1.DASHBOARD/views/dashboard.dart';
-import 'package:ssipl_billing/2.BILLING/views/Billing.dart';
+import 'package:ssipl_billing/2.BILLING/_main_BILLING/views/Billing.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Subscription.dart';
 import 'package:ssipl_billing/4.SALES/views/Sales.dart';
 import 'package:ssipl_billing/5.VENDOR/views/vendors.dart';
@@ -241,7 +241,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 controller: pageController,
                 children: [
                   const Dashboard(),
-                  const Billing(),
+                  Billing(),
                   Subscription_Client(),
                   Sales_Client(),
                   const Vendor(),

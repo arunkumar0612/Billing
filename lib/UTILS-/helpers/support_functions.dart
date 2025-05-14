@@ -108,6 +108,12 @@ String calculateFormattedDifference(double grandTotal) {
   return "${difference >= 0 ? '+' : ''}${difference.toStringAsFixed(2)}";
 }
 
+String removeCommasAndFormat(String valueWithCommas) {
+  final cleaned = valueWithCommas.replaceAll(',', '');
+  final parsed = double.tryParse(cleaned);
+  return parsed != null ? parsed.toStringAsFixed(2) : '0.00';
+}
+
 String formatCurrency(double amount) {
   final formatter = NumberFormat.currency(locale: 'en_IN', symbol: '', decimalDigits: 2);
   return formatter.format(amount);

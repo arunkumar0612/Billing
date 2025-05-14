@@ -96,7 +96,7 @@ class MaualInvoiceTemplate {
         header: header,
         build: (context) => [
           pw.SizedBox(height: 10),
-          title(context),
+          GSTIN(context),
           pw.SizedBox(height: 10),
           _contentTable(context),
           pw.SizedBox(height: 20),
@@ -336,8 +336,8 @@ class MaualInvoiceTemplate {
     );
   }
 
-  pw.Widget title(pw.Context context) {
-    return pw.Center(child: bold(GST, 12));
+  pw.Widget GSTIN(pw.Context context) {
+    return pw.Center(child: bold("GSTIN : $GST", 12));
   }
 
   pw.Widget _contentTable(pw.Context context) {
@@ -392,11 +392,11 @@ class MaualInvoiceTemplate {
       // },
       columnWidths: {
         0: const pw.FlexColumnWidth(1), // S.No (narrow)
-        1: const pw.FlexColumnWidth(3), // Item Description (wider)
+        1: const pw.FlexColumnWidth(7), // Item Description (wider)
         2: const pw.FlexColumnWidth(2), // HSN (medium)
         3: const pw.FlexColumnWidth(1.5), // GST (narrow)
         4: const pw.FlexColumnWidth(2), // Price (medium)
-        5: const pw.FlexColumnWidth(1.5), // Quantity (narrow)
+        5: const pw.FlexColumnWidth(2), // Quantity (narrow)
         6: const pw.FlexColumnWidth(2), // Total (medium)
       },
       headers: tableHeaders,

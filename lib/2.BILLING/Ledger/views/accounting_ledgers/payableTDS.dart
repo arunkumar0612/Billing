@@ -1,325 +1,465 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/2.BILLING/views/LEDGER/ViewLedger.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 
 import '../../../../THEMES-/style.dart';
 
-class Inward extends StatefulWidget {
-  const Inward({super.key});
+class payableTDS extends StatefulWidget {
+  const payableTDS({super.key});
 
   @override
-  State<Inward> createState() => _InwardState();
+  State<payableTDS> createState() => _payableTDSState();
 }
 
-class _InwardState extends State<Inward> {
-  final List<Map<String, dynamic>> Inward_list = [
+class _payableTDSState extends State<payableTDS> {
+  final List<Map<String, dynamic>> payableTDS_list = [
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'Maharaja',
-      'quantity': '500',
+      'clientname': 'Maharaja',
+      'debit': '500',
+      'credit': '0',
       'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'Maruti',
-      'quantity': '0',
+      'clientname': 'Maruti',
+      'debit': '0',
+      'credit': '300',
       'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'Anamalais',
-      'quantity': '200',
+      'clientname': 'Anamalais',
+      'debit': '200',
+      'credit': '0',
       'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'Maharaja',
-      'quantity': '0',
+      'clientname': 'Maharaja',
+      'debit': '0',
+      'credit': '450',
       'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'Maharaja',
-      'quantity': '500',
+      'clientname': 'Maharaja',
+      'debit': '500',
+      'credit': '0',
       'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'Maruti',
-      'quantity': '0',
+      'clientname': 'Maruti',
+      'debit': '0',
+      'credit': '300',
       'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'Anamalais',
-      'quantity': '200',
+      'clientname': 'Anamalais',
+      'debit': '200',
+      'credit': '0',
       'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'Maharaja',
-      'quantity': '0',
+      'clientname': 'Maharaja',
+      'debit': '0',
+      'credit': '450',
       'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'Maharaja',
-      'quantity': '500',
+      'clientname': 'Maharaja',
+      'debit': '500',
+      'credit': '0',
       'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'Maruti',
-      'quantity': '0',
+      'clientname': 'Maruti',
+      'debit': '0',
+      'credit': '300',
       'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'Anamalais',
-      'quantity': '200',
+      'clientname': 'Anamalais',
+      'debit': '200',
+      'credit': '0',
       'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'Maharaja',
-      'quantity': '0',
+      'clientname': 'Maharaja',
+      'debit': '0',
+      'credit': '450',
       'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'Maharaja',
-      'quantity': '500',
+      'clientname': 'Maharaja',
+      'debit': '500',
+      'credit': '0',
       'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'Maruti',
-      'quantity': '0',
+      'clientname': 'Maruti',
+      'debit': '0',
+      'credit': '300',
       'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'Anamalais',
-      'quantity': '200',
+      'clientname': 'Anamalais',
+      'debit': '200',
+      'credit': '0',
       'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'Maharaja',
-      'quantity': '0',
+      'clientname': 'Maharaja',
+      'debit': '0',
+      'credit': '450',
       'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'Maharaja',
-      'quantity': '500',
+      'clientname': 'Maharaja',
+      'debit': '500',
+      'credit': '0',
       'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'Maruti',
-      'quantity': '0',
+      'clientname': 'Maruti',
+      'debit': '0',
+      'credit': '300',
       'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'Anamalais',
-      'quantity': '200',
+      'clientname': 'Anamalais',
+      'debit': '200',
+      'credit': '0',
       'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'Maharaja',
-      'quantity': '0',
+      'clientname': 'Maharaja',
+      'debit': '0',
+      'credit': '450',
       'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'Maharaja',
-      'quantity': '500',
+      'clientname': 'Maharaja',
+      'debit': '500',
+      'credit': '0',
       'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'Maruti',
-      'quantity': '0',
+      'clientname': 'Maruti',
+      'debit': '0',
+      'credit': '300',
       'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'Anamalais',
-      'quantity': '200',
+      'clientname': 'Anamalais',
+      'debit': '200',
+      'credit': '0',
       'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'Maharaja',
-      'quantity': '0',
+      'clientname': 'Maharaja',
+      'debit': '0',
+      'credit': '450',
       'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'Maharaja',
-      'quantity': '500',
+      'clientname': 'Maharaja',
+      'debit': '500',
+      'credit': '0',
       'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'Maruti',
-      'quantity': '0',
+      'clientname': 'Maruti',
+      'debit': '0',
+      'credit': '300',
       'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'Anamalais',
-      'quantity': '200',
+      'clientname': 'Anamalais',
+      'debit': '200',
+      'credit': '0',
       'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'Maharaja',
-      'quantity': '0',
+      'clientname': 'Maharaja',
+      'debit': '0',
+      'credit': '450',
       'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'Maharaja',
-      'quantity': '500',
+      'clientname': 'Maharaja',
+      'debit': '500',
+      'credit': '0',
       'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'Maruti',
-      'quantity': '0',
+      'clientname': 'Maruti',
+      'debit': '0',
+      'credit': '300',
       'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'Anamalais',
-      'quantity': '200',
+      'clientname': 'Anamalais',
+      'debit': '200',
+      'credit': '0',
       'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'Maharaja',
-      'quantity': '0',
+      'clientname': 'Maharaja',
+      'debit': '0',
+      'credit': '450',
       'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'Maharaja',
-      'quantity': '500',
+      'clientname': 'Maharaja',
+      'debit': '500',
+      'credit': '0',
       'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'Maruti',
-      'quantity': '0',
+      'clientname': 'Maruti',
+      'debit': '0',
+      'credit': '300',
       'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'Anamalais',
-      'quantity': '200',
+      'clientname': 'Anamalais',
+      'debit': '200',
+      'credit': '0',
       'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'Maharaja',
-      'quantity': '0',
+      'clientname': 'Maharaja',
+      'debit': '0',
+      'credit': '450',
       'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'Maharaja',
-      'quantity': '500',
+      'clientname': 'Maharaja',
+      'debit': '500',
+      'credit': '0',
       'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'Maruti',
-      'quantity': '0',
+      'clientname': 'Maruti',
+      'debit': '0',
+      'credit': '300',
       'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'Anamalais',
-      'quantity': '200',
+      'clientname': 'Anamalais',
+      'debit': '200',
+      'credit': '0',
       'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'Maharaja',
-      'quantity': '0',
+      'clientname': 'Maharaja',
+      'debit': '0',
+      'credit': '450',
       'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'particulars': 'Maharaja',
-      'quantity': '500',
+      'clientname': 'Maharaja',
+      'debit': '500',
+      'credit': '0',
       'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'particulars': 'Maruti',
-      'quantity': '0',
+      'clientname': 'Maruti',
+      'debit': '0',
+      'credit': '300',
       'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'particulars': 'Anamalais',
-      'quantity': '200',
+      'clientname': 'Anamalais',
+      'debit': '200',
+      'credit': '0',
       'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'particulars': 'Maharaja',
-      'quantity': '0',
+      'clientname': 'Maharaja',
+      'debit': '0',
+      'credit': '450',
+      'notes': 'Received via bank transfer',
+    },
+    {
+      'date': '2024-12-01',
+      'reference_no': '12345',
+      'clientname': 'Maharaja',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via card',
+    },
+    {
+      'date': '2024-12-02',
+      'reference_no': '12346',
+      'clientname': 'Maruti',
+      'debit': '0',
+      'credit': '300',
+      'notes': 'Paid via cash',
+    },
+    {
+      'date': '2024-12-03',
+      'reference_no': '12347',
+      'clientname': 'Anamalais',
+      'debit': '200',
+      'credit': '0',
+      'notes': 'Paid via cheque',
+    },
+    {
+      'date': '2024-12-04',
+      'reference_no': '12348',
+      'clientname': 'Maharaja',
+      'debit': '0',
+      'credit': '450',
+      'notes': 'Received via bank transfer',
+    },
+    {
+      'date': '2024-12-01',
+      'reference_no': '12345',
+      'clientname': 'Maharaja',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via card',
+    },
+    {
+      'date': '2024-12-02',
+      'reference_no': '12346',
+      'clientname': 'Maruti',
+      'debit': '0',
+      'credit': '300',
+      'notes': 'Paid via cash',
+    },
+    {
+      'date': '2024-12-03',
+      'reference_no': '12347',
+      'clientname': 'Anamalais',
+      'debit': '200',
+      'credit': '0',
+      'notes': 'Paid via cheque',
+    },
+    {
+      'date': '2024-12-04',
+      'reference_no': '12348',
+      'clientname': 'Maharaja',
+      'debit': '0',
+      'credit': '450',
+      'notes': 'Received via bank transfer',
+    },
+    {
+      'date': '2024-12-01',
+      'reference_no': '12345',
+      'clientname': 'Maharaja',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via card',
+    },
+    {
+      'date': '2024-12-02',
+      'reference_no': '12346',
+      'clientname': 'Maruti',
+      'debit': '0',
+      'credit': '300',
+      'notes': 'Paid via cash',
+    },
+    {
+      'date': '2024-12-03',
+      'reference_no': '12347',
+      'clientname': 'Anamalais',
+      'debit': '200',
+      'credit': '0',
+      'notes': 'Paid via cheque',
+    },
+    {
+      'date': '2024-12-04',
+      'reference_no': '12348',
+      'clientname': 'Maharaja',
+      'debit': '0',
+      'credit': '450',
       'notes': 'Received via bank transfer',
     },
   ];
@@ -376,7 +516,7 @@ class _InwardState extends State<Inward> {
                   child: Padding(
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      'particulars',
+                      'clientname',
                       style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                     ),
                   ),
@@ -396,7 +536,27 @@ class _InwardState extends State<Inward> {
                   child: Padding(
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      'quantity',
+                      'Debit',
+                      style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      'Credit',
+                      style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      'Balance',
                       style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                     ),
                   ),
@@ -412,7 +572,7 @@ class _InwardState extends State<Inward> {
               height: 1,
               color: const Color.fromARGB(94, 125, 125, 125),
             ),
-            itemCount: Inward_list.length,
+            itemCount: payableTDS_list.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(top: 0),
@@ -449,7 +609,7 @@ class _InwardState extends State<Inward> {
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                Inward_list[index]['date'],
+                                payableTDS_list[index]['date'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -461,7 +621,7 @@ class _InwardState extends State<Inward> {
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                Inward_list[index]['reference_no'],
+                                payableTDS_list[index]['reference_no'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -471,25 +631,24 @@ class _InwardState extends State<Inward> {
                           Expanded(
                             flex: 3,
                             child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    Inward_list[index]['particulars'],
-                                    style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                  ),
-                                ],
-                              ),
-                            ),
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      payableTDS_list[index]['clientname'],
+                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                    ),
+                                  ],
+                                )),
                           ),
-                          // Vertical line after 'particulars' column
+                          // Vertical line after 'clientname' column
                           Expanded(
                             flex: 3,
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                Inward_list[index]['notes'],
+                                payableTDS_list[index]['notes'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -499,13 +658,33 @@ class _InwardState extends State<Inward> {
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                Inward_list[index]['quantity'],
+                                payableTDS_list[index]['debit'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
                           ),
-                          // Vertical line after 'quantity' column
+                          // Vertical line after 'Debit' column
 
+                          Expanded(
+                            flex: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Text(
+                                payableTDS_list[index]['credit'],
+                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                              ),
+                            ),
+                          ),
+                          const Expanded(
+                            flex: 2,
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                '8233',
+                                style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                              ),
+                            ),
+                          ),
                           // Vertical line after 'Credit' column
 
                           // Vertical line after 'Notes' column
@@ -522,7 +701,7 @@ class _InwardState extends State<Inward> {
         Row(
           children: [
             Expanded(
-              flex: 37,
+              flex: 12,
               child: Container(),
             ),
             Expanded(
@@ -541,7 +720,7 @@ class _InwardState extends State<Inward> {
           child: Row(
             children: [
               Expanded(
-                flex: 37,
+                flex: 12,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -630,7 +809,7 @@ class _InwardState extends State<Inward> {
                           children: [
                             // Bottom shadow for the recessed effect
                             Text(
-                              '389',
+                              'Rs. 2389',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -647,7 +826,91 @@ class _InwardState extends State<Inward> {
                             ),
                             // Top layer to give the 3D embossed effect
                             Text(
-                              '389',
+                              'Rs. 2389',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2,
+                                foreground: Paint()
+                                  ..shader = LinearGradient(
+                                    colors: [
+                                      Colors.black.withOpacity(0.8),
+                                      const Color.fromARGB(255, 255, 223, 0),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Stack(
+                          children: [
+                            // Bottom shadow for the recessed effect
+                            Text(
+                              'Rs. 2389',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2,
+                                color: Colors.white.withOpacity(0.2),
+                                shadows: const [
+                                  Shadow(
+                                    offset: Offset(2, 2),
+                                    blurRadius: 2,
+                                    color: Colors.black,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Top layer to give the 3D embossed effect
+                            Text(
+                              'Rs. 2389',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2,
+                                foreground: Paint()
+                                  ..shader = LinearGradient(
+                                    colors: [
+                                      Colors.black.withOpacity(0.8),
+                                      const Color.fromARGB(255, 255, 223, 0),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Stack(
+                          children: [
+                            // Bottom shadow for the recessed effect
+                            Text(
+                              '- Rs.2389',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2,
+                                color: Colors.white.withOpacity(0.2),
+                                shadows: const [
+                                  Shadow(
+                                    offset: Offset(2, 2),
+                                    blurRadius: 2,
+                                    color: Colors.black,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Top layer to give the 3D embossed effect
+                            Text(
+                              '- Rs.2389',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -677,7 +940,7 @@ class _InwardState extends State<Inward> {
         Row(
           children: [
             Expanded(
-              flex: 37,
+              flex: 12,
               child: Container(),
             ),
             Expanded(

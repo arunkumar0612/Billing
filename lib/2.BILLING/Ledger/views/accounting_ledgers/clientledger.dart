@@ -1,238 +1,238 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/2.BILLING/views/LEDGER/ViewLedger.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 
 import '../../../../THEMES-/style.dart';
 
-class Vendorledger extends StatefulWidget {
-  const Vendorledger({super.key});
+class Client_ledger extends StatefulWidget {
+  const Client_ledger({super.key});
 
   @override
-  State<Vendorledger> createState() => _VendorledgerState();
+  State<Client_ledger> createState() => _Client_ledgerState();
 }
 
-class _VendorledgerState extends State<Vendorledger> {
+class _Client_ledgerState extends State<Client_ledger> {
+  final List<Map<String, dynamic>> clientledger_list = [
+    {
+      'date': '2024-12-01',
+      'reference_no': '12345',
+      'particulars': 'Purchase of goods',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via card',
+    },
+    {
+      'date': '2024-12-02',
+      'reference_no': '12346',
+      'particulars': 'Sale of goods',
+      'debit': '0',
+      'credit': '300',
+      'notes': 'Paid via cash',
+    },
+    {
+      'date': '2024-12-03',
+      'reference_no': '12347',
+      'particulars': 'Office supplies',
+      'debit': '200',
+      'credit': '0',
+      'notes': 'Paid via cheque',
+    },
+    {
+      'date': '2024-12-04',
+      'reference_no': '12348',
+      'particulars': 'Service income',
+      'debit': '0',
+      'credit': '450',
+      'notes': 'Received via bank transfer',
+    },
+    {
+      'date': '2024-12-05',
+      'reference_no': '12349',
+      'particulars': 'Rent payment',
+      'debit': '1000',
+      'credit': '0',
+      'notes': 'Paid via online banking',
+    },
+    {
+      'date': '2024-12-06',
+      'reference_no': '12350',
+      'particulars': 'Consulting fees',
+      'debit': '0',
+      'credit': '600',
+      'notes': 'Paid via cheque',
+    },
+    {
+      'date': '2024-12-07',
+      'reference_no': '12351',
+      'particulars': 'Product refund',
+      'debit': '200',
+      'credit': '0',
+      'notes': 'Refunded to customer',
+    },
+    {
+      'date': '2024-12-08',
+      'reference_no': '12352',
+      'particulars': 'Electricity bill payment',
+      'debit': '150',
+      'credit': '0',
+      'notes': 'Paid via card',
+    },
+    {
+      'date': '2024-12-09',
+      'reference_no': '12353',
+      'particulars': 'Sale of equipment',
+      'debit': '0',
+      'credit': '1200',
+      'notes': 'Received via cash',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+    {
+      'date': '2024-12-10',
+      'reference_no': '12354',
+      'particulars': 'Loan repayment',
+      'debit': '500',
+      'credit': '0',
+      'notes': 'Paid via bank transfer',
+    },
+  ];
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> vendorledger_list = [
-      {
-        'date': '2024-12-01',
-        'reference_no': '12345',
-        'particulars': 'Purchase of goods',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via card',
-      },
-      {
-        'date': '2024-12-02',
-        'reference_no': '12346',
-        'particulars': 'Sale of goods',
-        'debit': '0',
-        'credit': '300',
-        'notes': 'Paid via cash',
-      },
-      {
-        'date': '2024-12-03',
-        'reference_no': '12347',
-        'particulars': 'Office supplies',
-        'debit': '200',
-        'credit': '0',
-        'notes': 'Paid via cheque',
-      },
-      {
-        'date': '2024-12-04',
-        'reference_no': '12348',
-        'particulars': 'Service income',
-        'debit': '0',
-        'credit': '450',
-        'notes': 'Received via bank transfer',
-      },
-      {
-        'date': '2024-12-05',
-        'reference_no': '12349',
-        'particulars': 'Rent payment',
-        'debit': '1000',
-        'credit': '0',
-        'notes': 'Paid via online banking',
-      },
-      {
-        'date': '2024-12-06',
-        'reference_no': '12350',
-        'particulars': 'Consulting fees',
-        'debit': '0',
-        'credit': '600',
-        'notes': 'Paid via cheque',
-      },
-      {
-        'date': '2024-12-07',
-        'reference_no': '12351',
-        'particulars': 'Product refund',
-        'debit': '200',
-        'credit': '0',
-        'notes': 'Refunded to customer',
-      },
-      {
-        'date': '2024-12-08',
-        'reference_no': '12352',
-        'particulars': 'Electricity bill payment',
-        'debit': '150',
-        'credit': '0',
-        'notes': 'Paid via card',
-      },
-      {
-        'date': '2024-12-09',
-        'reference_no': '12353',
-        'particulars': 'Sale of equipment',
-        'debit': '0',
-        'credit': '1200',
-        'notes': 'Received via cash',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-      {
-        'date': '2024-12-10',
-        'reference_no': '12354',
-        'particulars': 'Loan repayment',
-        'debit': '500',
-        'credit': '0',
-        'notes': 'Paid via bank transfer',
-      },
-    ];
     return Column(
       children: [
         Container(
@@ -340,7 +340,7 @@ class _VendorledgerState extends State<Vendorledger> {
               height: 1,
               color: const Color.fromARGB(94, 125, 125, 125),
             ),
-            itemCount: vendorledger_list.length,
+            itemCount: clientledger_list.length,
             itemBuilder: (context, index) {
               return index % 2 == 0
                   ? Padding(
@@ -378,7 +378,7 @@ class _VendorledgerState extends State<Vendorledger> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(10),
                                     child: Text(
-                                      vendorledger_list[index]['date'],
+                                      clientledger_list[index]['date'],
                                       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                     ),
                                   ),
@@ -390,7 +390,7 @@ class _VendorledgerState extends State<Vendorledger> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(10),
                                     child: Text(
-                                      vendorledger_list[index]['reference_no'],
+                                      clientledger_list[index]['reference_no'],
                                       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                     ),
                                   ),
@@ -405,7 +405,7 @@ class _VendorledgerState extends State<Vendorledger> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            vendorledger_list[index]['particulars'],
+                                            clientledger_list[index]['particulars'],
                                             style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                           ),
                                         ],
@@ -417,23 +417,11 @@ class _VendorledgerState extends State<Vendorledger> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(10),
                                     child: Text(
-                                      vendorledger_list[index]['notes'],
+                                      clientledger_list[index]['notes'],
                                       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                     ),
                                   ),
                                 ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Text(
-                                      vendorledger_list[index]['debit'],
-                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                    ),
-                                  ),
-                                ),
-                                // Vertical line after 'Debit' column
-
                                 Expanded(
                                   flex: 2,
                                   child: Padding(
@@ -442,7 +430,7 @@ class _VendorledgerState extends State<Vendorledger> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          vendorledger_list[index]['credit'],
+                                          clientledger_list[index]['debit'],
                                           style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                         ),
                                         const SizedBox(height: 2),
@@ -456,6 +444,18 @@ class _VendorledgerState extends State<Vendorledger> {
                                           style: TextStyle(color: Primary_colors.Color6, fontSize: Primary_font_size.Text5),
                                         ),
                                       ],
+                                    ),
+                                  ),
+                                ),
+                                // Vertical line after 'Debit' column
+
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Text(
+                                      clientledger_list[index]['credit'],
+                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                     ),
                                   ),
                                 ),
@@ -517,7 +517,7 @@ class _VendorledgerState extends State<Vendorledger> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(10),
                                     child: Text(
-                                      vendorledger_list[index]['date'],
+                                      clientledger_list[index]['date'],
                                       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                     ),
                                   ),
@@ -529,7 +529,7 @@ class _VendorledgerState extends State<Vendorledger> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(10),
                                     child: Text(
-                                      vendorledger_list[index]['reference_no'],
+                                      clientledger_list[index]['reference_no'],
                                       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                     ),
                                   ),
@@ -544,7 +544,7 @@ class _VendorledgerState extends State<Vendorledger> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            vendorledger_list[index]['particulars'],
+                                            clientledger_list[index]['particulars'],
                                             style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                           ),
                                           const SizedBox(height: 2),
@@ -566,7 +566,7 @@ class _VendorledgerState extends State<Vendorledger> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(10),
                                     child: Text(
-                                      vendorledger_list[index]['notes'],
+                                      clientledger_list[index]['notes'],
                                       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                     ),
                                   ),
@@ -575,11 +575,23 @@ class _VendorledgerState extends State<Vendorledger> {
                                   flex: 2,
                                   child: Padding(
                                     padding: const EdgeInsets.all(10),
+                                    child: Text(
+                                      clientledger_list[index]['debit'],
+                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                    ),
+                                  ),
+                                ),
+                                // Vertical line after 'Debit' column
+
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          vendorledger_list[index]['debit'],
+                                          clientledger_list[index]['credit'],
                                           style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                         ),
                                         const SizedBox(height: 2),
@@ -604,18 +616,6 @@ class _VendorledgerState extends State<Vendorledger> {
                                           ),
                                         )
                                       ],
-                                    ),
-                                  ),
-                                ),
-                                // Vertical line after 'Debit' column
-
-                                Expanded(
-                                  flex: 2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Text(
-                                      vendorledger_list[index]['credit'],
-                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                     ),
                                   ),
                                 ),

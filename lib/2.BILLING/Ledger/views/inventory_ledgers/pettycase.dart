@@ -1,466 +1,298 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/2.BILLING/views/LEDGER/ViewLedger.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 
 import '../../../../THEMES-/style.dart';
 
-class consolidated extends StatefulWidget {
-  const consolidated({super.key});
+class pettyCase extends StatefulWidget {
+  const pettyCase({super.key});
 
   @override
-  State<consolidated> createState() => _consolidatedState();
+  State<pettyCase> createState() => _pettyCaseState();
 }
 
-class _consolidatedState extends State<consolidated> {
-  final List<Map<String, dynamic>> consolidated_list = [
+class _pettyCaseState extends State<pettyCase> {
+  final List<Map<String, dynamic>> pettyCase_list = [
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'clientname': 'Maharaja',
+      'particulars': 'For EB bill',
       'debit': '500',
       'credit': '0',
-      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'clientname': 'Maruti',
+      'particulars': 'For Milk',
       'debit': '0',
       'credit': '300',
-      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'clientname': 'Anamalais',
+      'particulars': 'For Snacks',
       'debit': '200',
       'credit': '0',
-      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'clientname': 'Maharaja',
+      'particulars': 'For Eb bill',
       'debit': '0',
       'credit': '450',
-      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'clientname': 'Maharaja',
+      'particulars': 'For EB bill',
       'debit': '500',
       'credit': '0',
-      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'clientname': 'Maruti',
+      'particulars': 'For Milk',
       'debit': '0',
       'credit': '300',
-      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'clientname': 'Anamalais',
+      'particulars': 'For Snacks',
       'debit': '200',
       'credit': '0',
-      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'clientname': 'Maharaja',
+      'particulars': 'For Eb bill',
       'debit': '0',
       'credit': '450',
-      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'clientname': 'Maharaja',
+      'particulars': 'For EB bill',
       'debit': '500',
       'credit': '0',
-      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'clientname': 'Maruti',
+      'particulars': 'For Milk',
       'debit': '0',
       'credit': '300',
-      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'clientname': 'Anamalais',
+      'particulars': 'For Snacks',
       'debit': '200',
       'credit': '0',
-      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'clientname': 'Maharaja',
+      'particulars': 'For Eb bill',
       'debit': '0',
       'credit': '450',
-      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'clientname': 'Maharaja',
+      'particulars': 'For EB bill',
       'debit': '500',
       'credit': '0',
-      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'clientname': 'Maruti',
+      'particulars': 'For Milk',
       'debit': '0',
       'credit': '300',
-      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'clientname': 'Anamalais',
+      'particulars': 'For Snacks',
       'debit': '200',
       'credit': '0',
-      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'clientname': 'Maharaja',
+      'particulars': 'For Eb bill',
       'debit': '0',
       'credit': '450',
-      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'clientname': 'Maharaja',
+      'particulars': 'For EB bill',
       'debit': '500',
       'credit': '0',
-      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'clientname': 'Maruti',
+      'particulars': 'For Milk',
       'debit': '0',
       'credit': '300',
-      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'clientname': 'Anamalais',
+      'particulars': 'For Snacks',
       'debit': '200',
       'credit': '0',
-      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'clientname': 'Maharaja',
+      'particulars': 'For Eb bill',
       'debit': '0',
       'credit': '450',
-      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'clientname': 'Maharaja',
+      'particulars': 'For EB bill',
       'debit': '500',
       'credit': '0',
-      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'clientname': 'Maruti',
+      'particulars': 'For Milk',
       'debit': '0',
       'credit': '300',
-      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'clientname': 'Anamalais',
+      'particulars': 'For Snacks',
       'debit': '200',
       'credit': '0',
-      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'clientname': 'Maharaja',
+      'particulars': 'For Eb bill',
       'debit': '0',
       'credit': '450',
-      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'clientname': 'Maharaja',
+      'particulars': 'For EB bill',
       'debit': '500',
       'credit': '0',
-      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'clientname': 'Maruti',
+      'particulars': 'For Milk',
       'debit': '0',
       'credit': '300',
-      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'clientname': 'Anamalais',
+      'particulars': 'For Snacks',
       'debit': '200',
       'credit': '0',
-      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'clientname': 'Maharaja',
+      'particulars': 'For Eb bill',
       'debit': '0',
       'credit': '450',
-      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'clientname': 'Maharaja',
+      'particulars': 'For EB bill',
       'debit': '500',
       'credit': '0',
-      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'clientname': 'Maruti',
+      'particulars': 'For Milk',
       'debit': '0',
       'credit': '300',
-      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'clientname': 'Anamalais',
+      'particulars': 'For Snacks',
       'debit': '200',
       'credit': '0',
-      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'clientname': 'Maharaja',
+      'particulars': 'For Eb bill',
       'debit': '0',
       'credit': '450',
-      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'clientname': 'Maharaja',
+      'particulars': 'For EB bill',
       'debit': '500',
       'credit': '0',
-      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'clientname': 'Maruti',
+      'particulars': 'For Milk',
       'debit': '0',
       'credit': '300',
-      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'clientname': 'Anamalais',
+      'particulars': 'For Snacks',
       'debit': '200',
       'credit': '0',
-      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'clientname': 'Maharaja',
+      'particulars': 'For Eb bill',
       'debit': '0',
       'credit': '450',
-      'notes': 'Received via bank transfer',
     },
     {
       'date': '2024-12-01',
       'reference_no': '12345',
-      'clientname': 'Maharaja',
+      'particulars': 'For EB bill',
       'debit': '500',
       'credit': '0',
-      'notes': 'Paid via card',
     },
     {
       'date': '2024-12-02',
       'reference_no': '12346',
-      'clientname': 'Maruti',
+      'particulars': 'For Milk',
       'debit': '0',
       'credit': '300',
-      'notes': 'Paid via cash',
     },
     {
       'date': '2024-12-03',
       'reference_no': '12347',
-      'clientname': 'Anamalais',
+      'particulars': 'For Snacks',
       'debit': '200',
       'credit': '0',
-      'notes': 'Paid via cheque',
     },
     {
       'date': '2024-12-04',
       'reference_no': '12348',
-      'clientname': 'Maharaja',
+      'particulars': 'For Eb bill',
       'debit': '0',
       'credit': '450',
-      'notes': 'Received via bank transfer',
-    },
-    {
-      'date': '2024-12-01',
-      'reference_no': '12345',
-      'clientname': 'Maharaja',
-      'debit': '500',
-      'credit': '0',
-      'notes': 'Paid via card',
-    },
-    {
-      'date': '2024-12-02',
-      'reference_no': '12346',
-      'clientname': 'Maruti',
-      'debit': '0',
-      'credit': '300',
-      'notes': 'Paid via cash',
-    },
-    {
-      'date': '2024-12-03',
-      'reference_no': '12347',
-      'clientname': 'Anamalais',
-      'debit': '200',
-      'credit': '0',
-      'notes': 'Paid via cheque',
-    },
-    {
-      'date': '2024-12-04',
-      'reference_no': '12348',
-      'clientname': 'Maharaja',
-      'debit': '0',
-      'credit': '450',
-      'notes': 'Received via bank transfer',
-    },
-    {
-      'date': '2024-12-01',
-      'reference_no': '12345',
-      'clientname': 'Maharaja',
-      'debit': '500',
-      'credit': '0',
-      'notes': 'Paid via card',
-    },
-    {
-      'date': '2024-12-02',
-      'reference_no': '12346',
-      'clientname': 'Maruti',
-      'debit': '0',
-      'credit': '300',
-      'notes': 'Paid via cash',
-    },
-    {
-      'date': '2024-12-03',
-      'reference_no': '12347',
-      'clientname': 'Anamalais',
-      'debit': '200',
-      'credit': '0',
-      'notes': 'Paid via cheque',
-    },
-    {
-      'date': '2024-12-04',
-      'reference_no': '12348',
-      'clientname': 'Maharaja',
-      'debit': '0',
-      'credit': '450',
-      'notes': 'Received via bank transfer',
-    },
-    {
-      'date': '2024-12-01',
-      'reference_no': '12345',
-      'clientname': 'Maharaja',
-      'debit': '500',
-      'credit': '0',
-      'notes': 'Paid via card',
-    },
-    {
-      'date': '2024-12-02',
-      'reference_no': '12346',
-      'clientname': 'Maruti',
-      'debit': '0',
-      'credit': '300',
-      'notes': 'Paid via cash',
-    },
-    {
-      'date': '2024-12-03',
-      'reference_no': '12347',
-      'clientname': 'Anamalais',
-      'debit': '200',
-      'credit': '0',
-      'notes': 'Paid via cheque',
-    },
-    {
-      'date': '2024-12-04',
-      'reference_no': '12348',
-      'clientname': 'Maharaja',
-      'debit': '0',
-      'credit': '450',
-      'notes': 'Received via bank transfer',
-    },
-    {
-      'date': '2024-12-01',
-      'reference_no': '12345',
-      'clientname': 'Maharaja',
-      'debit': '500',
-      'credit': '0',
-      'notes': 'Paid via card',
-    },
-    {
-      'date': '2024-12-02',
-      'reference_no': '12346',
-      'clientname': 'Maruti',
-      'debit': '0',
-      'credit': '300',
-      'notes': 'Paid via cash',
-    },
-    {
-      'date': '2024-12-03',
-      'reference_no': '12347',
-      'clientname': 'Anamalais',
-      'debit': '200',
-      'credit': '0',
-      'notes': 'Paid via cheque',
-    },
-    {
-      'date': '2024-12-04',
-      'reference_no': '12348',
-      'clientname': 'Maharaja',
-      'debit': '0',
-      'credit': '450',
-      'notes': 'Received via bank transfer',
     },
   ];
   @override
@@ -516,17 +348,7 @@ class _consolidatedState extends State<consolidated> {
                   child: Padding(
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      'clientname',
-                      style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      'Notes',
+                      'Particulars',
                       style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                     ),
                   ),
@@ -551,16 +373,6 @@ class _consolidatedState extends State<consolidated> {
                     ),
                   ),
                 ),
-                Expanded(
-                  flex: 2,
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      'Balance',
-                      style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -572,7 +384,7 @@ class _consolidatedState extends State<consolidated> {
               height: 1,
               color: const Color.fromARGB(94, 125, 125, 125),
             ),
-            itemCount: consolidated_list.length,
+            itemCount: pettyCase_list.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(top: 0),
@@ -609,7 +421,7 @@ class _consolidatedState extends State<consolidated> {
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                consolidated_list[index]['date'],
+                                pettyCase_list[index]['date'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -621,7 +433,7 @@ class _consolidatedState extends State<consolidated> {
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                consolidated_list[index]['reference_no'],
+                                pettyCase_list[index]['reference_no'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -631,62 +443,43 @@ class _consolidatedState extends State<consolidated> {
                           Expanded(
                             flex: 3,
                             child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      consolidated_list[index]['clientname'],
-                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                    ),
-                                  ],
-                                )),
-                          ),
-                          // Vertical line after 'clientname' column
-                          Expanded(
-                            flex: 3,
-                            child: Padding(
                               padding: const EdgeInsets.all(10),
-                              child: Text(
-                                consolidated_list[index]['notes'],
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    pettyCase_list[index]['particulars'],
+                                    style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
+                          // Vertical line after 'particulars' column
+
                           Expanded(
                             flex: 2,
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                consolidated_list[index]['debit'],
+                                pettyCase_list[index]['debit'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
                           ),
                           // Vertical line after 'Debit' column
-
                           Expanded(
                             flex: 2,
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                consolidated_list[index]['credit'],
+                                pettyCase_list[index]['credit'],
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
                           ),
-                          const Expanded(
-                            flex: 2,
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                '8233',
-                                style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                              ),
-                            ),
-                          ),
-                          // Vertical line after 'Credit' column
 
+                          // Vertical line after 'Credit' column
                           // Vertical line after 'Notes' column
                         ],
                       ),
@@ -701,11 +494,11 @@ class _consolidatedState extends State<consolidated> {
         Row(
           children: [
             Expanded(
-              flex: 12,
+              flex: 11,
               child: Container(),
             ),
             Expanded(
-              flex: 6,
+              flex: 5,
               child: SizedBox(
                 height: 5,
                 child: CustomPaint(
@@ -720,7 +513,7 @@ class _consolidatedState extends State<consolidated> {
           child: Row(
             children: [
               Expanded(
-                flex: 12,
+                flex: 11,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -798,7 +591,7 @@ class _consolidatedState extends State<consolidated> {
                 ),
               ),
               Expanded(
-                flex: 6,
+                flex: 5,
                 child: SizedBox(
                   child: Row(
                     children: [
@@ -887,48 +680,6 @@ class _consolidatedState extends State<consolidated> {
                           ],
                         ),
                       ),
-                      Expanded(
-                        flex: 2,
-                        child: Stack(
-                          children: [
-                            // Bottom shadow for the recessed effect
-                            Text(
-                              '- Rs.2389',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 2,
-                                color: Colors.white.withOpacity(0.2),
-                                shadows: const [
-                                  Shadow(
-                                    offset: Offset(2, 2),
-                                    blurRadius: 2,
-                                    color: Colors.black,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // Top layer to give the 3D embossed effect
-                            Text(
-                              '- Rs.2389',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 2,
-                                foreground: Paint()
-                                  ..shader = LinearGradient(
-                                    colors: [
-                                      Colors.black.withOpacity(0.8),
-                                      const Color.fromARGB(255, 255, 223, 0),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -940,11 +691,11 @@ class _consolidatedState extends State<consolidated> {
         Row(
           children: [
             Expanded(
-              flex: 12,
+              flex: 11,
               child: Container(),
             ),
             Expanded(
-              flex: 6,
+              flex: 5,
               child: SizedBox(
                 height: 5,
                 child: CustomPaint(

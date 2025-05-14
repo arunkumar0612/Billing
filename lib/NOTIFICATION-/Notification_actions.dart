@@ -97,11 +97,11 @@ class NotificationController extends GetxController {
 
   void initializeMqttClient() {
     notificationModel.MQTT_client = MqttServerClient.withPort('192.168.0.200', loginController.loginModel.userController.value.text, 1883);
-    notificationModel.MQTT_client.logging(on: true);
+    notificationModel.MQTT_client.logging(on: false); // disable internal logs
     notificationModel.MQTT_client.keepAlivePeriod = 60;
     notificationModel.MQTT_client.onConnected = onConnected;
     notificationModel.MQTT_client.onDisconnected = onDisconnected;
-    notificationModel.MQTT_client.setProtocolV311(); // Ensure compatibility with broker
+    notificationModel.MQTT_client.setProtocolV311();
 
     final connMessage = MqttConnectMessage()
         .withClientIdentifier(loginController.loginModel.userController.value.text)

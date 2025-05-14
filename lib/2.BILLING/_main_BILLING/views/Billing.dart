@@ -1,11 +1,15 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/2.BILLING/views/LEDGER/ViewLedger.dart';
-import 'package:ssipl_billing/2.BILLING/views/filter.dart';
-import 'package:ssipl_billing/2.BILLING/views/piechart.dart';
+import 'package:get/get.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
+import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
+import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
+import 'package:ssipl_billing/2.BILLING/_main_BILLING/views/filter.dart';
+import 'package:ssipl_billing/2.BILLING/_main_BILLING/views/piechart.dart';
+import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 
-import '../../THEMES-/style.dart';
+import '../../../THEMES-/style.dart';
 
 PageRouteBuilder _createCustomPageRoute(Widget Function() navigation) {
   return PageRouteBuilder(
@@ -23,8 +27,8 @@ PageRouteBuilder _createCustomPageRoute(Widget Function() navigation) {
   );
 }
 
-class Billing extends StatefulWidget {
-  const Billing({super.key});
+class Billing extends StatefulWidget with main_Billing {
+  Billing({super.key});
   static late dynamic Function() quote_Callback;
   static late dynamic Function() invoice_Callback;
 
@@ -35,6 +39,7 @@ class Billing extends StatefulWidget {
 class _BillingState extends State<Billing> {
   String? selectedCustomer;
   String? Selected_billingtype;
+  final MainBilling_Controller mainBilling_Controller = Get.find<MainBilling_Controller>();
 
   List<String> customerList = [
     'Customer 1',
@@ -50,608 +55,6 @@ class _BillingState extends State<Billing> {
     'Vendor',
     'Sales',
   ];
-  final List<Map<String, dynamic>> invoice_list = [
-    {
-      "invoice_id": "56546",
-      "clientname": "Khivraj Groups",
-      "image": "assets/images/human.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "06 oct 24",
-      "amount": "15000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56534",
-      "clientname": "Maharaja",
-      "image": "assets/images/download.jpg",
-      "type": "Sales",
-      "product": "Secure 360",
-      "date": "10 Nov 24",
-      "amount": "50000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56556",
-      "clientname": "Anamalais Groups",
-      "image": "assets/images/car.jpg",
-      "type": "Vendor",
-      "product": "Secure Shutter",
-      "date": "13 Dec 24",
-      "amount": "43000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56545",
-      "clientname": "Honda Groups",
-      "image": "assets/images/bay.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "13 oct 24",
-      "amount": "15000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56546",
-      "clientname": "Khivraj Groups",
-      "image": "assets/images/human.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "06 oct 24",
-      "amount": "15000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56534",
-      "clientname": "Maharaja",
-      "image": "assets/images/download.jpg",
-      "type": "Sales",
-      "product": "Secure 360",
-      "date": "10 Nov 24",
-      "amount": "50000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56556",
-      "clientname": "Anamalais Groups",
-      "image": "assets/images/car.jpg",
-      "type": "Vendor",
-      "product": "Secure Shutter",
-      "date": "13 Dec 24",
-      "amount": "43000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56545",
-      "clientname": "Honda Groups",
-      "image": "assets/images/bay.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "13 oct 24",
-      "amount": "15000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56546",
-      "clientname": "Khivraj Groups",
-      "image": "assets/images/human.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "06 oct 24",
-      "amount": "15000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56534",
-      "clientname": "Maharaja",
-      "image": "assets/images/download.jpg",
-      "type": "Sales",
-      "product": "Secure 360",
-      "date": "10 Nov 24",
-      "amount": "50000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56556",
-      "clientname": "Anamalais Groups",
-      "image": "assets/images/car.jpg",
-      "type": "Vendor",
-      "product": "Secure Shutter",
-      "date": "13 Dec 24",
-      "amount": "43000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56545",
-      "clientname": "Honda Groups",
-      "image": "assets/images/bay.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "13 oct 24",
-      "amount": "15000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56546",
-      "clientname": "Khivraj Groups",
-      "image": "assets/images/human.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "06 oct 24",
-      "amount": "15000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56534",
-      "clientname": "Maharaja",
-      "image": "assets/images/download.jpg",
-      "type": "Sales",
-      "product": "Secure 360",
-      "date": "10 Nov 24",
-      "amount": "50000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56556",
-      "clientname": "Anamalais Groups",
-      "image": "assets/images/car.jpg",
-      "type": "Vendor",
-      "product": "Secure Shutter",
-      "date": "13 Dec 24",
-      "amount": "43000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56545",
-      "clientname": "Honda Groups",
-      "image": "assets/images/bay.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "13 oct 24",
-      "amount": "15000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56546",
-      "clientname": "Khivraj Groups",
-      "image": "assets/images/human.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "06 oct 24",
-      "amount": "15000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56534",
-      "clientname": "Maharaja",
-      "image": "assets/images/download.jpg",
-      "type": "Sales",
-      "product": "Secure 360",
-      "date": "10 Nov 24",
-      "amount": "50000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56556",
-      "clientname": "Anamalais Groups",
-      "image": "assets/images/car.jpg",
-      "type": "Vendor",
-      "product": "Secure Shutter",
-      "date": "13 Dec 24",
-      "amount": "43000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56545",
-      "clientname": "Honda Groups",
-      "image": "assets/images/bay.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "13 oct 24",
-      "amount": "15000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56546",
-      "clientname": "Khivraj Groups",
-      "image": "assets/images/human.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "06 oct 24",
-      "amount": "15000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56534",
-      "clientname": "Maharaja",
-      "image": "assets/images/download.jpg",
-      "type": "Sales",
-      "product": "Secure 360",
-      "date": "10 Nov 24",
-      "amount": "50000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56556",
-      "clientname": "Anamalais Groups",
-      "image": "assets/images/car.jpg",
-      "type": "Vendor",
-      "product": "Secure Shutter",
-      "date": "13 Dec 24",
-      "amount": "43000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56545",
-      "clientname": "Honda Groups",
-      "image": "assets/images/bay.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "13 oct 24",
-      "amount": "15000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56546",
-      "clientname": "Khivraj Groups",
-      "image": "assets/images/human.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "06 oct 24",
-      "amount": "15000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56534",
-      "clientname": "Maharaja",
-      "image": "assets/images/download.jpg",
-      "type": "Sales",
-      "product": "Secure 360",
-      "date": "10 Nov 24",
-      "amount": "50000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56556",
-      "clientname": "Anamalais Groups",
-      "image": "assets/images/car.jpg",
-      "type": "Vendor",
-      "product": "Secure Shutter",
-      "date": "13 Dec 24",
-      "amount": "43000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56545",
-      "clientname": "Honda Groups",
-      "image": "assets/images/bay.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "13 oct 24",
-      "amount": "15000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56546",
-      "clientname": "Khivraj Groups",
-      "image": "assets/images/human.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "06 oct 24",
-      "amount": "15000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56534",
-      "clientname": "Maharaja",
-      "image": "assets/images/download.jpg",
-      "type": "Sales",
-      "product": "Secure 360",
-      "date": "10 Nov 24",
-      "amount": "50000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56556",
-      "clientname": "Anamalais Groups",
-      "image": "assets/images/car.jpg",
-      "type": "Vendor",
-      "product": "Secure Shutter",
-      "date": "13 Dec 24",
-      "amount": "43000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56545",
-      "clientname": "Honda Groups",
-      "image": "assets/images/bay.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "13 oct 24",
-      "amount": "15000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56546",
-      "clientname": "Khivraj Groups",
-      "image": "assets/images/human.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "06 oct 24",
-      "amount": "15000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56534",
-      "clientname": "Maharaja",
-      "image": "assets/images/download.jpg",
-      "type": "Sales",
-      "product": "Secure 360",
-      "date": "10 Nov 24",
-      "amount": "50000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56556",
-      "clientname": "Anamalais Groups",
-      "image": "assets/images/car.jpg",
-      "type": "Vendor",
-      "product": "Secure Shutter",
-      "date": "13 Dec 24",
-      "amount": "43000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56545",
-      "clientname": "Honda Groups",
-      "image": "assets/images/bay.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "13 oct 24",
-      "amount": "15000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56546",
-      "clientname": "Khivraj Groups",
-      "image": "assets/images/human.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "06 oct 24",
-      "amount": "15000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56534",
-      "clientname": "Maharaja",
-      "image": "assets/images/download.jpg",
-      "type": "Sales",
-      "product": "Secure 360",
-      "date": "10 Nov 24",
-      "amount": "50000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56556",
-      "clientname": "Anamalais Groups",
-      "image": "assets/images/car.jpg",
-      "type": "Vendor",
-      "product": "Secure Shutter",
-      "date": "13 Dec 24",
-      "amount": "43000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56545",
-      "clientname": "Honda Groups",
-      "image": "assets/images/bay.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "13 oct 24",
-      "amount": "15000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56546",
-      "clientname": "Khivraj Groups",
-      "image": "assets/images/human.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "06 oct 24",
-      "amount": "15000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56534",
-      "clientname": "Maharaja",
-      "image": "assets/images/download.jpg",
-      "type": "Sales",
-      "product": "Secure 360",
-      "date": "10 Nov 24",
-      "amount": "50000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56556",
-      "clientname": "Anamalais Groups",
-      "image": "assets/images/car.jpg",
-      "type": "Vendor",
-      "product": "Secure Shutter",
-      "date": "13 Dec 24",
-      "amount": "43000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56545",
-      "clientname": "Honda Groups",
-      "image": "assets/images/bay.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "13 oct 24",
-      "amount": "15000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56546",
-      "clientname": "Khivraj Groups",
-      "image": "assets/images/human.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "06 oct 24",
-      "amount": "15000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56534",
-      "clientname": "Maharaja",
-      "image": "assets/images/download.jpg",
-      "type": "Sales",
-      "product": "Secure 360",
-      "date": "10 Nov 24",
-      "amount": "50000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56556",
-      "clientname": "Anamalais Groups",
-      "image": "assets/images/car.jpg",
-      "type": "Vendor",
-      "product": "Secure Shutter",
-      "date": "13 Dec 24",
-      "amount": "43000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56545",
-      "clientname": "Honda Groups",
-      "image": "assets/images/bay.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "13 oct 24",
-      "amount": "15000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56546",
-      "clientname": "Khivraj Groups",
-      "image": "assets/images/human.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "06 oct 24",
-      "amount": "15000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56534",
-      "clientname": "Maharaja",
-      "image": "assets/images/download.jpg",
-      "type": "Sales",
-      "product": "Secure 360",
-      "date": "10 Nov 24",
-      "amount": "50000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56556",
-      "clientname": "Anamalais Groups",
-      "image": "assets/images/car.jpg",
-      "type": "Vendor",
-      "product": "Secure Shutter",
-      "date": "13 Dec 24",
-      "amount": "43000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56545",
-      "clientname": "Honda Groups",
-      "image": "assets/images/bay.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "13 oct 24",
-      "amount": "15000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56546",
-      "clientname": "Khivraj Groups",
-      "image": "assets/images/human.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "06 oct 24",
-      "amount": "15000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56534",
-      "clientname": "Maharaja",
-      "image": "assets/images/download.jpg",
-      "type": "Sales",
-      "product": "Secure 360",
-      "date": "10 Nov 24",
-      "amount": "50000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56556",
-      "clientname": "Anamalais Groups",
-      "image": "assets/images/car.jpg",
-      "type": "Vendor",
-      "product": "Secure Shutter",
-      "date": "13 Dec 24",
-      "amount": "43000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56545",
-      "clientname": "Honda Groups",
-      "image": "assets/images/bay.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "13 oct 24",
-      "amount": "15000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56546",
-      "clientname": "Khivraj Groups",
-      "image": "assets/images/human.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "06 oct 24",
-      "amount": "15000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56534",
-      "clientname": "Maharaja",
-      "image": "assets/images/download.jpg",
-      "type": "Sales",
-      "product": "Secure 360",
-      "date": "10 Nov 24",
-      "amount": "50000",
-      "Status": "Paid",
-    },
-    {
-      "invoice_id": "56556",
-      "clientname": "Anamalais Groups",
-      "image": "assets/images/car.jpg",
-      "type": "Vendor",
-      "product": "Secure Shutter",
-      "date": "13 Dec 24",
-      "amount": "43000",
-      "Status": "Pending",
-    },
-    {
-      "invoice_id": "56545",
-      "clientname": "Honda Groups",
-      "image": "assets/images/bay.jpg",
-      "type": "Subscription",
-      "product": "Secure Shutter",
-      "date": "13 oct 24",
-      "amount": "15000",
-      "Status": "Paid",
-    },
-  ];
 
   // Adding a controller and isAdding flag for each item
   late List<bool> isAddingList;
@@ -662,6 +65,9 @@ class _BillingState extends State<Billing> {
   @override
   void initState() {
     super.initState();
+
+    widget.get_SubscriptionInvoiceList();
+    widget.get_SalesInvoiceList();
   }
 
 // ##################################################################################################################################################################################################################################################################################################################################################################
@@ -925,14 +331,14 @@ class _BillingState extends State<Billing> {
                                               children: [
                                                 _buildIconWithLabel(
                                                     icon: Icons.book_outlined,
-                                                    label: 'View Ledger',
+                                                    label: 'Ledgers',
                                                     color: Primary_colors.Color4,
                                                     onPressed: () {
                                                       Navigator.of(context).push(
                                                         _createCustomPageRoute(() => const ViewLedger()),
                                                       );
                                                     }),
-                                                _buildIconWithLabel(icon: Icons.receipt_long_outlined, label: 'View Transaction', color: Primary_colors.Color5, onPressed: () {}),
+                                                _buildIconWithLabel(icon: Icons.receipt_long_outlined, label: 'Vouchers', color: Primary_colors.Color5, onPressed: () {}),
                                               ],
                                             ),
                                             const SizedBox(height: 20),
@@ -998,13 +404,14 @@ class _BillingState extends State<Billing> {
                       Row(
                         children: [
                           const SizedBox(
-                            width: 350,
+                            width: 380,
+                            height: 40,
                             child: TabBar(
                               indicatorColor: Primary_colors.Color5,
                               tabs: [
-                                Text('All invoice'),
-                                Text('Paid'),
-                                Text('Unpaid'),
+                                Text('Subscription'),
+                                Text('Sales'),
+                                Text('Vendor'),
                               ],
                             ),
                           ),
@@ -1117,74 +524,12 @@ class _BillingState extends State<Billing> {
                                   ),
                                   borderRadius: BorderRadius.circular(10), // Ensure border radius for smooth corners
                                 ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Invoice ID',
-                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 4,
-                                        child: Text(
-                                          'Client Name',
-                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Type',
-                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 4,
-                                        child: Text(
-                                          'Product',
-                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Date',
-                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Amount',
-                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Status',
-                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          '',
-                                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                child: Padding(padding: const EdgeInsets.all(10), child: SubscriptionHeaders()),
                               ),
                               const SizedBox(height: 5),
                               Expanded(
                                 child: TabBarView(
-                                  children: [Allinvoices(), paid(), unpaid()],
+                                  children: [Subscription(), Sales(), Vendor()],
                                 ),
                               ),
                             ],
@@ -1198,6 +543,85 @@ class _BillingState extends State<Billing> {
             ),
           ),
         ));
+  }
+
+  Widget SubscriptionHeaders() {
+    return const Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Date',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Invoice ID',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Voucher No',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 5,
+          child: Text(
+            textAlign: TextAlign.center,
+            'Client Name',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        SizedBox(width: 10),
+        Expanded(
+          flex: 1,
+          child: Text(
+            'Type',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Package',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Amount',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Overdue',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Status',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            '',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        )
+      ],
+    );
   }
 
   Widget _buildIconWithLabel({
@@ -1240,13 +664,294 @@ class _BillingState extends State<Billing> {
     );
   }
 
-  Widget Allinvoices() {
+  Widget Subscription() {
+    return Obx(
+      () {
+        return ListView.separated(
+          separatorBuilder: (context, index) => Container(
+            height: 1,
+            color: const Color.fromARGB(94, 125, 125, 125),
+          ),
+          itemCount: mainBilling_Controller.billingModel.subscriptionInvoiceList.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Primary_colors.Light,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            formatDate(mainBilling_Controller.billingModel.subscriptionInvoiceList[index].date),
+                            style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            mainBilling_Controller.billingModel.subscriptionInvoiceList[index].invoiceNo,
+                            style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                          ),
+                        ),
+                        const Expanded(
+                          flex: 2,
+                          child: Text(
+                            "VCH905857",
+                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                          ),
+                        ),
+                        Expanded(
+                            flex: 5,
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 35,
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                    // ignore: deprecated_member_use
+                                    color: Primary_colors.Color5.withOpacity(0.1),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: ClipOval(
+                                    child: Image.asset(
+                                      'assets/images/black.jpg',
+                                      fit: BoxFit.cover, // Ensures the image covers the container
+                                      width: double.infinity, // Makes the image fill the container's width
+                                      height: double.infinity, // Makes the image fill the container's height
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                Expanded(
+                                  child: Text(
+                                    softWrap: true,
+                                    maxLines: 4,
+                                    // overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: Primary_colors.Color1,
+                                      fontSize: Primary_font_size.Text7,
+                                    ),
+                                    textAlign: TextAlign.start,
+                                    mainBilling_Controller.billingModel.subscriptionInvoiceList[index].clientAddressName,
+                                  ),
+                                ),
+                              ],
+                            )),
+                        const SizedBox(width: 10),
+
+                        // Expanded(
+                        //   flex: 2,
+                        //   child: Text(
+                        //     mainBilling_Controller.billingModel.subscriptionInvoiceList[index].subs,
+                        //     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        //   ),
+                        // ),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            mainBilling_Controller.billingModel.subscriptionInvoiceList[index].planType,
+                            style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            mainBilling_Controller.billingModel.subscriptionInvoiceList[index].planName,
+                            style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                          ),
+                        ),
+
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            mainBilling_Controller.billingModel.subscriptionInvoiceList[index].totalAmount.toString(),
+                            style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                          ),
+                        ),
+                        const Expanded(
+                          flex: 2,
+                          child: Text(
+                            "9 days",
+                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                          ),
+                        ),
+                        Expanded(
+                            flex: 2,
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 22,
+                                  width: 60,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1
+                                        ? const Color.fromARGB(193, 103, 223, 109)
+                                        : const Color.fromARGB(208, 255, 80, 68),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1 ? 'Paid' : 'Pending',
+                                      style: TextStyle(
+                                          color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1
+                                              ? const Color.fromARGB(255, 0, 0, 0)
+                                              : const Color.fromARGB(255, 0, 0, 0),
+                                          fontSize: Primary_font_size.Text5,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
+                        const Expanded(flex: 2, child: Icon(Icons.keyboard_control))
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget Sales() {
+    return Obx(() {
+      return ListView.separated(
+        separatorBuilder: (context, index) => Container(
+          height: 1,
+          color: const Color.fromARGB(94, 125, 125, 125),
+        ),
+        itemCount: mainBilling_Controller.billingModel.salesInvoiceList.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Primary_colors.Light,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceNumber,
+                          style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        ),
+                      ),
+                      Expanded(
+                          flex: 4,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 35,
+                                height: 35,
+                                decoration: BoxDecoration(
+                                  // ignore: deprecated_member_use
+                                  color: Primary_colors.Color5.withOpacity(0.1),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    'assets/images/black.jpg',
+                                    fit: BoxFit.cover, // Ensures the image covers the container
+                                    width: double.infinity, // Makes the image fill the container's width
+                                    height: double.infinity, // Makes the image fill the container's height
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                mainBilling_Controller.billingModel.salesInvoiceList[index].clientAddressName,
+                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                              ),
+                            ],
+                          )),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          mainBilling_Controller.billingModel.salesInvoiceList[index].clientAddress,
+                          style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Text(
+                          mainBilling_Controller.billingModel.salesInvoiceList[index].emailId,
+                          style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          formatDate(mainBilling_Controller.billingModel.salesInvoiceList[index].date),
+                          style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceAmount.toString(),
+                          style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                        ),
+                      ),
+                      Expanded(
+                          flex: 2,
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 22,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1
+                                      ? const Color.fromARGB(193, 222, 244, 223)
+                                      : const Color.fromARGB(208, 244, 214, 212),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1 ? 'Paid' : 'Pending',
+                                    style: TextStyle(
+                                        color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1 ? const Color.fromARGB(255, 0, 122, 4) : Colors.red,
+                                        fontSize: Primary_font_size.Text5,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
+                      const Expanded(flex: 2, child: Icon(Icons.keyboard_control))
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    });
+  }
+
+  Widget Vendor() {
     return ListView.separated(
       separatorBuilder: (context, index) => Container(
         height: 1,
         color: const Color.fromARGB(94, 125, 125, 125),
       ),
-      itemCount: invoice_list.length,
+      itemCount: mainBilling_Controller.billingModel.subscriptionInvoiceList.length,
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.only(top: 10),
@@ -1264,7 +969,7 @@ class _BillingState extends State<Billing> {
                     Expanded(
                       flex: 2,
                       child: Text(
-                        invoice_list[index]['invoice_id'],
+                        mainBilling_Controller.billingModel.subscriptionInvoiceList[index].invoiceNo,
                         style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
@@ -1282,7 +987,7 @@ class _BillingState extends State<Billing> {
                               ),
                               child: ClipOval(
                                 child: Image.asset(
-                                  invoice_list[index]['image'],
+                                  'assets/images/black.jpg',
                                   fit: BoxFit.cover, // Ensures the image covers the container
                                   width: double.infinity, // Makes the image fill the container's width
                                   height: double.infinity, // Makes the image fill the container's height
@@ -1291,7 +996,7 @@ class _BillingState extends State<Billing> {
                             ),
                             const SizedBox(width: 5),
                             Text(
-                              invoice_list[index]['clientname'],
+                              mainBilling_Controller.billingModel.subscriptionInvoiceList[index].clientAddressName,
                               style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                             ),
                           ],
@@ -1299,28 +1004,28 @@ class _BillingState extends State<Billing> {
                     Expanded(
                       flex: 2,
                       child: Text(
-                        invoice_list[index]['type'],
+                        mainBilling_Controller.billingModel.subscriptionInvoiceList[index].planType,
                         style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
                       flex: 4,
                       child: Text(
-                        invoice_list[index]['product'],
+                        mainBilling_Controller.billingModel.subscriptionInvoiceList[index].planName,
                         style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
                       flex: 2,
                       child: Text(
-                        invoice_list[index]['date'],
+                        formatDate(mainBilling_Controller.billingModel.subscriptionInvoiceList[index].date),
                         style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
                     Expanded(
                       flex: 2,
                       child: Text(
-                        invoice_list[index]['amount'],
+                        mainBilling_Controller.billingModel.subscriptionInvoiceList[index].totalAmount.toString(),
                         style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                       ),
                     ),
@@ -1333,13 +1038,15 @@ class _BillingState extends State<Billing> {
                               width: 60,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: invoice_list[index]['Status'] == 'Paid' ? const Color.fromARGB(193, 222, 244, 223) : const Color.fromARGB(208, 244, 214, 212),
+                                color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1
+                                    ? const Color.fromARGB(193, 222, 244, 223)
+                                    : const Color.fromARGB(208, 244, 214, 212),
                               ),
                               child: Center(
                                 child: Text(
-                                  invoice_list[index]['Status'],
+                                  mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1 ? 'Paid' : 'Pending',
                                   style: TextStyle(
-                                      color: invoice_list[index]['Status'] == 'Paid' ? const Color.fromARGB(255, 0, 122, 4) : Colors.red,
+                                      color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1 ? const Color.fromARGB(255, 0, 122, 4) : Colors.red,
                                       fontSize: Primary_font_size.Text5,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -1348,260 +1055,6 @@ class _BillingState extends State<Billing> {
                           ],
                         )),
                     const Expanded(flex: 2, child: Icon(Icons.keyboard_control))
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget paid() {
-    return ListView.separated(
-      separatorBuilder: (context, index) => Container(
-        height: 1,
-        color: const Color.fromARGB(94, 125, 125, 125),
-      ),
-      itemCount: invoice_list.where((invoice) => invoice['Status'] == 'Paid').length,
-      itemBuilder: (context, index) {
-        // Filter the list to include only 'Paid' invoices
-        final paidInvoices = invoice_list.where((invoice) => invoice['Status'] == 'Paid').toList();
-
-        return Padding(
-          padding: const EdgeInsets.only(top: 10),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Primary_colors.Light,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        paidInvoices[index]['invoice_id'],
-                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 35,
-                            height: 35,
-                            decoration: BoxDecoration(
-                              // ignore: deprecated_member_use
-                              color: Primary_colors.Color5.withOpacity(0.1),
-                              shape: BoxShape.circle,
-                            ),
-                            child: ClipOval(
-                              child: Image.asset(
-                                paidInvoices[index]['image'],
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: double.infinity,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            paidInvoices[index]['clientname'],
-                            style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        paidInvoices[index]['type'],
-                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Text(
-                        paidInvoices[index]['product'],
-                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        paidInvoices[index]['date'],
-                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        paidInvoices[index]['amount'],
-                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 22,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color.fromARGB(193, 222, 244, 223),
-                            ),
-                            child: Center(
-                              child: Text(
-                                paidInvoices[index]['Status'],
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 0, 122, 4),
-                                  fontSize: Primary_font_size.Text5,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Expanded(
-                      flex: 2,
-                      child: Icon(Icons.keyboard_control),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget unpaid() {
-    return ListView.separated(
-      separatorBuilder: (context, index) => Container(
-        height: 1,
-        color: const Color.fromARGB(94, 125, 125, 125),
-      ),
-      itemCount: invoice_list.where((invoice) => invoice['Status'] == 'Pending').length,
-      itemBuilder: (context, index) {
-        // Filter the list to include only 'Paid' invoices
-        final paidInvoices = invoice_list.where((invoice) => invoice['Status'] == 'Pending').toList();
-
-        return Padding(
-          padding: const EdgeInsets.only(top: 10),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Primary_colors.Light,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        paidInvoices[index]['invoice_id'],
-                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 35,
-                            height: 35,
-                            decoration: BoxDecoration(
-                              // ignore: deprecated_member_use
-                              color: Primary_colors.Color5.withOpacity(0.1),
-                              shape: BoxShape.circle,
-                            ),
-                            child: ClipOval(
-                              child: Image.asset(
-                                paidInvoices[index]['image'],
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: double.infinity,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            paidInvoices[index]['clientname'],
-                            style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        paidInvoices[index]['type'],
-                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Text(
-                        paidInvoices[index]['product'],
-                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        paidInvoices[index]['date'],
-                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        paidInvoices[index]['amount'],
-                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 22,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color.fromARGB(208, 244, 214, 212),
-                            ),
-                            child: Center(
-                              child: Text(
-                                paidInvoices[index]['Status'],
-                                style: const TextStyle(
-                                  color: Colors.red,
-                                  fontSize: Primary_font_size.Text5,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Expanded(
-                      flex: 2,
-                      child: Icon(Icons.keyboard_control),
-                    ),
                   ],
                 ),
               ),

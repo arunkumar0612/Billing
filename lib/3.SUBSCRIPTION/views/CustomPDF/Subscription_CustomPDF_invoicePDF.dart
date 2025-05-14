@@ -1413,26 +1413,28 @@ class Subscription_CustomPDF_InvoicePDF {
                             tableHeaders.length - 1,
                             (colIndex) {
                               // bool isNumericField = [5].contains(colIndex);
-                              // bool isNumericField = colIndex == 4;
+                              bool isMonthlyCharge = colIndex == 4;
                               return Expanded(
                                 flex: 2,
                                 // flex: colIndex == 1 ? 3 : 1, // Make "Description" column wider
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 10),
                                   child: TextFormField(
-                                    // maxLines: null,
                                     controller: controller.pdfModel.value.textControllers[rowIndex][colIndex],
-                                    textAlign: colIndex == 3 ? TextAlign.center : TextAlign.center,
+                                    textAlign: TextAlign.center,
                                     style: const TextStyle(fontSize: 12),
                                     onChanged: (value) {
-                                      // if (!isTotalField) {
                                       controller.updateCell(rowIndex, colIndex, value);
-
-                                      // inst.assign_GSTtotals();
+                                      pdfpopup_controller.totalcaculationTable();
                                     },
-                                    readOnly: false,
-                                    inputFormatters: colIndex == 3 ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*'))] : null,
-                                    // keyboardType: colIndex == 4 ? TextInputType.number : TextInputType.text,
+                                    keyboardType: isMonthlyCharge ? const TextInputType.numberWithOptions(decimal: true) : TextInputType.text, // Allow decimals
+                                    inputFormatters: isMonthlyCharge ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}'))] : null,
+                                    onTap: () {
+                                      final controller = pdfpopup_controller.pdfModel.value.textControllers[rowIndex][colIndex];
+                                      controller.selection = TextSelection.collapsed(
+                                        offset: controller.text.length,
+                                      );
+                                    },
                                     decoration: InputDecoration(
                                       errorStyle: const TextStyle(height: -1, fontSize: 0),
                                       hintText: tableHeaders[colIndex + 1],
@@ -1446,6 +1448,9 @@ class Subscription_CustomPDF_InvoicePDF {
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Please enter ${tableHeaders[colIndex + 1]}';
+                                      }
+                                      if (colIndex == 4 && double.tryParse(value) == null) {
+                                        return 'Enter a valid number';
                                       }
                                       return null;
                                     },
@@ -1697,8 +1702,8 @@ class Subscription_CustomPDF_InvoicePDF {
             ),
           ],
         ),
-        const SizedBox(height: 20),
-        signatory(),
+        // const SizedBox(height: 20),
+        // signatory(),
       ],
     );
   }
@@ -1886,227 +1891,191 @@ class Subscription_CustomPDF_InvoicePDF {
             ),
           ],
         ),
-        const SizedBox(height: 20),
-        signatory(),
+        // const SizedBox(height: 20),
+        // signatory(),
       ],
     );
   }
 
-  Widget signatory() {
-    return Container(
-      height: 90,
-      width: 220,
-      decoration: BoxDecoration(border: Border.all()),
-      child: const Align(
-        alignment: Alignment.bottomCenter,
-        child: Text("Authorized Signatory", style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 127, 126, 126))),
-      ),
-    );
-  }
+  // Widget signatory() {
+  //   return Container(
+  //     height: 90,
+  //     width: 220,
+  //     decoration: BoxDecoration(border: Border.all()),
+  //     child: const Align(
+  //       alignment: Alignment.bottomCenter,
+  //       child: Text("Authorized Signatory", style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 127, 126, 126))),
+  //     ),
+  //   );
+  // }
 
   Widget gstTable() {
-    return Obx(
-      () {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-                decoration: BoxDecoration(border: Border.all(color: const Color.fromARGB(255, 151, 150, 150))),
-                height: 90,
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 90,
-                              height: double.infinity,
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)),
-                                ),
-                              ),
-                              child: const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    textAlign: TextAlign.center,
-                                    'Taxable Value',
-                                    style: TextStyle(
-                                      fontSize: Primary_font_size.Text8,
-                                    ),
-                                  ),
-                                ],
-                              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+            decoration: BoxDecoration(border: Border.all(color: const Color.fromARGB(255, 151, 150, 150))),
+            height: 90,
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 90,
+                          height: double.infinity,
+                          decoration: const BoxDecoration(
+                            border: Border(
+                              right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)),
                             ),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  border: Border(
-                                    right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)),
-                                  ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        width: double.infinity,
-                                        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                        child: const Text(
-                                          textAlign: TextAlign.center,
-                                          'CGST',
-                                          style: TextStyle(fontSize: Primary_font_size.Text8, overflow: TextOverflow.ellipsis),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              height: double.infinity,
-                                              decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                              child: const Text(
-                                                textAlign: TextAlign.center,
-                                                '%',
-                                                style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                              ),
-                                            ),
-                                          ),
-                                          const Expanded(
-                                            flex: 2,
-                                            child: SizedBox(
-                                              width: double.infinity,
-                                              child: Text(
-                                                textAlign: TextAlign.center,
-                                                'amount',
-                                                style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                          ),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                textAlign: TextAlign.center,
+                                'Taxable Value',
+                                style: TextStyle(
+                                  fontSize: Primary_font_size.Text8,
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    // border: Border(right: BorderSide()),
-                                    ),
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        width: double.infinity,
-                                        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                        child: const Text(
-                                          textAlign: TextAlign.center,
-                                          'SGST',
-                                          style: TextStyle(fontSize: Primary_font_size.Text8, overflow: TextOverflow.ellipsis),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              height: double.infinity,
-                                              decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                              child: const Text(
-                                                textAlign: TextAlign.center,
-                                                '%',
-                                                style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                              ),
-                                            ),
-                                          ),
-                                          const Expanded(
-                                            flex: 2,
-                                            child: Text(
-                                              textAlign: TextAlign.center,
-                                              'amount',
-                                              style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ),
-                    Expanded(
-                      child: SizedBox(
-                        height: 200, // Set a fixed height (adjust as needed)
-                        child: ListView.builder(
-                          shrinkWrap: true, // Prevents infinite height issue
-                          itemCount: 1,
-                          itemBuilder: (context, index) {
-                            return SizedBox(
-                              height: 44, // Set a height for each row to prevent overflow
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 90,
-                                    decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                    child: Center(
-                                      child: Text(
-                                        pdfpopup_controller.pdfModel.value.subTotal.value.text,
-                                        style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                      ),
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    width: double.infinity,
+                                    decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                    child: const Text(
+                                      textAlign: TextAlign.center,
+                                      'CGST',
+                                      style: TextStyle(fontSize: Primary_font_size.Text8, overflow: TextOverflow.ellipsis),
                                     ),
                                   ),
-                                  Expanded(
-                                      flex: 3,
-                                      child: Container(
-                                        decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                        child: Column(
-                                          children: [
-                                            Expanded(
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Container(
-                                                      decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                                      child: Center(
-                                                        child: Text(
-                                                          (18 / 2).toString(),
-                                                          style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Center(
-                                                      child: Text(
-                                                        pdfpopup_controller.pdfModel.value.CGST.value.text,
-                                                        style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          height: double.infinity,
+                                          decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                          child: const Text(
+                                            textAlign: TextAlign.center,
+                                            '%',
+                                            style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                          ),
                                         ),
-                                      )),
-                                  Expanded(
-                                    flex: 3,
+                                      ),
+                                      const Expanded(
+                                        flex: 2,
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          child: Text(
+                                            textAlign: TextAlign.center,
+                                            'amount',
+                                            style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                                // border: Border(right: BorderSide()),
+                                ),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    width: double.infinity,
+                                    decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                    child: const Text(
+                                      textAlign: TextAlign.center,
+                                      'SGST',
+                                      style: TextStyle(fontSize: Primary_font_size.Text8, overflow: TextOverflow.ellipsis),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          height: double.infinity,
+                                          decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                          child: const Text(
+                                            textAlign: TextAlign.center,
+                                            '%',
+                                            style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                          ),
+                                        ),
+                                      ),
+                                      const Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          textAlign: TextAlign.center,
+                                          'amount',
+                                          style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: SizedBox(
+                    height: 200, // Set a fixed height (adjust as needed)
+                    child: ListView.builder(
+                      shrinkWrap: true, // Prevents infinite height issue
+                      itemCount: 1,
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                          height: 44, // Set a height for each row to prevent overflow
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 90,
+                                decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                child: Center(
+                                  child: Text(
+                                    pdfpopup_controller.pdfModel.value.subTotal.value.text,
+                                    style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
                                     child: Column(
                                       children: [
                                         Expanded(
@@ -2128,7 +2097,7 @@ class Subscription_CustomPDF_InvoicePDF {
                                                 flex: 2,
                                                 child: Center(
                                                   child: Text(
-                                                    pdfpopup_controller.pdfModel.value.SGST.value.text,
+                                                    pdfpopup_controller.pdfModel.value.CGST.value.text,
                                                     style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                                   ),
                                                 ),
@@ -2138,105 +2107,32 @@ class Subscription_CustomPDF_InvoicePDF {
                                         ),
                                       ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                )),
-            const SizedBox(height: 55),
-            notes(),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget Other_gstTable() {
-    return Obx(
-      () {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-                decoration: BoxDecoration(border: Border.all(color: const Color.fromARGB(255, 151, 150, 150))),
-                height: 90,
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 90,
-                              height: double.infinity,
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)),
-                                ),
-                              ),
-                              child: const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    textAlign: TextAlign.center,
-                                    'Taxable Value',
-                                    style: TextStyle(
-                                      fontSize: Primary_font_size.Text8,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  border: Border(
-                                    right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)),
-                                  ),
-                                ),
+                                  )),
+                              Expanded(
+                                flex: 3,
                                 child: Column(
                                   children: [
-                                    Expanded(
-                                      child: Container(
-                                        width: double.infinity,
-                                        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                        child: const Text(
-                                          textAlign: TextAlign.center,
-                                          'IGST',
-                                          style: TextStyle(fontSize: Primary_font_size.Text8, overflow: TextOverflow.ellipsis),
-                                        ),
-                                      ),
-                                    ),
                                     Expanded(
                                       child: Row(
                                         children: [
                                           Expanded(
                                             flex: 1,
                                             child: Container(
-                                              height: double.infinity,
                                               decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                              child: const Text(
-                                                textAlign: TextAlign.center,
-                                                '%',
-                                                style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                              child: Center(
+                                                child: Text(
+                                                  (18 / 2).toString(),
+                                                  style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                          const Expanded(
+                                          Expanded(
                                             flex: 2,
-                                            child: SizedBox(
-                                              width: double.infinity,
+                                            child: Center(
                                               child: Text(
-                                                textAlign: TextAlign.center,
-                                                'amount',
-                                                style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                                pdfpopup_controller.pdfModel.value.SGST.value.text,
+                                                style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
                                               ),
                                             ),
                                           ),
@@ -2246,107 +2142,208 @@ class Subscription_CustomPDF_InvoicePDF {
                                   ],
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                    Expanded(
-                      child: SizedBox(
-                        height: 200, // Set a fixed height (adjust as needed)
-                        child: ListView.builder(
-                          shrinkWrap: true, // Prevents infinite height issue
-                          itemCount: 1,
-                          itemBuilder: (context, index) {
-                            return SizedBox(
-                              height: 44, // Set a height for each row to prevent overflow
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 90,
-                                    decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                    child: Center(
-                                      child: Text(
-                                        pdfpopup_controller.pdfModel.value.subTotal.value.text,
-                                        style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                      ),
+                  ),
+                ),
+              ],
+            )),
+        // const SizedBox(height: 55),
+        // notes(),
+      ],
+    );
+  }
+
+  Widget Other_gstTable() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+            decoration: BoxDecoration(border: Border.all(color: const Color.fromARGB(255, 151, 150, 150))),
+            height: 90,
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 90,
+                          height: double.infinity,
+                          decoration: const BoxDecoration(
+                            border: Border(
+                              right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)),
+                            ),
+                          ),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                textAlign: TextAlign.center,
+                                'Taxable Value',
+                                style: TextStyle(
+                                  fontSize: Primary_font_size.Text8,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    width: double.infinity,
+                                    decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                    child: const Text(
+                                      textAlign: TextAlign.center,
+                                      'IGST',
+                                      style: TextStyle(fontSize: Primary_font_size.Text8, overflow: TextOverflow.ellipsis),
                                     ),
                                   ),
-                                  Expanded(
-                                      flex: 3,
-                                      child: Container(
-                                        decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                        child: Column(
-                                          children: [
-                                            Expanded(
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Container(
-                                                      decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                                      child: const Center(
-                                                        child: Text(
-                                                          '18',
-                                                          style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Center(
-                                                      child: Text(
-                                                        pdfpopup_controller.pdfModel.value.IGST.value.text,
-                                                        style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          height: double.infinity,
+                                          decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                          child: const Text(
+                                            textAlign: TextAlign.center,
+                                            '%',
+                                            style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                          ),
                                         ),
-                                      )),
-                                  // Expanded(
-                                  //   flex: 3,
-                                  //   child: Column(
-                                  //     children: [
-                                  //       Expanded(
-                                  //         child: Row(
-                                  //           children: [
-                                  //             Expanded(
-                                  //               flex: 1,
-                                  //               child: Container(
-                                  //                 decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
-                                  //                 child: Center(
-                                  //                   child: Text(
-                                  //                     (18 / 2).toString(),
-                                  //                     style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
-                                  //                   ),
-                                  //                 ),
-                                  //               ),
-                                  //             ),
-                                  //           ],
-                                  //         ),
-                                  //       ),
-                                  //     ],
-                                  //   ),
-                                  // ),
-                                ],
-                              ),
-                            );
-                          },
+                                      ),
+                                      const Expanded(
+                                        flex: 2,
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          child: Text(
+                                            textAlign: TextAlign.center,
+                                            'amount',
+                                            style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                )),
-            const SizedBox(height: 55),
-            notes(),
-          ],
-        );
-      },
+                  ),
+                ),
+                Expanded(
+                  child: SizedBox(
+                    height: 200, // Set a fixed height (adjust as needed)
+                    child: ListView.builder(
+                      shrinkWrap: true, // Prevents infinite height issue
+                      itemCount: 1,
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                          height: 44, // Set a height for each row to prevent overflow
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 90,
+                                decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                child: Center(
+                                  child: Text(
+                                    pdfpopup_controller.pdfModel.value.subTotal.value.text,
+                                    style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: Container(
+                                                  decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                                                  child: const Center(
+                                                    child: Text(
+                                                      '18',
+                                                      style: TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 2,
+                                                child: Center(
+                                                  child: Text(
+                                                    pdfpopup_controller.pdfModel.value.IGST.value.text,
+                                                    style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              // Expanded(
+                              //   flex: 3,
+                              //   child: Column(
+                              //     children: [
+                              //       Expanded(
+                              //         child: Row(
+                              //           children: [
+                              //             Expanded(
+                              //               flex: 1,
+                              //               child: Container(
+                              //                 decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color.fromARGB(255, 151, 150, 150)))),
+                              //                 child: Center(
+                              //                   child: Text(
+                              //                     (18 / 2).toString(),
+                              //                     style: const TextStyle(fontSize: Primary_font_size.Text7, overflow: TextOverflow.ellipsis),
+                              //                   ),
+                              //                 ),
+                              //               ),
+                              //             ),
+                              //           ],
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            )),
+        // const SizedBox(height: 55),
+        // notes(),
+      ],
     );
   }
 

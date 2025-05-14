@@ -8,7 +8,7 @@ class Site {
   String siteName;
   String address;
   String siteID;
-  int monthlyCharges;
+  double monthlyCharges;
 
   Site({required this.siteName, required this.address, required this.siteID, required this.monthlyCharges}) : serialNo = (_counter++).toString(); // Auto-increment serial number
 
@@ -21,7 +21,7 @@ class Site {
         siteName: json['sitename'] as String, // Fix key casing
         address: json['address'] as String,
         siteID: json['customerid'] as String,
-        monthlyCharges: (json['monthlycharges'] as num).toInt(),
+        monthlyCharges: json['monthlycharges'] as double,
       );
     }).toList();
   }

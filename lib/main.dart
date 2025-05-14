@@ -1,6 +1,7 @@
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
@@ -53,13 +54,15 @@ Future<void> main() async {
 
   ////////////////////////--------HIERARCHY-------/////////////////////////////
   Get.lazyPut<HierarchyController>(() => HierarchyController());
-
   ////////////////////////////----SUBSCRIPTION----////////////////////////////////////
   Get.lazyPut<SubscriptionController>(() => SubscriptionController());
-
   Get.lazyPut<SUBSCRIPTION_CustomPDF_InvoiceController>(() => SUBSCRIPTION_CustomPDF_InvoiceController());
   Get.lazyPut<SUBSCRIPTION_QuoteController>(() => SUBSCRIPTION_QuoteController());
   Get.lazyPut<SUBSCRIPTION_ClientreqController>(() => SUBSCRIPTION_ClientreqController());
+
+  ////////////////////////////----BILLING----////////////////////////////////////
+  Get.lazyPut<MainBilling_Controller>(() => MainBilling_Controller());
+
   // Get.lazyPut<ViewsendController>(() => ViewsendController());
   // if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux)) {
   //   await windowManager.ensureInitialized();

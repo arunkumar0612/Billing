@@ -297,8 +297,8 @@ mixin VoucherService {
   }
 
   void resetFilters() {
-    voucherController.voucherModel.startDateController.clear();
-    voucherController.voucherModel.endDateController.clear();
+    voucherController.voucherModel.startDateController.value.clear();
+    voucherController.voucherModel.endDateController.value.clear();
     voucherController.voucherModel.selectedpaymentStatus.value = 'Show All';
     voucherController.voucherModel.selectedInvoiceType.value = 'Show All';
     voucherController.voucherModel.selectedQuickFilter.value = 'Show All';

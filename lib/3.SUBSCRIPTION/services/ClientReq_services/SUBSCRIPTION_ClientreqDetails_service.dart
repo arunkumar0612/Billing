@@ -24,6 +24,7 @@ mixin SUBSCRIPTION_ClientreqDetailsService {
         if (value.code) {
           // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
           clientreqController.update_OrganizationList(value);
+          // get_CompanyList(context, 0);
         } else {
           await Error_dialog(context: context, title: 'Fetching Organization List Error', content: value.message ?? "", onOk: () {});
         }

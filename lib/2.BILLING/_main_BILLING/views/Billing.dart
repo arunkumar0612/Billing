@@ -334,26 +334,20 @@ class _BillingState extends State<Billing> {
                                                   children: [
                                                     MouseRegion(
                                                       cursor: SystemMouseCursors.click,
-                                                    child: _buildIconWithLabel(
-                                                        icon: Icons.book_outlined,
-                                                        label: 'View Ledger',
-                                                        color: Primary_colors.Color4,
-                                                        onPressed: () {
-                                                          Navigator.of(context).push(
-                                                            _createCustomPageRoute(() => const ViewLedger()),
-                                                          );
-                                                        }),
+                                                      child: _buildIconWithLabel(
+                                                          icon: Icons.book_outlined,
+                                                          label: 'View Ledger',
+                                                          color: Primary_colors.Color4,
+                                                          onPressed: () {
+                                                            Navigator.of(context).push(
+                                                              _createCustomPageRoute(() => ViewLedger()),
+                                                            );
+                                                          }),
                                                     ),
                                                     MouseRegion(
                                                       cursor: SystemMouseCursors.click,
-                                                      child:_buildIconWithLabel(
-                                                      icon: Icons.receipt_long_outlined, 
-                                                      label: 'View Transaction', color:
-                                                       Primary_colors.Color5,
-                                                        onPressed: () {}
-                                                       ),
+                                                      child: _buildIconWithLabel(icon: Icons.receipt_long_outlined, label: 'View Transaction', color: Primary_colors.Color5, onPressed: () {}),
                                                     )
-                                                    
                                                   ],
                                                 ),
                                                 const SizedBox(height: 20),
@@ -364,25 +358,20 @@ class _BillingState extends State<Billing> {
                                                     MouseRegion(
                                                       cursor: SystemMouseCursors.click,
                                                       child: _buildIconWithLabel(
-                                                      icon: Icons.info_outline,
-                                                      label: 'Voucher',
-                                                      color: Primary_colors.Color6,
-                                                      onPressed: () {
-                                                        Navigator.of(context).push(
-                                                          _createCustomPageRoute(() => Voucher()),
-                                                        );
-                                                      },
-                                                    ),
+                                                        icon: Icons.info_outline,
+                                                        label: 'Voucher',
+                                                        color: Primary_colors.Color6,
+                                                        onPressed: () {
+                                                          Navigator.of(context).push(
+                                                            _createCustomPageRoute(() => Voucher()),
+                                                          );
+                                                        },
+                                                      ),
                                                     ),
                                                     MouseRegion(
                                                       cursor: SystemMouseCursors.click,
-                                                      child: _buildIconWithLabel(
-                                                      icon: Icons.person_outline,
-                                                       label: 'Balance Sheet', 
-                                                       color: Primary_colors.Color8, 
-                                                       onPressed: () {}
-                                                       ),
-                                                    ),                                                    
+                                                      child: _buildIconWithLabel(icon: Icons.person_outline, label: 'Balance Sheet', color: Primary_colors.Color8, onPressed: () {}),
+                                                    ),
                                                   ],
                                                 ),
                                               ],

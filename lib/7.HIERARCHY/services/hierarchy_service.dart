@@ -136,7 +136,7 @@ mixin HierarchyService {
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
-          await Error_dialog(context: context, title: "LOGO", content: value.message!, onOk: () {});
+          await Success_dialog(context: context, title: "LOGO", content: value.message!, onOk: () {});
 
           if (logoType == 'organization') {
             get_OrganizationList(context);

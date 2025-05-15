@@ -23,7 +23,7 @@ class _VoucherState extends State<Voucher> {
   @override
   void initState() {
     super.initState();
-    widget.get_VoucherList(context);
+    widget.get_VoucherList();
     // Ensure data is loaded
     WidgetsBinding.instance.addPostFrameCallback((_) {
       voucherController.voucherModel.selectedItems = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false).obs;
@@ -32,12 +32,12 @@ class _VoucherState extends State<Voucher> {
 
   final GlobalKey _copyIconKey = GlobalKey();
   void _showCloseVoucherPopup(int index) {
-    final TextEditingController _closedDateController = TextEditingController(
-      text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
-    );
-    final TextEditingController _referenceIdController = TextEditingController();
-    final TextEditingController _amountController = TextEditingController();
-    final TextEditingController _feedbackController = TextEditingController();
+    // final TextEditingController _closedDateController = TextEditingController(
+    //   text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+    // );
+    // final TextEditingController _referenceIdController = TextEditingController();
+    // final TextEditingController _amountController = TextEditingController();
+    // final TextEditingController _feedbackController = TextEditingController();
 
     showDialog(
       context: context,
@@ -116,40 +116,70 @@ class _VoucherState extends State<Voucher> {
                     ),
 
                     // Form Content
+
                     Padding(
                       padding: const EdgeInsets.all(20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           // Warning banner
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: Primary_colors.Dark,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: const Color.fromARGB(55, 243, 208, 96),
-                                width: 1,
-                              ),
-                            ),
-                            child: const Row(
-                              children: [
-                                Icon(Icons.warning_amber_rounded, color: Color.fromARGB(255, 236, 190, 64), size: 20),
-                                SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    "Client have exceeded the transaction of 1 Lakh, so this invoice is TDS Deductable!",
-                                    style: TextStyle(
-                                      color: Color.fromARGB(255, 236, 190, 64),
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12,
+                          voucherController.voucherModel.voucher_list[index].tdsCalculation == 1
+                              ? Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Primary_colors.Dark,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: const Color.fromARGB(55, 243, 208, 96),
+                                      width: 1,
                                     ),
                                   ),
+                                  child: const Row(
+                                    children: [
+                                      Icon(Icons.warning_amber_rounded, color: Color.fromARGB(255, 236, 190, 64), size: 20),
+                                      SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text(
+                                          "Client have exceeded the transaction of 1 Lakh, so this invoice is TDS Deductable!",
+                                          style: TextStyle(
+                                            color: Color.fromARGB(255, 236, 190, 64),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Primary_colors.Dark,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: const Color.fromARGB(55, 96, 243, 96),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: const Row(
+                                    children: [
+                                      Icon(Icons.warning_amber_rounded, color: Color.fromARGB(255, 64, 236, 87), size: 20),
+                                      SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text(
+                                          "The client hasn't exceeded transaction of 1 Lakh rupees, So this invoice is not Taxable!",
+                                          style: TextStyle(
+                                            color: Color.fromARGB(255, 133, 236, 64),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ],
-                            ),
-                          ),
                           const SizedBox(height: 20),
 
                           // Client and Invoice Info
@@ -304,10 +334,14 @@ class _VoucherState extends State<Voucher> {
                                         Colors.green,
                                       ),
                                       const SizedBox(height: 12),
-                                      _amountRow(
-                                        "Receivable Amount:",
-                                        "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].totalAmount)}",
-                                        Colors.green,
+                                      Obx(
+                                        () {
+                                          return _amountRow(
+                                            "Receivable Amount:",
+                                            "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.recievableAmount.value)}",
+                                            Colors.green,
+                                          );
+                                        },
                                       ),
                                       const SizedBox(height: 12),
                                       _amountRow(
@@ -345,38 +379,57 @@ class _VoucherState extends State<Voucher> {
                                   child: Column(
                                     children: [
                                       _buildEditableField(
-                                        controller: _closedDateController,
+                                        controller: voucherController.voucherModel.closedDateController,
                                         label: 'Closed Date',
                                         hint: 'Select closed date',
                                         icon: Icons.calendar_today,
-                                        onTap: () => widget.selectDate(context, _closedDateController),
+                                        onTap: () => widget.selectDate(context, voucherController.voucherModel.closedDateController),
                                       ),
                                       const SizedBox(height: 16),
                                       _buildEditableField(
-                                        controller: _amountController,
+                                        controller: voucherController.voucherModel.amountCleared_controller.value,
+                                        onChanged: (value) {
+                                          voucherController.is_fullclear_Valid(index);
+                                          voucherController.is_amountExceeds();
+                                          voucherController.update();
+                                        },
                                         label: 'Amount Received',
                                         hint: 'Enter received amount',
                                         icon: Icons.attach_money,
                                         keyboardType: TextInputType.number,
+                                        isNumber: true,
                                       ),
-                                      const SizedBox(height: 16),
-                                      _buildDropdownField(
-                                        label: 'TDS Status',
-                                        hint: 'Select TDS status',
-                                        icon: Icons.percent,
-                                        items: ['Deducted', 'Not Applicable', 'Pending'],
-                                        onChanged: (value) {},
-                                      ),
+                                      if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1) const SizedBox(height: 16),
+                                      if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1)
+                                        _buildDropdownField(
+                                          label: 'TDS Status',
+                                          hint: 'Select TDS status',
+                                          icon: Icons.percent,
+                                          items: ['Deducted', 'Not Deducted'],
+                                          value: voucherController.voucherModel.is_Deducted.value ? 'Deducted' : 'Not Deducted',
+                                          onChanged: (value) {
+                                            if (value == "Deducted") {
+                                              voucherController.set_isDeducted(true);
+                                              voucherController.calculate_recievable(true, index);
+                                            } else {
+                                              voucherController.set_isDeducted(false);
+                                              voucherController.calculate_recievable(false, index);
+                                            }
+                                            voucherController.is_fullclear_Valid(index);
+                                            voucherController.is_amountExceeds();
+                                            voucherController.update();
+                                          },
+                                        ),
                                       const SizedBox(height: 16),
                                       _buildEditableField(
-                                        controller: _referenceIdController,
+                                        controller: voucherController.voucherModel.transactionDetails_controller.value,
                                         label: 'Transaction Reference',
                                         hint: 'Enter transaction ID/bank reference',
                                         icon: Icons.credit_card,
                                       ),
                                       const SizedBox(height: 16),
                                       _buildEditableField(
-                                        controller: _feedbackController,
+                                        controller: voucherController.voucherModel.feedback_controller.value,
                                         label: 'Payment Notes',
                                         hint: 'Any additional notes about this payment',
                                         icon: Icons.note,
@@ -424,8 +477,9 @@ class _VoucherState extends State<Voucher> {
                                           _buildBreakupDivider(),
                                           _buildBreakupLine("IGST", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].igst)}"),
                                           _buildBreakupDivider(),
-                                          _buildBreakupLine(
-                                              "TDS (2%)", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].tdsCalculationAmount)}"),
+                                          if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1)
+                                            _buildBreakupLine(
+                                                "TDS (2%)", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].tdsCalculationAmount)}"),
                                           const SizedBox(height: 16),
                                           Container(
                                             padding: const EdgeInsets.all(12),
@@ -555,68 +609,91 @@ class _VoucherState extends State<Voucher> {
                                 ),
                               ),
                               const SizedBox(width: 16),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Primary_colors.Color3,
-                                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  elevation: 2,
-                                  shadowColor: Primary_colors.Color3.withOpacity(0.3),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: const Text('Voucher closed successfully'),
-                                      behavior: SnackBarBehavior.floating,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
+                              voucherController.voucherModel.is_fullClear.value && voucherController.voucherModel.is_amountExceeds.value == false
+                                  ? ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Primary_colors.Color3,
+                                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        elevation: 2,
+                                        shadowColor: Primary_colors.Color3.withOpacity(0.3),
                                       ),
-                                      backgroundColor: Colors.green,
-                                    ),
-                                  );
-                                },
-                                child: const Text(
-                                  'MARK AS PAID',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.orange,
-                                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  elevation: 2,
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: const Text('Voucher partially cleared'),
-                                      behavior: SnackBarBehavior.floating,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
+                                      onPressed: () async {
+                                        await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete');
+                                        // Navigator.of(context).pop();
+                                        // ScaffoldMessenger.of(context).showSnackBar(
+                                        //   SnackBar(
+                                        //     content: const Text('Voucher closed successfully'),
+                                        //     behavior: SnackBarBehavior.floating,
+                                        //     shape: RoundedRectangleBorder(
+                                        //       borderRadius: BorderRadius.circular(8),
+                                        //     ),
+                                        //     backgroundColor: Colors.green,
+                                        //   ),
+                                        // );
+                                      },
+                                      child: const Text(
+                                        'CLEAR VOUCHER',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                      backgroundColor: Colors.blue,
+                                    )
+                                  : voucherController.voucherModel.is_amountExceeds.value == true
+                                      ? const SizedBox(
+                                          width: 250,
+                                          child: Text(
+                                            "The recieved amount is either empty or exceeds the recievable amount",
+                                            style: TextStyle(color: Colors.amber, fontSize: 12),
+                                          ))
+                                      : MouseRegion(
+                                          cursor: SystemMouseCursors.forbidden,
+                                          child: Container(
+                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.grey),
+                                            child: const Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Text(
+                                                "CLEAR VOUCHER",
+                                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                              ),
+                                            ),
+                                          )),
+                              if (!voucherController.voucherModel.is_fullClear.value && voucherController.voucherModel.is_amountExceeds.value == false) const SizedBox(width: 16),
+                              if (!voucherController.voucherModel.is_fullClear.value && voucherController.voucherModel.is_amountExceeds.value == false)
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.orange,
+                                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
-                                  );
-                                },
-                                child: const Text(
-                                  'PARTIALLY CLEAR',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                                    elevation: 2,
+                                  ),
+                                  onPressed: () async {
+                                    await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'partial');
+                                    // Navigator.of(context).pop();
+                                    // ScaffoldMessenger.of(context).showSnackBar(
+                                    //   SnackBar(
+                                    //     content: const Text('Voucher partially cleared'),
+                                    //     behavior: SnackBarBehavior.floating,
+                                    //     shape: RoundedRectangleBorder(
+                                    //       borderRadius: BorderRadius.circular(8),
+                                    //     ),
+                                    //     backgroundColor: Colors.blue,
+                                    //   ),
+                                    // );
+                                  },
+                                  child: const Text(
+                                    'PARTIALLY CLEAR',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
-                              ),
                             ],
                           ),
                         ],
@@ -656,7 +733,9 @@ class _VoucherState extends State<Voucher> {
     required String label,
     required String hint,
     required IconData icon,
+    bool isNumber = false,
     VoidCallback? onTap,
+    ValueChanged<String>? onChanged,
     TextInputType? keyboardType,
     int maxLines = 1,
   }) {
@@ -674,9 +753,11 @@ class _VoucherState extends State<Voucher> {
         ),
         const SizedBox(height: 6),
         TextFormField(
+          onChanged: onChanged,
           controller: controller,
           readOnly: onTap != null,
           onTap: onTap,
+          inputFormatters: isNumber ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}'))] : null,
           keyboardType: keyboardType,
           maxLines: maxLines,
           decoration: InputDecoration(
@@ -720,6 +801,7 @@ class _VoucherState extends State<Voucher> {
     required String hint,
     required IconData icon,
     required List<String> items,
+    required String? value, // Add this
     required Function(String?) onChanged,
   }) {
     return Column(
@@ -735,6 +817,7 @@ class _VoucherState extends State<Voucher> {
         ),
         const SizedBox(height: 6),
         DropdownButtonFormField<String>(
+          value: value ?? (items.isNotEmpty ? items[0] : null), // Default to first item
           hint: Text(
             hint,
             style: TextStyle(
@@ -1567,6 +1650,18 @@ class _VoucherState extends State<Voucher> {
                             ),
                           ),
                           const SizedBox(width: 3),
+                          const Expanded(
+                            flex: 2,
+                            child: Text(
+                              'Status',
+                              style: TextStyle(
+                                color: Primary_colors.Color1,
+                                fontWeight: FontWeight.bold,
+                                fontSize: Primary_font_size.Text7,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 3),
                           const SizedBox(width: 125),
                         ],
                       ),
@@ -1680,14 +1775,25 @@ class _VoucherState extends State<Voucher> {
 
                                             void showPopup() {
                                               if (overlayEntry != null) return;
-
                                               final RenderBox renderBox = context.findRenderObject() as RenderBox;
                                               final Offset offset = renderBox.localToGlobal(Offset.zero);
+                                              final Size size = renderBox.size;
 
+                                              // Calculate position dynamically based on available space
+                                              double top;
+                                              double left = offset.dx - 80;
+
+                                              // If there's enough space above the widget, show popup above it
+                                              if (offset.dy > 320) {
+                                                top = offset.dy - 320; // Show above
+                                              } else {
+                                                // Otherwise show below the widget
+                                                top = offset.dy + size.height + 5;
+                                              }
                                               overlayEntry = OverlayEntry(
                                                 builder: (_) => Positioned(
-                                                  left: offset.dx - 80,
-                                                  top: offset.dy - 320,
+                                                  left: left,
+                                                  top: top,
                                                   child: TweenAnimationBuilder(
                                                     duration: const Duration(milliseconds: 200),
                                                     tween: Tween<double>(begin: 0.9, end: 1.0),
@@ -1820,24 +1926,61 @@ class _VoucherState extends State<Voucher> {
                                         ),
                                       ),
                                       const SizedBox(width: 3),
-                                      SizedBox(
-                                        width: 125,
-                                        child: ElevatedButton(
-                                          onPressed: () => _showCloseVoucherPopup(index),
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: const Color.fromARGB(255, 107, 183, 109),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(15),
-                                            ),
-                                          ),
-                                          child: const Text(
-                                            'Update Payment',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: Primary_font_size.Text6,
-                                            ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          (voucher.fullyCleared == 0 && voucher.partiallyCleared == 0)
+                                              ? 'pending'
+                                              : voucher.fullyCleared == 1
+                                                  ? 'completed'
+                                                  : voucher.partiallyCleared == 1
+                                                      ? 'partially cleared'
+                                                      : '',
+                                          style: TextStyle(
+                                            color: (voucher.fullyCleared == 0 && voucher.partiallyCleared == 0)
+                                                ? Colors.red
+                                                : voucher.fullyCleared == 1
+                                                    ? Colors.green
+                                                    : voucher.partiallyCleared == 1
+                                                        ? Colors.amber
+                                                        : Colors.black,
+                                            fontSize: Primary_font_size.Text7,
                                           ),
                                         ),
+                                      ),
+                                      const SizedBox(width: 3),
+                                      SizedBox(
+                                        width: 125,
+                                        child: (voucher.fullyCleared == 0 && voucher.partiallyCleared == 0)
+                                            ? ElevatedButton(
+                                                onPressed: () {
+                                                  voucherController.reset_voucherClear_popup();
+                                                  if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1) {
+                                                    voucherController.calculate_recievable(true, index);
+                                                  } else {
+                                                    voucherController.calculate_recievable(false, index);
+                                                  }
+
+                                                  _showCloseVoucherPopup(index);
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: const Color.fromARGB(255, 107, 183, 109),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(15),
+                                                  ),
+                                                ),
+                                                child: const Text(
+                                                  'Update Payment',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: Primary_font_size.Text6,
+                                                  ),
+                                                ),
+                                              )
+                                            : const Icon(
+                                                Icons.check_circle_sharp,
+                                                color: Colors.green,
+                                              ),
                                       ),
                                     ],
                                   ),

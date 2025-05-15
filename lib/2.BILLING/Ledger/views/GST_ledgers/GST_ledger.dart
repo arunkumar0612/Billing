@@ -5,14 +5,14 @@ import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 
 import '../../../../THEMES-/style.dart';
 
-class consolidatedGST extends StatefulWidget {
-  const consolidatedGST({super.key});
+class GSTLedger extends StatefulWidget {
+  const GSTLedger({super.key});
 
   @override
-  State<consolidatedGST> createState() => _consolidatedGSTState();
+  State<GSTLedger> createState() => _GSTLedgerState();
 }
 
-class _consolidatedGSTState extends State<consolidatedGST> {
+class _GSTLedgerState extends State<GSTLedger> {
   final List<Map<String, dynamic>> consolidated_list = [
     {
       'date': '2024-12-01',
@@ -40,7 +40,7 @@ class _consolidatedGSTState extends State<consolidatedGST> {
       'total_GST': '5400',
       'gross_amount': '35400',
     },
-   {
+    {
       'date': '2024-02-11',
       'voucher_no': 'VH-3435',
       'invoice_no': '78845',
@@ -92,7 +92,7 @@ class _consolidatedGSTState extends State<consolidatedGST> {
       'total_GST': '5400',
       'gross_amount': '35400',
     },
-   {
+    {
       'date': '2024-02-11',
       'voucher_no': 'VH-3435',
       'invoice_no': '78845',
@@ -144,7 +144,7 @@ class _consolidatedGSTState extends State<consolidatedGST> {
       'total_GST': '5400',
       'gross_amount': '35400',
     },
-   {
+    {
       'date': '2024-02-11',
       'voucher_no': 'VH-3435',
       'invoice_no': '78845',
@@ -196,7 +196,7 @@ class _consolidatedGSTState extends State<consolidatedGST> {
       'total_GST': '5400',
       'gross_amount': '35400',
     },
-   {
+    {
       'date': '2024-02-11',
       'voucher_no': 'VH-3435',
       'invoice_no': '78845',
@@ -248,7 +248,7 @@ class _consolidatedGSTState extends State<consolidatedGST> {
       'total_GST': '5400',
       'gross_amount': '35400',
     },
-   {
+    {
       'date': '2024-02-11',
       'voucher_no': 'VH-3435',
       'invoice_no': '78845',
@@ -300,7 +300,7 @@ class _consolidatedGSTState extends State<consolidatedGST> {
       'total_GST': '5400',
       'gross_amount': '35400',
     },
-   {
+    {
       'date': '2024-02-11',
       'voucher_no': 'VH-3435',
       'invoice_no': '78845',
@@ -352,111 +352,7 @@ class _consolidatedGSTState extends State<consolidatedGST> {
       'total_GST': '5400',
       'gross_amount': '35400',
     },
-   {
-      'date': '2024-02-11',
-      'voucher_no': 'VH-3435',
-      'invoice_no': '78845',
-      'particulars': 'Sale to Topsel(KOL)',
-      'GST_type': 'Ouput',
-      'taxable_value': '40000',
-      'CGST': '0',
-      'SGST': '0',
-      'IGST': '7200',
-      'total_GST': '7200',
-      'gross_amount': '47200',
-    },
     {
-      'date': '2024-02-11',
-      'voucher_no': 'VH-3435',
-      'invoice_no': '78845',
-      'particulars': 'Purchase from Pandi Machinaries(KA)',
-      'GST_type': 'Input',
-      'taxable_value': '20000',
-      'CGST': '0',
-      'SGST': '0',
-      'IGST': '3600',
-      'total_GST': '3600',
-      'gross_amount': '23600',
-    },
-
-    {
-      'date': '2024-12-01',
-      'voucher_no': 'VH-3435',
-      'invoice_no': '12345',
-      'particulars': 'Sale to Khivraj',
-      'GST_type': 'Output',
-      'taxable_value': '50000',
-      'CGST': '4500',
-      'SGST': '4500',
-      'IGST': '0',
-      'total_GST': '9000',
-      'gross_amount': '59000',
-    },
-    {
-      'date': '2024-02-11',
-      'voucher_no': 'VH-3435',
-      'invoice_no': '78845',
-      'particulars': 'Purchase from JK&Co Ltd',
-      'GST_type': 'Input',
-      'taxable_value': '30000',
-      'CGST': '2700',
-      'SGST': '2700',
-      'IGST': '0',
-      'total_GST': '5400',
-      'gross_amount': '35400',
-    },
-   {
-      'date': '2024-02-11',
-      'voucher_no': 'VH-3435',
-      'invoice_no': '78845',
-      'particulars': 'Sale to Topsel(KOL)',
-      'GST_type': 'Ouput',
-      'taxable_value': '40000',
-      'CGST': '0',
-      'SGST': '0',
-      'IGST': '7200',
-      'total_GST': '7200',
-      'gross_amount': '47200',
-    },
-    {
-      'date': '2024-02-11',
-      'voucher_no': 'VH-3435',
-      'invoice_no': '78845',
-      'particulars': 'Purchase from Pandi Machinaries(KA)',
-      'GST_type': 'Input',
-      'taxable_value': '20000',
-      'CGST': '0',
-      'SGST': '0',
-      'IGST': '3600',
-      'total_GST': '3600',
-      'gross_amount': '23600',
-    },{
-      'date': '2024-12-01',
-      'voucher_no': 'VH-3435',
-      'invoice_no': '12345',
-      'particulars': 'Sale to Khivraj',
-      'GST_type': 'Output',
-      'taxable_value': '50000',
-      'CGST': '4500',
-      'SGST': '4500',
-      'IGST': '0',
-      'total_GST': '9000',
-      'gross_amount': '59000',
-    },
-    {
-      'date': '2024-02-11',
-      'voucher_no': 'VH-3435',
-      'invoice_no': '78845',
-      'particulars': 'Purchase from JK&Co Ltd',
-      'GST_type': 'Input',
-      'taxable_value': '30000',
-      'CGST': '2700',
-      'SGST': '2700',
-      'IGST': '0',
-      'total_GST': '5400',
-      'gross_amount': '35400',
-    },
-   {
       'date': '2024-02-11',
       'voucher_no': 'VH-3435',
       'invoice_no': '78845',
@@ -508,7 +404,7 @@ class _consolidatedGSTState extends State<consolidatedGST> {
       'total_GST': '5400',
       'gross_amount': '35400',
     },
-   {
+    {
       'date': '2024-02-11',
       'voucher_no': 'VH-3435',
       'invoice_no': '78845',
@@ -560,7 +456,7 @@ class _consolidatedGSTState extends State<consolidatedGST> {
       'total_GST': '5400',
       'gross_amount': '35400',
     },
-   {
+    {
       'date': '2024-02-11',
       'voucher_no': 'VH-3435',
       'invoice_no': '78845',
@@ -612,7 +508,7 @@ class _consolidatedGSTState extends State<consolidatedGST> {
       'total_GST': '5400',
       'gross_amount': '35400',
     },
-   {
+    {
       'date': '2024-02-11',
       'voucher_no': 'VH-3435',
       'invoice_no': '78845',
@@ -664,7 +560,7 @@ class _consolidatedGSTState extends State<consolidatedGST> {
       'total_GST': '5400',
       'gross_amount': '35400',
     },
-   {
+    {
       'date': '2024-02-11',
       'voucher_no': 'VH-3435',
       'invoice_no': '78845',
@@ -716,7 +612,111 @@ class _consolidatedGSTState extends State<consolidatedGST> {
       'total_GST': '5400',
       'gross_amount': '35400',
     },
-   {
+    {
+      'date': '2024-02-11',
+      'voucher_no': 'VH-3435',
+      'invoice_no': '78845',
+      'particulars': 'Sale to Topsel(KOL)',
+      'GST_type': 'Ouput',
+      'taxable_value': '40000',
+      'CGST': '0',
+      'SGST': '0',
+      'IGST': '7200',
+      'total_GST': '7200',
+      'gross_amount': '47200',
+    },
+    {
+      'date': '2024-02-11',
+      'voucher_no': 'VH-3435',
+      'invoice_no': '78845',
+      'particulars': 'Purchase from Pandi Machinaries(KA)',
+      'GST_type': 'Input',
+      'taxable_value': '20000',
+      'CGST': '0',
+      'SGST': '0',
+      'IGST': '3600',
+      'total_GST': '3600',
+      'gross_amount': '23600',
+    },
+    {
+      'date': '2024-12-01',
+      'voucher_no': 'VH-3435',
+      'invoice_no': '12345',
+      'particulars': 'Sale to Khivraj',
+      'GST_type': 'Output',
+      'taxable_value': '50000',
+      'CGST': '4500',
+      'SGST': '4500',
+      'IGST': '0',
+      'total_GST': '9000',
+      'gross_amount': '59000',
+    },
+    {
+      'date': '2024-02-11',
+      'voucher_no': 'VH-3435',
+      'invoice_no': '78845',
+      'particulars': 'Purchase from JK&Co Ltd',
+      'GST_type': 'Input',
+      'taxable_value': '30000',
+      'CGST': '2700',
+      'SGST': '2700',
+      'IGST': '0',
+      'total_GST': '5400',
+      'gross_amount': '35400',
+    },
+    {
+      'date': '2024-02-11',
+      'voucher_no': 'VH-3435',
+      'invoice_no': '78845',
+      'particulars': 'Sale to Topsel(KOL)',
+      'GST_type': 'Ouput',
+      'taxable_value': '40000',
+      'CGST': '0',
+      'SGST': '0',
+      'IGST': '7200',
+      'total_GST': '7200',
+      'gross_amount': '47200',
+    },
+    {
+      'date': '2024-02-11',
+      'voucher_no': 'VH-3435',
+      'invoice_no': '78845',
+      'particulars': 'Purchase from Pandi Machinaries(KA)',
+      'GST_type': 'Input',
+      'taxable_value': '20000',
+      'CGST': '0',
+      'SGST': '0',
+      'IGST': '3600',
+      'total_GST': '3600',
+      'gross_amount': '23600',
+    },
+    {
+      'date': '2024-12-01',
+      'voucher_no': 'VH-3435',
+      'invoice_no': '12345',
+      'particulars': 'Sale to Khivraj',
+      'GST_type': 'Output',
+      'taxable_value': '50000',
+      'CGST': '4500',
+      'SGST': '4500',
+      'IGST': '0',
+      'total_GST': '9000',
+      'gross_amount': '59000',
+    },
+    {
+      'date': '2024-02-11',
+      'voucher_no': 'VH-3435',
+      'invoice_no': '78845',
+      'particulars': 'Purchase from JK&Co Ltd',
+      'GST_type': 'Input',
+      'taxable_value': '30000',
+      'CGST': '2700',
+      'SGST': '2700',
+      'IGST': '0',
+      'total_GST': '5400',
+      'gross_amount': '35400',
+    },
+    {
       'date': '2024-02-11',
       'voucher_no': 'VH-3435',
       'invoice_no': '78845',
@@ -743,6 +743,8 @@ class _consolidatedGSTState extends State<consolidatedGST> {
       'gross_amount': '23600',
     },
   ];
+  List<String> gst_ledger_type_list = ['Consolidated GST', 'Input GST', 'Output GST'];
+  String? Selected_ledger_type = 'Consolidated GST';
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -791,7 +793,7 @@ class _consolidatedGSTState extends State<consolidatedGST> {
                     ),
                   ),
                 ),
-                 Expanded(
+                Expanded(
                   flex: 2,
                   child: Padding(
                     padding: EdgeInsets.all(10),
@@ -851,7 +853,7 @@ class _consolidatedGSTState extends State<consolidatedGST> {
                     ),
                   ),
                 ),
-                  Expanded(
+                Expanded(
                   flex: 2,
                   child: Padding(
                     padding: EdgeInsets.all(10),
@@ -861,7 +863,7 @@ class _consolidatedGSTState extends State<consolidatedGST> {
                     ),
                   ),
                 ),
-                  Expanded(
+                Expanded(
                   flex: 2,
                   child: Padding(
                     padding: EdgeInsets.all(10),
@@ -871,7 +873,7 @@ class _consolidatedGSTState extends State<consolidatedGST> {
                     ),
                   ),
                 ),
-                  Expanded(
+                Expanded(
                   flex: 2,
                   child: Padding(
                     padding: EdgeInsets.all(10),
@@ -995,12 +997,12 @@ class _consolidatedGSTState extends State<consolidatedGST> {
                               ),
                             ),
                           ),
-                           Expanded(
+                          Expanded(
                             flex: 2,
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                 consolidated_list[index]['CGST'],
+                                consolidated_list[index]['CGST'],
                                 style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -1008,9 +1010,9 @@ class _consolidatedGSTState extends State<consolidatedGST> {
                           Expanded(
                             flex: 2,
                             child: Padding(
-                              padding:const EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Text(
-                                 consolidated_list[index]['SGST'],
+                                consolidated_list[index]['SGST'],
                                 style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -1018,9 +1020,9 @@ class _consolidatedGSTState extends State<consolidatedGST> {
                           Expanded(
                             flex: 2,
                             child: Padding(
-                              padding:const EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Text(
-                                 consolidated_list[index]['IGST'],
+                                consolidated_list[index]['IGST'],
                                 style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -1028,9 +1030,9 @@ class _consolidatedGSTState extends State<consolidatedGST> {
                           Expanded(
                             flex: 2,
                             child: Padding(
-                              padding:const EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Text(
-                                 consolidated_list[index]['total_GST'],
+                                consolidated_list[index]['total_GST'],
                                 style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -1038,9 +1040,9 @@ class _consolidatedGSTState extends State<consolidatedGST> {
                           Expanded(
                             flex: 2,
                             child: Padding(
-                              padding:const EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Text(
-                                 consolidated_list[index]['gross_amount'],
+                                consolidated_list[index]['gross_amount'],
                                 style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),

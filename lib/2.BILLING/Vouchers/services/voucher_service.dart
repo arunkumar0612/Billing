@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
+import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entities.dart';
 // import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
 import 'package:ssipl_billing/API-/api.dart';
 import 'package:ssipl_billing/API-/invoker.dart';
@@ -17,7 +19,7 @@ mixin VoucherService {
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
 
-  Future<void> get_VoucherList(context) async {
+  Future<void> get_VoucherList() async {
     // loader.start(context);
     await Future.delayed(const Duration(milliseconds: 1000));
     // response;
@@ -35,12 +37,106 @@ mixin VoucherService {
         voucherController.add_Voucher(value);
         voucherController.update();
       } else {
-        await Error_dialog(context: context, title: 'ERROR', content: value.message ?? "", onOk: () {});
+        // await Error_dialog(context: context, title: 'ERROR', content: value.message ?? "", onOk: () {});
       }
     } else {
-      Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      // Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
     }
     // loader.stop();
+  }
+
+  Future<void> voucher_refresh() async {
+    await get_VoucherList();
+    voucherController.update();
+  }
+  // dynamic clearVoucher(context, int index) async {
+  //   try {
+  //     final mapData = {
+  //       "date": voucherController.voucherModel.closedDate.value,
+  //       "voucherid": voucherController.voucherModel.voucher_list[index].voucher_id,
+  //       "vouchernumber": voucherController.voucherModel.voucher_list[index].voucherNumber,
+  //       "paymentstatus": 'partial',
+  //       "IGST": voucherController.voucherModel.voucher_list[index].igst,
+  //       "SGST": voucherController.voucherModel.voucher_list[index].sgst,
+  //       "CGST": voucherController.voucherModel.voucher_list[index].cgst,
+  //       "tds": voucherController.voucherModel.voucher_list[index].tdsCalculationAmount,
+  //       "grossamount": voucherController.voucherModel.voucher_list[index].totalAmount,
+  //       "subtotal": voucherController.voucherModel.voucher_list[index].subTotal,
+  //       "paidamount": double.parse(voucherController.voucherModel.amountCleared_controller.value.text),
+  //       "clientaddressname": voucherController.voucherModel.voucher_list[index].clientName,
+  //       "clientaddress": voucherController.voucherModel.voucher_list[index].clientAddress,
+  //       "invoicenumber": voucherController.voucherModel.voucher_list[index].invoiceNumber,
+  //       "emailid": voucherController.voucherModel.voucher_list[index].emailId,
+  //       "phoneno": voucherController.voucherModel.voucher_list[index].phoneNumber,
+  //       "tdsstatus": true,
+  //       "invoicetype": voucherController.voucherModel.voucher_list[index].invoiceType,
+  //       "gstnumber": voucherController.voucherModel.voucher_list[index].gstNumber,
+  //       "feedback": voucherController.voucherModel.feedback_controller.value.text,
+  //       "transactiondetails": voucherController.voucherModel.transactionDetails_controller.value.text,
+  //     };
+  //     ClearVoucher voucherdata = ClearVoucher.fromJson(mapData);
+
+  //     String encodedData = json.encode(voucherdata.toJson());
+  //     Map<String, dynamic>? response = await apiController.Multer(encodedData, API.clearVoucher);
+  //     if (response['statusCode'] == 200) {
+  //       CMDmResponse value = CMDmResponse.fromJson(response);
+  //       if (value.code) {
+  //         await Success_dialog(context: context, title: "LOGO", content: value.message!, onOk: () {});
+  //       } else {
+  //         await Error_dialog(context: context, title: 'Uploading Logo', content: value.message ?? "", onOk: () {});
+  //       }
+  //     } else {
+  //       Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+  //     }
+  //   } catch (e) {
+  //     Error_dialog(context: context, title: "ERROR", content: "$e");
+  //   }
+  // }
+
+  dynamic clearVoucher(context, int index, File? file, String VoucherType) async {
+    try {
+      final mapData = {
+        "date": voucherController.voucherModel.closedDate.value,
+        "voucherid": voucherController.voucherModel.voucher_list[index].voucher_id,
+        "vouchernumber": voucherController.voucherModel.voucher_list[index].voucherNumber,
+        "paymentstatus": VoucherType,
+        "IGST": voucherController.voucherModel.voucher_list[index].igst,
+        "SGST": voucherController.voucherModel.voucher_list[index].sgst,
+        "CGST": voucherController.voucherModel.voucher_list[index].cgst,
+        "tds": voucherController.voucherModel.voucher_list[index].tdsCalculationAmount,
+        "grossamount": voucherController.voucherModel.voucher_list[index].totalAmount,
+        "subtotal": voucherController.voucherModel.voucher_list[index].subTotal,
+        "paidamount": double.parse(voucherController.voucherModel.amountCleared_controller.value.text),
+        "clientaddressname": voucherController.voucherModel.voucher_list[index].clientName,
+        "clientaddress": voucherController.voucherModel.voucher_list[index].clientAddress,
+        "invoicenumber": voucherController.voucherModel.voucher_list[index].invoiceNumber,
+        "emailid": voucherController.voucherModel.voucher_list[index].emailId,
+        "phoneno": voucherController.voucherModel.voucher_list[index].phoneNumber,
+        "tdsstatus": voucherController.voucherModel.is_Deducted.value,
+        "invoicetype": voucherController.voucherModel.voucher_list[index].invoiceType,
+        "gstnumber": voucherController.voucherModel.voucher_list[index].gstNumber,
+        "feedback": voucherController.voucherModel.feedback_controller.value.text,
+        "transactiondetails": voucherController.voucherModel.transactionDetails_controller.value.text,
+      };
+      ClearVoucher voucherdata = ClearVoucher.fromJson(mapData);
+
+      String encodedData = json.encode(voucherdata.toJson());
+      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, encodedData, file, API.clearVoucher);
+      if (response['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response);
+        if (value.code) {
+          await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
+          Navigator.of(context).pop(true);
+        } else {
+          await Error_dialog(context: context, title: 'Processing Invoice', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+      //await Refresher().refreshAll(context);
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+    }
   }
 
   void applySearchFilter(String query) {
@@ -64,12 +160,15 @@ mixin VoucherService {
   }
 
   Future<void> selectDate(BuildContext context, TextEditingController controller) async {
+    final DateTime now = DateTime.now();
+    final DateTime tomorrow = DateTime(now.year, now.month, now.day, 23, 59);
+
     // Step 1: Show Date Picker
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: now,
       firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
+      lastDate: tomorrow,
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -118,7 +217,6 @@ mixin VoucherService {
       );
 
       if (pickedTime != null) {
-        // Combine date and time
         final DateTime fullDateTime = DateTime(
           pickedDate.year,
           pickedDate.month,
@@ -127,7 +225,14 @@ mixin VoucherService {
           pickedTime.minute,
         );
 
-        // Format it to a readable string (e.g., yyyy-MM-dd HH:mm)
+        // Check if the selected datetime exceeds tomorrow
+        if (fullDateTime.isAfter(tomorrow)) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Date/time cannot exceed tomorrow.')),
+          );
+          return;
+        }
+
         final formatted = "${fullDateTime.year.toString().padLeft(4, '0')}-"
             "${fullDateTime.month.toString().padLeft(2, '0')}-"
             "${fullDateTime.day.toString().padLeft(2, '0')} "

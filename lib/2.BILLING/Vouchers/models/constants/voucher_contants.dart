@@ -18,6 +18,10 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   // Filter related variables
   var clientNames = <String>[].obs;
   var productTypes = <String>[].obs;
+  var recievableAmount = 0.0.obs;
+  var is_fullClear = false.obs;
+  var is_amountExceeds = false.obs;
+  var is_Deducted = true.obs;
 
   var selectedpaymentStatus = 'Show All'.obs;
   var selectedQuickFilter = 'Show All'.obs;

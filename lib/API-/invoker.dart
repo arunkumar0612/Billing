@@ -108,11 +108,11 @@ class Invoker extends GetxController {
     }
   }
 
-  Future<Map<String, dynamic>> Multer(String Token, String body, File file, String API) async {
+  Future<Map<String, dynamic>> Multer(String Token, String body, File? file, String API) async {
     final encryptedData = AES.encryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), body);
 
     FormData formData = FormData({
-      "file": MultipartFile(file, filename: file.path.split('/').last), // Attach file
+      if (file != null) "file": MultipartFile(file, filename: file.path.split('/').last), // Attach file
       "STOKEN": sessiontokenController.sessiontokenModel.sessiontoken.value,
       "querystring": encryptedData
     });

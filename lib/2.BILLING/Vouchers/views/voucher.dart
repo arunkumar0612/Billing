@@ -1447,7 +1447,7 @@ class _VoucherState extends State<Voucher> {
                           width: 400,
                           height: 40,
                           child: TextFormField(
-                            controller: voucherController.voucherModel.searchController,
+                            controller: voucherController.voucherModel.searchController.value,
                             onChanged: (value) => widget.applySearchFilter(value),
                             style: const TextStyle(fontSize: 13, color: Colors.white),
                             decoration: InputDecoration(
@@ -2088,9 +2088,9 @@ class _VoucherState extends State<Voucher> {
                                   color: Color.fromARGB(255, 154, 152, 152),
                                   fontSize: Primary_font_size.Text7,
                                 ),
-                                controller: voucherController.voucherModel.startDateController,
+                                controller: voucherController.voucherModel.startDateController.value,
                                 readOnly: true,
-                                onTap: () => widget.selectDate(context, voucherController.voucherModel.startDateController),
+                                onTap: () => widget.selectDate(context, voucherController.voucherModel.startDateController.value),
                                 decoration: InputDecoration(
                                   labelText: 'From',
                                   labelStyle: const TextStyle(
@@ -2131,9 +2131,9 @@ class _VoucherState extends State<Voucher> {
                                   color: Color.fromARGB(255, 154, 152, 152),
                                   fontSize: Primary_font_size.Text7,
                                 ),
-                                controller: voucherController.voucherModel.endDateController,
+                                controller: voucherController.voucherModel.endDateController.value,
                                 readOnly: true,
-                                onTap: () => widget.selectDate(context, voucherController.voucherModel.endDateController),
+                                onTap: () => widget.selectDate(context, voucherController.voucherModel.endDateController.value),
                                 decoration: InputDecoration(
                                   labelText: 'To',
                                   labelStyle: const TextStyle(
@@ -2467,9 +2467,9 @@ class CreateVoucherBottomSheet extends StatelessWidget with VoucherService {
                                   width: 400,
                                   height: 50,
                                   child: TextFormField(
-                                    controller: voucherController.voucherModel.dateController,
+                                    controller: voucherController.voucherModel.dateController.value,
                                     readOnly: true,
-                                    onTap: () => selectDate(context, voucherController.voucherModel.dateController),
+                                    onTap: () => selectDate(context, voucherController.voucherModel.dateController.value),
                                     style: const TextStyle(
                                       fontSize: Primary_font_size.Text7,
                                       color: Primary_colors.Color1,

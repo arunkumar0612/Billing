@@ -27,10 +27,10 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   var selectedQuickFilter = 'Show All'.obs;
   var selectedInvoiceType = 'Show All'.obs;
   var showCustomDateRange = false.obs;
-  final TextEditingController dateController = TextEditingController();
-  final TextEditingController startDateController = TextEditingController();
-  final TextEditingController endDateController = TextEditingController();
-  final TextEditingController searchController = TextEditingController();
+  final  dateController = TextEditingController().obs;
+  final startDateController = TextEditingController().obs;
+  final endDateController = TextEditingController().obs;
+  final  searchController = TextEditingController().obs;
   final amountCleared_controller = TextEditingController().obs;
   final transactionDetails_controller = TextEditingController().obs;
   final feedback_controller = TextEditingController().obs;

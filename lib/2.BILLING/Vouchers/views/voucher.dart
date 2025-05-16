@@ -269,9 +269,7 @@ class _VoucherState extends State<Voucher> {
                                               fontWeight: FontWeight.w500,
                                             ),
                                           ),
-                                          // Define a GlobalKey in your widget's state
-
-// Inside your Row widget
+                                          // Define a GlobalKey in your widget's state  // Inside your Row widget
                                           Row(
                                             children: [
                                               Text(
@@ -334,6 +332,15 @@ class _VoucherState extends State<Voucher> {
                                         Colors.green,
                                       ),
                                       const SizedBox(height: 12),
+                                      if (voucherController.voucherModel.voucher_list[index].paymentDetails != null)
+                                        if (voucherController.voucherModel.voucher_list[index].paymentDetails!.isNotEmpty) _buildLastPaymentInfo(index),
+                                      const SizedBox(height: 12),
+                                      _amountRow(
+                                        "Pending Amount:",
+                                        "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].pendingAmount)}",
+                                        voucherController.voucherModel.voucher_list[index].pendingAmount > 0 ? const Color.fromARGB(255, 253, 206, 64) : Colors.grey,
+                                      ),
+                                      const SizedBox(height: 12),
                                       Obx(
                                         () {
                                           return _amountRow(
@@ -343,14 +350,6 @@ class _VoucherState extends State<Voucher> {
                                           );
                                         },
                                       ),
-                                      const SizedBox(height: 12),
-                                      _amountRow(
-                                        "Pending Amount:",
-                                        "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].pendingAmount)}",
-                                        voucherController.voucherModel.voucher_list[index].pendingAmount > 0 ? const Color.fromARGB(255, 253, 206, 64) : Colors.grey,
-                                      ),
-                                      const SizedBox(height: 12),
-                                      _buildLastPaymentInfo(),
                                     ],
                                   ),
                                 ),
@@ -377,7 +376,18 @@ class _VoucherState extends State<Voucher> {
                                     ),
                                   ),
                                   child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
+                                      Row(
+                                        children: [
+                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount != voucherController.voucherModel.voucher_list[index].tdsCalculationAmount)
+                                            _buildRadioTile(value: 'Partial', label: 'Partial', color: Colors.amber, index: index),
+                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount != voucherController.voucherModel.voucher_list[index].tdsCalculationAmount)
+                                            const SizedBox(width: 12),
+                                          _buildRadioTile(value: 'Full', label: 'Full', color: Colors.green, index: index),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 16),
                                       _buildEditableField(
                                         controller: voucherController.voucherModel.closedDateController,
                                         label: 'Closed Date',
@@ -390,7 +400,7 @@ class _VoucherState extends State<Voucher> {
                                         controller: voucherController.voucherModel.amountCleared_controller.value,
                                         onChanged: (value) {
                                           voucherController.is_fullclear_Valid(index);
-                                          voucherController.is_amountExceeds();
+                                          voucherController.is_amountExceeds(index);
                                           voucherController.update();
                                         },
                                         label: 'Amount Received',
@@ -399,8 +409,14 @@ class _VoucherState extends State<Voucher> {
                                         keyboardType: TextInputType.number,
                                         isNumber: true,
                                       ),
-                                      if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1) const SizedBox(height: 16),
-                                      if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1)
+                                      const SizedBox(height: 5),
+                                      if (voucherController.voucherModel.selectedValue.value == "Partial")
+                                        Text(
+                                            style: const TextStyle(color: Colors.amber, fontSize: 10),
+                                            "    can clear upto  -  Rs.${voucherController.voucherModel.voucher_list[index].pendingAmount - voucherController.voucherModel.voucher_list[index].tdsCalculationAmount}"),
+                                      if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full")
+                                        const SizedBox(height: 16),
+                                      if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full")
                                         _buildDropdownField(
                                           label: 'TDS Status',
                                           hint: 'Select TDS status',
@@ -416,7 +432,7 @@ class _VoucherState extends State<Voucher> {
                                               voucherController.calculate_recievable(false, index);
                                             }
                                             voucherController.is_fullclear_Valid(index);
-                                            voucherController.is_amountExceeds();
+                                            voucherController.is_amountExceeds(index);
                                             voucherController.update();
                                           },
                                         ),
@@ -608,92 +624,133 @@ class _VoucherState extends State<Voucher> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 16),
-                              voucherController.voucherModel.is_fullClear.value && voucherController.voucherModel.is_amountExceeds.value == false
-                                  ? ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Primary_colors.Color3,
-                                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8),
+                              if (voucherController.voucherModel.selectedValue.value == "Full")
+                                if (voucherController.voucherModel.is_amountExceeds.value == false) const SizedBox(width: 16),
+                              if (voucherController.voucherModel.selectedValue.value == "Full")
+                                voucherController.voucherModel.is_fullClear.value && voucherController.voucherModel.is_amountExceeds.value == false
+                                    ? ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Primary_colors.Color3,
+                                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                          elevation: 2,
+                                          shadowColor: Primary_colors.Color3.withOpacity(0.3),
                                         ),
-                                        elevation: 2,
-                                        shadowColor: Primary_colors.Color3.withOpacity(0.3),
-                                      ),
-                                      onPressed: () async {
-                                        await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete');
-                                        // Navigator.of(context).pop();
-                                        // ScaffoldMessenger.of(context).showSnackBar(
-                                        //   SnackBar(
-                                        //     content: const Text('Voucher closed successfully'),
-                                        //     behavior: SnackBarBehavior.floating,
-                                        //     shape: RoundedRectangleBorder(
-                                        //       borderRadius: BorderRadius.circular(8),
-                                        //     ),
-                                        //     backgroundColor: Colors.green,
-                                        //   ),
-                                        // );
-                                      },
-                                      child: const Text(
-                                        'CLEAR VOUCHER',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
+                                        onPressed: () async {
+                                          await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete');
+                                          // Navigator.of(context).pop();
+                                          // ScaffoldMessenger.of(context).showSnackBar(
+                                          //   SnackBar(
+                                          //     content: const Text('Voucher closed successfully'),
+                                          //     behavior: SnackBarBehavior.floating,
+                                          //     shape: RoundedRectangleBorder(
+                                          //       borderRadius: BorderRadius.circular(8),
+                                          //     ),
+                                          //     backgroundColor: Colors.green,
+                                          //   ),
+                                          // );
+                                        },
+                                        child: const Text(
+                                          'CLEAR VOUCHER',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                  : voucherController.voucherModel.is_amountExceeds.value == true
-                                      ? const SizedBox(
-                                          width: 250,
-                                          child: Text(
-                                            "The recieved amount is either empty or exceeds the recievable amount",
-                                            style: TextStyle(color: Colors.amber, fontSize: 12),
-                                          ))
-                                      : MouseRegion(
-                                          cursor: SystemMouseCursors.forbidden,
-                                          child: Container(
-                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.grey),
-                                            child: const Padding(
-                                              padding: EdgeInsets.all(8.0),
-                                              child: Text(
-                                                "CLEAR VOUCHER",
-                                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                      )
+                                    : voucherController.voucherModel.is_amountExceeds.value == true || voucherController.voucherModel.is_amountExceeds.value == null
+                                        ? const SizedBox(
+                                            width: 250,
+                                            child: Text(
+                                              "The recieved amount is either empty or exceeds the recievable amount",
+                                              style: TextStyle(color: Colors.amber, fontSize: 12),
+                                            ))
+                                        : MouseRegion(
+                                            cursor: SystemMouseCursors.forbidden,
+                                            child: Container(
+                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.grey),
+                                              child: const Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  "CLEAR VOUCHER",
+                                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                                ),
                                               ),
-                                            ),
-                                          )),
-                              if (!voucherController.voucherModel.is_fullClear.value && voucherController.voucherModel.is_amountExceeds.value == false) const SizedBox(width: 16),
-                              if (!voucherController.voucherModel.is_fullClear.value && voucherController.voucherModel.is_amountExceeds.value == false)
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.orange,
-                                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    elevation: 2,
-                                  ),
-                                  onPressed: () async {
-                                    await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'partial');
-                                    // Navigator.of(context).pop();
-                                    // ScaffoldMessenger.of(context).showSnackBar(
-                                    //   SnackBar(
-                                    //     content: const Text('Voucher partially cleared'),
-                                    //     behavior: SnackBarBehavior.floating,
-                                    //     shape: RoundedRectangleBorder(
-                                    //       borderRadius: BorderRadius.circular(8),
-                                    //     ),
-                                    //     backgroundColor: Colors.blue,
-                                    //   ),
-                                    // );
-                                  },
-                                  child: const Text(
-                                    'PARTIALLY CLEAR',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
+                                            )),
+
+                              // if (voucherController.voucherModel.selectedValue.value == "Full")
+                              //   voucherController.voucherModel.is_amountExceeds.value == false
+                              //       ? ElevatedButton(
+                              //           style: ElevatedButton.styleFrom(
+                              //             backgroundColor: Primary_colors.Color3,
+                              //             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                              //             shape: RoundedRectangleBorder(
+                              //               borderRadius: BorderRadius.circular(8),
+                              //             ),
+                              //             elevation: 2,
+                              //             shadowColor: Primary_colors.Color3.withOpacity(0.3),
+                              //           ),
+                              //           onPressed: () async {
+                              //             await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete');
+                              //           },
+                              //           child: const Text(
+                              //             'CLEAR VOUCHER',
+                              //             style: TextStyle(
+                              //               color: Colors.white,
+                              //               fontWeight: FontWeight.bold,
+                              //             ),
+                              //           ),
+                              //         )
+                              //       : const SizedBox(
+                              //           width: 250,
+                              //           child: Text(
+                              //             "The recieved amount is either empty or exceeds the recievable amount",
+                              //             style: TextStyle(color: Colors.amber, fontSize: 12),
+                              //           )),
+                              if (voucherController.voucherModel.selectedValue.value == "Partial")
+                                if (voucherController.voucherModel.is_amountExceeds.value == false) const SizedBox(width: 16),
+                              if (voucherController.voucherModel.selectedValue.value == "Partial")
+                                (voucherController.voucherModel.is_amountExceeds.value == false)
+                                    ? ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.orange,
+                                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                          elevation: 2,
+                                        ),
+                                        onPressed: () async {
+                                          bool type = voucherController.voucherModel.voucher_list[index].pendingAmount != voucherController.voucherModel.recievableAmount.value;
+                                          await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, type ? 'complete' : 'partial');
+                                          // Navigator.of(context).pop();
+                                          // ScaffoldMessenger.of(context).showSnackBar(
+                                          //   SnackBar(
+                                          //     content: const Text('Voucher partially cleared'),
+                                          //     behavior: SnackBarBehavior.floating,
+                                          //     shape: RoundedRectangleBorder(
+                                          //       borderRadius: BorderRadius.circular(8),
+                                          //     ),
+                                          //     backgroundColor: Colors.blue,
+                                          //   ),
+                                          // );
+                                        },
+                                        child: const Text(
+                                          'PARTIALLY CLEAR',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      )
+                                    : const SizedBox(
+                                        width: 250,
+                                        child: Text(
+                                          "1. The recieved amount is either empty\n2. Partial payment is limited to 98% of the Gross amount",
+                                          style: TextStyle(color: Colors.amber, fontSize: 12),
+                                        ))
                             ],
                           ),
                         ],
@@ -745,13 +802,13 @@ class _VoucherState extends State<Voucher> {
         Text(
           label,
           style: const TextStyle(
-            fontSize: 13,
+            fontSize: 11,
             color: Colors.grey,
             fontWeight: FontWeight.w500,
             letterSpacing: 0.5,
           ),
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: 3),
         TextFormField(
           onChanged: onChanged,
           controller: controller,
@@ -810,12 +867,12 @@ class _VoucherState extends State<Voucher> {
         Text(
           label,
           style: const TextStyle(
-            fontSize: 13,
+            fontSize: 11,
             color: Colors.grey,
             letterSpacing: 0.5,
           ),
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: 3),
         DropdownButtonFormField<String>(
           value: value ?? (items.isNotEmpty ? items[0] : null), // Default to first item
           hint: Text(
@@ -892,7 +949,7 @@ class _VoucherState extends State<Voucher> {
     );
   }
 
-  Widget _buildLastPaymentInfo() {
+  Widget _buildLastPaymentInfo(int index) {
     OverlayEntry? overlayEntry;
     bool isOverlayVisible = false;
 
@@ -993,18 +1050,18 @@ class _VoucherState extends State<Voucher> {
                     showPopup(context);
                   }
                 },
-                child: const Row(
+                child: Row(
                   children: [
                     Text(
-                      "12.05.2025 - ₹1,05,000",
-                      style: TextStyle(
+                      "${formatDate(DateTime.parse(voucherController.voucherModel.voucher_list[index].paymentDetails![0]['date']))} - ₹${formatCurrency(double.parse(voucherController.voucherModel.voucher_list[index].paymentDetails![0]['amount'].toString()))}",
+                      style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: Primary_colors.Color3,
                       ),
                     ),
-                    SizedBox(width: 4),
-                    Icon(
+                    const SizedBox(width: 4),
+                    const Icon(
                       Icons.info_outline,
                       color: Primary_colors.Color3,
                       size: 14,
@@ -1088,306 +1145,62 @@ class _VoucherState extends State<Voucher> {
     );
   }
 
-  // void _showCloseVoucherPopup(int index) {
-  //   final TextEditingController _closedDateController = TextEditingController(text: "${DateTime.now().toLocal()}".split(' ')[0]);
-  //   final TextEditingController _referenceIdController = TextEditingController();
+  Widget _buildRadioTile({
+    required String value,
+    required String label,
+    required Color color,
+    required int index,
+  }) {
+    final isSelected = voucherController.voucherModel.selectedValue.value == value;
 
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return Dialog(
-  //         backgroundColor: Colors.transparent,
-  //         insetPadding: const EdgeInsets.all(20),
-  //         child: Obx(
-  //           () => Container(
-  //             width: 600,
-  //             decoration: BoxDecoration(
-  //               color: Colors.white,
-  //               borderRadius: BorderRadius.circular(16),
-  //               boxShadow: [
-  //                 BoxShadow(
-  //                   color: Colors.black.withOpacity(0.2),
-  //                   blurRadius: 20,
-  //                   offset: const Offset(0, 10),
-  //                 ),
-  //               ],
-  //             ),
-  //             child: SingleChildScrollView(
-  //               child: Column(
-  //                 mainAxisSize: MainAxisSize.min,
-  //                 children: [
-  //                   // Header
-  //                   Container(
-  //                     padding: const EdgeInsets.all(16),
-  //                     decoration: const BoxDecoration(
-  //                       color: Primary_colors.Color3,
-  //                       borderRadius: BorderRadius.only(
-  //                         topLeft: Radius.circular(16),
-  //                         topRight: Radius.circular(16),
-  //                       ),
-  //                     ),
-  //                     child: Row(
-  //                       children: [
-  //                         const Icon(Icons.receipt_long, color: Colors.white, size: 24),
-  //                         const SizedBox(width: 12),
-  //                         const Text(
-  //                           'Close Voucher',
-  //                           style: TextStyle(
-  //                             color: Colors.white,
-  //                             fontSize: Primary_font_size.SubHeading,
-  //                             fontWeight: FontWeight.bold,
-  //                           ),
-  //                         ),
-  //                         const Spacer(),
-  //                         IconButton(
-  //                           icon: const Icon(Icons.close, color: Colors.white),
-  //                           onPressed: () => Navigator.of(context).pop(),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-
-  //                   // Form Content
-  //                   Padding(
-  //                     padding: const EdgeInsets.all(14),
-  //                     child: Column(
-  //                       children: [
-  //                         // First Row - Non-editable fields
-  //                         Row(
-  //                           children: [
-  //                             // Voucher ID
-  //                             Expanded(
-  //                               child: _buildReadOnlyField(
-  //                                 label: 'Voucher ID',
-  //                                 value: voucherController.voucherModel.voucher_list[index].voucherNumber,
-  //                                 icon: Icons.confirmation_number,
-  //                               ),
-  //                             ),
-  //                             const SizedBox(width: 16),
-  //                             // Invoice ID
-  //                             Expanded(
-  //                               child: _buildReadOnlyField(
-  //                                 label: 'Invoice ID',
-  //                                 value: voucherController.voucherModel.voucher_list[index].invoiceNumber,
-  //                                 icon: Icons.receipt,
-  //                               ),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                         const SizedBox(height: 16),
-
-  //                         // Second Row - Non-editable fields
-  //                         Row(
-  //                           children: [
-  //                             // Client Name
-  //                             Expanded(
-  //                               child: _buildReadOnlyField(
-  //                                 label: 'Client Name',
-  //                                 value: voucherController.voucherModel.voucher_list[index].clientName,
-  //                                 icon: Icons.person,
-  //                               ),
-  //                             ),
-  //                             const SizedBox(width: 16),
-  //                             // Amount
-  //                             Expanded(
-  //                               child: _buildReadOnlyField(
-  //                                 label: 'Amount',
-  //                                 value: '₹${voucherController.voucherModel.voucher_list[index].totalAmount}',
-  //                                 icon: Icons.attach_money,
-  //                               ),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                         const SizedBox(height: 24),
-
-  //                         // Divider
-  //                         const Divider(height: 1, color: Colors.grey),
-  //                         const SizedBox(height: 14),
-
-  //                         // Editable Fields
-  //                         // Closed Date
-  //                         _buildEditableField(
-  //                           controller: _closedDateController,
-  //                           label: 'Closed Date',
-  //                           hint: 'Select closed date',
-  //                           icon: Icons.calendar_today,
-  //                           onTap: () => widget.selectDate(context, _closedDateController),
-  //                         ),
-  //                         const SizedBox(height: 16),
-
-  //                         // Reference ID
-  //                         _buildEditableField(
-  //                           controller: _referenceIdController,
-  //                           label: 'Reference ID',
-  //                           hint: 'Enter payment reference ID',
-  //                           icon: Icons.credit_card,
-  //                         ),
-  //                         const SizedBox(height: 16),
-
-  //                         // Upload Section
-  //                         const Align(
-  //                           alignment: Alignment.centerLeft,
-  //                           child: Text(
-  //                             'Upload Payment Receipt',
-  //                             style: TextStyle(
-  //                               fontSize: 14,
-  //                               fontWeight: FontWeight.bold,
-  //                               color: Colors.black87,
-  //                             ),
-  //                           ),
-  //                         ),
-  //                         const SizedBox(height: 8),
-  //                         GestureDetector(
-  //                           onTap: widget.pickFile,
-  //                           child: DashedRect(
-  //                             color: const Color.fromARGB(255, 173, 171, 171),
-  //                             strokeWidth: 2.0,
-  //                             gap: 5.0,
-  //                             child: Padding(
-  //                               padding: const EdgeInsets.all(8.0),
-  //                               child: Column(
-  //                                 mainAxisAlignment: MainAxisAlignment.center,
-  //                                 children: [
-  //                                   const Icon(
-  //                                     Icons.cloud_upload,
-  //                                     size: 40,
-  //                                     color: Primary_colors.Color3,
-  //                                   ),
-  //                                   const SizedBox(height: 8),
-  //                                   Text(
-  //                                     voucherController.voucherModel.fileName.value ?? '               Click to upload               ',
-  //                                     style: TextStyle(
-  //                                       color: voucherController.voucherModel.fileName.value != null ? Primary_colors.Color3 : Colors.grey,
-  //                                       fontWeight: voucherController.voucherModel.fileName.value != null ? FontWeight.bold : FontWeight.normal,
-  //                                     ),
-  //                                   ),
-  //                                   if (voucherController.voucherModel.fileName.value != null) ...[
-  //                                     const SizedBox(height: 4),
-  //                                     Text(
-  //                                       '${(voucherController.voucherModel.selectedFile.value?.lengthSync() ?? 0) / 1024} KB',
-  //                                       style: const TextStyle(
-  //                                         fontSize: 12,
-  //                                         color: Colors.grey,
-  //                                       ),
-  //                                     ),
-  //                                   ],
-  //                                 ],
-  //                               ),
-  //                             ),
-  //                           ),
-  //                         ),
-  //                         const SizedBox(height: 24),
-
-  //                         // Action Buttons
-  //                         Row(
-  //                           mainAxisAlignment: MainAxisAlignment.end,
-  //                           children: [
-  //                             TextButton(
-  //                               style: TextButton.styleFrom(
-  //                                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-  //                                 shape: RoundedRectangleBorder(
-  //                                   borderRadius: BorderRadius.circular(8),
-  //                                 ),
-  //                               ),
-  //                               onPressed: () => Navigator.of(context).pop(),
-  //                               child: const Text(
-  //                                 'CANCEL',
-  //                                 style: TextStyle(
-  //                                   color: Colors.red,
-  //                                   fontWeight: FontWeight.bold,
-  //                                 ),
-  //                               ),
-  //                             ),
-  //                             const SizedBox(width: 16),
-  //                             ElevatedButton(
-  //                               style: ElevatedButton.styleFrom(
-  //                                 backgroundColor: Primary_colors.Color3,
-  //                                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-  //                                 shape: RoundedRectangleBorder(
-  //                                   borderRadius: BorderRadius.circular(8),
-  //                                 ),
-  //                                 elevation: 2,
-  //                               ),
-  //                               onPressed: () {
-  //                                 Navigator.of(context).pop();
-  //                                 ScaffoldMessenger.of(context).showSnackBar(
-  //                                   SnackBar(
-  //                                     content: const Text('Voucher closed successfully'),
-  //                                     behavior: SnackBarBehavior.floating,
-  //                                     shape: RoundedRectangleBorder(
-  //                                       borderRadius: BorderRadius.circular(8),
-  //                                     ),
-  //                                     backgroundColor: Colors.green,
-  //                                   ),
-  //                                 );
-  //                               },
-  //                               child: const Text(
-  //                                 'CONFIRM CLOSE',
-  //                                 style: TextStyle(
-  //                                   color: Colors.white,
-  //                                   fontWeight: FontWeight.bold,
-  //                                 ),
-  //                               ),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
-  // Widget _buildReadOnlyField({
-  //   required String label,
-  //   required String value,
-  //   required IconData icon,
-  // }) {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         maxLines: 5,
-  //         label,
-  //         style: const TextStyle(
-  //           fontSize: 13,
-  //           color: Colors.black54,
-  //           fontWeight: FontWeight.w500,
-  //         ),
-  //       ),
-  //       const SizedBox(height: 4),
-  //       Container(
-  //         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-  //         decoration: BoxDecoration(
-  //           color: Colors.grey[100],
-  //           borderRadius: BorderRadius.circular(8),
-  //           border: Border.all(color: Colors.grey[300]!),
-  //         ),
-  //         child: Row(
-  //           children: [
-  //             Icon(icon, size: 20, color: Colors.grey[600]),
-  //             const SizedBox(width: 12),
-  //             Text(
-  //               maxLines: 4,
-  //               value,
-  //               style: const TextStyle(
-  //                 fontSize: 14,
-  //                 color: Colors.black87,
-  //                 fontWeight: FontWeight.w500,
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          voucherController.voucherModel.selectedValue.value = value;
+          if (value == 'Partial') {
+            voucherController.set_isDeducted(false);
+            voucherController.calculate_recievable(false, index);
+          } else {
+            voucherController.set_isDeducted(true);
+            voucherController.calculate_recievable(true, index);
+          }
+          voucherController.is_fullclear_Valid(index);
+          voucherController.is_amountExceeds(index);
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 0),
+          decoration: BoxDecoration(
+            color: isSelected ? color.withOpacity(0.15) : Colors.grey.shade900,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: isSelected ? color : Colors.grey.shade700,
+              width: 1.5,
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Radio<String>(
+                value: value,
+                groupValue: voucherController.voucherModel.selectedValue.value,
+                activeColor: color,
+                onChanged: (val) {
+                  setState(() {
+                    voucherController.voucherModel.selectedValue.value = val!;
+                  });
+                },
+              ),
+              const SizedBox(width: 4),
+              Text(
+                label,
+                style: TextStyle(color: isSelected ? color : Colors.grey[300], fontWeight: FontWeight.w600, fontSize: 12),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1951,7 +1764,7 @@ class _VoucherState extends State<Voucher> {
                                       const SizedBox(width: 3),
                                       SizedBox(
                                         width: 125,
-                                        child: (voucher.fullyCleared == 0 && voucher.partiallyCleared == 0)
+                                        child: (voucher.fullyCleared == 0)
                                             ? ElevatedButton(
                                                 onPressed: () {
                                                   voucherController.reset_voucherClear_popup();
@@ -1960,7 +1773,8 @@ class _VoucherState extends State<Voucher> {
                                                   } else {
                                                     voucherController.calculate_recievable(false, index);
                                                   }
-
+                                                  voucherController.is_amountExceeds(index);
+                                                  voucherController.is_fullclear_Valid(index);
                                                   _showCloseVoucherPopup(index);
                                                 },
                                                 style: ElevatedButton.styleFrom(

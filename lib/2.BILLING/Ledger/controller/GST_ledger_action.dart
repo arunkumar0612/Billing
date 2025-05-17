@@ -6,6 +6,8 @@ import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
 class GST_LedgerController extends GetxController {
   var gst_LedgerModel = GST_LedgerModel();
+
+  
   void add_GST_Ledger(CMDlResponse value) {
     gst_LedgerModel.gst_Ledger_list.clear();
     for (int i = 0; i < value.data.length; i++) {
@@ -29,4 +31,17 @@ class GST_LedgerController extends GetxController {
   //   gst_LedgerModel.feedback_controller.value.clear();
   //   gst_LedgerModel.closedDateController.text = gst_LedgerModel.closedDate.value;
   // }
+
+  void clear_sharedata() {
+    gst_LedgerModel.emailController.value.clear();
+    gst_LedgerModel.phoneController.value.clear();
+    gst_LedgerModel.feedbackController.value.clear();
+    gst_LedgerModel.CCemailController.value.clear();
+    gst_LedgerModel.whatsapp_selectionStatus.value = false;
+    gst_LedgerModel.gmail_selectionStatus.value = false;
+  }
+
+  void toggleCCemailvisibility(bool value) {
+    gst_LedgerModel.CCemailToggle.value = value;
+}
 }

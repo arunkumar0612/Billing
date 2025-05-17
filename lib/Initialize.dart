@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/controller/GST_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/account_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
@@ -30,6 +31,8 @@ void initialize_IAM() {
   Get.lazyPut<NewpasswordController>(() => NewpasswordController());
   Get.lazyPut<Invoker>(() => Invoker());
   Get.lazyPut<VerifyOTPControllers>(() => VerifyOTPControllers());
+  Get.lazyPut<GST_LedgerController>(()=>GST_LedgerController());
+  
 }
 
 void initialize_others() {

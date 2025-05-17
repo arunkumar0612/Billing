@@ -6,6 +6,8 @@ import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
 class Account_LedgerController extends GetxController {
   var account_LedgerModel = Account_LedgerModel();
+
+  
   void add_Account_Ledger(CMDlResponse value) {
     account_LedgerModel.account_Ledger_list.clear();
     for (int i = 0; i < value.data.length; i++) {
@@ -29,4 +31,20 @@ class Account_LedgerController extends GetxController {
   //   account_LedgerModel.feedback_controller.value.clear();
   //   account_LedgerModel.closedDateController.text = account_LedgerModel.closedDate.value;
   // }
+
+  void clear_sharedata() {
+    account_LedgerModel.emailController.value.clear();
+    account_LedgerModel.phoneController.value.clear();
+    account_LedgerModel.feedbackController.value.clear();
+    account_LedgerModel.CCemailController.value.clear();
+    account_LedgerModel.whatsapp_selectionStatus.value = false;
+    account_LedgerModel.gmail_selectionStatus.value = false;
+  }
+
+  void toggleCCemailvisibility(bool value) {
+    account_LedgerModel.CCemailToggle.value = value;
+  }
+
+
+
 }

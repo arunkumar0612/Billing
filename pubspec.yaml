@@ -76,11 +76,7 @@ dependencies:
   lottie: ^3.3.0
   fluttertoast: ^8.2.12
   pdfx: ^2.9.1
-  docx_template: ^0.4.0
-  docx_to_text: ^1.0.1
-  dartdoc: ^8.3.3
-  open_file: ^3.5.10
-  confetti: ^0.8.0
+  file_selector: ^1.0.3
 
 dev_dependencies:
   flutter_test:

@@ -140,7 +140,7 @@ class _ViewLedgerState extends State<ViewLedger> {
                 ),
                 const SizedBox(height: 20),
                 Obx(() {
-                  return view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'Account Ledger' ? const Expanded(child: AccountLedger()) : const Expanded(child: GSTLedger());
+                  return view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'Account Ledger' ?  Expanded(child: AccountLedger()) : const Expanded(child: GSTLedger());
                 }),
               ],
             ),
@@ -300,7 +300,7 @@ class _ViewLedgerState extends State<ViewLedger> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Account Ledgert Type',
+                            'Account Ledger Type',
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
                           ),
                           const SizedBox(height: 8),

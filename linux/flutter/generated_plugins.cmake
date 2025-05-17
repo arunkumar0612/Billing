@@ -6,6 +6,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   desktop_window
   file_saver
   file_selector_linux
+  open_file_linux
   printing
   screen_retriever
   url_launcher_linux

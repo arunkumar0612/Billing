@@ -1,7 +1,13 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/account_ledgers/account_ledger_PDF_template.dart';
 
 import '../../../../THEMES-/style.dart';
 
@@ -798,8 +804,18 @@ class _accountLedgerState extends State<AccountLedger> {
                     ),
                     const SizedBox(width: 40), // Space between buttons
                     // Download Button
-                    GestureDetector(
-                      onTap: () {},
+                    MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child:  GestureDetector(
+                     onTap: () async {
+                  final pdfBytes = await generateInvoice(PdfPageFormat.a4,); // Pass your data
+
+                  final outputDir = await getApplicationDocumentsDirectory();
+                  final filePath = '${outputDir.path}/invoice.pdf';
+                  final file = File(filePath);
+                  await file.writeAsBytes(pdfBytes);
+                  await OpenFilex.open(file.path);
+                },
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -818,6 +834,8 @@ class _accountLedgerState extends State<AccountLedger> {
                         ],
                       ),
                     ),
+                    )
+                   
                   ],
                 ),
               ),

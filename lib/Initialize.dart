@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/controller/account_ledger_action.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
@@ -54,4 +56,6 @@ void initialize_others() {
   ////////////////////////////----BILLING----////////////////////////////////////
   Get.lazyPut<MainBilling_Controller>(() => MainBilling_Controller());
   Get.lazyPut<VoucherController>(() => VoucherController());
+  Get.lazyPut<View_LedgerController>(() => View_LedgerController());
+  Get.lazyPut<Account_LedgerController>(() => Account_LedgerController());
 }

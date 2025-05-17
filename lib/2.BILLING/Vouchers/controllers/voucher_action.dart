@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:ssipl_billing/2.BILLING/Vouchers/models/constants/voucher_contants.dart';
+import 'package:ssipl_billing/2.BILLING/Vouchers/models/constants/voucher_constants.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 

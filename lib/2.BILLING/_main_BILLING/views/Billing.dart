@@ -834,8 +834,9 @@ class _BillingState extends State<Billing> {
                         Expanded(
                           flex: 2,
                           child: Text(
+                            // textAlign: TextAlign.left,
                             mainBilling_Controller.billingModel.subscriptionInvoiceList[index].totalAmount.toString(),
-                            style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                            style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7, ),
                           ),
                         ),
                         const Expanded(

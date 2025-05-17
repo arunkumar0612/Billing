@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 
 import '../../../THEMES-/style.dart'; // Assuming style.dart defines Primary_colors and Primary_font_size
 
-class FilterScreen extends StatefulWidget  with main_BillingService{
-   FilterScreen({super.key});
+class FilterScreen extends StatefulWidget with main_BillingService {
+  FilterScreen({super.key});
 
   @override
   State<FilterScreen> createState() => _FilterScreenState();
 }
 
 class _FilterScreenState extends State<FilterScreen> {
-
-  final MainBilling_Controller mainBilling_Controller=Get.find<MainBilling_Controller>();
+  final MainBilling_Controller mainBilling_Controller = Get.find<MainBilling_Controller>();
 
   bool isUsingDays = true;
   bool isUsingSpecificDate = false;
@@ -261,7 +260,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   FilterChip(
                     showCheckmark: false,
                     label: const Text('Show All'),
-                    selected: mainBilling_Controller.billingModel.selectedInvoiceType.value=='Show All',
+                    selected: mainBilling_Controller.billingModel.selectedInvoiceType.value == 'Show All',
                     onSelected: (_) {
                       mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Show All';
                     },
@@ -269,7 +268,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     selectedColor: Primary_colors.Dark,
                     labelStyle: TextStyle(
                       fontSize: Primary_font_size.Text7,
-                      color: mainBilling_Controller.billingModel.selectedInvoiceType.value== 'Show All' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
+                      color: mainBilling_Controller.billingModel.selectedInvoiceType.value == 'Show All' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -282,7 +281,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     label: const Text('Prepaid'),
                     selected: mainBilling_Controller.billingModel.selectedInvoiceType.value == 'Prepaid',
                     onSelected: (_) {
-                     mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Prepaid';
+                      mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Prepaid';
                     },
                     backgroundColor: Primary_colors.Dark,
                     showCheckmark: false,
@@ -314,7 +313,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                       side: BorderSide(
-                        color:mainBilling_Controller.billingModel.selectedInvoiceType.value == 'Postpaid' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
+                        color: mainBilling_Controller.billingModel.selectedInvoiceType.value == 'Postpaid' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
                       ),
                     ),
                   ),
@@ -366,7 +365,7 @@ class _FilterScreenState extends State<FilterScreen> {
               child: DropdownButtonFormField<String>(
                 menuMaxHeight: 200,
                 value: mainBilling_Controller.billingModel.selectedPackageName.value,
-                items: ['Show All','Secure-360', 'Package A', 'Package B', 'Package C','Package D','Package E' ].map((String value) {
+                items: ['Show All', 'Secure-360', 'Package A', 'Package B', 'Package C', 'Package D', 'Package E'].map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
@@ -427,7 +426,7 @@ class _FilterScreenState extends State<FilterScreen> {
           ],
         ),
       ),
-    );   
+    );
   }
 
   Widget _buildDateFilterChip(
@@ -462,30 +461,30 @@ class _FilterScreenState extends State<FilterScreen> {
   }
 }
 
-  Widget _buildSidebarItem({
-    required String title,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.transparent,
-          borderRadius: const BorderRadius.horizontal(right: Radius.circular(10)),
-        ),
-        child: Text(
-          title,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Primary_colors.Color1,
-            fontWeight: FontWeight.bold,
-            fontSize: Primary_font_size.Text10,
-          ),
+Widget _buildSidebarItem({
+  required String title,
+  required bool isSelected,
+  required VoidCallback onTap,
+}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      decoration: BoxDecoration(
+        color: isSelected ? Colors.blue : Colors.transparent,
+        borderRadius: const BorderRadius.horizontal(right: Radius.circular(10)),
+      ),
+      child: Text(
+        title,
+        style: TextStyle(
+          color: isSelected ? Colors.white : Primary_colors.Color1,
+          fontWeight: FontWeight.bold,
+          fontSize: Primary_font_size.Text10,
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   // Widget _buildDateFilterList() {
   //   return Column(

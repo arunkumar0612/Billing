@@ -6,6 +6,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   desktop_window
   file_saver
   file_selector_windows
+  pdfx
   permission_handler_windows
   printing
   screen_retriever

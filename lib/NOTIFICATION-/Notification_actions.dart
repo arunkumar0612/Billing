@@ -224,6 +224,7 @@ class NotificationController extends GetxController {
       if (!notificationModel.notifications.contains(message)) {
         notificationModel.notifications.add(message);
         showWithSmallImage(message);
+        await Refresher().refreshAll();
       }
     } else if (topic == "refresh") {
       if (context != null) {

@@ -19,13 +19,257 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/views/account_ledgers/account_ledger_pdf_entities.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/ledger_pdf_entities/account_ledger_PDF_entities.dart';
 
 
-Future<Uint8List> generateInvoice(
+
+Future<Uint8List> generateAccountLedger(
     PdfPageFormat pageFormat) async {
   final List<Map<String, dynamic>> ledgerList = [
     {
+      'date': '01-04-2023',
+      'voucherNo': 'SSIPL-V01032025',
+      'description':
+          ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
+      'debit': '',
+      'credit': '3675',
+      'balance': '345647.99 Dr',
+      'invoiceNo': 'INV-1001',
+    },
+    {
+      'date': '01-04-2024',
+      'voucherNo': 'V34532',
+      'description':
+          'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
+      'debit': '235454433.44',
+      'credit': '4533434323.99',
+      'balance': '36467.99 Dr',
+      'invoiceNo': 'INV-1002',
+    },
+       {
+      'date': '01-04-2023',
+      'voucherNo': 'SSIPL-V01032025',
+      'description':
+          ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
+      'debit': '',
+      'credit': '3675',
+      'balance': '345647.99 Dr',
+      'invoiceNo': 'INV-1001',
+    },
+    {
+      'date': '01-04-2024',
+      'voucherNo': 'V34532',
+      'description':
+          'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
+      'debit': '235454433.44',
+      'credit': '4533434323.99',
+      'balance': '36467.99 Dr',
+      'invoiceNo': 'INV-1002',
+    },
+       {
+      'date': '01-04-2023',
+      'voucherNo': 'SSIPL-V01032025',
+      'description':
+          ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
+      'debit': '',
+      'credit': '3675',
+      'balance': '345647.99 Dr',
+      'invoiceNo': 'INV-1001',
+    },
+    {
+      'date': '01-04-2024',
+      'voucherNo': 'V34532',
+      'description':
+          'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
+      'debit': '235454433.44',
+      'credit': '4533434323.99',
+      'balance': '36467.99 Dr',
+      'invoiceNo': 'INV-1002',
+    },
+       {
+      'date': '01-04-2023',
+      'voucherNo': 'SSIPL-V01032025',
+      'description':
+          ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
+      'debit': '',
+      'credit': '3675',
+      'balance': '345647.99 Dr',
+      'invoiceNo': 'INV-1001',
+    },
+    {
+      'date': '01-04-2024',
+      'voucherNo': 'V34532',
+      'description':
+          'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
+      'debit': '235454433.44',
+      'credit': '4533434323.99',
+      'balance': '36467.99 Dr',
+      'invoiceNo': 'INV-1002',
+    },
+       {
+      'date': '01-04-2023',
+      'voucherNo': 'SSIPL-V01032025',
+      'description':
+          ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
+      'debit': '',
+      'credit': '3675',
+      'balance': '345647.99 Dr',
+      'invoiceNo': 'INV-1001',
+    },
+    {
+      'date': '01-04-2024',
+      'voucherNo': 'V34532',
+      'description':
+          'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
+      'debit': '235454433.44',
+      'credit': '4533434323.99',
+      'balance': '36467.99 Dr',
+      'invoiceNo': 'INV-1002',
+    },
+
+       {
+      'date': '01-04-2023',
+      'voucherNo': 'SSIPL-V01032025',
+      'description':
+          ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
+      'debit': '',
+      'credit': '3675',
+      'balance': '345647.99 Dr',
+      'invoiceNo': 'INV-1001',
+    },
+    {
+      'date': '01-04-2024',
+      'voucherNo': 'V34532',
+      'description':
+          'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
+      'debit': '235454433.44',
+      'credit': '4533434323.99',
+      'balance': '36467.99 Dr',
+      'invoiceNo': 'INV-1002',
+    },
+       {
+      'date': '01-04-2023',
+      'voucherNo': 'SSIPL-V01032025',
+      'description':
+          ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
+      'debit': '',
+      'credit': '3675',
+      'balance': '345647.99 Dr',
+      'invoiceNo': 'INV-1001',
+    },
+    {
+      'date': '01-04-2024',
+      'voucherNo': 'V34532',
+      'description':
+          'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
+      'debit': '235454433.44',
+      'credit': '4533434323.99',
+      'balance': '36467.99 Dr',
+      'invoiceNo': 'INV-1002',
+    },
+       {
+      'date': '01-04-2023',
+      'voucherNo': 'SSIPL-V01032025',
+      'description':
+          ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
+      'debit': '',
+      'credit': '3675',
+      'balance': '345647.99 Dr',
+      'invoiceNo': 'INV-1001',
+    },
+    {
+      'date': '01-04-2024',
+      'voucherNo': 'V34532',
+      'description':
+          'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
+      'debit': '235454433.44',
+      'credit': '4533434323.99',
+      'balance': '36467.99 Dr',
+      'invoiceNo': 'INV-1002',
+    },
+       {
+      'date': '01-04-2023',
+      'voucherNo': 'SSIPL-V01032025',
+      'description':
+          ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
+      'debit': '',
+      'credit': '3675',
+      'balance': '345647.99 Dr',
+      'invoiceNo': 'INV-1001',
+    },
+    {
+      'date': '01-04-2024',
+      'voucherNo': 'V34532',
+      'description':
+          'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
+      'debit': '235454433.44',
+      'credit': '4533434323.99',
+      'balance': '36467.99 Dr',
+      'invoiceNo': 'INV-1002',
+    },
+
+       {
+      'date': '01-04-2023',
+      'voucherNo': 'SSIPL-V01032025',
+      'description':
+          ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
+      'debit': '',
+      'credit': '3675',
+      'balance': '345647.99 Dr',
+      'invoiceNo': 'INV-1001',
+    },
+    {
+      'date': '01-04-2024',
+      'voucherNo': 'V34532',
+      'description':
+          'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
+      'debit': '235454433.44',
+      'credit': '4533434323.99',
+      'balance': '36467.99 Dr',
+      'invoiceNo': 'INV-1002',
+    },
+       {
+      'date': '01-04-2023',
+      'voucherNo': 'SSIPL-V01032025',
+      'description':
+          ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
+      'debit': '',
+      'credit': '3675',
+      'balance': '345647.99 Dr',
+      'invoiceNo': 'INV-1001',
+    },
+    {
+      'date': '01-04-2024',
+      'voucherNo': 'V34532',
+      'description':
+          'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
+      'debit': '235454433.44',
+      'credit': '4533434323.99',
+      'balance': '36467.99 Dr',
+      'invoiceNo': 'INV-1002',
+    },
+       {
+      'date': '01-04-2023',
+      'voucherNo': 'SSIPL-V01032025',
+      'description':
+          ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
+      'debit': '',
+      'credit': '3675',
+      'balance': '345647.99 Dr',
+      'invoiceNo': 'INV-1001',
+    },
+    {
+      'date': '01-04-2024',
+      'voucherNo': 'V34532',
+      'description':
+          'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
+      'debit': '235454433.44',
+      'credit': '4533434323.99',
+      'balance': '36467.99 Dr',
+      'invoiceNo': 'INV-1002',
+    },
+
+       {
       'date': '01-04-2023',
       'voucherNo': 'SSIPL-V01032025',
       'description':
@@ -92,7 +336,7 @@ class Invoice {
   static const detailsColor = PdfColors.grey900;
   static const contentHeading = PdfColors.grey;
   static const accentColor = PdfColors.blueGrey900;
-   static var baseColor = PdfColors.green500;
+  static const baseColor = PdfColors.green500;
 
   PdfColor get _baseTextColor => baseColor.isLight ? _lightColor : _darkColor;
 

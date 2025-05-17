@@ -23,9 +23,9 @@ class VoucherController extends GetxController {
 
     if (TDSdecucted) {
       voucherModel.recievableAmount.value =
-          (voucherModel.voucher_list[index].pendingAmount) - (voucherModel.voucher_list[index].tdsCalculation == 1 ? voucherModel.voucher_list[index].tdsCalculationAmount : 0.0);
+          (voucherModel.voucher_list[index].pendingAmount) - (voucherModel.voucher_list[index].tdsCalculation == 1 ? voucherModel.voucher_list[index].tdsCalculationAmount : 0.0).roundToDouble();
     } else {
-      voucherModel.recievableAmount.value = voucherModel.voucher_list[index].pendingAmount;
+      voucherModel.recievableAmount.value = voucherModel.voucher_list[index].pendingAmount.roundToDouble();
     }
 
     if (voucherModel.recievableAmount.value == 0.0) {
@@ -78,16 +78,19 @@ class VoucherController extends GetxController {
     } else {
       voucherModel.is_fullClear.value = false;
     }
+    voucherModel.update();
   }
 
   void reset_voucherClear_popup() {
     voucherModel.recievableAmount.value = 0.0;
     voucherModel.is_fullClear.value = false;
     voucherModel.is_amountExceeds.value = null;
-    voucherModel.is_Deducted.value = true;
+    voucherModel.is_Deducted.value = false;
     voucherModel.closedDate.value = DateFormat('yyyy-MM-dd').format(DateTime.now());
     voucherModel.fileName.value = null;
     voucherModel.selectedFile.value = null;
+
+    voucherModel.selectedValue.value = 'Partial';
 
     // Reset text controllers
     voucherModel.amountCleared_controller.value.clear();

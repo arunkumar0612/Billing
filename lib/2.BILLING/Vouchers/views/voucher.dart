@@ -413,7 +413,7 @@ class _VoucherState extends State<Voucher> {
                                       if (voucherController.voucherModel.selectedValue.value == "Partial")
                                         Text(
                                             style: const TextStyle(color: Colors.amber, fontSize: 10),
-                                            "    can clear upto  -  Rs.${voucherController.voucherModel.voucher_list[index].pendingAmount - voucherController.voucherModel.voucher_list[index].tdsCalculationAmount}"),
+                                            "    can clear upto  -  Rs.${(voucherController.voucherModel.voucher_list[index].pendingAmount - (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 ? voucherController.voucherModel.voucher_list[index].tdsCalculationAmount : 0.0)).roundToDouble()}"),
                                       if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full")
                                         const SizedBox(height: 16),
                                       if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full")
@@ -624,8 +624,7 @@ class _VoucherState extends State<Voucher> {
                                   ),
                                 ),
                               ),
-                              if (voucherController.voucherModel.selectedValue.value == "Full")
-                                if (voucherController.voucherModel.is_amountExceeds.value == false) const SizedBox(width: 16),
+                              if (voucherController.voucherModel.selectedValue.value == "Full") const SizedBox(width: 16),
                               if (voucherController.voucherModel.selectedValue.value == "Full")
                                 voucherController.voucherModel.is_fullClear.value && voucherController.voucherModel.is_amountExceeds.value == false
                                     ? ElevatedButton(
@@ -678,7 +677,8 @@ class _VoucherState extends State<Voucher> {
                                                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                                                 ),
                                               ),
-                                            )),
+                                            ),
+                                          ),
 
                               // if (voucherController.voucherModel.selectedValue.value == "Full")
                               //   voucherController.voucherModel.is_amountExceeds.value == false
@@ -709,8 +709,7 @@ class _VoucherState extends State<Voucher> {
                               //             "The recieved amount is either empty or exceeds the recievable amount",
                               //             style: TextStyle(color: Colors.amber, fontSize: 12),
                               //           )),
-                              if (voucherController.voucherModel.selectedValue.value == "Partial")
-                                if (voucherController.voucherModel.is_amountExceeds.value == false) const SizedBox(width: 16),
+                              if (voucherController.voucherModel.selectedValue.value == "Partial") const SizedBox(width: 16),
                               if (voucherController.voucherModel.selectedValue.value == "Partial")
                                 (voucherController.voucherModel.is_amountExceeds.value == false)
                                     ? ElevatedButton(
@@ -1767,14 +1766,22 @@ class _VoucherState extends State<Voucher> {
                                         child: (voucher.fullyCleared == 0)
                                             ? ElevatedButton(
                                                 onPressed: () {
+                                                  if (voucherController.voucherModel.voucher_list[index].pendingAmount == voucherController.voucherModel.voucher_list[index].tdsCalculationAmount) {
+                                                    voucherController.calculate_recievable(true, index);
+                                                  }
                                                   voucherController.reset_voucherClear_popup();
                                                   if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1) {
                                                     voucherController.calculate_recievable(true, index);
                                                   } else {
-                                                    voucherController.calculate_recievable(false, index);
+                                                    if (voucherController.voucherModel.voucher_list[index].pendingAmount == voucherController.voucherModel.voucher_list[index].tdsCalculationAmount) {
+                                                      voucherController.calculate_recievable(true, index);
+                                                    } else {
+                                                      voucherController.calculate_recievable(false, index);
+                                                    }
                                                   }
                                                   voucherController.is_amountExceeds(index);
                                                   voucherController.is_fullclear_Valid(index);
+                                                  print(voucherController.voucherModel.is_Deducted.value);
                                                   _showCloseVoucherPopup(index);
                                                 },
                                                 style: ElevatedButton.styleFrom(

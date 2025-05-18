@@ -245,7 +245,7 @@ class Company {
       client_address: json.data[i]['client_address'],
       billing_addressname: json.data[i]['billing_addressname'],
       billing_address: json.data[i]['billing_address'],
-      contact_number: json.data[i]['contact_number'],
+      contact_number: json.data[i]['contactnumber'],
       gst_number: json.data[i]['gst_number'],
     );
   }

@@ -65,6 +65,7 @@ class SUBSCRIPTION_ClientreqController extends GetxController {
 
   void clear_CompanyData() async {
     clientReqModel.CompanyID_Controller.value = null;
+    clientReqModel.Companyname_Controller.value = null;
     clientReqModel.CompanyList.clear();
   }
 
@@ -311,13 +312,14 @@ class SUBSCRIPTION_ClientreqController extends GetxController {
     updateGST("");
   }
 
-  void update_KYC(Claddress, Blname, Bladdress, email, phone, gst) {
+  void update_KYC(Clname, Claddress, Blname, Bladdress, email, phone, gst) {
     updateClientAddress(Claddress ?? "");
     updateBillingAddressName(Blname ?? "");
     updateBillingAddress(Bladdress ?? "");
     updateEmail(email ?? "");
     updatePhone(phone ?? "");
     updateGST(gst ?? "");
+    updateClientName(Clname ?? "");
   }
 
   // String branchname_via_branchID(int id) {
@@ -343,10 +345,12 @@ class SUBSCRIPTION_ClientreqController extends GetxController {
   //   }
   // }
 
-  void update_CompanyList(CMDlResponse value) {
+  void update_CompanyList(CMDlResponse value) async {
     clear_CompanyData();
     // clear_BranchData();
     clear_KYC();
+
+    // await Future.delayed(const Duration(milliseconds: 1000));
     for (int i = 0; i < value.data.length; i++) {
       clientReqModel.CompanyList.add(Company.fromJson(value, i));
     }

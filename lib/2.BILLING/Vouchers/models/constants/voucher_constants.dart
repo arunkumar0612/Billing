@@ -21,8 +21,8 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   var recievableAmount = 0.0.obs;
   var is_fullClear = false.obs;
   var is_amountExceeds = RxnBool();
-  var is_Deducted = false.obs;
-  var selectedValue = 'Partial'.obs;
+  var is_Deducted = true.obs;
+  var selectedValue = 'Full'.obs;
   var selectedpaymentStatus = 'Show All'.obs;
   var selectedQuickFilter = 'Show All'.obs;
   var selectedInvoiceType = 'Show All'.obs;

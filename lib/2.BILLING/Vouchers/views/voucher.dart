@@ -331,13 +331,14 @@ class _VoucherState extends State<Voucher> {
                                         "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].totalAmount)}",
                                         Colors.green,
                                       ),
-                                      const SizedBox(height: 12),
+                                      if (voucherController.voucherModel.voucher_list[index].paymentDetails != null)
+                                        if (voucherController.voucherModel.voucher_list[index].paymentDetails!.isNotEmpty) const SizedBox(height: 12),
                                       if (voucherController.voucherModel.voucher_list[index].paymentDetails != null)
                                         if (voucherController.voucherModel.voucher_list[index].paymentDetails!.isNotEmpty) _buildLastPaymentInfo(index),
                                       const SizedBox(height: 12),
                                       _amountRow(
                                         "Pending Amount:",
-                                        "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].pendingAmount)}",
+                                        "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format((voucherController.voucherModel.voucher_list[index].pendingAmount).roundToDouble())}",
                                         voucherController.voucherModel.voucher_list[index].pendingAmount > 0 ? const Color.fromARGB(255, 253, 206, 64) : Colors.grey,
                                       ),
                                       const SizedBox(height: 12),
@@ -380,9 +381,11 @@ class _VoucherState extends State<Voucher> {
                                     children: [
                                       Row(
                                         children: [
-                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount != voucherController.voucherModel.voucher_list[index].tdsCalculationAmount)
+                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount !=
+                                              voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
                                             _buildRadioTile(value: 'Partial', label: 'Partial', color: Colors.amber, index: index),
-                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount != voucherController.voucherModel.voucher_list[index].tdsCalculationAmount)
+                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount !=
+                                              voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
                                             const SizedBox(width: 12),
                                           _buildRadioTile(value: 'Full', label: 'Full', color: Colors.green, index: index),
                                         ],
@@ -722,7 +725,8 @@ class _VoucherState extends State<Voucher> {
                                           elevation: 2,
                                         ),
                                         onPressed: () async {
-                                          bool type = voucherController.voucherModel.voucher_list[index].pendingAmount != voucherController.voucherModel.recievableAmount.value;
+                                          bool type =
+                                              voucherController.voucherModel.voucher_list[index].pendingAmount == double.parse(voucherController.voucherModel.amountCleared_controller.value.text);
                                           await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, type ? 'complete' : 'partial');
                                           // Navigator.of(context).pop();
                                           // ScaffoldMessenger.of(context).showSnackBar(
@@ -997,6 +1001,7 @@ class _VoucherState extends State<Voucher> {
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           const Text(
                             "PAYMENT HISTORY",
@@ -1007,9 +1012,9 @@ class _VoucherState extends State<Voucher> {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          _buildPaymentHistoryItem("12.05.2025", "₹1,05,000"),
-                          _buildPaymentHistoryItem("28.04.2025", "₹50,000"),
-                          _buildPaymentHistoryItem("15.03.2025", "₹75,000"),
+                          ...voucherController.voucherModel.voucher_list[index].paymentDetails!.map((payment) {
+                            return _buildPaymentHistoryItem(formatDate(DateTime.parse(payment['date'])) ?? '', "₹${payment['amount'] ?? '0'}");
+                          }),
                         ],
                       ),
                     ),
@@ -1766,22 +1771,24 @@ class _VoucherState extends State<Voucher> {
                                         child: (voucher.fullyCleared == 0)
                                             ? ElevatedButton(
                                                 onPressed: () {
-                                                  if (voucherController.voucherModel.voucher_list[index].pendingAmount == voucherController.voucherModel.voucher_list[index].tdsCalculationAmount) {
-                                                    voucherController.calculate_recievable(true, index);
-                                                  }
                                                   voucherController.reset_voucherClear_popup();
-                                                  if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1) {
+
+                                                  final voucher = voucherController.voucherModel.voucher_list[index];
+                                                  final isPendingEqualsTds = voucher.pendingAmount == voucher.tdsCalculationAmount;
+
+                                                  if (isPendingEqualsTds) {
+                                                    voucherController.calculate_recievable(true, index);
+                                                    voucherController.set_isDeducted(true);
+                                                  }
+
+                                                  if (voucher.tdsCalculation == 1 || isPendingEqualsTds) {
                                                     voucherController.calculate_recievable(true, index);
                                                   } else {
-                                                    if (voucherController.voucherModel.voucher_list[index].pendingAmount == voucherController.voucherModel.voucher_list[index].tdsCalculationAmount) {
-                                                      voucherController.calculate_recievable(true, index);
-                                                    } else {
-                                                      voucherController.calculate_recievable(false, index);
-                                                    }
+                                                    voucherController.calculate_recievable(false, index);
                                                   }
+
                                                   voucherController.is_amountExceeds(index);
                                                   voucherController.is_fullclear_Valid(index);
-                                                  print(voucherController.voucherModel.is_Deducted.value);
                                                   _showCloseVoucherPopup(index);
                                                 },
                                                 style: ElevatedButton.styleFrom(

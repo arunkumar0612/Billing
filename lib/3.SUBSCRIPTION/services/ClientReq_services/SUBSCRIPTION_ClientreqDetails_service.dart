@@ -68,13 +68,19 @@ mixin SUBSCRIPTION_ClientreqDetailsService {
   }
 
   void on_Compselected(context, Compname) {
-    int? id = clientreqController.clientReqModel.CompanyList
-        .firstWhere(
-          (x) => x.companyName == Compname,
-        )
-        .companyId;
-    clientreqController.updateCompanyID(id ?? 0);
+    // int? id = clientreqController.clientReqModel.CompanyList
+    //     .firstWhere(
+    //       (x) => x.companyName == Compname,
+    //     )
+    //     .companyId;
+
+    var model = clientreqController.clientReqModel.CompanyList.firstWhere(
+      (x) => x.companyName == Compname,
+    );
+    // update_KYC(model.client_address, model.billing_addressname, model.billing_address, model.emailid, model.contact_number, model.gst_number);
+    clientreqController.updateCompanyID(model.companyId ?? 0);
     clientreqController.updateCompanyName(Compname);
+    clientreqController.update_KYC(model.client_addressname, model.client_address, model.billing_addressname, model.billing_address, model.emailid, model.contact_number, model.gst_number);
     // get_BranchList(context, id!);
     // get_CompanyList(context, id!);
   }

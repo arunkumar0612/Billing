@@ -27,7 +27,7 @@ class RegisterServices {
         CMResponse data = CMResponse.fromJson(response!);
         if (data.code) {
           registerController.toggleIndicator(false);
-          await Error_dialog(
+          await Success_dialog(
             context: context,
             // showCancel: false,
             title: 'Please click the link to verify on your Mail',
@@ -40,7 +40,7 @@ class RegisterServices {
               registerController.registerModel.confirmController.value.clear();
             },
           );
-          registerController.toggleIndicator(true);
+
           IamController.IAMModel.pagename.value = "Login";
         } else {
           registerController.toggleIndicator(false);

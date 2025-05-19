@@ -335,7 +335,7 @@ class _BillingState extends State<Billing> {
                                                     MouseRegion(
                                                       cursor: SystemMouseCursors.click,
                                                       child: _buildIconWithLabel(
-                                                        image: 'assets/images/21.png',
+                                                        image: 'assets/images/ledger.png',
                                                         label: 'View Ledger',
                                                         color: Primary_colors.Color4,
                                                         onPressed: () {

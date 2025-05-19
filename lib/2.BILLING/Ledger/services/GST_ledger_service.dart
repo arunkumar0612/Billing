@@ -13,7 +13,7 @@ mixin GST_LedgerService {
 
   Future<void> get_GST_LedgerList() async {
     // loader.start(context);
-    await Future.delayed(const Duration(milliseconds: 1000));
+    // await Future.delayed(const Duration(milliseconds: 1000));
     // response;
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
@@ -45,6 +45,6 @@ mixin GST_LedgerService {
   }
 
   void resetFilters() {
-    gst_LedgerController.gst_LedgerModel.filteredGST_Ledgers.value = gst_LedgerController.gst_LedgerModel.gst_Ledger_list;
+    gst_LedgerController.gst_LedgerModel.filteredGST_Ledgers.value = gst_LedgerController.gst_LedgerModel.gst_Ledger_list.value;
   }
 }

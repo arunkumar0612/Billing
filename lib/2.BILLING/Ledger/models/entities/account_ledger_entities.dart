@@ -117,11 +117,6 @@ class AccountLedger {
   final int voucherId;
   final String voucherNumber;
   final String clientName;
-  final double igst;
-  final double cgst;
-  final double sgst;
-  final double totalAmount;
-  final double subTotal;
   final double tdsAmount;
   final String gstNumber;
   final String invoiceNumber;
@@ -129,19 +124,16 @@ class AccountLedger {
   final DateTime updatedDate;
   final double debitAmount;
   final double creditAmount;
-  final Map<String, dynamic> billDetails;
-  final double netAmount;
+  final String description;
+  final BillDetails billDetails;
+  final double balance;
+  final PaymentDetails? Payment_details;
 
   AccountLedger({
     required this.clientLedgerId,
     required this.voucherId,
     required this.voucherNumber,
     required this.clientName,
-    required this.igst,
-    required this.cgst,
-    required this.sgst,
-    required this.totalAmount,
-    required this.subTotal,
     required this.tdsAmount,
     required this.gstNumber,
     required this.invoiceNumber,
@@ -150,7 +142,9 @@ class AccountLedger {
     required this.debitAmount,
     required this.creditAmount,
     required this.billDetails,
-    required this.netAmount,
+    required this.balance,
+    required this.description,
+    required this.Payment_details,
   });
 
   factory AccountLedger.fromJson(Map<String, dynamic> json) {
@@ -159,20 +153,17 @@ class AccountLedger {
       voucherId: json['voucher_id'] ?? 0,
       voucherNumber: json['voucher_number'] ?? '',
       clientName: json['client_name'] ?? '',
-      igst: (json['IGST'] ?? 0).toDouble(),
-      cgst: (json['CGST'] ?? 0).toDouble(),
-      sgst: (json['SGST'] ?? 0).toDouble(),
-      totalAmount: (json['totalamount'] ?? 0).toDouble(),
-      subTotal: (json['subtotal'] ?? 0).toDouble(),
       tdsAmount: (json['tdsamount'] ?? 0).toDouble(),
       gstNumber: json['gst_number'] ?? '',
       invoiceNumber: json['invoicenumber'] ?? '',
       ledgerType: json['ledger_type'] ?? '',
-      updatedDate: DateTime.parse(json['DATE(Row_updated_date)'] ?? DateTime.now().toIso8601String()),
+      updatedDate: DateTime.parse(json['date)'] ?? DateTime.now().toIso8601String()),
       debitAmount: (json['debitamount'] ?? 0).toDouble(),
       creditAmount: (json['creditamount'] ?? 0).toDouble(),
-      billDetails: Map<String, dynamic>.from(json['billdetails'] ?? {}),
-      netAmount: (json['netamount'] ?? 0).toDouble(),
+      billDetails: BillDetails.fromJson(json['billdetails'] ?? {}),
+      balance: (json['balance'] ?? 0).toDouble(),
+      description: json['description'] ?? "-",
+      Payment_details: json['Payment_details'] != null ? PaymentDetails.fromJson(json['Payment_details']) : null,
     );
   }
 
@@ -182,20 +173,112 @@ class AccountLedger {
       'voucher_id': voucherId,
       'voucher_number': voucherNumber,
       'client_name': clientName,
-      'IGST': igst,
-      'CGST': cgst,
-      'SGST': sgst,
-      'totalamount': totalAmount,
-      'subtotal': subTotal,
       'tdsamount': tdsAmount,
       'gst_number': gstNumber,
       'invoicenumber': invoiceNumber,
       'ledger_type': ledgerType,
-      'DATE(Row_updated_date)': updatedDate.toIso8601String(),
+      'date': updatedDate.toIso8601String(),
       'debitamount': debitAmount,
       'creditamount': creditAmount,
-      'billdetails': billDetails,
-      'netamount': netAmount,
+      'billdetails': billDetails.toJson(),
+      'balance': balance,
+      'description': description,
+      'Payment_details': Payment_details?.toJson(),
+    };
+  }
+}
+
+class PaymentDetails {
+  final DateTime date;
+  final double amount;
+  final String feedback;
+  final double tdsAmount;
+  final String? transactionDetails;
+
+  PaymentDetails({
+    required this.date,
+    required this.amount,
+    required this.feedback,
+    required this.tdsAmount,
+    required this.transactionDetails,
+  });
+
+  factory PaymentDetails.fromJson(Map<String, dynamic> json) {
+    return PaymentDetails(
+      date: DateTime.parse(json['date'] ?? DateTime.now().toIso8601String()),
+      amount: (json['amount'] ?? 0).toDouble(),
+      feedback: json['feedback'] ?? '',
+      tdsAmount: (json['tdsamount'] ?? 0).toDouble(),
+      transactionDetails: json['transanctiondetails'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'date': date.toIso8601String(),
+      'amount': amount,
+      'feedback': feedback,
+      'tdsamount': tdsAmount,
+      'transanctiondetails': transactionDetails,
+    };
+  }
+}
+
+class BillDetails {
+  final GST gst;
+  final double total;
+  final double subtotal;
+  final double totalGST;
+
+  BillDetails({
+    required this.gst,
+    required this.total,
+    required this.subtotal,
+  }) : totalGST = gst.cgst + gst.sgst + gst.igst;
+
+  factory BillDetails.fromJson(Map<String, dynamic> json) {
+    final gst = GST.fromJson(json['gst'] ?? {});
+    return BillDetails(
+      gst: gst,
+      total: json['total'].toDouble() ?? 0.0,
+      subtotal: json['subtotal'].toDouble() ?? 0.0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'gst': gst.toJson(),
+      'total': total,
+      'subtotal': subtotal,
+      'totalGST': totalGST,
+    };
+  }
+}
+
+class GST {
+  final double cgst;
+  final double igst;
+  final double sgst;
+
+  GST({
+    required this.cgst,
+    required this.igst,
+    required this.sgst,
+  });
+
+  factory GST.fromJson(Map<String, dynamic> json) {
+    return GST(
+      cgst: json['CGST'].toDouble() ?? 0.0,
+      igst: json['IGST'].toDouble() ?? 0.0,
+      sgst: json['SGST'].toDouble() ?? 0.0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'CGST': cgst,
+      'IGST': igst,
+      'SGST': sgst,
     };
   }
 }

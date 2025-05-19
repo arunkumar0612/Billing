@@ -83,6 +83,7 @@ mixin PostServices {
       var bill = BillDetails(
         total: invoiceController.invoiceModel.invoice_amount.value!,
         subtotal: invoiceController.invoiceModel.invoice_subTotal.value!,
+        tdsamount: 0.0, //while genrating a invoice we  cannot know, that client will deduct tds or not
         gst: GST(
           IGST: double.parse((invoiceController.invoiceModel.invoice_IGSTamount.value ?? 0).toStringAsFixed(2)),
           CGST: double.parse((invoiceController.invoiceModel.invoice_CGSTamount.value ?? 0).toStringAsFixed(2)),

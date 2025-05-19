@@ -119,6 +119,16 @@ String formatCurrency(double amount) {
   return formatter.format(amount);
 }
 
+String convertAmountWithDrCr(String input) {
+  final sanitized = input.replaceAll(',', '');
+  final value = double.tryParse(sanitized);
+
+  if (value == null) return input; // fallback if input is not valid
+
+  final formatted = input.replaceAll('-', '');
+  return value < 0 ? '$formatted (Dr)' : '$formatted (Cr)';
+}
+
 String formatzero(double amount) {
   final formatter = NumberFormat.currency(locale: 'en_IN', symbol: '', decimalDigits: 2);
   return formatter.format(amount);

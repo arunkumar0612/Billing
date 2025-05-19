@@ -7,11 +7,16 @@ class GST_LedgerController extends GetxController {
   var gst_LedgerModel = GST_LedgerModel();
 
   void add_GST_Ledger(CMDmResponse value) {
-    gst_LedgerModel.gst_Ledger_list.clear();
-    for (int i = 0; i < value.data.length; i++) {
-      gst_LedgerModel.gst_Ledger_list.add(GSTSummaryModel.fromJson(value.data));
-    }
-    gst_LedgerModel.filteredGST_Ledgers.assignAll(gst_LedgerModel.gst_Ledger_list);
+    gst_LedgerModel.gst_Ledger_list.value = GSTSummaryModel(
+      gstList: [],
+      inputGst: 0.0,
+      outputGst: 0.0,
+      totalGst: 0.0,
+    );
+    // for (int i = 0; i < value.data.length; i++) {
+    gst_LedgerModel.gst_Ledger_list.value = GSTSummaryModel.fromJson(value.data);
+    // }
+    gst_LedgerModel.filteredGST_Ledgers = gst_LedgerModel.gst_Ledger_list;
   }
 
   // void reset_gst_LedgerClear_popup() {

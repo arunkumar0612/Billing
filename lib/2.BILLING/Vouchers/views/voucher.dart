@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/services/voucher_service.dart';
+import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/THEMES-/style.dart';
 import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
 
@@ -20,14 +21,33 @@ class Voucher extends StatefulWidget with VoucherService {
 class _VoucherState extends State<Voucher> {
   final VoucherController voucherController = Get.find<VoucherController>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final loader = LoadingOverlay();
   @override
   void initState() {
-    super.initState();
     widget.get_VoucherList();
-    // Ensure data is loaded
+    super.initState();
+    // Avoid using context here for inherited widgets.
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _startInitialization();
+  }
+
+  bool _initialized = false;
+
+  void _startInitialization() async {
+    if (_initialized) return;
+    _initialized = true;
+    await Future.delayed(const Duration(milliseconds: 100));
+    loader.start(context); // Now safe to use
     WidgetsBinding.instance.addPostFrameCallback((_) {
       voucherController.voucherModel.selectedItems = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false).obs;
     });
+    await Future.delayed(const Duration(seconds: 2));
+    loader.stop();
   }
 
   final GlobalKey _copyIconKey = GlobalKey();
@@ -1735,7 +1755,7 @@ class _VoucherState extends State<Voucher> {
                                       Expanded(
                                         flex: 2,
                                         child: Text(
-                                          voucher.totalAmount.toString(),
+                                          formatCurrency(voucher.totalAmount),
                                           style: const TextStyle(
                                             color: Primary_colors.Color1,
                                             fontSize: Primary_font_size.Text7,

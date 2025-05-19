@@ -13,17 +13,16 @@ mixin Account_LedgerService {
 
   Future<void> get_Account_LedgerList() async {
     // loader.start(context);
-    await Future.delayed(const Duration(milliseconds: 1000));
+    // await Future.delayed(const Duration(milliseconds: 1000));
     // response;
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
         "ledgertype": "receivable",
-        "account_Ledgertype": "payment",
+        // "account_Ledgertype": "payment",
         "invoicetype": "subscription",
         "customerid": "",
         "startdate": "",
         "enddate": ""
-
         // "customerid": "SB_1",
       },
       API.getaccount_Ledgerlist,
@@ -32,7 +31,7 @@ mixin Account_LedgerService {
       CMDlResponse value = CMDlResponse.fromJson(response ?? {});
       if (value.code) {
         account_LedgerController.add_Account_Ledger(value);
-        print(account_LedgerController.account_LedgerModel.account_Ledger_list[0].billDetails);
+        // print(account_LedgerController.account_LedgerModel.account_Ledger_list[0].billDetails);
         account_LedgerController.update();
       } else {
         // await Error_dialog(context: context, title: 'ERROR', content: value.message ?? "", onOk: () {});

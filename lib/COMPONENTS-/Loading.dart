@@ -27,54 +27,56 @@ class LoadingOverlay {
         _dialogContext = dialogContext;
         // ignore: duplicate_ignore
         // ignore: deprecated_member_use
-        return WillPopScope(
-          onWillPop: () async => false, // Disable back button
-          child: Stack(
-            children: [
-              // Background Blur
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-                child: Container(
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-              // Loading Box
-              Center(
-                child: Container(
-                  width: 520,
-                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: const [
-                      BoxShadow(color: Colors.black26, blurRadius: 10),
-                    ],
+        return Scaffold(
+            backgroundColor: Colors.transparent,
+            body: WillPopScope(
+              onWillPop: () async => false, // Disable back button
+              child: Stack(
+                children: [
+                  // Background Blur
+                  BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                    child: Container(
+                      color: Colors.black.withOpacity(0.5),
+                    ),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Animated Progress Bar
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: LinearProgressIndicator(
-                          minHeight: 9,
-                          backgroundColor: Colors.grey[300],
-                          valueColor: const AlwaysStoppedAnimation<Color>(Primary_colors.Color3),
-                        ),
+                  // Loading Box
+                  Center(
+                    child: Container(
+                      width: 520,
+                      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: const [
+                          BoxShadow(color: Colors.black26, blurRadius: 10),
+                        ],
                       ),
-                      const SizedBox(height: 12),
-                      // Loading Text
-                      const Text(
-                        "Loading, please wait...",
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.white),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Animated Progress Bar
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: LinearProgressIndicator(
+                              minHeight: 9,
+                              backgroundColor: Colors.grey[300],
+                              valueColor: const AlwaysStoppedAnimation<Color>(Primary_colors.Color3),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          // Loading Text
+                          const Text(
+                            "Loading, please wait...",
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.white),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        );
+            ));
       },
     );
 

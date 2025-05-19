@@ -463,7 +463,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputGst ?? 0.0), style: const TextStyle(color: Colors.white)),
+                                    child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputGst), style: const TextStyle(color: Colors.white)),
                                   ),
                                 ],
                               ),
@@ -488,7 +488,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputGst ?? 0.0), style: const TextStyle(color: Colors.white)),
+                                    child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputGst), style: const TextStyle(color: Colors.white)),
                                   ),
                                 ],
                               ),
@@ -631,7 +631,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                       children: [
                                         // Bottom shadow for the recessed effect
                                         Text(
-                                          formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalGst ?? 0.0),
+                                          formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalGst),
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
@@ -648,7 +648,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                         ),
                                         // Top layer to give the 3D embossed effect
                                         Text(
-                                          formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalGst ?? 0.0),
+                                          formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalGst),
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,

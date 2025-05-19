@@ -1033,7 +1033,7 @@ class _VoucherState extends State<Voucher> {
                           ),
                           const SizedBox(height: 8),
                           ...voucherController.voucherModel.voucher_list[index].paymentDetails!.map((payment) {
-                            return _buildPaymentHistoryItem(formatDate(DateTime.parse(payment['date'])) ?? '', "₹${payment['amount'] ?? '0'}");
+                            return _buildPaymentHistoryItem(formatDate(DateTime.parse(payment['date'])), "₹${payment['amount'] ?? '0'}");
                           }),
                         ],
                       ),

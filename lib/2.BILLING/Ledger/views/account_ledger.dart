@@ -49,10 +49,10 @@ class _accountLedgerState extends State<AccountLedger> {
     if (_initialized) return;
     _initialized = true;
     await Future.delayed(const Duration(milliseconds: 100));
-    // loader.start(context); // Now safe to use
+    loader.start(context); // Now safe to use
     await widget.get_Account_LedgerList();
     await Future.delayed(const Duration(seconds: 2));
-    // loader.stop();
+     loader.stop();
   }
 
   @override

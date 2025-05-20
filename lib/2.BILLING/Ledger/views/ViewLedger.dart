@@ -186,112 +186,107 @@ class _ViewLedgerState extends State<ViewLedger> {
               spacing: 8,
               runSpacing: 8,
               children: [
-                _buildDateFilterChip('Show All'),
-                _buildDateFilterChip('Last 1 hour  '),
-                _buildDateFilterChip('Last 24 hours'),
-                _buildDateFilterChip('Last week'),
-                _buildDateFilterChip('Last month'),
-                _buildDateFilterChip('Custom range'),
+                _buildDateFilterChip('Consolidate'),
+                _buildDateFilterChip('Client'),
+                _buildDateFilterChip('Vendor'),
               ],
             ),
             const SizedBox(height: 35),
             Obx(() {
-              return view_LedgerController.view_LedgerModel.showCustomDateRange.value
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Custom Date Range',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: SizedBox(
-                                height: 35,
-                                child: TextFormField(
-                                  style: const TextStyle(
-                                    color: Color.fromARGB(255, 154, 152, 152),
-                                    fontSize: Primary_font_size.Text7,
-                                  ),
-                                  controller: view_LedgerController.view_LedgerModel.startDateController.value,
-                                  readOnly: true,
-                                  onTap: () => widget.selectDate(context, view_LedgerController.view_LedgerModel.startDateController.value),
-                                  decoration: InputDecoration(
-                                    labelText: 'From',
-                                    labelStyle: const TextStyle(
-                                      color: Color.fromARGB(255, 154, 152, 152),
-                                      fontSize: Primary_font_size.Text7,
-                                    ),
-                                    suffixIcon: const Icon(
-                                      Icons.calendar_today,
-                                      size: 20,
-                                      color: Color.fromARGB(255, 85, 84, 84),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: SizedBox(
-                                height: 35,
-                                child: TextFormField(
-                                  style: const TextStyle(
-                                    color: Color.fromARGB(255, 154, 152, 152),
-                                    fontSize: Primary_font_size.Text7,
-                                  ),
-                                  controller: view_LedgerController.view_LedgerModel.endDateController.value,
-                                  readOnly: true,
-                                  onTap: () => widget.selectDate(context, view_LedgerController.view_LedgerModel.endDateController.value),
-                                  decoration: InputDecoration(
-                                    labelText: 'To',
-                                    labelStyle: const TextStyle(
-                                      color: Color.fromARGB(255, 154, 152, 152),
-                                      fontSize: Primary_font_size.Text7,
-                                    ),
-                                    suffixIcon: const Icon(
-                                      Icons.calendar_today,
-                                      size: 20,
-                                      color: Color.fromARGB(255, 85, 84, 84),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Custom Date Range',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
                           height: 35,
-                        )
-                      ],
-                    )
-                  : const SizedBox();
+                          child: TextFormField(
+                            style: const TextStyle(
+                              color: Color.fromARGB(255, 154, 152, 152),
+                              fontSize: Primary_font_size.Text7,
+                            ),
+                            controller: view_LedgerController.view_LedgerModel.startDateController.value,
+                            readOnly: true,
+                            onTap: () => widget.selectDate(context, view_LedgerController.view_LedgerModel.startDateController.value),
+                            decoration: InputDecoration(
+                              labelText: 'From',
+                              labelStyle: const TextStyle(
+                                color: Color.fromARGB(255, 154, 152, 152),
+                                fontSize: Primary_font_size.Text7,
+                              ),
+                              suffixIcon: const Icon(
+                                Icons.calendar_today,
+                                size: 20,
+                                color: Color.fromARGB(255, 85, 84, 84),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: SizedBox(
+                          height: 35,
+                          child: TextFormField(
+                            style: const TextStyle(
+                              color: Color.fromARGB(255, 154, 152, 152),
+                              fontSize: Primary_font_size.Text7,
+                            ),
+                            controller: view_LedgerController.view_LedgerModel.endDateController.value,
+                            readOnly: true,
+                            onTap: () => widget.selectDate(context, view_LedgerController.view_LedgerModel.endDateController.value),
+                            decoration: InputDecoration(
+                              labelText: 'To',
+                              labelStyle: const TextStyle(
+                                color: Color.fromARGB(255, 154, 152, 152),
+                                fontSize: Primary_font_size.Text7,
+                              ),
+                              suffixIcon: const Icon(
+                                Icons.calendar_today,
+                                size: 20,
+                                color: Color.fromARGB(255, 85, 84, 84),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 35,
+                  )
+                ],
+              );
             }),
             Obx(() {
               return Center(

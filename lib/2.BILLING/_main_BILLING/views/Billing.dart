@@ -340,7 +340,9 @@ class _BillingState extends State<Billing> {
                                                         color: Primary_colors.Color4,
                                                         onPressed: () {
                                                           Navigator.of(context).push(
-                                                            _createCustomPageRoute(() => ViewLedger()),
+                                                            _createCustomPageRoute(
+                                                              () => ViewLedger(),
+                                                            ),
                                                           );
                                                         },
                                                       ),

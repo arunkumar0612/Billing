@@ -17,7 +17,7 @@ mixin GST_LedgerService {
     // response;
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
-        "gst_Ledgertype": "payment",
+        "gsttype": "input",
         "invoicetype": "subscription",
         // "customerid": "SB_1",
         "startdate": "",

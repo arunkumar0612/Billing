@@ -351,26 +351,39 @@ class _VoucherState extends State<Voucher> {
                                         "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].totalAmount)}",
                                         Colors.green,
                                       ),
+
+                                      // const SizedBox(height: 12),
+                                      // _amountRow(
+                                      //   "Pending Amount:",
+                                      //   "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format((voucherController.voucherModel.voucher_list[index].pendingAmount).roundToDouble())}",
+                                      //   voucherController.voucherModel.voucher_list[index].pendingAmount > 0 ? const Color.fromARGB(255, 253, 206, 64) : Colors.grey,
+                                      // ),
+                                      const SizedBox(height: 12),
+                                      Obx(
+                                        () {
+                                          return Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            children: [
+                                              _amountRow(
+                                                "Receivable Amount:  ",
+                                                "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.recievableAmount.value)}",
+                                                Colors.amber,
+                                              ),
+                                              if (voucherController.voucherModel.voucher_list[index].pendingAmount != voucherController.voucherModel.recievableAmount.value)
+                                                const Text(
+                                                  "- incl TDS",
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(color: Colors.grey, fontSize: 8),
+                                                ),
+                                            ],
+                                          );
+                                        },
+                                      ),
                                       if (voucherController.voucherModel.voucher_list[index].paymentDetails != null)
                                         if (voucherController.voucherModel.voucher_list[index].paymentDetails!.isNotEmpty) const SizedBox(height: 12),
                                       if (voucherController.voucherModel.voucher_list[index].paymentDetails != null)
                                         if (voucherController.voucherModel.voucher_list[index].paymentDetails!.isNotEmpty) _buildLastPaymentInfo(index),
-                                      const SizedBox(height: 12),
-                                      _amountRow(
-                                        "Pending Amount:",
-                                        "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format((voucherController.voucherModel.voucher_list[index].pendingAmount).roundToDouble())}",
-                                        voucherController.voucherModel.voucher_list[index].pendingAmount > 0 ? const Color.fromARGB(255, 253, 206, 64) : Colors.grey,
-                                      ),
-                                      const SizedBox(height: 12),
-                                      Obx(
-                                        () {
-                                          return _amountRow(
-                                            "Receivable Amount:",
-                                            "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.recievableAmount.value)}",
-                                            Colors.green,
-                                          );
-                                        },
-                                      ),
                                     ],
                                   ),
                                 ),
@@ -1033,7 +1046,7 @@ class _VoucherState extends State<Voucher> {
                           ),
                           const SizedBox(height: 8),
                           ...voucherController.voucherModel.voucher_list[index].paymentDetails!.map((payment) {
-                            return _buildPaymentHistoryItem(formatDate(DateTime.parse(payment['date'])) ?? '', "₹${payment['amount'] ?? '0'}");
+                            return _buildPaymentHistoryItem(formatDate(payment.date), "₹${payment.amount}");
                           }),
                         ],
                       ),
@@ -1077,7 +1090,7 @@ class _VoucherState extends State<Voucher> {
                 child: Row(
                   children: [
                     Text(
-                      "${formatDate(DateTime.parse(voucherController.voucherModel.voucher_list[index].paymentDetails![0]['date']))} - ₹${formatCurrency(double.parse(voucherController.voucherModel.voucher_list[index].paymentDetails![0]['amount'].toString()))}",
+                      "${formatDate(voucherController.voucherModel.voucher_list[index].paymentDetails![0].date)} - ₹${formatCurrency(double.parse(voucherController.voucherModel.voucher_list[index].paymentDetails![0].amount.toString()))}",
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -1178,48 +1191,51 @@ class _VoucherState extends State<Voucher> {
     final isSelected = voucherController.voucherModel.selectedValue.value == value;
 
     return Expanded(
-      child: GestureDetector(
-        onTap: () {
-          voucherController.voucherModel.selectedValue.value = value;
-          if (value == 'Partial') {
-            voucherController.set_isDeducted(false);
-            voucherController.calculate_recievable(false, index);
-          } else {
-            voucherController.set_isDeducted(true);
-            voucherController.calculate_recievable(true, index);
-          }
-          voucherController.is_fullclear_Valid(index);
-          voucherController.is_amountExceeds(index);
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 0),
-          decoration: BoxDecoration(
-            color: isSelected ? color.withOpacity(0.15) : Colors.grey.shade900,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: isSelected ? color : Colors.grey.shade700,
-              width: 1.5,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: () {
+            voucherController.voucherModel.selectedValue.value = value;
+            if (value == 'Partial') {
+              voucherController.set_isDeducted(false);
+              voucherController.calculate_recievable(false, index);
+            } else {
+              voucherController.set_isDeducted(true);
+              voucherController.calculate_recievable(true, index);
+            }
+            voucherController.is_fullclear_Valid(index);
+            voucherController.is_amountExceeds(index);
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 0),
+            decoration: BoxDecoration(
+              color: isSelected ? color.withOpacity(0.15) : Colors.grey.shade900,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: isSelected ? color : Colors.grey.shade700,
+                width: 1.5,
+              ),
             ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Radio<String>(
-                value: value,
-                groupValue: voucherController.voucherModel.selectedValue.value,
-                activeColor: color,
-                onChanged: (val) {
-                  setState(() {
-                    voucherController.voucherModel.selectedValue.value = val!;
-                  });
-                },
-              ),
-              const SizedBox(width: 4),
-              Text(
-                label,
-                style: TextStyle(color: isSelected ? color : Colors.grey[300], fontWeight: FontWeight.w600, fontSize: 12),
-              ),
-            ],
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Radio<String>(
+                  value: value,
+                  groupValue: voucherController.voucherModel.selectedValue.value,
+                  activeColor: color,
+                  onChanged: (val) {
+                    setState(() {
+                      voucherController.voucherModel.selectedValue.value = val!;
+                    });
+                  },
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  label,
+                  style: TextStyle(color: isSelected ? color : Colors.grey[300], fontWeight: FontWeight.w600, fontSize: 12),
+                ),
+              ],
+            ),
           ),
         ),
       ),

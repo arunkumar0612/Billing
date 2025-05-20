@@ -21,7 +21,7 @@ class InvoicePaymentVoucher {
   int tdsCalculation;
   double tdsCalculationAmount;
   DateTime date;
-  List<Map<String, dynamic>>? paymentDetails;
+  List<TransactionDetail>? paymentDetails;
 
   InvoicePaymentVoucher({
     required this.voucher_id,
@@ -73,7 +73,7 @@ class InvoicePaymentVoucher {
       tdsCalculation: (json['tds_calculation'] ?? 0),
       tdsCalculationAmount: (json['tdscalculation_amount'] ?? 0).roundToDouble(),
       date: DateTime.tryParse(json['date'] ?? '') ?? DateTime.now(),
-      paymentDetails: json['payment_details'] != null ? List<Map<String, dynamic>>.from(json['payment_details']) : null,
+      paymentDetails: json['payment_details'] != null ? List<TransactionDetail>.from((json['payment_details'] as List).map((item) => TransactionDetail.fromJson(item))) : null,
     );
   }
 
@@ -101,7 +101,43 @@ class InvoicePaymentVoucher {
       'tds_calculation': tdsCalculation,
       'tdscalculation_amount': tdsCalculationAmount,
       'date': date.toIso8601String(),
-      'payment_details': paymentDetails,
+      'payment_details': paymentDetails?.map((e) => e.toJson()).toList(),
+    };
+  }
+}
+
+class TransactionDetail {
+  final DateTime date;
+  final double amount;
+  final String feedback;
+  final int transactionId;
+  final String transanctionDetails;
+
+  TransactionDetail({
+    required this.date,
+    required this.amount,
+    required this.feedback,
+    required this.transactionId,
+    required this.transanctionDetails,
+  });
+
+  factory TransactionDetail.fromJson(Map<String, dynamic> json) {
+    return TransactionDetail(
+      date: DateTime.parse(json['date'] ?? DateTime.now().toIso8601String()),
+      amount: (json['amount'] ?? 0).toDouble(),
+      feedback: json['feedback'] ?? '',
+      transactionId: json['transactionid'] ?? 0,
+      transanctionDetails: json['transanctiondetails'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'date': date.toIso8601String(),
+      'amount': amount,
+      'feedback': feedback,
+      'transactionid': transactionId,
+      'transanctiondetails': transanctionDetails,
     };
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/account_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/account_ledger_entities.dart';
 // import 'package:ssipl_billing/2.BILLING/View_Ledgers/controllers/view_Ledger_action.dart';
 import 'package:ssipl_billing/API-/invoker.dart';
 import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
@@ -16,12 +17,20 @@ mixin View_LedgerService {
   void applySearchFilter(String query) {
     try {
       if (query.isEmpty) {
-        account_LedgerController.account_LedgerModel.filteredAccount_Ledgers.assignAll(account_LedgerController.account_LedgerModel.account_Ledger_list);
+        account_LedgerController.account_LedgerModel.filteredAccount_Ledgers.value = (account_LedgerController.account_LedgerModel.account_Ledger_list.value);
       } else {
-        final filtered = account_LedgerController.account_LedgerModel.account_Ledger_list.where((view_Ledger) {
+        final filteredList = account_LedgerController.account_LedgerModel.account_Ledger_list.value.ledgerList.where((view_Ledger) {
           return view_Ledger.clientName.toLowerCase().contains(query.toLowerCase()) || view_Ledger.voucherNumber.toLowerCase().contains(query.toLowerCase());
         }).toList();
-        account_LedgerController.account_LedgerModel.filteredAccount_Ledgers.assignAll(filtered);
+
+        final summary = AccountLedgerSummary(
+          ledgerList: filteredList,
+          creditAmount: account_LedgerController.account_LedgerModel.account_Ledger_list.value.creditAmount, // or recalculate totals if needed
+          debitAmount: account_LedgerController.account_LedgerModel.account_Ledger_list.value.debitAmount,
+          balanceAmount: account_LedgerController.account_LedgerModel.account_Ledger_list.value.balanceAmount,
+        );
+
+        account_LedgerController.account_LedgerModel.filteredAccount_Ledgers.value = summary;
       }
 
       // Update selectedItems to match the new filtered list length
@@ -128,6 +137,6 @@ mixin View_LedgerService {
     view_LedgerController.view_LedgerModel.selectedInvoiceType.value = 'Show All';
     view_LedgerController.view_LedgerModel.selectedQuickFilter.value = 'Show All';
     view_LedgerController.view_LedgerModel.showCustomDateRange.value = false;
-    account_LedgerController.account_LedgerModel.filteredAccount_Ledgers.value = account_LedgerController.account_LedgerModel.account_Ledger_list;
+    account_LedgerController.account_LedgerModel.filteredAccount_Ledgers.value = account_LedgerController.account_LedgerModel.account_Ledger_list.value;
   }
 }

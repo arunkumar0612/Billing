@@ -18,17 +18,16 @@ mixin Account_LedgerService {
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
         "ledgertype": "receivable",
-        // "account_Ledgertype": "payment",
-        "invoicetype": "subscription",
+        "paymenttype": "", //"credit"       (or) debit,
+        "invoicetype": "subscription", //sales   (or) subscription (or) vendor,
         "customerid": "",
         "startdate": "",
         "enddate": ""
-        // "customerid": "SB_1",
       },
       API.getaccount_Ledgerlist,
     );
     if (response?['statusCode'] == 200) {
-      CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+      CMDmResponse value = CMDmResponse.fromJson(response ?? {});
       if (value.code) {
         account_LedgerController.add_Account_Ledger(value);
         // print(account_LedgerController.account_LedgerModel.account_Ledger_list[0].billDetails);
@@ -48,6 +47,6 @@ mixin Account_LedgerService {
   }
 
   void resetFilters() {
-    account_LedgerController.account_LedgerModel.filteredAccount_Ledgers.value = account_LedgerController.account_LedgerModel.account_Ledger_list;
+    account_LedgerController.account_LedgerModel.filteredAccount_Ledgers.value = account_LedgerController.account_LedgerModel.account_Ledger_list.value;
   }
 }

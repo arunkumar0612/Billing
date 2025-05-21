@@ -86,6 +86,8 @@ class API {
   /////////////////////-----------VOUCHER-------------//////////////////////////////////
   static String getvoucherlist = "http://192.168.0.200:8081/billing/getvoucher";
   static String clearVoucher = "http://192.168.0.200:8081/billing/clearvoucher";
+  static String get_transactionBinaryfile = "http://192.168.0.200:8081/billing/gettransactionfile";
+  static String clearClubVoucher = "http://192.168.0.200:8081/billing/clearconsolidatevoucher";
 
   static String getaccount_Ledgerlist = "http://192.168.0.200:8081/billing/accountledger";
   static String getgst_Ledgerlist = "http://192.168.0.200:8081/billing/gstledger";

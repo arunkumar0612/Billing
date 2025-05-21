@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/models/constants/voucher_constants.dart';
@@ -8,6 +10,16 @@ class VoucherController extends GetxController {
   var voucherModel = VoucherModel();
   void set_isDeducted(bool value) {
     voucherModel.is_Deducted.value = value;
+  }
+
+  Future<void> PDFfileApiData(CMDmResponse value) async {
+    var pdfFileData = await PDFfileData.fromJson(value); // Await async function
+    var binaryData = pdfFileData.data; // Extract File object
+    await updatePDFfile(binaryData);
+  }
+
+  Future<void> updatePDFfile(File value) async {
+    voucherModel.pdfFile.value = value;
   }
 
   void add_Voucher(CMDlResponse value) {
@@ -67,6 +79,19 @@ class VoucherController extends GetxController {
     } else {
       final clearedAmount = double.parse(clearedText);
       voucherModel.is_fullClear.value = voucherModel.recievableAmount.value == clearedAmount;
+    }
+
+    voucherModel.update();
+  }
+
+  void is_Club_fullclear_Valid(pending_amount) {
+    final clearedText = voucherModel.amountCleared_controller.value.text;
+
+    if (clearedText.isEmpty) {
+      voucherModel.is_fullClear.value = false;
+    } else {
+      final clearedAmount = double.parse(clearedText);
+      voucherModel.is_fullClear.value = pending_amount == clearedAmount;
     }
 
     voucherModel.update();

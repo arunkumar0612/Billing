@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import 'package:ssipl_billing/2.BILLING/Ledger/models/constants/account_ledger_constants.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/account_ledger_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
@@ -7,13 +6,16 @@ import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 class Account_LedgerController extends GetxController {
   var account_LedgerModel = Account_LedgerModel();
 
-  
-  void add_Account_Ledger(CMDlResponse value) {
-    account_LedgerModel.account_Ledger_list.clear();
-    for (int i = 0; i < value.data.length; i++) {
-      account_LedgerModel.account_Ledger_list.add(AccountLedger.fromJson(value.data[i]));
-    }
-    account_LedgerModel.filteredAccount_Ledgers.assignAll(account_LedgerModel.account_Ledger_list);
+  void add_Account_Ledger(CMDmResponse value) {
+    account_LedgerModel.account_Ledger_list.value = AccountLedgerSummary(
+      balanceAmount: 0.0,
+      creditAmount: 0.0,
+      debitAmount: 0.0,
+      ledgerList: [],
+    );
+    account_LedgerModel.account_Ledger_list.value = AccountLedgerSummary.fromJson(value.data);
+
+    account_LedgerModel.filteredAccount_Ledgers.value = AccountLedgerSummary.fromJson(value.data);
   }
 
   // void reset_account_LedgerClear_popup() {
@@ -44,7 +46,4 @@ class Account_LedgerController extends GetxController {
   void toggleCCemailvisibility(bool value) {
     account_LedgerModel.CCemailToggle.value = value;
   }
-
-
-
 }

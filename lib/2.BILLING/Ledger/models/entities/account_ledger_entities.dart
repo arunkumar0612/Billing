@@ -112,6 +112,38 @@ class AmountDetails {
       };
 }
 
+class AccountLedgerSummary {
+  final List<AccountLedger> ledgerList;
+  final double creditAmount;
+  final double debitAmount;
+  final double balanceAmount;
+
+  AccountLedgerSummary({
+    required this.ledgerList,
+    required this.creditAmount,
+    required this.debitAmount,
+    required this.balanceAmount,
+  });
+
+  factory AccountLedgerSummary.fromJson(Map<String, dynamic> json) {
+    return AccountLedgerSummary(
+      ledgerList: (json['ledgerlist'] as List<dynamic>).map((e) => AccountLedger.fromJson(e)).toList(),
+      creditAmount: (json['creditAmount'] ?? 0).toDouble(),
+      debitAmount: (json['debitAmount'] ?? 0).toDouble(),
+      balanceAmount: (json['balanceAmount'] ?? 0).toDouble(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'ledgerlist': ledgerList.map((e) => e.toJson()).toList(),
+      'creditAmount': creditAmount,
+      'debitAmount': debitAmount,
+      'balanceAmount': balanceAmount,
+    };
+  }
+}
+
 class AccountLedger {
   final int clientLedgerId;
   final int voucherId;

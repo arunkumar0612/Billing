@@ -81,11 +81,14 @@ class API {
   /////////////////////-----------BILLING-------------//////////////////////////////////
   static String billing_subscriptionInvoice = "http://192.168.0.200:8081/billing/getsubscriptioninvoice";
   static String billing_salesInvoice = "http://192.168.0.200:8081/billing/getsalesinvoice";
-
+  static String get_ledgerSubscriptionCustomers = "http://192.168.0.200:8081/billing/getsubscriptioncustomer";
+  static String get_ledgerSalesCustomers = "http://192.168.0.200:8081/billing/getsalescustomer";
   /////////////////////-----------VOUCHER-------------//////////////////////////////////
   static String getvoucherlist = "http://192.168.0.200:8081/billing/getvoucher";
   static String clearVoucher = "http://192.168.0.200:8081/billing/clearvoucher";
+  static String get_transactionBinaryfile = "http://192.168.0.200:8081/billing/gettransactionfile";
+  static String clearClubVoucher = "http://192.168.0.200:8081/billing/clearconsolidatevoucher";
 
-  static String getaccount_Ledgerlist = "http://192.168.0.200:8081/billing/clientledger";
+  static String getaccount_Ledgerlist = "http://192.168.0.200:8081/billing/accountledger";
   static String getgst_Ledgerlist = "http://192.168.0.200:8081/billing/gstledger";
 }

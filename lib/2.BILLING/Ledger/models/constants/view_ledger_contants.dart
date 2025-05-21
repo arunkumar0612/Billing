@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/view_ledger_entities.dart';
 
 class View_LedgerModel extends GetxController with GetSingleTickerProviderStateMixin {
   // Filter related variables
@@ -15,13 +16,7 @@ class View_LedgerModel extends GetxController with GetSingleTickerProviderStateM
   final searchController = TextEditingController().obs;
   RxString selectedLedgerType = 'Account Ledger'.obs;
   RxList<String> ledgerTypeList = ['Account Ledger', 'GST Ledger'].obs;
-  @override
-  void onInit() {
-    super.onInit();
-    // Initialize with sample data
 
-    // Sync RxString when controller changes (optional)
-
-    // Sync controller when RxString changes
-  }
+  var salesCustomerList = <CustomerInfo>[].obs;
+  var subCustomerList = <CustomerInfo>[].obs;
 }

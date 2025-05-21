@@ -20,7 +20,6 @@ class addservice_pageState extends State<addservice_page> {
   int? editIndex; // Index of the camera being edited
   final TextEditingController nameController = TextEditingController();
   final TextEditingController costController = TextEditingController();
-
   List<Map<String, dynamic>> servicelist = [];
   @override
   void initState() {

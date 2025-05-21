@@ -233,7 +233,7 @@ class _accountLedgerState extends State<AccountLedger> {
                   height: 1,
                   color: const Color.fromARGB(94, 125, 125, 125),
                 ),
-                itemCount: account_ledgerController.account_LedgerModel.account_Ledger_list.length,
+                itemCount: account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(top: 0),
@@ -272,7 +272,7 @@ class _accountLedgerState extends State<AccountLedger> {
                                   padding: const EdgeInsets.all(0),
                                   child: Text(
                                     textAlign: TextAlign.center,
-                                    formatDate(account_ledgerController.account_LedgerModel.account_Ledger_list[index].updatedDate),
+                                    formatDate(account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].updatedDate),
                                     // account_ledgerController.account_LedgerModel.account_Ledger_list[index]['date'],
                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                   ),
@@ -286,7 +286,7 @@ class _accountLedgerState extends State<AccountLedger> {
                                   padding: const EdgeInsets.all(10),
                                   child: Text(
                                     textAlign: TextAlign.center,
-                                    account_ledgerController.account_LedgerModel.account_Ledger_list[index].voucherNumber,
+                                    account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].voucherNumber,
                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                   ),
                                 ),
@@ -302,7 +302,7 @@ class _accountLedgerState extends State<AccountLedger> {
                                     children: [
                                       Text(
                                         textAlign: TextAlign.center,
-                                        account_ledgerController.account_LedgerModel.account_Ledger_list[index].invoiceNumber,
+                                        account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].invoiceNumber,
                                         style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                       ),
                                     ],
@@ -319,7 +319,7 @@ class _accountLedgerState extends State<AccountLedger> {
                                     children: [
                                       Text(
                                         textAlign: TextAlign.center,
-                                        account_ledgerController.account_LedgerModel.account_Ledger_list[index].gstNumber,
+                                        account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].gstNumber,
                                         style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                       ),
                                     ],
@@ -334,7 +334,7 @@ class _accountLedgerState extends State<AccountLedger> {
                                   padding: const EdgeInsets.all(0),
                                   child: Text(
                                     textAlign: TextAlign.start,
-                                    account_ledgerController.account_LedgerModel.account_Ledger_list[index].clientName,
+                                    account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].clientName,
                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                   ),
                                 ),
@@ -346,7 +346,7 @@ class _accountLedgerState extends State<AccountLedger> {
                                   padding: const EdgeInsets.all(0),
                                   child: Text(
                                     textAlign: TextAlign.center,
-                                    account_ledgerController.account_LedgerModel.account_Ledger_list[index].ledgerType,
+                                    account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].ledgerType,
                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                   ),
                                 ),
@@ -362,7 +362,7 @@ class _accountLedgerState extends State<AccountLedger> {
                                       children: [
                                         Text(
                                           textAlign: TextAlign.start,
-                                          account_ledgerController.account_LedgerModel.account_Ledger_list[index].description,
+                                          account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].description,
                                           style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                         ),
                                         // const SizedBox(height: 2),
@@ -386,8 +386,10 @@ class _accountLedgerState extends State<AccountLedger> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(0),
                                   child: Text(
-                                    textAlign: account_ledgerController.account_LedgerModel.account_Ledger_list[index].Payment_details?.transactionDetails == null ? TextAlign.center : TextAlign.start,
-                                    account_ledgerController.account_LedgerModel.account_Ledger_list[index].Payment_details?.transactionDetails ?? '-',
+                                    textAlign: account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].Payment_details?.transactionDetails == null
+                                        ? TextAlign.center
+                                        : TextAlign.start,
+                                    account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].Payment_details?.transactionDetails ?? '-',
                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                   ),
                                 ),
@@ -402,10 +404,10 @@ class _accountLedgerState extends State<AccountLedger> {
                                     children: [
                                       Text(
                                         textAlign: TextAlign.start,
-                                        formatCurrency(account_ledgerController.account_LedgerModel.account_Ledger_list[index].debitAmount),
+                                        formatCurrency(account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].debitAmount),
                                         style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                       ),
-                                      if (account_ledgerController.account_LedgerModel.account_Ledger_list[index].debitAmount != 0.0)
+                                      if (account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].debitAmount != 0.0)
                                         Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -413,13 +415,13 @@ class _accountLedgerState extends State<AccountLedger> {
                                             const SizedBox(height: 2),
                                             Text(
                                               textAlign: TextAlign.start,
-                                              'Net : ${account_ledgerController.account_LedgerModel.account_Ledger_list[index].billDetails.subtotal.toString()}',
+                                              'Net : ${account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].billDetails.subtotal.toString()}',
                                               style: const TextStyle(color: Primary_colors.Color6, fontSize: Primary_font_size.Text5),
                                             ),
                                             const SizedBox(height: 2),
                                             Text(
                                               textAlign: TextAlign.start,
-                                              'GST : ${account_ledgerController.account_LedgerModel.account_Ledger_list[index].billDetails.totalGST.toString()}',
+                                              'GST : ${account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].billDetails.totalGST.toString()}',
                                               style: const TextStyle(color: Primary_colors.Color6, fontSize: Primary_font_size.Text5),
                                             ),
                                             // const SizedBox(height: 2),
@@ -444,27 +446,27 @@ class _accountLedgerState extends State<AccountLedger> {
                                     children: [
                                       Text(
                                         textAlign: TextAlign.start,
-                                        formatCurrency(account_ledgerController.account_LedgerModel.account_Ledger_list[index].creditAmount),
+                                        formatCurrency(account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].creditAmount),
                                         style: const TextStyle(
                                           color: Primary_colors.Color1,
                                           fontSize: Primary_font_size.Text7,
                                         ),
                                       ),
-                                      if (account_ledgerController.account_LedgerModel.account_Ledger_list[index].creditAmount != 0.0)
+                                      if (account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].creditAmount != 0.0)
                                         Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             const SizedBox(height: 2),
                                             Text(
                                               textAlign: TextAlign.start,
-                                              'Net : ${account_ledgerController.account_LedgerModel.account_Ledger_list[index].billDetails.subtotal.toString()}',
+                                              'Net : ${account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].billDetails.subtotal.toString()}',
                                               style: const TextStyle(color: Color.fromARGB(179, 129, 244, 133), fontSize: Primary_font_size.Text5),
                                             ),
                                             const SizedBox(height: 2),
                                             Tooltip(
                                               message: "KHV/INGST/241215",
                                               child: Text(
-                                                'GST : ${account_ledgerController.account_LedgerModel.account_Ledger_list[index].billDetails.totalGST.toString()}',
+                                                'GST : ${account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].billDetails.totalGST.toString()}',
                                                 style: const TextStyle(color: Color.fromARGB(181, 129, 244, 133), fontSize: Primary_font_size.Text5),
                                               ),
                                             ),
@@ -489,7 +491,7 @@ class _accountLedgerState extends State<AccountLedger> {
                                   padding: const EdgeInsets.all(0),
                                   child: Text(
                                     textAlign: TextAlign.end,
-                                    convertAmountWithDrCr(formatCurrency(account_ledgerController.account_LedgerModel.account_Ledger_list[index].balance)),
+                                    convertAmountWithDrCr(formatCurrency(account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].balance)),
                                     style: const TextStyle(
                                       color: Color.fromARGB(255, 255, 255, 255),
                                       fontSize: Primary_font_size.Text7,
@@ -1066,11 +1068,11 @@ class _accountLedgerState extends State<AccountLedger> {
                               children: [
                                 // Bottom shadow for the recessed effect
                                 Text(
-                                  'Rs. 2389',
+                                  formatCurrency(account_ledgerController.account_LedgerModel.account_Ledger_list.value.debitAmount),
                                   style: TextStyle(
-                                    fontSize: 17,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.bold,
-                                    letterSpacing: 2,
+                                    letterSpacing: 0,
                                     color: Colors.white.withOpacity(0.2),
                                     shadows: const [
                                       Shadow(
@@ -1083,11 +1085,11 @@ class _accountLedgerState extends State<AccountLedger> {
                                 ),
                                 // Top layer to give the 3D embossed effect
                                 Text(
-                                  'Rs. 2389',
+                                  formatCurrency(account_ledgerController.account_LedgerModel.account_Ledger_list.value.debitAmount),
                                   style: TextStyle(
-                                    fontSize: 17,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.bold,
-                                    letterSpacing: 2,
+                                    letterSpacing: 0,
                                     foreground: Paint()
                                       ..shader = LinearGradient(
                                         colors: [
@@ -1108,11 +1110,11 @@ class _accountLedgerState extends State<AccountLedger> {
                               children: [
                                 // Bottom shadow for the recessed effect
                                 Text(
-                                  'Rs. 2389',
+                                  formatCurrency(account_ledgerController.account_LedgerModel.account_Ledger_list.value.creditAmount),
                                   style: TextStyle(
-                                    fontSize: 17,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.bold,
-                                    letterSpacing: 2,
+                                    letterSpacing: 0,
                                     color: Colors.white.withOpacity(0.2),
                                     shadows: const [
                                       Shadow(
@@ -1125,11 +1127,11 @@ class _accountLedgerState extends State<AccountLedger> {
                                 ),
                                 // Top layer to give the 3D embossed effect
                                 Text(
-                                  'Rs. 2389',
+                                  formatCurrency(account_ledgerController.account_LedgerModel.account_Ledger_list.value.creditAmount),
                                   style: TextStyle(
-                                    fontSize: 17,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.bold,
-                                    letterSpacing: 2,
+                                    letterSpacing: 0,
                                     foreground: Paint()
                                       ..shader = LinearGradient(
                                         colors: [
@@ -1147,18 +1149,18 @@ class _accountLedgerState extends State<AccountLedger> {
                           Expanded(
                             flex: 2,
                             child: Padding(
-                              padding: const EdgeInsets.only(right: 11),
+                              padding: const EdgeInsets.only(right: 0),
                               child: Stack(
                                 alignment: Alignment.centerRight,
                                 children: [
                                   // Bottom shadow for the recessed effect
                                   Text(
                                     textAlign: TextAlign.end,
-                                    '- Rs.2389',
+                                    convertAmountWithDrCr(formatCurrency(account_ledgerController.account_LedgerModel.account_Ledger_list.value.balanceAmount)),
                                     style: TextStyle(
-                                      fontSize: 17,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.bold,
-                                      letterSpacing: 2,
+                                      letterSpacing: 0,
                                       color: Colors.white.withOpacity(0.2),
                                       shadows: const [
                                         Shadow(
@@ -1172,11 +1174,11 @@ class _accountLedgerState extends State<AccountLedger> {
                                   // Top layer to give the 3D embossed effect
                                   Text(
                                     textAlign: TextAlign.end,
-                                    '- Rs.2389',
+                                    convertAmountWithDrCr(formatCurrency(account_ledgerController.account_LedgerModel.account_Ledger_list.value.balanceAmount)),
                                     style: TextStyle(
-                                      fontSize: 17,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.bold,
-                                      letterSpacing: 2,
+                                      letterSpacing: 0,
                                       foreground: Paint()
                                         ..shader = LinearGradient(
                                           colors: [

@@ -50,7 +50,9 @@ class _VoucherState extends State<Voucher> {
     loader.stop();
   }
 
-  final GlobalKey _copyIconKey = GlobalKey();
+  final GlobalKey _invoiceCopyKey = GlobalKey();
+  final GlobalKey _voucherCopyKey=GlobalKey();
+  final GlobalKey _GSTcopyKey=GlobalKey();
   void _showCloseVoucherPopup(int index) {
     // final TextEditingController _closedDateController = TextEditingController(
     //   text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
@@ -304,13 +306,13 @@ class _VoucherState extends State<Voucher> {
                                               MouseRegion(
                                                 cursor: SystemMouseCursors.click,
                                                 child: GestureDetector(
-                                                  key: _copyIconKey, // Attach the key here
+                                                  key: _invoiceCopyKey, // Attach the key here
                                                   onTap: () async {
                                                     await Clipboard.setData(ClipboardData(
                                                       text: voucherController.voucherModel.voucher_list[index].invoiceNumber,
                                                     ));
 
-                                                    final renderBox = _copyIconKey.currentContext?.findRenderObject() as RenderBox?;
+                                                    final renderBox = _invoiceCopyKey.currentContext?.findRenderObject() as RenderBox?;
                                                     if (renderBox == null || !mounted) return; // Early exit if not rendered
 
                                                     final overlay = Overlay.of(context);
@@ -1812,7 +1814,7 @@ class _VoucherState extends State<Voucher> {
                                                   _showCloseVoucherPopup(index);
                                                 },
                                                 style: ElevatedButton.styleFrom(
-                                                  backgroundColor: const Color.fromARGB(255, 107, 183, 109),
+                                                  backgroundColor: const Color.fromARGB(255, 240, 193, 52),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius: BorderRadius.circular(15),
                                                   ),
@@ -1820,15 +1822,29 @@ class _VoucherState extends State<Voucher> {
                                                 child: const Text(
                                                   'Update Payment',
                                                   style: TextStyle(
-                                                    color: Colors.white,
+                                                    color: Colors.black,
                                                     fontSize: Primary_font_size.Text6,
                                                   ),
                                                 ),
                                               )
-                                            : const Icon(
-                                                Icons.check_circle_sharp,
-                                                color: Colors.green,
-                                              ),
+                                            : ElevatedButton(
+                                                onPressed: () {
+                                                  showVoucherClearedDialog(context,index);
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: const Color.fromARGB(255, 107, 183, 109),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(15),
+                                                  ),
+                                                ),
+                                                child: const Text(
+                                                  'View Details',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: Primary_font_size.Text6,
+                                                  ),
+                                                ),
+                                              )
                                       ),
                                     ],
                                   ),
@@ -1848,6 +1864,591 @@ class _VoucherState extends State<Voucher> {
       ),
     );
   }
+
+
+  void showVoucherClearedDialog(BuildContext context,int index) {
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (context) {
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        insetPadding: EdgeInsets.all(20),
+        child: Obx(() {
+          return Container(
+            width: 800,
+            // padding: EdgeInsets.all(16),
+            // constraints: BoxConstraints(minWidth: 300, maxWidth: 500),
+            decoration: BoxDecoration(
+              color: Primary_colors.Light,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            // child: SingleChildScrollView(
+               child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [  
+                Container(
+                  padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Primary_colors.Color3,
+                            Primary_colors.Color3.withOpacity(0.8),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(16),
+                          topRight: Radius.circular(16),
+                        ),
+                      ),
+                       child: Row(
+                  children: [
+                    Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      // color: Colors.white.withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.check_circle, color: Colors.green, size: 34),
+                  ),
+                    const SizedBox(width:5),
+                    const Text(
+                      'Voucher Cleared',
+                       style: TextStyle(
+                        color: Colors.white,
+                        fontSize: Primary_font_size.Text10,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.2,
+                      ),                          
+                    ),
+                  ],
+                ),
+                ),  
+                const SizedBox(height: 20),
+                Container(
+                  margin: const EdgeInsets.only( right: 16, left: 16),
+                  padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Primary_colors.Dark,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Primary_colors.Dark,
+                    width: 1,
+                  ),
+                  ),
+                 child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Flexible( // ✅ use Flexible inside scroll views
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: Primary_colors.Color3.withOpacity(0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const CircleAvatar(
+                            radius: 20,
+                            backgroundColor: Primary_colors.Color3,
+                            child: Icon(Icons.person, color: Colors.white, size: 20),
+                          ),
+                        ),
+                         const SizedBox(width: 12,),
+                     Expanded(child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    voucherController.voucherModel.voucher_list[index].clientName,
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: Primary_font_size.Text9,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    "Client ID: ${voucherController.voucherModel.voucher_list[index].customerId}",
+                                    style: const TextStyle(color: Colors.grey, fontSize: 11),
+                                  ),
+                                  const SizedBox(height: 8),
+                                ],
+                              ),)
+                        ],
+                        ),              
+                        const SizedBox(height: 12),
+                        _infoRow(Icons.location_on_outlined, voucherController.voucherModel.voucher_list[index].clientAddress),
+                        const SizedBox(height: 8),
+                        _infoRow(Icons.phone_android, voucherController.voucherModel.voucher_list[index].phoneNumber),
+                         const SizedBox(height: 8),
+                        _infoRow(Icons.email_sharp, voucherController.voucherModel.filteredVouchers[index].emailId),
+                        const SizedBox(height: 12,),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Invoice Number',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Row(
+                              children: [
+                                Text(
+                                  voucherController.voucherModel.voucher_list[index].invoiceNumber,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: Primary_font_size.Text8,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                MouseRegion(
+                                  cursor: SystemMouseCursors.click,
+                                  child: GestureDetector(
+                                    key: _invoiceCopyKey, // Attach the key here
+                                    onTap: () async {
+                                      await Clipboard.setData(ClipboardData(
+                                        text: voucherController.voucherModel.voucher_list[index].invoiceNumber,
+                                      ));
+
+                                      final renderBox = _invoiceCopyKey.currentContext?.findRenderObject() as RenderBox?;
+                                      if (renderBox == null || !mounted) return; // Early exit if not rendered
+
+                                      final overlay = Overlay.of(context);
+                                      final overlayEntry = OverlayEntry(
+                                        builder: (context) => Positioned(
+                                          left: renderBox.localToGlobal(Offset.zero).dx + renderBox.size.width,
+                                          top: renderBox.localToGlobal(Offset.zero).dy,
+                                          child: Material(
+                                            color: Colors.transparent,
+                                            child: Container(
+                                              padding: const EdgeInsets.all(6),
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(119, 33, 149, 243).withOpacity(0.8),
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: const Text(
+                                                "Copied!",
+                                                style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text5),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+
+                                      overlay.insert(overlayEntry);
+                                      Future.delayed(const Duration(seconds: 1), overlayEntry.remove);
+                                    },
+                                    child: const Icon(Icons.copy, color: Colors.grey, size: 18),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            ],
+                          ),
+                          const SizedBox(height: 12,),
+                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Voucher Number',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Row(
+                              children: [
+                                Text(
+                                  voucherController.voucherModel.voucher_list[index].voucherNumber,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: Primary_font_size.Text8,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                MouseRegion(
+                                  cursor: SystemMouseCursors.click,
+                                  child: GestureDetector(
+                                    key: _voucherCopyKey, // Attach the key here
+                                    onTap: () async {
+                                      await Clipboard.setData(ClipboardData(
+                                        text: voucherController.voucherModel.voucher_list[index].voucherNumber,
+                                      ));
+
+                                      final renderBox = _voucherCopyKey.currentContext?.findRenderObject() as RenderBox?;
+                                      if (renderBox == null || !mounted) return; // Early exit if not rendered
+
+                                      final overlay = Overlay.of(context);
+                                      final overlayEntry = OverlayEntry(
+                                        builder: (context) => Positioned(
+                                          left: renderBox.localToGlobal(Offset.zero).dx + renderBox.size.width,
+                                          top: renderBox.localToGlobal(Offset.zero).dy,
+                                          child: Material(
+                                            color: Colors.transparent,
+                                            child: Container(
+                                              padding: const EdgeInsets.all(6),
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(119, 33, 149, 243).withOpacity(0.8),
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: const Text(
+                                                "Copied!",
+                                                style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text5),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+
+                                      overlay.insert(overlayEntry);
+                                      Future.delayed(const Duration(seconds: 1), overlayEntry.remove);
+                                    },
+                                    child: const Icon(Icons.copy, color: Colors.grey, size: 16),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            ],
+                          ),
+                          const SizedBox(height: 12,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'GST Number',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Row(
+                              children: [
+                                Text(
+                                  voucherController.voucherModel.voucher_list[index].gstNumber,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: Primary_font_size.Text8,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                MouseRegion(
+                                  cursor: SystemMouseCursors.click,
+                                  child: GestureDetector(
+                                    key: _GSTcopyKey, // Attach the key here
+                                    onTap: () async {
+                                      await Clipboard.setData(ClipboardData(
+                                        text: voucherController.voucherModel.voucher_list[index].gstNumber,
+                                      ));
+
+                                      final renderBox = _GSTcopyKey.currentContext?.findRenderObject() as RenderBox?;
+                                      if (renderBox == null || !mounted) return; // Early exit if not rendered
+
+                                      final overlay = Overlay.of(context);
+                                      final overlayEntry = OverlayEntry(
+                                        builder: (context) => Positioned(
+                                          left: renderBox.localToGlobal(Offset.zero).dx + renderBox.size.width,
+                                          top: renderBox.localToGlobal(Offset.zero).dy,
+                                          child: Material(
+                                            color: Colors.transparent,
+                                            child: Container(
+                                              padding: const EdgeInsets.all(6),
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(119, 33, 149, 243).withOpacity(0.8),
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: const Text(
+                                                "Copied!",
+                                                style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text5),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+
+                                      overlay.insert(overlayEntry);
+                                      Future.delayed(const Duration(seconds: 1), overlayEntry.remove);
+                                    },
+                                    child: const Icon(Icons.copy, color: Colors.grey, size: 18),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            ],
+                          ),
+                      ],
+                    ),
+                    
+                  ),
+                  
+                    Container(
+                      height: 250,
+                      width: 0.5,
+                      color: Colors.grey[500],
+                      margin: const EdgeInsets.all(20),
+                    ),
+                    // const SizedBox(height: 15,),
+                    Flexible(
+                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "PAYMENT BREAKUP",
+                          style: TextStyle(
+                            color: Primary_colors.Color3,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        _buildBreakupLine("Net Amount", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].subTotal)}"),
+                        _buildBreakupDivider(),
+                        _buildBreakupLine("CGST (9%)", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].cgst)}"),
+                        _buildBreakupDivider(),
+                        _buildBreakupLine("SGST (9%)", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].sgst)}"),
+                        _buildBreakupDivider(),
+                        _buildBreakupLine("IGST", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].igst)}"),
+                        _buildBreakupDivider(),
+                        if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1)
+                          _buildBreakupLine(
+                              "TDS (2%)", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].tdsCalculationAmount)}"),
+                        const SizedBox(height: 16),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Primary_colors.Color3.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Total Amount",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Text(
+                                "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].totalAmount)}",
+                                style: const TextStyle(
+                                  color: Primary_colors.Color3,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    )
+
+                ],
+              ),
+
+                ),
+              //  Expanded(
+                 Container(
+                margin: const EdgeInsets.only(top: 8, right: 16, left: 16, bottom: 8),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Primary_colors.Dark,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Primary_colors.Dark,
+                    width: 1,
+                  ),
+                ),
+                child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Payment Details',
+                    style: TextStyle(
+                      color: Primary_colors.Color3,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+
+                  // Header Row (non-scrollable)
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6),
+                    ),
+                    child: Container(
+                      color: const Color(0xFFE0E0E0),
+                      child: Table(
+                        columnWidths: const {
+                          0: FlexColumnWidth(1.5),
+                          1: FlexColumnWidth(2),
+                          2: FlexColumnWidth(3.5),
+                          3: FlexColumnWidth(1.5),
+                        },
+                        border: TableBorder(
+                          bottom: BorderSide(color: Colors.grey.shade400),
+                        ),
+                        children: const [
+                          TableRow(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('Date', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('Amount Paid', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('Transaction Details', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('View', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // Scrollable Rows (only this part scrolls)
+                  // Expanded(
+                ClipRRect(
+  borderRadius: const BorderRadius.only(
+    bottomLeft: Radius.circular(6),
+    bottomRight: Radius.circular(6),
+  ),
+  child: Container(
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.grey.shade400),
+    ),
+    child: ConstrainedBox(
+      constraints: const BoxConstraints(
+        maxHeight: 200,
+      ),
+      child: SingleChildScrollView(
+        child: Table(
+          columnWidths: const {
+            0: FlexColumnWidth(1.5),
+            1: FlexColumnWidth(2),
+            2: FlexColumnWidth(3.5),
+            3: FlexColumnWidth(1.5),
+          },
+          border: TableBorder(
+            horizontalInside: BorderSide(color: Colors.grey.shade400),
+          ),
+          children: voucherController.voucherModel.voucher_list[index].paymentDetails!.map<TableRow>((payment) {
+            final date = formatDate(DateTime.parse(payment['date']));
+            final amount = "₹${payment['amount'] ?? '0'}";
+            final txnDetails = payment['payment_details'] ?? 'N/A';
+
+            return TableRow(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(date, textAlign: TextAlign.center, style: const TextStyle(color: Colors.grey)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(amount, textAlign: TextAlign.center, style: const TextStyle(color: Colors.grey)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(txnDetails, textAlign: TextAlign.center, style: const TextStyle(color: Colors.grey)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () {
+                        print("Image clicked");
+                      },
+                      child: Image.asset(
+                        'assets/images/pdfdownload.png',
+                        width: 24,
+                        height: 24,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }).toList(),
+        ),
+      ),
+    ),
+  ),
+),
+
+
+              // ),
+            ],
+
+          ),
+             ),  
+
+              ],
+            ),
+            );
+          
+        }),
+      );
+    },
+  );
+}
+Widget _buildInfoRow(String label, String value) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 4),
+    child: Row(
+      children: [
+        Expanded(
+            flex: 2,
+            child: Text(
+              label,
+              style: TextStyle(color: Colors.grey[700], fontSize: 14),
+            )),
+        Expanded(
+            flex: 3,
+            child: Text(
+              value,
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+            )),
+      ],
+    ),
+  );
+}
 
   Widget _buildInfoItem(IconData icon, String label, String value) {
     return Padding(
@@ -2874,4 +3475,6 @@ class _ClientInfoIconState extends State<ClientInfoIcon> {
       ),
     );
   }
+
+  
 }

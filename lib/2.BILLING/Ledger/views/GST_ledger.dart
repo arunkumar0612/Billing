@@ -13,6 +13,7 @@ import 'package:printing/printing.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/GST_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/services/GST_ledger_service.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_PDF_template/GST_ledger_pdf_template.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
@@ -22,7 +23,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../../THEMES-/style.dart';
 
-class GSTLedger extends StatefulWidget with GST_LedgerService {
+class GSTLedger extends StatefulWidget with GST_LedgerService, View_LedgerService {
   GSTLedger({super.key});
 
   @override
@@ -57,6 +58,8 @@ class _GSTLedgerState extends State<GSTLedger> {
     await Future.delayed(const Duration(milliseconds: 100));
     // loader.start(context); // Now safe to use
     await widget.get_GST_LedgerList();
+    await widget.Get_SUBcustomerList();
+    await widget.Get_SALEScustomerList();
     await Future.delayed(const Duration(seconds: 2));
     // loader.stop();
   }

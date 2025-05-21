@@ -22,6 +22,14 @@ class _ViewLedgerState extends State<ViewLedger> {
   final View_LedgerController view_LedgerController = Get.find<View_LedgerController>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+// @override
+//   void initState() {
+//     // TODO: implement initState
+
+//         await widget.Get_SUBcustomerList();
+//     super.initState();
+//   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

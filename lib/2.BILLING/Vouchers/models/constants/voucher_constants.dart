@@ -14,7 +14,7 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   var selectedItems = <bool>[].obs;
   var selectAll = false.obs;
   var showDeleteButton = false.obs;
-
+  final pdfFile = Rxn<File>();
   // Filter related variables
   var clientNames = <String>[].obs;
   var productTypes = <String>[].obs;

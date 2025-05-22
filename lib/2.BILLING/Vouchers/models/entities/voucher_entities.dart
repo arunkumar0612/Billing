@@ -1,3 +1,9 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:path_provider/path_provider.dart';
+import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
+
 class InvoicePaymentVoucher {
   int voucher_id;
   String invoiceNumber;
@@ -238,6 +244,147 @@ class ClearVoucher {
       'gstnumber': gstNumber,
       'feedback': feedback,
       'transactiondetails': transactionDetails,
+    };
+  }
+}
+
+class Clear_ClubVoucher {
+  final DateTime date;
+  final double totalPaidAmount;
+  final bool tdsStatus;
+  final String paymentStatus;
+  final String feedback;
+  final String transactionDetails;
+  final List<int> voucherIds;
+  final List<String> voucherNumbers;
+  final List<Map<String, dynamic>> voucherList;
+
+  Clear_ClubVoucher({
+    required this.date,
+    required this.totalPaidAmount,
+    required this.tdsStatus,
+    required this.paymentStatus,
+    required this.feedback,
+    required this.transactionDetails,
+    required this.voucherIds,
+    required this.voucherNumbers,
+    required this.voucherList,
+  });
+
+  factory Clear_ClubVoucher.fromJson(Map<String, dynamic> json) {
+    return Clear_ClubVoucher(
+      date: DateTime.tryParse(json['date'] ?? '') ?? DateTime.now(),
+      totalPaidAmount: (json['totalpaidamount'] ?? 0).toDouble(),
+      tdsStatus: json['tdsstatus'] ?? false,
+      paymentStatus: json['paymentstatus'] ?? '',
+      feedback: json['feedback'] ?? '',
+      transactionDetails: json['transactiondetails'] ?? '',
+      voucherIds: json['voucherids'] ?? '',
+      voucherNumbers: json['vouchernumbers'] ?? '',
+      voucherList: (json['voucherlist'] as List<dynamic>).map((item) => Map<String, dynamic>.from(item)).toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'date': date.toIso8601String(),
+      'totalpaidamount': totalPaidAmount,
+      'tdsstatus': tdsStatus,
+      'paymentstatus': paymentStatus,
+      'feedback': feedback,
+      'transactiondetails': transactionDetails,
+      'voucherlist': voucherList,
+      "voucherids": voucherIds,
+      "vouchernumbers": voucherNumbers
+    };
+  }
+}
+
+class SelectedInvoiceVoucherGroup {
+  List<InvoicePaymentVoucher> selectedVoucherList;
+  double totalPendingAmount_withoutTDS;
+  double totalPendingAmount_withTDS;
+  double netAmount;
+  double totalCGST;
+  double totalSGST;
+  double totalIGST;
+  double totalTDS;
+
+  SelectedInvoiceVoucherGroup({
+    required this.selectedVoucherList,
+    required this.totalPendingAmount_withoutTDS,
+    required this.totalPendingAmount_withTDS,
+    required this.netAmount,
+    required this.totalCGST,
+    required this.totalSGST,
+    required this.totalIGST,
+    required this.totalTDS,
+  });
+
+  factory SelectedInvoiceVoucherGroup.fromJson(Map<String, dynamic> json) {
+    List<dynamic> list = json['selected_voucher_list'] ?? [];
+    List<InvoicePaymentVoucher> vouchers = list.map((e) => InvoicePaymentVoucher.fromJson(e)).toList();
+
+    double pending_withoutTDS = vouchers.fold(0, (sum, v) => sum + v.pendingAmount);
+    double pending_withTDS = vouchers.fold<double>(0.0, (sum, v) => sum + v.pendingAmount) - vouchers.fold<double>(0.0, (sum, v) => sum + v.tdsCalculationAmount);
+    double netAmount = vouchers.fold(0, (sum, v) => sum + v.subTotal);
+    double cgst = vouchers.fold(0, (sum, v) => sum + v.cgst);
+    double sgst = vouchers.fold(0, (sum, v) => sum + v.sgst);
+    double igst = vouchers.fold(0, (sum, v) => sum + v.igst);
+    double tds = vouchers.fold(0, (sum, v) => sum + v.tdsCalculationAmount);
+
+    return SelectedInvoiceVoucherGroup(
+      selectedVoucherList: vouchers,
+      totalPendingAmount_withoutTDS: pending_withoutTDS,
+      totalPendingAmount_withTDS: pending_withTDS,
+      netAmount: netAmount,
+      totalCGST: cgst,
+      totalSGST: sgst,
+      totalIGST: igst,
+      totalTDS: tds,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'selected_voucher_list': selectedVoucherList.map((e) => e.toJson()).toList(),
+      'total_pending_amount_withoutTDS': totalPendingAmount_withoutTDS,
+      'total_pending_amount_withTDS': totalPendingAmount_withTDS,
+      'netAmount': netAmount,
+      'total_CGST': totalCGST,
+      'total_SGST': totalSGST,
+      'total_IGST': totalIGST,
+      'total_TDS': totalTDS,
+    };
+  }
+}
+
+class PDFfileData {
+  final File data;
+
+  PDFfileData({
+    required this.data,
+  });
+
+  static Future<File> saveBytesToFile(Uint8List bytes) async {
+    final tempDir = await getTemporaryDirectory(); // Get temporary directory
+    final file = File('${tempDir.path}/temp.pdf'); // Define file path
+    await file.writeAsBytes(bytes); // Write bytes to file
+    return file;
+  }
+
+  static Future<PDFfileData> fromJson(CMDmResponse json) async {
+    if (json.data['data'] is List<dynamic>) {
+      Uint8List fileBytes = Uint8List.fromList(json.data['data'].cast<int>());
+      File file = await saveBytesToFile(fileBytes);
+      return PDFfileData(data: file);
+    }
+    throw TypeError();
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'data': data.path, // Convert File to path string for JSON
     };
   }
 }

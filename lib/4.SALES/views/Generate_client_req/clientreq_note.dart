@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 
 import '../../controllers/ClientReq_actions.dart';
 import '../../services/ClientReq_services/ClientreqNote_service.dart';

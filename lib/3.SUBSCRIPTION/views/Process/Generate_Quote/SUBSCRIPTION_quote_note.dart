@@ -5,7 +5,7 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_acti
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/Quotation_services/SUBSCRIPTION_QuoteNotes_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 
 class SUBSCRIPTION_QuoteNote extends StatefulWidget with SUBSCRIPTION_QuotenotesService {
   SUBSCRIPTION_QuoteNote({super.key});

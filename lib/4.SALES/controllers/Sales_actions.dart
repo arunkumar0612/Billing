@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/models/constants/Sales_constants.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/Sales_entities.dart';
-import 'package:ssipl_billing/API-/api.dart';
-import 'package:ssipl_billing/API-/invoker.dart';
+import 'package:ssipl_billing/API/api.dart';
+import 'package:ssipl_billing/API/invoker.dart';
 
 import '../../COMPONENTS-/Response_entities.dart';
 

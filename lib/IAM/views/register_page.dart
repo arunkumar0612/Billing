@@ -1,11 +1,12 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import '../../THEMES-/style.dart';
-import '../../UTILS-/validators/register_validator.dart';
-import '../controllers/IAM_actions.dart';
-import 'package:glowy_borders/glowy_borders.dart';
 import 'package:get/get.dart';
+import 'package:glowy_borders/glowy_borders.dart';
+
+import '../../THEMES/style.dart';
+import '../../UTILS/validators/register_validator.dart';
+import '../controllers/IAM_actions.dart';
 
 class RegisterPage extends StatefulWidget with RegisterValidator {
   RegisterPage({super.key});

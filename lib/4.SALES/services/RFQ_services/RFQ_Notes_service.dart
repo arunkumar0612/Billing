@@ -1,16 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/4.SALES/controllers/RFQ_actions.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_RFQ/RFQ_template.dart';
-import 'package:ssipl_billing/API-/invoker.dart';
+import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/UTILS-/helpers/returns.dart';
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
+import 'package:ssipl_billing/UTILS/helpers/returns.dart';
 
 mixin RfqnotesService {
   final RfqController rfqController = Get.find<RfqController>();

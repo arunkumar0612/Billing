@@ -18,10 +18,10 @@ import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_PDF_template/GST_ledger_pdf_template.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
-import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-import '../../../THEMES-/style.dart';
+import '../../../THEMES/style.dart';
 
 class GSTLedger extends StatefulWidget with GST_LedgerService, View_LedgerService {
   GSTLedger({super.key});
@@ -290,7 +290,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].voucherNumber,
+                                          gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number,
                                           style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                         ),
                                       ],

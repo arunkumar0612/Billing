@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
 import '../../controllers/Quote_actions.dart';
 import '../../services/Quotation_services/QuoteDetails_service.dart';

@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:glowy_borders/glowy_borders.dart';
-import 'package:ssipl_billing/IAM-/services/forgotpassword_service.dart';
+import 'package:ssipl_billing/IAM/services/forgotpassword_service.dart';
 
-import '../../THEMES-/style.dart';
+import '../../THEMES/style.dart';
 import '../controllers/IAM_actions.dart';
 
 class Forgot_password extends StatefulWidget with ForgotpasswordService {

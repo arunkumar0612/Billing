@@ -8,7 +8,7 @@ import 'package:ssipl_billing/4.SALES/views/Generate_RFQ/RFQ_details.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_RFQ/RFQ_note.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_RFQ/RFQ_products.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_RFQ/post_RFQ.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class GenerateRfq extends StatefulWidget with RfqdetailsService {

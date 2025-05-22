@@ -11,11 +11,11 @@ import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/NOTIFICATION-/Notification_constants.dart';
-import 'package:ssipl_billing/UTILS-/helpers/refresher.dart';
+import 'package:ssipl_billing/UTILS/helpers/refresher.dart';
 import 'package:windows_notification/notification_message.dart';
 import 'package:windows_notification/windows_notification.dart';
 
-import '../IAM-/controllers/IAM_actions.dart';
+import '../IAM/controllers/IAM_actions.dart';
 
 class NotificationController extends GetxController {
   var notificationModel = NotificationModel();

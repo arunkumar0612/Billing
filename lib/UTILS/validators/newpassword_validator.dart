@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:ssipl_billing/IAM-/services/newpassword_services.dart';
+import 'package:ssipl_billing/IAM/services/newpassword_services.dart';
 
-import '../../IAM-/controllers/IAM_actions.dart';
+import '../../IAM/controllers/IAM_actions.dart';
 
 mixin NewpasswordValidator {
   final NewpasswordController newwordController = Get.find<NewpasswordController>();

@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ssipl_billing/IAM-/models/entities/IAM_entities.dart';
+import 'package:ssipl_billing/IAM/models/entities/IAM_entities.dart';
 
-import '../../API-/api.dart';
-import '../../API-/invoker.dart';
+import '../../API/api.dart';
+import '../../API/invoker.dart';
 import '../../COMPONENTS-/Basic_DialogBox.dart';
 import '../../COMPONENTS-/Response_entities.dart';
-import '../../ROUTES-/route_names.dart';
+import '../../ROUTES/route_names.dart';
 import '../controllers/IAM_actions.dart';
 
 mixin LoginServices {

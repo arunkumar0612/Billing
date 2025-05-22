@@ -5,12 +5,12 @@ import 'package:ssipl_billing/2.BILLING/Ledger/controller/account_ledger_action.
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/account_ledger_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/view_ledger_entities.dart';
-import 'package:ssipl_billing/API-/api.dart';
+import 'package:ssipl_billing/API/api.dart';
 // import 'package:ssipl_billing/2.BILLING/View_Ledgers/controllers/view_Ledger_action.dart';
-import 'package:ssipl_billing/API-/invoker.dart';
+import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 
 mixin View_LedgerService {
   final View_LedgerController view_LedgerController = Get.find<View_LedgerController>();
@@ -124,9 +124,9 @@ mixin View_LedgerService {
                 foregroundColor: Primary_colors.Color3,
               ),
             ),
-            dialogTheme: DialogTheme(
+            dialogTheme: const DialogThemeData(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.all(Radius.circular(16)),
               ),
             ),
           ),

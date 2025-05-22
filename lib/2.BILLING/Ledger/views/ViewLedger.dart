@@ -7,9 +7,10 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/GST_ledger.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/TDS_Ledger.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/account_ledger.dart';
 
-import '../../../../THEMES-/style.dart';
+import '../../../../THEMES/style.dart';
 
 class ViewLedger extends StatefulWidget with View_LedgerService {
   ViewLedger({super.key});
@@ -149,7 +150,11 @@ class _ViewLedgerState extends State<ViewLedger> {
                 ),
                 const SizedBox(height: 20),
                 Obx(() {
-                  return view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'Account Ledger' ? Expanded(child: AccountLedger()) : Expanded(child: GSTLedger());
+                  return view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'Account Ledger'
+                      ? Expanded(child: AccountLedger())
+                      : view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'GST Ledger'
+                          ? Expanded(child: GSTLedger())
+                          : Expanded(child: TDSLedger());
                 }),
               ],
             ),
@@ -341,43 +346,81 @@ class _ViewLedgerState extends State<ViewLedger> {
                           }),
                         ],
                       )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'GST Ledger Type',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                    : view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'GST Ledger'
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'GST Ledger Type',
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                              ),
+                              const SizedBox(height: 8),
+                              Obx(() {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: const Color.fromARGB(255, 85, 84, 84)),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: DropdownButtonFormField<String>(
+                                    value: view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value,
+                                    items: ['Consolidate', 'Input', 'Output'].map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value = value!;
+                                    },
+                                    decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                                      border: InputBorder.none,
+                                    ),
+                                    style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 154, 152, 152)),
+                                    dropdownColor: Primary_colors.Dark,
+                                  ),
+                                );
+                              }),
+                            ],
+                          )
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'TDS Ledger Type',
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                              ),
+                              const SizedBox(height: 8),
+                              Obx(() {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: const Color.fromARGB(255, 85, 84, 84)),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: DropdownButtonFormField<String>(
+                                    value: view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value,
+                                    items: ['Consolidate', 'Input', 'Output'].map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value = value!;
+                                    },
+                                    decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                                      border: InputBorder.none,
+                                    ),
+                                    style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 154, 152, 152)),
+                                    dropdownColor: Primary_colors.Dark,
+                                  ),
+                                );
+                              }),
+                            ],
                           ),
-                          const SizedBox(height: 8),
-                          Obx(() {
-                            return Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(color: const Color.fromARGB(255, 85, 84, 84)),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: DropdownButtonFormField<String>(
-                                value: view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value,
-                                items: ['Consolidate', 'Input', 'Output'].map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (value) {
-                                  view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value = value!;
-                                },
-                                decoration: const InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                                  border: InputBorder.none,
-                                ),
-                                style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 154, 152, 152)),
-                                dropdownColor: Primary_colors.Dark,
-                              ),
-                            );
-                          }),
-                        ],
-                      ),
               );
             }),
             const Spacer(),

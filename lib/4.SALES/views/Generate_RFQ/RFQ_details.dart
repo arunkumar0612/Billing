@@ -7,7 +7,7 @@ import 'package:ssipl_billing/4.SALES/models/entities/RFQ_entities.dart';
 import 'package:ssipl_billing/4.SALES/services/RFQ_services/RFQ_Details_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 
 class RfqDetails extends StatefulWidget with RfqdetailsService {
   RfqDetails({super.key, required this.eventID});

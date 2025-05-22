@@ -6,8 +6,8 @@ import 'package:ssipl_billing/4.SALES/controllers/DC_actions.dart';
 import 'package:ssipl_billing/4.SALES/services/DC_services/DC_Details_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
 class DcDetails extends StatefulWidget with DcdetailsService {
   DcDetails({super.key, required this.eventID, required this.eventName});

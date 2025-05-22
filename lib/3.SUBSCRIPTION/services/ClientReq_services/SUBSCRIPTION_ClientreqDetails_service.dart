@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_actions.dart' show SUBSCRIPTION_ClientreqController;
-import 'package:ssipl_billing/API-/api.dart' show API;
-import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
+import 'package:ssipl_billing/API/api.dart' show API;
+import 'package:ssipl_billing/API/invoker.dart' show Invoker;
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart' show CMDlResponse, CMDmResponse;
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart' show SessiontokenController;
 
 mixin SUBSCRIPTION_ClientreqDetailsService {
   final Invoker apiController = Get.find<Invoker>();

@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:ssipl_billing/IAM-/models/entities/IAM_entities.dart';
+import 'package:ssipl_billing/IAM/models/entities/IAM_entities.dart';
 
-import '../../API-/api.dart';
-import '../../API-/invoker.dart';
+import '../../API/api.dart';
+import '../../API/invoker.dart';
 import '../../COMPONENTS-/Basic_DialogBox.dart';
 import '../../COMPONENTS-/Response_entities.dart';
 import '../controllers/IAM_actions.dart';

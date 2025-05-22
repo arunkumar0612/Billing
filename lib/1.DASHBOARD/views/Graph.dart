@@ -3,7 +3,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-import '../../THEMES-/style.dart';
+import '../../THEMES/style.dart';
 
 class Graph extends StatelessWidget {
   const Graph({super.key});

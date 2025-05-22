@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 
 import 'package:glowy_borders/glowy_borders.dart';
 
-import '../../THEMES-/style.dart';
-import '../../UTILS-/validators/newpassword_validator.dart';
+import '../../THEMES/style.dart';
+import '../../UTILS/validators/newpassword_validator.dart';
 import '../controllers/IAM_actions.dart';
 
 class Newpassword extends StatefulWidget with NewpasswordValidator {

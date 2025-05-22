@@ -10,9 +10,9 @@ import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPD
 import 'package:ssipl_billing/4.SALES/services/CustomPDF_services/Quote/PostAll_Quote_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PostQuote extends StatefulWidget with salesCustom_PostServices {

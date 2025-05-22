@@ -4,7 +4,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:ssipl_billing/4.SALES/controllers/DC_actions.dart';
 import 'package:ssipl_billing/4.SALES/services/DC_services/DC_Notes_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 
 class DcNote extends StatefulWidget with DcnotesService {
   DcNote({super.key});

@@ -5,7 +5,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:ssipl_billing/4.SALES/controllers/RFQ_actions.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/product_entities.dart';
-import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 Future<Uint8List> generate_RFQ(
   PdfPageFormat pageFormat,

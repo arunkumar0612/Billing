@@ -7,7 +7,7 @@ import 'package:ssipl_billing/4.SALES/views/Generate_Invoice/invoice_details.dar
 import 'package:ssipl_billing/4.SALES/views/Generate_Invoice/invoice_note.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_Invoice/invoice_products.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_Invoice/post_Invoice.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../controllers/Invoice_actions.dart';

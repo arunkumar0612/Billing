@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/controllers/Sales_actions.dart';
 import 'package:ssipl_billing/4.SALES/services/Quotation_services/QuoteDetails_service.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_Quote/post_Quote.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../controllers/Quote_actions.dart';

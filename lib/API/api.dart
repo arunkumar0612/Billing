@@ -91,4 +91,5 @@ class API {
 
   static String getaccount_Ledgerlist = "http://192.168.0.200:8081/billing/accountledger";
   static String getgst_Ledgerlist = "http://192.168.0.200:8081/billing/gstledger";
+  static String gettds_Ledgerlist = "http://192.168.0.200:8081/billing/tdsledger";
 }

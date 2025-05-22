@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/models/entities/Billing_entities.dart';
-import 'package:ssipl_billing/API-/api.dart';
-import 'package:ssipl_billing/API-/invoker.dart';
+import 'package:ssipl_billing/API/api.dart';
+import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 
 mixin main_BillingService {
   final Invoker apiController = Get.find<Invoker>();
@@ -59,9 +59,9 @@ mixin main_BillingService {
                 foregroundColor: Primary_colors.Color3,
               ),
             ),
-            dialogTheme: DialogTheme(
+            dialogTheme: const DialogThemeData(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.all(Radius.circular(16)),
               ),
             ),
           ),
@@ -121,7 +121,6 @@ mixin main_BillingService {
     }
   }
 
-
   void get_SalesInvoiceList() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.billing_salesInvoice);
@@ -147,13 +146,13 @@ mixin main_BillingService {
     }
   }
 
-   void resetFilters() {
+  void resetFilters() {
     mainBilling_Controller.billingModel.startDateController.value.clear();
     mainBilling_Controller.billingModel.endDateController.value.clear();
     mainBilling_Controller.billingModel.selectedPaymentStatus.value = 'Show All';
     mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Show All';
     mainBilling_Controller.billingModel.selectedQuickFilter.value = 'Show All';
-    mainBilling_Controller.billingModel.selectedPackageName.value='Show All';
+    mainBilling_Controller.billingModel.selectedPackageName.value = 'Show All';
     mainBilling_Controller.billingModel.showCustomDateRange.value = false;
     // voucherController.voucherModel.filteredVouchers.value = voucherController.voucherModel.voucher_list;
     // voucherController.voucherModel.selectedItems.value = List.filled(voucherController.voucherModel.voucher_list.length, false);

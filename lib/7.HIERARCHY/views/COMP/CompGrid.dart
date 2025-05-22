@@ -6,7 +6,7 @@ import 'package:ssipl_billing/7.HIERARCHY/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/7.HIERARCHY/services/hierarchy_service.dart';
 import 'package:ssipl_billing/7.HIERARCHY/views/COMP/CompEditor.dart';
 import 'package:ssipl_billing/7.HIERARCHY/views/COMP/Comp_card.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 
 class CompanyGrid extends StatefulWidget with HierarchyService {
   CompanyGrid({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../THEMES-/style.dart';
+import '../../THEMES/style.dart';
 
 class Bar_line extends StatefulWidget {
   const Bar_line({super.key});

@@ -6,7 +6,7 @@ import 'package:ssipl_billing/7.HIERARCHY/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/7.HIERARCHY/services/hierarchy_service.dart';
 import 'package:ssipl_billing/7.HIERARCHY/views/ORG/OrgEditor.dart';
 import 'package:ssipl_billing/7.HIERARCHY/views/ORG/Org_card.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 
 class OrganizationGrid extends StatefulWidget with HierarchyService {
   OrganizationGrid({super.key});

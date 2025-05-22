@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, deprecated_member_use
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
@@ -7,9 +8,9 @@ import 'package:ssipl_billing/4.SALES/controllers/Invoice_actions.dart';
 import 'package:ssipl_billing/4.SALES/services/Invoice_services/InvoicePost_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 // ignore: must_be_immutable

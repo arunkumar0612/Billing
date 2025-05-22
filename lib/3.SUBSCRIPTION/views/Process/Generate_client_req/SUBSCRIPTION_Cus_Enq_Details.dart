@@ -7,8 +7,8 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/ClientReq_services/SUBSCRIPTION_ClientreqDetails_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart' show BasicButton;
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart' show BasicTextfield;
-import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart' show Validators;
+import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart' show Validators;
 
 class enquryDetails extends StatefulWidget with SUBSCRIPTION_ClientreqDetailsService {
   enquryDetails({super.key});

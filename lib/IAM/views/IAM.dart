@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/IAM-/views/forgot_password.dart';
-import 'package:ssipl_billing/IAM-/views/login_page.dart';
-import 'package:ssipl_billing/IAM-/views/newpassword.dart';
-import 'package:ssipl_billing/IAM-/views/register_page.dart';
-import 'package:ssipl_billing/IAM-/views/verifyOTP.dart';
+import 'package:ssipl_billing/IAM/views/forgot_password.dart';
+import 'package:ssipl_billing/IAM/views/login_page.dart';
+import 'package:ssipl_billing/IAM/views/newpassword.dart';
+import 'package:ssipl_billing/IAM/views/register_page.dart';
+import 'package:ssipl_billing/IAM/views/verifyOTP.dart';
 
-import '../../THEMES-/style.dart';
+import '../../THEMES/style.dart';
 import '../controllers/IAM_actions.dart';
 
 class IAM extends StatefulWidget {

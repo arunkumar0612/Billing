@@ -8,10 +8,10 @@ import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/CustomPDF_entities/CustomPDF_invoice_entities.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/CustomPDF/Subscription_PostAll.dart' show SUBSCRIPTION_PostInvoice;
-import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
+import 'package:ssipl_billing/API/invoker.dart' show Invoker;
 import 'package:ssipl_billing/COMPONENTS-/CustomPDF_templates/SUBSCRIPTION_CustomPDF_Invoice_template.dart' show SUBSCRIPTION_generate_CustomPDFInvoice;
-import 'package:ssipl_billing/THEMES-/style.dart' show Primary_colors;
-import 'package:ssipl_billing/UTILS-/helpers/returns.dart' show Returns;
+import 'package:ssipl_billing/THEMES/style.dart' show Primary_colors;
+import 'package:ssipl_billing/UTILS/helpers/returns.dart' show Returns;
 
 class SUBSCRIPTION_CustomPDF_Services {
   final Invoker apiController = Get.find<Invoker>();

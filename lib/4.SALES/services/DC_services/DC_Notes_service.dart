@@ -6,10 +6,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/4.SALES/controllers/DC_actions.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_DC/DC_template.dart';
-import 'package:ssipl_billing/API-/invoker.dart';
+import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/UTILS-/helpers/returns.dart';
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
+import 'package:ssipl_billing/UTILS/helpers/returns.dart';
 
 // import 'package:ssipl_billing/utils/helpers/returns.dart';
 

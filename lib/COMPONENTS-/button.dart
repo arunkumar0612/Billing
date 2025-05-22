@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 
 class BasicButton extends StatelessWidget {
   final String text;

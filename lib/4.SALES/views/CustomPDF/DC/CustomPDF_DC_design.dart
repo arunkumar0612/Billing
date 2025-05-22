@@ -6,8 +6,8 @@ import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPD
 import 'package:ssipl_billing/4.SALES/services/CustomPDF_services/DC/CustomPDF_DC_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
 class CustomPDF_DcPDF {
   final CustomPDF_DcController pdfpopup_controller = Get.find<CustomPDF_DcController>();

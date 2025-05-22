@@ -6,7 +6,7 @@ import 'package:ssipl_billing/1.DASHBOARD/views/dashboardcards.dart';
 
 // import 'package:ssipl_billing/cards.dart';
 
-import '../../THEMES-/style.dart';
+import '../../THEMES/style.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/view_ledger_entities.dart';
 
 class View_LedgerModel extends GetxController with GetSingleTickerProviderStateMixin {
   // Filter related variables
 
-  var selectedAccountLedgerType = 'Consolidate'.obs;
+  var selectedinvoiceType = 'Show All'.obs;
   var selectedGSTLedgerType = 'Consolidate'.obs;
+  var selectedtransactiontype = 'Show All'.obs;
   var selectedPaymenttype = 'Show All'.obs;
   var selectedInvoiceType = 'Show All'.obs;
+  RxBool showGSTsummary = true.obs;
   // var showCustomDateRange = false.obs;
   // final dateController = TextEditingController().obs;
   // Add to your View_LedgerModel class
@@ -17,15 +20,10 @@ class View_LedgerModel extends GetxController with GetSingleTickerProviderStateM
   final searchController = TextEditingController().obs;
   RxString selectedLedgerType = 'Account Ledger'.obs;
   RxList<String> ledgerTypeList = ['Account Ledger', 'GST Ledger'].obs;
-  RxList<String> clientlist = ['Account Ledger', 'GST Ledger'].obs;
-  RxString selectedclient = 'Account Ledger'.obs;
-  @override
-  void onInit() {
-    super.onInit();
-    // Initialize with sample data
-
-    // Sync RxString when controller changes (optional)
-
-    // Sync controller when RxString changes
-  }
+  RxString selectedsalescustomer = 'None'.obs;
+  RxString selectedsalescustomerID = ''.obs;
+  RxString selectedsubcustomer = 'None'.obs;
+  RxString selectedsubcustomerID = ''.obs;
+  var salesCustomerList = <CustomerInfo>[].obs;
+  var subCustomerList = <CustomerInfo>[].obs;
 }

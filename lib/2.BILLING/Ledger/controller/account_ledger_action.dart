@@ -15,7 +15,7 @@ class Account_LedgerController extends GetxController {
     );
     account_LedgerModel.account_Ledger_list.value = AccountLedgerSummary.fromJson(value.data);
 
-    account_LedgerModel.filteredAccount_Ledgers.value = AccountLedgerSummary.fromJson(value.data);
+    account_LedgerModel.filteredaccount_Ledger_list.value = AccountLedgerSummary.fromJson(value.data);
   }
 
   // void reset_account_LedgerClear_popup() {

@@ -2,11 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/controllers/RFQ_actions.dart';
-import 'package:ssipl_billing/API-/api.dart';
-import 'package:ssipl_billing/API-/invoker.dart';
+import 'package:ssipl_billing/API/api.dart';
+import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 
 mixin RfqdetailsService {
   final RfqController rfqController = Get.find<RfqController>();
@@ -115,7 +115,6 @@ mixin RfqdetailsService {
             title: 'PRE - LOADER',
             content: value.message ?? "",
             onOk: () {},
-            
           );
           Navigator.of(context).pop();
         }

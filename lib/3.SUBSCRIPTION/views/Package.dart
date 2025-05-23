@@ -8,7 +8,7 @@ import 'package:lottie/lottie.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/Subscription_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/subscription_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 
 class Packagepage extends StatefulWidget with SubscriptionServices {
   Packagepage({super.key});

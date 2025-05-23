@@ -1,17 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/4.SALES/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_Quote/quote_template.dart';
-import 'package:ssipl_billing/API-/invoker.dart';
+import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/UTILS-/helpers/returns.dart';
-import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
+import 'package:ssipl_billing/UTILS/helpers/returns.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 mixin QuotenotesService {
   final QuoteController quoteController = Get.find<QuoteController>();

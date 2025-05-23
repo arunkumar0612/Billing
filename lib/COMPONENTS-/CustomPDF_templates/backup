@@ -6,7 +6,11 @@
 // import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart';
 // import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/CustomPDF_entities/CustomPDF_invoice_entities.dart';
 
+<<<<<<< HEAD
 // import '../../UTILS-/helpers/support_functions.dart';
+=======
+import '../../UTILS/helpers/support_functions.dart';
+>>>>>>> dd2e150fc2eee71b196cd710edf69bfd7e2136b3
 
 // Future<Uint8List> SUBSCRIPTION_generate_CustomPDFInvoice(PdfPageFormat pageFormat, SUBSCRIPTION_Custom_Invoice instInvoice) async {
 //   final quotation = SUBSCRIPTION_MaualInvoiceTemplate(instInvoice: instInvoice);

@@ -19,12 +19,12 @@ import 'package:ssipl_billing/4.SALES/views/Generate_DC/generateDC.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_RFQ/generateRFQ.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-import '../../API-/api.dart';
-import '../../API-/invoker.dart';
+import '../../API/api.dart';
+import '../../API/invoker.dart';
 import '../../COMPONENTS-/Response_entities.dart';
 import '../controllers/Sales_actions.dart';
 import '../views/Generate_Invoice/generateInvoice.dart';

@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:get/get.dart';
-import 'package:ssipl_billing/API-/api_service.dart';
-import 'package:ssipl_billing/UTILS-/helpers/encrypt_decrypt.dart';
-import 'package:ssipl_billing/UTILS-/helpers/returns.dart';
+import 'package:ssipl_billing/API/api_service.dart';
+import 'package:ssipl_billing/UTILS/helpers/encrypt_decrypt.dart';
+import 'package:ssipl_billing/UTILS/helpers/returns.dart';
 
-import '../IAM-/controllers/IAM_actions.dart';
+import '../IAM/controllers/IAM_actions.dart';
 
 class Invoker extends GetxController {
   final ApiService apiService = ApiService();

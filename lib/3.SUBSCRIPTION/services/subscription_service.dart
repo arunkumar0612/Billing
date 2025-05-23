@@ -13,13 +13,13 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_acti
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/Subscription_actions.dart' show SubscriptionController;
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_Quote/SUBSCRIPTION_generateQuote.dart' show SUBSCRIPTION_GenerateQuote;
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_client_req/SUBSCRIPTION_generate_clientreq.dart' show SUBSCRIPTION_Generate_clientreq;
-import 'package:ssipl_billing/API-/api.dart';
+import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Error_dialog, Success_SnackBar, Success_dialog, Warning_dialog;
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart' show SessiontokenController;
+import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-import '../../API-/invoker.dart';
+import '../../API/invoker.dart';
 import '../../COMPONENTS-/Response_entities.dart';
 
 mixin SubscriptionServices {

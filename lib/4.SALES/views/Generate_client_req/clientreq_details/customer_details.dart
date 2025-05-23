@@ -7,8 +7,8 @@ import 'package:ssipl_billing/4.SALES/services/ClientReq_services/ClientreqDetai
 import 'package:ssipl_billing/4.SALES/services/sales_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
 class customerDetails extends StatefulWidget with ClientreqDetailsService, SalesServices {
   customerDetails({super.key});

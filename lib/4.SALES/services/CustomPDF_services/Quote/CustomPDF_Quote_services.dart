@@ -5,17 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
-import 'package:ssipl_billing/COMPONENTS-/CustomPDF_templates/CustomPDF_Quote_template.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/helpers/returns.dart';
 import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_Quote_actions.dart';
 import 'package:ssipl_billing/4.SALES/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entities.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/Quote_entities.dart';
 import 'package:ssipl_billing/4.SALES/views/CustomPDF/Quote/Quote_PostAll.dart';
-import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
+import 'package:ssipl_billing/COMPONENTS-/CustomPDF_templates/CustomPDF_Quote_template.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/UTILS/helpers/returns.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
-import '../../../../API-/invoker.dart';
+import '../../../../API/invoker.dart';
 
 class Custom_Quote_Services {
   final Invoker apiController = Get.find<Invoker>();
@@ -43,21 +43,18 @@ class Custom_Quote_Services {
 
   Future<void> savePdfToCache(context) async {
     Uint8List pdfData = await generate_CustomPDFQuote(
-      PdfPageFormat.a4,
-      pdfpopup_controller.pdfModel.value.date.value.text,
-      pdfpopup_controller.pdfModel.value.manualQuoteproducts,
-      pdfpopup_controller.pdfModel.value.clientName.value.text,
-      pdfpopup_controller.pdfModel.value.clientAddress.value.text,
-      pdfpopup_controller.pdfModel.value.billingName.value.text,
-      pdfpopup_controller.pdfModel.value.billingAddres.value.text,
-      pdfpopup_controller.pdfModel.value.manualquoteNo.value.text,
-      "",
-      pdfpopup_controller.pdfModel.value.GSTnumber.value.text,
-      pdfpopup_controller.pdfModel.value.manualQuote_gstTotals,
-      isGST_Local( pdfpopup_controller.pdfModel.value.GSTnumber.value.text)
-    );
-
-
+        PdfPageFormat.a4,
+        pdfpopup_controller.pdfModel.value.date.value.text,
+        pdfpopup_controller.pdfModel.value.manualQuoteproducts,
+        pdfpopup_controller.pdfModel.value.clientName.value.text,
+        pdfpopup_controller.pdfModel.value.clientAddress.value.text,
+        pdfpopup_controller.pdfModel.value.billingName.value.text,
+        pdfpopup_controller.pdfModel.value.billingAddres.value.text,
+        pdfpopup_controller.pdfModel.value.manualquoteNo.value.text,
+        "",
+        pdfpopup_controller.pdfModel.value.GSTnumber.value.text,
+        pdfpopup_controller.pdfModel.value.manualQuote_gstTotals,
+        isGST_Local(pdfpopup_controller.pdfModel.value.GSTnumber.value.text));
 
     Directory tempDir = await getTemporaryDirectory();
     String? sanitizedQuoteNo = Returns.replace_Slash_hypen(pdfpopup_controller.pdfModel.value.manualquoteNo.value.text);

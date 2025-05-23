@@ -7,7 +7,7 @@ import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPD
 
 import '../../4.SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entities.dart';
 import '../../4.SALES/models/entities/Invoice_entities.dart';
-import '../../UTILS-/helpers/support_functions.dart';
+import '../../UTILS/helpers/support_functions.dart';
 
 Future<Uint8List> generate_CustomPDFInvoice(
     PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, invoice_num, title, gst, invoice_gstTotals, isGST_local) async {

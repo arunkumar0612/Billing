@@ -8,7 +8,7 @@ import 'package:ssipl_billing/7.HIERARCHY/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/7.HIERARCHY/models/entities/Hierarchy_entities.dart';
 import 'package:ssipl_billing/7.HIERARCHY/services/Branch_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 
 class BranchEditor extends StatefulWidget with BranchService {
   final double screenWidth;

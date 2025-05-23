@@ -2,8 +2,9 @@ import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/Initialize.dart';
-import 'package:ssipl_billing/ROUTES-/app_routes.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/ROUTES/app_routes.dart';
+import 'package:ssipl_billing/ROUTES/route_names.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 
 // 33AADCK2098J1ZF
 Future<void> main() async {
@@ -21,9 +22,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      // home: const IAM(),
       title: 'ERP',
       // home: const IAM(),
-      initialRoute: '/IAM', // Set the initial route
+      initialRoute: RouteNames.IAM, // Set the initial route
       getPages: AppRoutes.routes,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

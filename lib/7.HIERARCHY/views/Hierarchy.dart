@@ -6,7 +6,7 @@ import 'package:ssipl_billing/7.HIERARCHY/views/BRANCH/BranchGrid.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:ssipl_billing/7.HIERARCHY/views/COMP/CompGrid.dart';
 import 'package:ssipl_billing/7.HIERARCHY/views/ORG/OrgGrid.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 
 class Enterprise_Hierarchy extends StatefulWidget with HierarchyService {
   Enterprise_Hierarchy({super.key});

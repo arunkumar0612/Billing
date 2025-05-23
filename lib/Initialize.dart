@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/GST_ledger_action.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/controller/TDS_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/account_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
@@ -18,8 +19,8 @@ import 'package:ssipl_billing/4.SALES/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/4.SALES/controllers/RFQ_actions.dart';
 import 'package:ssipl_billing/4.SALES/controllers/Sales_actions.dart';
 import 'package:ssipl_billing/7.HIERARCHY/controllers/Hierarchy_actions.dart';
-import 'package:ssipl_billing/API-/invoker.dart';
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
+import 'package:ssipl_billing/API/invoker.dart';
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/NOTIFICATION-/Notification_actions.dart';
 
 void initialize_IAM() {
@@ -60,4 +61,6 @@ void initialize_others() {
   Get.lazyPut<VoucherController>(() => VoucherController());
   Get.lazyPut<View_LedgerController>(() => View_LedgerController());
   Get.lazyPut<Account_LedgerController>(() => Account_LedgerController());
+  Get.lazyPut<TDS_LedgerController>(() => TDS_LedgerController());
+  Get.lazyPut<GST_LedgerController>(() => GST_LedgerController());
 }

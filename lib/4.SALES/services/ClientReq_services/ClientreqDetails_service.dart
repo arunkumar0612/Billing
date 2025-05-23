@@ -4,11 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/controllers/ClientReq_actions.dart';
-import 'package:ssipl_billing/API-/api.dart';
-import 'package:ssipl_billing/API-/invoker.dart';
+import 'package:ssipl_billing/API/api.dart';
+import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 
 mixin ClientreqDetailsService {
   final Invoker apiController = Get.find<Invoker>();

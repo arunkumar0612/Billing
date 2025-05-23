@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart'; // For advanced grid layouts
 import 'package:google_fonts/google_fonts.dart'; // For custom fonts
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/views/addservice.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 
 class Inventory extends StatefulWidget {
   const Inventory({super.key});

@@ -6,8 +6,8 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_acti
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/Quotation_services/SUBSCRIPTION_QuoteDetails_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
 class SUBSCRIPTION_QuoteDetails extends StatefulWidget with SUBSCRIPTION_QuotedetailsService {
   SUBSCRIPTION_QuoteDetails({super.key, required this.eventtype, required this.eventID});
@@ -179,9 +179,9 @@ class _SUBSCRIPTION_QuoteDetailsState extends State<SUBSCRIPTION_QuoteDetails> {
                       width: 660,
                       child: Text(
                         textAlign: TextAlign.center,
-                        widget.eventtype == 'revisedquotation' ?
-                        'The Quotation shown beside can be used as a reference for generating the Quote. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.'
-                        : 'The client request shown beside can be used as a reference for generating the Quote. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
+                        widget.eventtype == 'revisedquotation'
+                            ? 'The Quotation shown beside can be used as a reference for generating the Quote. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.'
+                            : 'The client request shown beside can be used as a reference for generating the Quote. Ensure that all the details inherited are accurate and thoroughly verified before generating the PDF documents.',
                         style: const TextStyle(color: Color.fromARGB(255, 124, 124, 124), fontSize: Primary_font_size.Text7),
                       ),
                     )

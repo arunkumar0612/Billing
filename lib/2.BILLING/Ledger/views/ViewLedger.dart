@@ -10,8 +10,10 @@ import 'package:ssipl_billing/2.BILLING/Ledger/services/GST_ledger_service.dart'
 import 'package:ssipl_billing/2.BILLING/Ledger/services/account_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/GST_ledger.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/TDS_Ledger.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/account_ledger.dart';
-import '../../../../THEMES-/style.dart';
+
+import '../../../../THEMES/style.dart';
 
 class ViewLedger extends StatefulWidget with Account_LedgerService, GST_LedgerService, View_LedgerService {
   ViewLedger({super.key});
@@ -159,11 +161,13 @@ class _ViewLedgerState extends State<ViewLedger> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Obx(
-                  () {
-                    return view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'Account Ledger' ? Expanded(child: AccountLedger()) : Expanded(child: GSTLedger());
-                  },
-                ),
+                Obx(() {
+                  return view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'Account Ledger'
+                      ? Expanded(child: AccountLedger())
+                      : view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'GST Ledger'
+                          ? Expanded(child: GSTLedger())
+                          : Expanded(child: TDSLedger());
+                }),
               ],
             ),
           ),
@@ -669,179 +673,251 @@ class _ViewLedgerState extends State<ViewLedger> {
             // Add Month Dropdown here
 
             Obx(() {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Select date',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
-                      ),
-                      // const SizedBox(width: 8),
-                      Obx(
-                        () => SizedBox(
-                            child: view_LedgerController.view_LedgerModel.startDateController.value.text.isNotEmpty || view_LedgerController.view_LedgerModel.endDateController.value.text.isNotEmpty
-                                ? TextButton(
-                                    onPressed: () {
-                                      view_LedgerController.view_LedgerModel.selectedMonth.value = 'None';
-                                      view_LedgerController.view_LedgerModel.startDateController.value.clear();
-                                      view_LedgerController.view_LedgerModel.endDateController.value.clear();
-                                    },
-                                    child: const Text(
-                                      'Clear',
-                                      style: TextStyle(fontSize: Primary_font_size.Text7),
-                                    ),
-                                  )
-                                : const SizedBox()),
-                      ),
-                      const Spacer(),
-                      Obx(() {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          width: 100, // Adjust width as needed
-                          height: 30, // Adjust height as needed
-                          child: DropdownButtonFormField<String>(
-                            menuMaxHeight: 300,
-                            value: view_LedgerController.view_LedgerModel.selectedMonth.value,
-                            items: ['None', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              view_LedgerController.view_LedgerModel.selectedMonth.value = value!;
-                              if (value != 'None') {
-                                final monthIndex = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].indexOf(value) + 1;
+              return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Select date',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                    ),
+                    // const SizedBox(width: 8),
+                    Obx(
+                      () => SizedBox(
+                          child: view_LedgerController.view_LedgerModel.startDateController.value.text.isNotEmpty || view_LedgerController.view_LedgerModel.endDateController.value.text.isNotEmpty
+                              ? TextButton(
+                                  onPressed: () {
+                                    view_LedgerController.view_LedgerModel.selectedMonth.value = 'None';
+                                    view_LedgerController.view_LedgerModel.startDateController.value.clear();
+                                    view_LedgerController.view_LedgerModel.endDateController.value.clear();
+                                  },
+                                  child: const Text(
+                                    'Clear',
+                                    style: TextStyle(fontSize: Primary_font_size.Text7),
+                                  ),
+                                )
+                              : const SizedBox()),
+                    ),
+                    const Spacer(),
+                    Obx(() {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 100, // Adjust width as needed
+                        height: 30, // Adjust height as needed
+                        child: DropdownButtonFormField<String>(
+                          menuMaxHeight: 300,
+                          value: view_LedgerController.view_LedgerModel.selectedMonth.value,
+                          items: ['None', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            view_LedgerController.view_LedgerModel.selectedMonth.value = value!;
+                            if (value != 'None') {
+                              final monthIndex = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].indexOf(value) + 1;
 
-                                final now = DateTime.now();
-                                final year = now.year;
-                                final firstDay = DateTime(year, monthIndex, 1);
-                                final lastDay = monthIndex < 12 ? DateTime(year, monthIndex + 1, 0) : DateTime(year + 1, 1, 0);
+                              final now = DateTime.now();
+                              final year = now.year;
+                              final firstDay = DateTime(year, monthIndex, 1);
+                              final lastDay = monthIndex < 12 ? DateTime(year, monthIndex + 1, 0) : DateTime(year + 1, 1, 0);
 
-                                String formatDate(DateTime date) {
-                                  return "${date.year.toString().padLeft(4, '0')}-"
-                                      "${date.month.toString().padLeft(2, '0')}-"
-                                      "${date.day.toString().padLeft(2, '0')}";
-                                }
-
-                                view_LedgerController.view_LedgerModel.startDateController.value.text = formatDate(firstDay);
-                                view_LedgerController.view_LedgerModel.endDateController.value.text = formatDate(lastDay);
-                              } else {
-                                view_LedgerController.view_LedgerModel.startDateController.value.clear();
-                                view_LedgerController.view_LedgerModel.endDateController.value.clear();
+                              String formatDate(DateTime date) {
+                                return "${date.year.toString().padLeft(4, '0')}-"
+                                    "${date.month.toString().padLeft(2, '0')}-"
+                                    "${date.day.toString().padLeft(2, '0')}";
                               }
-                            },
-                            decoration: const InputDecoration(
-                              isDense: true,
-                              contentPadding: EdgeInsets.symmetric(vertical: 8),
-                              border: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              ),
+
+                              view_LedgerController.view_LedgerModel.startDateController.value.text = formatDate(firstDay);
+                              view_LedgerController.view_LedgerModel.endDateController.value.text = formatDate(lastDay);
+                            } else {
+                              view_LedgerController.view_LedgerModel.startDateController.value.clear();
+                              view_LedgerController.view_LedgerModel.endDateController.value.clear();
+                            }
+                          },
+                          decoration: const InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.symmetric(vertical: 8),
+                            border: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
                             ),
-                            style: const TextStyle(
-                              fontSize: Primary_font_size.Text7,
-                              color: Color.fromARGB(255, 154, 152, 152),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
                             ),
-                            dropdownColor: Primary_colors.Dark,
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
                           ),
-                        );
-                      }),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: SizedBox(
-                          height: 35,
-                          child: TextFormField(
-                            style: const TextStyle(
+                          style: const TextStyle(
+                            fontSize: Primary_font_size.Text7,
+                            color: Color.fromARGB(255, 154, 152, 152),
+                          ),
+                          dropdownColor: Primary_colors.Dark,
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+                const SizedBox(height: 15),
+                Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: 35,
+                        child: TextFormField(
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 154, 152, 152),
+                            fontSize: Primary_font_size.Text7,
+                          ),
+                          controller: view_LedgerController.view_LedgerModel.startDateController.value,
+                          readOnly: true,
+                          onTap: () => widget.selectDate(context, view_LedgerController.view_LedgerModel.startDateController.value),
+                          decoration: InputDecoration(
+                            labelText: 'From',
+                            labelStyle: const TextStyle(
                               color: Color.fromARGB(255, 154, 152, 152),
                               fontSize: Primary_font_size.Text7,
                             ),
-                            controller: view_LedgerController.view_LedgerModel.startDateController.value,
-                            readOnly: true,
-                            onTap: () => widget.selectDate(context, view_LedgerController.view_LedgerModel.startDateController.value),
-                            decoration: InputDecoration(
-                              labelText: 'From',
-                              labelStyle: const TextStyle(
-                                color: Color.fromARGB(255, 154, 152, 152),
-                                fontSize: Primary_font_size.Text7,
-                              ),
-                              suffixIcon: const Icon(
-                                Icons.calendar_today,
-                                size: 20,
-                                color: Color.fromARGB(255, 85, 84, 84),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                            suffixIcon: const Icon(
+                              Icons.calendar_today,
+                              size: 20,
+                              color: Color.fromARGB(255, 85, 84, 84),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: SizedBox(
-                          height: 35,
-                          child: TextFormField(
-                            style: const TextStyle(
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: SizedBox(
+                        height: 35,
+                        child: TextFormField(
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 154, 152, 152),
+                            fontSize: Primary_font_size.Text7,
+                          ),
+                          controller: view_LedgerController.view_LedgerModel.endDateController.value,
+                          readOnly: true,
+                          onTap: () => widget.selectDate(context, view_LedgerController.view_LedgerModel.endDateController.value),
+                          decoration: InputDecoration(
+                            labelText: 'To',
+                            labelStyle: const TextStyle(
                               color: Color.fromARGB(255, 154, 152, 152),
                               fontSize: Primary_font_size.Text7,
                             ),
-                            controller: view_LedgerController.view_LedgerModel.endDateController.value,
-                            readOnly: true,
-                            onTap: () => widget.selectDate(context, view_LedgerController.view_LedgerModel.endDateController.value),
-                            decoration: InputDecoration(
-                              labelText: 'To',
-                              labelStyle: const TextStyle(
-                                color: Color.fromARGB(255, 154, 152, 152),
-                                fontSize: Primary_font_size.Text7,
-                              ),
-                              suffixIcon: const Icon(
-                                Icons.calendar_today,
-                                size: 20,
-                                color: Color.fromARGB(255, 85, 84, 84),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                            suffixIcon: const Icon(
+                              Icons.calendar_today,
+                              size: 20,
+                              color: Color.fromARGB(255, 85, 84, 84),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 35),
-                ],
-              );
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 35),
+                view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'GST Ledger'
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'GST Ledger Type',
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                          ),
+                          const SizedBox(height: 8),
+                          Obx(() {
+                            return Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: const Color.fromARGB(255, 85, 84, 84)),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: DropdownButtonFormField<String>(
+                                value: view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value,
+                                items: ['Consolidate', 'Input', 'Output'].map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value = value!;
+                                },
+                                decoration: const InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                                  border: InputBorder.none,
+                                ),
+                                style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 154, 152, 152)),
+                                dropdownColor: Primary_colors.Dark,
+                              ),
+                            );
+                          }),
+                        ],
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'TDS Ledger Type',
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                          ),
+                          const SizedBox(height: 8),
+                          Obx(() {
+                            return Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: const Color.fromARGB(255, 85, 84, 84)),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: DropdownButtonFormField<String>(
+                                value: view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value,
+                                items: ['Consolidate', 'Input', 'Output'].map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value = value!;
+                                },
+                                decoration: const InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                                  border: InputBorder.none,
+                                ),
+                                style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 154, 152, 152)),
+                                dropdownColor: Primary_colors.Dark,
+                              ),
+                            );
+                          }),
+                        ],
+                      ),
+              ]);
             }),
 
             const Spacer(),

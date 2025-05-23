@@ -1,5 +1,14 @@
 # Project-level configuration.
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.10)
+
+# ✅ Add this block to fix plugin linking errors (CMP0079)
+if(POLICY CMP0079)
+  cmake_policy(SET CMP0079 NEW)
+endif()
+if(POLICY CMP0087)
+  cmake_policy(SET CMP0087 NEW)
+endif()
+
 project(ERPs LANGUAGES CXX)
 
 # The name of the executable created for the application. Change this to change

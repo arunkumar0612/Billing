@@ -11,11 +11,11 @@ import 'package:ssipl_billing/4.SALES/models/entities/CustomPDF_entities/CustomP
 import 'package:ssipl_billing/4.SALES/models/entities/Invoice_entities.dart';
 import 'package:ssipl_billing/4.SALES/views/CustomPDF/Invoice/Invoice_PostAll.dart';
 import 'package:ssipl_billing/COMPONENTS-/CustomPDF_templates/CustomPDF_Invoice_template.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/helpers/returns.dart';
-import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/UTILS/helpers/returns.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
-import '../../../../API-/invoker.dart';
+import '../../../../API/invoker.dart';
 
 class Custom_Invoice_Services {
   final Invoker apiController = Get.find<Invoker>();

@@ -24,6 +24,7 @@ class View_LedgerModel extends GetxController with GetSingleTickerProviderStateM
   RxString selectedsalescustomerID = ''.obs;
   RxString selectedsubcustomer = 'None'.obs;
   RxString selectedsubcustomerID = ''.obs;
+  RxString selectedAccountLedgerType = ''.obs;
   var salesCustomerList = <CustomerInfo>[].obs;
   var subCustomerList = <CustomerInfo>[].obs;
 }

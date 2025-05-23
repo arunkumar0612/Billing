@@ -70,6 +70,7 @@ class GSTEntryModel {
   final int gstLedgerId;
   final int voucherId;
   final String voucherNumber;
+  final String invoice_number;
   final String clientName;
   final double igst;
   final double cgst;
@@ -88,6 +89,7 @@ class GSTEntryModel {
     required this.gstLedgerId,
     required this.voucherId,
     required this.voucherNumber,
+    required this.invoice_number,
     required this.clientName,
     required this.igst,
     required this.cgst,
@@ -108,6 +110,7 @@ class GSTEntryModel {
       gstLedgerId: json['gstledger_id'] ?? 0,
       voucherId: json['voucher_id'] ?? 0,
       voucherNumber: json['voucher_number'] ?? '',
+      invoice_number: json['invoice_number'] ?? '',
       clientName: json['client_name'] ?? '',
       igst: (json['IGST'] ?? 0).toDouble(),
       cgst: (json['CGST'] ?? 0).toDouble(),

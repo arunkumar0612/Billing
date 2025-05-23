@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:glowy_borders/glowy_borders.dart';
-import 'package:ssipl_billing/IAM-/services/verifyOTP_services.dart';
+import 'package:ssipl_billing/IAM/services/verifyOTP_services.dart';
 
 import '../../COMPONENTS-/Basic_DialogBox.dart';
-import '../../THEMES-/style.dart';
+import '../../THEMES/style.dart';
 import '../controllers/IAM_actions.dart';
 
 class Verify_OTP extends StatefulWidget with VerifyotpServices {

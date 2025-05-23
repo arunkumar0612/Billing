@@ -8,13 +8,13 @@ import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart' show SUBSCRIPTION_QuoteController;
 import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart' show PostSubQuote;
-import 'package:ssipl_billing/API-/api.dart' show API;
-import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
+import 'package:ssipl_billing/API/api.dart' show API;
+import 'package:ssipl_billing/API/invoker.dart' show Invoker;
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Error_dialog, Success_dialog;
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart' show CMDmResponse;
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
-import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart' show getCurrentDate;
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart' show SessiontokenController;
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart' show getCurrentDate;
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 mixin SUBSCRIPTION_QuotePostServices {

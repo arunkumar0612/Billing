@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:ssipl_billing/IAM-/services/register_services.dart';
+import 'package:ssipl_billing/IAM/services/register_services.dart';
 
-import '../../IAM-/controllers/IAM_actions.dart';
+import '../../IAM/controllers/IAM_actions.dart';
 
 mixin RegisterValidator {
   final RegisterController registerController = Get.find<RegisterController>();

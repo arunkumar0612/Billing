@@ -5,7 +5,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart';
-import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 Future<Uint8List> SUBSCRIPTION_generate_Quote(PdfPageFormat pageFormat, SUBSCRIPTION_Quote instQuote) async {
   final quotation = SUBSCRIPTION_Quotation(instQuote: instQuote);
@@ -1177,7 +1177,7 @@ class SUBSCRIPTION_Quotation {
                             child: pw.Row(
                               children: [
                                 pw.Container(
-                                  width:80,
+                                  width: 80,
                                   child: regular(recommendation.key.toString(), 10),
                                 ),
                                 regular(":", 10),

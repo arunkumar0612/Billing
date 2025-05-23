@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/models/constants/CustomPDF_constants/CustomPDF_invoice_constants.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
-import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 class CustomPDF_InvoiceController extends GetxController {
   var pdfModel = CustomPDF_InvoiceModel().obs;

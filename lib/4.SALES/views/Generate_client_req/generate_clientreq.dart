@@ -6,7 +6,7 @@ import 'package:ssipl_billing/4.SALES/views/Generate_client_req/clientreq_detail
 import 'package:ssipl_billing/4.SALES/views/Generate_client_req/clientreq_details/enquiry_details.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_client_req/clientreq_note.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_client_req/clientreq_products.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../controllers/ClientReq_actions.dart';

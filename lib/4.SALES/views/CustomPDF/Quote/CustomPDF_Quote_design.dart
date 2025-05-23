@@ -6,9 +6,9 @@ import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPD
 import 'package:ssipl_billing/4.SALES/services/CustomPDF_services/Quote/CustomPDF_Quote_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
-import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
+import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
 class CustomPDF_QuotePDF {
   final CustomPDF_QuoteController pdfpopup_controller = Get.find<CustomPDF_QuoteController>();

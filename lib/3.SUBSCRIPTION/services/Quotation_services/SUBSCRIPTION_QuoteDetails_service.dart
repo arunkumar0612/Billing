@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
-import 'package:ssipl_billing/API-/api.dart' show API;
-import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
+import 'package:ssipl_billing/API/api.dart' show API;
+import 'package:ssipl_billing/API/invoker.dart' show Invoker;
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart';
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 
 mixin SUBSCRIPTION_QuotedetailsService {
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();

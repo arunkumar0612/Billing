@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/services/Invoice_services/InvoiceDetails_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/validators/minimal_validators.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
 import '../../controllers/Invoice_actions.dart';
 

@@ -6,7 +6,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:ssipl_billing/4.SALES/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/Quote_entities.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/product_entities.dart';
-import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 Future<Uint8List> generate_Quote(PdfPageFormat pageFormat, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, GSTIN, quote_gstTotals, isGST_local) async {
   final quotation = Quotation(

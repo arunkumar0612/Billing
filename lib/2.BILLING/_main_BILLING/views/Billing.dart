@@ -10,8 +10,9 @@ import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_action
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/views/filter.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/views/piechart.dart';
-import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
-import '../../../THEMES-/style.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
+
+import '../../../THEMES/style.dart';
 
 PageRouteBuilder _createCustomPageRoute(Widget Function() navigation) {
   return PageRouteBuilder(
@@ -782,10 +783,10 @@ class _BillingState extends State<Billing> {
                                   style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                 ),
                               ),
-                              const Expanded(
+                              Expanded(
                                 flex: 2,
                                 child: Text(
-                                  "VCH905857",
+                                  mainBilling_Controller.billingModel.subscriptionInvoiceList[index].invoiceNo,
                                   style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                 ),
                               ),

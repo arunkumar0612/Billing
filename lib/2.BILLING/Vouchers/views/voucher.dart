@@ -9,8 +9,8 @@ import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart
 import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/services/voucher_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 class Voucher extends StatefulWidget with VoucherService {
   Voucher({super.key});
@@ -1020,7 +1020,7 @@ class _VoucherState extends State<Voucher> {
                                       const SizedBox(height: 12),
                                       Expanded(
                                         child: ListView.separated(
-                                          itemCount: 2,
+                                          itemCount: selectedVouchers.selectedVoucherList.length,
                                           separatorBuilder: (context, index) => const Divider(
                                             color: Color.fromARGB(255, 94, 94, 94),
                                             thickness: 1,
@@ -2003,28 +2003,6 @@ class _VoucherState extends State<Voucher> {
                           'Vouchers',
                           style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text12),
                         ),
-                        Obx(
-                          () => voucherController.voucherModel.showDeleteButton.value
-                              ? Row(
-                                  children: [
-                                    const SizedBox(width: 20),
-                                    ElevatedButton(
-                                      onPressed: () => widget.deleteSelectedItems(context),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.red,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(15),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        'Delete',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : const SizedBox.shrink(),
-                        ),
                       ],
                     ),
                     Row(
@@ -2059,24 +2037,40 @@ class _VoucherState extends State<Voucher> {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        if (voucherController.voucherModel.selectedItems.contains(true))
-                          ElevatedButton(
-                            onPressed: () async {
-                              voucherController.reset_voucherClear_popup();
-                              var selectedVouchers = await widget.calculate_SelectedVouchers();
-                              _show_MultipleCloseVoucherPopup(selectedVouchers);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blueAccent,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                            ),
-                            child: const Text(
-                              'Club Vouchers',
-                              style: TextStyle(fontSize: Primary_font_size.Text6),
-                            ),
+                        Obx(
+                          () => Row(
+                            children: [
+                              const SizedBox(width: 20),
+                              Tooltip(
+                                message: voucherController.voucherModel.showDeleteButton.value
+                                    ? '' // No tooltip when enabled
+                                    : 'Please select the pending vouchers',
+                                child: ElevatedButton(
+                                  onPressed: voucherController.voucherModel.showDeleteButton.value
+                                      ? () async {
+                                          voucherController.reset_voucherClear_popup();
+                                          var selectedVouchers = await widget.calculate_SelectedVouchers();
+                                          _show_MultipleCloseVoucherPopup(selectedVouchers);
+                                        }
+                                      : null, // Disabled when false
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: voucherController.voucherModel.showDeleteButton.value ? Colors.blueAccent : Colors.grey,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    foregroundColor: Colors.white,
+                                    disabledBackgroundColor: Colors.grey,
+                                    disabledForegroundColor: Colors.white70,
+                                  ),
+                                  child: const Text(
+                                    'Club Vouchers',
+                                    style: TextStyle(fontSize: Primary_font_size.Text6),
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
+                        ),
                         const SizedBox(width: 10),
                         ElevatedButton(
                           onPressed: () {
@@ -2305,25 +2299,30 @@ class _VoucherState extends State<Voucher> {
                                               voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false);
                                             }
 
-                                            return Checkbox(
-                                              value: index < voucherController.voucherModel.selectedItems.length ? voucherController.voucherModel.selectedItems[index] : false,
-                                              onChanged: (bool? value) {
-                                                if (index < voucherController.voucherModel.selectedItems.length) {
-                                                  voucherController.voucherModel.selectedItems[index] = value ?? false;
-                                                  widget.updateDeleteButtonVisibility();
-                                                }
-                                              },
-                                              activeColor: Colors.blueAccent,
-                                              fillColor: WidgetStateProperty.resolveWith<Color>((states) {
-                                                if (states.contains(WidgetState.selected)) {
-                                                  return Colors.blueAccent;
-                                                }
-                                                return Colors.white;
-                                              }),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(4),
-                                              ),
-                                            );
+                                            return voucher.fullyCleared == 0
+                                                ? Checkbox(
+                                                    value: index < voucherController.voucherModel.selectedItems.length ? voucherController.voucherModel.selectedItems[index] : false,
+                                                    onChanged: (bool? value) {
+                                                      if (index < voucherController.voucherModel.selectedItems.length) {
+                                                        voucherController.voucherModel.selectedItems[index] = value ?? false;
+                                                        widget.updateDeleteButtonVisibility();
+                                                      }
+                                                    },
+                                                    activeColor: Colors.blueAccent,
+                                                    fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+                                                      if (states.contains(WidgetState.selected)) {
+                                                        return Colors.blueAccent;
+                                                      }
+                                                      return Colors.white;
+                                                    }),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(4),
+                                                    ),
+                                                  )
+                                                : Icon(
+                                                    Icons.check_rounded,
+                                                    color: Colors.green,
+                                                  );
                                           },
                                         ),
                                       ),

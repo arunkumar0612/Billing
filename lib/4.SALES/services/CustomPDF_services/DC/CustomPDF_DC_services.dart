@@ -8,10 +8,10 @@ import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
 import 'package:ssipl_billing/4.SALES/views/CustomPDF/DC/DC_PostAll.dart';
 import 'package:ssipl_billing/COMPONENTS-/CustomPDF_templates/CustomPDF_DC_template.dart';
-import 'package:ssipl_billing/THEMES-/style.dart';
-import 'package:ssipl_billing/UTILS-/helpers/returns.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/UTILS/helpers/returns.dart';
 
-import '../../../../API-/invoker.dart';
+import '../../../../API/invoker.dart';
 
 class Custom_Dc_Services {
   final Invoker apiController = Get.find<Invoker>();

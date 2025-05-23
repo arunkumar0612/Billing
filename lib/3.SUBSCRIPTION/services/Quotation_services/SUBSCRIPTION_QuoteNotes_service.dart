@@ -8,12 +8,12 @@ import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart' show SUBSCRIPTION_QuoteController;
 import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart' show Package, SUBSCRIPTION_Quote, Site;
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_Quote/SUBSCRIPTION_quote_template.dart' show SUBSCRIPTION_generate_Quote;
-import 'package:ssipl_billing/API-/invoker.dart' show Invoker;
-import 'package:ssipl_billing/API-/invoker.dart';
+import 'package:ssipl_billing/API/invoker.dart' show Invoker;
+import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
-import 'package:ssipl_billing/IAM-/controllers/IAM_actions.dart' show SessiontokenController;
-import 'package:ssipl_billing/UTILS-/helpers/returns.dart';
-import 'package:ssipl_billing/UTILS-/helpers/support_functions.dart';
+import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart' show SessiontokenController;
+import 'package:ssipl_billing/UTILS/helpers/returns.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 mixin SUBSCRIPTION_QuotenotesService {
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();

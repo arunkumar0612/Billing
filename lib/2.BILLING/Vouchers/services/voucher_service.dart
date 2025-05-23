@@ -199,17 +199,7 @@ mixin VoucherService {
       totalIGST: selected.fold(0, (sum, v) => sum + v.igst),
       totalTDS: selected.fold(0, (sum, v) => sum + v.tdsCalculationAmount),
     );
-    print(voucherController.voucherModel.voucher_list[8].pendingAmount);
-    print(voucherController.voucherModel.voucher_list[8].cgst);
-    print(voucherController.voucherModel.voucher_list[8].sgst);
-    print(voucherController.voucherModel.voucher_list[8].igst);
-    print(voucherController.voucherModel.voucher_list[8].tdsCalculationAmount);
-    print(voucherController.voucherModel.voucher_list[9].pendingAmount);
-    print(voucherController.voucherModel.voucher_list[9].cgst);
-    print(voucherController.voucherModel.voucher_list[9].sgst);
-    print(voucherController.voucherModel.voucher_list[9].igst);
-    print(voucherController.voucherModel.voucher_list[9].tdsCalculationAmount);
-    print(group);
+
     return group;
   }
 

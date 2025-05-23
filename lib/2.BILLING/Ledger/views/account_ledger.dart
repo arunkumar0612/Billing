@@ -14,6 +14,7 @@ import 'package:ssipl_billing/2.BILLING/Ledger/controller/account_ledger_action.
 import 'package:ssipl_billing/2.BILLING/Ledger/services/account_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_PDF_template/account_ledger_pdf_template.dart';
+import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
@@ -21,7 +22,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../../THEMES/style.dart';
 
-class AccountLedger extends StatefulWidget with Account_LedgerService {
+class AccountLedger extends StatefulWidget with Account_LedgerService, main_BillingService {
   AccountLedger({super.key});
 
   @override
@@ -293,6 +294,7 @@ class _accountLedgerState extends State<AccountLedger> {
                               ),
                               // Vertical line after 'Reference No' column
                               const SizedBox(width: 3),
+
                               Expanded(
                                 flex: 2,
                                 child: Padding(
@@ -300,10 +302,24 @@ class _accountLedgerState extends State<AccountLedger> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        textAlign: TextAlign.center,
-                                        account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].invoiceNumber,
-                                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                      MouseRegion(
+                                        cursor: SystemMouseCursors.click,
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            if (account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].invoiceType == 'subscription') {
+                                              bool success = await widget.GetSubscriptionPDFfile(
+                                                  context: context, invoiceNo: account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].invoiceNumber);
+                                              if (success) {
+                                                widget.showPDF(context, account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].invoiceNumber);
+                                              }
+                                            }
+                                          },
+                                          child: Text(
+                                            textAlign: TextAlign.center,
+                                            account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].invoiceNumber,
+                                            style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),

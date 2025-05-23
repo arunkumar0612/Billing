@@ -584,7 +584,7 @@ class _BillingState extends State<Billing> {
         Expanded(
           flex: 2,
           child: Text(
-            'Invoice ID',
+            'Invoice No',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
@@ -622,6 +622,13 @@ class _BillingState extends State<Billing> {
           flex: 2,
           child: Text(
             'Amount',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Duedate',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
@@ -776,15 +783,26 @@ class _BillingState extends State<Billing> {
                               ),
                               Expanded(
                                 flex: 2,
-                                child: Text(
-                                  mainBilling_Controller.billingModel.subscriptionInvoiceList[index].invoiceNo,
-                                  style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                child: MouseRegion(
+                                  cursor: SystemMouseCursors.click,
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      bool success = await widget.GetSubscriptionPDFfile(context: context, invoiceNo: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].invoiceNo);
+                                      if (success) {
+                                        widget.showPDF(context, mainBilling_Controller.billingModel.subscriptionInvoiceList[index].invoiceNo);
+                                      }
+                                    },
+                                    child: Text(
+                                      mainBilling_Controller.billingModel.subscriptionInvoiceList[index].invoiceNo,
+                                      style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                    ),
+                                  ),
                                 ),
                               ),
                               Expanded(
                                 flex: 2,
                                 child: Text(
-                                  mainBilling_Controller.billingModel.subscriptionInvoiceList[index].invoiceNo,
+                                  mainBilling_Controller.billingModel.subscriptionInvoiceList[index].voucher_number,
                                   style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                 ),
                               ),
@@ -860,10 +878,29 @@ class _BillingState extends State<Billing> {
                                   ),
                                 ),
                               ),
-                              const Expanded(
+                              Expanded(
+                                  flex: 2,
+                                  child: MouseRegion(
+                                    cursor: SystemMouseCursors.click,
+                                    child: GestureDetector(
+                                      onTap: () {},
+                                      child: Text(
+                                        // textAlign: TextAlign.left,
+                                        mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate != null
+                                            ? mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate!
+                                            : '-',
+                                        style: const TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: Primary_font_size.Text7,
+                                        ),
+                                      ),
+                                    ),
+                                  )),
+                              Expanded(
                                 flex: 2,
                                 child: Text(
-                                  "9 days",
+                                  // textAlign: TextAlign.center,
+                                  (mainBilling_Controller.billingModel.subscriptionInvoiceList[index].overdueDays ?? 0).toString(),
                                   style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                 ),
                               ),

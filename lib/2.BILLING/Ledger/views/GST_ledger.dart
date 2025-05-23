@@ -16,6 +16,7 @@ import 'package:ssipl_billing/2.BILLING/Ledger/services/GST_ledger_service.dart'
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_PDF_template/GST_ledger_pdf_template.dart';
+import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
@@ -23,7 +24,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../../THEMES/style.dart';
 
-class GSTLedger extends StatefulWidget with GST_LedgerService, View_LedgerService {
+class GSTLedger extends StatefulWidget with GST_LedgerService, View_LedgerService, main_BillingService {
   GSTLedger({super.key});
 
   @override
@@ -289,9 +290,23 @@ class _GSTLedgerState extends State<GSTLedger> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number,
-                                          style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                        MouseRegion(
+                                          cursor: SystemMouseCursors.click,
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              if (gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoiceType == 'subscription') {
+                                                bool success = await widget.GetSubscriptionPDFfile(
+                                                    context: context, invoiceNo: gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number);
+                                                if (success) {
+                                                  widget.showPDF(context, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number);
+                                                }
+                                              }
+                                            },
+                                            child: Text(
+                                              gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number,
+                                              style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     )),

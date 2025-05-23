@@ -16,6 +16,7 @@ import 'package:ssipl_billing/2.BILLING/Ledger/services/TDS_ledger_service.dart'
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_PDF_template/TDS_ledger_pdf_template.dart';
+import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
@@ -23,7 +24,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../../THEMES/style.dart';
 
-class TDSLedger extends StatefulWidget with TDS_LedgerService, View_LedgerService {
+class TDSLedger extends StatefulWidget with TDS_LedgerService, View_LedgerService, main_BillingService {
   TDSLedger({super.key});
 
   @override
@@ -251,9 +252,23 @@ class _TDSLedgerState extends State<TDSLedger> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number,
-                                          style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                        MouseRegion(
+                                          cursor: SystemMouseCursors.click,
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              if (tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoiceType == 'subscription') {
+                                                bool success = await widget.GetSubscriptionPDFfile(
+                                                    context: context, invoiceNo: tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number);
+                                                if (success) {
+                                                  widget.showPDF(context, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number);
+                                                }
+                                              }
+                                            },
+                                            child: Text(
+                                              tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number,
+                                              style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     )),

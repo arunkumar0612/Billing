@@ -8,11 +8,12 @@ import 'package:intl/intl.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/services/voucher_service.dart';
+import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
-class Voucher extends StatefulWidget with VoucherService {
+class Voucher extends StatefulWidget with VoucherService, main_BillingService {
   Voucher({super.key});
 
   @override
@@ -2238,7 +2239,7 @@ class _VoucherState extends State<Voucher> {
                           ),
                           const SizedBox(width: 3),
                           const Expanded(
-                            flex: 2,
+                            flex: 1,
                             child: Text(
                               'Amount',
                               style: TextStyle(
@@ -2250,8 +2251,35 @@ class _VoucherState extends State<Voucher> {
                           ),
                           const SizedBox(width: 3),
                           const Expanded(
-                            flex: 2,
+                            flex: 1,
                             child: Text(
+                              textAlign: TextAlign.center,
+                              'Due Date',
+                              style: TextStyle(
+                                color: Primary_colors.Color1,
+                                fontWeight: FontWeight.bold,
+                                fontSize: Primary_font_size.Text7,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 3),
+                          const Expanded(
+                            flex: 1,
+                            child: Text(
+                              textAlign: TextAlign.center,
+                              'OverDue days',
+                              style: TextStyle(
+                                color: Primary_colors.Color1,
+                                fontWeight: FontWeight.bold,
+                                fontSize: Primary_font_size.Text7,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 3),
+                          const Expanded(
+                            flex: 1,
+                            child: Text(
+                              textAlign: TextAlign.center,
                               'Status',
                               style: TextStyle(
                                 color: Primary_colors.Color1,
@@ -2351,11 +2379,24 @@ class _VoucherState extends State<Voucher> {
                                       const SizedBox(width: 3),
                                       Expanded(
                                         flex: 2,
-                                        child: Text(
-                                          voucher.invoiceNumber,
-                                          style: const TextStyle(
-                                            color: Primary_colors.Color1,
-                                            fontSize: Primary_font_size.Text7,
+                                        child: MouseRegion(
+                                          cursor: SystemMouseCursors.click,
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              if (voucher.invoiceType == 'subscription') {
+                                                bool success = await widget.GetSubscriptionPDFfile(context: context, invoiceNo: voucher.invoiceNumber);
+                                                if (success) {
+                                                  widget.showPDF(context, voucher.invoiceNumber);
+                                                }
+                                              }
+                                            },
+                                            child: Text(
+                                              voucher.invoiceNumber,
+                                              style: const TextStyle(
+                                                color: Colors.blue,
+                                                fontSize: Primary_font_size.Text7,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -2520,7 +2561,7 @@ class _VoucherState extends State<Voucher> {
                                       ),
                                       const SizedBox(width: 3),
                                       Expanded(
-                                        flex: 2,
+                                        flex: 1,
                                         child: Text(
                                           formatCurrency(voucher.totalAmount),
                                           style: const TextStyle(
@@ -2531,8 +2572,39 @@ class _VoucherState extends State<Voucher> {
                                       ),
                                       const SizedBox(width: 3),
                                       Expanded(
-                                        flex: 2,
+                                        flex: 1,
+                                        child: MouseRegion(
+                                          cursor: SystemMouseCursors.click,
+                                          child: GestureDetector(
+                                            onTap: () {},
+                                            child: Text(
+                                              textAlign: TextAlign.center,
+                                              voucher.dueDate == null ? '-' : formatDate(voucher.dueDate!),
+                                              style: const TextStyle(
+                                                color: Colors.blue,
+                                                fontSize: Primary_font_size.Text7,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 3),
+                                      Expanded(
+                                        flex: 1,
                                         child: Text(
+                                          textAlign: TextAlign.center,
+                                          (voucher.overdueDays ?? 0).toString(),
+                                          style: const TextStyle(
+                                            color: Primary_colors.Color1,
+                                            fontSize: Primary_font_size.Text7,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 3),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          textAlign: TextAlign.center,
                                           (voucher.fullyCleared == 0 && voucher.partiallyCleared == 0)
                                               ? 'pending'
                                               : voucher.fullyCleared == 1
@@ -2542,9 +2614,9 @@ class _VoucherState extends State<Voucher> {
                                                       : '',
                                           style: TextStyle(
                                             color: (voucher.fullyCleared == 0 && voucher.partiallyCleared == 0)
-                                                ? Colors.red
+                                                ? const Color.fromARGB(255, 248, 71, 59)
                                                 : voucher.fullyCleared == 1
-                                                    ? Colors.green
+                                                    ? const Color.fromARGB(255, 105, 240, 112)
                                                     : voucher.partiallyCleared == 1
                                                         ? Colors.amber
                                                         : Colors.black,

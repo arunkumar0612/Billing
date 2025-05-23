@@ -1,24 +1,34 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/models/entities/Billing_entities.dart';
 import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/API/invoker.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
+import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 mixin main_BillingService {
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final MainBilling_Controller mainBilling_Controller = Get.find<MainBilling_Controller>();
-
+  final loader = LoadingOverlay();
   void get_SubscriptionInvoiceList() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.billing_subscriptionInvoice);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
+          mainBilling_Controller.billingModel.subscriptionInvoiceList.clear();
           for (int i = 0; i < value.data.length; i++) {
             mainBilling_Controller.addto_SubscriptionInvoiceList(SubscriptionInvoice.fromJson(value.data[i]));
           }
@@ -143,6 +153,137 @@ mixin main_BillingService {
       }
     } catch (e) {
       // Error_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
+  Future<bool> GetSubscriptionPDFfile({
+    required BuildContext context,
+    required String invoiceNo,
+  }) async {
+    try {
+      mainBilling_Controller.billingModel.pdfFile.value = null;
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({'invoicenumber': invoiceNo}, API.subscription_getRecurredBinaryfile_API);
+      if (response?['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        if (value.code) {
+          await mainBilling_Controller.PDFfileApiData(value);
+          return true;
+          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Error_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+      return false;
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+      return false;
+    }
+  }
+
+  void showPDF(context, String filename) async {
+    if (mainBilling_Controller.billingModel.pdfFile.value != null) {
+      await showDialog(
+        context: context,
+        builder: (context) => Dialog(
+          insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+          child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+              height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
+              child: Stack(
+                children: [
+                  SfPdfViewer.file(mainBilling_Controller.billingModel.pdfFile.value!),
+                  Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: IconButton(
+                          onPressed: () {
+                            downloadPdf(
+                                context,
+                                path
+                                    .basename(filename)
+                                    .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
+                                    .replaceAll(" ", ""),
+                                mainBilling_Controller.billingModel.pdfFile.value);
+                          },
+                          icon: const Icon(
+                            Icons.download,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ))
+                ],
+              )),
+        ),
+      );
+    }
+  }
+
+  Future<File> savePdfToTemp(Uint8List pdfData) async {
+    final tempDir = await getTemporaryDirectory();
+    final tempFile = File('${tempDir.path}/temp_pdf.pdf');
+    await tempFile.writeAsBytes(pdfData, flush: true);
+    return tempFile;
+  }
+
+  Future<void> downloadPdf(BuildContext context, String filename, File? pdfFile) async {
+    try {
+      loader.start(context);
+
+      // ✅ Let the loader show before blocking UI
+      await Future.delayed(const Duration(milliseconds: 300));
+
+      if (pdfFile == null) {
+        loader.stop();
+        if (kDebugMode) {
+          print("No PDF file found to download.");
+        }
+        Error_dialog(
+          context: context,
+          title: "No PDF Found",
+          content: "There is no PDF file to download.",
+          // showCancel: false,
+        );
+        return;
+      }
+
+      await Future.delayed(const Duration(milliseconds: 100));
+
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(lockParentWindow: true);
+
+      // ✅ Always stop loader after native call
+      loader.stop();
+
+      if (selectedDirectory == null) {
+        if (kDebugMode) {
+          print("User cancelled the folder selection.");
+        }
+        Error_dialog(
+          context: context,
+          title: "Cancelled",
+          content: "Download cancelled. No folder was selected.",
+          // showCancel: false,
+        );
+        return;
+      }
+
+      String savePath = "$selectedDirectory/$filename.pdf";
+      await pdfFile.copy(savePath);
+
+      Success_SnackBar(context, "✅ PDF downloaded successfully to: $savePath");
+    } catch (e) {
+      loader.stop();
+      if (kDebugMode) {
+        print("❌ Error while downloading PDF: $e");
+      }
+      Error_dialog(
+        context: context,
+        title: "Error",
+        content: "An error occurred while downloading the PDF:\n$e",
+        // showCancel: false,
+      );
     }
   }
 

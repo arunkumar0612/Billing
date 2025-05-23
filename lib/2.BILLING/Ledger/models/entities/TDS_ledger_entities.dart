@@ -65,6 +65,7 @@ class TDSEntryModel {
   final double paidAmount;
   final double balance;
   final double runningBalance;
+  final String invoiceType;
 
   TDSEntryModel({
     required this.tdsLedgerId,
@@ -89,6 +90,7 @@ class TDSEntryModel {
     required this.paidAmount,
     required this.balance,
     required this.runningBalance,
+    required this.invoiceType,
   });
 
   factory TDSEntryModel.fromJson(Map<String, dynamic> json) {
@@ -115,6 +117,7 @@ class TDSEntryModel {
       paidAmount: (json['paidamount'] ?? 0).toDouble(),
       balance: (json['balance'] ?? 0).toDouble(),
       runningBalance: (json['runningbalance'] ?? 0).toDouble(),
+      invoiceType: json['invoice_type'] ?? '',
     );
   }
 
@@ -142,6 +145,7 @@ class TDSEntryModel {
       'paidamount': paidAmount,
       'balance': balance,
       'runningbalance': runningBalance,
+      'invoice_type': invoiceType
     };
   }
 }

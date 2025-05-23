@@ -84,6 +84,7 @@ class GSTEntryModel {
   final double subTotal;
   final String? description;
   final List<PaymentDetail>? paymentDetails;
+  final String invoiceType;
 
   GSTEntryModel({
     required this.gstLedgerId,
@@ -103,6 +104,7 @@ class GSTEntryModel {
     required this.subTotal,
     this.description,
     this.paymentDetails,
+    required this.invoiceType,
   });
 
   factory GSTEntryModel.fromJson(Map<String, dynamic> json) {
@@ -124,6 +126,7 @@ class GSTEntryModel {
       subTotal: (json['subtotal'] ?? 0).toDouble(),
       description: json['description'],
       paymentDetails: (json['payment_details'] as List<dynamic>?)?.map((e) => PaymentDetail.fromJson(e)).toList(),
+      invoiceType: json['invoice_type'] ?? '',
     );
   }
 
@@ -145,6 +148,7 @@ class GSTEntryModel {
       'subtotal': subTotal,
       'description': description,
       'payment_details': paymentDetails?.map((e) => e.toJson()).toList(),
+      'invoice_type': invoiceType
     };
   }
 }

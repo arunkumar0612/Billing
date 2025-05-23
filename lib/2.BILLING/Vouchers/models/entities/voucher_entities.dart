@@ -29,6 +29,11 @@ class InvoicePaymentVoucher {
   DateTime date;
   List<TransactionDetail>? paymentDetails;
 
+  /// ✅ Newly added fields
+  DateTime? dueDate;
+  int? overdueDays;
+  List<OverdueHistory>? overdueHistory;
+
   InvoicePaymentVoucher({
     required this.voucher_id,
     required this.invoiceNumber,
@@ -53,6 +58,9 @@ class InvoicePaymentVoucher {
     required this.tdsCalculationAmount,
     required this.date,
     this.paymentDetails,
+    this.dueDate,
+    this.overdueDays,
+    this.overdueHistory,
   });
 
   factory InvoicePaymentVoucher.fromJson(Map<String, dynamic> json) {
@@ -79,7 +87,13 @@ class InvoicePaymentVoucher {
       tdsCalculation: (json['tds_calculation'] ?? 0),
       tdsCalculationAmount: (json['tdscalculation_amount'] ?? 0).roundToDouble(),
       date: DateTime.tryParse(json['date'] ?? '') ?? DateTime.now(),
-      paymentDetails: json['payment_details'] != null ? List<TransactionDetail>.from((json['payment_details'] as List).map((item) => TransactionDetail.fromJson(item))) : null,
+
+      /// ✅ Parse new fields
+      dueDate: json['Due_date'] != null ? DateTime.tryParse(json['Due_date']) : null,
+      overdueDays: json['Overdue_days'],
+      overdueHistory: json['Overdue_history'] != null ? List<OverdueHistory>.from(json['Overdue_history'].map((e) => OverdueHistory.fromJson(e))) : null,
+
+      paymentDetails: json['payment_details'] != null ? List<TransactionDetail>.from(json['payment_details'].map((item) => TransactionDetail.fromJson(item))) : null,
     );
   }
 
@@ -107,7 +121,31 @@ class InvoicePaymentVoucher {
       'tds_calculation': tdsCalculation,
       'tdscalculation_amount': tdsCalculationAmount,
       'date': date.toIso8601String(),
+      'due_date': dueDate?.toIso8601String(),
+      'Overdue_days': overdueDays,
+      'Overdue_history': overdueHistory?.map((e) => e.toJson()).toList(),
       'payment_details': paymentDetails?.map((e) => e.toJson()).toList(),
+    };
+  }
+}
+
+class OverdueHistory {
+  final String date;
+  final String feedback;
+
+  OverdueHistory({required this.date, required this.feedback});
+
+  factory OverdueHistory.fromJson(Map<String, dynamic> json) {
+    return OverdueHistory(
+      date: json['date'] ?? '',
+      feedback: json['feedback'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'date': date,
+      'feedback': feedback,
     };
   }
 }

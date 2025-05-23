@@ -160,6 +160,7 @@ class AccountLedger {
   final BillDetails billDetails;
   final double balance;
   final PaymentDetails? Payment_details;
+  final String invoiceType;
 
   AccountLedger({
     required this.clientLedgerId,
@@ -177,6 +178,7 @@ class AccountLedger {
     required this.balance,
     required this.description,
     required this.Payment_details,
+    required this.invoiceType,
   });
 
   factory AccountLedger.fromJson(Map<String, dynamic> json) {
@@ -196,6 +198,7 @@ class AccountLedger {
       balance: (json['balance'] ?? 0).toDouble(),
       description: json['description'] ?? "-",
       Payment_details: json['Payment_details'] != null ? PaymentDetails.fromJson(json['Payment_details']) : null,
+      invoiceType: json['invoice_type'] ?? '',
     );
   }
 
@@ -216,6 +219,7 @@ class AccountLedger {
       'balance': balance,
       'description': description,
       'Payment_details': Payment_details?.toJson(),
+      'invoice_type': invoiceType
     };
   }
 }

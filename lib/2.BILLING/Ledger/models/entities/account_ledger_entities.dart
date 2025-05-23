@@ -191,7 +191,7 @@ class AccountLedger {
       gstNumber: json['gst_number'] ?? '',
       invoiceNumber: json['invoicenumber'] ?? '',
       ledgerType: json['ledger_type'] ?? '',
-      updatedDate: DateTime.parse(json['date)'] ?? DateTime.now().toIso8601String()),
+      updatedDate: DateTime.parse(json['date'] ?? DateTime.now().toIso8601String()),
       debitAmount: (json['debitamount'] ?? 0).toDouble(),
       creditAmount: (json['creditamount'] ?? 0).toDouble(),
       billDetails: BillDetails.fromJson(json['billdetails'] ?? {}),
@@ -276,8 +276,8 @@ class BillDetails {
     final gst = GST.fromJson(json['gst'] ?? {});
     return BillDetails(
       gst: gst,
-      total: json['total'].toDouble() ?? 0.0,
-      subtotal: json['subtotal'].toDouble() ?? 0.0,
+      total: (json['total'] ?? 0).toDouble(),
+      subtotal: (json['subtotal'] ?? 0).toDouble(),
     );
   }
 

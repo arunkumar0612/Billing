@@ -137,7 +137,9 @@ mixin main_BillingService {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          print(value.data);
+          if (kDebugMode) {
+            print(value.data);
+          }
 
           for (int i = 0; i < value.data.length; i++) {
             mainBilling_Controller.addto_SalesInvoiceList(SalesInvoice.fromJson(value.data[i]));

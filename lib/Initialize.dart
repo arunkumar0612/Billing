@@ -32,6 +32,7 @@ void initialize_IAM() {
   Get.lazyPut<NewpasswordController>(() => NewpasswordController());
   Get.lazyPut<Invoker>(() => Invoker());
   Get.lazyPut<VerifyOTPControllers>(() => VerifyOTPControllers());
+  Get.lazyPut<GST_LedgerController>(() => GST_LedgerController());
 }
 
 void initialize_others() {

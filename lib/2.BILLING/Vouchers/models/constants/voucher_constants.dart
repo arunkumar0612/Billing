@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/view_ledger_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entities.dart';
 
 class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin {
@@ -24,10 +25,11 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   var is_Deducted = true.obs;
   var selectedValue = 'Full'.obs;
   var selectedpaymentStatus = 'Show All'.obs;
-  var selectedQuickFilter = 'Show All'.obs;
+  var selectedvouchertype = 'Show All'.obs;
   var selectedInvoiceType = 'Show All'.obs;
   var showCustomDateRange = false.obs;
   final dateController = TextEditingController().obs;
+  RxString selectedMonth = 'None'.obs;
   final startDateController = TextEditingController().obs;
   final endDateController = TextEditingController().obs;
   final searchController = TextEditingController().obs;
@@ -38,6 +40,12 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   final RxString closedDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
   var fileName = RxnString();
   var selectedFile = Rxn<File>();
+  RxString selectedsalescustomer = 'None'.obs;
+  // RxString selectedsalescustomerID = ''.obs;
+  RxString selectedsubcustomer = 'None'.obs;
+  RxString selectedcustomerID = ''.obs;
+  var salesCustomerList = <CustomerInfo>[].obs;
+  var subCustomerList = <CustomerInfo>[].obs;
 
   @override
   void onInit() {

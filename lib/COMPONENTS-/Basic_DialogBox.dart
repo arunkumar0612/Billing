@@ -190,10 +190,12 @@ Future<bool?> Warning_dialog({
         position: Tween<Offset>(
           begin: const Offset(0, 0.5),
           end: Offset.zero,
-        ).animate(CurvedAnimation(
-          parent: animation,
-          curve: Curves.fastOutSlowIn,
-        )),
+        ).animate(
+          CurvedAnimation(
+            parent: animation,
+            curve: Curves.fastOutSlowIn,
+          ),
+        ),
         child: FadeTransition(
           opacity: animation,
           child: AlertDialog(

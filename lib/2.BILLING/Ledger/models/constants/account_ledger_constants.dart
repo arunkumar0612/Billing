@@ -9,13 +9,13 @@ class Account_LedgerModel extends GetxController with GetSingleTickerProviderSta
     debitAmount: 0.0,
     ledgerList: [],
   ).obs;
-  var filteredAccount_Ledgers = AccountLedgerSummary(
+  var filteredaccount_Ledger_list = AccountLedgerSummary(
     balanceAmount: 0.0,
     creditAmount: 0.0,
     debitAmount: 0.0,
     ledgerList: [],
   ).obs;
-
+  final searchController = TextEditingController().obs;
   var whatsapp_selectionStatus = true.obs;
   var gmail_selectionStatus = true.obs;
   final phoneController = TextEditingController().obs;

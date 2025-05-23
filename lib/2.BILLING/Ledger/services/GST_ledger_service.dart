@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/GST_ledger_action.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
 // import 'package:ssipl_billing/2.BILLING/GST_Ledgers/controllers/gst_Ledger_action.dart';
 import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/API/invoker.dart';
@@ -8,20 +9,22 @@ import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 
 mixin GST_LedgerService {
   final GST_LedgerController gst_LedgerController = Get.find<GST_LedgerController>();
+  final View_LedgerController view_LedgerController = Get.find<View_LedgerController>();
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
-
   Future<void> get_GST_LedgerList() async {
     // loader.start(context);
     // await Future.delayed(const Duration(milliseconds: 1000));
     // response;
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
-        "gsttype": "output",
-        "invoicetype": "subscription",
+        "gsttype":
+            view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value.toLowerCase() == 'consolidate' ? '' : view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value.toLowerCase(),
+        "invoicetype":
+            view_LedgerController.view_LedgerModel.selectedinvoiceType.value.toLowerCase() == 'show all' ? '' : view_LedgerController.view_LedgerModel.selectedinvoiceType.value.toLowerCase(),
         // "customerid": "SB_1",
-        "startdate": "",
-        "enddate": "",
+        "startdate": view_LedgerController.view_LedgerModel.startDateController.value.text,
+        "enddate": view_LedgerController.view_LedgerModel.endDateController.value.text,
       },
       API.getgst_Ledgerlist,
     );

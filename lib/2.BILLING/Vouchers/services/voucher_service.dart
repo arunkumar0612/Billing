@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -7,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/view_ledger_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entities.dart';
 // import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
@@ -43,6 +46,64 @@ mixin VoucherService {
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
       return false;
+    }
+  }
+
+  Future<void> Get_SUBcustomerList() async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_ledgerSubscriptionCustomers);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          voucherController.voucherModel.subCustomerList.value = value.data.map((e) => CustomerInfo.fromJson(e)).toList();
+          // print('ijhietjwe${view_LedgerController.view_LedgerModel.subCustomerList}');
+          // salesController.addToCustompdfList(value);
+        } else {
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
+          // await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
+        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("error : $e");
+      }
+      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
+
+  Future<void> Get_SALEScustomerList() async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_ledgerSalesCustomers);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          voucherController.voucherModel.salesCustomerList.value = value.data.map((e) => CustomerInfo.fromJson(e)).toList();
+          // print(view_LedgerController.view_LedgerModel.salesCustomerList);
+          // salesController.addToCustompdfList(value);
+        } else {
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
+          // await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
+        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("error : $e");
+      }
+      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 
@@ -157,14 +218,20 @@ mixin VoucherService {
     // response;
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
-        "vouchertype": "payment",
-        "invoicetype": "subscription",
+        "vouchertype": voucherController.voucherModel.selectedvouchertype.value.toLowerCase() == 'show all' ? '' : voucherController.voucherModel.selectedvouchertype.value.toLowerCase(),
+        "paymentstatus": voucherController.voucherModel.selectedpaymentStatus.value.toLowerCase() == 'show all' ? '' : voucherController.voucherModel.selectedpaymentStatus.value.toLowerCase(),
+        "invoicetype": voucherController.voucherModel.selectedInvoiceType.value.toLowerCase() == 'show all' ? '' : voucherController.voucherModel.selectedInvoiceType.value.toLowerCase(),
         // "customerid": "SB_1",
+        "customerid": voucherController.voucherModel.selectedcustomerID.value == 'None' ? '' : voucherController.voucherModel.selectedcustomerID.value,
+        "startdate": voucherController.voucherModel.startDateController.value.text,
+        "enddate": voucherController.voucherModel.endDateController.value.text,
       },
       API.getvoucherlist,
     );
     if (response?['statusCode'] == 200) {
-      CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+      CMDlResponse value = CMDlResponse.fromJson(
+        response ?? {},
+      );
       if (value.code) {
         voucherController.add_Voucher(value);
         voucherController.update();
@@ -381,9 +448,8 @@ mixin VoucherService {
 
   Future<void> selectDate(BuildContext context, TextEditingController controller) async {
     final DateTime now = DateTime.now();
-    final DateTime tomorrow = DateTime(now.year, now.month, now.day, 23, 59);
+    final DateTime tomorrow = DateTime(now.year, now.month, now.day + 1);
 
-    // Step 1: Show Date Picker
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: now,
@@ -414,53 +480,18 @@ mixin VoucherService {
     );
 
     if (pickedDate != null) {
-      // Step 2: Show Time Picker
-      final TimeOfDay? pickedTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              timePickerTheme: const TimePickerThemeData(
-                dialHandColor: Primary_colors.Color3,
-                entryModeIconColor: Primary_colors.Color3,
-              ),
-              colorScheme: const ColorScheme.light(
-                primary: Primary_colors.Color3,
-                onPrimary: Colors.white,
-                onSurface: Colors.black87,
-              ),
-            ),
-            child: child!,
-          );
-        },
-      );
-
-      if (pickedTime != null) {
-        final DateTime fullDateTime = DateTime(
-          pickedDate.year,
-          pickedDate.month,
-          pickedDate.day,
-          pickedTime.hour,
-          pickedTime.minute,
+      if (pickedDate.isAfter(tomorrow)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Date cannot exceed tomorrow.')),
         );
-
-        // Check if the selected datetime exceeds tomorrow
-        if (fullDateTime.isAfter(tomorrow)) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Date/time cannot exceed tomorrow.')),
-          );
-          return;
-        }
-
-        final formatted = "${fullDateTime.year.toString().padLeft(4, '0')}-"
-            "${fullDateTime.month.toString().padLeft(2, '0')}-"
-            "${fullDateTime.day.toString().padLeft(2, '0')} "
-            "${pickedTime.hour.toString().padLeft(2, '0')}:"
-            "${pickedTime.minute.toString().padLeft(2, '0')}";
-
-        controller.text = formatted;
+        return;
       }
+
+      final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
+          "${pickedDate.month.toString().padLeft(2, '0')}-"
+          "${pickedDate.day.toString().padLeft(2, '0')}";
+
+      controller.text = formatted;
     }
   }
 
@@ -513,7 +544,7 @@ mixin VoucherService {
 
   void showCustomDateRangePicker() {
     voucherController.voucherModel.showCustomDateRange.value = true;
-    voucherController.voucherModel.selectedQuickFilter.value = 'Custom range';
+    voucherController.voucherModel.selectedvouchertype.value = 'Custom range';
   }
 
   void resetFilters() {
@@ -521,9 +552,11 @@ mixin VoucherService {
     voucherController.voucherModel.endDateController.value.clear();
     voucherController.voucherModel.selectedpaymentStatus.value = 'Show All';
     voucherController.voucherModel.selectedInvoiceType.value = 'Show All';
-    voucherController.voucherModel.selectedQuickFilter.value = 'Show All';
+    voucherController.voucherModel.selectedvouchertype.value = 'Show All';
     voucherController.voucherModel.showCustomDateRange.value = false;
-    voucherController.voucherModel.filteredVouchers.value = voucherController.voucherModel.voucher_list;
+    voucherController.voucherModel.selectedsalescustomer.value = 'None';
+    voucherController.voucherModel.selectedcustomerID.value = 'None';
+    // voucherController.voucherModel.filteredVouchers.value = voucherController.voucherModel.voucher_list;
     voucherController.voucherModel.selectedItems.value = List.filled(voucherController.voucherModel.voucher_list.length, false);
     voucherController.voucherModel.selectAll.value = false;
     voucherController.voucherModel.showDeleteButton.value = false;

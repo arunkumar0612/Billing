@@ -26,7 +26,7 @@ class InvoicePaymentVoucher {
   String customerId;
   int tdsCalculation;
   double tdsCalculationAmount;
-  DateTime date;
+  DateTime? date;
   List<TransactionDetail>? paymentDetails;
 
   /// ✅ Newly added fields
@@ -86,7 +86,7 @@ class InvoicePaymentVoucher {
       customerId: json['customer_id']?.toString() ?? '',
       tdsCalculation: (json['tds_calculation'] ?? 0),
       tdsCalculationAmount: (json['tdscalculation_amount'] ?? 0).roundToDouble(),
-      date: DateTime.tryParse(json['date'] ?? '') ?? DateTime.now(),
+      date: DateTime.tryParse(json['date'] ?? ''),
 
       /// ✅ Parse new fields
       dueDate: json['Due_date'] != null ? DateTime.tryParse(json['Due_date']) : null,
@@ -120,7 +120,7 @@ class InvoicePaymentVoucher {
       'customer_id': customerId,
       'tds_calculation': tdsCalculation,
       'tdscalculation_amount': tdsCalculationAmount,
-      'date': date.toIso8601String(),
+      'date': date?.toIso8601String(),
       'due_date': dueDate?.toIso8601String(),
       'Overdue_days': overdueDays,
       'Overdue_history': overdueHistory?.map((e) => e.toJson()).toList(),

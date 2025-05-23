@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/account_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/account_ledger_entities.dart';
+// import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/account_ledger_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/view_ledger_entities.dart';
 import 'package:ssipl_billing/API/api.dart';
 // import 'package:ssipl_billing/2.BILLING/View_Ledgers/controllers/view_Ledger_action.dart';
@@ -25,7 +25,7 @@ mixin View_LedgerService {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           view_LedgerController.view_LedgerModel.subCustomerList.value = value.data.map((e) => CustomerInfo.fromJson(e)).toList();
-          print(view_LedgerController.view_LedgerModel.subCustomerList);
+          // print('ijhietjwe${view_LedgerController.view_LedgerModel.subCustomerList}');
           // salesController.addToCustompdfList(value);
         } else {
           if (kDebugMode) {
@@ -54,7 +54,7 @@ mixin View_LedgerService {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           view_LedgerController.view_LedgerModel.salesCustomerList.value = value.data.map((e) => CustomerInfo.fromJson(e)).toList();
-          print(view_LedgerController.view_LedgerModel.salesCustomerList);
+          // print(view_LedgerController.view_LedgerModel.salesCustomerList);
           // salesController.addToCustompdfList(value);
         } else {
           if (kDebugMode) {
@@ -76,36 +76,35 @@ mixin View_LedgerService {
     }
   }
 
-  void applySearchFilter(String query) {
-    try {
-      if (query.isEmpty) {
-        account_LedgerController.account_LedgerModel.filteredAccount_Ledgers.value = (account_LedgerController.account_LedgerModel.account_Ledger_list.value);
-      } else {
-        final filteredList = account_LedgerController.account_LedgerModel.account_Ledger_list.value.ledgerList.where((view_Ledger) {
-          return view_Ledger.clientName.toLowerCase().contains(query.toLowerCase()) || view_Ledger.voucherNumber.toLowerCase().contains(query.toLowerCase());
-        }).toList();
+  // void applySearchFilter(String query) {
+  //   try {
+  //     if (query.isEmpty) {
+  //       account_LedgerController.account_LedgerModel.filteredaccount_Ledger_list.value = (account_LedgerController.account_LedgerModel.account_Ledger_list.value);
+  //     } else {
+  //       final filteredList = account_LedgerController.account_LedgerModel.account_Ledger_list.value.ledgerList.where((view_Ledger) {
+  //         return view_Ledger.clientName.toLowerCase().contains(query.toLowerCase()) || view_Ledger.voucherNumber.toLowerCase().contains(query.toLowerCase());
+  //       }).toList();
 
-        final summary = AccountLedgerSummary(
-          ledgerList: filteredList,
-          creditAmount: account_LedgerController.account_LedgerModel.account_Ledger_list.value.creditAmount, // or recalculate totals if needed
-          debitAmount: account_LedgerController.account_LedgerModel.account_Ledger_list.value.debitAmount,
-          balanceAmount: account_LedgerController.account_LedgerModel.account_Ledger_list.value.balanceAmount,
-        );
+  //       final summary = AccountLedgerSummary(
+  //         ledgerList: filteredList,
+  //         creditAmount: account_LedgerController.account_LedgerModel.account_Ledger_list.value.creditAmount, // or recalculate totals if needed
+  //         debitAmount: account_LedgerController.account_LedgerModel.account_Ledger_list.value.debitAmount,
+  //         balanceAmount: account_LedgerController.account_LedgerModel.account_Ledger_list.value.balanceAmount,
+  //       );
 
-        account_LedgerController.account_LedgerModel.filteredAccount_Ledgers.value = summary;
-      }
+  //       account_LedgerController.account_LedgerModel.filteredaccount_Ledger_list.value = summary;
+  //     }
 
-      // Update selectedItems to match the new filtered list length
-    } catch (e) {
-      debugPrint('Error in applySearchFilter: $e');
-    }
-  }
+  //     // Update selectedItems to match the new filtered list length
+  //   } catch (e) {
+  //     debugPrint('Error in applySearchFilter: $e');
+  //   }
+  // }
 
   Future<void> selectDate(BuildContext context, TextEditingController controller) async {
     final DateTime now = DateTime.now();
-    final DateTime tomorrow = DateTime(now.year, now.month, now.day, 23, 59);
+    final DateTime tomorrow = DateTime(now.year, now.month, now.day + 1);
 
-    // Step 1: Show Date Picker
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: now,
@@ -136,69 +135,37 @@ mixin View_LedgerService {
     );
 
     if (pickedDate != null) {
-      // Step 2: Show Time Picker
-      final TimeOfDay? pickedTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              timePickerTheme: const TimePickerThemeData(
-                dialHandColor: Primary_colors.Color3,
-                entryModeIconColor: Primary_colors.Color3,
-              ),
-              colorScheme: const ColorScheme.light(
-                primary: Primary_colors.Color3,
-                onPrimary: Colors.white,
-                onSurface: Colors.black87,
-              ),
-            ),
-            child: child!,
-          );
-        },
-      );
-
-      if (pickedTime != null) {
-        final DateTime fullDateTime = DateTime(
-          pickedDate.year,
-          pickedDate.month,
-          pickedDate.day,
-          pickedTime.hour,
-          pickedTime.minute,
+      if (pickedDate.isAfter(tomorrow)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Date cannot exceed tomorrow.')),
         );
-
-        // Check if the selected datetime exceeds tomorrow
-        if (fullDateTime.isAfter(tomorrow)) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Date/time cannot exceed tomorrow.')),
-          );
-          return;
-        }
-
-        final formatted = "${fullDateTime.year.toString().padLeft(4, '0')}-"
-            "${fullDateTime.month.toString().padLeft(2, '0')}-"
-            "${fullDateTime.day.toString().padLeft(2, '0')} "
-            "${pickedTime.hour.toString().padLeft(2, '0')}:"
-            "${pickedTime.minute.toString().padLeft(2, '0')}";
-
-        controller.text = formatted;
+        return;
       }
+
+      final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
+          "${pickedDate.month.toString().padLeft(2, '0')}-"
+          "${pickedDate.day.toString().padLeft(2, '0')}";
+
+      controller.text = formatted;
     }
   }
 
-  void showCustomDateRangePicker() {
-    view_LedgerController.view_LedgerModel.showCustomDateRange.value = true;
-    view_LedgerController.view_LedgerModel.selectedQuickFilter.value = 'Custom range';
-  }
+  // void showCustomDateRangePicker() {
+  //   view_LedgerController.view_LedgerModel.showCustomDateRange.value = true;
+  // }
 
   void resetFilters() {
     view_LedgerController.view_LedgerModel.startDateController.value.clear();
     view_LedgerController.view_LedgerModel.endDateController.value.clear();
-    view_LedgerController.view_LedgerModel.selectedAccountLedgerType.value = 'Show All';
-    view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value = 'Show All';
+    view_LedgerController.view_LedgerModel.selectedMonth.value = 'None';
+    view_LedgerController.view_LedgerModel.selectedinvoiceType.value = 'Show All';
+    view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value = 'Consolidate';
     view_LedgerController.view_LedgerModel.selectedInvoiceType.value = 'Show All';
-    view_LedgerController.view_LedgerModel.selectedQuickFilter.value = 'Show All';
-    view_LedgerController.view_LedgerModel.showCustomDateRange.value = false;
-    account_LedgerController.account_LedgerModel.filteredAccount_Ledgers.value = account_LedgerController.account_LedgerModel.account_Ledger_list.value;
+    view_LedgerController.view_LedgerModel.selectedPaymenttype.value = 'Show All';
+    view_LedgerController.view_LedgerModel.selectedsalescustomerID.value = 'None';
+    view_LedgerController.view_LedgerModel.selectedsalescustomer.value = 'None';
+    view_LedgerController.view_LedgerModel.selectedsubcustomerID.value = 'None';
+    view_LedgerController.view_LedgerModel.selectedsubcustomer.value = 'None';
+    account_LedgerController.account_LedgerModel.filteredaccount_Ledger_list.value = account_LedgerController.account_LedgerModel.account_Ledger_list.value;
   }
 }

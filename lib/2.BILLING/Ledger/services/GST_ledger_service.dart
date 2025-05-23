@@ -12,7 +12,6 @@ mixin GST_LedgerService {
   final View_LedgerController view_LedgerController = Get.find<View_LedgerController>();
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
-
   Future<void> get_GST_LedgerList() async {
     // loader.start(context);
     // await Future.delayed(const Duration(milliseconds: 1000));

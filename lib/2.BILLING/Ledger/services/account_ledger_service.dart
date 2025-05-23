@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/account_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
@@ -72,23 +71,23 @@ mixin Account_LedgerService {
   void resetFilters() {
     account_LedgerController.account_LedgerModel.filteredaccount_Ledger_list.value = account_LedgerController.account_LedgerModel.account_Ledger_list.value;
   }
-
-  void applySearchFilter(String query) {
-    try {
-      if (query.isEmpty) {
-        account_LedgerController.account_LedgerModel.filteredaccount_Ledger_list.value.ledgerList.assignAll(account_LedgerController.account_LedgerModel.account_Ledger_list.value.ledgerList);
-      } else {
-        final filtered = account_LedgerController.account_LedgerModel.account_Ledger_list.value.ledgerList.where((accountledger) {
-          return accountledger.gstNumber.toLowerCase().contains(query.toLowerCase()) ||
-              accountledger.clientName.toLowerCase().contains(query.toLowerCase()) ||
-              accountledger.voucherNumber.toLowerCase().contains(query.toLowerCase()) ||
-              accountledger.invoiceNumber.toLowerCase().contains(query.toLowerCase()) ||
-              accountledger.ledgerType.toLowerCase().contains(query.toLowerCase());
-        }).toList();
-        account_LedgerController.account_LedgerModel.filteredaccount_Ledger_list.value.ledgerList.assignAll(filtered);
-      }
-    } catch (e) {
-      debugPrint('Error in applySearchFilter: $e');
-    }
-  }
 }
+// void applySearchFilter(String query) {
+//     try {
+//       if (query.isEmpty) {
+//         voucherController.voucherModel.filteredVouchers.assignAll(voucherController.voucherModel.voucher_list);
+//       } else {
+//         final filtered = voucherController.voucherModel.voucher_list.where((voucher) {
+//           return voucher.clientName.toLowerCase().contains(query.toLowerCase()) || voucher.voucherNumber.toLowerCase().contains(query.toLowerCase());
+//         }).toList();
+//         voucherController.voucherModel.filteredVouchers.assignAll(filtered);
+//       }
+
+//       // Update selectedItems to match the new filtered list length
+//       voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false);
+//       voucherController.voucherModel.selectAll.value = false;
+//       voucherController.voucherModel.showDeleteButton.value = false;
+//     } catch (e) {
+//       debugPrint('Error in applySearchFilter: $e');
+//     }
+//   }

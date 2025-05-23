@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -164,7 +166,9 @@ mixin VoucherService {
       API.getvoucherlist,
     );
     if (response?['statusCode'] == 200) {
-      CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+      CMDlResponse value = CMDlResponse.fromJson(
+        response ?? {},
+      );
       if (value.code) {
         voucherController.add_Voucher(value);
         voucherController.update();
@@ -199,17 +203,39 @@ mixin VoucherService {
       totalIGST: selected.fold(0, (sum, v) => sum + v.igst),
       totalTDS: selected.fold(0, (sum, v) => sum + v.tdsCalculationAmount),
     );
-    print(voucherController.voucherModel.voucher_list[8].pendingAmount);
-    print(voucherController.voucherModel.voucher_list[8].cgst);
-    print(voucherController.voucherModel.voucher_list[8].sgst);
-    print(voucherController.voucherModel.voucher_list[8].igst);
-    print(voucherController.voucherModel.voucher_list[8].tdsCalculationAmount);
-    print(voucherController.voucherModel.voucher_list[9].pendingAmount);
-    print(voucherController.voucherModel.voucher_list[9].cgst);
-    print(voucherController.voucherModel.voucher_list[9].sgst);
-    print(voucherController.voucherModel.voucher_list[9].igst);
-    print(voucherController.voucherModel.voucher_list[9].tdsCalculationAmount);
-    print(group);
+    if (kDebugMode) {
+      print(voucherController.voucherModel.voucher_list[8].pendingAmount);
+    }
+    if (kDebugMode) {
+      print(voucherController.voucherModel.voucher_list[8].cgst);
+    }
+    if (kDebugMode) {
+      print(voucherController.voucherModel.voucher_list[8].sgst);
+    }
+    if (kDebugMode) {
+      print(voucherController.voucherModel.voucher_list[8].igst);
+    }
+    if (kDebugMode) {
+      print(voucherController.voucherModel.voucher_list[8].tdsCalculationAmount);
+    }
+    if (kDebugMode) {
+      print(voucherController.voucherModel.voucher_list[9].pendingAmount);
+    }
+    if (kDebugMode) {
+      print(voucherController.voucherModel.voucher_list[9].cgst);
+    }
+    if (kDebugMode) {
+      print(voucherController.voucherModel.voucher_list[9].sgst);
+    }
+    if (kDebugMode) {
+      print(voucherController.voucherModel.voucher_list[9].igst);
+    }
+    if (kDebugMode) {
+      print(voucherController.voucherModel.voucher_list[9].tdsCalculationAmount);
+    }
+    if (kDebugMode) {
+      print(group);
+    }
     return group;
   }
 

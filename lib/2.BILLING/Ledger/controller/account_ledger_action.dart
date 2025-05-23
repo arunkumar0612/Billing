@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/constants/account_ledger_constants.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/account_ledger_entities.dart';
@@ -45,5 +46,25 @@ class Account_LedgerController extends GetxController {
 
   void toggleCCemailvisibility(bool value) {
     account_LedgerModel.CCemailToggle.value = value;
+  }
+
+  void applySearchFilter(String query) {
+    try {
+      if (query.isEmpty) {
+        account_LedgerModel.filteredaccount_Ledger_list.value.ledgerList.assignAll(account_LedgerModel.account_Ledger_list.value.ledgerList);
+      } else {
+        final filtered = account_LedgerModel.account_Ledger_list.value.ledgerList.where((accountledger) {
+          return accountledger.gstNumber.toLowerCase().contains(query.toLowerCase()) ||
+              accountledger.clientName.toLowerCase().contains(query.toLowerCase()) ||
+              accountledger.voucherNumber.toLowerCase().contains(query.toLowerCase()) ||
+              accountledger.invoiceNumber.toLowerCase().contains(query.toLowerCase()) ||
+              accountledger.ledgerType.toLowerCase().contains(query.toLowerCase());
+        }).toList();
+
+        account_LedgerModel.filteredaccount_Ledger_list.value.ledgerList.assignAll(filtered);
+      }
+    } catch (e) {
+      debugPrint('Error in applySearchFilter: $e');
+    }
   }
 }

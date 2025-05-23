@@ -27,8 +27,6 @@ class _ViewLedgerState extends State<ViewLedger> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
     widget.Get_SUBcustomerList();
     widget.Get_SALEScustomerList();
     super.initState();
@@ -73,34 +71,33 @@ class _ViewLedgerState extends State<ViewLedger> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   SizedBox(
-                                    width: 400,
-                                    height: 40,
-                                    child: TextFormField(
-                                      controller: account_LedgerController.account_LedgerModel.searchController.value,
-                                      onChanged: (value) => widget.applySearchFilter(value),
-                                      style: const TextStyle(fontSize: 13, color: Colors.white),
-                                      decoration: InputDecoration(
-                                        contentPadding: const EdgeInsets.all(1),
-                                        filled: true,
-                                        fillColor: Primary_colors.Light,
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
+                                      width: 400,
+                                      height: 40,
+                                      child: TextFormField(
+                                        controller: account_LedgerController.account_LedgerModel.searchController.value,
+                                        onChanged: (value) => account_LedgerController.applySearchFilter(value),
+                                        style: const TextStyle(fontSize: 13, color: Colors.white),
+                                        decoration: InputDecoration(
+                                          contentPadding: const EdgeInsets.all(1),
+                                          filled: true,
+                                          fillColor: Primary_colors.Light,
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(30),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(30),
+                                          ),
+                                          hintStyle: const TextStyle(
+                                            fontSize: Primary_font_size.Text7,
+                                            color: Color.fromARGB(255, 167, 165, 165),
+                                          ),
+                                          hintText: 'Search customer',
+                                          prefixIcon: const Icon(
+                                            Icons.search,
+                                            color: Colors.white,
+                                          ),
                                         ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                        ),
-                                        hintStyle: const TextStyle(
-                                          fontSize: Primary_font_size.Text7,
-                                          color: Color.fromARGB(255, 167, 165, 165),
-                                        ),
-                                        hintText: 'Search customer',
-                                        prefixIcon: const Icon(
-                                          Icons.search,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                      )),
                                   const SizedBox(width: 20),
                                   Obx(
                                     () => SizedBox(

@@ -2786,6 +2786,17 @@ class _VoucherState extends State<Voucher> {
                               ),
                             ),
                           ),
+                           const Expanded(
+                            flex: 2,
+                            child: Text(
+                              'Overdue',
+                              style: TextStyle(
+                                color: Primary_colors.Color1,
+                                fontWeight: FontWeight.bold,
+                                fontSize: Primary_font_size.Text7,
+                              ),
+                            ),
+                          ),
                           const SizedBox(width: 3),
                           const Expanded(
                             flex: 2,
@@ -3184,6 +3195,8 @@ class _VoucherState extends State<Voucher> {
                                           ),
                                         ),
                                       ),
+                                  
+                                     
                                       const SizedBox(width: 3),
                                       Expanded(
                                         flex: 2,
@@ -3328,6 +3341,9 @@ class _VoucherState extends State<Voucher> {
       ),
     );
   }
+
+ 
+
 
   void showVoucherClearedDialog(BuildContext context, int index) {
     showDialog(

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
@@ -387,4 +388,45 @@ class PDFfileData {
       'data': data.path, // Convert File to path string for JSON
     };
   }
+
 }
+
+
+
+// Dummy timeline data model
+class TimelineEntry {
+  final String heading;
+  final String subHeading;
+  final String date;
+  final String feedback;
+
+  TimelineEntry({
+    required this.heading,
+    required this.subHeading,
+    required this.date,
+    required this.feedback,
+  });
+}
+
+
+// Sample data list
+final List<TimelineEntry> timelineData = [
+  TimelineEntry(
+    heading: 'Initial Contact',
+    subHeading: 'Reached out via phone',
+    date: '2025-05-21',
+    feedback: 'Client was interested',
+  ),
+  TimelineEntry(
+    heading: 'Follow-up',
+    subHeading: 'Sent quotation',
+    date: '2025-05-22',
+    feedback: 'Waiting for response',
+  ),
+  TimelineEntry(
+    heading: 'Final Review',
+    subHeading: 'Negotiated pricing',
+    date: '2025-05-23',
+    feedback: 'Deal confirmed',
+  ),
+];

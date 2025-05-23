@@ -2253,6 +2253,7 @@ class _VoucherState extends State<Voucher> {
                               ),
                             ),
                           ),
+                          
                           const SizedBox(width: 3),
                           const Expanded(
                             flex: 1,
@@ -2574,6 +2575,8 @@ class _VoucherState extends State<Voucher> {
                                           ),
                                         ),
                                       ),
+                                  
+                                     
                                       const SizedBox(width: 3),
                                       Expanded(
                                         flex: 1,
@@ -2705,6 +2708,9 @@ class _VoucherState extends State<Voucher> {
       ),
     );
   }
+
+ 
+
 
   void showVoucherClearedDialog(BuildContext context, int index) {
     showDialog(

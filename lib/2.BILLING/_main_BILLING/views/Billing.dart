@@ -431,12 +431,17 @@ class _BillingState extends State<Billing> {
                           const SizedBox(height: 25),
                           Row(
                             children: [
-                              const SizedBox(
+                              SizedBox(
                                 width: 380,
                                 height: 40,
                                 child: TabBar(
                                   indicatorColor: Primary_colors.Color5,
-                                  tabs: [
+                                  onTap: (index) {
+                                    if (index == 0) mainBilling_Controller.setActiveTab('Subscription');
+                                    if (index == 1) mainBilling_Controller.setActiveTab('Sales');
+                                    if (index == 2) mainBilling_Controller.setActiveTab('Vendor');
+                                  },
+                                  tabs: const [
                                     Text('Subscription'),
                                     Text('Sales'),
                                     Text('Vendor'),
@@ -447,30 +452,43 @@ class _BillingState extends State<Billing> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    SizedBox(
-                                      width: max(screenWidth - 1480, 200),
-                                      height: 40,
-                                      child: TextFormField(
-                                        style: const TextStyle(fontSize: 13, color: Colors.white),
-                                        decoration: InputDecoration(
-                                          contentPadding: const EdgeInsets.all(1),
-                                          filled: true,
-                                          fillColor: Primary_colors.Light,
-                                          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Colors.transparent)),
-                                          // enabledBorder: InputBorder.none, // Removes the enabled border
-                                          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Colors.transparent)),
-                                          hintStyle: const TextStyle(
-                                            fontSize: Primary_font_size.Text7,
-                                            color: Color.fromARGB(255, 167, 165, 165),
-                                          ),
-                                          hintText: 'Search customer',
-                                          prefixIcon: const Icon(
-                                            Icons.search,
-                                            color: Colors.white,
+                                    Obx(
+                                      () => SizedBox(
+                                        width: max(screenWidth - 1480, 200),
+                                        height: 40,
+                                        child: TextFormField(
+                                          controller: TextEditingController(text: mainBilling_Controller.billingModel.searchQuery.value)
+                                            ..selection = TextSelection.fromPosition(
+                                              TextPosition(offset: mainBilling_Controller.billingModel.searchQuery.value.length),
+                                            ),
+                                          onChanged: mainBilling_Controller.search,
+                                          style: const TextStyle(fontSize: 13, color: Colors.white),
+                                          decoration: InputDecoration(
+                                            contentPadding: const EdgeInsets.all(1),
+                                            filled: true,
+                                            fillColor: Primary_colors.Light,
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(30),
+                                              borderSide: const BorderSide(color: Colors.transparent),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(30),
+                                              borderSide: const BorderSide(color: Colors.transparent),
+                                            ),
+                                            hintStyle: const TextStyle(
+                                              fontSize: Primary_font_size.Text7,
+                                              color: Color.fromARGB(255, 167, 165, 165),
+                                            ),
+                                            hintText: 'Search customer',
+                                            prefixIcon: const Icon(
+                                              Icons.search,
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
+
                                     const SizedBox(
                                       width: 10,
                                     ),

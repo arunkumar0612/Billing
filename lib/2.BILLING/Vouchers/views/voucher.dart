@@ -1,10 +1,13 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:dashed_rect/dashed_rect.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
 import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/services/voucher_service.dart';
@@ -27,6 +30,8 @@ class _VoucherState extends State<Voucher> {
   @override
   void initState() {
     widget.get_VoucherList();
+    widget.Get_SUBcustomerList();
+    widget.Get_SALEScustomerList();
     super.initState();
     // Avoid using context here for inherited widgets.
   }
@@ -3200,27 +3205,27 @@ class _VoucherState extends State<Voucher> {
     );
   }
 
-  Widget _buildInfoRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          Expanded(
-              flex: 2,
-              child: Text(
-                label,
-                style: TextStyle(color: Colors.grey[700], fontSize: 14),
-              )),
-          Expanded(
-              flex: 3,
-              child: Text(
-                value,
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
-              )),
-        ],
-      ),
-    );
-  }
+  // Widget _buildInfoRow(String label, String value) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 4),
+  //     child: Row(
+  //       children: [
+  //         Expanded(
+  //             flex: 2,
+  //             child: Text(
+  //               label,
+  //               style: TextStyle(color: Colors.grey[700], fontSize: 14),
+  //             )),
+  //         Expanded(
+  //             flex: 3,
+  //             child: Text(
+  //               value,
+  //               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+  //             )),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildInfoItem(IconData icon, String label, String value) {
     return Padding(
@@ -3285,124 +3290,19 @@ class _VoucherState extends State<Voucher> {
             ),
             const SizedBox(height: 35),
             // Quick Date Filters
-            const Text('Quick Date Filters', style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192))),
+            const Text('Voucher type', style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192))),
             const SizedBox(height: 12),
             Wrap(
               spacing: 8,
               runSpacing: 8,
               children: [
-                Obx(
-                  () => _buildDateFilterChip('Show All'),
-                ),
-                Obx(() => _buildDateFilterChip('Last 1 hour  ')),
-                Obx(() => _buildDateFilterChip('Last 24 hours')),
-                Obx(() => _buildDateFilterChip('Last week')),
-                Obx(() => _buildDateFilterChip('Last month')),
-                Obx(() => _buildDateFilterChip('Custom range')),
+                Obx(() => _buildVouchertypeFilterChip('Show All')),
+                Obx(() => _buildVouchertypeFilterChip('Payment')),
+                Obx(() => _buildVouchertypeFilterChip('Receipt')),
               ],
             ),
             const SizedBox(height: 35),
 
-            // Custom Date Range (visible when custom range is selected)
-            Obx(() => voucherController.voucherModel.showCustomDateRange.value
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Custom Date Range', style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192))),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              height: 35,
-                              child: TextFormField(
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 154, 152, 152),
-                                  fontSize: Primary_font_size.Text7,
-                                ),
-                                controller: voucherController.voucherModel.startDateController.value,
-                                readOnly: true,
-                                onTap: () => widget.selectDate(context, voucherController.voucherModel.startDateController.value),
-                                decoration: InputDecoration(
-                                  labelText: 'From',
-                                  labelStyle: const TextStyle(
-                                    color: Color.fromARGB(255, 154, 152, 152),
-                                    fontSize: Primary_font_size.Text7,
-                                  ),
-                                  suffixIcon: const Icon(
-                                    Icons.calendar_today,
-                                    size: 20,
-                                    color: const Color.fromARGB(255, 85, 84, 84),
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: SizedBox(
-                              height: 35,
-                              child: TextFormField(
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 154, 152, 152),
-                                  fontSize: Primary_font_size.Text7,
-                                ),
-                                controller: voucherController.voucherModel.endDateController.value,
-                                readOnly: true,
-                                onTap: () => widget.selectDate(context, voucherController.voucherModel.endDateController.value),
-                                decoration: InputDecoration(
-                                  labelText: 'To',
-                                  labelStyle: const TextStyle(
-                                    color: Color.fromARGB(255, 154, 152, 152),
-                                    fontSize: Primary_font_size.Text7,
-                                  ),
-                                  suffixIcon: const Icon(
-                                    Icons.calendar_today,
-                                    size: 20,
-                                    color: const Color.fromARGB(255, 85, 84, 84),
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  )
-                : const SizedBox()),
-            Obx(() => SizedBox(height: voucherController.voucherModel.showCustomDateRange.value ? 35 : 0)),
             // Product Type Filter
             const Text('Invoice Type', style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192))),
             const SizedBox(height: 8),
@@ -3416,6 +3316,8 @@ class _VoucherState extends State<Voucher> {
                     selected: voucherController.voucherModel.selectedInvoiceType.value == 'Show All',
                     onSelected: (_) {
                       voucherController.voucherModel.selectedInvoiceType.value = 'Show All';
+                      voucherController.voucherModel.selectedsalescustomer.value = 'None';
+                      voucherController.voucherModel.selectedsubcustomer.value = 'None';
                     },
                     backgroundColor: Primary_colors.Dark,
                     selectedColor: Primary_colors.Dark,
@@ -3435,6 +3337,8 @@ class _VoucherState extends State<Voucher> {
                     selected: voucherController.voucherModel.selectedInvoiceType.value == 'Sales',
                     onSelected: (_) {
                       voucherController.voucherModel.selectedInvoiceType.value = 'Sales';
+                      voucherController.voucherModel.selectedsalescustomer.value = 'None';
+                      voucherController.voucherModel.selectedsubcustomer.value = 'None';
                     },
                     backgroundColor: Primary_colors.Dark,
                     showCheckmark: false,
@@ -3455,6 +3359,8 @@ class _VoucherState extends State<Voucher> {
                     selected: voucherController.voucherModel.selectedInvoiceType.value == 'Subscription',
                     onSelected: (_) {
                       voucherController.voucherModel.selectedInvoiceType.value = 'Subscription';
+                      voucherController.voucherModel.selectedsalescustomer.value = 'None';
+                      voucherController.voucherModel.selectedsubcustomer.value = 'None';
                     },
                     backgroundColor: Primary_colors.Dark,
                     showCheckmark: false,
@@ -3473,6 +3379,238 @@ class _VoucherState extends State<Voucher> {
                 ],
               ),
             ),
+            Obx(
+              () => SizedBox(
+                child: voucherController.voucherModel.selectedInvoiceType.value == 'Sales'
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 35),
+                          const Text(
+                            'Select sales client',
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                          ),
+                          const SizedBox(height: 10),
+                          Obx(
+                            () {
+                              return SizedBox(
+                                height: 35,
+                                // width: 250,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: const Color.fromARGB(255, 91, 90, 90),
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(6.0),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: DropdownSearch<String>(
+                                          popupProps: PopupProps.menu(
+                                            showSearchBox: true,
+                                            searchFieldProps: TextFieldProps(
+                                              decoration: InputDecoration(
+                                                hintText: 'Search...',
+                                                hintStyle: const TextStyle(fontSize: 12),
+                                                prefixIcon: const Icon(Icons.search, size: 18),
+                                                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                                border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(6.0),
+                                                  borderSide: BorderSide(color: Colors.grey.shade300),
+                                                ),
+                                                isDense: true,
+                                              ),
+                                            ),
+                                            menuProps: MenuProps(
+                                              borderRadius: BorderRadius.circular(6.0),
+                                              elevation: 3,
+                                            ),
+                                            constraints: const BoxConstraints.tightFor(height: 250), // Reduced popup height
+                                          ),
+                                          dropdownDecoratorProps: DropDownDecoratorProps(
+                                            dropdownSearchDecoration: InputDecoration(
+                                              iconColor: const Color.fromARGB(252, 162, 158, 158),
+                                              // labelText: "Client",
+                                              // labelStyle: TextStyle(
+                                              //   color: Colors.grey.shade600,
+                                              //   fontSize: 12,
+                                              // ),
+                                              floatingLabelStyle: TextStyle(
+                                                color: Colors.blue.shade700,
+                                                fontSize: 12,
+                                              ),
+                                              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                              border: InputBorder.none,
+                                              isDense: true,
+                                            ),
+                                            baseStyle: const TextStyle(
+                                              fontSize: 12, // Smaller font size
+                                              color: Color.fromARGB(255, 138, 137, 137),
+                                            ),
+                                          ),
+                                          items: voucherController.voucherModel.salesCustomerList.map((customer) {
+                                            return customer.customerName;
+                                          }).toList(),
+                                          selectedItem: voucherController.voucherModel.selectedsalescustomer.value,
+                                          onChanged: (value) {
+                                            if (value != null) {
+                                              voucherController.voucherModel.selectedsalescustomer.value = value;
+                                              final customerList = voucherController.voucherModel.salesCustomerList;
+
+                                              // Find the index of the selected customer
+                                              final index = customerList.indexWhere((customer) => customer.customerName == value);
+                                              voucherController.voucherModel.selectedcustomerID.value = voucherController.voucherModel.salesCustomerList[index].customerId;
+                                              if (kDebugMode) {
+                                                print('Selected customer ID: ${voucherController.voucherModel.selectedcustomerID.value}');
+                                              }
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                      Obx(
+                                        () => SizedBox(
+                                          child: voucherController.voucherModel.selectedsalescustomer.value != 'None'
+                                              ? IconButton(
+                                                  onPressed: () {
+                                                    voucherController.voucherModel.selectedsalescustomer.value = 'None';
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.close,
+                                                    color: Colors.red,
+                                                    size: 18,
+                                                  ),
+                                                )
+                                              : const SizedBox(),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      )
+                    : const SizedBox(),
+              ),
+            ),
+            Obx(
+              () => SizedBox(
+                  child: voucherController.voucherModel.selectedInvoiceType.value == 'Subscription'
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 35),
+                            const Text(
+                              'Select subscription customer',
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                            ),
+                            const SizedBox(height: 10),
+                            Obx(
+                              () {
+                                return SizedBox(
+                                  height: 35,
+                                  // width: 250,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: const Color.fromARGB(255, 91, 90, 90),
+                                        width: 1.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(6.0),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: DropdownSearch<String>(
+                                            popupProps: PopupProps.menu(
+                                              showSearchBox: true,
+                                              searchFieldProps: TextFieldProps(
+                                                decoration: InputDecoration(
+                                                  hintText: 'Search...',
+                                                  hintStyle: const TextStyle(fontSize: 12),
+                                                  prefixIcon: const Icon(Icons.search, size: 18),
+                                                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                                  border: OutlineInputBorder(
+                                                    borderRadius: BorderRadius.circular(6.0),
+                                                    borderSide: BorderSide(color: Colors.grey.shade300),
+                                                  ),
+                                                  isDense: true,
+                                                ),
+                                              ),
+                                              menuProps: MenuProps(
+                                                borderRadius: BorderRadius.circular(6.0),
+                                                elevation: 3,
+                                              ),
+                                              constraints: const BoxConstraints.tightFor(height: 250), // Reduced popup height
+                                            ),
+                                            dropdownDecoratorProps: DropDownDecoratorProps(
+                                              dropdownSearchDecoration: InputDecoration(
+                                                iconColor: const Color.fromARGB(252, 162, 158, 158),
+                                                // labelText: "Client",
+                                                // labelStyle: TextStyle(
+                                                //   color: Colors.grey.shade600,
+                                                //   fontSize: 12,
+                                                // ),
+                                                floatingLabelStyle: TextStyle(
+                                                  color: Colors.blue.shade700,
+                                                  fontSize: 12,
+                                                ),
+                                                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                                border: InputBorder.none,
+                                                isDense: true,
+                                              ),
+                                              baseStyle: const TextStyle(
+                                                fontSize: 12, // Smaller font size
+                                                color: Color.fromARGB(255, 138, 137, 137),
+                                              ),
+                                            ),
+                                            items: voucherController.voucherModel.subCustomerList.map((customer) {
+                                              return customer.customerName;
+                                            }).toList(),
+                                            selectedItem: voucherController.voucherModel.selectedsubcustomer.value,
+                                            onChanged: (value) {
+                                              if (value != null) {
+                                                voucherController.voucherModel.selectedsubcustomer.value = value;
+                                                final customerList = voucherController.voucherModel.subCustomerList;
+
+                                                // Find the index of the selected customer
+                                                final index = customerList.indexWhere((customer) => customer.customerName == value);
+                                                voucherController.voucherModel.selectedcustomerID.value = voucherController.voucherModel.subCustomerList[index].customerId;
+                                                // print('Selected customer ID: ${view_LedgerController.view_LedgerModel.selectedsubcustomerID.value}');
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                        Obx(
+                                          () => SizedBox(
+                                            child: voucherController.voucherModel.selectedsubcustomer.value != 'None'
+                                                ? IconButton(
+                                                    onPressed: () {
+                                                      voucherController.voucherModel.selectedsubcustomer.value = 'None';
+                                                      voucherController.voucherModel.selectedcustomerID.value = 'None';
+                                                    },
+                                                    icon: const Icon(
+                                                      Icons.close,
+                                                      color: Colors.red,
+                                                      size: 18,
+                                                    ),
+                                                  )
+                                                : const SizedBox(),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        )
+                      : const SizedBox()),
+            ),
             const SizedBox(height: 35),
 
             // Status Filter
@@ -3485,7 +3623,7 @@ class _VoucherState extends State<Voucher> {
               ),
               child: DropdownButtonFormField<String>(
                 value: voucherController.voucherModel.selectedpaymentStatus.value,
-                items: ['Show All', 'Paid', 'Pending', 'Unpaid'].map((String value) {
+                items: ['Show All', 'Unpaid', 'Partial', 'Complete'].map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
@@ -3502,7 +3640,179 @@ class _VoucherState extends State<Voucher> {
                 dropdownColor: Primary_colors.Dark,
               ),
             ),
+            const SizedBox(height: 35),
+            Obx(() {
+              return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Select date',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                    ),
+                    // const SizedBox(width: 8),
+                    Obx(
+                      () => SizedBox(
+                          child: voucherController.voucherModel.startDateController.value.text.isNotEmpty || voucherController.voucherModel.endDateController.value.text.isNotEmpty
+                              ? TextButton(
+                                  onPressed: () {
+                                    voucherController.voucherModel.selectedMonth.value = 'None';
+                                    voucherController.voucherModel.startDateController.value.clear();
+                                    voucherController.voucherModel.endDateController.value.clear();
+                                  },
+                                  child: const Text(
+                                    'Clear',
+                                    style: TextStyle(fontSize: Primary_font_size.Text7),
+                                  ),
+                                )
+                              : const SizedBox()),
+                    ),
+                    const Spacer(),
+                    Obx(() {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 100, // Adjust width as needed
+                        height: 30, // Adjust height as needed
+                        child: DropdownButtonFormField<String>(
+                          menuMaxHeight: 300,
+                          value: voucherController.voucherModel.selectedMonth.value,
+                          items: ['None', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            voucherController.voucherModel.selectedMonth.value = value!;
+                            if (value != 'None') {
+                              final monthIndex = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].indexOf(value) + 1;
 
+                              final now = DateTime.now();
+                              final year = now.year;
+                              final firstDay = DateTime(year, monthIndex, 1);
+                              final lastDay = monthIndex < 12 ? DateTime(year, monthIndex + 1, 0) : DateTime(year + 1, 1, 0);
+
+                              String formatDate(DateTime date) {
+                                return "${date.year.toString().padLeft(4, '0')}-"
+                                    "${date.month.toString().padLeft(2, '0')}-"
+                                    "${date.day.toString().padLeft(2, '0')}";
+                              }
+
+                              voucherController.voucherModel.startDateController.value.text = formatDate(firstDay);
+                              voucherController.voucherModel.endDateController.value.text = formatDate(lastDay);
+                            } else {
+                              voucherController.voucherModel.startDateController.value.clear();
+                              voucherController.voucherModel.endDateController.value.clear();
+                            }
+                          },
+                          decoration: const InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.symmetric(vertical: 8),
+                            border: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                          ),
+                          style: const TextStyle(
+                            fontSize: Primary_font_size.Text7,
+                            color: Color.fromARGB(255, 154, 152, 152),
+                          ),
+                          dropdownColor: Primary_colors.Dark,
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+                const SizedBox(height: 15),
+                Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: 35,
+                        child: TextFormField(
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 154, 152, 152),
+                            fontSize: Primary_font_size.Text7,
+                          ),
+                          controller: voucherController.voucherModel.startDateController.value,
+                          readOnly: true,
+                          onTap: () => widget.selectDate(context, voucherController.voucherModel.startDateController.value),
+                          decoration: InputDecoration(
+                            labelText: 'From',
+                            labelStyle: const TextStyle(
+                              color: Color.fromARGB(255, 154, 152, 152),
+                              fontSize: Primary_font_size.Text7,
+                            ),
+                            suffixIcon: const Icon(
+                              Icons.calendar_today,
+                              size: 20,
+                              color: Color.fromARGB(255, 85, 84, 84),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: SizedBox(
+                        height: 35,
+                        child: TextFormField(
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 154, 152, 152),
+                            fontSize: Primary_font_size.Text7,
+                          ),
+                          controller: voucherController.voucherModel.endDateController.value,
+                          readOnly: true,
+                          onTap: () => widget.selectDate(context, voucherController.voucherModel.endDateController.value),
+                          decoration: InputDecoration(
+                            labelText: 'To',
+                            labelStyle: const TextStyle(
+                              color: Color.fromARGB(255, 154, 152, 152),
+                              fontSize: Primary_font_size.Text7,
+                            ),
+                            suffixIcon: const Icon(
+                              Icons.calendar_today,
+                              size: 20,
+                              color: Color.fromARGB(255, 85, 84, 84),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 35),
+              ]);
+            }),
             const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -3510,6 +3820,7 @@ class _VoucherState extends State<Voucher> {
                 OutlinedButton(
                   onPressed: () {
                     widget.resetFilters();
+                    widget.get_VoucherList();
                     Navigator.pop(context);
                   },
                   style: OutlinedButton.styleFrom(
@@ -3527,6 +3838,7 @@ class _VoucherState extends State<Voucher> {
                 const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
+                    widget.get_VoucherList();
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
@@ -3549,7 +3861,7 @@ class _VoucherState extends State<Voucher> {
     );
   }
 
-  // Widget _buildDateFilterChip(String label, VoidCallback onSelected) {
+  // Widget _buildVouchertypeFilterChip(String label, VoidCallback onSelected) {
   //   final isSelected = voucherController.voucherModel.selectedQuickFilter.value == label;
 
   //   return ChoiceChip(
@@ -3575,22 +3887,19 @@ class _VoucherState extends State<Voucher> {
   //     ),
   //   );
   // }
-  Widget _buildDateFilterChip(
+  Widget _buildVouchertypeFilterChip(
     String label,
   ) {
-    final isSelected = voucherController.voucherModel.selectedQuickFilter.value == label;
+    final isSelected = voucherController.voucherModel.selectedvouchertype.value == label;
 
     return ChoiceChip(
       label: Text(
-        label == 'Show All' ? 'Show All   ' : label,
+        label,
         style: TextStyle(color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
       ),
       selected: isSelected,
       onSelected: (_) {
-        voucherController.voucherModel.selectedQuickFilter.value = label;
-        if (label == 'Custom range') {
-          voucherController.voucherModel.showCustomDateRange.value = true;
-        }
+        voucherController.voucherModel.selectedvouchertype.value = label;
       },
       backgroundColor: Primary_colors.Dark,
       selectedColor: Primary_colors.Dark,

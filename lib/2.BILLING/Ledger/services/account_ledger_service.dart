@@ -1,11 +1,14 @@
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/account_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/ledger_pdf_entities/account_ledger_PDF_entities.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/view_ledger_entities.dart';
 // import 'package:ssipl_billing/2.BILLING/Account_Ledgers/controllers/account_Ledger_action.dart';
 import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 mixin Account_LedgerService {
   final Account_LedgerController account_LedgerController = Get.find<Account_LedgerController>();
@@ -61,6 +64,42 @@ mixin Account_LedgerService {
       // Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
     }
     // loader.stop();
+  }
+
+  Future<PDF_AccountLedgerSummary> parsePDF_AccountLedger(bool Sub_clientOrNot, bool Sales_clientOrNot) async {
+    final ClientDetails? clientDetails;
+
+    if (Sub_clientOrNot) {
+      String? clientID = view_LedgerController.view_LedgerModel.selectedsubcustomerID.value;
+
+      CustomerInfo clientData = view_LedgerController.view_LedgerModel.subCustomerList.firstWhere((element) => element.customerId == clientID);
+      clientDetails = ClientDetails(
+        clientName: clientData.customerName,
+        clientAddress: clientData.customerName,
+        GSTIN: clientData.customerGstNo == '' ? '-' : clientData.customerGstNo,
+        PAN: extractPanFromGst(clientData.customerGstNo),
+        fromDate: DateTime.parse(account_LedgerController.account_LedgerModel.account_Ledger_list.value.startdate!),
+        toDate: DateTime.parse(account_LedgerController.account_LedgerModel.account_Ledger_list.value.enddate!),
+      );
+    } else if (Sales_clientOrNot) {
+      String? clientID = view_LedgerController.view_LedgerModel.selectedsalescustomerID.value;
+
+      CustomerInfo clientData = view_LedgerController.view_LedgerModel.salesCustomerList.firstWhere((element) => element.customerId == clientID);
+      clientDetails = ClientDetails(
+        clientName: clientData.customerName,
+        clientAddress: clientData.customerName,
+        GSTIN: clientData.customerGstNo == '' ? '-' : clientData.customerGstNo,
+        PAN: extractPanFromGst(clientData.customerGstNo),
+        fromDate: DateTime.parse(account_LedgerController.account_LedgerModel.account_Ledger_list.value.startdate!),
+        toDate: DateTime.parse(account_LedgerController.account_LedgerModel.account_Ledger_list.value.enddate!),
+      );
+    } else {
+      clientDetails = null;
+    }
+
+    PDF_AccountLedgerSummary value = PDF_AccountLedgerSummary.fromJson(clientDetails: clientDetails, ledgerDetails: account_LedgerController.account_LedgerModel.account_Ledger_list.value);
+
+    return value;
   }
 
   Future<void> account_Ledger_refresh() async {

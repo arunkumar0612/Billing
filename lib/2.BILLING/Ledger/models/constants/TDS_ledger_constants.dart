@@ -11,6 +11,8 @@ class TDS_LedgerModel extends GetxController with GetSingleTickerProviderStateMi
     totalReceivables: 0,
     totalPayables: 0,
     netTds: 0,
+    startdate: null,
+    enddate: null,
   ).obs;
   var filteredTDS_Ledgers = TDSSummaryModel(
     tdsList: [],
@@ -20,6 +22,8 @@ class TDS_LedgerModel extends GetxController with GetSingleTickerProviderStateMi
     totalReceivables: 0,
     totalPayables: 0,
     netTds: 0,
+    startdate: null,
+    enddate: null,
   ).obs;
 
   var whatsapp_selectionStatus = true.obs;

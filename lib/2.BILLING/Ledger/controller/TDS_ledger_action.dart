@@ -15,6 +15,8 @@ class TDS_LedgerController extends GetxController {
       totalReceivables: 0,
       totalPayables: 0,
       netTds: 0,
+      startdate: null,
+      enddate: null,
     );
     // for (int i = 0; i < value.data.length; i++) {
     tds_LedgerModel.tds_Ledger_list.value = TDSSummaryModel.fromJson(value.data);

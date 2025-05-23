@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import 'package:ssipl_billing/2.BILLING/Ledger/models/constants/view_ledger_contants.dart';
 
 class View_LedgerController extends GetxController {
@@ -18,4 +17,9 @@ class View_LedgerController extends GetxController {
   //   view_LedgerModel.feedback_controller.value.clear();
   //   view_LedgerModel.closedDateController.text = view_LedgerModel.closedDate.value;
   // }
+
+  void initialize_StartEnd_date(String startDate, String endDate) {
+    view_LedgerModel.startDateController.value.text = startDate;
+    view_LedgerModel.endDateController.value.text = endDate;
+  }
 }

@@ -12,6 +12,8 @@ class GSTSummaryModel {
   final double? inputIgst;
   final double? outputIgst;
   final double? totalIgst;
+  final String? startdate;
+  final String? enddate;
 
   GSTSummaryModel({
     required this.gstList,
@@ -27,24 +29,27 @@ class GSTSummaryModel {
     this.inputIgst,
     this.outputIgst,
     this.totalIgst,
+    required this.startdate,
+    required this.enddate,
   });
 
   factory GSTSummaryModel.fromJson(Map<String, dynamic> json) {
     return GSTSummaryModel(
-      gstList: (json['gstlist'] as List<dynamic>).map((e) => GSTEntryModel.fromJson(e)).toList(),
-      inputGst: (json['inputgst'] ?? 0).toDouble(),
-      outputGst: (json['outputgst'] ?? 0).toDouble(),
-      totalGst: (json['totalgst'] ?? 0).toDouble(),
-      inputSgst: (json['inputsgst'] as num?)?.toDouble(),
-      outputSgst: (json['outputsgst'] as num?)?.toDouble(),
-      totalSgst: (json['totalsgst'] as num?)?.toDouble(),
-      inputCgst: (json['inputcgst'] as num?)?.toDouble(),
-      outputCgst: (json['outputcgst'] as num?)?.toDouble(),
-      totalCgst: (json['totalcgst'] as num?)?.toDouble(),
-      inputIgst: (json['inputigst'] as num?)?.toDouble(),
-      outputIgst: (json['outputigst'] as num?)?.toDouble(),
-      totalIgst: (json['totaligst'] as num?)?.toDouble(),
-    );
+        gstList: (json['gstlist'] as List<dynamic>).map((e) => GSTEntryModel.fromJson(e)).toList(),
+        inputGst: (json['inputgst'] ?? 0).toDouble(),
+        outputGst: (json['outputgst'] ?? 0).toDouble(),
+        totalGst: (json['totalgst'] ?? 0).toDouble(),
+        inputSgst: (json['inputsgst'] as num?)?.toDouble(),
+        outputSgst: (json['outputsgst'] as num?)?.toDouble(),
+        totalSgst: (json['totalsgst'] as num?)?.toDouble(),
+        inputCgst: (json['inputcgst'] as num?)?.toDouble(),
+        outputCgst: (json['outputcgst'] as num?)?.toDouble(),
+        totalCgst: (json['totalcgst'] as num?)?.toDouble(),
+        inputIgst: (json['inputigst'] as num?)?.toDouble(),
+        outputIgst: (json['outputigst'] as num?)?.toDouble(),
+        totalIgst: (json['totaligst'] as num?)?.toDouble(),
+        startdate: (json['startdate'] ?? DateTime.now().toString()),
+        enddate: (json['enddate'] ?? DateTime.now().toString()));
   }
 
   Map<String, dynamic> toJson() {
@@ -62,6 +67,8 @@ class GSTSummaryModel {
       'inputigst': inputIgst,
       'outputigst': outputIgst,
       'totaligst': totalIgst,
+      'startdate': startdate,
+      'enddate': enddate,
     };
   }
 }

@@ -1,61 +1,3 @@
-// class AccountLedger {
-//   DateTime date;
-//   String voucherNo;
-//   String invoiceNo;
-//   String gstNo;
-//   String clientName;
-//   String ledgerType;
-//   Description description;
-//   String transactionDetails;
-//   AmountDetails debit;
-//   AmountDetails credit;
-//   double balance;
-
-//   AccountLedger({
-//     required this.date,
-//     required this.voucherNo,
-//     required this.invoiceNo,
-//     required this.gstNo,
-//     required this.clientName,
-//     required this.ledgerType,
-//     required this.description,
-//     required this.transactionDetails,
-//     required this.debit,
-//     required this.credit,
-//     required this.balance,
-//   });
-
-//   factory AccountLedger.fromJson(Map<String, dynamic> json) {
-//     return AccountLedger(
-//       date: DateTime.tryParse(json['date'] ?? '') ?? DateTime.now(),
-//       voucherNo: json['voucher_no'] ?? '',
-//       invoiceNo: json['invoice_no'] ?? '',
-//       gstNo: json['gst_no'] ?? '',
-//       clientName: json['client_name'] ?? '',
-//       ledgerType: json['ledger_type'] ?? '',
-//       description: Description.fromJson(json['description'] ?? {}),
-//       transactionDetails: json['transaction_details'] ?? '',
-//       debit: AmountDetails.fromJson(json['debit'] ?? {}),
-//       credit: AmountDetails.fromJson(json['credit'] ?? {}),
-//       balance: (json['balance'] ?? 0).toDouble(),
-//     );
-//   }
-
-//   Map<String, dynamic> toJson() => {
-//         'date': date.toIso8601String(),
-//         'voucher_no': voucherNo,
-//         'invoice_no': invoiceNo,
-//         'gst_no': gstNo,
-//         'client_name': clientName,
-//         'ledger_type': ledgerType,
-//         'description': description.toJson(),
-//         'transaction_details': transactionDetails,
-//         'debit': debit.toJson(),
-//         'credit': credit.toJson(),
-//         'balance': balance,
-//       };
-// }
-
 class Description {
   String content;
   double gst;
@@ -117,21 +59,26 @@ class AccountLedgerSummary {
   final double creditAmount;
   final double debitAmount;
   final double balanceAmount;
+  final String? startdate;
+  final String? enddate;
 
   AccountLedgerSummary({
     required this.ledgerList,
     required this.creditAmount,
     required this.debitAmount,
     required this.balanceAmount,
+    required this.startdate,
+    required this.enddate,
   });
 
   factory AccountLedgerSummary.fromJson(Map<String, dynamic> json) {
     return AccountLedgerSummary(
-      ledgerList: (json['ledgerlist'] as List<dynamic>).map((e) => AccountLedger.fromJson(e)).toList(),
-      creditAmount: (json['creditAmount'] ?? 0).toDouble(),
-      debitAmount: (json['debitAmount'] ?? 0).toDouble(),
-      balanceAmount: (json['balanceAmount'] ?? 0).toDouble(),
-    );
+        ledgerList: (json['ledgerlist'] as List<dynamic>).map((e) => AccountLedger.fromJson(e)).toList(),
+        creditAmount: (json['creditAmount'] ?? 0).toDouble(),
+        debitAmount: (json['debitAmount'] ?? 0).toDouble(),
+        balanceAmount: (json['balanceAmount'] ?? 0).toDouble(),
+        startdate: (json['startdate'] ?? DateTime.now().toString()),
+        enddate: (json['enddate'] ?? DateTime.now().toString()));
   }
 
   Map<String, dynamic> toJson() {
@@ -140,6 +87,8 @@ class AccountLedgerSummary {
       'creditAmount': creditAmount,
       'debitAmount': debitAmount,
       'balanceAmount': balanceAmount,
+      'startdate': startdate,
+      'enddate': enddate,
     };
   }
 }

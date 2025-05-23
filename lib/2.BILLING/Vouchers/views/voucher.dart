@@ -2786,17 +2786,7 @@ class _VoucherState extends State<Voucher> {
                               ),
                             ),
                           ),
-                           const Expanded(
-                            flex: 2,
-                            child: Text(
-                              'Overdue',
-                              style: TextStyle(
-                                color: Primary_colors.Color1,
-                                fontWeight: FontWeight.bold,
-                                fontSize: Primary_font_size.Text7,
-                              ),
-                            ),
-                          ),
+                          
                           const SizedBox(width: 3),
                           const Expanded(
                             flex: 2,

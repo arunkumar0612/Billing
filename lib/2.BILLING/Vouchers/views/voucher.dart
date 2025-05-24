@@ -29,11 +29,15 @@ class _VoucherState extends State<Voucher> {
   final loader = LoadingOverlay();
   @override
   void initState() {
-    widget.get_VoucherList();
-    widget.Get_SUBcustomerList();
-    widget.Get_SALEScustomerList();
     super.initState();
-    // Avoid using context here for inherited widgets.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.get_VoucherList();
+      widget.Get_SUBcustomerList();
+      widget.Get_SALEScustomerList();
+
+      // Initialize selectedItems after data is loaded
+      voucherController.voucherModel.selectedItems = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false).obs;
+    });
   }
 
   @override
@@ -2253,7 +2257,6 @@ class _VoucherState extends State<Voucher> {
                               ),
                             ),
                           ),
-                          
                           const SizedBox(width: 3),
                           const Expanded(
                             flex: 1,
@@ -2310,6 +2313,9 @@ class _VoucherState extends State<Voucher> {
                         itemCount: voucherController.voucherModel.filteredVouchers.length,
                         itemBuilder: (context, index) {
                           final voucher = voucherController.voucherModel.filteredVouchers[index];
+                          if (voucherController.voucherModel.selectedItems.length != voucherController.voucherModel.filteredVouchers.length) {
+                            voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false);
+                          }
                           return Padding(
                             padding: const EdgeInsets.only(top: 10),
                             child: ClipRRect(
@@ -2324,41 +2330,31 @@ class _VoucherState extends State<Voucher> {
                                   child: Row(
                                     children: [
                                       SizedBox(
-                                        width: 30,
-                                        child: Obx(
-                                          () {
-                                            // Ensure selectedItems has the correct length
-                                            if (voucherController.voucherModel.selectedItems.length != voucherController.voucherModel.filteredVouchers.length) {
-                                              voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false);
-                                            }
-
-                                            return voucher.fullyCleared == 0
-                                                ? Checkbox(
-                                                    value: index < voucherController.voucherModel.selectedItems.length ? voucherController.voucherModel.selectedItems[index] : false,
-                                                    onChanged: (bool? value) {
-                                                      if (index < voucherController.voucherModel.selectedItems.length) {
-                                                        voucherController.voucherModel.selectedItems[index] = value ?? false;
-                                                        widget.updateDeleteButtonVisibility();
-                                                      }
-                                                    },
-                                                    activeColor: Colors.blueAccent,
-                                                    fillColor: WidgetStateProperty.resolveWith<Color>((states) {
-                                                      if (states.contains(WidgetState.selected)) {
-                                                        return Colors.blueAccent;
-                                                      }
-                                                      return Colors.white;
-                                                    }),
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(4),
-                                                    ),
-                                                  )
-                                                : Icon(
-                                                    Icons.check_rounded,
-                                                    color: Colors.green,
-                                                  );
-                                          },
-                                        ),
-                                      ),
+                                          width: 30,
+                                          child: voucher.fullyCleared == 0
+                                              ? Checkbox(
+                                                  value: index < voucherController.voucherModel.selectedItems.length ? voucherController.voucherModel.selectedItems[index] : false,
+                                                  onChanged: (bool? value) {
+                                                    if (index < voucherController.voucherModel.selectedItems.length) {
+                                                      voucherController.voucherModel.selectedItems[index] = value ?? false;
+                                                      widget.updateDeleteButtonVisibility();
+                                                    }
+                                                  },
+                                                  activeColor: Colors.blueAccent,
+                                                  fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+                                                    if (states.contains(WidgetState.selected)) {
+                                                      return Colors.blueAccent;
+                                                    }
+                                                    return Colors.white;
+                                                  }),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(4),
+                                                  ),
+                                                )
+                                              : Icon(
+                                                  Icons.check_rounded,
+                                                  color: Colors.green,
+                                                )),
                                       const SizedBox(width: 3),
                                       Expanded(
                                         flex: 2,
@@ -2575,8 +2571,6 @@ class _VoucherState extends State<Voucher> {
                                           ),
                                         ),
                                       ),
-                                  
-                                     
                                       const SizedBox(width: 3),
                                       Expanded(
                                         flex: 1,
@@ -2708,9 +2702,6 @@ class _VoucherState extends State<Voucher> {
       ),
     );
   }
-
- 
-
 
   void showVoucherClearedDialog(BuildContext context, int index) {
     showDialog(
@@ -3395,6 +3386,7 @@ class _VoucherState extends State<Voucher> {
                       voucherController.voucherModel.selectedInvoiceType.value = 'Show All';
                       voucherController.voucherModel.selectedsalescustomer.value = 'None';
                       voucherController.voucherModel.selectedsubcustomer.value = 'None';
+                      widget.get_VoucherList();
                     },
                     backgroundColor: Primary_colors.Dark,
                     selectedColor: Primary_colors.Dark,
@@ -3416,6 +3408,7 @@ class _VoucherState extends State<Voucher> {
                       voucherController.voucherModel.selectedInvoiceType.value = 'Sales';
                       voucherController.voucherModel.selectedsalescustomer.value = 'None';
                       voucherController.voucherModel.selectedsubcustomer.value = 'None';
+                      widget.get_VoucherList();
                     },
                     backgroundColor: Primary_colors.Dark,
                     showCheckmark: false,
@@ -3438,6 +3431,7 @@ class _VoucherState extends State<Voucher> {
                       voucherController.voucherModel.selectedInvoiceType.value = 'Subscription';
                       voucherController.voucherModel.selectedsalescustomer.value = 'None';
                       voucherController.voucherModel.selectedsubcustomer.value = 'None';
+                      widget.get_VoucherList();
                     },
                     backgroundColor: Primary_colors.Dark,
                     showCheckmark: false,
@@ -3656,7 +3650,9 @@ class _VoucherState extends State<Voucher> {
                                                 // Find the index of the selected customer
                                                 final index = customerList.indexWhere((customer) => customer.customerName == value);
                                                 voucherController.voucherModel.selectedcustomerID.value = voucherController.voucherModel.subCustomerList[index].customerId;
+
                                                 // print('Selected customer ID: ${view_LedgerController.view_LedgerModel.selectedsubcustomerID.value}');
+                                                widget.get_VoucherList();
                                               }
                                             },
                                           ),
@@ -3668,6 +3664,7 @@ class _VoucherState extends State<Voucher> {
                                                     onPressed: () {
                                                       voucherController.voucherModel.selectedsubcustomer.value = 'None';
                                                       voucherController.voucherModel.selectedcustomerID.value = 'None';
+                                                      widget.get_VoucherList();
                                                     },
                                                     icon: const Icon(
                                                       Icons.close,
@@ -3693,30 +3690,39 @@ class _VoucherState extends State<Voucher> {
             // Status Filter
             const Text('Payment Status', style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192))),
             const SizedBox(height: 8),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: const Color.fromARGB(255, 85, 84, 84)),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: DropdownButtonFormField<String>(
-                value: voucherController.voucherModel.selectedpaymentStatus.value,
-                items: ['Show All', 'Unpaid', 'Partial', 'Complete'].map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  voucherController.voucherModel.selectedpaymentStatus.value = value!;
-                },
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  border: InputBorder.none,
+            Obx(
+              () => Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: const Color.fromARGB(255, 85, 84, 84)),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                style: const TextStyle(fontSize: Primary_font_size.Text7, color: const Color.fromARGB(255, 154, 152, 152)),
-                dropdownColor: Primary_colors.Dark,
+                child: DropdownButtonFormField<String>(
+                  value: voucherController.voucherModel.selectedpaymentStatus.value,
+                  isDense: true, // Reduces the vertical height
+                  items: voucherController.voucherModel.paymentstatusList.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    voucherController.voucherModel.selectedpaymentStatus.value = value!;
+                    widget.get_VoucherList();
+                  },
+                  decoration: const InputDecoration(
+                    isDense: true, // Makes the field more compact
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8), // Smaller padding
+                    border: InputBorder.none,
+                  ),
+                  style: const TextStyle(
+                    fontSize: Primary_font_size.Text7,
+                    color: Color.fromARGB(255, 154, 152, 152),
+                  ),
+                  dropdownColor: Primary_colors.Dark,
+                ),
               ),
             ),
+
             const SizedBox(height: 35),
             Obx(() {
               return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -3736,6 +3742,7 @@ class _VoucherState extends State<Voucher> {
                                     voucherController.voucherModel.selectedMonth.value = 'None';
                                     voucherController.voucherModel.startDateController.value.clear();
                                     voucherController.voucherModel.endDateController.value.clear();
+                                    widget.get_VoucherList();
                                   },
                                   child: const Text(
                                     'Clear',
@@ -3777,9 +3784,11 @@ class _VoucherState extends State<Voucher> {
 
                               voucherController.voucherModel.startDateController.value.text = formatDate(firstDay);
                               voucherController.voucherModel.endDateController.value.text = formatDate(lastDay);
+                              widget.get_VoucherList();
                             } else {
                               voucherController.voucherModel.startDateController.value.clear();
                               voucherController.voucherModel.endDateController.value.clear();
+                              widget.get_VoucherList();
                             }
                           },
                           decoration: const InputDecoration(
@@ -3818,7 +3827,10 @@ class _VoucherState extends State<Voucher> {
                           ),
                           controller: voucherController.voucherModel.startDateController.value,
                           readOnly: true,
-                          onTap: () => widget.selectDate(context, voucherController.voucherModel.startDateController.value),
+                          onTap: () async {
+                            await widget.selectfilterDate(context, voucherController.voucherModel.startDateController.value);
+                            await widget.get_VoucherList();
+                          },
                           decoration: InputDecoration(
                             labelText: 'From',
                             labelStyle: const TextStyle(
@@ -3857,7 +3869,10 @@ class _VoucherState extends State<Voucher> {
                           ),
                           controller: voucherController.voucherModel.endDateController.value,
                           readOnly: true,
-                          onTap: () => widget.selectDate(context, voucherController.voucherModel.endDateController.value),
+                          onTap: () async {
+                            await widget.selectfilterDate(context, voucherController.voucherModel.endDateController.value);
+                            await widget.get_VoucherList();
+                          },
                           decoration: InputDecoration(
                             labelText: 'To',
                             labelStyle: const TextStyle(
@@ -3892,11 +3907,11 @@ class _VoucherState extends State<Voucher> {
             }),
             const Spacer(),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 OutlinedButton(
                   onPressed: () {
-                    widget.resetFilters();
+                    widget.resetvoucherFilters();
                     widget.get_VoucherList();
                     Navigator.pop(context);
                   },
@@ -3912,24 +3927,24 @@ class _VoucherState extends State<Voucher> {
                     style: TextStyle(color: Primary_colors.Color3),
                   ),
                 ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    widget.get_VoucherList();
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Primary_colors.Color3,
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    'APPLY',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
+                // const SizedBox(width: 10),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     widget.get_VoucherList();
+                //     Navigator.pop(context);
+                //   },
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: Primary_colors.Color3,
+                //     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(8),
+                //     ),
+                //   ),
+                //   child: const Text(
+                //     'APPLY',
+                //     style: TextStyle(color: Colors.white),
+                //   ),
+                // ),
               ],
             ),
           ],
@@ -3977,6 +3992,7 @@ class _VoucherState extends State<Voucher> {
       selected: isSelected,
       onSelected: (_) {
         voucherController.voucherModel.selectedvouchertype.value = label;
+        widget.get_VoucherList();
       },
       backgroundColor: Primary_colors.Dark,
       selectedColor: Primary_colors.Dark,
@@ -4087,7 +4103,7 @@ class CreateVoucherBottomSheet extends StatelessWidget with VoucherService {
                                   child: TextFormField(
                                     controller: voucherController.voucherModel.dateController.value,
                                     readOnly: true,
-                                    onTap: () => selectDate(context, voucherController.voucherModel.dateController.value),
+                                    onTap: () => selectfilterDate(context, voucherController.voucherModel.dateController.value),
                                     style: const TextStyle(
                                       fontSize: Primary_font_size.Text7,
                                       color: Primary_colors.Color1,

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
@@ -426,10 +426,7 @@ class PDFfileData {
       'data': data.path, // Convert File to path string for JSON
     };
   }
-
 }
-
-
 
 // Dummy timeline data model
 class TimelineEntry {
@@ -445,7 +442,6 @@ class TimelineEntry {
     required this.feedback,
   });
 }
-
 
 // Sample data list
 final List<TimelineEntry> timelineData = [

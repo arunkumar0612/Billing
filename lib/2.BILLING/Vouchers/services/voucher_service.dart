@@ -213,8 +213,9 @@ mixin VoucherService {
   }
 
   Future<void> get_VoucherList() async {
+    // print('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
     // loader.start(context);
-    await Future.delayed(const Duration(milliseconds: 1000));
+    // await Future.delayed(const Duration(milliseconds: 1000));
     // response;
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
@@ -233,6 +234,7 @@ mixin VoucherService {
         response ?? {},
       );
       if (value.code) {
+        print(value.data);
         voucherController.add_Voucher(value);
         voucherController.update();
       } else {
@@ -446,7 +448,7 @@ mixin VoucherService {
     }
   }
 
-  Future<void> selectDate(BuildContext context, TextEditingController controller) async {
+  Future<void> selectfilterDate(BuildContext context, TextEditingController controller) async {
     final DateTime now = DateTime.now();
     final DateTime tomorrow = DateTime(now.year, now.month, now.day + 1);
 
@@ -547,7 +549,7 @@ mixin VoucherService {
     voucherController.voucherModel.selectedvouchertype.value = 'Custom range';
   }
 
-  void resetFilters() {
+  void resetvoucherFilters() {
     voucherController.voucherModel.startDateController.value.clear();
     voucherController.voucherModel.endDateController.value.clear();
     voucherController.voucherModel.selectedpaymentStatus.value = 'Show All';

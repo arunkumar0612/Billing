@@ -907,7 +907,7 @@ class _BillingState extends State<Billing> {
                                       child: Text(
                                         // textAlign: TextAlign.left,
                                         mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate != null
-                                            ? mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate!
+                                            ? formatDate(DateTime.parse(mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate!))
                                             : '-',
                                         style: const TextStyle(
                                           color: Colors.blue,

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/constants/account_ledger_constants.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/account_ledger_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
 class Account_LedgerController extends GetxController {
   var account_LedgerModel = Account_LedgerModel();
+  final View_LedgerController view_LedgerController = Get.find<View_LedgerController>();
 
   void add_Account_Ledger(CMDmResponse value) {
     account_LedgerModel.account_Ledger_list.value = AccountLedgerSummary(
@@ -13,10 +15,13 @@ class Account_LedgerController extends GetxController {
       creditAmount: 0.0,
       debitAmount: 0.0,
       ledgerList: [],
+      startdate: null,
+      enddate: null,
     );
     account_LedgerModel.account_Ledger_list.value = AccountLedgerSummary.fromJson(value.data);
 
     account_LedgerModel.filteredaccount_Ledger_list.value = AccountLedgerSummary.fromJson(value.data);
+    view_LedgerController.initialize_StartEnd_date(account_LedgerModel.account_Ledger_list.value.startdate!, account_LedgerModel.account_Ledger_list.value.enddate!);
   }
 
   // void reset_account_LedgerClear_popup() {

@@ -12,6 +12,8 @@ class GST_LedgerController extends GetxController {
       inputGst: 0.0,
       outputGst: 0.0,
       totalGst: 0.0,
+      startdate: null,
+      enddate: null,
     );
     // for (int i = 0; i < value.data.length; i++) {
     gst_LedgerModel.gst_Ledger_list.value = GSTSummaryModel.fromJson(value.data);

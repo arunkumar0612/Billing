@@ -151,6 +151,17 @@ String generateRandomString(int length) {
   return List.generate(length, (index) => chars[random.nextInt(chars.length)]).join('');
 }
 
+String extractPanFromGst(String gstNumber) {
+  if (gstNumber.isEmpty) {
+    return '-';
+  }
+  if (gstNumber.length >= 12) {
+    return gstNumber.substring(2, 12); // characters 3 to 12 (0-based index)
+  } else {
+    throw FormatException("Invalid GST number: must be at least 12 characters long");
+  }
+}
+
 Future<Uint8List> convertFileToUint8List(File file) async {
   return await file.readAsBytes();
 }

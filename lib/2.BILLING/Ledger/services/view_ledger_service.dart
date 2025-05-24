@@ -150,6 +150,13 @@ mixin View_LedgerService {
     }
   }
 
+  bool isSubscription_Client() {
+    return view_LedgerController.view_LedgerModel.selectedsubcustomer.value != 'None' && view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Subscription' ? true : false;
+  }
+
+  bool isSales_Client() {
+    return view_LedgerController.view_LedgerModel.selectedsalescustomer.value != 'None' && view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Sales' ? true : false;
+  }
   // void showCustomDateRangePicker() {
   //   view_LedgerController.view_LedgerModel.showCustomDateRange.value = true;
   // }
@@ -160,7 +167,6 @@ mixin View_LedgerService {
     view_LedgerController.view_LedgerModel.selectedMonth.value = 'None';
     view_LedgerController.view_LedgerModel.selectedinvoiceType.value = 'Show All';
     view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value = 'Consolidate';
-    view_LedgerController.view_LedgerModel.selectedInvoiceType.value = 'Show All';
     view_LedgerController.view_LedgerModel.selectedPaymenttype.value = 'Show All';
     view_LedgerController.view_LedgerModel.selectedsalescustomerID.value = 'None';
     view_LedgerController.view_LedgerModel.selectedsalescustomer.value = 'None';

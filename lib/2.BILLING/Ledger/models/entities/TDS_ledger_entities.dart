@@ -6,6 +6,8 @@ class TDSSummaryModel {
   final double totalReceivables;
   final double totalPayables;
   final double netTds;
+  final String? startdate;
+  final String? enddate;
 
   TDSSummaryModel({
     required this.tdsList,
@@ -15,18 +17,21 @@ class TDSSummaryModel {
     required this.totalReceivables,
     required this.totalPayables,
     required this.netTds,
+    required this.startdate,
+    required this.enddate,
   });
 
   factory TDSSummaryModel.fromJson(Map<String, dynamic> json) {
     return TDSSummaryModel(
-      tdsList: (json['tdsledger'] as List<dynamic>).map((e) => TDSEntryModel.fromJson(e)).toList(),
-      totalTds: (json['totalTds'] ?? 0).toDouble(),
-      totalPaid: (json['totalPaid'] ?? 0).toDouble(),
-      netTdsBalance: (json['netTdsBalance'] ?? 0).toDouble(),
-      totalReceivables: (json['totalReceivables'] ?? 0).toDouble(),
-      totalPayables: (json['totalPayables'] ?? 0).toDouble(),
-      netTds: (json['netTds'] ?? 0).toDouble(),
-    );
+        tdsList: (json['tdsledger'] as List<dynamic>).map((e) => TDSEntryModel.fromJson(e)).toList(),
+        totalTds: (json['totalTds'] ?? 0).toDouble(),
+        totalPaid: (json['totalPaid'] ?? 0).toDouble(),
+        netTdsBalance: (json['netTdsBalance'] ?? 0).toDouble(),
+        totalReceivables: (json['totalReceivables'] ?? 0).toDouble(),
+        totalPayables: (json['totalPayables'] ?? 0).toDouble(),
+        netTds: (json['netTds'] ?? 0).toDouble(),
+        startdate: (json['startdate'] ?? DateTime.now().toString()),
+        enddate: (json['enddate'] ?? DateTime.now().toString()));
   }
 
   Map<String, dynamic> toJson() {
@@ -38,6 +43,8 @@ class TDSSummaryModel {
       'totalReceivables': totalReceivables,
       'totalPayables': totalPayables,
       'netTds': netTds,
+      'startdate': startdate,
+      'enddate': enddate,
     };
   }
 }

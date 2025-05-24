@@ -8,12 +8,16 @@ class Account_LedgerModel extends GetxController with GetSingleTickerProviderSta
     creditAmount: 0.0,
     debitAmount: 0.0,
     ledgerList: [],
+    startdate: null,
+    enddate: null,
   ).obs;
   var filteredaccount_Ledger_list = AccountLedgerSummary(
     balanceAmount: 0.0,
     creditAmount: 0.0,
     debitAmount: 0.0,
     ledgerList: [],
+    startdate: null,
+    enddate: null,
   ).obs;
   final searchController = TextEditingController().obs;
   var whatsapp_selectionStatus = true.obs;

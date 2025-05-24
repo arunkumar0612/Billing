@@ -15,268 +15,18 @@
  */
 
 import 'dart:typed_data';
+
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/ledger_pdf_entities/account_ledger_PDF_entities.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
-Future<Uint8List> generateAccountLedger(PdfPageFormat pageFormat) async {
-  final List<Map<String, dynamic>> ledgerList = [
-    {
-      'date': '01-04-2023',
-      'voucherNo': 'SSIPL-V01032025',
-      'description': ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
-      'debit': '',
-      'credit': '3675',
-      'balance': '345647.99 Dr',
-      'invoiceNo': 'INV-1001',
-    },
-    {
-      'date': '01-04-2024',
-      'voucherNo': 'V34532',
-      'description': 'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
-      'debit': '235454433.44',
-      'credit': '4533434323.99',
-      'balance': '36467.99 Dr',
-      'invoiceNo': 'INV-1002',
-    },
-    {
-      'date': '01-04-2023',
-      'voucherNo': 'SSIPL-V01032025',
-      'description': ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
-      'debit': '',
-      'credit': '3675',
-      'balance': '345647.99 Dr',
-      'invoiceNo': 'INV-1001',
-    },
-    {
-      'date': '01-04-2024',
-      'voucherNo': 'V34532',
-      'description': 'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
-      'debit': '235454433.44',
-      'credit': '4533434323.99',
-      'balance': '36467.99 Dr',
-      'invoiceNo': 'INV-1002',
-    },
-    {
-      'date': '01-04-2023',
-      'voucherNo': 'SSIPL-V01032025',
-      'description': ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
-      'debit': '',
-      'credit': '3675',
-      'balance': '345647.99 Dr',
-      'invoiceNo': 'INV-1001',
-    },
-    {
-      'date': '01-04-2024',
-      'voucherNo': 'V34532',
-      'description': 'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
-      'debit': '235454433.44',
-      'credit': '4533434323.99',
-      'balance': '36467.99 Dr',
-      'invoiceNo': 'INV-1002',
-    },
-    {
-      'date': '01-04-2023',
-      'voucherNo': 'SSIPL-V01032025',
-      'description': ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
-      'debit': '',
-      'credit': '3675',
-      'balance': '345647.99 Dr',
-      'invoiceNo': 'INV-1001',
-    },
-    {
-      'date': '01-04-2024',
-      'voucherNo': 'V34532',
-      'description': 'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
-      'debit': '235454433.44',
-      'credit': '4533434323.99',
-      'balance': '36467.99 Dr',
-      'invoiceNo': 'INV-1002',
-    },
-    {
-      'date': '01-04-2023',
-      'voucherNo': 'SSIPL-V01032025',
-      'description': ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
-      'debit': '',
-      'credit': '3675',
-      'balance': '345647.99 Dr',
-      'invoiceNo': 'INV-1001',
-    },
-    {
-      'date': '01-04-2024',
-      'voucherNo': 'V34532',
-      'description': 'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
-      'debit': '235454433.44',
-      'credit': '4533434323.99',
-      'balance': '36467.99 Dr',
-      'invoiceNo': 'INV-1002',
-    },
-    {
-      'date': '01-04-2023',
-      'voucherNo': 'SSIPL-V01032025',
-      'description': ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
-      'debit': '',
-      'credit': '3675',
-      'balance': '345647.99 Dr',
-      'invoiceNo': 'INV-1001',
-    },
-    {
-      'date': '01-04-2024',
-      'voucherNo': 'V34532',
-      'description': 'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
-      'debit': '235454433.44',
-      'credit': '4533434323.99',
-      'balance': '36467.99 Dr',
-      'invoiceNo': 'INV-1002',
-    },
-    {
-      'date': '01-04-2023',
-      'voucherNo': 'SSIPL-V01032025',
-      'description': ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
-      'debit': '',
-      'credit': '3675',
-      'balance': '345647.99 Dr',
-      'invoiceNo': 'INV-1001',
-    },
-    {
-      'date': '01-04-2024',
-      'voucherNo': 'V34532',
-      'description': 'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
-      'debit': '235454433.44',
-      'credit': '4533434323.99',
-      'balance': '36467.99 Dr',
-      'invoiceNo': 'INV-1002',
-    },
-    {
-      'date': '01-04-2023',
-      'voucherNo': 'SSIPL-V01032025',
-      'description': ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
-      'debit': '',
-      'credit': '3675',
-      'balance': '345647.99 Dr',
-      'invoiceNo': 'INV-1001',
-    },
-    {
-      'date': '01-04-2024',
-      'voucherNo': 'V34532',
-      'description': 'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
-      'debit': '235454433.44',
-      'credit': '4533434323.99',
-      'balance': '36467.99 Dr',
-      'invoiceNo': 'INV-1002',
-    },
-    {
-      'date': '01-04-2023',
-      'voucherNo': 'SSIPL-V01032025',
-      'description': ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
-      'debit': '',
-      'credit': '3675',
-      'balance': '345647.99 Dr',
-      'invoiceNo': 'INV-1001',
-    },
-    {
-      'date': '01-04-2024',
-      'voucherNo': 'V34532',
-      'description': 'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
-      'debit': '235454433.44',
-      'credit': '4533434323.99',
-      'balance': '36467.99 Dr',
-      'invoiceNo': 'INV-1002',
-    },
-    {
-      'date': '01-04-2023',
-      'voucherNo': 'SSIPL-V01032025',
-      'description': ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
-      'debit': '',
-      'credit': '3675',
-      'balance': '345647.99 Dr',
-      'invoiceNo': 'INV-1001',
-    },
-    {
-      'date': '01-04-2024',
-      'voucherNo': 'V34532',
-      'description': 'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
-      'debit': '235454433.44',
-      'credit': '4533434323.99',
-      'balance': '36467.99 Dr',
-      'invoiceNo': 'INV-1002',
-    },
-    {
-      'date': '01-04-2023',
-      'voucherNo': 'SSIPL-V01032025',
-      'description': ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
-      'debit': '',
-      'credit': '3675',
-      'balance': '345647.99 Dr',
-      'invoiceNo': 'INV-1001',
-    },
-    {
-      'date': '01-04-2024',
-      'voucherNo': 'V34532',
-      'description': 'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
-      'debit': '235454433.44',
-      'credit': '4533434323.99',
-      'balance': '36467.99 Dr',
-      'invoiceNo': 'INV-1002',
-    },
-    {
-      'date': '01-04-2023',
-      'voucherNo': 'SSIPL-V01032025',
-      'description': ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
-      'debit': '',
-      'credit': '3675',
-      'balance': '345647.99 Dr',
-      'invoiceNo': 'INV-1001',
-    },
-    {
-      'date': '01-04-2024',
-      'voucherNo': 'V34532',
-      'description': 'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
-      'debit': '235454433.44',
-      'credit': '4533434323.99',
-      'balance': '36467.99 Dr',
-      'invoiceNo': 'INV-1002',
-    },
-    {
-      'date': '01-04-2023',
-      'voucherNo': 'SSIPL-V01032025',
-      'description': ' Demo Repair & Maintenance Computer BEING SURVEILLANCE CHARGES FOR THE MONTH APRIL 2023',
-      'debit': '',
-      'credit': '3675',
-      'balance': '345647.99 Dr',
-      'invoiceNo': 'INV-1001',
-    },
-    {
-      'date': '01-04-2024',
-      'voucherNo': 'V34532',
-      'description': 'SP SALELOCAL18  Cust. SPORADA SECURE INDIA PRIVATE LIMITED 1-4HKTKSIU  No.:MEERBC009K8003096',
-      'debit': '235454433.44',
-      'credit': '4533434323.99',
-      'balance': '36467.99 Dr',
-      'invoiceNo': 'INV-1002',
-    },
-  ];
-
-  final clientDetails = ClientDetails(
-    clientName: 'Anamallais Agencies Private Limited ',
-    clientAddress: '131b, Raja Street, Rivoli 75001 Paris, Palani Road, Rivoli 75001 Paris, Palani Road, Rivoli 75001 Paris, France',
-    GSTIN: '27AAEPM1234C1Z5',
-    PAN: 'ABCDE1234F',
-    fromDate: DateTime(2025, 5, 1),
-    toDate: DateTime(2025, 5, 3),
-  );
-
-  List<LedgerDetails> parsedLedgerList = ledgerList.map((item) => LedgerDetails.fromJson(item)).toList();
-
-  final temp = {'clientDetails': clientDetails.toJson(), 'ledgerDetails': parsedLedgerList};
-
-  ClientLedger value = ClientLedger.fromJson(temp);
-
+Future<Uint8List> generateAccountLedger(PdfPageFormat pageFormat, PDF_AccountLedgerSummary allData) async {
   final invoice = Invoice(
-    clientLedger: value,
-    // clientLedger.clientDetails: clientLedger.clientDetails,
+    data: allData,
+    // data.clientDetails: data.clientDetails,
     // invoiceLedgerList: parsedLedgerList,
     currentDate: DateTime.now(),
   );
@@ -285,11 +35,11 @@ Future<Uint8List> generateAccountLedger(PdfPageFormat pageFormat) async {
 }
 
 class Invoice {
-  final ClientLedger clientLedger;
+  final PDF_AccountLedgerSummary data;
   final DateTime currentDate;
 
   Invoice({
-    required this.clientLedger,
+    required this.data,
     required this.currentDate,
   });
 
@@ -323,9 +73,9 @@ class Invoice {
         footer: _buildFooter,
         build: (context) => [
           pw.SizedBox(height: 5),
-          _contentHeader(context),
+          if (data.clientDetails != null) _contentHeader(context),
           pw.SizedBox(height: 15),
-          ..._contentTable(context, clientLedger.ledgerDetails),
+          ..._contentTable(context),
           totalRow(),
           closingBalanceRow(),
           pw.SizedBox(height: 20),
@@ -508,8 +258,8 @@ class Invoice {
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
                   buildInfoRow('Date', _formatDate(DateTime.now())),
-                  buildInfoRow('Client Name', clientLedger.clientDetails.clientName),
-                  buildInfoRow('Client Address', clientLedger.clientDetails.clientAddress),
+                  buildInfoRow('Client Name', data.clientDetails!.clientName),
+                  buildInfoRow('Client Address', data.clientDetails!.clientAddress),
                 ],
               ),
             ),
@@ -519,10 +269,10 @@ class Invoice {
               child: pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  buildInfoRow('GSTIN', clientLedger.clientDetails.GSTIN),
-                  buildInfoRow('PAN Number', clientLedger.clientDetails.PAN),
-                  buildInfoRow('From Date', _formatDate(clientLedger.clientDetails.fromDate)),
-                  buildInfoRow('To Date', _formatDate(clientLedger.clientDetails.toDate)),
+                  buildInfoRow('GSTIN', data.clientDetails!.GSTIN),
+                  buildInfoRow('PAN Number', data.clientDetails!.PAN),
+                  buildInfoRow('From Date', _formatDate(data.clientDetails!.fromDate)),
+                  buildInfoRow('To Date', _formatDate(data.clientDetails!.toDate)),
                 ],
               ),
             ),
@@ -532,23 +282,23 @@ class Invoice {
     );
   }
 
-  List<pw.Widget> _contentTable(pw.Context context, List invoiceLedgerList) {
+  List<pw.Widget> _contentTable(pw.Context context) {
     const tableHeaders = ['S.No', 'Date', 'Voucher No', 'Description', 'Debit', 'Credit', 'Balance'];
 
     final dataRows = List<pw.TableRow>.generate(
-      invoiceLedgerList.length,
+      data.ledgerDetails.ledgerList.length,
       (index) {
-        final item = invoiceLedgerList[index];
+        final item = data.ledgerDetails.ledgerList[index];
         return pw.TableRow(
           children: [
             _buildCell((index + 1).toString()),
-            _buildCell(item.date),
-            _buildCell(item.voucherNo),
-            _builddescription(item.description, item.invoiceNo, isDescription: true),
-            _buildCell(_formatCurrency(double.tryParse(item.debit) ?? 0), alignRight: true),
-            _buildCell(_formatCurrency(double.tryParse(item.credit) ?? 0), alignRight: true),
+            _buildCell(formatDate(item.updatedDate)),
+            _buildCell(item.voucherNumber),
+            _builddescription(item.description, item.invoiceNumber, isDescription: true),
+            _buildCell(_formatCurrency(item.debitAmount), alignRight: true),
+            _buildCell(_formatCurrency(item.creditAmount), alignRight: true),
             _buildCell(
-              _formatCurrency(parseBalanceWithSuffix(item.balance).abs()) + (item.balance.toLowerCase().contains('dr') ? ' Dr' : ' Cr'),
+              _formatCurrency(parseBalanceWithSuffix(item.balance.toString()).abs()) + ((item.balance.toString()).toLowerCase().contains('dr') ? ' Dr' : ' Cr'),
               alignRight: true,
             ),
           ],
@@ -622,11 +372,11 @@ class Invoice {
   }
 
   pw.Widget totalRow() {
-    final totalDebit = clientLedger.ledgerDetails.fold<double>(
-      0.0,
-      (sum, item) => sum + (double.tryParse(item.debit) ?? 0),
-    );
-    final totalCredit = clientLedger.ledgerDetails.fold<double>(0.0, (sum, item) => sum + (double.tryParse(item.credit) ?? 0));
+    // final totalDebit = data.ledgerDetails.fold<double>(
+    //   0.0,
+    //   (sum, item) => sum + (double.tryParse(item.debit) ?? 0),
+    // );
+    // final totalCredit = data.ledgerDetails.fold<double>(0.0, (sum, item) => sum + (double.tryParse(item.credit) ?? 0));
 
     return pw.Row(
       children: [
@@ -647,8 +397,8 @@ class Invoice {
               pw.TableRow(
                 children: [
                   _buildCalculationCell('Total', align: pw.Alignment.centerLeft, isBold: false),
-                  _buildCalculationCell(_formatCurrency(totalDebit)),
-                  _buildCalculationCell(_formatCurrency(totalCredit)),
+                  _buildCalculationCell(_formatCurrency(data.ledgerDetails.debitAmount)),
+                  _buildCalculationCell(_formatCurrency(data.ledgerDetails.creditAmount)),
                   _buildCalculationCell(''),
                 ],
               ),
@@ -660,15 +410,9 @@ class Invoice {
   }
 
   pw.Widget closingBalanceRow() {
-    final totalDebit = clientLedger.ledgerDetails.fold<double>(
-      0.0,
-      (sum, item) => sum + (double.tryParse(item.debit) ?? 0),
-    );
-    final totalCredit = clientLedger.ledgerDetails.fold<double>(
-      0.0,
-      (sum, item) => sum + (double.tryParse(item.credit) ?? 0),
-    );
-    final closingAmount = (totalDebit - totalCredit).abs();
+    final totalDebit = data.ledgerDetails.debitAmount;
+    final totalCredit = data.ledgerDetails.creditAmount;
+    final closingAmount = data.ledgerDetails.balanceAmount;
     final isDebit = totalDebit > totalCredit;
 
     final formatter = NumberFormat('#,##,##0.00'); // Indian number format

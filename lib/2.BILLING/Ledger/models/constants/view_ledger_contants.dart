@@ -9,7 +9,7 @@ class View_LedgerModel extends GetxController with GetSingleTickerProviderStateM
   var selectedGSTLedgerType = 'Consolidate'.obs;
   var selectedtransactiontype = 'Show All'.obs;
   var selectedPaymenttype = 'Show All'.obs;
-  var selectedInvoiceType = 'Show All'.obs;
+  // var selectedInvoiceType = 'Show All'.obs;
   RxBool showGSTsummary = true.obs;
   // var showCustomDateRange = false.obs;
   // final dateController = TextEditingController().obs;

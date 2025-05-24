@@ -8,12 +8,16 @@ class GST_LedgerModel extends GetxController with GetSingleTickerProviderStateMi
     inputGst: 0.0,
     outputGst: 0.0,
     totalGst: 0.0,
+    startdate: null,
+    enddate: null,
   ).obs;
   var filteredGST_Ledgers = GSTSummaryModel(
     gstList: [],
     inputGst: 0.0,
     outputGst: 0.0,
     totalGst: 0.0,
+    startdate: null,
+    enddate: null,
   ).obs;
 
   var whatsapp_selectionStatus = true.obs;

@@ -234,7 +234,7 @@ mixin VoucherService {
         response ?? {},
       );
       if (value.code) {
-        print(value.data);
+        // print(value.data);
         voucherController.add_Voucher(value);
         voucherController.update();
       } else {
@@ -434,7 +434,11 @@ mixin VoucherService {
         voucherController.voucherModel.filteredVouchers.assignAll(voucherController.voucherModel.voucher_list);
       } else {
         final filtered = voucherController.voucherModel.voucher_list.where((voucher) {
-          return voucher.clientName.toLowerCase().contains(query.toLowerCase()) || voucher.voucherNumber.toLowerCase().contains(query.toLowerCase());
+          return voucher.clientName.toLowerCase().contains(query.toLowerCase()) ||
+              voucher.voucherNumber.toLowerCase().contains(query.toLowerCase()) ||
+              voucher.invoiceNumber.toLowerCase().contains(query.toLowerCase()) ||
+              voucher.invoiceType.toLowerCase().contains(query.toLowerCase()) ||
+              voucher.gstNumber.toLowerCase().contains(query.toLowerCase());
         }).toList();
         voucherController.voucherModel.filteredVouchers.assignAll(filtered);
       }

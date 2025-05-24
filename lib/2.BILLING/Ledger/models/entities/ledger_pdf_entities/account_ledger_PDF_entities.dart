@@ -1,3 +1,5 @@
+import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/account_ledger_entities.dart';
+
 class ClientDetails {
   final String clientName;
   final String clientAddress;
@@ -38,71 +40,26 @@ class ClientDetails {
   }
 }
 
-class LedgerDetails {
-  final String date;
-  final String voucherNo;
-  final String description;
-  final String debit;
-  final String credit;
-  final String balance;
-  final String invoiceNo;
+class PDF_AccountLedgerSummary {
+  final ClientDetails? clientDetails;
+  final AccountLedgerSummary ledgerDetails;
 
-  LedgerDetails({
-    required this.date,
-    required this.voucherNo,
-    required this.description,
-    required this.debit,
-    required this.credit,
-    required this.balance,
-    required this.invoiceNo,
-  });
-
-  factory LedgerDetails.fromJson(Map<String, dynamic> json) {
-    return LedgerDetails(
-      date: json['date'],
-      voucherNo: json['voucherNo'],
-      description: json['description'],
-      debit: json['debit'],
-      credit: json['credit'],
-      balance: json['balance'],
-      invoiceNo: json['invoiceNo'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'date': date,
-      'voucherNo': voucherNo,
-      'description': description,
-      'debit': debit,
-      'credit': credit,
-      'balance': balance,
-      'invoiceNo': invoiceNo
-    };
-  }
-}
-
-class ClientLedger {
-  final ClientDetails clientDetails;
-  final List<LedgerDetails> ledgerDetails;
-
-  ClientLedger({
+  PDF_AccountLedgerSummary({
     required this.clientDetails,
     required this.ledgerDetails,
   });
 
-  factory ClientLedger.fromJson(Map<String, dynamic> json) {
-    return ClientLedger(
-      clientDetails: ClientDetails.fromJson(json['clientDetails']),
-      ledgerDetails:json['ledgerDetails'] 
-         
+  factory PDF_AccountLedgerSummary.fromJson({required ClientDetails? clientDetails, required AccountLedgerSummary ledgerDetails}) {
+    return PDF_AccountLedgerSummary(
+      clientDetails: clientDetails,
+      ledgerDetails: ledgerDetails,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'clientDetails': clientDetails.toJson(),
-      'ledgerDetails': ledgerDetails.map((ledger) => ledger.toJson()).toList(),
+      'clientDetails': clientDetails?.toJson(),
+      'ledgerDetails': ledgerDetails.toJson(),
     };
   }
 }

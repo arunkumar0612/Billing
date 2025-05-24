@@ -50,7 +50,7 @@ class _VoucherState extends State<Voucher> {
     await Future.delayed(const Duration(milliseconds: 100));
     loader.start(context); // Now safe to use
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      voucherController.voucherModel.selectedItems = List<bool>.filled(voucherController.voucherModel.ParentVoucher_list.length, false).obs;
+      voucherController.voucherModel.checkboxValues = List<bool>.filled(voucherController.voucherModel.ParentVoucher_list.length, false).obs;
     });
     await Future.delayed(const Duration(seconds: 2));
     loader.stop();
@@ -2152,8 +2152,8 @@ class _VoucherState extends State<Voucher> {
                                 onChanged: (bool? value) {
                                   voucherController.voucherModel.selectAll.value = value ?? false;
                                   // Update all selected items
-                                  for (int i = 0; i < voucherController.voucherModel.selectedItems.length; i++) {
-                                    voucherController.voucherModel.selectedItems[i] = voucherController.voucherModel.selectAll.value;
+                                  for (int i = 0; i < voucherController.voucherModel.checkboxValues.length; i++) {
+                                    voucherController.voucherModel.checkboxValues[i] = voucherController.voucherModel.selectAll.value;
                                   }
                                   voucherController.voucherModel.showDeleteButton.value = voucherController.voucherModel.selectAll.value;
                                 },
@@ -2311,9 +2311,9 @@ class _VoucherState extends State<Voucher> {
                         itemCount: voucherController.voucherModel.voucher_list.length,
                         itemBuilder: (context, index) {
                           final voucher = voucherController.voucherModel.voucher_list[index];
-                          if (voucherController.voucherModel.selectedItems.length != voucherController.voucherModel.voucher_list.length) {
-                            voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false);
-                          }
+                          // if (voucherController.voucherModel.selectedItems.length != voucherController.voucherModel.voucher_list.length) {
+                          //   voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false);
+                          // }
 
                           return Padding(
                             padding: const EdgeInsets.only(top: 10),
@@ -2331,25 +2331,22 @@ class _VoucherState extends State<Voucher> {
                                       SizedBox(
                                         width: 30,
                                         child: voucher.fullyCleared == 0
-                                            ? Checkbox(
-                                                value: index < voucherController.voucherModel.selectedItems.length ? voucherController.voucherModel.selectedItems[index] : false,
-                                                onChanged: (bool? value) {
-                                                  if (index < voucherController.voucherModel.selectedItems.length) {
-                                                    voucherController.voucherModel.selectedItems[index] = value ?? false;
-                                                    widget.updateDeleteButtonVisibility();
-                                                  }
-                                                },
-                                                activeColor: Colors.blueAccent,
-                                                fillColor: WidgetStateProperty.resolveWith<Color>((states) {
-                                                  if (states.contains(WidgetState.selected)) {
-                                                    return Colors.blueAccent;
-                                                  }
-                                                  return Colors.white;
-                                                }),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(4),
-                                                ),
-                                              )
+                                            ? Obx(() => Checkbox(
+                                                  value: voucherController.voucherModel.checkboxValues.isNotEmpty ? voucherController.voucherModel.checkboxValues[index] : false,
+                                                  onChanged: (bool? value) {
+                                                    widget.update_checkboxValues(index, value!);
+                                                  },
+                                                  activeColor: Colors.blueAccent,
+                                                  fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+                                                    if (states.contains(WidgetState.selected)) {
+                                                      return Colors.blueAccent;
+                                                    }
+                                                    return Colors.white;
+                                                  }),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(4),
+                                                  ),
+                                                ))
                                             : Icon(
                                                 Icons.check_rounded,
                                                 color: Colors.green,

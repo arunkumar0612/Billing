@@ -12,7 +12,7 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
 
   // var voucherlist = Voucher_List(VoucherList: []).obs;
 
-  var selectedItems = <bool>[].obs;
+  RxList<bool> checkboxValues = <bool>[].obs;
   var selectAll = false.obs;
   var showDeleteButton = false.obs;
   final pdfFile = Rxn<File>();
@@ -52,7 +52,7 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
     super.onInit();
     // Initialize with sample data
 
-    selectedItems.value = List.filled(voucher_list.length, false);
+    checkboxValues.value = List.filled(voucher_list.length, false);
 
     // Extract unique client names and product types for filters
     clientNames.value = voucher_list.map((v) => v.clientName).toSet().toList();

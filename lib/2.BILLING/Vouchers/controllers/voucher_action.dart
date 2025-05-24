@@ -28,6 +28,7 @@ class VoucherController extends GetxController {
     for (int i = 0; i < value.data.length; i++) {
       voucherModel.voucher_list.add(InvoicePaymentVoucher.fromJson(value.data[i]));
       voucherModel.ParentVoucher_list.add(InvoicePaymentVoucher.fromJson(value.data[i]));
+      voucherModel.checkboxValues = List<bool>.filled(voucherModel.voucher_list.length, false).obs;
     }
   }
 

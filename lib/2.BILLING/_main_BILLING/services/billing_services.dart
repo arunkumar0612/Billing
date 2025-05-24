@@ -141,7 +141,8 @@ mixin main_BillingService {
           mainBilling_Controller.billingModel.allSalesInvoices.clear();
           mainBilling_Controller.billingModel.salesInvoiceList.clear();
           for (int i = 0; i < value.data.length; i++) {
-            mainBilling_Controller.addto_SalesInvoiceList(SalesInvoice.fromJson(value.data[i]));
+            SalesInvoice element = SalesInvoice.fromJson(value.data[i]);
+            mainBilling_Controller.addto_SalesInvoiceList(element);
           }
 
           // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});

@@ -599,7 +599,13 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                       ),
                                       borderRadius: BorderRadius.circular(10), // Ensure border radius for smooth corners
                                     ),
-                                    child: Padding(padding: const EdgeInsets.all(10), child: SubscriptionHeaders()),
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: mainBilling_Controller.billingModel.activeTab.value == 'Subscription'
+                                            ? SubscriptionHeaders()
+                                            : mainBilling_Controller.billingModel.activeTab.value == 'Sales'
+                                                ? SalesHeaders()
+                                                : SubscriptionHeaders()),
                                   ),
                                   const SizedBox(height: 5),
                                   Expanded(
@@ -685,6 +691,64 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
           flex: 2,
           child: Text(
             'Overdue',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Status',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            '',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget SalesHeaders() {
+    return const Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Date',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Invoice No',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Voucher No',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 5,
+          child: Text(
+            textAlign: TextAlign.center,
+            'Client Name',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        SizedBox(width: 10),
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Amount',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
@@ -1270,32 +1334,32 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
-                            Expanded(
-                              flex: 2,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 22,
-                                    width: 60,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1
-                                          ? const Color.fromARGB(193, 222, 244, 223)
-                                          : const Color.fromARGB(208, 244, 214, 212),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1 ? 'Paid' : 'Pending',
-                                        style: TextStyle(
-                                            color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1 ? const Color.fromARGB(255, 0, 122, 4) : Colors.red,
-                                            fontSize: Primary_font_size.Text5,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // Expanded(
+                            //   flex: 2,
+                            //   child: Row(
+                            //     children: [
+                            //       Container(
+                            //         height: 22,
+                            //         width: 60,
+                            //         decoration: BoxDecoration(
+                            //           borderRadius: BorderRadius.circular(20),
+                            //           color: mainBilling_Controller.billingModel.salesInvoiceList[index].paymentStatus == 1
+                            //               ? const Color.fromARGB(193, 222, 244, 223)
+                            //               : const Color.fromARGB(208, 244, 214, 212),
+                            //         ),
+                            //         child: Center(
+                            //           child: Text(
+                            //             mainBilling_Controller.billingModel.salesInvoiceList[index].paymentStatus == 1 ? 'Paid' : 'Pending',
+                            //             style: TextStyle(
+                            //                 color: mainBilling_Controller.billingModel.salesInvoiceList[index].paymentStatus == 1 ? const Color.fromARGB(255, 0, 122, 4) : Colors.red,
+                            //                 fontSize: Primary_font_size.Text5,
+                            //                 fontWeight: FontWeight.bold),
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             const Expanded(flex: 2, child: Icon(Icons.keyboard_control))
                           ],
                         ),

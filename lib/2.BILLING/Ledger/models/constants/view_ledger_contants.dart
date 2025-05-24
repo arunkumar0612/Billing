@@ -19,7 +19,7 @@ class View_LedgerModel extends GetxController with GetSingleTickerProviderStateM
   final endDateController = TextEditingController().obs;
   final searchController = TextEditingController().obs;
   RxString selectedLedgerType = 'Account Ledger'.obs;
-  RxList<String> ledgerTypeList = ['Account Ledger', 'GST Ledger'].obs;
+  RxList<String> ledgerTypeList = ['Account Ledger', 'GST Ledger', 'TDS Ledger'].obs;
   RxString selectedsalescustomer = 'None'.obs;
   RxString selectedsalescustomerID = ''.obs;
   RxString selectedsubcustomer = 'None'.obs;

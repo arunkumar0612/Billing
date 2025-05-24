@@ -21,7 +21,7 @@ class TDS_LedgerController extends GetxController {
     // for (int i = 0; i < value.data.length; i++) {
     tds_LedgerModel.tds_Ledger_list.value = TDSSummaryModel.fromJson(value.data);
     // }
-    tds_LedgerModel.filteredTDS_Ledgers = tds_LedgerModel.tds_Ledger_list;
+    tds_LedgerModel.ParentTDS_Ledgers.value = TDSSummaryModel.fromJson(value.data);
   }
 
   // void reset_tds_LedgerClear_popup() {

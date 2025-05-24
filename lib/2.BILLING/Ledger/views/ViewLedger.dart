@@ -1,5 +1,6 @@
 // ignore_for_file: unused_field, deprecated_member_use
 import 'dart:math';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -77,7 +78,7 @@ class _ViewLedgerState extends State<ViewLedger> {
                                       height: 40,
                                       child: TextFormField(
                                         controller: account_LedgerController.account_LedgerModel.searchController.value,
-                                        onChanged: (value) => account_LedgerController.applySearchFilter(value),
+                                        onChanged: (value) => widget.applySearchFilter(value),
                                         style: const TextStyle(fontSize: 13, color: Colors.white),
                                         decoration: InputDecoration(
                                           contentPadding: const EdgeInsets.all(1),

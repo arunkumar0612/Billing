@@ -30,54 +30,20 @@ PageRouteBuilder _createCustomPageRoute(Widget Function() navigation) {
 
 class Billing extends StatefulWidget with main_BillingService {
   Billing({super.key});
-  static late dynamic Function() quote_Callback;
-  static late dynamic Function() invoice_Callback;
 
   @override
   _BillingState createState() => _BillingState();
 }
 
 class _BillingState extends State<Billing> {
-  String? selectedCustomer;
-  String? Selected_billingtype;
   final MainBilling_Controller mainBilling_Controller = Get.find<MainBilling_Controller>();
 
-  List<String> customerList = [
-    'Customer 1',
-    'Customer 2',
-    'Customer 3',
-    'Customer 4',
-    'Customer 5',
-  ];
-
-  List<String> billing_type = [
-    'All',
-    'Subscription',
-    'Vendor',
-    'Sales',
-  ];
-
-  // Adding a controller and isAdding flag for each item
-  late List<bool> isAddingList;
-  // late List<TextEditingController> controllers;
-  int showcustomerprocess = 0;
-  List<String> list = <String>['One', 'Two', 'Three', 'Four'];
-  String BillingSearchQuery = '';
   @override
   void initState() {
     super.initState();
 
     widget.get_SubscriptionInvoiceList();
     widget.get_SalesInvoiceList();
-  }
-
-// ##################################################################################################################################################################################################################################################################################################################################################################
-
-  @override
-  void dispose() {
-    // Dispose controllers to avoid memory leaks
-
-    super.dispose();
   }
 
   @override

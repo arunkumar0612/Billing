@@ -426,19 +426,21 @@ mixin VoucherService {
     }
   }
 
-  void applySearchFilter(String query) {
+  Future<void> applySearchFilter(String query) async {
     try {
       if (query.isEmpty) {
-        voucherController.voucherModel.filteredVouchers.assignAll(voucherController.voucherModel.voucher_list);
+        voucherController.voucherModel.voucher_list.assignAll(voucherController.voucherModel.ParentVoucher_list);
       } else {
-        final filtered = voucherController.voucherModel.voucher_list.where((voucher) {
-          return voucher.clientName.toLowerCase().contains(query.toLowerCase()) || voucher.voucherNumber.toLowerCase().contains(query.toLowerCase());
+        final filtered = voucherController.voucherModel.ParentVoucher_list.where((voucher) {
+          return voucher.clientName.toLowerCase().contains(query.toLowerCase()) ||
+              voucher.voucherNumber.toLowerCase().contains(query.toLowerCase()) ||
+              voucher.invoiceNumber.toLowerCase().contains(query.toLowerCase());
         }).toList();
-        voucherController.voucherModel.filteredVouchers.assignAll(filtered);
+        voucherController.voucherModel.voucher_list.assignAll(filtered);
       }
 
       // Update selectedItems to match the new filtered list length
-      voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false);
+      voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.ParentVoucher_list.length, false);
       voucherController.voucherModel.selectAll.value = false;
       voucherController.voucherModel.showDeleteButton.value = false;
     } catch (e) {

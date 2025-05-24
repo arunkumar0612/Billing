@@ -8,7 +8,7 @@ import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entitie
 
 class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin {
   var voucher_list = <InvoicePaymentVoucher>[].obs;
-  var filteredVouchers = <InvoicePaymentVoucher>[].obs;
+  var ParentVoucher_list = <InvoicePaymentVoucher>[].obs;
 
   // var voucherlist = Voucher_List(VoucherList: []).obs;
 

@@ -50,7 +50,7 @@ class _VoucherState extends State<Voucher> {
     await Future.delayed(const Duration(milliseconds: 100));
     loader.start(context); // Now safe to use
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      voucherController.voucherModel.selectedItems = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false).obs;
+      voucherController.voucherModel.selectedItems = List<bool>.filled(voucherController.voucherModel.ParentVoucher_list.length, false).obs;
     });
     await Future.delayed(const Duration(seconds: 2));
     loader.stop();
@@ -2017,7 +2017,9 @@ class _VoucherState extends State<Voucher> {
                           height: 40,
                           child: TextFormField(
                             controller: voucherController.voucherModel.searchController.value,
-                            onChanged: (value) => widget.applySearchFilter(value),
+                            onChanged: (value) async {
+                              await widget.applySearchFilter(value);
+                            },
                             style: const TextStyle(fontSize: 13, color: Colors.white),
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(1),
@@ -2253,7 +2255,6 @@ class _VoucherState extends State<Voucher> {
                               ),
                             ),
                           ),
-                          
                           const SizedBox(width: 3),
                           const Expanded(
                             flex: 1,
@@ -2307,9 +2308,13 @@ class _VoucherState extends State<Voucher> {
                           height: 1,
                           color: const Color.fromARGB(94, 125, 125, 125),
                         ),
-                        itemCount: voucherController.voucherModel.filteredVouchers.length,
+                        itemCount: voucherController.voucherModel.voucher_list.length,
                         itemBuilder: (context, index) {
-                          final voucher = voucherController.voucherModel.filteredVouchers[index];
+                          final voucher = voucherController.voucherModel.voucher_list[index];
+                          if (voucherController.voucherModel.selectedItems.length != voucherController.voucherModel.voucher_list.length) {
+                            voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false);
+                          }
+
                           return Padding(
                             padding: const EdgeInsets.only(top: 10),
                             child: ClipRRect(
@@ -2325,39 +2330,30 @@ class _VoucherState extends State<Voucher> {
                                     children: [
                                       SizedBox(
                                         width: 30,
-                                        child: Obx(
-                                          () {
-                                            // Ensure selectedItems has the correct length
-                                            if (voucherController.voucherModel.selectedItems.length != voucherController.voucherModel.filteredVouchers.length) {
-                                              voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false);
-                                            }
-
-                                            return voucher.fullyCleared == 0
-                                                ? Checkbox(
-                                                    value: index < voucherController.voucherModel.selectedItems.length ? voucherController.voucherModel.selectedItems[index] : false,
-                                                    onChanged: (bool? value) {
-                                                      if (index < voucherController.voucherModel.selectedItems.length) {
-                                                        voucherController.voucherModel.selectedItems[index] = value ?? false;
-                                                        widget.updateDeleteButtonVisibility();
-                                                      }
-                                                    },
-                                                    activeColor: Colors.blueAccent,
-                                                    fillColor: WidgetStateProperty.resolveWith<Color>((states) {
-                                                      if (states.contains(WidgetState.selected)) {
-                                                        return Colors.blueAccent;
-                                                      }
-                                                      return Colors.white;
-                                                    }),
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(4),
-                                                    ),
-                                                  )
-                                                : Icon(
-                                                    Icons.check_rounded,
-                                                    color: Colors.green,
-                                                  );
-                                          },
-                                        ),
+                                        child: voucher.fullyCleared == 0
+                                            ? Checkbox(
+                                                value: index < voucherController.voucherModel.selectedItems.length ? voucherController.voucherModel.selectedItems[index] : false,
+                                                onChanged: (bool? value) {
+                                                  if (index < voucherController.voucherModel.selectedItems.length) {
+                                                    voucherController.voucherModel.selectedItems[index] = value ?? false;
+                                                    widget.updateDeleteButtonVisibility();
+                                                  }
+                                                },
+                                                activeColor: Colors.blueAccent,
+                                                fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+                                                  if (states.contains(WidgetState.selected)) {
+                                                    return Colors.blueAccent;
+                                                  }
+                                                  return Colors.white;
+                                                }),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(4),
+                                                ),
+                                              )
+                                            : Icon(
+                                                Icons.check_rounded,
+                                                color: Colors.green,
+                                              ),
                                       ),
                                       const SizedBox(width: 3),
                                       Expanded(
@@ -2575,8 +2571,6 @@ class _VoucherState extends State<Voucher> {
                                           ),
                                         ),
                                       ),
-                                  
-                                     
                                       const SizedBox(width: 3),
                                       Expanded(
                                         flex: 1,
@@ -2708,9 +2702,6 @@ class _VoucherState extends State<Voucher> {
       ),
     );
   }
-
- 
-
 
   void showVoucherClearedDialog(BuildContext context, int index) {
     showDialog(
@@ -2847,7 +2838,7 @@ class _VoucherState extends State<Voucher> {
                               const SizedBox(height: 8),
                               _infoRow(Icons.phone_android, voucherController.voucherModel.voucher_list[index].phoneNumber),
                               const SizedBox(height: 8),
-                              _infoRow(Icons.email_sharp, voucherController.voucherModel.filteredVouchers[index].emailId),
+                              _infoRow(Icons.email_sharp, voucherController.voucherModel.voucher_list[index].emailId),
                               const SizedBox(
                                 height: 12,
                               ),
@@ -4529,108 +4520,108 @@ class CreateVoucherBottomSheet extends StatelessWidget with VoucherService {
   }
 }
 
-class ClientInfoIcon extends StatefulWidget {
-  final String clientName;
-  final String clientDetails; // Add more detail to show in pop-up
+// class ClientInfoIcon extends StatefulWidget {
+//   final String clientName;
+//   final String clientDetails; // Add more detail to show in pop-up
 
-  const ClientInfoIcon({
-    super.key,
-    required this.clientName,
-    required this.clientDetails,
-  });
+//   const ClientInfoIcon({
+//     super.key,
+//     required this.clientName,
+//     required this.clientDetails,
+//   });
 
-  @override
-  State<ClientInfoIcon> createState() => _ClientInfoIconState();
-}
+//   @override
+//   State<ClientInfoIcon> createState() => _ClientInfoIconState();
+// }
 
-class _ClientInfoIconState extends State<ClientInfoIcon> {
-  OverlayEntry? _overlayEntry;
+// class _ClientInfoIconState extends State<ClientInfoIcon> {
+//   OverlayEntry? _overlayEntry;
 
-  void _showPopup(BuildContext context) {
-    final RenderBox renderBox = context.findRenderObject() as RenderBox;
-    final Offset offset = renderBox.localToGlobal(Offset.zero);
+//   void _showPopup(BuildContext context) {
+//     final RenderBox renderBox = context.findRenderObject() as RenderBox;
+//     final Offset offset = renderBox.localToGlobal(Offset.zero);
 
-    _overlayEntry = OverlayEntry(
-      builder: (context) => Stack(
-        children: [
-          // To detect tap outside
-          GestureDetector(
-            onTap: _removePopup,
-            child: Container(color: Colors.transparent),
-          ),
-          Positioned(
-            left: offset.dx,
-            top: offset.dy + renderBox.size.height + 8,
-            child: Material(
-              elevation: 4,
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                width: 200,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Colors.blue,
-                      child: Icon(Icons.person, color: Colors.white),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      widget.clientDetails,
-                      style: const TextStyle(fontSize: 14),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+//     _overlayEntry = OverlayEntry(
+//       builder: (context) => Stack(
+//         children: [
+//           // To detect tap outside
+//           GestureDetector(
+//             onTap: _removePopup,
+//             child: Container(color: Colors.transparent),
+//           ),
+//           Positioned(
+//             left: offset.dx,
+//             top: offset.dy + renderBox.size.height + 8,
+//             child: Material(
+//               elevation: 4,
+//               borderRadius: BorderRadius.circular(8),
+//               child: Container(
+//                 width: 200,
+//                 padding: const EdgeInsets.all(12),
+//                 decoration: BoxDecoration(
+//                   color: Colors.white,
+//                   borderRadius: BorderRadius.circular(12),
+//                 ),
+//                 child: Column(
+//                   mainAxisSize: MainAxisSize.min,
+//                   children: [
+//                     const CircleAvatar(
+//                       radius: 20,
+//                       backgroundColor: Colors.blue,
+//                       child: Icon(Icons.person, color: Colors.white),
+//                     ),
+//                     const SizedBox(height: 8),
+//                     Text(
+//                       widget.clientDetails,
+//                       style: const TextStyle(fontSize: 14),
+//                       textAlign: TextAlign.center,
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
 
-    Overlay.of(context).insert(_overlayEntry!);
-  }
+//     Overlay.of(context).insert(_overlayEntry!);
+//   }
 
-  void _removePopup() {
-    _overlayEntry?.remove();
-    _overlayEntry = null;
-  }
+//   void _removePopup() {
+//     _overlayEntry?.remove();
+//     _overlayEntry = null;
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 2,
-      child: Row(
-        children: [
-          MouseRegion(
-            cursor: SystemMouseCursors.click,
-            child: GestureDetector(
-              onTap: () {
-                if (_overlayEntry == null) {
-                  _showPopup(context);
-                } else {
-                  _removePopup();
-                }
-              },
-              child: const Icon(Icons.info_outline),
-            ),
-          ),
-          const SizedBox(width: 3),
-          Text(
-            widget.clientName,
-            style: const TextStyle(
-              color: Primary_colors.Color1,
-              fontSize: Primary_font_size.Text7,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Expanded(
+//       flex: 2,
+//       child: Row(
+//         children: [
+//           MouseRegion(
+//             cursor: SystemMouseCursors.click,
+//             child: GestureDetector(
+//               onTap: () {
+//                 if (_overlayEntry == null) {
+//                   _showPopup(context);
+//                 } else {
+//                   _removePopup();
+//                 }
+//               },
+//               child: const Icon(Icons.info_outline),
+//             ),
+//           ),
+//           const SizedBox(width: 3),
+//           Text(
+//             widget.clientName,
+//             style: const TextStyle(
+//               color: Primary_colors.Color1,
+//               fontSize: Primary_font_size.Text7,
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

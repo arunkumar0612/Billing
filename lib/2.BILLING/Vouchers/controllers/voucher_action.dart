@@ -24,10 +24,11 @@ class VoucherController extends GetxController {
 
   void add_Voucher(CMDlResponse value) {
     voucherModel.voucher_list.clear();
+    voucherModel.ParentVoucher_list.clear();
     for (int i = 0; i < value.data.length; i++) {
       voucherModel.voucher_list.add(InvoicePaymentVoucher.fromJson(value.data[i]));
+      voucherModel.ParentVoucher_list.add(InvoicePaymentVoucher.fromJson(value.data[i]));
     }
-    voucherModel.filteredVouchers.assignAll(voucherModel.voucher_list);
   }
 
   void calculate_recievable(bool TDSdeducted, int index) {

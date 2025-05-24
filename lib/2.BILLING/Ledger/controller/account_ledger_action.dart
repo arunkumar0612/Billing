@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/constants/account_ledger_constants.dart';
@@ -8,19 +7,20 @@ import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 class Account_LedgerController extends GetxController {
   var account_LedgerModel = Account_LedgerModel();
   final View_LedgerController view_LedgerController = Get.find<View_LedgerController>();
+  // final Account_LedgerController account_ledgerController = Get.find<Account_LedgerController>();
 
   void add_Account_Ledger(CMDmResponse value) {
-    account_LedgerModel.account_Ledger_list.value = AccountLedgerSummary(
-      balanceAmount: 0.0,
-      creditAmount: 0.0,
-      debitAmount: 0.0,
-      ledgerList: [],
-      startdate: null,
-      enddate: null,
-    );
+    // account_LedgerModel.account_Ledger_list.value = AccountLedgerSummary(
+    //   balanceAmount: 0.0,
+    //   creditAmount: 0.0,
+    //   debitAmount: 0.0,
+    //   ledgerList: [],
+    //   startdate: null,
+    //   enddate: null,
+    // );
+    account_LedgerModel.Secondaryaccount_Ledger_list.value = AccountLedgerSummary.fromJson(value.data);
     account_LedgerModel.account_Ledger_list.value = AccountLedgerSummary.fromJson(value.data);
 
-    account_LedgerModel.filteredaccount_Ledger_list.value = AccountLedgerSummary.fromJson(value.data);
     view_LedgerController.initialize_StartEnd_date(account_LedgerModel.account_Ledger_list.value.startdate!, account_LedgerModel.account_Ledger_list.value.enddate!);
   }
 
@@ -53,23 +53,27 @@ class Account_LedgerController extends GetxController {
     account_LedgerModel.CCemailToggle.value = value;
   }
 
-  void applySearchFilter(String query) {
-    try {
-      if (query.isEmpty) {
-        account_LedgerModel.filteredaccount_Ledger_list.value.ledgerList.assignAll(account_LedgerModel.account_Ledger_list.value.ledgerList);
-      } else {
-        final filtered = account_LedgerModel.account_Ledger_list.value.ledgerList.where((accountledger) {
-          return accountledger.gstNumber.toLowerCase().contains(query.toLowerCase()) ||
-              accountledger.clientName.toLowerCase().contains(query.toLowerCase()) ||
-              accountledger.voucherNumber.toLowerCase().contains(query.toLowerCase()) ||
-              accountledger.invoiceNumber.toLowerCase().contains(query.toLowerCase()) ||
-              accountledger.ledgerType.toLowerCase().contains(query.toLowerCase());
-        }).toList();
+  // void applySearchFilter(String query) {
+  //   try {
+  //     if (query.isEmpty) {
+  //       account_LedgerModel.account_Ledger_list.value.ledgerList.assignAll(account_LedgerModel.Secondaryaccount_Ledger_list.value.ledgerList);
 
-        account_LedgerModel.filteredaccount_Ledger_list.value.ledgerList.assignAll(filtered);
-      }
-    } catch (e) {
-      debugPrint('Error in applySearchFilter: $e');
-    }
-  }
+  //       account_LedgerModel.account_Ledger_list.refresh();
+  //     } else {
+  //       final filtered = account_LedgerModel.Secondaryaccount_Ledger_list.value.ledgerList.where((accountledger) {
+  //         return accountledger.gstNumber.toLowerCase().contains(query.toLowerCase()) ||
+  //             accountledger.clientName.toLowerCase().contains(query.toLowerCase()) ||
+  //             accountledger.voucherNumber.toLowerCase().contains(query.toLowerCase()) ||
+  //             accountledger.invoiceNumber.toLowerCase().contains(query.toLowerCase()) ||
+  //             accountledger.ledgerType.toLowerCase().contains(query.toLowerCase());
+  //       }).toList();
+
+  //       account_LedgerModel.account_Ledger_list.value.ledgerList.assignAll(filtered);
+
+  //       account_LedgerModel.account_Ledger_list.refresh();
+  //     }
+  //   } catch (e) {
+  //     debugPrint('Error in applySearchFilter: $e');
+  //   }
+  // }
 }

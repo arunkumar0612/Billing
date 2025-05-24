@@ -48,8 +48,10 @@ class MainBilling_Controller extends GetxController {
     }
 
     if (billingModel.activeTab.value == 'Subscription') {
-      var filtered =
-          billingModel.allSubscriptionInvoices.where((item) => item.clientAddressName.toLowerCase().contains(query.toLowerCase()) || item.invoiceNo.toLowerCase().contains(query.toLowerCase()));
+      var filtered = billingModel.allSubscriptionInvoices.where((item) =>
+          item.clientAddressName.toLowerCase().contains(query.toLowerCase()) ||
+          item.invoiceNo.toLowerCase().contains(query.toLowerCase()) ||
+          item.voucher_number.toLowerCase().contains(query.toLowerCase()));
       billingModel.subscriptionInvoiceList.assignAll(filtered);
     }
 
@@ -60,8 +62,10 @@ class MainBilling_Controller extends GetxController {
     }
 
     if (billingModel.activeTab.value == 'Vendor') {
-      var filtered =
-          billingModel.allSubscriptionInvoices.where((item) => item.clientAddressName.toLowerCase().contains(query.toLowerCase()) || item.invoiceNo.toLowerCase().contains(query.toLowerCase()));
+      var filtered = billingModel.allSubscriptionInvoices.where((item) =>
+          item.clientAddressName.toLowerCase().contains(query.toLowerCase()) ||
+          item.invoiceNo.toLowerCase().contains(query.toLowerCase()) ||
+          item.voucher_number.toLowerCase().contains(query.toLowerCase()));
       billingModel.subscriptionInvoiceList.assignAll(filtered);
     }
   }

@@ -48,6 +48,6 @@ mixin GST_LedgerService {
   }
 
   void resetFilters() {
-    gst_LedgerController.gst_LedgerModel.filteredGST_Ledgers.value = gst_LedgerController.gst_LedgerModel.gst_Ledger_list.value;
+    gst_LedgerController.gst_LedgerModel.gst_Ledger_list.value = gst_LedgerController.gst_LedgerModel.ParentGST_Ledgers.value;
   }
 }

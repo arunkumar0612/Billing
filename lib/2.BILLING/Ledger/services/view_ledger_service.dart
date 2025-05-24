@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/controller/GST_ledger_action.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/controller/TDS_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/account_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
 // import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/account_ledger_entities.dart';
@@ -15,6 +17,8 @@ import 'package:ssipl_billing/THEMES/style.dart';
 mixin View_LedgerService {
   final View_LedgerController view_LedgerController = Get.find<View_LedgerController>();
   final Account_LedgerController account_LedgerController = Get.find<Account_LedgerController>();
+  final TDS_LedgerController tds_ledgerController = Get.find<TDS_LedgerController>();
+  final GST_LedgerController gst_LedgerController = Get.find<GST_LedgerController>();
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
 
@@ -157,9 +161,71 @@ mixin View_LedgerService {
   bool isSales_Client() {
     return view_LedgerController.view_LedgerModel.selectedsalescustomer.value != 'None' && view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Sales' ? true : false;
   }
+
   // void showCustomDateRangePicker() {
   //   view_LedgerController.view_LedgerModel.showCustomDateRange.value = true;
   // }
+  void applySearchFilter(String query) {
+    try {
+      if (view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'Account Ledger') {
+        if (query.isEmpty) {
+          account_LedgerController.account_LedgerModel.account_Ledger_list.value.ledgerList.assignAll(account_LedgerController.account_LedgerModel.Secondaryaccount_Ledger_list.value.ledgerList);
+
+          account_LedgerController.account_LedgerModel.account_Ledger_list.refresh();
+        } else {
+          final filtered = account_LedgerController.account_LedgerModel.Secondaryaccount_Ledger_list.value.ledgerList.where((accountledger) {
+            return accountledger.gstNumber.toLowerCase().contains(query.toLowerCase()) ||
+                accountledger.clientName.toLowerCase().contains(query.toLowerCase()) ||
+                accountledger.voucherNumber.toLowerCase().contains(query.toLowerCase()) ||
+                accountledger.invoiceNumber.toLowerCase().contains(query.toLowerCase()) ||
+                accountledger.ledgerType.toLowerCase().contains(query.toLowerCase());
+          }).toList();
+
+          account_LedgerController.account_LedgerModel.account_Ledger_list.value.ledgerList.assignAll(filtered);
+
+          account_LedgerController.account_LedgerModel.account_Ledger_list.refresh();
+        }
+      } else if (view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'GST Ledger') {
+        if (query.isEmpty) {
+          gst_LedgerController.gst_LedgerModel.gst_Ledger_list.value.gstList.assignAll(gst_LedgerController.gst_LedgerModel.ParentGST_Ledgers.value.gstList);
+
+          gst_LedgerController.gst_LedgerModel.gst_Ledger_list.refresh();
+        } else {
+          final filtered = gst_LedgerController.gst_LedgerModel.gst_Ledger_list.value.gstList.where((gstledger) {
+            return gstledger.gstNumber.toLowerCase().contains(query.toLowerCase()) ||
+                    gstledger.clientName.toLowerCase().contains(query.toLowerCase()) ||
+                    gstledger.voucherNumber.toLowerCase().contains(query.toLowerCase()) ||
+                    gstledger.invoice_number.toLowerCase().contains(query.toLowerCase())
+                // gstledger.ledgerType.toLowerCase().contains(query.toLowerCase())
+                ;
+          }).toList();
+
+          gst_LedgerController.gst_LedgerModel.gst_Ledger_list.value.gstList.assignAll(filtered);
+
+          gst_LedgerController.gst_LedgerModel.gst_Ledger_list.refresh();
+        }
+      } else {
+        if (query.isEmpty) {
+          tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList.assignAll(tds_ledgerController.tds_LedgerModel.ParentTDS_Ledgers.value.tdsList);
+
+          tds_ledgerController.tds_LedgerModel.tds_Ledger_list.refresh();
+        } else {
+          final filtered = tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList.where((tdsledger) {
+            return tdsledger.gstNumber.toLowerCase().contains(query.toLowerCase()) ||
+                tdsledger.clientName.toLowerCase().contains(query.toLowerCase()) ||
+                tdsledger.voucherNumber.toLowerCase().contains(query.toLowerCase()) ||
+                tdsledger.invoice_number.toLowerCase().contains(query.toLowerCase());
+          }).toList();
+
+          tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList.assignAll(filtered);
+
+          tds_ledgerController.tds_LedgerModel.tds_Ledger_list.refresh();
+        }
+      }
+    } catch (e) {
+      debugPrint('Error in applySearchFilter: $e');
+    }
+  }
 
   void resetFilters() {
     view_LedgerController.view_LedgerModel.startDateController.value.clear();
@@ -172,6 +238,8 @@ mixin View_LedgerService {
     view_LedgerController.view_LedgerModel.selectedsalescustomer.value = 'None';
     view_LedgerController.view_LedgerModel.selectedsubcustomerID.value = 'None';
     view_LedgerController.view_LedgerModel.selectedsubcustomer.value = 'None';
-    account_LedgerController.account_LedgerModel.filteredaccount_Ledger_list.value = account_LedgerController.account_LedgerModel.account_Ledger_list.value;
+    account_LedgerController.account_LedgerModel.account_Ledger_list.value = account_LedgerController.account_LedgerModel.Secondaryaccount_Ledger_list.value;
+    gst_LedgerController.gst_LedgerModel.gst_Ledger_list.value = gst_LedgerController.gst_LedgerModel.ParentGST_Ledgers.value;
+    tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value = tds_ledgerController.tds_LedgerModel.ParentTDS_Ledgers.value;
   }
 }

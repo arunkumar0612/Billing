@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 // import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/services/voucher_service.dart';
@@ -2310,823 +2311,889 @@ class _VoucherState extends State<Voucher> {
                   ),
                   const SizedBox(height: 5),
                   Expanded(
-                    child: Obx(
-                      () => ListView.separated(
-                        separatorBuilder: (context, index) => Container(
-                          height: 1,
-                          color: const Color.fromARGB(94, 125, 125, 125),
-                        ),
-                        itemCount: voucherController.voucherModel.filteredVouchers.length,
-                        itemBuilder: (context, index) {
-                          final voucher = voucherController.voucherModel.filteredVouchers[index];
-                          if (voucherController.voucherModel.selectedItems.length != voucherController.voucherModel.filteredVouchers.length) {
-                            voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false);
-                          }
-                          return index % 2 == 0
-                              ? Padding(
-                                  padding: const EdgeInsets.only(top: 10),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Primary_colors.Light,
+                    child: Obx(() => voucherController.voucherModel.filteredVouchers.isNotEmpty
+                        ? ListView.separated(
+                            separatorBuilder: (context, index) => Container(
+                              height: 1,
+                              color: const Color.fromARGB(94, 125, 125, 125),
+                            ),
+                            itemCount: voucherController.voucherModel.filteredVouchers.length,
+                            itemBuilder: (context, index) {
+                              final voucher = voucherController.voucherModel.filteredVouchers[index];
+                              if (voucherController.voucherModel.selectedItems.length != voucherController.voucherModel.filteredVouchers.length) {
+                                voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false);
+                              }
+                              // ignore: unrelated_type_equality_checks
+                              return voucher.dueDate == 0 || voucher.fullyCleared == 1
+                                  ? Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: ClipRRect(
                                         borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: Row(
-                                          children: [
-                                            SizedBox(
-                                              width: 30,
-                                              child: voucher.fullyCleared == 0
-                                                  ? Checkbox(
-                                                      value: index < voucherController.voucherModel.selectedItems.length ? voucherController.voucherModel.selectedItems[index] : false,
-                                                      onChanged: (bool? value) {
-                                                        if (index < voucherController.voucherModel.selectedItems.length) {
-                                                          voucherController.voucherModel.selectedItems[index] = value ?? false;
-                                                          widget.updateDeleteButtonVisibility();
-                                                        }
-                                                      },
-                                                      activeColor: Colors.blueAccent,
-                                                      fillColor: WidgetStateProperty.resolveWith<Color>((states) {
-                                                        if (states.contains(WidgetState.selected)) {
-                                                          return Colors.blueAccent;
-                                                        }
-                                                        return Colors.white;
-                                                      }),
-                                                      shape: RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.circular(4),
-                                                      ),
-                                                    )
-                                                  : Icon(
-                                                      Icons.check_rounded,
-                                                      color: Colors.green,
-                                                    ),
-                                            ),
-                                            const SizedBox(width: 3),
-                                            Expanded(
-                                              flex: 2,
-                                              child: Text(
-                                                voucher.date != null ? formatDate(voucher.date!) : '-',
-                                                style: const TextStyle(
-                                                  color: Primary_colors.Color1,
-                                                  fontSize: Primary_font_size.Text7,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Primary_colors.Light,
+                                            borderRadius: BorderRadius.circular(5),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10),
+                                            child: Row(
+                                              children: [
+                                                SizedBox(
+                                                  width: 30,
+                                                  child: voucher.fullyCleared == 0
+                                                      ? Checkbox(
+                                                          value: index < voucherController.voucherModel.selectedItems.length ? voucherController.voucherModel.selectedItems[index] : false,
+                                                          onChanged: (bool? value) {
+                                                            if (index < voucherController.voucherModel.selectedItems.length) {
+                                                              voucherController.voucherModel.selectedItems[index] = value ?? false;
+                                                              widget.updateDeleteButtonVisibility();
+                                                            }
+                                                          },
+                                                          activeColor: Colors.blueAccent,
+                                                          fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+                                                            if (states.contains(WidgetState.selected)) {
+                                                              return Colors.blueAccent;
+                                                            }
+                                                            return Colors.white;
+                                                          }),
+                                                          shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(4),
+                                                          ),
+                                                        )
+                                                      : Icon(
+                                                          Icons.check_rounded,
+                                                          color: Colors.green,
+                                                        ),
                                                 ),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 3),
-                                            Expanded(
-                                              flex: 2,
-                                              child: Text(
-                                                voucher.voucherNumber,
-                                                style: const TextStyle(
-                                                  color: Primary_colors.Color1,
-                                                  fontSize: Primary_font_size.Text7,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 3),
-                                            Expanded(
-                                              flex: 2,
-                                              child: MouseRegion(
-                                                cursor: SystemMouseCursors.click,
-                                                child: GestureDetector(
-                                                  onTap: () async {
-                                                    if (voucher.invoiceType == 'subscription') {
-                                                      bool success = await widget.GetSubscriptionPDFfile(context: context, invoiceNo: voucher.invoiceNumber);
-                                                      if (success) {
-                                                        widget.showPDF(context, voucher.invoiceNumber);
-                                                      }
-                                                    }
-                                                  },
+                                                const SizedBox(width: 3),
+                                                Expanded(
+                                                  flex: 2,
                                                   child: Text(
-                                                    voucher.invoiceNumber,
+                                                    voucher.date != null ? formatDate(voucher.date!) : '-',
                                                     style: const TextStyle(
-                                                      color: Colors.blue,
+                                                      color: Primary_colors.Color1,
                                                       fontSize: Primary_font_size.Text7,
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 3),
-                                            Expanded(
-                                              flex: 2,
-                                              child: Text(
-                                                voucher.voucherType,
-                                                style: const TextStyle(
-                                                  color: Primary_colors.Color1,
-                                                  fontSize: Primary_font_size.Text7,
+                                                const SizedBox(width: 3),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Text(
+                                                    voucher.voucherNumber,
+                                                    style: const TextStyle(
+                                                      color: Primary_colors.Color1,
+                                                      fontSize: Primary_font_size.Text7,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 3),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Builder(
-                                                builder: (context) {
-                                                  OverlayEntry? overlayEntry;
+                                                const SizedBox(width: 3),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: MouseRegion(
+                                                    cursor: SystemMouseCursors.click,
+                                                    child: GestureDetector(
+                                                      onTap: () async {
+                                                        if (voucher.invoiceType == 'subscription') {
+                                                          bool success = await widget.GetSubscriptionPDFfile(context: context, invoiceNo: voucher.invoiceNumber);
+                                                          if (success) {
+                                                            widget.showPDF(context, voucher.invoiceNumber);
+                                                          }
+                                                        }
+                                                      },
+                                                      child: Text(
+                                                        voucher.invoiceNumber,
+                                                        style: const TextStyle(
+                                                          color: Colors.blue,
+                                                          fontSize: Primary_font_size.Text7,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 3),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Text(
+                                                    voucher.voucherType,
+                                                    style: const TextStyle(
+                                                      color: Primary_colors.Color1,
+                                                      fontSize: Primary_font_size.Text7,
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 3),
+                                                Expanded(
+                                                  flex: 3,
+                                                  child: Builder(
+                                                    builder: (context) {
+                                                      OverlayEntry? overlayEntry;
 
-                                                  void showPopup() {
-                                                    if (overlayEntry != null) return;
-                                                    final RenderBox renderBox = context.findRenderObject() as RenderBox;
-                                                    final Offset offset = renderBox.localToGlobal(Offset.zero);
-                                                    final Size size = renderBox.size;
+                                                      void showPopup() {
+                                                        if (overlayEntry != null) return;
+                                                        final RenderBox renderBox = context.findRenderObject() as RenderBox;
+                                                        final Offset offset = renderBox.localToGlobal(Offset.zero);
+                                                        final Size size = renderBox.size;
 
-                                                    // Calculate position dynamically based on available space
-                                                    double top;
-                                                    double left = offset.dx - 80;
+                                                        // Calculate position dynamically based on available space
+                                                        double top;
+                                                        double left = offset.dx - 80;
 
-                                                    // If there's enough space above the widget, show popup above it
-                                                    if (offset.dy > 320) {
-                                                      top = offset.dy - 320; // Show above
-                                                    } else {
-                                                      // Otherwise show below the widget
-                                                      top = offset.dy + size.height + 5;
-                                                    }
-                                                    overlayEntry = OverlayEntry(
-                                                      builder: (_) => Positioned(
-                                                        left: left,
-                                                        top: top,
-                                                        child: TweenAnimationBuilder(
-                                                          duration: const Duration(milliseconds: 200),
-                                                          tween: Tween<double>(begin: 0.9, end: 1.0),
-                                                          builder: (_, double scale, __) => Transform.scale(
-                                                            scale: scale,
-                                                            child: MouseRegion(
-                                                              onExit: (_) {
-                                                                overlayEntry?.remove();
-                                                                overlayEntry = null;
-                                                              },
-                                                              child: Material(
-                                                                elevation: 8,
-                                                                borderRadius: BorderRadius.circular(16),
-                                                                color: Colors.transparent,
-                                                                child: Container(
-                                                                  width: 340,
-                                                                  padding: const EdgeInsets.all(16),
-                                                                  decoration: BoxDecoration(
-                                                                    color: Colors.white,
+                                                        // If there's enough space above the widget, show popup above it
+                                                        if (offset.dy > 320) {
+                                                          top = offset.dy - 320; // Show above
+                                                        } else {
+                                                          // Otherwise show below the widget
+                                                          top = offset.dy + size.height + 5;
+                                                        }
+                                                        overlayEntry = OverlayEntry(
+                                                          builder: (_) => Positioned(
+                                                            left: left,
+                                                            top: top,
+                                                            child: TweenAnimationBuilder(
+                                                              duration: const Duration(milliseconds: 200),
+                                                              tween: Tween<double>(begin: 0.9, end: 1.0),
+                                                              builder: (_, double scale, __) => Transform.scale(
+                                                                scale: scale,
+                                                                child: MouseRegion(
+                                                                  onExit: (_) {
+                                                                    overlayEntry?.remove();
+                                                                    overlayEntry = null;
+                                                                  },
+                                                                  child: Material(
+                                                                    elevation: 8,
                                                                     borderRadius: BorderRadius.circular(16),
-                                                                    gradient: LinearGradient(
-                                                                      colors: [Colors.white, Colors.grey[50]!],
-                                                                      begin: Alignment.topCenter,
-                                                                      end: Alignment.bottomCenter,
-                                                                    ),
-                                                                    boxShadow: [
-                                                                      BoxShadow(
-                                                                        color: Colors.black.withOpacity(0.1),
-                                                                        blurRadius: 20,
-                                                                        spreadRadius: 2,
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  child: Column(
-                                                                    mainAxisSize: MainAxisSize.min,
-                                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                                    children: [
-                                                                      Container(
-                                                                        decoration: BoxDecoration(
-                                                                          shape: BoxShape.circle,
-                                                                          border: Border.all(
-                                                                            color: Colors.blue.shade100,
-                                                                            width: 2,
-                                                                          ),
-                                                                          boxShadow: [
-                                                                            BoxShadow(
-                                                                              color: Colors.blue.withOpacity(0.2),
-                                                                              blurRadius: 10,
-                                                                              spreadRadius: 2,
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        child: const CircleAvatar(
-                                                                          radius: 15,
-                                                                          backgroundColor: Colors.blue,
-                                                                          child: Icon(Icons.person, color: Colors.white, size: 24),
-                                                                        ),
-                                                                      ),
-                                                                      const SizedBox(height: 12),
-                                                                      _buildInfoItem(Icons.credit_card, "Customer ID", voucher.customerId),
-                                                                      const Divider(height: 16, thickness: 0.5),
-                                                                      _buildInfoItem(Icons.email, "Email", voucher.emailId),
-                                                                      const Divider(height: 16, thickness: 0.5),
-                                                                      _buildInfoItem(Icons.phone, "Phone", voucher.phoneNumber),
-                                                                      const Divider(height: 16, thickness: 0.5),
-                                                                      _buildInfoItem(Icons.location_on, "Address", voucher.clientAddress),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
-
-                                                    Overlay.of(context).insert(overlayEntry!);
-                                                  }
-
-                                                  void removePopup() {
-                                                    overlayEntry?.remove();
-                                                    overlayEntry = null;
-                                                  }
-
-                                                  return Row(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      MouseRegion(
-                                                        cursor: SystemMouseCursors.click,
-                                                        onEnter: (_) => showPopup(),
-                                                        onExit: (_) => removePopup(),
-                                                        child: const Icon(Icons.info_outline, size: 20, color: Colors.blue),
-                                                      ),
-                                                      const SizedBox(width: 3),
-                                                      Expanded(
-                                                        child: Text(
-                                                          maxLines: 5,
-                                                          voucher.clientName,
-                                                          style: const TextStyle(
-                                                            color: Primary_colors.Color1,
-                                                            fontSize: Primary_font_size.Text7,
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                            const SizedBox(width: 3),
-                                            Expanded(
-                                              flex: 2,
-                                              child: Text(
-                                                voucher.gstNumber,
-                                                style: const TextStyle(
-                                                  color: Primary_colors.Color1,
-                                                  fontSize: Primary_font_size.Text7,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 3),
-                                            Expanded(
-                                              flex: 1,
-                                              child: Text(
-                                                formatCurrency(voucher.totalAmount),
-                                                style: const TextStyle(
-                                                  color: Primary_colors.Color1,
-                                                  fontSize: Primary_font_size.Text7,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 3),
-                                            Expanded(
-                                              flex: 1,
-                                              child: MouseRegion(
-                                                cursor: SystemMouseCursors.click,
-                                                child: GestureDetector(
-                                                  onTap: () {},
-                                                  child: Text(
-                                                    textAlign: TextAlign.center,
-                                                    voucher.dueDate == null ? '-' : formatDate(voucher.dueDate!),
-                                                    style: const TextStyle(
-                                                      color: Colors.blue,
-                                                      fontSize: Primary_font_size.Text7,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 3),
-                                            Expanded(
-                                              flex: 1,
-                                              child: Text(
-                                                textAlign: TextAlign.center,
-                                                (voucher.overdueDays ?? 0).toString(),
-                                                style: const TextStyle(
-                                                  color: Primary_colors.Color1,
-                                                  fontSize: Primary_font_size.Text7,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 3),
-                                            Expanded(
-                                              flex: 1,
-                                              child: Text(
-                                                textAlign: TextAlign.center,
-                                                (voucher.fullyCleared == 0 && voucher.partiallyCleared == 0)
-                                                    ? 'pending'
-                                                    : voucher.fullyCleared == 1
-                                                        ? 'completed'
-                                                        : voucher.partiallyCleared == 1
-                                                            ? 'partially cleared'
-                                                            : '',
-                                                style: TextStyle(
-                                                  color: (voucher.fullyCleared == 0 && voucher.partiallyCleared == 0)
-                                                      ? const Color.fromARGB(255, 248, 71, 59)
-                                                      : voucher.fullyCleared == 1
-                                                          ? const Color.fromARGB(255, 105, 240, 112)
-                                                          : voucher.partiallyCleared == 1
-                                                              ? Colors.amber
-                                                              : Colors.black,
-                                                  fontSize: Primary_font_size.Text7,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 3),
-                                            SizedBox(
-                                                width: 125,
-                                                child: (voucher.fullyCleared == 0)
-                                                    ? ElevatedButton(
-                                                        onPressed: () {
-                                                          voucherController.reset_voucherClear_popup();
-
-                                                          final voucher = voucherController.voucherModel.voucher_list[index];
-                                                          final isPendingEqualsTds = voucher.pendingAmount == voucher.tdsCalculationAmount;
-
-                                                          if (isPendingEqualsTds) {
-                                                            voucherController.calculate_recievable(true, index);
-                                                            voucherController.set_isDeducted(true);
-                                                          }
-
-                                                          if (voucher.tdsCalculation == 1 || isPendingEqualsTds) {
-                                                            voucherController.calculate_recievable(true, index);
-                                                          } else {
-                                                            voucherController.calculate_recievable(false, index);
-                                                          }
-
-                                                          voucherController.is_amountExceeds(index);
-                                                          voucherController.is_fullclear_Valid(index);
-
-                                                          _showCloseVoucherPopup(index);
-                                                        },
-                                                        style: ElevatedButton.styleFrom(
-                                                          backgroundColor: const Color.fromARGB(255, 240, 193, 52),
-                                                          shape: RoundedRectangleBorder(
-                                                            borderRadius: BorderRadius.circular(15),
-                                                          ),
-                                                        ),
-                                                        child: const Text(
-                                                          'Update Payment',
-                                                          style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: Primary_font_size.Text6,
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : ElevatedButton(
-                                                        onPressed: () {
-                                                          showVoucherClearedDialog(context, index);
-                                                        },
-                                                        style: ElevatedButton.styleFrom(
-                                                          backgroundColor: const Color.fromARGB(255, 107, 183, 109),
-                                                          shape: RoundedRectangleBorder(
-                                                            borderRadius: BorderRadius.circular(15),
-                                                          ),
-                                                        ),
-                                                        child: const Text(
-                                                          'View Details',
-                                                          style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: Primary_font_size.Text6,
-                                                          ),
-                                                        ),
-                                                      )),
-                                            SizedBox(
-                                              width: 35,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : Container(
-                                  color: Primary_colors.Light,
-                                  child: ExpansionTile(
-                                    // leading: Icon(Icons.import_contacts),
-                                    collapsedIconColor: Colors.red,
-                                    iconColor: Colors.white,
-                                    showTrailingIcon: true,
-                                    tilePadding: EdgeInsets.all(0),
-                                    initiallyExpanded: false,
-                                    collapsedBackgroundColor: const Color.fromARGB(14, 244, 67, 54),
-                                    backgroundColor: Primary_colors.Light,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    collapsedShape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    title: Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                              width: 30,
-                                              child: voucher.fullyCleared == 0
-                                                  ? Checkbox(
-                                                      value: index < voucherController.voucherModel.selectedItems.length ? voucherController.voucherModel.selectedItems[index] : false,
-                                                      onChanged: (bool? value) {
-                                                        if (index < voucherController.voucherModel.selectedItems.length) {
-                                                          voucherController.voucherModel.selectedItems[index] = value ?? false;
-                                                          widget.updateDeleteButtonVisibility();
-                                                        }
-                                                      },
-                                                      activeColor: Colors.blueAccent,
-                                                      fillColor: WidgetStateProperty.resolveWith<Color>((states) {
-                                                        if (states.contains(WidgetState.selected)) {
-                                                          return Colors.blueAccent;
-                                                        }
-                                                        return Colors.white;
-                                                      }),
-                                                      shape: RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.circular(4),
-                                                      ),
-                                                    )
-                                                  : Icon(
-                                                      Icons.check_rounded,
-                                                      color: Colors.green,
-                                                    )),
-                                          const SizedBox(width: 3),
-                                          Expanded(
-                                            flex: 2,
-                                            child: Text(
-                                              voucher.date != null ? formatDate(voucher.date!) : '-',
-                                              style: const TextStyle(
-                                                color: Primary_colors.Color1,
-                                                fontSize: Primary_font_size.Text7,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 3),
-                                          Expanded(
-                                            flex: 2,
-                                            child: Text(
-                                              voucher.voucherNumber,
-                                              style: const TextStyle(
-                                                color: Primary_colors.Color1,
-                                                fontSize: Primary_font_size.Text7,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 3),
-                                          Expanded(
-                                            flex: 2,
-                                            child: MouseRegion(
-                                              cursor: SystemMouseCursors.click,
-                                              child: GestureDetector(
-                                                onTap: () async {
-                                                  if (voucher.invoiceType == 'subscription') {
-                                                    bool success = await widget.GetSubscriptionPDFfile(context: context, invoiceNo: voucher.invoiceNumber);
-                                                    if (success) {
-                                                      widget.showPDF(context, voucher.invoiceNumber);
-                                                    }
-                                                  }
-                                                },
-                                                child: Text(
-                                                  voucher.invoiceNumber,
-                                                  style: const TextStyle(
-                                                    color: Colors.blue,
-                                                    fontSize: Primary_font_size.Text7,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 3),
-                                          Expanded(
-                                            flex: 2,
-                                            child: Text(
-                                              voucher.voucherType,
-                                              style: const TextStyle(
-                                                color: Primary_colors.Color1,
-                                                fontSize: Primary_font_size.Text7,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 3),
-                                          Expanded(
-                                            flex: 3,
-                                            child: Builder(
-                                              builder: (context) {
-                                                OverlayEntry? overlayEntry;
-
-                                                void showPopup() {
-                                                  if (overlayEntry != null) return;
-                                                  final RenderBox renderBox = context.findRenderObject() as RenderBox;
-                                                  final Offset offset = renderBox.localToGlobal(Offset.zero);
-                                                  final Size size = renderBox.size;
-
-                                                  // Calculate position dynamically based on available space
-                                                  double top;
-                                                  double left = offset.dx - 80;
-
-                                                  // If there's enough space above the widget, show popup above it
-                                                  if (offset.dy > 320) {
-                                                    top = offset.dy - 320; // Show above
-                                                  } else {
-                                                    // Otherwise show below the widget
-                                                    top = offset.dy + size.height + 5;
-                                                  }
-                                                  overlayEntry = OverlayEntry(
-                                                    builder: (_) => Positioned(
-                                                      left: left,
-                                                      top: top,
-                                                      child: TweenAnimationBuilder(
-                                                        duration: const Duration(milliseconds: 200),
-                                                        tween: Tween<double>(begin: 0.9, end: 1.0),
-                                                        builder: (_, double scale, __) => Transform.scale(
-                                                          scale: scale,
-                                                          child: MouseRegion(
-                                                            onExit: (_) {
-                                                              overlayEntry?.remove();
-                                                              overlayEntry = null;
-                                                            },
-                                                            child: Material(
-                                                              elevation: 8,
-                                                              borderRadius: BorderRadius.circular(16),
-                                                              color: Colors.transparent,
-                                                              child: Container(
-                                                                width: 340,
-                                                                padding: const EdgeInsets.all(16),
-                                                                decoration: BoxDecoration(
-                                                                  color: Colors.white,
-                                                                  borderRadius: BorderRadius.circular(16),
-                                                                  gradient: LinearGradient(
-                                                                    colors: [Colors.white, Colors.grey[50]!],
-                                                                    begin: Alignment.topCenter,
-                                                                    end: Alignment.bottomCenter,
-                                                                  ),
-                                                                  boxShadow: [
-                                                                    BoxShadow(
-                                                                      color: Colors.black.withOpacity(0.1),
-                                                                      blurRadius: 20,
-                                                                      spreadRadius: 2,
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                child: Column(
-                                                                  mainAxisSize: MainAxisSize.min,
-                                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                                  children: [
-                                                                    Container(
+                                                                    color: Colors.transparent,
+                                                                    child: Container(
+                                                                      width: 340,
+                                                                      padding: const EdgeInsets.all(16),
                                                                       decoration: BoxDecoration(
-                                                                        shape: BoxShape.circle,
-                                                                        border: Border.all(
-                                                                          color: Colors.blue.shade100,
-                                                                          width: 2,
+                                                                        color: Colors.white,
+                                                                        borderRadius: BorderRadius.circular(16),
+                                                                        gradient: LinearGradient(
+                                                                          colors: [Colors.white, Colors.grey[50]!],
+                                                                          begin: Alignment.topCenter,
+                                                                          end: Alignment.bottomCenter,
                                                                         ),
                                                                         boxShadow: [
                                                                           BoxShadow(
-                                                                            color: Colors.blue.withOpacity(0.2),
-                                                                            blurRadius: 10,
+                                                                            color: Colors.black.withOpacity(0.1),
+                                                                            blurRadius: 20,
                                                                             spreadRadius: 2,
                                                                           ),
                                                                         ],
                                                                       ),
-                                                                      child: const CircleAvatar(
-                                                                        radius: 15,
-                                                                        backgroundColor: Colors.blue,
-                                                                        child: Icon(Icons.person, color: Colors.white, size: 24),
+                                                                      child: Column(
+                                                                        mainAxisSize: MainAxisSize.min,
+                                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                                        children: [
+                                                                          Container(
+                                                                            decoration: BoxDecoration(
+                                                                              shape: BoxShape.circle,
+                                                                              border: Border.all(
+                                                                                color: Colors.blue.shade100,
+                                                                                width: 2,
+                                                                              ),
+                                                                              boxShadow: [
+                                                                                BoxShadow(
+                                                                                  color: Colors.blue.withOpacity(0.2),
+                                                                                  blurRadius: 10,
+                                                                                  spreadRadius: 2,
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                            child: const CircleAvatar(
+                                                                              radius: 15,
+                                                                              backgroundColor: Colors.blue,
+                                                                              child: Icon(Icons.person, color: Colors.white, size: 24),
+                                                                            ),
+                                                                          ),
+                                                                          const SizedBox(height: 12),
+                                                                          _buildInfoItem(Icons.credit_card, "Customer ID", voucher.customerId),
+                                                                          const Divider(height: 16, thickness: 0.5),
+                                                                          _buildInfoItem(Icons.email, "Email", voucher.emailId),
+                                                                          const Divider(height: 16, thickness: 0.5),
+                                                                          _buildInfoItem(Icons.phone, "Phone", voucher.phoneNumber),
+                                                                          const Divider(height: 16, thickness: 0.5),
+                                                                          _buildInfoItem(Icons.location_on, "Address", voucher.clientAddress),
+                                                                        ],
                                                                       ),
                                                                     ),
-                                                                    const SizedBox(height: 12),
-                                                                    _buildInfoItem(Icons.credit_card, "Customer ID", voucher.customerId),
-                                                                    const Divider(height: 16, thickness: 0.5),
-                                                                    _buildInfoItem(Icons.email, "Email", voucher.emailId),
-                                                                    const Divider(height: 16, thickness: 0.5),
-                                                                    _buildInfoItem(Icons.phone, "Phone", voucher.phoneNumber),
-                                                                    const Divider(height: 16, thickness: 0.5),
-                                                                    _buildInfoItem(Icons.location_on, "Address", voucher.clientAddress),
-                                                                  ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+
+                                                        Overlay.of(context).insert(overlayEntry!);
+                                                      }
+
+                                                      void removePopup() {
+                                                        overlayEntry?.remove();
+                                                        overlayEntry = null;
+                                                      }
+
+                                                      return Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          MouseRegion(
+                                                            cursor: SystemMouseCursors.click,
+                                                            onEnter: (_) => showPopup(),
+                                                            onExit: (_) => removePopup(),
+                                                            child: const Icon(Icons.info_outline, size: 20, color: Colors.blue),
+                                                          ),
+                                                          const SizedBox(width: 3),
+                                                          Expanded(
+                                                            child: Text(
+                                                              maxLines: 5,
+                                                              voucher.clientName,
+                                                              style: const TextStyle(
+                                                                color: Primary_colors.Color1,
+                                                                fontSize: Primary_font_size.Text7,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 3),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Text(
+                                                    voucher.gstNumber,
+                                                    style: const TextStyle(
+                                                      color: Primary_colors.Color1,
+                                                      fontSize: Primary_font_size.Text7,
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 3),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    formatCurrency(voucher.totalAmount),
+                                                    style: const TextStyle(
+                                                      color: Primary_colors.Color1,
+                                                      fontSize: Primary_font_size.Text7,
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 3),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: MouseRegion(
+                                                    cursor: SystemMouseCursors.click,
+                                                    child: GestureDetector(
+                                                      onTap: () {},
+                                                      child: Text(
+                                                        textAlign: TextAlign.center,
+                                                        voucher.dueDate == null ? '-' : formatDate(voucher.dueDate!),
+                                                        style: const TextStyle(
+                                                          color: Colors.blue,
+                                                          fontSize: Primary_font_size.Text7,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 3),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    textAlign: TextAlign.center,
+                                                    (voucher.overdueDays ?? 0).toString(),
+                                                    style: const TextStyle(
+                                                      color: Primary_colors.Color1,
+                                                      fontSize: Primary_font_size.Text7,
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 3),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    textAlign: TextAlign.center,
+                                                    (voucher.fullyCleared == 0 && voucher.partiallyCleared == 0)
+                                                        ? 'pending'
+                                                        : voucher.fullyCleared == 1
+                                                            ? 'completed'
+                                                            : voucher.partiallyCleared == 1
+                                                                ? 'partially cleared'
+                                                                : '',
+                                                    style: TextStyle(
+                                                      color: (voucher.fullyCleared == 0 && voucher.partiallyCleared == 0)
+                                                          ? const Color.fromARGB(255, 248, 71, 59)
+                                                          : voucher.fullyCleared == 1
+                                                              ? const Color.fromARGB(255, 105, 240, 112)
+                                                              : voucher.partiallyCleared == 1
+                                                                  ? Colors.amber
+                                                                  : Colors.black,
+                                                      fontSize: Primary_font_size.Text7,
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 3),
+                                                SizedBox(
+                                                    width: 125,
+                                                    child: (voucher.fullyCleared == 0)
+                                                        ? ElevatedButton(
+                                                            onPressed: () {
+                                                              voucherController.reset_voucherClear_popup();
+
+                                                              final voucher = voucherController.voucherModel.voucher_list[index];
+                                                              final isPendingEqualsTds = voucher.pendingAmount == voucher.tdsCalculationAmount;
+
+                                                              if (isPendingEqualsTds) {
+                                                                voucherController.calculate_recievable(true, index);
+                                                                voucherController.set_isDeducted(true);
+                                                              }
+
+                                                              if (voucher.tdsCalculation == 1 || isPendingEqualsTds) {
+                                                                voucherController.calculate_recievable(true, index);
+                                                              } else {
+                                                                voucherController.calculate_recievable(false, index);
+                                                              }
+
+                                                              voucherController.is_amountExceeds(index);
+                                                              voucherController.is_fullclear_Valid(index);
+
+                                                              _showCloseVoucherPopup(index);
+                                                            },
+                                                            style: ElevatedButton.styleFrom(
+                                                              backgroundColor: const Color.fromARGB(255, 240, 193, 52),
+                                                              shape: RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.circular(15),
+                                                              ),
+                                                            ),
+                                                            child: const Text(
+                                                              'Update Payment',
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                                fontSize: Primary_font_size.Text6,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : ElevatedButton(
+                                                            onPressed: () {
+                                                              showVoucherClearedDialog(context, index);
+                                                            },
+                                                            style: ElevatedButton.styleFrom(
+                                                              backgroundColor: const Color.fromARGB(255, 107, 183, 109),
+                                                              shape: RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.circular(15),
+                                                              ),
+                                                            ),
+                                                            child: const Text(
+                                                              'View Details',
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                                fontSize: Primary_font_size.Text6,
+                                                              ),
+                                                            ),
+                                                          )),
+                                                SizedBox(
+                                                  width: 35,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : Container(
+                                      color: Primary_colors.Light,
+                                      child: ExpansionTile(
+                                        // leading: Icon(Icons.import_contacts),
+                                        collapsedIconColor: Colors.red,
+                                        iconColor: Colors.white,
+                                        showTrailingIcon: true,
+                                        tilePadding: EdgeInsets.all(0),
+                                        initiallyExpanded: false,
+                                        collapsedBackgroundColor: Primary_colors.Light,
+                                        backgroundColor: Primary_colors.Light,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5),
+                                        ),
+                                        collapsedShape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5),
+                                        ),
+                                        title: Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: Row(
+                                            children: [
+                                              SizedBox(
+                                                  width: 30,
+                                                  child: voucher.fullyCleared == 0
+                                                      ? Checkbox(
+                                                          value: index < voucherController.voucherModel.selectedItems.length ? voucherController.voucherModel.selectedItems[index] : false,
+                                                          onChanged: (bool? value) {
+                                                            if (index < voucherController.voucherModel.selectedItems.length) {
+                                                              voucherController.voucherModel.selectedItems[index] = value ?? false;
+                                                              widget.updateDeleteButtonVisibility();
+                                                            }
+                                                          },
+                                                          activeColor: Colors.blueAccent,
+                                                          fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+                                                            if (states.contains(WidgetState.selected)) {
+                                                              return Colors.blueAccent;
+                                                            }
+                                                            return Colors.white;
+                                                          }),
+                                                          shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(4),
+                                                          ),
+                                                        )
+                                                      : Icon(
+                                                          Icons.check_rounded,
+                                                          color: Colors.green,
+                                                        )),
+                                              const SizedBox(width: 3),
+                                              Expanded(
+                                                flex: 2,
+                                                child: Text(
+                                                  voucher.date != null ? formatDate(voucher.date!) : '-',
+                                                  style: const TextStyle(
+                                                    color: Primary_colors.Color1,
+                                                    fontSize: Primary_font_size.Text7,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 3),
+                                              Expanded(
+                                                flex: 2,
+                                                child: Text(
+                                                  voucher.voucherNumber,
+                                                  style: const TextStyle(
+                                                    color: Primary_colors.Color1,
+                                                    fontSize: Primary_font_size.Text7,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 3),
+                                              Expanded(
+                                                flex: 2,
+                                                child: MouseRegion(
+                                                  cursor: SystemMouseCursors.click,
+                                                  child: GestureDetector(
+                                                    onTap: () async {
+                                                      if (voucher.invoiceType == 'subscription') {
+                                                        bool success = await widget.GetSubscriptionPDFfile(context: context, invoiceNo: voucher.invoiceNumber);
+                                                        if (success) {
+                                                          widget.showPDF(context, voucher.invoiceNumber);
+                                                        }
+                                                      }
+                                                    },
+                                                    child: Text(
+                                                      voucher.invoiceNumber,
+                                                      style: const TextStyle(
+                                                        color: Colors.blue,
+                                                        fontSize: Primary_font_size.Text7,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 3),
+                                              Expanded(
+                                                flex: 2,
+                                                child: Text(
+                                                  voucher.voucherType,
+                                                  style: const TextStyle(
+                                                    color: Primary_colors.Color1,
+                                                    fontSize: Primary_font_size.Text7,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 3),
+                                              Expanded(
+                                                flex: 3,
+                                                child: Builder(
+                                                  builder: (context) {
+                                                    OverlayEntry? overlayEntry;
+
+                                                    void showPopup() {
+                                                      if (overlayEntry != null) return;
+                                                      final RenderBox renderBox = context.findRenderObject() as RenderBox;
+                                                      final Offset offset = renderBox.localToGlobal(Offset.zero);
+                                                      final Size size = renderBox.size;
+
+                                                      // Calculate position dynamically based on available space
+                                                      double top;
+                                                      double left = offset.dx - 80;
+
+                                                      // If there's enough space above the widget, show popup above it
+                                                      if (offset.dy > 320) {
+                                                        top = offset.dy - 320; // Show above
+                                                      } else {
+                                                        // Otherwise show below the widget
+                                                        top = offset.dy + size.height + 5;
+                                                      }
+                                                      overlayEntry = OverlayEntry(
+                                                        builder: (_) => Positioned(
+                                                          left: left,
+                                                          top: top,
+                                                          child: TweenAnimationBuilder(
+                                                            duration: const Duration(milliseconds: 200),
+                                                            tween: Tween<double>(begin: 0.9, end: 1.0),
+                                                            builder: (_, double scale, __) => Transform.scale(
+                                                              scale: scale,
+                                                              child: MouseRegion(
+                                                                onExit: (_) {
+                                                                  overlayEntry?.remove();
+                                                                  overlayEntry = null;
+                                                                },
+                                                                child: Material(
+                                                                  elevation: 8,
+                                                                  borderRadius: BorderRadius.circular(16),
+                                                                  color: Colors.transparent,
+                                                                  child: Container(
+                                                                    width: 340,
+                                                                    padding: const EdgeInsets.all(16),
+                                                                    decoration: BoxDecoration(
+                                                                      color: Colors.white,
+                                                                      borderRadius: BorderRadius.circular(16),
+                                                                      gradient: LinearGradient(
+                                                                        colors: [Colors.white, Colors.grey[50]!],
+                                                                        begin: Alignment.topCenter,
+                                                                        end: Alignment.bottomCenter,
+                                                                      ),
+                                                                      boxShadow: [
+                                                                        BoxShadow(
+                                                                          color: Colors.black.withOpacity(0.1),
+                                                                          blurRadius: 20,
+                                                                          spreadRadius: 2,
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    child: Column(
+                                                                      mainAxisSize: MainAxisSize.min,
+                                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                                      children: [
+                                                                        Container(
+                                                                          decoration: BoxDecoration(
+                                                                            shape: BoxShape.circle,
+                                                                            border: Border.all(
+                                                                              color: Colors.blue.shade100,
+                                                                              width: 2,
+                                                                            ),
+                                                                            boxShadow: [
+                                                                              BoxShadow(
+                                                                                color: Colors.blue.withOpacity(0.2),
+                                                                                blurRadius: 10,
+                                                                                spreadRadius: 2,
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          child: const CircleAvatar(
+                                                                            radius: 15,
+                                                                            backgroundColor: Colors.blue,
+                                                                            child: Icon(Icons.person, color: Colors.white, size: 24),
+                                                                          ),
+                                                                        ),
+                                                                        const SizedBox(height: 12),
+                                                                        _buildInfoItem(Icons.credit_card, "Customer ID", voucher.customerId),
+                                                                        const Divider(height: 16, thickness: 0.5),
+                                                                        _buildInfoItem(Icons.email, "Email", voucher.emailId),
+                                                                        const Divider(height: 16, thickness: 0.5),
+                                                                        _buildInfoItem(Icons.phone, "Phone", voucher.phoneNumber),
+                                                                        const Divider(height: 16, thickness: 0.5),
+                                                                        _buildInfoItem(Icons.location_on, "Address", voucher.clientAddress),
+                                                                      ],
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  );
+                                                      );
 
-                                                  Overlay.of(context).insert(overlayEntry!);
-                                                }
+                                                      Overlay.of(context).insert(overlayEntry!);
+                                                    }
 
-                                                void removePopup() {
-                                                  overlayEntry?.remove();
-                                                  overlayEntry = null;
-                                                }
+                                                    void removePopup() {
+                                                      overlayEntry?.remove();
+                                                      overlayEntry = null;
+                                                    }
 
-                                                return Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    MouseRegion(
-                                                      cursor: SystemMouseCursors.click,
-                                                      onEnter: (_) => showPopup(),
-                                                      onExit: (_) => removePopup(),
-                                                      child: const Icon(Icons.info_outline, size: 20, color: Colors.blue),
-                                                    ),
-                                                    const SizedBox(width: 3),
-                                                    Expanded(
-                                                      child: Text(
-                                                        maxLines: 5,
-                                                        voucher.clientName,
-                                                        style: const TextStyle(
-                                                          color: Primary_colors.Color1,
-                                                          fontSize: Primary_font_size.Text7,
+                                                    return Row(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        MouseRegion(
+                                                          cursor: SystemMouseCursors.click,
+                                                          onEnter: (_) => showPopup(),
+                                                          onExit: (_) => removePopup(),
+                                                          child: const Icon(Icons.info_outline, size: 20, color: Colors.blue),
                                                         ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                          const SizedBox(width: 3),
-                                          Expanded(
-                                            flex: 2,
-                                            child: Text(
-                                              voucher.gstNumber,
-                                              style: const TextStyle(
-                                                color: Primary_colors.Color1,
-                                                fontSize: Primary_font_size.Text7,
+                                                        const SizedBox(width: 3),
+                                                        Expanded(
+                                                          child: Text(
+                                                            maxLines: 5,
+                                                            voucher.clientName,
+                                                            style: const TextStyle(
+                                                              color: Primary_colors.Color1,
+                                                              fontSize: Primary_font_size.Text7,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    );
+                                                  },
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 3),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              formatCurrency(voucher.totalAmount),
-                                              style: const TextStyle(
-                                                color: Primary_colors.Color1,
-                                                fontSize: Primary_font_size.Text7,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 3),
-                                          Expanded(
-                                            flex: 1,
-                                            child: MouseRegion(
-                                              cursor: SystemMouseCursors.click,
-                                              child: GestureDetector(
-                                                onTap: () {},
+                                              const SizedBox(width: 3),
+                                              Expanded(
+                                                flex: 2,
                                                 child: Text(
-                                                  textAlign: TextAlign.center,
-                                                  voucher.dueDate == null ? '-' : formatDate(voucher.dueDate!),
+                                                  voucher.gstNumber,
                                                   style: const TextStyle(
-                                                    color: Colors.blue,
+                                                    color: Primary_colors.Color1,
                                                     fontSize: Primary_font_size.Text7,
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 3),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              textAlign: TextAlign.center,
-                                              (voucher.overdueDays ?? 0).toString(),
-                                              style: const TextStyle(
-                                                color: Primary_colors.Color1,
-                                                fontSize: Primary_font_size.Text7,
+                                              const SizedBox(width: 3),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  formatCurrency(voucher.totalAmount),
+                                                  style: const TextStyle(
+                                                    color: Primary_colors.Color1,
+                                                    fontSize: Primary_font_size.Text7,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 3),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              textAlign: TextAlign.center,
-                                              (voucher.fullyCleared == 0 && voucher.partiallyCleared == 0)
-                                                  ? 'pending'
-                                                  : voucher.fullyCleared == 1
-                                                      ? 'completed'
-                                                      : voucher.partiallyCleared == 1
-                                                          ? 'partially cleared'
-                                                          : '',
-                                              style: TextStyle(
-                                                color: (voucher.fullyCleared == 0 && voucher.partiallyCleared == 0)
-                                                    ? const Color.fromARGB(255, 248, 71, 59)
-                                                    : voucher.fullyCleared == 1
-                                                        ? const Color.fromARGB(255, 105, 240, 112)
-                                                        : voucher.partiallyCleared == 1
-                                                            ? Colors.amber
-                                                            : Colors.black,
-                                                fontSize: Primary_font_size.Text7,
+                                              const SizedBox(width: 3),
+                                              Expanded(
+                                                flex: 1,
+                                                child: MouseRegion(
+                                                  cursor: SystemMouseCursors.click,
+                                                  child: GestureDetector(
+                                                    onTap: () {},
+                                                    child: Text(
+                                                      textAlign: TextAlign.center,
+                                                      voucher.dueDate == null ? '-' : formatDate(voucher.dueDate!),
+                                                      style: const TextStyle(
+                                                        color: Colors.blue,
+                                                        fontSize: Primary_font_size.Text7,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                              const SizedBox(width: 3),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  textAlign: TextAlign.center,
+                                                  (voucher.overdueDays ?? 0).toString(),
+                                                  style: const TextStyle(
+                                                    color: Primary_colors.Color1,
+                                                    fontSize: Primary_font_size.Text7,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 3),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  textAlign: TextAlign.center,
+                                                  (voucher.fullyCleared == 0 && voucher.partiallyCleared == 0)
+                                                      ? 'pending'
+                                                      : voucher.fullyCleared == 1
+                                                          ? 'completed'
+                                                          : voucher.partiallyCleared == 1
+                                                              ? 'partially cleared'
+                                                              : '',
+                                                  style: TextStyle(
+                                                    color: (voucher.fullyCleared == 0 && voucher.partiallyCleared == 0)
+                                                        ? const Color.fromARGB(255, 248, 71, 59)
+                                                        : voucher.fullyCleared == 1
+                                                            ? const Color.fromARGB(255, 105, 240, 112)
+                                                            : voucher.partiallyCleared == 1
+                                                                ? Colors.amber
+                                                                : Colors.black,
+                                                    fontSize: Primary_font_size.Text7,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 3),
+                                              SizedBox(
+                                                  width: 125,
+                                                  child: (voucher.fullyCleared == 0)
+                                                      ? ElevatedButton(
+                                                          onPressed: () {
+                                                            voucherController.reset_voucherClear_popup();
+
+                                                            final voucher = voucherController.voucherModel.voucher_list[index];
+                                                            final isPendingEqualsTds = voucher.pendingAmount == voucher.tdsCalculationAmount;
+
+                                                            if (isPendingEqualsTds) {
+                                                              voucherController.calculate_recievable(true, index);
+                                                              voucherController.set_isDeducted(true);
+                                                            }
+
+                                                            if (voucher.tdsCalculation == 1 || isPendingEqualsTds) {
+                                                              voucherController.calculate_recievable(true, index);
+                                                            } else {
+                                                              voucherController.calculate_recievable(false, index);
+                                                            }
+
+                                                            voucherController.is_amountExceeds(index);
+                                                            voucherController.is_fullclear_Valid(index);
+
+                                                            _showCloseVoucherPopup(index);
+                                                          },
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor: const Color.fromARGB(255, 240, 193, 52),
+                                                            shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(15),
+                                                            ),
+                                                          ),
+                                                          child: const Text(
+                                                            'Update Payment',
+                                                            style: TextStyle(
+                                                              color: Colors.black,
+                                                              fontSize: Primary_font_size.Text6,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : ElevatedButton(
+                                                          onPressed: () {
+                                                            showVoucherClearedDialog(context, index);
+                                                          },
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor: const Color.fromARGB(255, 107, 183, 109),
+                                                            shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(15),
+                                                            ),
+                                                          ),
+                                                          child: const Text(
+                                                            'View Details',
+                                                            style: TextStyle(
+                                                              color: Colors.black,
+                                                              fontSize: Primary_font_size.Text6,
+                                                            ),
+                                                          ),
+                                                        )),
+                                            ],
                                           ),
-                                          const SizedBox(width: 3),
-                                          SizedBox(
-                                              width: 125,
-                                              child: (voucher.fullyCleared == 0)
-                                                  ? ElevatedButton(
-                                                      onPressed: () {
-                                                        voucherController.reset_voucherClear_popup();
+                                        ),
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(15),
+                                            child: voucher.overdueHistory != null
+                                                ? ListView.builder(
+                                                    shrinkWrap: true,
+                                                    physics: NeverScrollableScrollPhysics(), // Remove if you want scrolling
+                                                    itemCount: voucher.overdueHistory!.length,
+                                                    itemBuilder: (context, index) {
+                                                      return IntrinsicHeight(
+                                                        child: Row(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            // Timeline dot and line
+                                                            Column(
+                                                              children: [
+                                                                Container(
+                                                                  width: 10,
+                                                                  height: 10,
+                                                                  decoration: const BoxDecoration(
+                                                                    color: Primary_colors.Color3,
+                                                                    shape: BoxShape.circle,
+                                                                  ),
+                                                                ),
+                                                                if (index < voucher.overdueHistory!.length - 1)
+                                                                  Expanded(
+                                                                    child: Container(
+                                                                      width: 2,
+                                                                      color: Primary_colors.Color3,
+                                                                    ),
+                                                                  ),
+                                                              ],
+                                                            ),
 
-                                                        final voucher = voucherController.voucherModel.voucher_list[index];
-                                                        final isPendingEqualsTds = voucher.pendingAmount == voucher.tdsCalculationAmount;
+                                                            const SizedBox(width: 12),
 
-                                                        if (isPendingEqualsTds) {
-                                                          voucherController.calculate_recievable(true, index);
-                                                          voucherController.set_isDeducted(true);
-                                                        }
-
-                                                        if (voucher.tdsCalculation == 1 || isPendingEqualsTds) {
-                                                          voucherController.calculate_recievable(true, index);
-                                                        } else {
-                                                          voucherController.calculate_recievable(false, index);
-                                                        }
-
-                                                        voucherController.is_amountExceeds(index);
-                                                        voucherController.is_fullclear_Valid(index);
-
-                                                        _showCloseVoucherPopup(index);
-                                                      },
-                                                      style: ElevatedButton.styleFrom(
-                                                        backgroundColor: const Color.fromARGB(255, 240, 193, 52),
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(15),
+                                                            // Timeline content
+                                                            Expanded(
+                                                              child: Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text(
+                                                                    voucher.overdueHistory![index].date,
+                                                                    style: TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontWeight: FontWeight.bold,
+                                                                      fontSize: Primary_font_size.Text8,
+                                                                    ),
+                                                                  ),
+                                                                  const SizedBox(height: 6),
+                                                                  Text(
+                                                                    voucher.overdueHistory![index].feedback,
+                                                                    maxLines: 3,
+                                                                    style: TextStyle(
+                                                                      color: Colors.grey[700],
+                                                                      fontSize: 12,
+                                                                    ),
+                                                                  ),
+                                                                  const SizedBox(height: 16),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ),
-                                                      child: const Text(
-                                                        'Update Payment',
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: Primary_font_size.Text6,
-                                                        ),
-                                                      ),
-                                                    )
-                                                  : ElevatedButton(
-                                                      onPressed: () {
-                                                        showVoucherClearedDialog(context, index);
-                                                      },
-                                                      style: ElevatedButton.styleFrom(
-                                                        backgroundColor: const Color.fromARGB(255, 107, 183, 109),
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(15),
-                                                        ),
-                                                      ),
-                                                      child: const Text(
-                                                        'View Details',
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: Primary_font_size.Text6,
-                                                        ),
-                                                      ),
-                                                    )),
+                                                      );
+                                                    },
+                                                  )
+                                                : SizedBox(),
+                                          ),
                                         ],
                                       ),
-                                    ),
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: Column(
-                                          children: [
-                                            // Add your expanded content here
-                                            // For example, you might want to show additional details
-                                            // that were in the original Row but didn't fit in the header
-                                            Row(
-                                              children: [
-                                                // Expanded content widgets...
-                                              ],
-                                            ),
-                                            // You can add more detailed information here
-                                            if (voucher.fullyCleared == 0)
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  voucherController.reset_voucherClear_popup();
-                                                  final voucher = voucherController.voucherModel.voucher_list[index];
-                                                  final isPendingEqualsTds = voucher.pendingAmount == voucher.tdsCalculationAmount;
-
-                                                  if (isPendingEqualsTds) {
-                                                    voucherController.calculate_recievable(true, index);
-                                                    voucherController.set_isDeducted(true);
-                                                  }
-
-                                                  if (voucher.tdsCalculation == 1 || isPendingEqualsTds) {
-                                                    voucherController.calculate_recievable(true, index);
-                                                  } else {
-                                                    voucherController.calculate_recievable(false, index);
-                                                  }
-
-                                                  voucherController.is_amountExceeds(index);
-                                                  voucherController.is_fullclear_Valid(index);
-                                                  _showCloseVoucherPopup(index);
-                                                },
-                                                child: const Text('Full Payment Details'),
-                                              ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                    );
+                            },
+                          )
+                        : Center(
+                            child: Stack(
+                              alignment: Alignment.topCenter,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 0),
+                                  child: Lottie.asset(
+                                    'assets/animations/JSON/emptyprocesslist.json',
+                                    // width: 264,
+                                    height: 150,
                                   ),
-                                );
-                        },
-                      ),
-                    ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 164),
+                                  child: Text(
+                                    'No Voucher Found',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.blueGrey[800],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 204),
+                                  child: Text(
+                                    'Generate a Voucher to see it listed here.',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.blueGrey[400],
+                                      height: 1.4,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
                   ),
                 ],
               ),

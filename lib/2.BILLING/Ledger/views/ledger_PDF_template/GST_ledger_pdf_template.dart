@@ -222,7 +222,7 @@ class GSTLedger {
               child: pw.Text(
                 label,
                 style: pw.TextStyle(
-                  fontSize: 11,
+                  fontSize: 10,
                   fontWeight: pw.FontWeight.normal,
                   color: detailsColor,
                 ),
@@ -234,7 +234,7 @@ class GSTLedger {
               child: pw.Text(
                 ':',
                 style: pw.TextStyle(
-                  fontSize: 11,
+                  fontSize: 10,
                   fontWeight: pw.FontWeight.normal,
                   color: PdfColors.black,
                 ),
@@ -244,7 +244,7 @@ class GSTLedger {
               child: pw.Text(
                 value,
                 style: const pw.TextStyle(
-                  fontSize: 11,
+                  fontSize: 10,
                   color: detailsColor,
                 ),
               ),
@@ -303,7 +303,7 @@ class GSTLedger {
   }
 
   pw.Widget _summaryTable(pw.Context context) {
-    const tableHeaders = ['Category', 'CGST(Rs.)', 'SGST(Rs.) ', 'IGST(Rs.)', 'Total GST(Rs.)'];
+    const tableHeaders = ['Category', 'CGST', 'SGST', 'IGST', 'Total GST'];
 
     final dataRows = List<pw.TableRow>.generate(
       2,
@@ -442,7 +442,7 @@ class GSTLedger {
   }
 
   List<pw.Widget> _GSTtransactionLog(pw.Context context) {
-    const tableHeaders = ['Date', 'Invoice No', 'Details', 'GST \nType', 'Taxable Value', 'CGST\n(Rs.)', 'SGST\n(Rs.)', 'IGST\n(Rs.)', 'Total GST\n(Rs.)', 'Gross Amount\n(Rs.)'];
+    const tableHeaders = ['Date', 'Invoice No', 'Details', 'GST \nType', 'Taxable Value', 'CGST', 'SGST', 'IGST', 'Total GST', 'Gross Amount'];
 
     final dataRows = List<pw.TableRow>.generate(
       data.gstList.length,
@@ -483,9 +483,9 @@ class GSTLedger {
           verticalInside: pw.BorderSide.none,
         ),
         columnWidths: {
-          0: const pw.FlexColumnWidth(3),
+          0: const pw.FlexColumnWidth(3.5),
           1: const pw.FlexColumnWidth(3),
-          2: const pw.FlexColumnWidth(5),
+          2: const pw.FlexColumnWidth(4.5),
           3: const pw.FlexColumnWidth(2),
           4: const pw.FlexColumnWidth(3),
           5: const pw.FlexColumnWidth(3),
@@ -520,9 +520,9 @@ class GSTLedger {
           verticalInside: pw.BorderSide.none,
         ),
         columnWidths: {
-          0: const pw.FlexColumnWidth(3),
+          0: const pw.FlexColumnWidth(3.5),
           1: const pw.FlexColumnWidth(3),
-          2: const pw.FlexColumnWidth(5),
+          2: const pw.FlexColumnWidth(4.5),
           3: const pw.FlexColumnWidth(2),
           4: const pw.FlexColumnWidth(3),
           5: const pw.FlexColumnWidth(3),
@@ -545,7 +545,7 @@ class GSTLedger {
         textAlign: align == pw.Alignment.centerLeft ? pw.TextAlign.left : pw.TextAlign.right,
         softWrap: true,
         style: pw.TextStyle(
-          fontSize: 7,
+          fontSize: 9,
           fontWeight: isBold ? pw.FontWeight.bold : pw.FontWeight.normal,
         ),
       ),
@@ -558,7 +558,7 @@ class GSTLedger {
       alignment: isCommonAlignment ? pw.Alignment.topLeft : (alignRight ? pw.Alignment.centerRight : pw.Alignment.centerLeft),
       child: pw.Text(
         text,
-        style: const pw.TextStyle(fontSize: 7),
+        style: const pw.TextStyle(fontSize: 9),
         softWrap: true,
         textAlign: alignRight ? pw.TextAlign.right : pw.TextAlign.left,
       ),
@@ -573,7 +573,7 @@ class GSTLedger {
         text,
         textAlign: pw.TextAlign.center,
         style: pw.TextStyle(
-          fontSize: 7,
+          fontSize: 10,
           fontWeight: pw.FontWeight.bold,
           color: _baseTextColor,
         ),

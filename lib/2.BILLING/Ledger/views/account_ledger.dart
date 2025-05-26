@@ -555,12 +555,12 @@ class _accountLedgerState extends State<AccountLedger> {
                                           onTap: () async {
                                             try {
                                               // Generate the PDF bytes
-                                                var parsedData = await widget.parsePDF_AccountLedger(
-                                              widget.isSubscription_Client(),
-                                              widget.isSales_Client(),
-                                            );
+                                              var parsedData = await widget.parsePDF_AccountLedger(
+                                                widget.isSubscription_Client(),
+                                                widget.isSales_Client(),
+                                              );
 
-                                              final pdfBytes = await generateAccountLedger(PdfPageFormat.a4,parsedData);
+                                              final pdfBytes = await generateAccountLedger(PdfPageFormat.a4, parsedData);
 
                                               // Create timestamp for filename
                                               final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -901,7 +901,7 @@ class _accountLedgerState extends State<AccountLedger> {
                                         onTap: () async {
                                           try {
                                             // Generate the PDF bytes first
-                                              var parsedData = await widget.parsePDF_AccountLedger(
+                                            var parsedData = await widget.parsePDF_AccountLedger(
                                               widget.isSubscription_Client(),
                                               widget.isSales_Client(),
                                             );
@@ -956,7 +956,7 @@ class _accountLedgerState extends State<AccountLedger> {
                                             // loader.start(context);
                                             // await Future.delayed(const Duration(milliseconds: 300));
 
-                                              var parsedData = await widget.parsePDF_AccountLedger(
+                                            var parsedData = await widget.parsePDF_AccountLedger(
                                               widget.isSubscription_Client(),
                                               widget.isSales_Client(),
                                             );
@@ -1298,7 +1298,6 @@ class _accountLedgerState extends State<AccountLedger> {
       },
     );
   }
-  void showSharePDFdialog() {
-    
-  }
+
+  void showSharePDFdialog() {}
 }

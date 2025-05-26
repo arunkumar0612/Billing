@@ -1610,8 +1610,8 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
     return List.generate(overdueList.length, (index) {
       final isLast = index == overdueList.length - 1;
       final item = overdueList[index];
-      final date = item.date ?? "Unknown Date";
-      final feedback = item.feedback ?? "No feedback provided";
+      final date = item.date;
+      final feedback = item.feedback;
 
       return Padding(
         padding: const EdgeInsets.only(bottom: 12),

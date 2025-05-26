@@ -1145,7 +1145,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 flex: 2,
                                 child: Text(
                                   // textAlign: TextAlign.center,
-                                  (mainBilling_Controller.billingModel.subscriptionInvoiceList[index].overdueDays ?? 0).toString(),
+                                  (mainBilling_Controller.billingModel.subscriptionInvoiceList[index].overdueDays ?? '-').toString(),
                                   style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                 ),
                               ),

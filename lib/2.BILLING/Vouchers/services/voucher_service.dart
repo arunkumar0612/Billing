@@ -61,16 +61,9 @@ mixin VoucherService {
       if (response['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response);
         if (value.code) {
-          await Success_dialog(context: context, title: "Upload Successfull", content: value.message!, onOk: () {});
-
-          Navigator.of(context).pop();
+          await Success_dialog(context: context, title: "Success", content: value.message!, onOk: () {});
         } else {
-          await Error_dialog(
-            context: context,
-            title: 'Error',
-            content: value.message ?? "",
-            onOk: () {},
-          );
+          await Error_dialog(context: context, title: 'Error', content: value.message ?? "", onOk: () {});
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
@@ -510,13 +503,13 @@ mixin VoucherService {
 
   Future<void> selectfilterDate(BuildContext context, TextEditingController controller) async {
     final DateTime now = DateTime.now();
-    final DateTime tomorrow = DateTime(now.year, now.month, now.day + 1);
+    final DateTime nextYear = now.add(const Duration(days: 365)); // Limit to next year
 
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: now,
-      firstDate: DateTime(2000),
-      lastDate: tomorrow,
+      firstDate: now, // Start from today
+      lastDate: nextYear, // Allow dates up to 1 year from today
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -542,13 +535,6 @@ mixin VoucherService {
     );
 
     if (pickedDate != null) {
-      if (pickedDate.isAfter(tomorrow)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Date cannot exceed tomorrow.')),
-        );
-        return;
-      }
-
       final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
           "${pickedDate.month.toString().padLeft(2, '0')}-"
           "${pickedDate.day.toString().padLeft(2, '0')}";

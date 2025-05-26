@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/account_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/ledger_pdf_entities/account_ledger_PDF_entities.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/account_ledger_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/view_ledger_entities.dart';
 // import 'package:ssipl_billing/2.BILLING/Account_Ledgers/controllers/account_Ledger_action.dart';
 import 'package:ssipl_billing/API/api.dart';

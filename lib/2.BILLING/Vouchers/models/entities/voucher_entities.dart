@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
@@ -91,7 +92,6 @@ class InvoicePaymentVoucher {
       dueDate: json['Due_date'] != null ? DateTime.tryParse(json['Due_date']) : null,
       overdueDays: json['Overdue_days'],
       overdueHistory: json['Overdue_history'] != null ? List<OverdueHistory>.from(json['Overdue_history'].map((e) => OverdueHistory.fromJson(e))) : null,
-
       paymentDetails: json['payment_details'] != null ? List<TransactionDetail>.from(json['payment_details'].map((item) => TransactionDetail.fromJson(item))) : null,
     );
   }

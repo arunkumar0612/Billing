@@ -20,7 +20,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/TDS_ledger_entities.dart';
-// import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/ledger_pdf_entities/TDS_ledger_PDF_entities.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 Future<Uint8List> generateTDSledger(PdfPageFormat pageFormat, TDSSummaryModel tds_Ledger_list) async {
   final tdsLedger = TDSledger(
@@ -241,7 +241,7 @@ class TDSledger {
       children: [
         pw.Center(
           child: pw.Text(
-            'LEDGER SUMMARY',
+            'TDS LEDGER SUMMARY',
             style: pw.TextStyle(
               fontSize: 12,
               fontWeight: pw.FontWeight.bold,
@@ -254,7 +254,7 @@ class TDSledger {
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
             pw.Expanded(
-              flex: 7,
+              flex: 8,
               child: pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
@@ -264,9 +264,9 @@ class TDSledger {
                 ],
               ),
             ),
-            pw.SizedBox(width: 30),
+            pw.SizedBox(width: 90),
             pw.Expanded(
-              flex: 7,
+              flex: 8,
               child: pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
@@ -283,7 +283,7 @@ class TDSledger {
   }
 
   List<pw.Widget> _TDStransactionLog(pw.Context context) {
-    const tableHeaders = ['Date', 'Voucher No', 'Invoice No', 'TDS No', 'Particulars', 'TDS\nType', 'Debit(Rs.)', 'Credit(Rs.)'];
+    const tableHeaders = ['Date', 'Invoice No', 'PAN No', 'Client Name', 'Particulars', 'TDS Type', 'Invoice\nAmount', 'Debit\n(Rs.)', 'Credit\n(Rs.)'];
     final dataRows = List<pw.TableRow>.generate(
       data.tdsList.length,
       (index) {
@@ -291,11 +291,14 @@ class TDSledger {
         return pw.TableRow(
           children: [
             _buildCell(_formatDate(item.rowUpdatedDate)),
-            _buildCell(item.voucherNumber, alignRight: true),
-            _buildCell(item.invoiceType),
-            _buildCell(item.tdsLedgerId.toString()),
+            _buildCell(item.invoice_number, alignRight: true),
+            _buildCell(extractPanFromGst(item.gstNumber), alignRight: true),
+            _buildCell(
+              item.clientName,
+            ),
             _buildCell(item.description ?? ''),
             _buildCell(item.tdsType),
+            _buildCell(item.totalAmount.toString(), alignRight: true),
             _buildCell(_formatCurrency(item.debitAmount), alignRight: true),
             _buildCell(_formatCurrency(item.creditAmount), alignRight: true),
           ],
@@ -314,13 +317,14 @@ class TDSledger {
         ),
         columnWidths: {
           0: const pw.FlexColumnWidth(3),
-          1: const pw.FlexColumnWidth(4),
+          1: const pw.FlexColumnWidth(3),
           2: const pw.FlexColumnWidth(4),
-          3: const pw.FlexColumnWidth(4),
+          3: const pw.FlexColumnWidth(5),
           4: const pw.FlexColumnWidth(5),
           5: const pw.FlexColumnWidth(3),
-          6: const pw.FlexColumnWidth(4),
-          7: const pw.FlexColumnWidth(4),
+          6: const pw.FlexColumnWidth(3),
+          7: const pw.FlexColumnWidth(3),
+          8: const pw.FlexColumnWidth(3)
         },
         children: [
           pw.TableRow(
@@ -331,7 +335,7 @@ class TDSledger {
             children: List.generate(tableHeaders.length, (index) {
               return _buildHeaderCell(
                 tableHeaders[index],
-                alignment: index <= 3 ? pw.Alignment.centerLeft : pw.Alignment.center,
+                alignment: index <= 4 ? pw.Alignment.center : pw.Alignment.centerRight,
               );
             }),
           ),
@@ -349,13 +353,14 @@ class TDSledger {
         ),
         columnWidths: {
           0: const pw.FlexColumnWidth(3),
-          1: const pw.FlexColumnWidth(4),
+          1: const pw.FlexColumnWidth(3),
           2: const pw.FlexColumnWidth(4),
-          3: const pw.FlexColumnWidth(4),
+          3: const pw.FlexColumnWidth(5),
           4: const pw.FlexColumnWidth(5),
           5: const pw.FlexColumnWidth(3),
-          6: const pw.FlexColumnWidth(4),
-          7: const pw.FlexColumnWidth(4),
+          6: const pw.FlexColumnWidth(3),
+          7: const pw.FlexColumnWidth(3),
+          8: const pw.FlexColumnWidth(3)
         },
         children: dataRows,
       ),
@@ -371,12 +376,12 @@ class TDSledger {
 
     return pw.Row(
       children: [
-        pw.Expanded(flex: 13, child: pw.Container()), // Spacer
+        pw.Expanded(flex: 75, child: pw.Container()), // Spacer
         pw.Expanded(
           flex: 30,
           child: pw.Table(
             columnWidths: {
-              0: const pw.FlexColumnWidth(18),
+              0: const pw.FlexColumnWidth(12),
               1: const pw.FlexColumnWidth(6),
               2: const pw.FlexColumnWidth(6),
             },
@@ -386,10 +391,10 @@ class TDSledger {
             children: [
               pw.TableRow(
                 children: [
-                  _buildCalculationCell('Total', align: pw.Alignment.centerLeft, isBold: false),
-                  _buildCalculationCell(_formatCurrency(data.totalPayables)),
-                  _buildCalculationCell(_formatCurrency(data.totalReceivables)),
-                  _buildCalculationCell(''),
+                  _buildCalculationCell('Total TDS', align: pw.Alignment.centerLeft, isBold: false),
+                  _buildCalculationCell(_formatCurrency(data.totalPayables), align: data.totalPayables == 0 ? pw.Alignment.center : pw.Alignment.centerRight),
+                  _buildCalculationCell(_formatCurrency(data.totalReceivables), align: pw.Alignment.centerRight),
+                  // _buildCalculationCell(''),
                 ],
               ),
             ],
@@ -410,7 +415,7 @@ class TDSledger {
 
     return pw.Row(
       children: [
-        pw.Expanded(flex: 13, child: pw.Container()), // Spacer
+        pw.Expanded(flex: 75, child: pw.Container()), // Spacer
         pw.Expanded(
           flex: 30,
           child: pw.Table(
@@ -418,7 +423,7 @@ class TDSledger {
               0: const pw.FlexColumnWidth(12),
               1: const pw.FlexColumnWidth(6),
               2: const pw.FlexColumnWidth(6),
-              3: const pw.FlexColumnWidth(6),
+              // 3: const pw.FlexColumnWidth(6),
             },
             border: const pw.TableBorder(
               bottom: pw.BorderSide(color: accentColor, width: 0.5),
@@ -426,16 +431,10 @@ class TDSledger {
             children: [
               pw.TableRow(
                 children: [
-                  _buildCalculationCell(' TDS Claimable/payable', align: pw.Alignment.centerLeft, isBold: false),
-                  _buildCalculationCell(
-                    isClaimable ? closingBalanceStr : '',
-                    isBold: true,
-                  ),
-                  _buildCalculationCell(
-                    !isClaimable ? closingBalanceStr : '',
-                    isBold: true,
-                  ),
-                  _buildCalculationCell('', isBold: false),
+                  _buildCalculationCell(' TDS Claimable/payable', align: pw.Alignment.centerLeft, isBold: true),
+                  _buildCalculationCell(isClaimable ? closingBalanceStr : '', isBold: true, align: pw.Alignment.centerRight),
+                  _buildCalculationCell(!isClaimable ? closingBalanceStr : '', isBold: true, align: pw.Alignment.centerRight),
+                  // _buildCalculationCell('', isBold: false, align: pw.Alignment.centerRight),
                 ],
               ),
             ],
@@ -454,7 +453,7 @@ class TDSledger {
         textAlign: align == pw.Alignment.centerLeft ? pw.TextAlign.left : pw.TextAlign.right,
         softWrap: true,
         style: pw.TextStyle(
-          fontSize: 8,
+          fontSize: 7,
           fontWeight: isBold ? pw.FontWeight.bold : pw.FontWeight.normal,
         ),
       ),
@@ -467,7 +466,7 @@ class TDSledger {
       alignment: isCommonAlignment ? pw.Alignment.topLeft : (alignRight ? pw.Alignment.centerRight : pw.Alignment.centerLeft),
       child: pw.Text(
         text,
-        style: const pw.TextStyle(fontSize: 8),
+        style: const pw.TextStyle(fontSize: 7),
         softWrap: true,
         textAlign: alignRight ? pw.TextAlign.right : pw.TextAlign.left,
       ),
@@ -482,7 +481,7 @@ class TDSledger {
         text,
         textAlign: pw.TextAlign.center,
         style: pw.TextStyle(
-          fontSize: 8,
+          fontSize: 7,
           fontWeight: pw.FontWeight.bold,
           color: _baseTextColor,
         ),

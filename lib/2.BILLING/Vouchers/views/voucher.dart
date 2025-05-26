@@ -1801,22 +1801,22 @@ class _VoucherState extends State<Voucher> {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        ElevatedButton(
-                          onPressed: () {
-                            showModalBottomSheet(
-                              backgroundColor: Colors.transparent,
-                              context: context,
-                              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-                              builder: (BuildContext context) => CreateVoucherBottomSheet(),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blueAccent,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                          ),
-                          child: const Text('Create Voucher', style: TextStyle(fontSize: Primary_font_size.Text6)),
-                        ),
-                        const SizedBox(width: 20),
+                        // ElevatedButton(
+                        //   onPressed: () {
+                        //     showModalBottomSheet(
+                        //       backgroundColor: Colors.transparent,
+                        //       context: context,
+                        //       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+                        //       builder: (BuildContext context) => CreateVoucherBottomSheet(),
+                        //     );
+                        //   },
+                        //   style: ElevatedButton.styleFrom(
+                        //     backgroundColor: Colors.blueAccent,
+                        //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                        //   ),
+                        //   child: const Text('Create Voucher', style: TextStyle(fontSize: Primary_font_size.Text6)),
+                        // ),
+                        // const SizedBox(width: 20),
                         IconButton(
                           onPressed: () {
                             _scaffoldKey.currentState?.openEndDrawer();
@@ -1975,7 +1975,7 @@ class _VoucherState extends State<Voucher> {
                                 //   voucherController.voucherModel.checkboxValues.value = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false);
                                 // }
                                 // ignore: unrelated_type_equality_checks
-                                return voucher.overdueDays! > 0 || voucher.overdueHistory != null
+                                return (voucher.overdueDays != null && voucher.overdueDays! > 0) || voucher.overdueHistory != null
                                     ? Container(
                                         color: Primary_colors.Light,
                                         child: ExpansionTile(
@@ -2303,6 +2303,7 @@ class _VoucherState extends State<Voucher> {
                                             Padding(
                                               padding: const EdgeInsets.all(15.0),
                                               child: Row(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Expanded(
                                                     child: voucher.overdueHistory != null
@@ -2360,6 +2361,7 @@ class _VoucherState extends State<Voucher> {
                                                   if (voucherController.voucherModel.voucher_list[index].fullyCleared != 1)
                                                     Expanded(
                                                       child: Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
                                                         mainAxisAlignment: MainAxisAlignment.end,
                                                         children: [
                                                           SizedBox(

@@ -1,11 +1,16 @@
 // ignore_for_file: deprecated_member_use
 
-// import 'package:dropdown_search/dropdown_search.dart';
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
+import 'package:printing/printing.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/account_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/services/account_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
@@ -548,323 +553,328 @@ class _accountLedgerState extends State<AccountLedger> {
                                         cursor: SystemMouseCursors.click,
                                         child: GestureDetector(
                                           onTap: () async {
-                                            // try {
-                                            //   // Generate the PDF bytes
-                                            //   final pdfBytes = await generateAccountLedger(PdfPageFormat.a4);
+                                            try {
+                                              // Generate the PDF bytes
+                                              var parsedData = await widget.parsePDF_AccountLedger(
+                                                widget.isSubscription_Client(),
+                                                widget.isSales_Client(),
+                                              );
 
-                                            //   // Create timestamp for filename
-                                            //   final timestamp = DateTime.now().millisecondsSinceEpoch;
-                                            //   final filename = 'ledger_$timestamp.pdf';
+                                              final pdfBytes = await generateAccountLedger(PdfPageFormat.a4, parsedData);
 
-                                            //   // Show the share dialog
-                                            //   account_ledgerController.clear_sharedata();
-                                            //   showDialog(
-                                            //     context: context,
-                                            //     builder: (context) {
-                                            //       return Obx(
-                                            //         () {
-                                            //           return AlertDialog(
-                                            //             titlePadding: const EdgeInsets.all(5),
-                                            //             backgroundColor: const Color.fromARGB(255, 194, 198, 253),
-                                            //             shape: RoundedRectangleBorder(
-                                            //               borderRadius: BorderRadius.circular(10),
-                                            //             ),
-                                            //             title: Container(
-                                            //               decoration: BoxDecoration(
-                                            //                 borderRadius: BorderRadius.circular(7),
-                                            //                 color: Primary_colors.Color3,
-                                            //               ),
-                                            //               child: const Padding(
-                                            //                 padding: EdgeInsets.all(7),
-                                            //                 child: Text(
-                                            //                   "Share",
-                                            //                   style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold),
-                                            //                 ),
-                                            //               ),
-                                            //             ),
-                                            //             content: IntrinsicHeight(
-                                            //               child: SizedBox(
-                                            //                 width: 500,
-                                            //                 child: Column(
-                                            //                   children: [
-                                            //                     Row(
-                                            //                       children: [
-                                            //                         const Text("File name"),
-                                            //                         const SizedBox(width: 20),
-                                            //                         const Text(":"),
-                                            //                         const SizedBox(width: 20),
-                                            //                         Expanded(
-                                            //                           child: Text(filename), // Using generated filename
-                                            //                         ),
-                                            //                       ],
-                                            //                     ),
-                                            //                     if (account_ledgerController.account_LedgerModel.whatsapp_selectionStatus.value) const SizedBox(height: 20),
-                                            //                     if (account_ledgerController.account_LedgerModel.whatsapp_selectionStatus.value)
-                                            //                       Row(
-                                            //                         children: [
-                                            //                           const Text("whatsapp"),
-                                            //                           const SizedBox(width: 20),
-                                            //                           const Text(":"),
-                                            //                           const SizedBox(width: 20),
-                                            //                           Expanded(
-                                            //                             child: TextFormField(
-                                            //                               controller: account_ledgerController.account_LedgerModel.phoneController.value,
-                                            //                               style: const TextStyle(fontSize: 13, color: Colors.black),
-                                            //                             ),
-                                            //                           ),
-                                            //                         ],
-                                            //                       ),
-                                            //                     if (account_ledgerController.account_LedgerModel.gmail_selectionStatus.value) const SizedBox(height: 20),
-                                            //                     if (account_ledgerController.account_LedgerModel.gmail_selectionStatus.value)
-                                            //                       Row(
-                                            //                         children: [
-                                            //                           const Text("E-mail"),
-                                            //                           const SizedBox(width: 50),
-                                            //                           const Text(":"),
-                                            //                           const SizedBox(width: 20),
-                                            //                           Expanded(
-                                            //                             child: SizedBox(
-                                            //                               child: TextFormField(
-                                            //                                 readOnly: false,
-                                            //                                 style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
-                                            //                                 controller: account_ledgerController.account_LedgerModel.emailController.value,
-                                            //                                 decoration: InputDecoration(
-                                            //                                   suffixIcon: MouseRegion(
-                                            //                                     cursor: SystemMouseCursors.click,
-                                            //                                     child: GestureDetector(
-                                            //                                       onTap: () {
-                                            //                                         account_ledgerController.toggleCCemailvisibility(!account_ledgerController.account_LedgerModel.CCemailToggle.value);
-                                            //                                       },
-                                            //                                       child: SizedBox(
-                                            //                                         height: 20,
-                                            //                                         width: 20,
-                                            //                                         child: Stack(
-                                            //                                           children: [
-                                            //                                             Align(
-                                            //                                               alignment: Alignment.center,
-                                            //                                               child: Icon(
-                                            //                                                 account_ledgerController.account_LedgerModel.CCemailToggle.value
-                                            //                                                     ? Icons.closed_caption_outlined
-                                            //                                                     : Icons.closed_caption_disabled_outlined,
-                                            //                                                 color: Primary_colors.Dark,
-                                            //                                               ),
-                                            //                                             ),
-                                            //                                             const Align(
-                                            //                                               alignment: Alignment.bottomRight,
-                                            //                                               child: Icon(
-                                            //                                                 size: 15,
-                                            //                                                 Icons.add,
-                                            //                                                 color: Primary_colors.Dark,
-                                            //                                               ),
-                                            //                                             ),
-                                            //                                           ],
-                                            //                                         ),
-                                            //                                       ),
-                                            //                                     ),
-                                            //                                   ),
-                                            //                                 ),
-                                            //                               ),
-                                            //                             ),
-                                            //                           ),
-                                            //                         ],
-                                            //                       ),
-                                            //                     if (account_ledgerController.account_LedgerModel.CCemailToggle.value &&
-                                            //                         account_ledgerController.account_LedgerModel.gmail_selectionStatus.value)
-                                            //                       const SizedBox(height: 10),
-                                            //                     if (account_ledgerController.account_LedgerModel.CCemailToggle.value &&
-                                            //                         account_ledgerController.account_LedgerModel.gmail_selectionStatus.value)
-                                            //                       Row(
-                                            //                         crossAxisAlignment: CrossAxisAlignment.end,
-                                            //                         children: [
-                                            //                           const Text(
-                                            //                             '                                      Cc :',
-                                            //                             style: TextStyle(fontSize: 13, color: Primary_colors.Dark, fontWeight: FontWeight.bold),
-                                            //                           ),
-                                            //                           const SizedBox(width: 10),
-                                            //                           Expanded(
-                                            //                             child: SizedBox(
-                                            //                               child: TextFormField(
-                                            //                                 scrollPadding: const EdgeInsets.only(top: 10),
-                                            //                                 style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
-                                            //                                 controller: account_ledgerController.account_LedgerModel.CCemailController.value,
-                                            //                               ),
-                                            //                             ),
-                                            //                           ),
-                                            //                         ],
-                                            //                       ),
-                                            //                     const SizedBox(height: 20),
-                                            //                     Row(
-                                            //                       children: [
-                                            //                         const Text("Select"),
-                                            //                         const SizedBox(width: 50),
-                                            //                         const Text(":"),
-                                            //                         const SizedBox(width: 20),
-                                            //                         Stack(
-                                            //                           alignment: FractionalOffset.topRight,
-                                            //                           children: [
-                                            //                             IconButton(
-                                            //                               iconSize: 30,
-                                            //                               onPressed: () {
-                                            //                                 account_ledgerController.account_LedgerModel.whatsapp_selectionStatus.value =
-                                            //                                     !account_ledgerController.account_LedgerModel.whatsapp_selectionStatus.value;
-                                            //                               },
-                                            //                               icon: Image.asset('assets/images/whatsapp.png'),
-                                            //                             ),
-                                            //                             if (account_ledgerController.account_LedgerModel.whatsapp_selectionStatus.value)
-                                            //                               Align(
-                                            //                                 child: Container(
-                                            //                                   decoration: BoxDecoration(
-                                            //                                     borderRadius: BorderRadius.circular(50),
-                                            //                                     color: Colors.blue,
-                                            //                                   ),
-                                            //                                   child: const Padding(
-                                            //                                     padding: EdgeInsets.all(2),
-                                            //                                     child: Icon(
-                                            //                                       Icons.check,
-                                            //                                       color: Colors.white,
-                                            //                                       size: 12,
-                                            //                                     ),
-                                            //                                   ),
-                                            //                                 ),
-                                            //                               )
-                                            //                           ],
-                                            //                         ),
-                                            //                         const SizedBox(width: 20),
-                                            //                         Stack(
-                                            //                           alignment: FractionalOffset.topRight,
-                                            //                           children: [
-                                            //                             IconButton(
-                                            //                               iconSize: 35,
-                                            //                               onPressed: () {
-                                            //                                 account_ledgerController.account_LedgerModel.gmail_selectionStatus.value =
-                                            //                                     !account_ledgerController.account_LedgerModel.gmail_selectionStatus.value;
-                                            //                               },
-                                            //                               icon: Image.asset('assets/images/gmail.png'),
-                                            //                             ),
-                                            //                             if (account_ledgerController.account_LedgerModel.gmail_selectionStatus.value)
-                                            //                               Align(
-                                            //                                 child: Container(
-                                            //                                   decoration: BoxDecoration(
-                                            //                                     borderRadius: BorderRadius.circular(50),
-                                            //                                     color: Colors.blue,
-                                            //                                   ),
-                                            //                                   child: const Padding(
-                                            //                                     padding: EdgeInsets.all(2),
-                                            //                                     child: Icon(
-                                            //                                       Icons.check,
-                                            //                                       color: Colors.white,
-                                            //                                       size: 12,
-                                            //                                     ),
-                                            //                                   ),
-                                            //                                 ),
-                                            //                               )
-                                            //                           ],
-                                            //                         )
-                                            //                       ],
-                                            //                     ),
-                                            //                     const SizedBox(height: 20),
-                                            //                     Row(
-                                            //                       mainAxisAlignment: MainAxisAlignment.end,
-                                            //                       children: [
-                                            //                         Align(
-                                            //                           alignment: Alignment.bottomLeft,
-                                            //                           child: SizedBox(
-                                            //                             width: 380,
-                                            //                             child: TextFormField(
-                                            //                               maxLines: 5,
-                                            //                               controller: account_ledgerController.account_LedgerModel.feedbackController.value,
-                                            //                               style: const TextStyle(fontSize: 13, color: Colors.white),
-                                            //                               decoration: InputDecoration(
-                                            //                                 contentPadding: const EdgeInsets.all(10),
-                                            //                                 filled: true,
-                                            //                                 fillColor: Primary_colors.Dark,
-                                            //                                 focusedBorder: OutlineInputBorder(
-                                            //                                   borderRadius: BorderRadius.circular(10),
-                                            //                                   borderSide: const BorderSide(color: Colors.transparent),
-                                            //                                 ),
-                                            //                                 enabledBorder: OutlineInputBorder(
-                                            //                                   borderRadius: BorderRadius.circular(10),
-                                            //                                   borderSide: const BorderSide(color: Colors.transparent),
-                                            //                                 ),
-                                            //                                 hintStyle: const TextStyle(
-                                            //                                   fontSize: Primary_font_size.Text7,
-                                            //                                   color: Color.fromARGB(255, 167, 165, 165),
-                                            //                                 ),
-                                            //                                 hintText: 'Enter Feedback...',
-                                            //                               ),
-                                            //                             ),
-                                            //                           ),
-                                            //                         ),
-                                            //                       ],
-                                            //                     ),
-                                            //                     const SizedBox(height: 20),
-                                            //                     Row(
-                                            //                       mainAxisAlignment: MainAxisAlignment.end,
-                                            //                       children: [
-                                            //                         MouseRegion(
-                                            //                           cursor: account_ledgerController.account_LedgerModel.whatsapp_selectionStatus.value ||
-                                            //                                   account_ledgerController.account_LedgerModel.gmail_selectionStatus.value
-                                            //                               ? SystemMouseCursors.click
-                                            //                               : SystemMouseCursors.forbidden,
-                                            //                           child: GestureDetector(
-                                            //                             onTap: () async {
-                                            //                               if (account_ledgerController.account_LedgerModel.whatsapp_selectionStatus.value ||
-                                            //                                   account_ledgerController.account_LedgerModel.gmail_selectionStatus.value) {
-                                            //                                 // Create temporary file
-                                            //                                 final tempDir = await getTemporaryDirectory();
-                                            //                                 final file = File('${tempDir.path}/$filename');
-                                            //                                 await file.writeAsBytes(pdfBytes);
+                                              // Create timestamp for filename
+                                              final timestamp = DateTime.now().millisecondsSinceEpoch;
+                                              final filename = 'ledger_$timestamp.pdf';
 
-                                            //                                 // Share the file
-                                            //                                 // You'll need to implement your sharing logic here
-                                            //                                 // For example using share_plus package:
-                                            //                                 // await Share.shareXFiles([XFile(file.path)], ...);
+                                              // Show the share dialog
+                                              account_ledgerController.clear_sharedata();
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return Obx(
+                                                    () {
+                                                      return AlertDialog(
+                                                        titlePadding: const EdgeInsets.all(5),
+                                                        backgroundColor: const Color.fromARGB(255, 194, 198, 253),
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(10),
+                                                        ),
+                                                        title: Container(
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(7),
+                                                            color: Primary_colors.Color3,
+                                                          ),
+                                                          child: const Padding(
+                                                            padding: EdgeInsets.all(7),
+                                                            child: Text(
+                                                              "Share",
+                                                              style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        content: IntrinsicHeight(
+                                                          child: SizedBox(
+                                                            width: 500,
+                                                            child: Column(
+                                                              children: [
+                                                                Row(
+                                                                  children: [
+                                                                    const Text("File name"),
+                                                                    const SizedBox(width: 20),
+                                                                    const Text(":"),
+                                                                    const SizedBox(width: 20),
+                                                                    Expanded(
+                                                                      child: Text(filename), // Using generated filename
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                if (account_ledgerController.account_LedgerModel.whatsapp_selectionStatus.value) const SizedBox(height: 20),
+                                                                if (account_ledgerController.account_LedgerModel.whatsapp_selectionStatus.value)
+                                                                  Row(
+                                                                    children: [
+                                                                      const Text("whatsapp"),
+                                                                      const SizedBox(width: 20),
+                                                                      const Text(":"),
+                                                                      const SizedBox(width: 20),
+                                                                      Expanded(
+                                                                        child: TextFormField(
+                                                                          controller: account_ledgerController.account_LedgerModel.phoneController.value,
+                                                                          style: const TextStyle(fontSize: 13, color: Colors.black),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                if (account_ledgerController.account_LedgerModel.gmail_selectionStatus.value) const SizedBox(height: 20),
+                                                                if (account_ledgerController.account_LedgerModel.gmail_selectionStatus.value)
+                                                                  Row(
+                                                                    children: [
+                                                                      const Text("E-mail"),
+                                                                      const SizedBox(width: 50),
+                                                                      const Text(":"),
+                                                                      const SizedBox(width: 20),
+                                                                      Expanded(
+                                                                        child: SizedBox(
+                                                                          child: TextFormField(
+                                                                            readOnly: false,
+                                                                            style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
+                                                                            controller: account_ledgerController.account_LedgerModel.emailController.value,
+                                                                            decoration: InputDecoration(
+                                                                              suffixIcon: MouseRegion(
+                                                                                cursor: SystemMouseCursors.click,
+                                                                                child: GestureDetector(
+                                                                                  onTap: () {
+                                                                                    account_ledgerController.toggleCCemailvisibility(!account_ledgerController.account_LedgerModel.CCemailToggle.value);
+                                                                                  },
+                                                                                  child: SizedBox(
+                                                                                    height: 20,
+                                                                                    width: 20,
+                                                                                    child: Stack(
+                                                                                      children: [
+                                                                                        Align(
+                                                                                          alignment: Alignment.center,
+                                                                                          child: Icon(
+                                                                                            account_ledgerController.account_LedgerModel.CCemailToggle.value
+                                                                                                ? Icons.closed_caption_outlined
+                                                                                                : Icons.closed_caption_disabled_outlined,
+                                                                                            color: Primary_colors.Dark,
+                                                                                          ),
+                                                                                        ),
+                                                                                        const Align(
+                                                                                          alignment: Alignment.bottomRight,
+                                                                                          child: Icon(
+                                                                                            size: 15,
+                                                                                            Icons.add,
+                                                                                            color: Primary_colors.Dark,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                if (account_ledgerController.account_LedgerModel.CCemailToggle.value &&
+                                                                    account_ledgerController.account_LedgerModel.gmail_selectionStatus.value)
+                                                                  const SizedBox(height: 10),
+                                                                if (account_ledgerController.account_LedgerModel.CCemailToggle.value &&
+                                                                    account_ledgerController.account_LedgerModel.gmail_selectionStatus.value)
+                                                                  Row(
+                                                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                                                    children: [
+                                                                      const Text(
+                                                                        '                                      Cc :',
+                                                                        style: TextStyle(fontSize: 13, color: Primary_colors.Dark, fontWeight: FontWeight.bold),
+                                                                      ),
+                                                                      const SizedBox(width: 10),
+                                                                      Expanded(
+                                                                        child: SizedBox(
+                                                                          child: TextFormField(
+                                                                            scrollPadding: const EdgeInsets.only(top: 10),
+                                                                            style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
+                                                                            controller: account_ledgerController.account_LedgerModel.CCemailController.value,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                const SizedBox(height: 20),
+                                                                Row(
+                                                                  children: [
+                                                                    const Text("Select"),
+                                                                    const SizedBox(width: 50),
+                                                                    const Text(":"),
+                                                                    const SizedBox(width: 20),
+                                                                    Stack(
+                                                                      alignment: FractionalOffset.topRight,
+                                                                      children: [
+                                                                        IconButton(
+                                                                          iconSize: 30,
+                                                                          onPressed: () {
+                                                                            account_ledgerController.account_LedgerModel.whatsapp_selectionStatus.value =
+                                                                                !account_ledgerController.account_LedgerModel.whatsapp_selectionStatus.value;
+                                                                          },
+                                                                          icon: Image.asset('assets/images/whatsapp.png'),
+                                                                        ),
+                                                                        if (account_ledgerController.account_LedgerModel.whatsapp_selectionStatus.value)
+                                                                          Align(
+                                                                            child: Container(
+                                                                              decoration: BoxDecoration(
+                                                                                borderRadius: BorderRadius.circular(50),
+                                                                                color: Colors.blue,
+                                                                              ),
+                                                                              child: const Padding(
+                                                                                padding: EdgeInsets.all(2),
+                                                                                child: Icon(
+                                                                                  Icons.check,
+                                                                                  color: Colors.white,
+                                                                                  size: 12,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          )
+                                                                      ],
+                                                                    ),
+                                                                    const SizedBox(width: 20),
+                                                                    Stack(
+                                                                      alignment: FractionalOffset.topRight,
+                                                                      children: [
+                                                                        IconButton(
+                                                                          iconSize: 35,
+                                                                          onPressed: () {
+                                                                            account_ledgerController.account_LedgerModel.gmail_selectionStatus.value =
+                                                                                !account_ledgerController.account_LedgerModel.gmail_selectionStatus.value;
+                                                                          },
+                                                                          icon: Image.asset('assets/images/gmail.png'),
+                                                                        ),
+                                                                        if (account_ledgerController.account_LedgerModel.gmail_selectionStatus.value)
+                                                                          Align(
+                                                                            child: Container(
+                                                                              decoration: BoxDecoration(
+                                                                                borderRadius: BorderRadius.circular(50),
+                                                                                color: Colors.blue,
+                                                                              ),
+                                                                              child: const Padding(
+                                                                                padding: EdgeInsets.all(2),
+                                                                                child: Icon(
+                                                                                  Icons.check,
+                                                                                  color: Colors.white,
+                                                                                  size: 12,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          )
+                                                                      ],
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                const SizedBox(height: 20),
+                                                                Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                                  children: [
+                                                                    Align(
+                                                                      alignment: Alignment.bottomLeft,
+                                                                      child: SizedBox(
+                                                                        width: 380,
+                                                                        child: TextFormField(
+                                                                          maxLines: 5,
+                                                                          controller: account_ledgerController.account_LedgerModel.feedbackController.value,
+                                                                          style: const TextStyle(fontSize: 13, color: Colors.white),
+                                                                          decoration: InputDecoration(
+                                                                            contentPadding: const EdgeInsets.all(10),
+                                                                            filled: true,
+                                                                            fillColor: Primary_colors.Dark,
+                                                                            focusedBorder: OutlineInputBorder(
+                                                                              borderRadius: BorderRadius.circular(10),
+                                                                              borderSide: const BorderSide(color: Colors.transparent),
+                                                                            ),
+                                                                            enabledBorder: OutlineInputBorder(
+                                                                              borderRadius: BorderRadius.circular(10),
+                                                                              borderSide: const BorderSide(color: Colors.transparent),
+                                                                            ),
+                                                                            hintStyle: const TextStyle(
+                                                                              fontSize: Primary_font_size.Text7,
+                                                                              color: Color.fromARGB(255, 167, 165, 165),
+                                                                            ),
+                                                                            hintText: 'Enter Feedback...',
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                const SizedBox(height: 20),
+                                                                Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                                  children: [
+                                                                    MouseRegion(
+                                                                      cursor: account_ledgerController.account_LedgerModel.whatsapp_selectionStatus.value ||
+                                                                              account_ledgerController.account_LedgerModel.gmail_selectionStatus.value
+                                                                          ? SystemMouseCursors.click
+                                                                          : SystemMouseCursors.forbidden,
+                                                                      child: GestureDetector(
+                                                                        onTap: () async {
+                                                                          if (account_ledgerController.account_LedgerModel.whatsapp_selectionStatus.value ||
+                                                                              account_ledgerController.account_LedgerModel.gmail_selectionStatus.value) {
+                                                                            // Create temporary file
+                                                                            final tempDir = await getTemporaryDirectory();
+                                                                            final file = File('${tempDir.path}/$filename');
+                                                                            await file.writeAsBytes(pdfBytes);
 
-                                            //                                 // Or call your existing sharing method:
-                                            //                                 // widget.postData_sendPDF(context, widget.fetch_messageType(), file);
+                                                                            // Share the file
+                                                                            // You'll need to implement your sharing logic here
+                                                                            // For example using share_plus package:
+                                                                            // await Share.shareXFiles([XFile(file.path)], ...);
 
-                                            //                                 Navigator.pop(context); // Close dialog after sharing
-                                            //                               }
-                                            //                             },
-                                            //                             child: Container(
-                                            //                               width: 105,
-                                            //                               decoration: BoxDecoration(
-                                            //                                 color: account_ledgerController.account_LedgerModel.whatsapp_selectionStatus.value ||
-                                            //                                         account_ledgerController.account_LedgerModel.gmail_selectionStatus.value
-                                            //                                     ? const Color.fromARGB(255, 81, 89, 212)
-                                            //                                     : const Color.fromARGB(255, 39, 41, 73),
-                                            //                                 borderRadius: BorderRadius.circular(5),
-                                            //                               ),
-                                            //                               child: const Padding(
-                                            //                                 padding: EdgeInsets.only(left: 5, right: 5, top: 8, bottom: 8),
-                                            //                                 child: Center(
-                                            //                                   child: Text(
-                                            //                                     "Send",
-                                            //                                     style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text7),
-                                            //                                   ),
-                                            //                                 ),
-                                            //                               ),
-                                            //                             ),
-                                            //                           ),
-                                            //                         )
-                                            //                       ],
-                                            //                     )
-                                            //                   ],
-                                            //                 ),
-                                            //               ),
-                                            //             ),
-                                            //           );
-                                            //         },
-                                            //       );
-                                            //     },
-                                            //   );
-                                            // } catch (e) {
-                                            //   Error_dialog(
-                                            //     context: context,
-                                            //     title: "Error",
-                                            //     content: "Failed to generate PDF for sharing:\n$e",
-                                            //   );
-                                            // }
+                                                                            // Or call your existing sharing method:
+                                                                            // widget.postData_sendPDF(context, widget.fetch_messageType(), file);
+
+                                                                            Navigator.pop(context); // Close dialog after sharing
+                                                                          }
+                                                                        },
+                                                                        child: Container(
+                                                                          width: 105,
+                                                                          decoration: BoxDecoration(
+                                                                            color: account_ledgerController.account_LedgerModel.whatsapp_selectionStatus.value ||
+                                                                                    account_ledgerController.account_LedgerModel.gmail_selectionStatus.value
+                                                                                ? const Color.fromARGB(255, 81, 89, 212)
+                                                                                : const Color.fromARGB(255, 39, 41, 73),
+                                                                            borderRadius: BorderRadius.circular(5),
+                                                                          ),
+                                                                          child: const Padding(
+                                                                            padding: EdgeInsets.only(left: 5, right: 5, top: 8, bottom: 8),
+                                                                            child: Center(
+                                                                              child: Text(
+                                                                                "Send",
+                                                                                style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text7),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                              );
+                                            } catch (e) {
+                                              Error_dialog(
+                                                context: context,
+                                                title: "Error",
+                                                content: "Failed to generate PDF for sharing:\n$e",
+                                              );
+                                            }
                                           },
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
@@ -891,16 +901,21 @@ class _accountLedgerState extends State<AccountLedger> {
                                         onTap: () async {
                                           try {
                                             // Generate the PDF bytes first
-                                            // final pdfBytes = await generateAccountLedger(PdfPageFormat.a4);
+                                            var parsedData = await widget.parsePDF_AccountLedger(
+                                              widget.isSubscription_Client(),
+                                              widget.isSales_Client(),
+                                            );
 
-                                            // // Print the generated PDF
-                                            // await Printing.layoutPdf(
-                                            //   onLayout: (PdfPageFormat format) async => pdfBytes,
-                                            // );
+                                            final pdfBytes = await generateAccountLedger(PdfPageFormat.a4, parsedData);
 
-                                            // if (kDebugMode) {
-                                            //   print('PDF printed successfully');
-                                            // }
+                                            // Print the generated PDF
+                                            await Printing.layoutPdf(
+                                              onLayout: (PdfPageFormat format) async => pdfBytes,
+                                            );
+
+                                            if (kDebugMode) {
+                                              print('PDF printed successfully');
+                                            }
                                           } catch (e) {
                                             if (kDebugMode) {
                                               print('Error printing PDF: $e');
@@ -936,59 +951,64 @@ class _accountLedgerState extends State<AccountLedger> {
                                       cursor: SystemMouseCursors.click,
                                       child: GestureDetector(
                                         onTap: () async {
-                                          // try {
-                                          //   // Start loading indicator
-                                          //   // loader.start(context);
-                                          //   await Future.delayed(const Duration(milliseconds: 300));
+                                          try {
+                                            // Start loading indicator
+                                            // loader.start(context);
+                                            // await Future.delayed(const Duration(milliseconds: 300));
 
-                                          //   // Generate PDF bytes
-                                          //   final pdfBytes = await generateAccountLedger(PdfPageFormat.a4);
+                                            var parsedData = await widget.parsePDF_AccountLedger(
+                                              widget.isSubscription_Client(),
+                                              widget.isSales_Client(),
+                                            );
 
-                                          //   // Generate unique filename with timestamp
-                                          //   final timestamp = DateTime.now().millisecondsSinceEpoch;
-                                          //   final filename = 'Account_ledger_$timestamp'; // Unique filename
+                                            // Generate PDF bytes
+                                            final pdfBytes = await generateAccountLedger(PdfPageFormat.a4, parsedData);
 
-                                          //   // Let user select directory
-                                          //   String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
-                                          //     dialogTitle: 'Select folder to save PDF',
-                                          //     lockParentWindow: true,
-                                          //   );
+                                            // Generate unique filename with timestamp
+                                            final timestamp = DateTime.now().millisecondsSinceEpoch;
+                                            final filename = 'Account_ledger_$timestamp'; // Unique filename
 
-                                          //   // Always stop loader after native call
-                                          //   // loader.stop();
+                                            // Let user select directory
+                                            String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+                                              dialogTitle: 'Select folder to save PDF',
+                                              lockParentWindow: true,
+                                            );
 
-                                          //   if (selectedDirectory == null) {
-                                          //     if (kDebugMode) {
-                                          //       print("User cancelled the folder selection.");
-                                          //     }
-                                          //     Error_dialog(
-                                          //       context: context,
-                                          //       title: "Cancelled",
-                                          //       content: "Download cancelled. No folder was selected.",
-                                          //     );
-                                          //     return;
-                                          //   }
+                                            // Always stop loader after native call
+                                            // loader.stop();
 
-                                          //   // Save the file with unique name
-                                          //   String savePath = "$selectedDirectory/$filename.pdf";
-                                          //   await File(savePath).writeAsBytes(pdfBytes);
+                                            if (selectedDirectory == null) {
+                                              if (kDebugMode) {
+                                                print("User cancelled the folder selection.");
+                                              }
+                                              Error_dialog(
+                                                context: context,
+                                                title: "Cancelled",
+                                                content: "Download cancelled. No folder was selected.",
+                                              );
+                                              return;
+                                            }
 
-                                          //   // Show success message
-                                          //   Success_SnackBar(context, "✅ PDF downloaded successfully!");
+                                            // Save the file with unique name
+                                            String savePath = "$selectedDirectory/$filename.pdf";
+                                            await File(savePath).writeAsBytes(pdfBytes);
 
-                                          //   // Optional: open the file
-                                          //   await OpenFilex.open(savePath);
-                                          // } catch (e) {
-                                          //   // loader.stop();
-                                          //   if (kDebugMode) {
-                                          //     print("❌ Error while downloading PDF: $e");
-                                          //   }
-                                          //   Error_dialog(
-                                          //     context: context,
-                                          //     title: "Error",
-                                          //     content: "An error occurred while downloading the PDF:\n$e",
-                                          //   );
-                                          // }
+                                            // Show success message
+                                            Success_SnackBar(context, "✅ PDF downloaded successfully!");
+
+                                            // Optional: open the file
+                                            await OpenFilex.open(savePath);
+                                          } catch (e) {
+                                            // loader.stop();
+                                            if (kDebugMode) {
+                                              print("❌ Error while downloading PDF: $e");
+                                            }
+                                            Error_dialog(
+                                              context: context,
+                                              title: "Error",
+                                              content: "An error occurred while downloading the PDF:\n$e",
+                                            );
+                                          }
                                         },
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
@@ -1278,695 +1298,6 @@ class _accountLedgerState extends State<AccountLedger> {
       },
     );
   }
+
+  void showSharePDFdialog() {}
 }
-
-
-
-// class account_ledger_filter extends StatefulWidget {
-//   const account_ledger_filter({super.key});
-
-//   @override
-//   State<account_ledger_filter> createState() => _account_ledger_filterState();
-// }
-
-// class _account_ledger_filterState extends State<account_ledger_filter> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return  Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             const Text(
-//               'Filter Ledgers',
-//               style: TextStyle(
-//                 fontSize: 20,
-//                 fontWeight: FontWeight.bold,
-//                 color: Primary_colors.Color3,
-//               ),
-//             ),
-//             const Divider(
-//               height: 30,
-//               thickness: 1,
-//               color: Color.fromARGB(255, 97, 97, 97),
-//             ),
-//             const SizedBox(height: 35),
-
-//             Obx(
-//               () => SizedBox(
-//                 child:Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           const Text(
-//                             'Select transaction Type',
-//                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
-//                           ),
-//                           const SizedBox(height: 12),
-//                           Wrap(
-//                             spacing: 8,
-//                             runSpacing: 8,
-//                             children: [
-//                               _buildtransactionFilterChip('Show All'),
-//                               _buildtransactionFilterChip('Payable'),
-//                               _buildtransactionFilterChip('Receivable'),
-//                             ],
-//                           ),
-//                           const SizedBox(height: 35),
-//                         ],
-//                       )
-//               ),
-//             ),
-//             Obx(
-//               () => SizedBox(
-//                 child: Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           const Text(
-//                             'Select payment Type',
-//                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
-//                           ),
-//                           const SizedBox(height: 12),
-//                           Wrap(
-//                             spacing: 8,
-//                             runSpacing: 8,
-//                             children: [
-//                               _buildpaymenFilterChip('Show All'),
-//                               _buildpaymenFilterChip('Credit'),
-//                               _buildpaymenFilterChip('Debit'),
-//                             ],
-//                           ),
-//                           const SizedBox(height: 35),
-//                         ],
-//                       )
-//               ),
-//             ),
-            
-//             Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 const Text(
-//                   'Invoice type',
-//                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
-//                 ),
-//                 const SizedBox(height: 10),
-//                 Obx(
-//                   () => Wrap(
-//                     spacing: 5,
-//                     children: [
-//                       FilterChip(
-//                         showCheckmark: false,
-//                         label: const Text('Show All'),
-//                         selected: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Show All',
-//                         onSelected: (_) {
-//                           view_LedgerController.view_LedgerModel.selectedinvoiceType.value = 'Show All';
-//                           view_LedgerController.view_LedgerModel.selectedsubcustomerID.value = 'None';
-//                         },
-//                         backgroundColor: Primary_colors.Dark,
-//                         selectedColor: Primary_colors.Dark,
-//                         labelStyle: TextStyle(
-//                           fontSize: Primary_font_size.Text7,
-//                           color: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Show All' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
-//                         ),
-//                         shape: RoundedRectangleBorder(
-//                           borderRadius: BorderRadius.circular(8),
-//                           side: BorderSide(
-//                             color: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Show All' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
-//                           ),
-//                         ),
-//                       ),
-//                       FilterChip(
-//                         label: const Text('Sales'),
-//                         selected: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Sales',
-//                         onSelected: (_) {
-//                           view_LedgerController.view_LedgerModel.selectedinvoiceType.value = 'Sales';
-//                         },
-//                         backgroundColor: Primary_colors.Dark,
-//                         showCheckmark: false,
-//                         selectedColor: Primary_colors.Dark,
-//                         labelStyle: TextStyle(
-//                           fontSize: Primary_font_size.Text7,
-//                           color: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Sales' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
-//                         ),
-//                         shape: RoundedRectangleBorder(
-//                           borderRadius: BorderRadius.circular(8),
-//                           side: BorderSide(
-//                             color: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Sales' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
-//                           ),
-//                         ),
-//                       ),
-//                       FilterChip(
-//                         label: const Text('Subscription'),
-//                         selected: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Subscription',
-//                         onSelected: (_) {
-//                           view_LedgerController.view_LedgerModel.selectedinvoiceType.value = 'Subscription';
-//                         },
-//                         backgroundColor: Primary_colors.Dark,
-//                         showCheckmark: false,
-//                         selectedColor: Primary_colors.Dark,
-//                         labelStyle: TextStyle(
-//                           fontSize: Primary_font_size.Text7,
-//                           color: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Subscription' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
-//                         ),
-//                         shape: RoundedRectangleBorder(
-//                           borderRadius: BorderRadius.circular(8),
-//                           side: BorderSide(
-//                             color: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Subscription' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
-//                           ),
-//                         ),
-//                       ),
-//                       FilterChip(
-//                         label: const Text('Vendor'),
-//                         selected: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Vendor',
-//                         onSelected: (_) {
-//                           view_LedgerController.view_LedgerModel.selectedinvoiceType.value = 'Vendor';
-//                         },
-//                         backgroundColor: Primary_colors.Dark,
-//                         showCheckmark: false,
-//                         selectedColor: Primary_colors.Dark,
-//                         labelStyle: TextStyle(
-//                           fontSize: Primary_font_size.Text7,
-//                           color: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Vendor' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
-//                         ),
-//                         shape: RoundedRectangleBorder(
-//                           borderRadius: BorderRadius.circular(8),
-//                           side: BorderSide(
-//                             color: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Vendor' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
-//                           ),
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               ],
-//             ),
-//             Obx(
-//               () => SizedBox(
-//                 child: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Sales' 
-//                     ? Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           const SizedBox(height: 35),
-//                           const Text(
-//                             'Select sales client',
-//                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
-//                           ),
-//                           const SizedBox(height: 10),
-//                           Obx(
-//                             () {
-//                               return SizedBox(
-//                                 height: 35,
-//                                 // width: 250,
-//                                 child: Container(
-//                                   decoration: BoxDecoration(
-//                                     border: Border.all(
-//                                       color: const Color.fromARGB(255, 91, 90, 90),
-//                                       width: 1.0,
-//                                     ),
-//                                     borderRadius: BorderRadius.circular(6.0),
-//                                   ),
-//                                   child: Row(
-//                                     children: [
-//                                       Expanded(
-//                                         child: DropdownSearch<String>(
-//                                           popupProps: PopupProps.menu(
-//                                             showSearchBox: true,
-//                                             searchFieldProps: TextFieldProps(
-//                                               decoration: InputDecoration(
-//                                                 hintText: 'Search...',
-//                                                 hintStyle: const TextStyle(fontSize: 12),
-//                                                 prefixIcon: const Icon(Icons.search, size: 18),
-//                                                 contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-//                                                 border: OutlineInputBorder(
-//                                                   borderRadius: BorderRadius.circular(6.0),
-//                                                   borderSide: BorderSide(color: Colors.grey.shade300),
-//                                                 ),
-//                                                 isDense: true,
-//                                               ),
-//                                             ),
-//                                             menuProps: MenuProps(
-//                                               borderRadius: BorderRadius.circular(6.0),
-//                                               elevation: 3,
-//                                             ),
-//                                             constraints: const BoxConstraints.tightFor(height: 250), // Reduced popup height
-//                                           ),
-//                                           dropdownDecoratorProps: DropDownDecoratorProps(
-//                                             dropdownSearchDecoration: InputDecoration(
-//                                               iconColor: const Color.fromARGB(252, 162, 158, 158),
-//                                               // labelText: "Client",
-//                                               // labelStyle: TextStyle(
-//                                               //   color: Colors.grey.shade600,
-//                                               //   fontSize: 12,
-//                                               // ),
-//                                               floatingLabelStyle: TextStyle(
-//                                                 color: Colors.blue.shade700,
-//                                                 fontSize: 12,
-//                                               ),
-//                                               contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-//                                               border: InputBorder.none,
-//                                               isDense: true,
-//                                             ),
-//                                             baseStyle: const TextStyle(
-//                                               fontSize: 12, // Smaller font size
-//                                               color: Color.fromARGB(255, 138, 137, 137),
-//                                             ),
-//                                           ),
-//                                           items: view_LedgerController.view_LedgerModel.salesCustomerList.map((customer) {
-//                                             return customer.customerName;
-//                                           }).toList(),
-//                                           selectedItem: view_LedgerController.view_LedgerModel.selectedsalescustomer.value,
-//                                           onChanged: (value) {
-//                                             if (value != null) {
-//                                               view_LedgerController.view_LedgerModel.selectedsalescustomer.value = value;
-//                                               final customerList = view_LedgerController.view_LedgerModel.salesCustomerList;
-
-//                                               // Find the index of the selected customer
-//                                               final index = customerList.indexWhere((customer) => customer.customerName == value);
-//                                               view_LedgerController.view_LedgerModel.selectedsalescustomerID.value = view_LedgerController.view_LedgerModel.salesCustomerList[index].customerId;
-//                                               if (kDebugMode) {
-//                                                 print('Selected customer ID: ${view_LedgerController.view_LedgerModel.selectedsalescustomerID.value}');
-//                                               }
-//                                             }
-//                                           },
-//                                         ),
-//                                       ),
-//                                       Obx(
-//                                         () => SizedBox(
-//                                           child: view_LedgerController.view_LedgerModel.selectedsalescustomer.value != 'None'
-//                                               ? IconButton(
-//                                                   onPressed: () {
-//                                                     view_LedgerController.view_LedgerModel.selectedsalescustomer.value = 'None';
-//                                                   },
-//                                                   icon: const Icon(
-//                                                     Icons.close,
-//                                                     color: Colors.red,
-//                                                     size: 18,
-//                                                   ),
-//                                                 )
-//                                               : const SizedBox(),
-//                                         ),
-//                                       )
-//                                     ],
-//                                   ),
-//                                 ),
-//                               );
-//                             },
-//                           ),
-//                         ],
-//                       )
-//                     : const SizedBox(),
-//               ),
-//             ),
-//             Obx(
-//               () => SizedBox(
-//                   child: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Subscription'
-//                       ? Column(
-//                           crossAxisAlignment: CrossAxisAlignment.start,
-//                           children: [
-//                             const SizedBox(height: 35),
-//                             const Text(
-//                               'Select subscription customer',
-//                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
-//                             ),
-//                             const SizedBox(height: 10),
-//                             Obx(
-//                               () {
-//                                 return SizedBox(
-//                                   height: 35,
-//                                   // width: 250,
-//                                   child: Container(
-//                                     decoration: BoxDecoration(
-//                                       border: Border.all(
-//                                         color: const Color.fromARGB(255, 91, 90, 90),
-//                                         width: 1.0,
-//                                       ),
-//                                       borderRadius: BorderRadius.circular(6.0),
-//                                     ),
-//                                     child: Row(
-//                                       children: [
-//                                         Expanded(
-//                                           child: DropdownSearch<String>(
-//                                             popupProps: PopupProps.menu(
-//                                               showSearchBox: true,
-//                                               searchFieldProps: TextFieldProps(
-//                                                 decoration: InputDecoration(
-//                                                   hintText: 'Search...',
-//                                                   hintStyle: const TextStyle(fontSize: 12),
-//                                                   prefixIcon: const Icon(Icons.search, size: 18),
-//                                                   contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-//                                                   border: OutlineInputBorder(
-//                                                     borderRadius: BorderRadius.circular(6.0),
-//                                                     borderSide: BorderSide(color: Colors.grey.shade300),
-//                                                   ),
-//                                                   isDense: true,
-//                                                 ),
-//                                               ),
-//                                               menuProps: MenuProps(
-//                                                 borderRadius: BorderRadius.circular(6.0),
-//                                                 elevation: 3,
-//                                               ),
-//                                               constraints: const BoxConstraints.tightFor(height: 250), // Reduced popup height
-//                                             ),
-//                                             dropdownDecoratorProps: DropDownDecoratorProps(
-//                                               dropdownSearchDecoration: InputDecoration(
-//                                                 iconColor: const Color.fromARGB(252, 162, 158, 158),
-//                                                 // labelText: "Client",
-//                                                 // labelStyle: TextStyle(
-//                                                 //   color: Colors.grey.shade600,
-//                                                 //   fontSize: 12,
-//                                                 // ),
-//                                                 floatingLabelStyle: TextStyle(
-//                                                   color: Colors.blue.shade700,
-//                                                   fontSize: 12,
-//                                                 ),
-//                                                 contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-//                                                 border: InputBorder.none,
-//                                                 isDense: true,
-//                                               ),
-//                                               baseStyle: const TextStyle(
-//                                                 fontSize: 12, // Smaller font size
-//                                                 color: Color.fromARGB(255, 138, 137, 137),
-//                                               ),
-//                                             ),
-//                                             items: view_LedgerController.view_LedgerModel.subCustomerList.map((customer) {
-//                                               return customer.customerName;
-//                                             }).toList(),
-//                                             selectedItem: view_LedgerController.view_LedgerModel.selectedsubcustomer.value,
-//                                             onChanged: (value) {
-//                                               if (value != null) {
-//                                                 view_LedgerController.view_LedgerModel.selectedsubcustomer.value = value;
-//                                                 final customerList = view_LedgerController.view_LedgerModel.subCustomerList;
-
-//                                                 // Find the index of the selected customer
-//                                                 final index = customerList.indexWhere((customer) => customer.customerName == value);
-//                                                 view_LedgerController.view_LedgerModel.selectedsubcustomerID.value = view_LedgerController.view_LedgerModel.subCustomerList[index].customerId;
-//                                                 // print('Selected customer ID: ${view_LedgerController.view_LedgerModel.selectedsubcustomerID.value}');
-//                                               }
-//                                             },
-//                                           ),
-//                                         ),
-//                                         Obx(
-//                                           () => SizedBox(
-//                                             child: view_LedgerController.view_LedgerModel.selectedsubcustomer.value != 'None'
-//                                                 ? IconButton(
-//                                                     onPressed: () {
-//                                                       view_LedgerController.view_LedgerModel.selectedsubcustomer.value = 'None';
-//                                                       view_LedgerController.view_LedgerModel.selectedsubcustomerID.value = 'None';
-//                                                     },
-//                                                     icon: const Icon(
-//                                                       Icons.close,
-//                                                       color: Colors.red,
-//                                                       size: 18,
-//                                                     ),
-//                                                   )
-//                                                 : const SizedBox(),
-//                                           ),
-//                                         )
-//                                       ],
-//                                     ),
-//                                   ),
-//                                 );
-//                               },
-//                             ),
-//                           ],
-//                         )
-//                       : const SizedBox()),
-//             ),
-//             const SizedBox(height: 35),
-//             // Add Month Dropdown here
-
-//             Obx(() {
-//               return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-//                 Row(
-//                   crossAxisAlignment: CrossAxisAlignment.center,
-//                   children: [
-//                     const Text(
-//                       'Select date',
-//                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
-//                     ),
-//                     // const SizedBox(width: 8),
-//                     Obx(
-//                       () => SizedBox(
-//                           child: view_LedgerController.view_LedgerModel.startDateController.value.text.isNotEmpty || view_LedgerController.view_LedgerModel.endDateController.value.text.isNotEmpty
-//                               ? TextButton(
-//                                   onPressed: () {
-//                                     view_LedgerController.view_LedgerModel.selectedMonth.value = 'None';
-//                                     view_LedgerController.view_LedgerModel.startDateController.value.clear();
-//                                     view_LedgerController.view_LedgerModel.endDateController.value.clear();
-//                                   },
-//                                   child: const Text(
-//                                     'Clear',
-//                                     style: TextStyle(fontSize: Primary_font_size.Text7),
-//                                   ),
-//                                 )
-//                               : const SizedBox()),
-//                     ),
-//                     const Spacer(),
-//                     Obx(() {
-//                       return Container(
-//                         padding: const EdgeInsets.symmetric(horizontal: 8),
-//                         width: 100, // Adjust width as needed
-//                         height: 30, // Adjust height as needed
-//                         child: DropdownButtonFormField<String>(
-//                           menuMaxHeight: 300,
-//                           value: view_LedgerController.view_LedgerModel.selectedMonth.value,
-//                           items: ['None', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((String value) {
-//                             return DropdownMenuItem<String>(
-//                               value: value,
-//                               child: Text(value),
-//                             );
-//                           }).toList(),
-//                           onChanged: (value) {
-//                             view_LedgerController.view_LedgerModel.selectedMonth.value = value!;
-//                             if (value != 'None') {
-//                               final monthIndex = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].indexOf(value) + 1;
-
-//                               final now = DateTime.now();
-//                               final year = now.year;
-//                               final firstDay = DateTime(year, monthIndex, 1);
-//                               final lastDay = monthIndex < 12 ? DateTime(year, monthIndex + 1, 0) : DateTime(year + 1, 1, 0);
-
-//                               String formatDate(DateTime date) {
-//                                 return "${date.year.toString().padLeft(4, '0')}-"
-//                                     "${date.month.toString().padLeft(2, '0')}-"
-//                                     "${date.day.toString().padLeft(2, '0')}";
-//                               }
-
-//                               view_LedgerController.view_LedgerModel.startDateController.value.text = formatDate(firstDay);
-//                               view_LedgerController.view_LedgerModel.endDateController.value.text = formatDate(lastDay);
-//                             } else {
-//                               view_LedgerController.view_LedgerModel.startDateController.value.clear();
-//                               view_LedgerController.view_LedgerModel.endDateController.value.clear();
-//                             }
-//                           },
-//                           decoration: const InputDecoration(
-//                             isDense: true,
-//                             contentPadding: EdgeInsets.symmetric(vertical: 8),
-//                             border: UnderlineInputBorder(
-//                               borderSide: BorderSide(color: Colors.grey),
-//                             ),
-//                             enabledBorder: UnderlineInputBorder(
-//                               borderSide: BorderSide(color: Colors.grey),
-//                             ),
-//                             focusedBorder: UnderlineInputBorder(
-//                               borderSide: BorderSide(color: Colors.blue),
-//                             ),
-//                           ),
-//                           style: const TextStyle(
-//                             fontSize: Primary_font_size.Text7,
-//                             color: Color.fromARGB(255, 154, 152, 152),
-//                           ),
-//                           dropdownColor: Primary_colors.Dark,
-//                         ),
-//                       );
-//                     }),
-//                   ],
-//                 ),
-//                 const SizedBox(height: 15),
-//                 Row(
-//                   children: [
-//                     Expanded(
-//                       child: SizedBox(
-//                         height: 35,
-//                         child: TextFormField(
-//                           style: const TextStyle(
-//                             color: Color.fromARGB(255, 154, 152, 152),
-//                             fontSize: Primary_font_size.Text7,
-//                           ),
-//                           controller: view_LedgerController.view_LedgerModel.startDateController.value,
-//                           readOnly: true,
-//                           onTap: () => widget.selectDate(context, view_LedgerController.view_LedgerModel.startDateController.value),
-//                           decoration: InputDecoration(
-//                             labelText: 'From',
-//                             labelStyle: const TextStyle(
-//                               color: Color.fromARGB(255, 154, 152, 152),
-//                               fontSize: Primary_font_size.Text7,
-//                             ),
-//                             suffixIcon: const Icon(
-//                               Icons.calendar_today,
-//                               size: 20,
-//                               color: Color.fromARGB(255, 85, 84, 84),
-//                             ),
-//                             contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-//                             border: OutlineInputBorder(
-//                               borderRadius: BorderRadius.circular(8),
-//                             ),
-//                             enabledBorder: OutlineInputBorder(
-//                               borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-//                               borderRadius: BorderRadius.circular(8),
-//                             ),
-//                             focusedBorder: OutlineInputBorder(
-//                               borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-//                               borderRadius: BorderRadius.circular(8),
-//                             ),
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                     const SizedBox(width: 10),
-//                     Expanded(
-//                       child: SizedBox(
-//                         height: 35,
-//                         child: TextFormField(
-//                           style: const TextStyle(
-//                             color: Color.fromARGB(255, 154, 152, 152),
-//                             fontSize: Primary_font_size.Text7,
-//                           ),
-//                           controller: view_LedgerController.view_LedgerModel.endDateController.value,
-//                           readOnly: true,
-//                           onTap: () => widget.selectDate(context, view_LedgerController.view_LedgerModel.endDateController.value),
-//                           decoration: InputDecoration(
-//                             labelText: 'To',
-//                             labelStyle: const TextStyle(
-//                               color: Color.fromARGB(255, 154, 152, 152),
-//                               fontSize: Primary_font_size.Text7,
-//                             ),
-//                             suffixIcon: const Icon(
-//                               Icons.calendar_today,
-//                               size: 20,
-//                               color: Color.fromARGB(255, 85, 84, 84),
-//                             ),
-//                             contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-//                             border: OutlineInputBorder(
-//                               borderRadius: BorderRadius.circular(8),
-//                             ),
-//                             enabledBorder: OutlineInputBorder(
-//                               borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-//                               borderRadius: BorderRadius.circular(8),
-//                             ),
-//                             focusedBorder: OutlineInputBorder(
-//                               borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-//                               borderRadius: BorderRadius.circular(8),
-//                             ),
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-               
-//               ]);
-//             }),
-
-//             const Spacer(),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.end,
-//               children: [
-//                 OutlinedButton(
-//                   onPressed: () async {
-//                     widget.resetFilters();
-//                     Navigator.pop(context);
-//                     if (view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'Account Ledger') {
-//                       widget.get_Account_LedgerList();
-//                     }
-//                     if (view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'GST Ledger') {
-//                       widget.get_GST_LedgerList();
-//                       view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value == 'Consolidate' ? view_LedgerController.view_LedgerModel.showGSTsummary.value = true : false;
-//                     }
-//                   },
-//                   style: OutlinedButton.styleFrom(
-//                     side: const BorderSide(color: Primary_colors.Color3),
-//                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-//                     shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(8),
-//                     ),
-//                   ),
-//                   child: const Text(
-//                     'RESET',
-//                     style: TextStyle(color: Primary_colors.Color3),
-//                   ),
-//                 ),
-//                 const SizedBox(width: 10),
-//                 ElevatedButton(
-//                   onPressed: () async {
-//                      widget.get_Account_LedgerList();
-//                   },
-//                   style: ElevatedButton.styleFrom(
-//                     backgroundColor: Primary_colors.Color3,
-//                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-//                     shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(8),
-//                     ),
-//                   ),
-//                   child: const Text(
-//                     'APPLY',
-//                     style: TextStyle(color: Colors.white),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ],
-//         );
-//   }
-//   Widget _buildtransactionFilterChip(String label) {
-//     return Obx(() {
-//       final isSelected = view_LedgerController.view_LedgerModel.selectedtransactiontype.value == label;
-
-//       return ChoiceChip(
-//         label: Text(
-//           label == 'Show All' ? 'Show All   ' : label,
-//           style: TextStyle(color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
-//         ),
-//         selected: isSelected,
-//         onSelected: (_) {
-//           view_LedgerController.view_LedgerModel.selectedtransactiontype.value = label;
-//         },
-//         backgroundColor: Primary_colors.Dark,
-//         selectedColor: Primary_colors.Dark,
-//         labelStyle: TextStyle(
-//           color: isSelected ? Primary_colors.Color3 : Colors.black,
-//         ),
-//         shape: RoundedRectangleBorder(
-//           borderRadius: BorderRadius.circular(8),
-//           side: BorderSide(
-//             color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
-//           ),
-//         ),
-//       );
-//     });
-//   }
-//    Widget _buildpaymenFilterChip(String label) {
-//     return Obx(() {
-//       final isSelected = view_LedgerController.view_LedgerModel.selectedPaymenttype.value == label;
-
-//       return ChoiceChip(
-//         label: Text(
-//           label == 'Show All' ? 'Show All   ' : label,
-//           style: TextStyle(color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
-//         ),
-//         selected: isSelected,
-//         onSelected: (_) {
-//           view_LedgerController.view_LedgerModel.selectedPaymenttype.value = label;
-//         },
-//         backgroundColor: Primary_colors.Dark,
-//         selectedColor: Primary_colors.Dark,
-//         labelStyle: TextStyle(
-//           color: isSelected ? Primary_colors.Color3 : Colors.black,
-//         ),
-//         shape: RoundedRectangleBorder(
-//           borderRadius: BorderRadius.circular(8),
-//           side: BorderSide(
-//             color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
-//           ),
-//         ),
-//       );
-//     });
-//   }
-// }

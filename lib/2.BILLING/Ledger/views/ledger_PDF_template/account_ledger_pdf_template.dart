@@ -23,9 +23,9 @@ import 'package:pdf/widgets.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/ledger_pdf_entities/account_ledger_PDF_entities.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
-Future<Uint8List> generateAccountLedger(PdfPageFormat pageFormat, PDF_AccountLedgerSummary allData) async {
+Future<Uint8List> generateAccountLedger(PdfPageFormat pageFormat, PDF_AccountLedgerSummary accountLedgerData) async {
   final invoice = Invoice(
-    data: allData,
+    data: accountLedgerData,
     // data.clientDetails: data.clientDetails,
     // invoiceLedgerList: parsedLedgerList,
     currentDate: DateTime.now(),
@@ -73,7 +73,7 @@ class Invoice {
         footer: _buildFooter,
         build: (context) => [
           pw.SizedBox(height: 5),
-          if (data.clientDetails != null) _contentHeader(context),
+           data.clientDetails !=null ?  _clientDetailsHeader(context) : _consolidatedLedgerHeader(context),
           pw.SizedBox(height: 15),
           ..._contentTable(context),
           totalRow(),
@@ -191,7 +191,7 @@ class Invoice {
     );
   }
 
-  pw.Widget _contentHeader(pw.Context context) {
+  pw.Widget _clientDetailsHeader(pw.Context context) {
     pw.Widget buildInfoRow(String label, String value) {
       return pw.Padding(
         padding: const pw.EdgeInsets.only(bottom: 5),
@@ -271,8 +271,104 @@ class Invoice {
                 children: [
                   buildInfoRow('GSTIN', data.clientDetails!.GSTIN),
                   buildInfoRow('PAN Number', data.clientDetails!.PAN),
-                  buildInfoRow('From Date', _formatDate(data.clientDetails!.fromDate)),
-                  buildInfoRow('To Date', _formatDate(data.clientDetails!.toDate)),
+                  buildInfoRow('From Date', _formatDate(data.fromDate)),
+                  buildInfoRow('To Date', _formatDate(data.toDate)),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  pw.Widget _consolidatedLedgerHeader(pw.Context context) {
+    pw.Widget buildInfoRow(String label, String value) {
+      return pw.Padding(
+        padding: const pw.EdgeInsets.only(bottom: 5),
+        child: pw.Row(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
+            pw.Container(
+              width: 80, // fixed width for alignment
+              child: pw.Text(
+                label,
+                style: pw.TextStyle(
+                  fontSize: 11,
+                  fontWeight: pw.FontWeight.normal,
+                  color: detailsColor,
+                ),
+              ),
+            ),
+            pw.Container(
+              width: 10, // fixed width for colon
+              alignment: pw.Alignment.centerLeft,
+              child: pw.Text(
+                ':',
+                style: pw.TextStyle(
+                  fontSize: 11,
+                  fontWeight: pw.FontWeight.normal,
+                  color: PdfColors.black,
+                ),
+              ),
+            ),
+            pw.Expanded(
+              child: pw.Text(
+                value,
+                style: const pw.TextStyle(
+                  fontSize: 11,
+                  color: detailsColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Center(
+          child: pw.Text(
+            ' CONSOLIDATED LEDGER SUMMARY',
+            style: pw.TextStyle(
+              fontSize: 12,
+              fontWeight: pw.FontWeight.bold,
+              color: detailsColor,
+            ),
+          ),
+        ),
+        pw.SizedBox(height: 15),
+        pw.Row(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
+            pw.Expanded(
+              flex: 4,
+              child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  buildInfoRow('Date', _formatDate(DateTime.now())),   
+                ],
+              ),
+            ),
+            pw.SizedBox(width: 40),
+            pw.Expanded(
+              flex: 4,
+              child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  buildInfoRow('From Date', _formatDate(data.fromDate)),
+                ],
+              ),
+            ),
+             pw.SizedBox(width: 40),
+            pw.Expanded(
+              flex: 4,
+              child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  buildInfoRow('To Date', _formatDate(data.toDate)),
                 ],
               ),
             ),
@@ -297,10 +393,12 @@ class Invoice {
             _builddescription(item.description, item.invoiceNumber, isDescription: true),
             _buildCell(_formatCurrency(item.debitAmount), alignRight: true),
             _buildCell(_formatCurrency(item.creditAmount), alignRight: true),
-            _buildCell(
-              _formatCurrency(parseBalanceWithSuffix(item.balance.toString()).abs()) + ((item.balance.toString()).toLowerCase().contains('dr') ? ' Dr' : ' Cr'),
-              alignRight: true,
-            ),
+            
+ _buildCell(
+  _formatCurrency(parseBalanceWithSuffix(item.balance.toString()).abs()) +
+      (parseBalanceWithSuffix(item.balance.toString()) < 0 ? ' (Dr)' : ' (Cr)'),
+  alignRight: true,
+),
           ],
         );
       },
@@ -358,18 +456,13 @@ class Invoice {
     ];
   }
 
-  double parseBalanceWithSuffix(String balance) {
-    final cleaned = balance.toLowerCase().trim();
+  
 
-    if (cleaned.endsWith('dr')) {
-      return double.tryParse(cleaned.replaceAll('dr', '').trim()) ?? 0.0;
-    } else if (cleaned.endsWith('cr')) {
-      return -(double.tryParse(cleaned.replaceAll('cr', '').trim()) ?? 0.0);
-    } else {
-      // Fallback if no suffix
-      return double.tryParse(cleaned) ?? 0.0;
-    }
-  }
+ double parseBalanceWithSuffix(String balance) {
+  // Simply parse the numeric value (remove any existing formatting)
+  return double.tryParse(balance.replaceAll(',', '').trim()) ?? 0.0;
+}
+
 
   pw.Widget totalRow() {
     // final totalDebit = data.ledgerDetails.fold<double>(

@@ -248,8 +248,8 @@ mixin VoucherService {
 
   Future<SelectedInvoiceVoucherGroup> calculate_SelectedVouchers() async {
     List<int> selectedIndices = [];
-    for (int i = 0; i < voucherController.voucherModel.selectedItems.length; i++) {
-      if (voucherController.voucherModel.selectedItems[i] == true) {
+    for (int i = 0; i < voucherController.voucherModel.checkboxValues.length; i++) {
+      if (voucherController.voucherModel.checkboxValues[i] == true) {
         selectedIndices.add(i);
       }
     }
@@ -319,6 +319,16 @@ mixin VoucherService {
   //     Error_dialog(context: context, title: "ERROR", content: "$e");
   //   }
   // }
+  void update_checkboxValues(int index, bool value) {
+    voucherController.voucherModel.checkboxValues[index] = value;
+    if (voucherController.voucherModel.checkboxValues.contains(true)) {
+      voucherController.voucherModel.showDeleteButton.value = true;
+    } else {
+      voucherController.voucherModel.showDeleteButton.value = false;
+    }
+
+    voucherController.update();
+  }
 
   dynamic clear_ClubVoucher(context, SelectedInvoiceVoucherGroup selectedVouchers, File? file) async {
     try {
@@ -335,6 +345,7 @@ mixin VoucherService {
           "SGST": selectedVouchers.selectedVoucherList[i].sgst,
           "CGST": selectedVouchers.selectedVoucherList[i].cgst,
           "tds": selectedVouchers.selectedVoucherList[i].tdsCalculationAmount,
+          "tdsstatus": voucherController.voucherModel.is_Deducted.value,
           "grossamount": selectedVouchers.selectedVoucherList[i].totalAmount,
           "subtotal": selectedVouchers.selectedVoucherList[i].subTotal,
           "paidamount": voucherController.voucherModel.is_Deducted.value
@@ -428,23 +439,23 @@ mixin VoucherService {
     }
   }
 
-  void applySearchFilter(String query) {
+  Future<void> applySearchFilter(String query) async {
     try {
       if (query.isEmpty) {
-        voucherController.voucherModel.filteredVouchers.assignAll(voucherController.voucherModel.voucher_list);
+        voucherController.voucherModel.voucher_list.assignAll(voucherController.voucherModel.ParentVoucher_list);
       } else {
-        final filtered = voucherController.voucherModel.voucher_list.where((voucher) {
+        final filtered = voucherController.voucherModel.ParentVoucher_list.where((voucher) {
           return voucher.clientName.toLowerCase().contains(query.toLowerCase()) ||
               voucher.voucherNumber.toLowerCase().contains(query.toLowerCase()) ||
               voucher.invoiceNumber.toLowerCase().contains(query.toLowerCase()) ||
               voucher.invoiceType.toLowerCase().contains(query.toLowerCase()) ||
               voucher.gstNumber.toLowerCase().contains(query.toLowerCase());
         }).toList();
-        voucherController.voucherModel.filteredVouchers.assignAll(filtered);
+        voucherController.voucherModel.voucher_list.assignAll(filtered);
       }
 
       // Update selectedItems to match the new filtered list length
-      voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false);
+      voucherController.voucherModel.checkboxValues.value = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false);
       voucherController.voucherModel.selectAll.value = false;
       voucherController.voucherModel.showDeleteButton.value = false;
     } catch (e) {
@@ -516,37 +527,37 @@ mixin VoucherService {
     }
   }
 
-  void updateDeleteButtonVisibility() {
-    voucherController.voucherModel.showDeleteButton.value = voucherController.voucherModel.selectedItems.contains(true);
-  }
+  // void updateDeleteButtonVisibility() {
+  //   voucherController.voucherModel.showDeleteButton.value = voucherController.voucherModel.selectedItems.contains(true);
+  // }
 
-  void deleteSelectedItems(BuildContext context) {
-    // Create a list of indices to remove (in reverse order to avoid index shifting)
-    final indicesToRemove = <int>[];
-    for (int i = voucherController.voucherModel.selectedItems.length - 1; i >= 0; i--) {
-      if (voucherController.voucherModel.selectedItems[i]) {
-        indicesToRemove.add(i);
-      }
-    }
+  // void deleteSelectedItems(BuildContext context) {
+  //   // Create a list of indices to remove (in reverse order to avoid index shifting)
+  //   final indicesToRemove = <int>[];
+  //   for (int i = voucherController.voucherModel.selectedItems.length - 1; i >= 0; i--) {
+  //     if (voucherController.voucherModel.selectedItems[i]) {
+  //       indicesToRemove.add(i);
+  //     }
+  //   }
 
-    // Remove items from voucher_list
-    for (final index in indicesToRemove) {
-      voucherController.voucherModel.voucher_list.removeAt(index);
-    }
+  //   // Remove items from voucher_list
+  //   for (final index in indicesToRemove) {
+  //     voucherController.voucherModel.voucher_list.removeAt(index);
+  //   }
 
-    // Reset selection state
-    voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false);
-    voucherController.voucherModel.selectAll.value = false;
-    voucherController.voucherModel.showDeleteButton.value = false;
+  //   // Reset selection state
+  //   voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false);
+  //   voucherController.voucherModel.selectAll.value = false;
+  //   voucherController.voucherModel.showDeleteButton.value = false;
 
-    // Show a snackbar to confirm deletion
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Deleted ${indicesToRemove.length} item(s)'),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
+  //   // Show a snackbar to confirm deletion
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text('Deleted ${indicesToRemove.length} item(s)'),
+  //       duration: const Duration(seconds: 2),
+  //     ),
+  //   );
+  // }
 
   void showCustomDateRangePicker() {
     voucherController.voucherModel.showCustomDateRange.value = true;
@@ -563,7 +574,7 @@ mixin VoucherService {
     voucherController.voucherModel.selectedsalescustomer.value = 'None';
     voucherController.voucherModel.selectedcustomerID.value = 'None';
     // voucherController.voucherModel.filteredVouchers.value = voucherController.voucherModel.voucher_list;
-    voucherController.voucherModel.selectedItems.value = List.filled(voucherController.voucherModel.voucher_list.length, false);
+    voucherController.voucherModel.checkboxValues.value = List.filled(voucherController.voucherModel.voucher_list.length, false);
     voucherController.voucherModel.selectAll.value = false;
     voucherController.voucherModel.showDeleteButton.value = false;
   }

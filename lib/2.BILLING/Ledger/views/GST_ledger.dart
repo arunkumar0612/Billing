@@ -13,6 +13,7 @@ import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/GST_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
+// import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/GST_ledger_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/services/GST_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
@@ -750,7 +751,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                             onTap: () async {
                                               try {
                                                 // Generate the PDF bytes
-                                                final pdfBytes = await generateGSTledger(PdfPageFormat.a4);
+                                                final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
 
                                                 // Create timestamp for filename
                                                 final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -1089,7 +1090,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                           onTap: () async {
                                             try {
                                               // Generate the PDF bytes first
-                                              final pdfBytes = await generateGSTledger(PdfPageFormat.a4);
+                                              final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
 
                                               // Print the generated PDF
                                               await Printing.layoutPdf(
@@ -1143,7 +1144,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               await Future.delayed(const Duration(milliseconds: 300));
 
                                               // Generate PDF bytes
-                                              final pdfBytes = await generateGSTledger(PdfPageFormat.a4);
+                                              final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
 
                                               // Generate unique filename with timestamp
                                               final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -1216,9 +1217,11 @@ class _GSTLedgerState extends State<GSTLedger> {
                                         cursor: SystemMouseCursors.click,
                                         child: GestureDetector(
                                           onTap: () async {
+                                            // Generate the PDF bytes directly from your function
                                             try {
-                                              // Generate the PDF bytes directly from your function
-                                              Uint8List pdfBytes = await generateGSTledger(PdfPageFormat.a4);
+                                              // Generate the PDF bytes
+
+                                              Uint8List pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
 
                                               // Show the dialog with the same design
                                               showDialog(

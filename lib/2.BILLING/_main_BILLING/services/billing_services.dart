@@ -28,7 +28,8 @@ mixin main_BillingService {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          mainBilling_Controller.billingModel.subscriptionInvoiceList.clear();
+          mainBilling_Controller.billingModel.allSubscriptionInvoices.clear();
+          mainBilling_Controller.billingModel.allSubscriptionInvoices.clear();
           for (int i = 0; i < value.data.length; i++) {
             mainBilling_Controller.addto_SubscriptionInvoiceList(SubscriptionInvoice.fromJson(value.data[i]));
           }
@@ -137,12 +138,11 @@ mixin main_BillingService {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          if (kDebugMode) {
-            print(value.data);
-          }
-
+          mainBilling_Controller.billingModel.allSalesInvoices.clear();
+          mainBilling_Controller.billingModel.salesInvoiceList.clear();
           for (int i = 0; i < value.data.length; i++) {
-            mainBilling_Controller.addto_SalesInvoiceList(SalesInvoice.fromJson(value.data[i]));
+            SalesInvoice element = SalesInvoice.fromJson(value.data[i]);
+            mainBilling_Controller.addto_SalesInvoiceList(element);
           }
 
           // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
@@ -287,6 +287,12 @@ mixin main_BillingService {
         // showCancel: false,
       );
     }
+  }
+
+  Future<void> billing_refresh() async {
+    // salesController.resetData();
+    get_SubscriptionInvoiceList();
+    get_SalesInvoiceList();
   }
 
   void resetFilters() {

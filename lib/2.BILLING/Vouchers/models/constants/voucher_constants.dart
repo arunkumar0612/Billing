@@ -8,11 +8,11 @@ import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entitie
 
 class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin {
   var voucher_list = <InvoicePaymentVoucher>[].obs;
-  var filteredVouchers = <InvoicePaymentVoucher>[].obs;
+  var ParentVoucher_list = <InvoicePaymentVoucher>[].obs;
 
   // var voucherlist = Voucher_List(VoucherList: []).obs;
 
-  var selectedItems = <bool>[].obs;
+  RxList<bool> checkboxValues = <bool>[].obs;
   var selectAll = false.obs;
   var showDeleteButton = false.obs;
   final pdfFile = Rxn<File>();
@@ -34,6 +34,8 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   var selectedvouchertype = 'Show All'.obs;
   var selectedInvoiceType = 'Show All'.obs;
   var showCustomDateRange = false.obs;
+  final extanddueDateController = TextEditingController().obs;
+  var extandduefeedbackController = TextEditingController().obs;
   final dateController = TextEditingController().obs;
   RxString selectedMonth = 'None'.obs;
   final startDateController = TextEditingController().obs;
@@ -58,7 +60,7 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
     super.onInit();
     // Initialize with sample data
 
-    selectedItems.value = List.filled(voucher_list.length, false);
+    checkboxValues.value = List.filled(voucher_list.length, false);
 
     // Extract unique client names and product types for filters
     clientNames.value = voucher_list.map((v) => v.clientName).toSet().toList();

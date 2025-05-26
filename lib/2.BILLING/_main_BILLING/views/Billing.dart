@@ -599,13 +599,15 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                       ),
                                       borderRadius: BorderRadius.circular(10), // Ensure border radius for smooth corners
                                     ),
-                                    child: Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: mainBilling_Controller.billingModel.activeTab.value == 'Subscription'
-                                            ? SubscriptionHeaders()
-                                            : mainBilling_Controller.billingModel.activeTab.value == 'Sales'
-                                                ? SalesHeaders()
-                                                : SubscriptionHeaders()),
+                                    child: Obx(() {
+                                      return Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: mainBilling_Controller.billingModel.activeTab.value == "Subscription"
+                                              ? SubscriptionHeaders()
+                                              : mainBilling_Controller.billingModel.activeTab.value == 'Sales'
+                                                  ? SalesHeaders()
+                                                  : SubscriptionHeaders());
+                                    }),
                                   ),
                                   const SizedBox(height: 5),
                                   Expanded(
@@ -737,9 +739,9 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
           ),
         ),
         Expanded(
-          flex: 5,
+          flex: 4,
           child: Text(
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.start,
             'Client Name',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -1261,15 +1263,15 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
-                            const Expanded(
+                            Expanded(
                               flex: 2,
                               child: Text(
-                                "VCH905857",
+                                mainBilling_Controller.billingModel.salesInvoiceList[index].voucherNumber,
                                 style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
                             Expanded(
-                              flex: 5,
+                              flex: 4,
                               child: Row(
                                 children: [
                                   Container(
@@ -1302,36 +1304,38 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 ],
                               ),
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            const Expanded(
-                              flex: 1,
-                              child: Text(
-                                // mainBilling_Controller.billingModel.salesInvoiceList[index].clientAddress,
-                                'plan type',
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                              ),
-                            ),
-                            const Expanded(
-                              flex: 2,
-                              child: Text(
-                                'Plan Name',
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                              ),
-                            ),
+                            // const SizedBox(
+                            //   width: 10,
+                            // ),
                             Expanded(
                               flex: 2,
                               child: Text(
+                                // textAlign: TextAlign.center,
+                                // mainBilling_Controller.billingModel.salesInvoiceList[index].clientAddress,
                                 mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceAmount.toString(),
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
-                            const Expanded(
+
+                            Expanded(
                               flex: 2,
-                              child: Text(
-                                "9 days",
-                                style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 22,
+                                    width: 60,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: const Color.fromARGB(208, 244, 214, 212),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'Pending',
+                                        style: TextStyle(color: Colors.red, fontSize: Primary_font_size.Text5, fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             // Expanded(

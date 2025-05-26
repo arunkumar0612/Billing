@@ -158,6 +158,32 @@ mixin main_BillingService {
     }
   }
 
+  Future<bool> GetSalesPDFfile({
+    required BuildContext context,
+    required String invoiceNo,
+  }) async {
+    try {
+      mainBilling_Controller.billingModel.pdfFile.value = null;
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({'invoicenumber': invoiceNo}, API.sales_getbinaryfile_API);
+      if (response?['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        if (value.code) {
+          await mainBilling_Controller.PDFfileApiData(value);
+          return true;
+          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Error_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+      return false;
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+      return false;
+    }
+  }
+
   Future<bool> GetSubscriptionPDFfile({
     required BuildContext context,
     required String invoiceNo,

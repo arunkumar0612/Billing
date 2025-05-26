@@ -154,6 +154,7 @@ class SalesInvoice {
   // final String dueDate; // newly added
   int? overdueDays;
   List<OverdueHistory>? overdueHistory;
+  final int paymentStatus;
 
   SalesInvoice({
     required this.eventId,
@@ -174,6 +175,7 @@ class SalesInvoice {
     // required this.dueDate,
     this.overdueDays,
     this.overdueHistory,
+    required this.paymentStatus,
   });
 
   factory SalesInvoice.fromJson(Map<String, dynamic> json) {
@@ -195,7 +197,7 @@ class SalesInvoice {
       voucherNumber: json['voucher_number'] as String,
       // dueDate: json['Due_date'],
       overdueDays: json['Overdue_days'],
-      overdueHistory: json['Overdue_history'] != null ? List<OverdueHistory>.from(json['Overdue_history'].map((e) => OverdueHistory.fromJson(e))) : null,
+      overdueHistory: json['Overdue_history'] != null ? List<OverdueHistory>.from(json['Overdue_history'].map((e) => OverdueHistory.fromJson(e))) : null, paymentStatus: json['payment_status'],
     );
   }
 
@@ -218,7 +220,7 @@ class SalesInvoice {
       'voucher_number': voucherNumber,
       // 'Due_date': dueDate,
       'Overdue_days': overdueDays,
-      'Overdue_history': overdueHistory?.map((e) => e.toJson()).toList(),
+      'Overdue_history': overdueHistory?.map((e) => e.toJson()).toList(), 'payment_status': paymentStatus,
     };
   }
 }

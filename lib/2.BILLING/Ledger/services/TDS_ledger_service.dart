@@ -45,6 +45,6 @@ mixin TDS_LedgerService {
   }
 
   void resetFilters() {
-    tds_LedgerController.tds_LedgerModel.filteredTDS_Ledgers.value = tds_LedgerController.tds_LedgerModel.tds_Ledger_list.value;
+    tds_LedgerController.tds_LedgerModel.tds_Ledger_list.value = tds_LedgerController.tds_LedgerModel.ParentTDS_Ledgers.value;
   }
 }

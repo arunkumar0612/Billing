@@ -49,6 +49,37 @@ mixin VoucherService {
     }
   }
 
+  dynamic add_Overdue(context, int voucherID, int index) async {
+    try {
+      Map<String, dynamic> query = {
+        "voucherid": voucherID,
+        "date": voucherController.voucherModel.extendDueDateControllers[index].value.text,
+        "feedback": voucherController.voucherModel.extendDueFeedbackControllers[index].value.text,
+      };
+      String encodedData = json.encode(query);
+      Map<String, dynamic>? response = await apiController.SendByQuerystring(encodedData, API.add_overdue);
+      if (response['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response);
+        if (value.code) {
+          await Success_dialog(context: context, title: "Upload Successfull", content: value.message!, onOk: () {});
+
+          Navigator.of(context).pop();
+        } else {
+          await Error_dialog(
+            context: context,
+            title: 'Error',
+            content: value.message ?? "",
+            onOk: () {},
+          );
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
   Future<void> Get_SUBcustomerList() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_ledgerSubscriptionCustomers);
@@ -213,8 +244,9 @@ mixin VoucherService {
   }
 
   Future<void> get_VoucherList() async {
+    // print('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
     // loader.start(context);
-    await Future.delayed(const Duration(milliseconds: 1000));
+    // await Future.delayed(const Duration(milliseconds: 1000));
     // response;
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
@@ -233,6 +265,7 @@ mixin VoucherService {
         response ?? {},
       );
       if (value.code) {
+        // print(value.data);
         voucherController.add_Voucher(value);
         voucherController.update();
       } else {
@@ -246,8 +279,8 @@ mixin VoucherService {
 
   Future<SelectedInvoiceVoucherGroup> calculate_SelectedVouchers() async {
     List<int> selectedIndices = [];
-    for (int i = 0; i < voucherController.voucherModel.selectedItems.length; i++) {
-      if (voucherController.voucherModel.selectedItems[i] == true) {
+    for (int i = 0; i < voucherController.voucherModel.checkboxValues.length; i++) {
+      if (voucherController.voucherModel.checkboxValues[i] == true) {
         selectedIndices.add(i);
       }
     }
@@ -317,6 +350,16 @@ mixin VoucherService {
   //     Error_dialog(context: context, title: "ERROR", content: "$e");
   //   }
   // }
+  void update_checkboxValues(int index, bool value) {
+    voucherController.voucherModel.checkboxValues[index] = value;
+    if (voucherController.voucherModel.checkboxValues.contains(true)) {
+      voucherController.voucherModel.showDeleteButton.value = true;
+    } else {
+      voucherController.voucherModel.showDeleteButton.value = false;
+    }
+
+    voucherController.update();
+  }
 
   dynamic clear_ClubVoucher(context, SelectedInvoiceVoucherGroup selectedVouchers, File? file) async {
     try {
@@ -333,6 +376,7 @@ mixin VoucherService {
           "SGST": selectedVouchers.selectedVoucherList[i].sgst,
           "CGST": selectedVouchers.selectedVoucherList[i].cgst,
           "tds": selectedVouchers.selectedVoucherList[i].tdsCalculationAmount,
+          "tdsstatus": voucherController.voucherModel.is_Deducted.value,
           "grossamount": selectedVouchers.selectedVoucherList[i].totalAmount,
           "subtotal": selectedVouchers.selectedVoucherList[i].subTotal,
           "paidamount": voucherController.voucherModel.is_Deducted.value
@@ -426,19 +470,31 @@ mixin VoucherService {
     }
   }
 
-  void applySearchFilter(String query) {
+  Future<void> applySearchFilter(String query) async {
     try {
       if (query.isEmpty) {
-        voucherController.voucherModel.filteredVouchers.assignAll(voucherController.voucherModel.voucher_list);
+        voucherController.voucherModel.voucher_list.assignAll(voucherController.voucherModel.ParentVoucher_list);
       } else {
-        final filtered = voucherController.voucherModel.voucher_list.where((voucher) {
-          return voucher.clientName.toLowerCase().contains(query.toLowerCase()) || voucher.voucherNumber.toLowerCase().contains(query.toLowerCase());
+        final filtered = voucherController.voucherModel.ParentVoucher_list.where((voucher) {
+          return voucher.clientName.toLowerCase().contains(query.toLowerCase()) ||
+              voucher.voucherNumber.toLowerCase().contains(query.toLowerCase()) ||
+              voucher.invoiceNumber.toLowerCase().contains(query.toLowerCase()) ||
+              voucher.invoiceType.toLowerCase().contains(query.toLowerCase()) ||
+              voucher.gstNumber.toLowerCase().contains(query.toLowerCase());
         }).toList();
-        voucherController.voucherModel.filteredVouchers.assignAll(filtered);
+        voucherController.voucherModel.voucher_list.assignAll(filtered);
       }
 
       // Update selectedItems to match the new filtered list length
-      voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false);
+      voucherController.voucherModel.checkboxValues.value = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false);
+      voucherController.voucherModel.isExtendButton_visible = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false).obs;
+
+      voucherController.voucherModel.extendDueDateControllers.assignAll(
+        List.generate(voucherController.voucherModel.voucher_list.length, (_) => TextEditingController()),
+      );
+      voucherController.voucherModel.extendDueFeedbackControllers.assignAll(
+        List.generate(voucherController.voucherModel.voucher_list.length, (_) => TextEditingController()),
+      );
       voucherController.voucherModel.selectAll.value = false;
       voucherController.voucherModel.showDeleteButton.value = false;
     } catch (e) {
@@ -446,7 +502,13 @@ mixin VoucherService {
     }
   }
 
-  Future<void> selectDate(BuildContext context, TextEditingController controller) async {
+  void isExtendButton_visibile(int index) {
+    voucherController.voucherModel.isExtendButton_visible[index] =
+        voucherController.voucherModel.extendDueDateControllers[index].value.text != '' && voucherController.voucherModel.extendDueFeedbackControllers[index].value.text != '';
+    voucherController.voucherModel.isExtendButton_visible.refresh();
+  }
+
+  Future<void> selectfilterDate(BuildContext context, TextEditingController controller) async {
     final DateTime now = DateTime.now();
     final DateTime tomorrow = DateTime(now.year, now.month, now.day + 1);
 
@@ -510,44 +572,44 @@ mixin VoucherService {
     }
   }
 
-  void updateDeleteButtonVisibility() {
-    voucherController.voucherModel.showDeleteButton.value = voucherController.voucherModel.selectedItems.contains(true);
-  }
+  // void updateDeleteButtonVisibility() {
+  //   voucherController.voucherModel.showDeleteButton.value = voucherController.voucherModel.selectedItems.contains(true);
+  // }
 
-  void deleteSelectedItems(BuildContext context) {
-    // Create a list of indices to remove (in reverse order to avoid index shifting)
-    final indicesToRemove = <int>[];
-    for (int i = voucherController.voucherModel.selectedItems.length - 1; i >= 0; i--) {
-      if (voucherController.voucherModel.selectedItems[i]) {
-        indicesToRemove.add(i);
-      }
-    }
+  // void deleteSelectedItems(BuildContext context) {
+  //   // Create a list of indices to remove (in reverse order to avoid index shifting)
+  //   final indicesToRemove = <int>[];
+  //   for (int i = voucherController.voucherModel.selectedItems.length - 1; i >= 0; i--) {
+  //     if (voucherController.voucherModel.selectedItems[i]) {
+  //       indicesToRemove.add(i);
+  //     }
+  //   }
 
-    // Remove items from voucher_list
-    for (final index in indicesToRemove) {
-      voucherController.voucherModel.voucher_list.removeAt(index);
-    }
+  //   // Remove items from voucher_list
+  //   for (final index in indicesToRemove) {
+  //     voucherController.voucherModel.voucher_list.removeAt(index);
+  //   }
 
-    // Reset selection state
-    voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false);
-    voucherController.voucherModel.selectAll.value = false;
-    voucherController.voucherModel.showDeleteButton.value = false;
+  //   // Reset selection state
+  //   voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false);
+  //   voucherController.voucherModel.selectAll.value = false;
+  //   voucherController.voucherModel.showDeleteButton.value = false;
 
-    // Show a snackbar to confirm deletion
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Deleted ${indicesToRemove.length} item(s)'),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
+  //   // Show a snackbar to confirm deletion
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text('Deleted ${indicesToRemove.length} item(s)'),
+  //       duration: const Duration(seconds: 2),
+  //     ),
+  //   );
+  // }
 
   void showCustomDateRangePicker() {
     voucherController.voucherModel.showCustomDateRange.value = true;
     voucherController.voucherModel.selectedvouchertype.value = 'Custom range';
   }
 
-  void resetFilters() {
+  void resetvoucherFilters() {
     voucherController.voucherModel.startDateController.value.clear();
     voucherController.voucherModel.endDateController.value.clear();
     voucherController.voucherModel.selectedpaymentStatus.value = 'Show All';
@@ -557,7 +619,15 @@ mixin VoucherService {
     voucherController.voucherModel.selectedsalescustomer.value = 'None';
     voucherController.voucherModel.selectedcustomerID.value = 'None';
     // voucherController.voucherModel.filteredVouchers.value = voucherController.voucherModel.voucher_list;
-    voucherController.voucherModel.selectedItems.value = List.filled(voucherController.voucherModel.voucher_list.length, false);
+    voucherController.voucherModel.checkboxValues.value = List.filled(voucherController.voucherModel.voucher_list.length, false);
+    voucherController.voucherModel.isExtendButton_visible = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false).obs;
+
+    voucherController.voucherModel.extendDueDateControllers.assignAll(
+      List.generate(voucherController.voucherModel.voucher_list.length, (_) => TextEditingController()),
+    );
+    voucherController.voucherModel.extendDueFeedbackControllers.assignAll(
+      List.generate(voucherController.voucherModel.voucher_list.length, (_) => TextEditingController()),
+    );
     voucherController.voucherModel.selectAll.value = false;
     voucherController.voucherModel.showDeleteButton.value = false;
   }

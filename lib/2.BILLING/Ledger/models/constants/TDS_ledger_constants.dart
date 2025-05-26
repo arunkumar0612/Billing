@@ -14,7 +14,7 @@ class TDS_LedgerModel extends GetxController with GetSingleTickerProviderStateMi
     startdate: null,
     enddate: null,
   ).obs;
-  var filteredTDS_Ledgers = TDSSummaryModel(
+  var ParentTDS_Ledgers = TDSSummaryModel(
     tdsList: [],
     totalTds: 0,
     totalPaid: 0,

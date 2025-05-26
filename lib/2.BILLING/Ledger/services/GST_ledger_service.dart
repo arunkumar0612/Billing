@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/GST_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
+// import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/GST_ledger_entities.dart';
+// import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/ledger_pdf_entities/GST_ledger_PDF_entities.dart';
+// import 'package:ssipl_billing/2.BILLING/GST_Ledgers/controllers/gst_Ledger_action.dart';
 import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
@@ -45,6 +48,6 @@ mixin GST_LedgerService {
   }
 
   void resetFilters() {
-    gst_LedgerController.gst_LedgerModel.filteredGST_Ledgers.value = gst_LedgerController.gst_LedgerModel.gst_Ledger_list.value;
+    gst_LedgerController.gst_LedgerModel.gst_Ledger_list.value = gst_LedgerController.gst_LedgerModel.ParentGST_Ledgers.value;
   }
 }

@@ -7,6 +7,7 @@ import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/views/voucher.dart';
 // import 'package:ssipl_billing/2.BILLING/views/VOUCHERS/voucher.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
+import 'package:ssipl_billing/2.BILLING/_main_BILLING/models/entities/Billing_entities.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/views/filter.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/views/piechart.dart';
@@ -30,54 +31,43 @@ PageRouteBuilder _createCustomPageRoute(Widget Function() navigation) {
 
 class Billing extends StatefulWidget with main_BillingService {
   Billing({super.key});
-  static late dynamic Function() quote_Callback;
-  static late dynamic Function() invoice_Callback;
 
   @override
   _BillingState createState() => _BillingState();
 }
 
-class _BillingState extends State<Billing> {
-  String? selectedCustomer;
-  String? Selected_billingtype;
+class _BillingState extends State<Billing> with TickerProviderStateMixin {
   final MainBilling_Controller mainBilling_Controller = Get.find<MainBilling_Controller>();
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    mainBilling_Controller.billingModel.animationController.dispose();
+  }
 
-  List<String> customerList = [
-    'Customer 1',
-    'Customer 2',
-    'Customer 3',
-    'Customer 4',
-    'Customer 5',
-  ];
-
-  List<String> billing_type = [
-    'All',
-    'Subscription',
-    'Vendor',
-    'Sales',
-  ];
-
-  // Adding a controller and isAdding flag for each item
-  late List<bool> isAddingList;
-  // late List<TextEditingController> controllers;
-  int showcustomerprocess = 0;
-  List<String> list = <String>['One', 'Two', 'Three', 'Four'];
-  String BillingSearchQuery = '';
   @override
   void initState() {
     super.initState();
+    mainBilling_Controller.billingModel.animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
     widget.get_SubscriptionInvoiceList();
     widget.get_SalesInvoiceList();
   }
 
-// ##################################################################################################################################################################################################################################################################################################################################################################
-
-  @override
-  void dispose() {
-    // Dispose controllers to avoid memory leaks
-
-    super.dispose();
+  void _startAnimation() {
+    if (!mainBilling_Controller.billingModel.animationController.isAnimating) {
+      mainBilling_Controller.billingModel.animationController.forward(from: 0).then((_) {
+        widget.billing_refresh();
+      });
+    }
   }
 
   @override
@@ -452,6 +442,45 @@ class _BillingState extends State<Billing> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
+                                    MouseRegion(
+                                      cursor: SystemMouseCursors.click,
+                                      child: GestureDetector(
+                                        onTap: _startAnimation,
+                                        child: AnimatedBuilder(
+                                          animation: mainBilling_Controller.billingModel.animationController,
+                                          builder: (context, child) {
+                                            return Transform.rotate(
+                                              angle: -mainBilling_Controller.billingModel.animationController.value * 2 * pi, // Counterclockwise rotation
+                                              child: Transform.scale(
+                                                scale: TweenSequence([
+                                                  TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 1.2), weight: 50),
+                                                  TweenSequenceItem(tween: Tween<double>(begin: 1.2, end: 1.0), weight: 50),
+                                                ])
+                                                    .animate(CurvedAnimation(parent: mainBilling_Controller.billingModel.animationController, curve: Curves.easeInOut))
+                                                    .value, // Zoom in and return to normal
+                                                child: Opacity(
+                                                  opacity: TweenSequence([
+                                                    TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.5), weight: 50),
+                                                    TweenSequenceItem(tween: Tween<double>(begin: 0.5, end: 1.0), weight: 50),
+                                                  ])
+                                                      .animate(CurvedAnimation(parent: mainBilling_Controller.billingModel.animationController, curve: Curves.easeInOut))
+                                                      .value, // Fade and return to normal
+                                                  child: ClipOval(
+                                                    child: Image.asset(
+                                                      'assets/images/reload.png',
+                                                      fit: BoxFit.cover,
+                                                      width: 30,
+                                                      height: 30,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
                                     Obx(
                                       () => SizedBox(
                                         width: max(screenWidth - 1480, 200),
@@ -570,7 +599,15 @@ class _BillingState extends State<Billing> {
                                       ),
                                       borderRadius: BorderRadius.circular(10), // Ensure border radius for smooth corners
                                     ),
-                                    child: Padding(padding: const EdgeInsets.all(10), child: SubscriptionHeaders()),
+                                    child: Obx(() {
+                                      return Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: mainBilling_Controller.billingModel.activeTab.value == "Subscription"
+                                              ? SubscriptionHeaders()
+                                              : mainBilling_Controller.billingModel.activeTab.value == 'Sales'
+                                                  ? SalesHeaders()
+                                                  : SubscriptionHeaders());
+                                    }),
                                   ),
                                   const SizedBox(height: 5),
                                   Expanded(
@@ -656,6 +693,64 @@ class _BillingState extends State<Billing> {
           flex: 2,
           child: Text(
             'Overdue',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Status',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            '',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget SalesHeaders() {
+    return const Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Date',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Invoice No',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Voucher No',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        Expanded(
+          flex: 4,
+          child: Text(
+            textAlign: TextAlign.start,
+            'Client Name',
+            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+          ),
+        ),
+        SizedBox(width: 10),
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Amount',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
@@ -899,23 +994,153 @@ class _BillingState extends State<Billing> {
                                 ),
                               ),
                               Expanded(
-                                  flex: 2,
-                                  child: MouseRegion(
-                                    cursor: SystemMouseCursors.click,
-                                    child: GestureDetector(
-                                      onTap: () {},
-                                      child: Text(
-                                        // textAlign: TextAlign.left,
-                                        mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate != null
-                                            ? formatDate(DateTime.parse(mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate!))
-                                            : '-',
-                                        style: const TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: Primary_font_size.Text7,
+                                flex: 3,
+                                child: Builder(
+                                  builder: (context) {
+                                    OverlayEntry? overlayEntry;
+
+                                    void showPopup() {
+                                      if (overlayEntry != null) return;
+
+                                      final RenderBox renderBox = context.findRenderObject() as RenderBox;
+                                      final Offset offset = renderBox.localToGlobal(Offset.zero);
+                                      final Size size = renderBox.size;
+
+                                      double top;
+                                      double left = offset.dx - 80;
+
+                                      if (offset.dy > 320) {
+                                        top = offset.dy - 320;
+                                      } else {
+                                        top = offset.dy + size.height + 5;
+                                      }
+
+                                      final overdueList = mainBilling_Controller.billingModel.subscriptionInvoiceList[index].overdueHistory;
+
+                                      overlayEntry = OverlayEntry(
+                                        builder: (_) => Positioned(
+                                          left: left,
+                                          top: top,
+                                          child: TweenAnimationBuilder(
+                                            duration: const Duration(milliseconds: 200),
+                                            tween: Tween<double>(begin: 0.9, end: 1.0),
+                                            builder: (_, double scale, __) => Transform.scale(
+                                              scale: scale,
+                                              child: MouseRegion(
+                                                onExit: (_) {
+                                                  overlayEntry?.remove();
+                                                  overlayEntry = null;
+                                                },
+                                                child: Material(
+                                                  elevation: 8,
+                                                  borderRadius: BorderRadius.circular(16),
+                                                  color: Colors.transparent,
+                                                  child: Container(
+                                                    width: 340,
+                                                    padding: const EdgeInsets.all(16),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius: BorderRadius.circular(16),
+                                                      gradient: LinearGradient(
+                                                        colors: [Colors.white, Colors.grey[50]!],
+                                                        begin: Alignment.topCenter,
+                                                        end: Alignment.bottomCenter,
+                                                      ),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.black.withOpacity(0.1),
+                                                          blurRadius: 20,
+                                                          spreadRadius: 2,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            const CircleAvatar(
+                                                              radius: 16,
+                                                              backgroundColor: Colors.blue,
+                                                              child: Icon(Icons.timeline, color: Colors.white, size: 20),
+                                                            ),
+                                                            const SizedBox(width: 8),
+                                                            const Text(
+                                                              "Overdue History",
+                                                              style: TextStyle(
+                                                                fontWeight: FontWeight.bold,
+                                                                fontSize: 16,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        const SizedBox(height: 16),
+                                                        ..._buildTimelineFromList(overdueList),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  )),
+                                      );
+
+                                      Overlay.of(context).insert(overlayEntry!);
+                                    }
+
+                                    void removePopup() {
+                                      overlayEntry?.remove();
+                                      overlayEntry = null;
+                                    }
+
+                                    return Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        MouseRegion(
+                                          cursor: SystemMouseCursors.click,
+                                          onEnter: (_) => showPopup(),
+                                          onExit: (_) => removePopup(),
+                                          child: const Icon(Icons.info_outline, size: 20, color: Colors.blue),
+                                        ),
+                                        const SizedBox(width: 3),
+                                        Expanded(
+                                          child: Text(
+                                            // textAlign: TextAlign.left,
+                                            mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate != null
+                                                ? formatDate(DateTime.parse(mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate!))
+                                                : '-',
+                                            style: const TextStyle(
+                                              color: Colors.blue,
+                                              fontSize: Primary_font_size.Text7,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+
+                              // Expanded(
+                              //     flex: 2,
+                              //     child: MouseRegion(
+                              //       cursor: SystemMouseCursors.click,
+                              //       child: GestureDetector(
+                              //         onTap: () {widh},
+                              //         child: Text(
+                              //           // textAlign: TextAlign.left,
+                              //           mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate != null
+                              //               ? formatDate(DateTime.parse(mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate!))
+                              //               : '-',
+                              //           style: const TextStyle(
+                              //             color: Colors.blue,
+                              //             fontSize: Primary_font_size.Text7,
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     )),
                               Expanded(
                                 flex: 2,
                                 child: Text(
@@ -1031,22 +1256,41 @@ class _BillingState extends State<Billing> {
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
+
+                            Expanded(
+                              flex: 2,
+                              child: MouseRegion(
+                                cursor: SystemMouseCursors.click,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    bool success = await widget.GetSalesPDFfile(context: context, invoiceNo: mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceNumber);
+                                    if (success) {
+                                      widget.showPDF(context, mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceNumber);
+                                    }
+                                  },
+                                  child: Text(
+                                    mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceNumber,
+                                    style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // Expanded(
+                            //   flex: 2,
+                            //   child: Text(
+                            //     mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceNumber,
+                            //     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                            //   ),
+                            // ),
                             Expanded(
                               flex: 2,
                               child: Text(
-                                mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceNumber,
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                              ),
-                            ),
-                            const Expanded(
-                              flex: 2,
-                              child: Text(
-                                "VCH905857",
+                                mainBilling_Controller.billingModel.salesInvoiceList[index].voucherNumber,
                                 style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
                             Expanded(
-                              flex: 5,
+                              flex: 4,
                               child: Row(
                                 children: [
                                   Container(
@@ -1079,64 +1323,71 @@ class _BillingState extends State<Billing> {
                                 ],
                               ),
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            const Expanded(
-                              flex: 1,
-                              child: Text(
-                                // mainBilling_Controller.billingModel.salesInvoiceList[index].clientAddress,
-                                'plan type',
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                              ),
-                            ),
-                            const Expanded(
-                              flex: 2,
-                              child: Text(
-                                'Plan Name',
-                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                              ),
-                            ),
+                            // const SizedBox(
+                            //   width: 10,
+                            // ),
                             Expanded(
                               flex: 2,
                               child: Text(
+                                // textAlign: TextAlign.center,
+                                // mainBilling_Controller.billingModel.salesInvoiceList[index].clientAddress,
                                 mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceAmount.toString(),
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
-                            const Expanded(
-                              flex: 2,
-                              child: Text(
-                                "9 days",
-                                style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                              ),
-                            ),
                             Expanded(
-                              flex: 2,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 22,
-                                    width: 60,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1
-                                          ? const Color.fromARGB(193, 222, 244, 223)
-                                          : const Color.fromARGB(208, 244, 214, 212),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1 ? 'Paid' : 'Pending',
-                                        style: TextStyle(
-                                            color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1 ? const Color.fromARGB(255, 0, 122, 4) : Colors.red,
-                                            fontSize: Primary_font_size.Text5,
-                                            fontWeight: FontWeight.bold),
+                                flex: 2,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 22,
+                                      width: 60,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: mainBilling_Controller.billingModel.salesInvoiceList[index].paymentStatus == 1
+                                            ? const Color.fromARGB(193, 103, 223, 109)
+                                            : const Color.fromARGB(208, 245, 85, 74),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          mainBilling_Controller.billingModel.salesInvoiceList[index].paymentStatus == 1 ? 'Paid' : 'Pending',
+                                          style: TextStyle(
+                                              color: mainBilling_Controller.billingModel.salesInvoiceList[index].paymentStatus == 1
+                                                  ? const Color.fromARGB(255, 0, 0, 0)
+                                                  : const Color.fromARGB(255, 0, 0, 0),
+                                              fontSize: Primary_font_size.Text5,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                                  ],
+                                )),
+                            // Expanded(
+                            //   flex: 2,
+                            //   child: Row(
+                            //     children: [
+                            //       Container(
+                            //         height: 22,
+                            //         width: 60,
+                            //         decoration: BoxDecoration(
+                            //           borderRadius: BorderRadius.circular(20),
+                            //           color: mainBilling_Controller.billingModel.salesInvoiceList[index].paymentStatus == 1
+                            //               ? const Color.fromARGB(193, 222, 244, 223)
+                            //               : const Color.fromARGB(208, 244, 214, 212),
+                            //         ),
+                            //         child: Center(
+                            //           child: Text(
+                            //             mainBilling_Controller.billingModel.salesInvoiceList[index].paymentStatus == 1 ? 'Paid' : 'Pending',
+                            //             style: TextStyle(
+                            //                 color: mainBilling_Controller.billingModel.salesInvoiceList[index].paymentStatus == 1 ? const Color.fromARGB(255, 0, 122, 4) : Colors.red,
+                            //                 fontSize: Primary_font_size.Text5,
+                            //                 fontWeight: FontWeight.bold),
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             const Expanded(flex: 2, child: Icon(Icons.keyboard_control))
                           ],
                         ),
@@ -1344,5 +1595,58 @@ class _BillingState extends State<Billing> {
               );
       },
     );
+  }
+
+  List<Widget> _buildTimelineFromList(List<OverdueHistory>? overdueList) {
+    if (overdueList == null || overdueList.isEmpty) {
+      return [
+        const Text(
+          "No overdue history available.",
+          style: TextStyle(color: Colors.grey),
+        ),
+      ];
+    }
+
+    return List.generate(overdueList.length, (index) {
+      final isLast = index == overdueList.length - 1;
+      final item = overdueList[index];
+      final date = item.date;
+      final feedback = item.feedback;
+
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              children: [
+                const Icon(Icons.circle, size: 10, color: Colors.blue),
+                if (!isLast)
+                  Container(
+                    width: 2,
+                    height: 30,
+                    color: Colors.blue.shade300,
+                  ),
+              ],
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: RichText(
+                text: TextSpan(
+                  style: const TextStyle(color: Colors.black87, fontSize: 14),
+                  children: [
+                    TextSpan(
+                      text: "$date: ",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(text: feedback),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

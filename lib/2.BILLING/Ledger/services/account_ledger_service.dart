@@ -110,7 +110,7 @@ mixin Account_LedgerService {
   }
 
   void resetFilters() {
-    account_LedgerController.account_LedgerModel.filteredaccount_Ledger_list.value = account_LedgerController.account_LedgerModel.account_Ledger_list.value;
+    account_LedgerController.account_LedgerModel.account_Ledger_list.value = account_LedgerController.account_LedgerModel.Secondaryaccount_Ledger_list.value;
   }
 }
 // void applySearchFilter(String query) {

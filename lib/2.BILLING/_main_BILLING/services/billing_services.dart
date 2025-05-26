@@ -28,7 +28,8 @@ mixin main_BillingService {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          mainBilling_Controller.billingModel.subscriptionInvoiceList.clear();
+          mainBilling_Controller.billingModel.allSubscriptionInvoices.clear();
+          mainBilling_Controller.billingModel.allSubscriptionInvoices.clear();
           for (int i = 0; i < value.data.length; i++) {
             mainBilling_Controller.addto_SubscriptionInvoiceList(SubscriptionInvoice.fromJson(value.data[i]));
           }
@@ -137,12 +138,11 @@ mixin main_BillingService {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          if (kDebugMode) {
-            print(value.data);
-          }
-
+          mainBilling_Controller.billingModel.allSalesInvoices.clear();
+          mainBilling_Controller.billingModel.salesInvoiceList.clear();
           for (int i = 0; i < value.data.length; i++) {
-            mainBilling_Controller.addto_SalesInvoiceList(SalesInvoice.fromJson(value.data[i]));
+            SalesInvoice element = SalesInvoice.fromJson(value.data[i]);
+            mainBilling_Controller.addto_SalesInvoiceList(element);
           }
 
           // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
@@ -155,6 +155,32 @@ mixin main_BillingService {
       }
     } catch (e) {
       // Error_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
+  Future<bool> GetSalesPDFfile({
+    required BuildContext context,
+    required String invoiceNo,
+  }) async {
+    try {
+      mainBilling_Controller.billingModel.pdfFile.value = null;
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({'invoicenumber': invoiceNo}, API.sales_getbinaryfile_API);
+      if (response?['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        if (value.code) {
+          await mainBilling_Controller.PDFfileApiData(value);
+          return true;
+          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Error_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+      return false;
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+      return false;
     }
   }
 
@@ -287,6 +313,12 @@ mixin main_BillingService {
         // showCancel: false,
       );
     }
+  }
+
+  Future<void> billing_refresh() async {
+    // salesController.resetData();
+    get_SubscriptionInvoiceList();
+    get_SalesInvoiceList();
   }
 
   void resetFilters() {

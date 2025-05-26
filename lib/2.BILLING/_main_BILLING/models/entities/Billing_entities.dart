@@ -151,13 +151,10 @@ class SalesInvoice {
   final DateTime date;
   final int voucherId;
   final String voucherNumber;
-  final String dueDate; // newly added
-  final String hsnCode; // newly added
-  final String planType; // newly added
-  final String billMode; // newly added
-  final int paymentStatus; // newly added
-  final String pendingPayments; // newly added
-  final String planName; // newly added
+  // final String dueDate; // newly added
+  int? overdueDays;
+  List<OverdueHistory>? overdueHistory;
+  final int paymentStatus;
 
   SalesInvoice({
     required this.eventId,
@@ -175,39 +172,33 @@ class SalesInvoice {
     required this.date,
     required this.voucherId,
     required this.voucherNumber,
-    required this.dueDate,
-    required this.hsnCode,
-    required this.planType,
-    required this.billMode,
+    // required this.dueDate,
+    this.overdueDays,
+    this.overdueHistory,
     required this.paymentStatus,
-    required this.pendingPayments,
-    required this.planName,
   });
 
   factory SalesInvoice.fromJson(Map<String, dynamic> json) {
     return SalesInvoice(
-        eventId: json['event_id'] as int,
-        invoiceNumber: json['invoicenumber'] as String,
-        clientAddressName: json['client_addressname'] as String,
-        clientAddress: json['client_address'] as String,
-        billingAddressName: json['billing_addressname'] as String,
-        billingAddress: json['billing_address'] as String,
-        gstNumber: json['gstnumber'] as String,
-        emailId: json['email_id'] as String,
-        phoneNo: json['phone_no'] as String,
-        ccEmail: json['ccemail'] as String,
-        invoiceAmount: (json['invoice_amount'] as num).toDouble(),
-        processId: json['processid'] as int,
-        date: DateTime.parse(json['date']),
-        voucherId: json['voucher_id'] as int,
-        voucherNumber: json['voucher_number'] as String,
-        dueDate: json['Due_date'],
-        hsnCode: json['hsn_code'],
-        planType: json['plantype'],
-        billMode: json['billmode'],
-        paymentStatus: json['payment_status'],
-        pendingPayments: json['pendingPayments'],
-        planName: json['plan_name']);
+      eventId: json['event_id'] as int,
+      invoiceNumber: json['invoicenumber'] as String,
+      clientAddressName: json['client_addressname'] as String,
+      clientAddress: json['client_address'] as String,
+      billingAddressName: json['billing_addressname'] as String,
+      billingAddress: json['billing_address'] as String,
+      gstNumber: json['gstnumber'] as String,
+      emailId: json['email_id'] as String,
+      phoneNo: json['phone_no'] as String,
+      ccEmail: json['ccemail'] as String,
+      invoiceAmount: (json['invoice_amount'] as num).toDouble(),
+      processId: json['processid'] as int,
+      date: DateTime.parse(json['date']),
+      voucherId: json['voucher_id'] as int,
+      voucherNumber: json['voucher_number'] as String,
+      // dueDate: json['Due_date'],
+      overdueDays: json['Overdue_days'],
+      overdueHistory: json['Overdue_history'] != null ? List<OverdueHistory>.from(json['Overdue_history'].map((e) => OverdueHistory.fromJson(e))) : null, paymentStatus: json['payment_status'],
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -227,13 +218,9 @@ class SalesInvoice {
       'date': date.toIso8601String(),
       'voucher_id': voucherId,
       'voucher_number': voucherNumber,
-      'Due_date': dueDate,
-      'hsn_code': hsnCode,
-      'plantype': planType,
-      'billmode': billMode,
-      'payment_status': paymentStatus,
-      'pendingPayments': pendingPayments,
-      'plan_name': planName
+      // 'Due_date': dueDate,
+      'Overdue_days': overdueDays,
+      'Overdue_history': overdueHistory?.map((e) => e.toJson()).toList(), 'payment_status': paymentStatus,
     };
   }
 }

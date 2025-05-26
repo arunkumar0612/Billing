@@ -20,6 +20,7 @@ class BillingModel extends GetxController with GetSingleTickerProviderStateMixin
   var selectedPaymentStatus = 'Show All'.obs;
   var selectedQuickFilter = 'Show All'.obs;
   var selectedPackageName = 'Show All'.obs;
+  late AnimationController animationController;
 
   // search customer variables
   var activeTab = 'Subscription'.obs;

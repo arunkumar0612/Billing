@@ -257,8 +257,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                           child: GestureDetector(
                                             onTap: () async {
                                               if (tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoiceType == 'subscription') {
-                                                bool success = await widget.GetSubscriptionPDFfile(
-                                                    context: context, invoiceNo: tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number);
+                                                bool success = await widget.GetSubscriptionPDFfile(context: context, invoiceNo: tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number);
                                                 if (success) {
                                                   widget.showPDF(context, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number);
                                                 }
@@ -579,7 +578,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                               onTap: () async {
                                 try {
                                   // Generate the PDF bytes
-                                  final pdfBytes = await generateTDSledger(PdfPageFormat.a4);
+                                  final pdfBytes = await generateTDSledger(PdfPageFormat.a4, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value);
 
                                   // Create timestamp for filename
                                   final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -672,9 +671,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                                             Align(
                                                                               alignment: Alignment.center,
                                                                               child: Icon(
-                                                                                tds_ledgerController.tds_LedgerModel.CCemailToggle.value
-                                                                                    ? Icons.closed_caption_outlined
-                                                                                    : Icons.closed_caption_disabled_outlined,
+                                                                                tds_ledgerController.tds_LedgerModel.CCemailToggle.value ? Icons.closed_caption_outlined : Icons.closed_caption_disabled_outlined,
                                                                                 color: Primary_colors.Dark,
                                                                               ),
                                                                             ),
@@ -697,8 +694,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                           ),
                                                         ],
                                                       ),
-                                                    if (tds_ledgerController.tds_LedgerModel.CCemailToggle.value && tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value)
-                                                      const SizedBox(height: 10),
+                                                    if (tds_ledgerController.tds_LedgerModel.CCemailToggle.value && tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value) const SizedBox(height: 10),
                                                     if (tds_ledgerController.tds_LedgerModel.CCemailToggle.value && tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value)
                                                       Row(
                                                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -732,8 +728,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                             IconButton(
                                                               iconSize: 30,
                                                               onPressed: () {
-                                                                tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value =
-                                                                    !tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value;
+                                                                tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value = !tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value;
                                                               },
                                                               icon: Image.asset('assets/images/whatsapp.png'),
                                                             ),
@@ -828,14 +823,12 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                       mainAxisAlignment: MainAxisAlignment.end,
                                                       children: [
                                                         MouseRegion(
-                                                          cursor:
-                                                              tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value || tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value
-                                                                  ? SystemMouseCursors.click
-                                                                  : SystemMouseCursors.forbidden,
+                                                          cursor: tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value || tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value
+                                                              ? SystemMouseCursors.click
+                                                              : SystemMouseCursors.forbidden,
                                                           child: GestureDetector(
                                                             onTap: () async {
-                                                              if (tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                  tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value) {
+                                                              if (tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value || tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value) {
                                                                 // Create temporary file
                                                                 final tempDir = await getTemporaryDirectory();
                                                                 final file = File('${tempDir.path}/$filename');
@@ -855,8 +848,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                             child: Container(
                                                               width: 105,
                                                               decoration: BoxDecoration(
-                                                                color: tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                        tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value
+                                                                color: tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value || tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value
                                                                     ? const Color.fromARGB(255, 81, 89, 212)
                                                                     : const Color.fromARGB(255, 39, 41, 73),
                                                                 borderRadius: BorderRadius.circular(5),
@@ -917,7 +909,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                             onTap: () async {
                               try {
                                 // Generate the PDF bytes first
-                                final pdfBytes = await generateTDSledger(PdfPageFormat.a4);
+                                final pdfBytes = await generateTDSledger(PdfPageFormat.a4, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value);
 
                                 // Print the generated PDF
                                 await Printing.layoutPdf(
@@ -971,7 +963,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                 await Future.delayed(const Duration(milliseconds: 300));
 
                                 // Generate PDF bytes
-                                final pdfBytes = await generateTDSledger(PdfPageFormat.a4);
+                                final pdfBytes = await generateTDSledger(PdfPageFormat.a4, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value);
 
                                 // Generate unique filename with timestamp
                                 final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -1046,7 +1038,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                             onTap: () async {
                               try {
                                 // Generate the PDF bytes directly from your function
-                                Uint8List pdfBytes = await generateTDSledger(PdfPageFormat.a4);
+                                Uint8List pdfBytes = await generateTDSledger(PdfPageFormat.a4, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value);
 
                                 // Show the dialog with the same design
                                 showDialog(

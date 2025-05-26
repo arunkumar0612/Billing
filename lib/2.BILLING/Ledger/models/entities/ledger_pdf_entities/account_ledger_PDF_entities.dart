@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/account_ledger_entities.dart';
 
 class ClientDetails {
@@ -5,16 +7,14 @@ class ClientDetails {
   final String clientAddress;
   final String GSTIN;
   final String PAN;
-  final DateTime fromDate;
-  final DateTime toDate;
+  
 
   ClientDetails({
     required this.clientName,
     required this.clientAddress,
     required this.GSTIN,
     required this.PAN,
-    required this.fromDate,
-    required this.toDate,
+   
   });
 
   factory ClientDetails.fromJson(Map<String, dynamic> json) {
@@ -23,8 +23,7 @@ class ClientDetails {
       clientAddress: json['clientAddress'],
       GSTIN: json['GSTIN'],
       PAN: json['PAN'],
-      fromDate: json['fromDate'],
-      toDate: json['toDate'],
+     
     );
   }
 
@@ -34,8 +33,7 @@ class ClientDetails {
       'clientAddress': clientAddress,
       'GSTIN': GSTIN,
       'PAN': PAN,
-      'fromDate': fromDate,
-      'toDate': toDate,
+      
     };
   }
 }
@@ -43,16 +41,24 @@ class ClientDetails {
 class PDF_AccountLedgerSummary {
   final ClientDetails? clientDetails;
   final AccountLedgerSummary ledgerDetails;
+  final DateTime fromDate;
+  final DateTime toDate;
+  
 
   PDF_AccountLedgerSummary({
     required this.clientDetails,
     required this.ledgerDetails,
+     required this.fromDate,
+    required this.toDate,
   });
 
-  factory PDF_AccountLedgerSummary.fromJson({required ClientDetails? clientDetails, required AccountLedgerSummary ledgerDetails}) {
+  factory PDF_AccountLedgerSummary.fromJson(
+    {required ClientDetails? clientDetails, required AccountLedgerSummary ledgerDetails, required fromDate, required toDate}){
     return PDF_AccountLedgerSummary(
       clientDetails: clientDetails,
       ledgerDetails: ledgerDetails,
+      fromDate: fromDate,
+      toDate: toDate,
     );
   }
 
@@ -60,6 +66,8 @@ class PDF_AccountLedgerSummary {
     return {
       'clientDetails': clientDetails?.toJson(),
       'ledgerDetails': ledgerDetails.toJson(),
+      'fromDate': fromDate,
+      'toDate': toDate,
     };
   }
 }

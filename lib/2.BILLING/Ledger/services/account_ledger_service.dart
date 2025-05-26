@@ -11,10 +11,13 @@ import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 mixin Account_LedgerService {
-  final Account_LedgerController account_LedgerController = Get.find<Account_LedgerController>();
-  final View_LedgerController view_LedgerController = Get.find<View_LedgerController>();
+  final Account_LedgerController account_LedgerController =
+      Get.find<Account_LedgerController>();
+  final View_LedgerController view_LedgerController =
+      Get.find<View_LedgerController>();
   final Invoker apiController = Get.find<Invoker>();
-  final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
+  final SessiontokenController sessiontokenController =
+      Get.find<SessiontokenController>();
 
   Future<void> get_Account_LedgerList() async {
     // final ledgerData = {
@@ -37,17 +40,36 @@ mixin Account_LedgerService {
     // response;
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
-        "ledgertype":
-            view_LedgerController.view_LedgerModel.selectedtransactiontype.value.toLowerCase() == 'show all' ? '' : view_LedgerController.view_LedgerModel.selectedtransactiontype.value.toLowerCase(),
-        "paymenttype": view_LedgerController.view_LedgerModel.selectedPaymenttype.value.toLowerCase() == 'show all'
+        "ledgertype": view_LedgerController
+                    .view_LedgerModel.selectedtransactiontype.value
+                    .toLowerCase() ==
+                'show all'
             ? ''
-            : view_LedgerController.view_LedgerModel.selectedPaymenttype.value.toLowerCase(), //"credit"       (or) debit,
-        "invoicetype": view_LedgerController.view_LedgerModel.selectedinvoiceType.value.toLowerCase() == 'show all'
+            : view_LedgerController
+                .view_LedgerModel.selectedtransactiontype.value
+                .toLowerCase(),
+        "paymenttype": view_LedgerController
+                    .view_LedgerModel.selectedPaymenttype.value
+                    .toLowerCase() ==
+                'show all'
             ? ''
-            : view_LedgerController.view_LedgerModel.selectedinvoiceType.value.toLowerCase(), //sales   (or) subscription (or) vendor,
-        "customerid": view_LedgerController.view_LedgerModel.selectedsubcustomerID.value == 'None' ? '' : view_LedgerController.view_LedgerModel.selectedsubcustomerID.value,
-        "startdate": view_LedgerController.view_LedgerModel.startDateController.value.text,
-        "enddate": view_LedgerController.view_LedgerModel.endDateController.value.text,
+            : view_LedgerController.view_LedgerModel.selectedPaymenttype.value
+                .toLowerCase(), //"credit"       (or) debit,
+        "invoicetype": view_LedgerController
+                    .view_LedgerModel.selectedinvoiceType.value
+                    .toLowerCase() ==
+                'show all'
+            ? ''
+            : view_LedgerController.view_LedgerModel.selectedinvoiceType.value
+                .toLowerCase(), //sales   (or) subscription (or) vendor,
+        "customerid": view_LedgerController
+                    .view_LedgerModel.selectedsubcustomerID.value ==
+                'None'
+            ? ''
+            : view_LedgerController
+                .view_LedgerModel.selectedsubcustomerID.value,
+        // "startdate": view_LedgerController.view_LedgerModel.startDateController.value.text,
+        // "enddate": view_LedgerController.view_LedgerModel.endDateController.value.text,
       },
       API.getaccount_Ledgerlist,
     );
@@ -66,38 +88,54 @@ mixin Account_LedgerService {
     // loader.stop();
   }
 
-  Future<PDF_AccountLedgerSummary> parsePDF_AccountLedger(bool Sub_clientOrNot, bool Sales_clientOrNot) async {
+  Future<PDF_AccountLedgerSummary> parsePDF_AccountLedger(
+      bool Sub_clientOrNot, bool Sales_clientOrNot) async {
     final ClientDetails? clientDetails;
 
     if (Sub_clientOrNot) {
-      String? clientID = view_LedgerController.view_LedgerModel.selectedsubcustomerID.value;
+      String? clientID =
+          view_LedgerController.view_LedgerModel.selectedsubcustomerID.value;
 
-      CustomerInfo clientData = view_LedgerController.view_LedgerModel.subCustomerList.firstWhere((element) => element.customerId == clientID);
+      CustomerInfo clientData = view_LedgerController
+          .view_LedgerModel.subCustomerList
+          .firstWhere((element) => element.customerId == clientID);
       clientDetails = ClientDetails(
         clientName: clientData.customerName,
         clientAddress: clientData.customerName,
         GSTIN: clientData.customerGstNo == '' ? '-' : clientData.customerGstNo,
         PAN: extractPanFromGst(clientData.customerGstNo),
-        fromDate: DateTime.parse(account_LedgerController.account_LedgerModel.account_Ledger_list.value.startdate!),
-        toDate: DateTime.parse(account_LedgerController.account_LedgerModel.account_Ledger_list.value.enddate!),
+        // fromDate: DateTime.parse(account_LedgerController
+        //     .account_LedgerModel.account_Ledger_list.value.startdate!),
+        // toDate: DateTime.parse(account_LedgerController
+        //     .account_LedgerModel.account_Ledger_list.value.enddate!),
       );
     } else if (Sales_clientOrNot) {
-      String? clientID = view_LedgerController.view_LedgerModel.selectedsalescustomerID.value;
+      String? clientID =
+          view_LedgerController.view_LedgerModel.selectedsalescustomerID.value;
 
-      CustomerInfo clientData = view_LedgerController.view_LedgerModel.salesCustomerList.firstWhere((element) => element.customerId == clientID);
+      CustomerInfo clientData = view_LedgerController
+          .view_LedgerModel.salesCustomerList
+          .firstWhere((element) => element.customerId == clientID);
       clientDetails = ClientDetails(
         clientName: clientData.customerName,
         clientAddress: clientData.customerName,
         GSTIN: clientData.customerGstNo == '' ? '-' : clientData.customerGstNo,
         PAN: extractPanFromGst(clientData.customerGstNo),
-        fromDate: DateTime.parse(account_LedgerController.account_LedgerModel.account_Ledger_list.value.startdate!),
-        toDate: DateTime.parse(account_LedgerController.account_LedgerModel.account_Ledger_list.value.enddate!),
       );
+      
     } else {
-      clientDetails = null;
+     clientDetails=null;
     }
 
-    PDF_AccountLedgerSummary value = PDF_AccountLedgerSummary.fromJson(clientDetails: clientDetails, ledgerDetails: account_LedgerController.account_LedgerModel.account_Ledger_list.value);
+    PDF_AccountLedgerSummary value = PDF_AccountLedgerSummary.fromJson(
+        clientDetails: clientDetails,
+        ledgerDetails: account_LedgerController.account_LedgerModel.account_Ledger_list.value,
+          fromDate: DateTime.parse(account_LedgerController
+            .account_LedgerModel.account_Ledger_list.value.startdate!),
+        toDate: DateTime.parse(account_LedgerController
+            .account_LedgerModel.account_Ledger_list.value.enddate!)
+
+        );
 
     return value;
   }
@@ -108,7 +146,9 @@ mixin Account_LedgerService {
   }
 
   void resetFilters() {
-    account_LedgerController.account_LedgerModel.filteredaccount_Ledger_list.value = account_LedgerController.account_LedgerModel.account_Ledger_list.value;
+    account_LedgerController
+            .account_LedgerModel.filteredaccount_Ledger_list.value =
+        account_LedgerController.account_LedgerModel.account_Ledger_list.value;
   }
 }
 // void applySearchFilter(String query) {

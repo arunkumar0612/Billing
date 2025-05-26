@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class GSTSummaryModel {
   final List<GSTEntryModel> gstList;
   final double inputGst;
@@ -195,3 +197,33 @@ class PaymentDetail {
     };
   }
 }
+
+// class PDF_GSTledgerSummary {
+//   final DateTime fromDate;
+//   final DateTime toDate;
+//   final GSTSummaryModel summaryDetails;
+
+//   PDF_GSTledgerSummary({
+//     required this.fromDate,
+//     required this.toDate,
+//     required this.summaryDetails,
+
+//   });
+
+//   factory PDF_GSTledgerSummary.fromJson({required GSTSummaryModel summaryDetails}) {
+//   return PDF_GSTledgerSummary(
+//     summaryDetails: summaryDetails,
+
+//   );
+// }
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'fromDate': fromDate,
+//       'toDate': toDate,
+//       'gstlist':  summaryDetails.toJson(),
+    
+//   };
+// }
+// }
+

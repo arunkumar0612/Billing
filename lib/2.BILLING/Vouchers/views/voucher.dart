@@ -2321,7 +2321,7 @@ class _VoucherState extends State<Voucher> {
                                                         Column(
                                                           children: [
                                                             SizedBox(
-                                                              width: 200,
+                                                              width: 130,
                                                               height: 40,
                                                               child: TextFormField(
                                                                 style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: Primary_font_size.Text7),
@@ -2351,7 +2351,7 @@ class _VoucherState extends State<Voucher> {
                                                             ),
                                                             SizedBox(height: 10),
                                                             SizedBox(
-                                                              width: 200,
+                                                              width: 130,
                                                               child: ElevatedButton(
                                                                 onPressed: () {},
                                                                 child: Text('Submit'),

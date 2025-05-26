@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+// import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -1278,3 +1279,694 @@ class _accountLedgerState extends State<AccountLedger> {
     );
   }
 }
+
+
+
+// class account_ledger_filter extends StatefulWidget {
+//   const account_ledger_filter({super.key});
+
+//   @override
+//   State<account_ledger_filter> createState() => _account_ledger_filterState();
+// }
+
+// class _account_ledger_filterState extends State<account_ledger_filter> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return  Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             const Text(
+//               'Filter Ledgers',
+//               style: TextStyle(
+//                 fontSize: 20,
+//                 fontWeight: FontWeight.bold,
+//                 color: Primary_colors.Color3,
+//               ),
+//             ),
+//             const Divider(
+//               height: 30,
+//               thickness: 1,
+//               color: Color.fromARGB(255, 97, 97, 97),
+//             ),
+//             const SizedBox(height: 35),
+
+//             Obx(
+//               () => SizedBox(
+//                 child:Column(
+//                         crossAxisAlignment: CrossAxisAlignment.start,
+//                         children: [
+//                           const Text(
+//                             'Select transaction Type',
+//                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+//                           ),
+//                           const SizedBox(height: 12),
+//                           Wrap(
+//                             spacing: 8,
+//                             runSpacing: 8,
+//                             children: [
+//                               _buildtransactionFilterChip('Show All'),
+//                               _buildtransactionFilterChip('Payable'),
+//                               _buildtransactionFilterChip('Receivable'),
+//                             ],
+//                           ),
+//                           const SizedBox(height: 35),
+//                         ],
+//                       )
+//               ),
+//             ),
+//             Obx(
+//               () => SizedBox(
+//                 child: Column(
+//                         crossAxisAlignment: CrossAxisAlignment.start,
+//                         children: [
+//                           const Text(
+//                             'Select payment Type',
+//                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+//                           ),
+//                           const SizedBox(height: 12),
+//                           Wrap(
+//                             spacing: 8,
+//                             runSpacing: 8,
+//                             children: [
+//                               _buildpaymenFilterChip('Show All'),
+//                               _buildpaymenFilterChip('Credit'),
+//                               _buildpaymenFilterChip('Debit'),
+//                             ],
+//                           ),
+//                           const SizedBox(height: 35),
+//                         ],
+//                       )
+//               ),
+//             ),
+            
+//             Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 const Text(
+//                   'Invoice type',
+//                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+//                 ),
+//                 const SizedBox(height: 10),
+//                 Obx(
+//                   () => Wrap(
+//                     spacing: 5,
+//                     children: [
+//                       FilterChip(
+//                         showCheckmark: false,
+//                         label: const Text('Show All'),
+//                         selected: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Show All',
+//                         onSelected: (_) {
+//                           view_LedgerController.view_LedgerModel.selectedinvoiceType.value = 'Show All';
+//                           view_LedgerController.view_LedgerModel.selectedsubcustomerID.value = 'None';
+//                         },
+//                         backgroundColor: Primary_colors.Dark,
+//                         selectedColor: Primary_colors.Dark,
+//                         labelStyle: TextStyle(
+//                           fontSize: Primary_font_size.Text7,
+//                           color: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Show All' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
+//                         ),
+//                         shape: RoundedRectangleBorder(
+//                           borderRadius: BorderRadius.circular(8),
+//                           side: BorderSide(
+//                             color: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Show All' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
+//                           ),
+//                         ),
+//                       ),
+//                       FilterChip(
+//                         label: const Text('Sales'),
+//                         selected: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Sales',
+//                         onSelected: (_) {
+//                           view_LedgerController.view_LedgerModel.selectedinvoiceType.value = 'Sales';
+//                         },
+//                         backgroundColor: Primary_colors.Dark,
+//                         showCheckmark: false,
+//                         selectedColor: Primary_colors.Dark,
+//                         labelStyle: TextStyle(
+//                           fontSize: Primary_font_size.Text7,
+//                           color: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Sales' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
+//                         ),
+//                         shape: RoundedRectangleBorder(
+//                           borderRadius: BorderRadius.circular(8),
+//                           side: BorderSide(
+//                             color: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Sales' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
+//                           ),
+//                         ),
+//                       ),
+//                       FilterChip(
+//                         label: const Text('Subscription'),
+//                         selected: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Subscription',
+//                         onSelected: (_) {
+//                           view_LedgerController.view_LedgerModel.selectedinvoiceType.value = 'Subscription';
+//                         },
+//                         backgroundColor: Primary_colors.Dark,
+//                         showCheckmark: false,
+//                         selectedColor: Primary_colors.Dark,
+//                         labelStyle: TextStyle(
+//                           fontSize: Primary_font_size.Text7,
+//                           color: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Subscription' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
+//                         ),
+//                         shape: RoundedRectangleBorder(
+//                           borderRadius: BorderRadius.circular(8),
+//                           side: BorderSide(
+//                             color: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Subscription' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
+//                           ),
+//                         ),
+//                       ),
+//                       FilterChip(
+//                         label: const Text('Vendor'),
+//                         selected: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Vendor',
+//                         onSelected: (_) {
+//                           view_LedgerController.view_LedgerModel.selectedinvoiceType.value = 'Vendor';
+//                         },
+//                         backgroundColor: Primary_colors.Dark,
+//                         showCheckmark: false,
+//                         selectedColor: Primary_colors.Dark,
+//                         labelStyle: TextStyle(
+//                           fontSize: Primary_font_size.Text7,
+//                           color: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Vendor' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
+//                         ),
+//                         shape: RoundedRectangleBorder(
+//                           borderRadius: BorderRadius.circular(8),
+//                           side: BorderSide(
+//                             color: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Vendor' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
+//                           ),
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               ],
+//             ),
+//             Obx(
+//               () => SizedBox(
+//                 child: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Sales' 
+//                     ? Column(
+//                         crossAxisAlignment: CrossAxisAlignment.start,
+//                         children: [
+//                           const SizedBox(height: 35),
+//                           const Text(
+//                             'Select sales client',
+//                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+//                           ),
+//                           const SizedBox(height: 10),
+//                           Obx(
+//                             () {
+//                               return SizedBox(
+//                                 height: 35,
+//                                 // width: 250,
+//                                 child: Container(
+//                                   decoration: BoxDecoration(
+//                                     border: Border.all(
+//                                       color: const Color.fromARGB(255, 91, 90, 90),
+//                                       width: 1.0,
+//                                     ),
+//                                     borderRadius: BorderRadius.circular(6.0),
+//                                   ),
+//                                   child: Row(
+//                                     children: [
+//                                       Expanded(
+//                                         child: DropdownSearch<String>(
+//                                           popupProps: PopupProps.menu(
+//                                             showSearchBox: true,
+//                                             searchFieldProps: TextFieldProps(
+//                                               decoration: InputDecoration(
+//                                                 hintText: 'Search...',
+//                                                 hintStyle: const TextStyle(fontSize: 12),
+//                                                 prefixIcon: const Icon(Icons.search, size: 18),
+//                                                 contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+//                                                 border: OutlineInputBorder(
+//                                                   borderRadius: BorderRadius.circular(6.0),
+//                                                   borderSide: BorderSide(color: Colors.grey.shade300),
+//                                                 ),
+//                                                 isDense: true,
+//                                               ),
+//                                             ),
+//                                             menuProps: MenuProps(
+//                                               borderRadius: BorderRadius.circular(6.0),
+//                                               elevation: 3,
+//                                             ),
+//                                             constraints: const BoxConstraints.tightFor(height: 250), // Reduced popup height
+//                                           ),
+//                                           dropdownDecoratorProps: DropDownDecoratorProps(
+//                                             dropdownSearchDecoration: InputDecoration(
+//                                               iconColor: const Color.fromARGB(252, 162, 158, 158),
+//                                               // labelText: "Client",
+//                                               // labelStyle: TextStyle(
+//                                               //   color: Colors.grey.shade600,
+//                                               //   fontSize: 12,
+//                                               // ),
+//                                               floatingLabelStyle: TextStyle(
+//                                                 color: Colors.blue.shade700,
+//                                                 fontSize: 12,
+//                                               ),
+//                                               contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+//                                               border: InputBorder.none,
+//                                               isDense: true,
+//                                             ),
+//                                             baseStyle: const TextStyle(
+//                                               fontSize: 12, // Smaller font size
+//                                               color: Color.fromARGB(255, 138, 137, 137),
+//                                             ),
+//                                           ),
+//                                           items: view_LedgerController.view_LedgerModel.salesCustomerList.map((customer) {
+//                                             return customer.customerName;
+//                                           }).toList(),
+//                                           selectedItem: view_LedgerController.view_LedgerModel.selectedsalescustomer.value,
+//                                           onChanged: (value) {
+//                                             if (value != null) {
+//                                               view_LedgerController.view_LedgerModel.selectedsalescustomer.value = value;
+//                                               final customerList = view_LedgerController.view_LedgerModel.salesCustomerList;
+
+//                                               // Find the index of the selected customer
+//                                               final index = customerList.indexWhere((customer) => customer.customerName == value);
+//                                               view_LedgerController.view_LedgerModel.selectedsalescustomerID.value = view_LedgerController.view_LedgerModel.salesCustomerList[index].customerId;
+//                                               if (kDebugMode) {
+//                                                 print('Selected customer ID: ${view_LedgerController.view_LedgerModel.selectedsalescustomerID.value}');
+//                                               }
+//                                             }
+//                                           },
+//                                         ),
+//                                       ),
+//                                       Obx(
+//                                         () => SizedBox(
+//                                           child: view_LedgerController.view_LedgerModel.selectedsalescustomer.value != 'None'
+//                                               ? IconButton(
+//                                                   onPressed: () {
+//                                                     view_LedgerController.view_LedgerModel.selectedsalescustomer.value = 'None';
+//                                                   },
+//                                                   icon: const Icon(
+//                                                     Icons.close,
+//                                                     color: Colors.red,
+//                                                     size: 18,
+//                                                   ),
+//                                                 )
+//                                               : const SizedBox(),
+//                                         ),
+//                                       )
+//                                     ],
+//                                   ),
+//                                 ),
+//                               );
+//                             },
+//                           ),
+//                         ],
+//                       )
+//                     : const SizedBox(),
+//               ),
+//             ),
+//             Obx(
+//               () => SizedBox(
+//                   child: view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Subscription'
+//                       ? Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             const SizedBox(height: 35),
+//                             const Text(
+//                               'Select subscription customer',
+//                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+//                             ),
+//                             const SizedBox(height: 10),
+//                             Obx(
+//                               () {
+//                                 return SizedBox(
+//                                   height: 35,
+//                                   // width: 250,
+//                                   child: Container(
+//                                     decoration: BoxDecoration(
+//                                       border: Border.all(
+//                                         color: const Color.fromARGB(255, 91, 90, 90),
+//                                         width: 1.0,
+//                                       ),
+//                                       borderRadius: BorderRadius.circular(6.0),
+//                                     ),
+//                                     child: Row(
+//                                       children: [
+//                                         Expanded(
+//                                           child: DropdownSearch<String>(
+//                                             popupProps: PopupProps.menu(
+//                                               showSearchBox: true,
+//                                               searchFieldProps: TextFieldProps(
+//                                                 decoration: InputDecoration(
+//                                                   hintText: 'Search...',
+//                                                   hintStyle: const TextStyle(fontSize: 12),
+//                                                   prefixIcon: const Icon(Icons.search, size: 18),
+//                                                   contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+//                                                   border: OutlineInputBorder(
+//                                                     borderRadius: BorderRadius.circular(6.0),
+//                                                     borderSide: BorderSide(color: Colors.grey.shade300),
+//                                                   ),
+//                                                   isDense: true,
+//                                                 ),
+//                                               ),
+//                                               menuProps: MenuProps(
+//                                                 borderRadius: BorderRadius.circular(6.0),
+//                                                 elevation: 3,
+//                                               ),
+//                                               constraints: const BoxConstraints.tightFor(height: 250), // Reduced popup height
+//                                             ),
+//                                             dropdownDecoratorProps: DropDownDecoratorProps(
+//                                               dropdownSearchDecoration: InputDecoration(
+//                                                 iconColor: const Color.fromARGB(252, 162, 158, 158),
+//                                                 // labelText: "Client",
+//                                                 // labelStyle: TextStyle(
+//                                                 //   color: Colors.grey.shade600,
+//                                                 //   fontSize: 12,
+//                                                 // ),
+//                                                 floatingLabelStyle: TextStyle(
+//                                                   color: Colors.blue.shade700,
+//                                                   fontSize: 12,
+//                                                 ),
+//                                                 contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+//                                                 border: InputBorder.none,
+//                                                 isDense: true,
+//                                               ),
+//                                               baseStyle: const TextStyle(
+//                                                 fontSize: 12, // Smaller font size
+//                                                 color: Color.fromARGB(255, 138, 137, 137),
+//                                               ),
+//                                             ),
+//                                             items: view_LedgerController.view_LedgerModel.subCustomerList.map((customer) {
+//                                               return customer.customerName;
+//                                             }).toList(),
+//                                             selectedItem: view_LedgerController.view_LedgerModel.selectedsubcustomer.value,
+//                                             onChanged: (value) {
+//                                               if (value != null) {
+//                                                 view_LedgerController.view_LedgerModel.selectedsubcustomer.value = value;
+//                                                 final customerList = view_LedgerController.view_LedgerModel.subCustomerList;
+
+//                                                 // Find the index of the selected customer
+//                                                 final index = customerList.indexWhere((customer) => customer.customerName == value);
+//                                                 view_LedgerController.view_LedgerModel.selectedsubcustomerID.value = view_LedgerController.view_LedgerModel.subCustomerList[index].customerId;
+//                                                 // print('Selected customer ID: ${view_LedgerController.view_LedgerModel.selectedsubcustomerID.value}');
+//                                               }
+//                                             },
+//                                           ),
+//                                         ),
+//                                         Obx(
+//                                           () => SizedBox(
+//                                             child: view_LedgerController.view_LedgerModel.selectedsubcustomer.value != 'None'
+//                                                 ? IconButton(
+//                                                     onPressed: () {
+//                                                       view_LedgerController.view_LedgerModel.selectedsubcustomer.value = 'None';
+//                                                       view_LedgerController.view_LedgerModel.selectedsubcustomerID.value = 'None';
+//                                                     },
+//                                                     icon: const Icon(
+//                                                       Icons.close,
+//                                                       color: Colors.red,
+//                                                       size: 18,
+//                                                     ),
+//                                                   )
+//                                                 : const SizedBox(),
+//                                           ),
+//                                         )
+//                                       ],
+//                                     ),
+//                                   ),
+//                                 );
+//                               },
+//                             ),
+//                           ],
+//                         )
+//                       : const SizedBox()),
+//             ),
+//             const SizedBox(height: 35),
+//             // Add Month Dropdown here
+
+//             Obx(() {
+//               return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+//                 Row(
+//                   crossAxisAlignment: CrossAxisAlignment.center,
+//                   children: [
+//                     const Text(
+//                       'Select date',
+//                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+//                     ),
+//                     // const SizedBox(width: 8),
+//                     Obx(
+//                       () => SizedBox(
+//                           child: view_LedgerController.view_LedgerModel.startDateController.value.text.isNotEmpty || view_LedgerController.view_LedgerModel.endDateController.value.text.isNotEmpty
+//                               ? TextButton(
+//                                   onPressed: () {
+//                                     view_LedgerController.view_LedgerModel.selectedMonth.value = 'None';
+//                                     view_LedgerController.view_LedgerModel.startDateController.value.clear();
+//                                     view_LedgerController.view_LedgerModel.endDateController.value.clear();
+//                                   },
+//                                   child: const Text(
+//                                     'Clear',
+//                                     style: TextStyle(fontSize: Primary_font_size.Text7),
+//                                   ),
+//                                 )
+//                               : const SizedBox()),
+//                     ),
+//                     const Spacer(),
+//                     Obx(() {
+//                       return Container(
+//                         padding: const EdgeInsets.symmetric(horizontal: 8),
+//                         width: 100, // Adjust width as needed
+//                         height: 30, // Adjust height as needed
+//                         child: DropdownButtonFormField<String>(
+//                           menuMaxHeight: 300,
+//                           value: view_LedgerController.view_LedgerModel.selectedMonth.value,
+//                           items: ['None', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((String value) {
+//                             return DropdownMenuItem<String>(
+//                               value: value,
+//                               child: Text(value),
+//                             );
+//                           }).toList(),
+//                           onChanged: (value) {
+//                             view_LedgerController.view_LedgerModel.selectedMonth.value = value!;
+//                             if (value != 'None') {
+//                               final monthIndex = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].indexOf(value) + 1;
+
+//                               final now = DateTime.now();
+//                               final year = now.year;
+//                               final firstDay = DateTime(year, monthIndex, 1);
+//                               final lastDay = monthIndex < 12 ? DateTime(year, monthIndex + 1, 0) : DateTime(year + 1, 1, 0);
+
+//                               String formatDate(DateTime date) {
+//                                 return "${date.year.toString().padLeft(4, '0')}-"
+//                                     "${date.month.toString().padLeft(2, '0')}-"
+//                                     "${date.day.toString().padLeft(2, '0')}";
+//                               }
+
+//                               view_LedgerController.view_LedgerModel.startDateController.value.text = formatDate(firstDay);
+//                               view_LedgerController.view_LedgerModel.endDateController.value.text = formatDate(lastDay);
+//                             } else {
+//                               view_LedgerController.view_LedgerModel.startDateController.value.clear();
+//                               view_LedgerController.view_LedgerModel.endDateController.value.clear();
+//                             }
+//                           },
+//                           decoration: const InputDecoration(
+//                             isDense: true,
+//                             contentPadding: EdgeInsets.symmetric(vertical: 8),
+//                             border: UnderlineInputBorder(
+//                               borderSide: BorderSide(color: Colors.grey),
+//                             ),
+//                             enabledBorder: UnderlineInputBorder(
+//                               borderSide: BorderSide(color: Colors.grey),
+//                             ),
+//                             focusedBorder: UnderlineInputBorder(
+//                               borderSide: BorderSide(color: Colors.blue),
+//                             ),
+//                           ),
+//                           style: const TextStyle(
+//                             fontSize: Primary_font_size.Text7,
+//                             color: Color.fromARGB(255, 154, 152, 152),
+//                           ),
+//                           dropdownColor: Primary_colors.Dark,
+//                         ),
+//                       );
+//                     }),
+//                   ],
+//                 ),
+//                 const SizedBox(height: 15),
+//                 Row(
+//                   children: [
+//                     Expanded(
+//                       child: SizedBox(
+//                         height: 35,
+//                         child: TextFormField(
+//                           style: const TextStyle(
+//                             color: Color.fromARGB(255, 154, 152, 152),
+//                             fontSize: Primary_font_size.Text7,
+//                           ),
+//                           controller: view_LedgerController.view_LedgerModel.startDateController.value,
+//                           readOnly: true,
+//                           onTap: () => widget.selectDate(context, view_LedgerController.view_LedgerModel.startDateController.value),
+//                           decoration: InputDecoration(
+//                             labelText: 'From',
+//                             labelStyle: const TextStyle(
+//                               color: Color.fromARGB(255, 154, 152, 152),
+//                               fontSize: Primary_font_size.Text7,
+//                             ),
+//                             suffixIcon: const Icon(
+//                               Icons.calendar_today,
+//                               size: 20,
+//                               color: Color.fromARGB(255, 85, 84, 84),
+//                             ),
+//                             contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+//                             border: OutlineInputBorder(
+//                               borderRadius: BorderRadius.circular(8),
+//                             ),
+//                             enabledBorder: OutlineInputBorder(
+//                               borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+//                               borderRadius: BorderRadius.circular(8),
+//                             ),
+//                             focusedBorder: OutlineInputBorder(
+//                               borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+//                               borderRadius: BorderRadius.circular(8),
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                     const SizedBox(width: 10),
+//                     Expanded(
+//                       child: SizedBox(
+//                         height: 35,
+//                         child: TextFormField(
+//                           style: const TextStyle(
+//                             color: Color.fromARGB(255, 154, 152, 152),
+//                             fontSize: Primary_font_size.Text7,
+//                           ),
+//                           controller: view_LedgerController.view_LedgerModel.endDateController.value,
+//                           readOnly: true,
+//                           onTap: () => widget.selectDate(context, view_LedgerController.view_LedgerModel.endDateController.value),
+//                           decoration: InputDecoration(
+//                             labelText: 'To',
+//                             labelStyle: const TextStyle(
+//                               color: Color.fromARGB(255, 154, 152, 152),
+//                               fontSize: Primary_font_size.Text7,
+//                             ),
+//                             suffixIcon: const Icon(
+//                               Icons.calendar_today,
+//                               size: 20,
+//                               color: Color.fromARGB(255, 85, 84, 84),
+//                             ),
+//                             contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+//                             border: OutlineInputBorder(
+//                               borderRadius: BorderRadius.circular(8),
+//                             ),
+//                             enabledBorder: OutlineInputBorder(
+//                               borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+//                               borderRadius: BorderRadius.circular(8),
+//                             ),
+//                             focusedBorder: OutlineInputBorder(
+//                               borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+//                               borderRadius: BorderRadius.circular(8),
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+               
+//               ]);
+//             }),
+
+//             const Spacer(),
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.end,
+//               children: [
+//                 OutlinedButton(
+//                   onPressed: () async {
+//                     widget.resetFilters();
+//                     Navigator.pop(context);
+//                     if (view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'Account Ledger') {
+//                       widget.get_Account_LedgerList();
+//                     }
+//                     if (view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'GST Ledger') {
+//                       widget.get_GST_LedgerList();
+//                       view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value == 'Consolidate' ? view_LedgerController.view_LedgerModel.showGSTsummary.value = true : false;
+//                     }
+//                   },
+//                   style: OutlinedButton.styleFrom(
+//                     side: const BorderSide(color: Primary_colors.Color3),
+//                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+//                     shape: RoundedRectangleBorder(
+//                       borderRadius: BorderRadius.circular(8),
+//                     ),
+//                   ),
+//                   child: const Text(
+//                     'RESET',
+//                     style: TextStyle(color: Primary_colors.Color3),
+//                   ),
+//                 ),
+//                 const SizedBox(width: 10),
+//                 ElevatedButton(
+//                   onPressed: () async {
+//                      widget.get_Account_LedgerList();
+//                   },
+//                   style: ElevatedButton.styleFrom(
+//                     backgroundColor: Primary_colors.Color3,
+//                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+//                     shape: RoundedRectangleBorder(
+//                       borderRadius: BorderRadius.circular(8),
+//                     ),
+//                   ),
+//                   child: const Text(
+//                     'APPLY',
+//                     style: TextStyle(color: Colors.white),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ],
+//         );
+//   }
+//   Widget _buildtransactionFilterChip(String label) {
+//     return Obx(() {
+//       final isSelected = view_LedgerController.view_LedgerModel.selectedtransactiontype.value == label;
+
+//       return ChoiceChip(
+//         label: Text(
+//           label == 'Show All' ? 'Show All   ' : label,
+//           style: TextStyle(color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+//         ),
+//         selected: isSelected,
+//         onSelected: (_) {
+//           view_LedgerController.view_LedgerModel.selectedtransactiontype.value = label;
+//         },
+//         backgroundColor: Primary_colors.Dark,
+//         selectedColor: Primary_colors.Dark,
+//         labelStyle: TextStyle(
+//           color: isSelected ? Primary_colors.Color3 : Colors.black,
+//         ),
+//         shape: RoundedRectangleBorder(
+//           borderRadius: BorderRadius.circular(8),
+//           side: BorderSide(
+//             color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
+//           ),
+//         ),
+//       );
+//     });
+//   }
+//    Widget _buildpaymenFilterChip(String label) {
+//     return Obx(() {
+//       final isSelected = view_LedgerController.view_LedgerModel.selectedPaymenttype.value == label;
+
+//       return ChoiceChip(
+//         label: Text(
+//           label == 'Show All' ? 'Show All   ' : label,
+//           style: TextStyle(color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+//         ),
+//         selected: isSelected,
+//         onSelected: (_) {
+//           view_LedgerController.view_LedgerModel.selectedPaymenttype.value = label;
+//         },
+//         backgroundColor: Primary_colors.Dark,
+//         selectedColor: Primary_colors.Dark,
+//         labelStyle: TextStyle(
+//           color: isSelected ? Primary_colors.Color3 : Colors.black,
+//         ),
+//         shape: RoundedRectangleBorder(
+//           borderRadius: BorderRadius.circular(8),
+//           side: BorderSide(
+//             color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84),
+//           ),
+//         ),
+//       );
+//     });
+//   }
+// }

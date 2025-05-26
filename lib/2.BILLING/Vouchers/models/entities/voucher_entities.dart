@@ -136,15 +136,15 @@ class OverdueHistory {
 
   factory OverdueHistory.fromJson(Map<String, dynamic> json) {
     return OverdueHistory(
-      date: json['Date'] ?? '',
-      feedback: json['Feedback'] ?? '',
+      date: json['date'] ?? '',
+      feedback: json['feedback'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'Date': date,
-      'Feedback': feedback,
+      'date': date,
+      'feedback': feedback,
     };
   }
 }

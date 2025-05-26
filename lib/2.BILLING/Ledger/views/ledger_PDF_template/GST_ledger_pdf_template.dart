@@ -20,8 +20,6 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/GST_ledger_entities.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/ledger_pdf_entities/GST_ledger_PDF_entities.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/views/GST_ledger.dart';
 
 Future<Uint8List> generateGSTledger(PdfPageFormat pageFormat, GSTSummaryModel gstLedgerData) async {
   final gstLedger = GSTLedger(data: gstLedgerData, currentDate: DateTime.now());
@@ -505,7 +503,7 @@ class GSTLedger {
             children: List.generate(tableHeaders.length, (index) {
               return _buildHeaderCell(
                 tableHeaders[index],
-                alignment: index <= 3 ? pw.Alignment.center : pw.Alignment.center,
+                alignment: index <= 4 ? pw.Alignment.center : pw.Alignment.centerRight,
               );
             }),
           ),
@@ -547,7 +545,7 @@ class GSTLedger {
         textAlign: align == pw.Alignment.centerLeft ? pw.TextAlign.left : pw.TextAlign.right,
         softWrap: true,
         style: pw.TextStyle(
-          fontSize: 8,
+          fontSize: 7,
           fontWeight: isBold ? pw.FontWeight.bold : pw.FontWeight.normal,
         ),
       ),
@@ -560,7 +558,7 @@ class GSTLedger {
       alignment: isCommonAlignment ? pw.Alignment.topLeft : (alignRight ? pw.Alignment.centerRight : pw.Alignment.centerLeft),
       child: pw.Text(
         text,
-        style: const pw.TextStyle(fontSize: 8),
+        style: const pw.TextStyle(fontSize: 7),
         softWrap: true,
         textAlign: alignRight ? pw.TextAlign.right : pw.TextAlign.left,
       ),
@@ -575,7 +573,7 @@ class GSTLedger {
         text,
         textAlign: pw.TextAlign.center,
         style: pw.TextStyle(
-          fontSize: 8,
+          fontSize: 7,
           fontWeight: pw.FontWeight.bold,
           color: _baseTextColor,
         ),

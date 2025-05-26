@@ -20,7 +20,7 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/ledger_pdf_entities/account_ledger_PDF_entities.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/account_ledger_entities.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 Future<Uint8List> generateAccountLedger(PdfPageFormat pageFormat, PDF_AccountLedgerSummary accountLedgerData) async {
@@ -73,7 +73,7 @@ class Invoice {
         footer: _buildFooter,
         build: (context) => [
           pw.SizedBox(height: 5),
-           data.clientDetails !=null ?  _clientDetailsHeader(context) : _consolidatedLedgerHeader(context),
+          data.clientDetails != null ? _clientDetailsHeader(context) : _consolidatedLedgerHeader(context),
           pw.SizedBox(height: 15),
           ..._contentTable(context),
           totalRow(),
@@ -348,7 +348,7 @@ class Invoice {
               child: pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  buildInfoRow('Date', _formatDate(DateTime.now())),   
+                  buildInfoRow('Date', _formatDate(DateTime.now())),
                 ],
               ),
             ),
@@ -362,7 +362,7 @@ class Invoice {
                 ],
               ),
             ),
-             pw.SizedBox(width: 40),
+            pw.SizedBox(width: 40),
             pw.Expanded(
               flex: 4,
               child: pw.Column(
@@ -379,7 +379,7 @@ class Invoice {
   }
 
   List<pw.Widget> _contentTable(pw.Context context) {
-    const tableHeaders = ['S.No', 'Date', 'Voucher No', 'Description', 'Debit', 'Credit', 'Balance'];
+    const tableHeaders = ['S.No', 'Date', 'Invoice No', 'Description', 'Debit', 'Credit', 'Balance'];
 
     final dataRows = List<pw.TableRow>.generate(
       data.ledgerDetails.ledgerList.length,
@@ -389,16 +389,14 @@ class Invoice {
           children: [
             _buildCell((index + 1).toString()),
             _buildCell(formatDate(item.updatedDate)),
-            _buildCell(item.voucherNumber),
-            _builddescription(item.description, item.invoiceNumber, isDescription: true),
+            _buildCell(item.invoiceNumber, alignRight: true),
+            _builddescription(item.description, item.billDetails.subtotal.toString(), item.billDetails.totalGST.toString(), item.tdsAmount.toString(), isDescription: true),
             _buildCell(_formatCurrency(item.debitAmount), alignRight: true),
             _buildCell(_formatCurrency(item.creditAmount), alignRight: true),
-            
- _buildCell(
-  _formatCurrency(parseBalanceWithSuffix(item.balance.toString()).abs()) +
-      (parseBalanceWithSuffix(item.balance.toString()) < 0 ? ' (Dr)' : ' (Cr)'),
-  alignRight: true,
-),
+            _buildCell(
+              _formatCurrency(parseBalanceWithSuffix(item.balance.toString()).abs()) + (parseBalanceWithSuffix(item.balance.toString()) < 0 ? ' (Dr)' : ' (Cr)'),
+              alignRight: true,
+            ),
           ],
         );
       },
@@ -428,7 +426,12 @@ class Invoice {
               color: PdfColors.green500,
               borderRadius: pw.BorderRadius.all(pw.Radius.circular(2)),
             ),
-            children: tableHeaders.map((h) => _buildHeaderCell(h)).toList(),
+            children: List.generate(tableHeaders.length, (index) {
+              return _buildHeaderCell(
+                tableHeaders[index],
+                alignment: index <= 3 ? pw.Alignment.center : pw.Alignment.centerRight,
+              );
+            }),
           ),
         ],
       ),
@@ -456,13 +459,10 @@ class Invoice {
     ];
   }
 
-  
-
- double parseBalanceWithSuffix(String balance) {
-  // Simply parse the numeric value (remove any existing formatting)
-  return double.tryParse(balance.replaceAll(',', '').trim()) ?? 0.0;
-}
-
+  double parseBalanceWithSuffix(String balance) {
+    // Simply parse the numeric value (remove any existing formatting)
+    return double.tryParse(balance.replaceAll(',', '').trim()) ?? 0.0;
+  }
 
   pw.Widget totalRow() {
     // final totalDebit = data.ledgerDetails.fold<double>(
@@ -557,7 +557,7 @@ class Invoice {
         textAlign: align == pw.Alignment.centerLeft ? pw.TextAlign.left : pw.TextAlign.right,
         softWrap: true,
         style: pw.TextStyle(
-          fontSize: 9.5,
+          fontSize: 7,
           fontWeight: isBold ? pw.FontWeight.bold : pw.FontWeight.normal,
         ),
       ),
@@ -570,7 +570,7 @@ class Invoice {
       alignment: isDescription ? pw.Alignment.topLeft : (alignRight ? pw.Alignment.centerRight : pw.Alignment.center),
       child: pw.Text(
         text,
-        style: const pw.TextStyle(fontSize: 9.5),
+        style: const pw.TextStyle(fontSize: 7),
         softWrap: true,
         // overflow: isDescription ? pw.TextOverflow.clip : pw.TextOverflow.clip,
         textAlign: alignRight ? pw.TextAlign.right : pw.TextAlign.left, // 👈 added
@@ -578,14 +578,14 @@ class Invoice {
     );
   }
 
-  pw.Widget _builddescription(String text, String Sub_text, {bool isDescription = false, bool alignRight = false}) {
+  pw.Widget _builddescription(String text, String Sub_text1, String Sub_text2, String Sub_text3, {bool isDescription = false, bool alignRight = false}) {
     return pw.Container(
         padding: const pw.EdgeInsets.only(bottom: 10, top: 10, left: 5, right: 5),
         alignment: isDescription ? pw.Alignment.topLeft : (alignRight ? pw.Alignment.centerRight : pw.Alignment.centerLeft),
         child: pw.Column(children: [
           pw.Text(
             text,
-            style: const pw.TextStyle(fontSize: 9.5),
+            style: const pw.TextStyle(fontSize: 7),
             softWrap: true,
             // overflow: isDescription ? pw.TextOverflow.clip : pw.TextOverflow.clip,
           ),
@@ -593,23 +593,35 @@ class Invoice {
           pw.Align(
             alignment: pw.Alignment.centerLeft,
             child: pw.Text(
-              Sub_text,
+              'Net : $Sub_text1,  GST: $Sub_text2,  TDS: $Sub_text3',
               style: pw.TextStyle(fontSize: 8, fontStyle: pw.FontStyle.italic, color: PdfColors.blue900),
               softWrap: true,
               // overflow: isDescription ? pw.TextOverflow.clip : pw.TextOverflow.clip,
             ),
           ),
+          // pw.SizedBox(height: 2),
+          // pw.Align(
+          //   alignment: pw.Alignment.centerLeft,
+          //   child: pw.Text(
+          //     'GST : $Sub_text2 \n'
+          //     'TDS: $Sub_text3',
+          //     style: pw.TextStyle(fontSize: 8, fontStyle: pw.FontStyle.italic, color: PdfColors.blue900),
+          //     softWrap: true,
+          //     // overflow: isDescription ? pw.TextOverflow.clip : pw.TextOverflow.clip,
+          //   ),
+          // ),
         ]));
   }
 
-  pw.Widget _buildHeaderCell(String text) {
+  pw.Widget _buildHeaderCell(String text, {pw.Alignment alignment = pw.Alignment.centerLeft}) {
     return pw.Container(
       padding: const pw.EdgeInsets.only(bottom: 10, top: 10, left: 5, right: 5),
-      alignment: pw.Alignment.center,
+      alignment: alignment,
       child: pw.Text(
         text,
+        textAlign: pw.TextAlign.center,
         style: pw.TextStyle(
-          fontSize: 9.5,
+          fontSize: 7,
           fontWeight: pw.FontWeight.bold,
           color: _baseTextColor,
         ),

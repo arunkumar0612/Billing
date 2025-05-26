@@ -33,6 +33,7 @@ class _VoucherState extends State<Voucher> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.resetvoucherFilters();
       widget.get_VoucherList();
       widget.Get_SUBcustomerList();
       widget.Get_SALEScustomerList();
@@ -1642,12 +1643,6 @@ class _VoucherState extends State<Voucher> {
     );
   }
 
-  List<String> activeFilters = [
-    'Category: Shoes',
-    'Price: Under ₹1000',
-    'Brand: Puma',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1662,70 +1657,97 @@ class _VoucherState extends State<Voucher> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.arrow_back, color: Colors.white),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        const SizedBox(width: 3),
-                        const Text(
-                          'Vouchers',
-                          style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text12),
-                        ),
-                        Container(
-                          height: 50,
-                          width: 500,
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                          // decoration: BoxDecoration(
-                          //   color: Colors.grey[100],
-                          //   borderRadius: BorderRadius.circular(12),
-                          //   boxShadow: [
-                          //     BoxShadow(
-                          //       color: Colors.black12,
-                          //       blurRadius: 6,
-                          //       offset: Offset(0, 2),
-                          //     ),
-                          //   ],
-                          // ),
-                          child: SizedBox(
-                            height: 20,
-                            child: ListView.separated(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: activeFilters.length,
-                              separatorBuilder: (context, index) => const SizedBox(width: 8),
-                              itemBuilder: (context, index) {
-                                final filter = activeFilters[index];
-                                return Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                                  decoration: BoxDecoration(
-                                    color: const Color.fromARGB(255, 203, 207, 252),
-                                    borderRadius: BorderRadius.circular(30),
-                                    border: Border.all(color: Primary_colors.Color3),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        filter,
-                                        style: const TextStyle(color: Color.fromARGB(255, 15, 20, 88), fontSize: 10),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      // GestureDetector(
-                                      //   onTap: () {
-                                      //     setState(() {
-                                      //       // activeFilters.removeAt(index); // or trigger controller
-                                      //     });
-                                      //   },
-                                      //   child: const Icon(Icons.close, size: 18, color: Primary_colors.Color3),
-                                      // ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.arrow_back, color: Colors.white),
+                            onPressed: () => Navigator.pop(context),
                           ),
-                        )
-                      ],
+                          const SizedBox(width: 3),
+                          const Text(
+                            'Vouchers',
+                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text12),
+                          ),
+                          Expanded(
+                            child: Container(
+                                height: 50,
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                                child: Obx(
+                                  () => SizedBox(
+                                      height: 20,
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                          children: [
+                                            if (voucherController.voucherModel.selectedvouchertype.value != 'Show All')
+                                              _buildselectedFiltersChip(
+                                                voucherController.voucherModel.selectedvouchertype.value,
+                                                onRemove: () {
+                                                  voucherController.voucherModel.selectedvouchertype.value = 'Show All';
+                                                },
+                                              ),
+                                            if (voucherController.voucherModel.selectedInvoiceType.value != 'Show All')
+                                              Row(
+                                                children: [
+                                                  const SizedBox(width: 5),
+                                                  _buildselectedFiltersChip(
+                                                    voucherController.voucherModel.selectedInvoiceType.value,
+                                                    onRemove: () {
+                                                      voucherController.voucherModel.selectedInvoiceType.value = 'Show All';
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            if (voucherController.voucherModel.selectedInvoiceType.value != 'Show All')
+                                              Row(
+                                                children: [
+                                                  if (voucherController.voucherModel.selectedInvoiceType.value == 'Sales' && voucherController.voucherModel.selectedsalescustomer.value != 'None')
+                                                    Row(
+                                                      children: [
+                                                        const SizedBox(width: 5),
+                                                        _buildselectedFiltersChip(
+                                                          voucherController.voucherModel.selectedsalescustomer.value,
+                                                          onRemove: () {
+                                                            voucherController.voucherModel.selectedsalescustomer.value = 'None';
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  if (voucherController.voucherModel.selectedInvoiceType.value == 'Subscription' && voucherController.voucherModel.selectedsubcustomer.value != 'None')
+                                                    Row(
+                                                      children: [
+                                                        const SizedBox(width: 5),
+                                                        _buildselectedFiltersChip(
+                                                          voucherController.voucherModel.selectedsubcustomer.value,
+                                                          onRemove: () {
+                                                            voucherController.voucherModel.selectedsubcustomer.value = 'None';
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                ],
+                                              ),
+                                            if (voucherController.voucherModel.selectedpaymentStatus.value != 'Show All')
+                                              Row(
+                                                children: [
+                                                  const SizedBox(width: 5),
+                                                  _buildselectedFiltersChip(
+                                                    voucherController.voucherModel.selectedpaymentStatus.value,
+                                                    onRemove: () {
+                                                      voucherController.voucherModel.selectedpaymentStatus.value = 'Show All';
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            const SizedBox(width: 5),
+                                          ],
+                                        ),
+                                      )),
+                                )),
+                          )
+                        ],
+                      ),
                     ),
                     Row(
                       children: [
@@ -3890,6 +3912,36 @@ class _VoucherState extends State<Voucher> {
   //     ),
   //   );
   // }
+  Widget _buildselectedFiltersChip(String label, {required VoidCallback onRemove}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 203, 207, 252),
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(color: Primary_colors.Color3),
+      ),
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: const TextStyle(color: Color.fromARGB(255, 15, 20, 88), fontSize: Primary_font_size.Text8),
+          ),
+          const SizedBox(width: 4),
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () async {
+                onRemove();
+                await widget.get_VoucherList();
+              },
+              child: const Icon(Icons.cancel_sharp, size: 16, color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildVouchertypeFilterChip(String label) {
     final isSelected = voucherController.voucherModel.selectedvouchertype.value == label;
 

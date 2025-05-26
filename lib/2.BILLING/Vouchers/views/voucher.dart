@@ -33,6 +33,7 @@ class _VoucherState extends State<Voucher> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.resetvoucherFilters();
       widget.get_VoucherList();
       widget.Get_SUBcustomerList();
       widget.Get_SALEScustomerList();

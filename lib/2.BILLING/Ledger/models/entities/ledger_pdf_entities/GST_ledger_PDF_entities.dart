@@ -1,7 +1,8 @@
 
 import 'package:intl/intl.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/GST_ledger_entities.dart';
 
-class SummaryDetails {
+class GSTsummaryDetails {
 
   final String category;
   final String CGST;
@@ -9,7 +10,7 @@ class SummaryDetails {
   final String IGST;
   final String totalGST;
  
-  SummaryDetails({
+  GSTsummaryDetails({
     required this.category,
     required this.CGST,
     required this.SGST,
@@ -17,8 +18,8 @@ class SummaryDetails {
     required this.totalGST,
   });
 
-  factory SummaryDetails.fromJson(Map<String, dynamic> json) {
-    return SummaryDetails(
+  factory GSTsummaryDetails.fromJson(Map<String, dynamic> json) {
+    return GSTsummaryDetails(
       category: json['category'],
       CGST: json['CGST']?? '0',
       SGST: json['SGST']?? '0',
@@ -99,35 +100,3 @@ class GSTlogDetails {
   }
 }
 
-class GSTledger {
-  final DateTime fromDate;
-  final DateTime toDate;
-  final List<SummaryDetails> summaryDetails;
-  final List<GSTlogDetails> gstLogDetails;
-
-  GSTledger({
-    required this.fromDate,
-    required this.toDate,
-    required this.summaryDetails,
-    required this.gstLogDetails,
-  });
-
-  factory GSTledger.fromJson(Map<String, dynamic> json) {
-  return GSTledger(
-    fromDate: DateFormat('dd-MM-yyyy').parse(json['fromDate']),
-    toDate: DateFormat('dd-MM-yyyy').parse(json['toDate']),
-    summaryDetails: (json['summaryDetails'] as List<dynamic>?)?.map((item) => SummaryDetails.fromJson(item)).toList() ??[],
-    gstLogDetails: (json['GSTlogDetails'] as List<dynamic>?)?.map((item) => GSTlogDetails.fromJson(item)).toList() ??[],
-  );
-}
-
-
-  Map<String, dynamic> toJson() {
-    return {
-      'fromDate':DateFormat('dd-MM-yyyy').format(fromDate),
-      'toDate':   DateFormat('dd-MM-yyyy').format(toDate),
-      'summaryDetails': summaryDetails.map((e)=> e.toJson()).toList() , 
-      'GSTlogDetails': gstLogDetails.map((ledger) => ledger.toJson()).toList(),
-    };
-  }
-}

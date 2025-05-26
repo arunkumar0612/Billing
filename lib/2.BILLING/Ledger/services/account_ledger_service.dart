@@ -46,8 +46,8 @@ mixin Account_LedgerService {
             ? ''
             : view_LedgerController.view_LedgerModel.selectedinvoiceType.value.toLowerCase(), //sales   (or) subscription (or) vendor,
         "customerid": view_LedgerController.view_LedgerModel.selectedsubcustomerID.value == 'None' ? '' : view_LedgerController.view_LedgerModel.selectedsubcustomerID.value,
-        "startdate": view_LedgerController.view_LedgerModel.startDateController.value.text,
-        "enddate": view_LedgerController.view_LedgerModel.endDateController.value.text,
+        // "startdate": view_LedgerController.view_LedgerModel.startDateController.value.text,
+        // "enddate": view_LedgerController.view_LedgerModel.endDateController.value.text,
       },
       API.getaccount_Ledgerlist,
     );
@@ -78,8 +78,10 @@ mixin Account_LedgerService {
         clientAddress: clientData.customerName,
         GSTIN: clientData.customerGstNo == '' ? '-' : clientData.customerGstNo,
         PAN: extractPanFromGst(clientData.customerGstNo),
-        fromDate: DateTime.parse(account_LedgerController.account_LedgerModel.account_Ledger_list.value.startdate!),
-        toDate: DateTime.parse(account_LedgerController.account_LedgerModel.account_Ledger_list.value.enddate!),
+        // fromDate: DateTime.parse(account_LedgerController
+        //     .account_LedgerModel.account_Ledger_list.value.startdate!),
+        // toDate: DateTime.parse(account_LedgerController
+        //     .account_LedgerModel.account_Ledger_list.value.enddate!),
       );
     } else if (Sales_clientOrNot) {
       String? clientID = view_LedgerController.view_LedgerModel.selectedsalescustomerID.value;
@@ -90,14 +92,16 @@ mixin Account_LedgerService {
         clientAddress: clientData.customerName,
         GSTIN: clientData.customerGstNo == '' ? '-' : clientData.customerGstNo,
         PAN: extractPanFromGst(clientData.customerGstNo),
-        fromDate: DateTime.parse(account_LedgerController.account_LedgerModel.account_Ledger_list.value.startdate!),
-        toDate: DateTime.parse(account_LedgerController.account_LedgerModel.account_Ledger_list.value.enddate!),
       );
     } else {
       clientDetails = null;
     }
 
-    PDF_AccountLedgerSummary value = PDF_AccountLedgerSummary.fromJson(clientDetails: clientDetails, ledgerDetails: account_LedgerController.account_LedgerModel.account_Ledger_list.value);
+    PDF_AccountLedgerSummary value = PDF_AccountLedgerSummary.fromJson(
+        clientDetails: clientDetails,
+        ledgerDetails: account_LedgerController.account_LedgerModel.account_Ledger_list.value,
+        fromDate: DateTime.parse(account_LedgerController.account_LedgerModel.account_Ledger_list.value.startdate!),
+        toDate: DateTime.parse(account_LedgerController.account_LedgerModel.account_Ledger_list.value.enddate!));
 
     return value;
   }

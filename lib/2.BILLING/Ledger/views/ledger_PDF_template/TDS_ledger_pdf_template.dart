@@ -19,248 +19,24 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/TDS_ledger_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/ledger_pdf_entities/TDS_ledger_PDF_entities.dart';
 
-Future<Uint8List> generateTDSledger(PdfPageFormat pageFormat) async {
-  final List<Map<String, dynamic>> summaryList = [
-    {
-      'category': 'Input',
-      'CTDS': '34454545454.67',
-      'STDS': '453454545454.5',
-      'ITDS': '',
-      'totalTDS': '4323.54',
-    },
-    {
-      'category': 'Output',
-      'CTDS': '4545',
-      'STDS': '',
-      'ITDS': '3333445423.55',
-      'totalTDS': '4323.54',
-    },
-  ];
-
-  final List<Map<String, dynamic>> logList = [
-    {
-      'logDate': '30-01-2025',
-      'invoiceNo': 'INV-3423',
-      'particulars': 'Goods Purchased',
-      'TDStype': 'Output',
-      'taxValue': '9000',
-      'CTDS': '4500',
-      'STDS': '4500',
-      'ITDS': '',
-      'totalTDS': '9000',
-      'grossAmount': '9000'
-    },
-    {
-      'logDate': '27-04-2025',
-      'invoiceNo': 'INV-3423',
-      'particulars': 'Subscription Service Sold',
-      'TDStype': 'Input',
-      'taxValue': '9000',
-      'CTDS': '4500',
-      'STDS': '450',
-      'ITDS': '',
-      'totalTDS': '903400',
-      'grossAmount': '900'
-    },
-    {
-      'logDate': '27-04-2025',
-      'invoiceNo': 'INV-3423',
-      'particulars': 'Goods Purchased',
-      'TDStype': 'Input',
-      'taxValue': '453366',
-      'CTDS': '',
-      'STDS': '',
-      'ITDS': '4564346',
-      'totalTDS': '654365',
-      'grossAmount': '9643800'
-    },
-    {
-      'logDate': '27-04-2025',
-      'invoiceNo': 'INV-3423',
-      'particulars': 'Goods Purchased',
-      'TDStype': 'Output',
-      'taxValue': '34550',
-      'CTDS': '676450',
-      'STDS': '2332',
-      'ITDS': '',
-      'totalTDS': '5673466',
-      'grossAmount': '3454'
-    },
-    {
-      'logDate': '30-01-2025',
-      'invoiceNo': 'INV-3423',
-      'particulars': 'Goods Purchased',
-      'TDStype': 'Output',
-      'taxValue': '9000',
-      'CTDS': '4500',
-      'STDS': '4500',
-      'ITDS': '',
-      'totalTDS': '9000',
-      'grossAmount': '9000'
-    },
-    {
-      'logDate': '27-04-2025',
-      'invoiceNo': 'INV-3423',
-      'particulars': 'Subscription Service Sold',
-      'TDStype': 'Input',
-      'taxValue': '9000',
-      'CTDS': '4500',
-      'STDS': '450',
-      'ITDS': '',
-      'totalTDS': '903400',
-      'grossAmount': '900'
-    },
-    {
-      'logDate': '27-04-2025',
-      'invoiceNo': 'INV-3423',
-      'particulars': 'Goods Purchased',
-      'TDStype': 'Input',
-      'taxValue': '453366',
-      'CTDS': '',
-      'STDS': '',
-      'ITDS': '4564346',
-      'totalTDS': '654365',
-      'grossAmount': '9643800'
-    },
-    {
-      'logDate': '27-04-2025',
-      'invoiceNo': 'INV-3423',
-      'particulars': 'Goods Purchased',
-      'TDStype': 'Output',
-      'taxValue': '34550',
-      'CTDS': '676450',
-      'STDS': '2332',
-      'ITDS': '',
-      'totalTDS': '5673466',
-      'grossAmount': '3454'
-    },
-    {
-      'logDate': '30-01-2025',
-      'invoiceNo': 'INV-3423',
-      'particulars': 'Goods Purchased',
-      'TDStype': 'Output',
-      'taxValue': '9000',
-      'CTDS': '4500',
-      'STDS': '4500',
-      'ITDS': '',
-      'totalTDS': '9000',
-      'grossAmount': '9000'
-    },
-    {
-      'logDate': '27-04-2025',
-      'invoiceNo': 'INV-3423',
-      'particulars': 'Subscription Service Sold',
-      'TDStype': 'Input',
-      'taxValue': '9000',
-      'CTDS': '4500',
-      'STDS': '450',
-      'ITDS': '',
-      'totalTDS': '903400',
-      'grossAmount': '900'
-    },
-    {
-      'logDate': '27-04-2025',
-      'invoiceNo': 'INV-3423',
-      'particulars': 'Goods Purchased',
-      'TDStype': 'Input',
-      'taxValue': '453366',
-      'CTDS': '',
-      'STDS': '',
-      'ITDS': '4564346',
-      'totalTDS': '654365',
-      'grossAmount': '9643800'
-    },
-    {
-      'logDate': '27-04-2025',
-      'invoiceNo': 'INV-3423',
-      'particulars': 'Goods Purchased',
-      'TDStype': 'Output',
-      'taxValue': '34550',
-      'CTDS': '676450',
-      'STDS': '2332',
-      'ITDS': '',
-      'totalTDS': '5673466',
-      'grossAmount': '3454'
-    },
-    {
-      'logDate': '30-01-2025',
-      'invoiceNo': 'INV-3423',
-      'particulars': 'Goods Purchased',
-      'TDStype': 'Output',
-      'taxValue': '9000',
-      'CTDS': '4500',
-      'STDS': '4500',
-      'ITDS': '',
-      'totalTDS': '9000',
-      'grossAmount': '9000'
-    },
-    {
-      'logDate': '27-04-2025',
-      'invoiceNo': 'INV-3423',
-      'particulars': 'Subscription Service Sold',
-      'TDStype': 'Input',
-      'taxValue': '9000',
-      'CTDS': '4500',
-      'STDS': '450',
-      'ITDS': '',
-      'totalTDS': '903400',
-      'grossAmount': '900'
-    },
-    {
-      'logDate': '27-04-2025',
-      'invoiceNo': 'INV-3423',
-      'particulars': 'Goods Purchased',
-      'TDStype': 'Input',
-      'taxValue': '453366',
-      'CTDS': '',
-      'STDS': '',
-      'ITDS': '4564346',
-      'totalTDS': '654365',
-      'grossAmount': '9643800'
-    },
-    {
-      'logDate': '27-04-2025',
-      'invoiceNo': 'INV-3423',
-      'particulars': 'Goods Purchased',
-      'TDStype': 'Output',
-      'taxValue': '34550',
-      'CTDS': '676450',
-      'STDS': '2332',
-      'ITDS': '',
-      'totalTDS': '5673466',
-      'grossAmount': '3454'
-    },
-  ];
-
-  DateTime fromDate = DateFormat('dd-MM-yyyy').parse('03-09-2024');
-  DateTime toDate = DateFormat('dd-MM-yyyy').parse('04-03-2025');
-
-  List<SummaryDetails> summaryParsedList = summaryList.map((item) => SummaryDetails.fromJson(item)).toList();
-  List<TDSlogDetails> logParsedList = logList.map((item) => TDSlogDetails.fromJson(item)).toList();
-
-  TDSledger value = TDSledger(
-    fromDate: fromDate,
-    toDate: toDate,
-    summaryDetails: summaryParsedList,
-    tdsLogDetails: logParsedList,
-  );
-
-  final tdsStatement = TDSstatement(
-    tdsLedger: value,
+Future<Uint8List> generateTDSledger(PdfPageFormat pageFormat, TDSSummaryModel tds_Ledger_list) async {
+  final tdsLedger = TDSledger(
+    data: tds_Ledger_list,
     currentDate: DateTime.now(),
   );
 
-  return await tdsStatement.buildPdf(pageFormat);
+  return await tdsLedger.buildPdf(pageFormat);
 }
 
-class TDSstatement {
-  final TDSledger tdsLedger;
+class TDSledger {
+  final TDSSummaryModel data;
   final DateTime currentDate;
 
-  TDSstatement({
-    required this.tdsLedger,
+  TDSledger({
+    required this.data,
     required this.currentDate,
   });
 
@@ -295,27 +71,16 @@ class TDSstatement {
         header: _buildHeader,
         footer: _buildFooter,
         build: (context) => [
-          pw.SizedBox(height: 10),
+          pw.SizedBox(height: 5),
           _contentHeader(context),
-          pw.SizedBox(height: 20),
-          summaryTitleContent(context),
-          pw.SizedBox(height: 20),
-          _summaryTable(context, tdsLedger.summaryDetails),
+          pw.SizedBox(height: 15),
+          ..._TDStransactionLog(context),
           totalRow(),
-        ],
-      ),
-    );
-
-// Second page — for TDS Log section
-    doc.addPage(
-      pw.MultiPage(
-        pageTheme: _buildTheme(pageFormat),
-        footer: _buildFooter,
-        build: (context) => [
-          pw.SizedBox(height: 10),
-          logTitleContent(context),
+          TDSnetBalance(),
           pw.SizedBox(height: 20),
-          ..._TDStransactionLog(context, tdsLedger.tdsLogDetails),
+          // _contentFooter(context),
+          pw.SizedBox(height: 20),
+          // _termsAndConditions(context),
         ],
       ),
     );
@@ -339,17 +104,6 @@ class TDSstatement {
                 mainAxisAlignment: pw.MainAxisAlignment.center,
                 // cr
                 children: [
-                  pw.Text(
-                    'TDS STATEMENT',
-                    style: pw.TextStyle(
-                      fontSize: 13,
-                      color: detailsColor,
-                      fontWeight: pw.FontWeight.bold,
-                      decoration: pw.TextDecoration.underline,
-                      decorationColor: detailsColor,
-                    ),
-                  ),
-                  pw.SizedBox(height: 10),
                   pw.Text(
                     'SPORADA SECURE INDIA PRIVATE LIMITED',
                     style: pw.TextStyle(
@@ -485,6 +239,17 @@ class TDSstatement {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
+        pw.Center(
+          child: pw.Text(
+            'LEDGER SUMMARY',
+            style: pw.TextStyle(
+              fontSize: 12,
+              fontWeight: pw.FontWeight.bold,
+              color: detailsColor,
+            ),
+          ),
+        ),
+        pw.SizedBox(height: 15),
         pw.Row(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
@@ -494,20 +259,20 @@ class TDSstatement {
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
                   buildInfoRow('Date', _formatDate(DateTime.now())),
-                  buildInfoRow('TDSIN', '33ABECS0625B1Z0'),
-                  buildInfoRow('PAN Number', 'ABECS0625B'),
+                  buildInfoRow('Name', 'SPORADA SECURE INDIA PRIVATE LIMITED'),
+                  buildInfoRow('TAN Number', 'ABECS0625B'),
                 ],
               ),
             ),
-            pw.SizedBox(width: 140),
+            pw.SizedBox(width: 30),
             pw.Expanded(
               flex: 7,
               child: pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  buildInfoRow('Registration Type', 'Regular'),
-                  buildInfoRow('From Date', _formatDate(tdsLedger.fromDate)),
-                  buildInfoRow('To Date', _formatDate(tdsLedger.toDate)),
+                  buildInfoRow('PAN Number', 'ABECS0625B'),
+                  buildInfoRow('From Date', _formatDate(DateTime.parse(data.startdate ?? ''))),
+                  buildInfoRow('To Date', _formatDate(DateTime.parse(data.enddate ?? ''))),
                 ],
               ),
             ),
@@ -517,170 +282,22 @@ class TDSstatement {
     );
   }
 
-  pw.Widget summaryTitleContent(pw.Context context) {
-    return pw.Center(
-      child: pw.Text(
-        'TDS SUMMARY',
-        style: pw.TextStyle(
-          fontSize: 12,
-          fontWeight: pw.FontWeight.bold,
-          color: detailsColor,
-        ),
-      ),
-    );
-  }
-
-  pw.Widget _summaryTable(pw.Context context, List<SummaryDetails> summaryDetailsList) {
-    const tableHeaders = ['Category', 'Credit(Rs.)', 'Debit(Rs.) '];
-
+  List<pw.Widget> _TDStransactionLog(pw.Context context) {
+    const tableHeaders = ['Date', 'Voucher No', 'Invoice No', 'TDS No', 'Particulars', 'TDS\nType', 'Debit(Rs.)', 'Credit(Rs.)'];
     final dataRows = List<pw.TableRow>.generate(
-      summaryDetailsList.length,
+      data.tdsList.length,
       (index) {
-        final item = summaryDetailsList[index];
+        final item = data.tdsList[index];
         return pw.TableRow(
           children: [
-            _buildCell(
-              item.category,
-            ),
-            _buildCell(
-              _formatCurrency(double.tryParse(item.CTDS) ?? 0),
-              alignRight: true,
-            ),
-            _buildCell(
-              _formatCurrency(double.tryParse(item.STDS) ?? 0),
-              alignRight: true,
-            ),
-          ],
-        );
-      },
-    );
-
-    return pw.Column(
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
-      children: [
-        // Header table (no horizontalInside border)
-        pw.Table(
-          border: const pw.TableBorder(
-            // bottom: pw.BorderSide(color: accentColor, width: 0.5),
-            left: pw.BorderSide.none,
-            right: pw.BorderSide.none,
-            horizontalInside: pw.BorderSide.none,
-            verticalInside: pw.BorderSide.none,
-          ),
-          columnWidths: {
-            0: const pw.FlexColumnWidth(10),
-            1: const pw.FlexColumnWidth(5),
-            2: const pw.FlexColumnWidth(5),
-          },
-          children: [
-            pw.TableRow(
-              decoration: const pw.BoxDecoration(
-                color: PdfColors.green500,
-                borderRadius: pw.BorderRadius.all(pw.Radius.circular(2)),
-              ),
-              children: List.generate(tableHeaders.length, (index) {
-                return _buildHeaderCell(
-                  tableHeaders[index],
-                  alignment: index == 0 ? pw.Alignment.centerLeft : pw.Alignment.centerRight,
-                );
-              }),
-            ),
-          ],
-        ),
-
-        // Data table (with horizontalInside border)
-        pw.Table(
-          border: const pw.TableBorder(
-            bottom: pw.BorderSide(color: accentColor, width: 0.5),
-            left: pw.BorderSide.none,
-            right: pw.BorderSide.none,
-            horizontalInside: pw.BorderSide(color: accentColor, width: 0.5),
-            verticalInside: pw.BorderSide.none,
-          ),
-          columnWidths: {
-            0: const pw.FlexColumnWidth(10),
-            1: const pw.FlexColumnWidth(5),
-            2: const pw.FlexColumnWidth(5),
-          },
-          children: dataRows,
-        ),
-      ],
-    );
-  }
-
-  pw.Widget totalRow() {
-    final totalCTDS = tdsLedger.summaryDetails.fold<double>(0.0, (sum, item) => sum + (double.tryParse(item.CTDS) ?? 0));
-    final totalSTDS = tdsLedger.summaryDetails.fold<double>(0.0, (sum, item) => sum + (double.tryParse(item.STDS) ?? 0));
-    final totalITDS = tdsLedger.summaryDetails.fold<double>(0.0, (sum, item) => sum + (double.tryParse(item.ITDS) ?? 0));
-    final totalTDSValue = tdsLedger.summaryDetails.fold<double>(0.0, (sum, item) => sum + (double.tryParse(item.CTDS) ?? 0) + (double.tryParse(item.STDS) ?? 0) + (double.tryParse(item.ITDS) ?? 0));
-
-    return pw.Row(
-      children: [
-        // pw.Expanded( child: pw.Container()), // Spacer
-        pw.Expanded(
-          flex: 30,
-          child: pw.Table(
-            columnWidths: {
-              0: const pw.FlexColumnWidth(10),
-              1: const pw.FlexColumnWidth(5),
-              2: const pw.FlexColumnWidth(5),
-            },
-            border: const pw.TableBorder(
-              bottom: pw.BorderSide(color: accentColor, width: 0.5),
-            ),
-            children: [
-              pw.TableRow(
-                children: [
-                  _buildCalculationCell('TDS Payable / refundable', align: pw.Alignment.centerLeft, isBold: true),
-                  _buildCalculationCell(_formatCurrency(totalCTDS), align: pw.Alignment.centerRight, isBold: true),
-                  _buildCalculationCell(_formatCurrency(totalSTDS), align: pw.Alignment.centerRight, isBold: true),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  pw.Widget logTitleContent(pw.Context context) {
-    return pw.Center(
-      child: pw.Text(
-        'TDS TRANSACTION LOG',
-        style: pw.TextStyle(
-          fontSize: 12,
-          fontWeight: pw.FontWeight.bold,
-          color: detailsColor,
-        ),
-      ),
-    );
-  }
-
-  List<pw.Widget> _TDStransactionLog(pw.Context context, List<TDSlogDetails> tdsLogDetails) {
-    const tableHeaders = ['Date', 'Invoice No', 'Details', 'TDS \nType', 'Taxable Value', 'CTDS\n(Rs.)', 'STDS\n(Rs.)', 'ITDS\n(Rs.)', 'Total TDS\n(Rs.)', 'Gross Amount\n(Rs.)'];
-
-    final dataRows = List<pw.TableRow>.generate(
-      tdsLogDetails.length,
-      (index) {
-        final item = tdsLogDetails[index];
-        return pw.TableRow(
-          children: [
-            _buildCell(_formatDate(item.logDate), alignRight: true),
-            _buildCell(item.invoiceNo, alignRight: true),
-            _buildCell(item.particulars),
-            _buildCell(item.TDStype),
-            _buildCell(_formatCurrency(double.tryParse(item.taxValue) ?? 0), alignRight: true),
-            _buildCell(_formatCurrency(double.tryParse(item.CTDS) ?? 0), alignRight: true),
-            _buildCell(_formatCurrency(double.tryParse(item.STDS) ?? 0), alignRight: true),
-            _buildCell(_formatCurrency(double.tryParse(item.ITDS) ?? 0), alignRight: true),
-            _buildCell(
-              _formatCurrency((double.tryParse(item.CTDS) ?? 0) + (double.tryParse(item.STDS) ?? 0) + (double.tryParse(item.ITDS) ?? 0)),
-              alignRight: true,
-            ),
-            _buildCell(
-              _formatCurrency((double.tryParse(item.taxValue) ?? 0) + (double.tryParse(item.CTDS) ?? 0) + (double.tryParse(item.STDS) ?? 0) + (double.tryParse(item.ITDS) ?? 0)),
-              alignRight: true,
-            ),
+            _buildCell(_formatDate(item.rowUpdatedDate)),
+            _buildCell(item.voucherNumber, alignRight: true),
+            _buildCell(item.invoiceType),
+            _buildCell(item.tdsLedgerId.toString()),
+            _buildCell(item.description ?? ''),
+            _buildCell(item.tdsType),
+            _buildCell(_formatCurrency(item.debitAmount), alignRight: true),
+            _buildCell(_formatCurrency(item.creditAmount), alignRight: true),
           ],
         );
       },
@@ -697,15 +314,13 @@ class TDSstatement {
         ),
         columnWidths: {
           0: const pw.FlexColumnWidth(3),
-          1: const pw.FlexColumnWidth(3),
+          1: const pw.FlexColumnWidth(4),
           2: const pw.FlexColumnWidth(4),
-          3: const pw.FlexColumnWidth(3),
-          4: const pw.FlexColumnWidth(3),
+          3: const pw.FlexColumnWidth(4),
+          4: const pw.FlexColumnWidth(5),
           5: const pw.FlexColumnWidth(3),
-          6: const pw.FlexColumnWidth(3),
-          7: const pw.FlexColumnWidth(3),
-          8: const pw.FlexColumnWidth(3),
-          9: const pw.FlexColumnWidth(3),
+          6: const pw.FlexColumnWidth(4),
+          7: const pw.FlexColumnWidth(4),
         },
         children: [
           pw.TableRow(
@@ -734,19 +349,100 @@ class TDSstatement {
         ),
         columnWidths: {
           0: const pw.FlexColumnWidth(3),
-          1: const pw.FlexColumnWidth(3),
+          1: const pw.FlexColumnWidth(4),
           2: const pw.FlexColumnWidth(4),
-          3: const pw.FlexColumnWidth(3),
-          4: const pw.FlexColumnWidth(3),
+          3: const pw.FlexColumnWidth(4),
+          4: const pw.FlexColumnWidth(5),
           5: const pw.FlexColumnWidth(3),
-          6: const pw.FlexColumnWidth(3),
-          7: const pw.FlexColumnWidth(3),
-          8: const pw.FlexColumnWidth(3),
-          9: const pw.FlexColumnWidth(3),
+          6: const pw.FlexColumnWidth(4),
+          7: const pw.FlexColumnWidth(4),
         },
         children: dataRows,
       ),
     ];
+  }
+
+  pw.Widget totalRow() {
+    // final totalDebit = data.ledgerDetails.fold<double>(
+    //   0.0,
+    //   (sum, item) => sum + (double.tryParse(item.debit) ?? 0),
+    // );
+    // final totalCredit = data.ledgerDetails.fold<double>(0.0, (sum, item) => sum + (double.tryParse(item.credit) ?? 0));
+
+    return pw.Row(
+      children: [
+        pw.Expanded(flex: 13, child: pw.Container()), // Spacer
+        pw.Expanded(
+          flex: 30,
+          child: pw.Table(
+            columnWidths: {
+              0: const pw.FlexColumnWidth(18),
+              1: const pw.FlexColumnWidth(6),
+              2: const pw.FlexColumnWidth(6),
+            },
+            border: const pw.TableBorder(
+              bottom: pw.BorderSide(color: accentColor, width: 0.5),
+            ),
+            children: [
+              pw.TableRow(
+                children: [
+                  _buildCalculationCell('Total', align: pw.Alignment.centerLeft, isBold: false),
+                  _buildCalculationCell(_formatCurrency(data.totalPayables)),
+                  _buildCalculationCell(_formatCurrency(data.totalReceivables)),
+                  _buildCalculationCell(''),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  pw.Widget TDSnetBalance() {
+    final totalPayable = data.totalPayables;
+    final totalReceivable = data.totalReceivables;
+    final closingAmount = data.totalTds;
+    final isClaimable = totalPayable > totalReceivable;
+
+    final formatter = NumberFormat('#,##,##0.00'); // Indian number format
+    final closingBalanceStr = formatter.format(closingAmount);
+
+    return pw.Row(
+      children: [
+        pw.Expanded(flex: 13, child: pw.Container()), // Spacer
+        pw.Expanded(
+          flex: 30,
+          child: pw.Table(
+            columnWidths: {
+              0: const pw.FlexColumnWidth(12),
+              1: const pw.FlexColumnWidth(6),
+              2: const pw.FlexColumnWidth(6),
+              3: const pw.FlexColumnWidth(6),
+            },
+            border: const pw.TableBorder(
+              bottom: pw.BorderSide(color: accentColor, width: 0.5),
+            ),
+            children: [
+              pw.TableRow(
+                children: [
+                  _buildCalculationCell(' TDS Claimable/payable', align: pw.Alignment.centerLeft, isBold: false),
+                  _buildCalculationCell(
+                    isClaimable ? closingBalanceStr : '',
+                    isBold: true,
+                  ),
+                  _buildCalculationCell(
+                    !isClaimable ? closingBalanceStr : '',
+                    isBold: true,
+                  ),
+                  _buildCalculationCell('', isBold: false),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   pw.Widget _buildCalculationCell(String text, {pw.Alignment align = pw.Alignment.centerRight, bool isBold = false}) {

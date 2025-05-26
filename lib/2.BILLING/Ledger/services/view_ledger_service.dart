@@ -162,6 +162,14 @@ mixin View_LedgerService {
     return view_LedgerController.view_LedgerModel.selectedsalescustomer.value != 'None' && view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Sales' ? true : false;
   }
 
+  bool isGSTsubscriptionData() {
+    return view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Subscription' ? true : false;
+  }
+
+  bool isGSTsalesData() {
+    return view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Sales' ? true : false;
+  }
+
   // void showCustomDateRangePicker() {
   //   view_LedgerController.view_LedgerModel.showCustomDateRange.value = true;
   // }

@@ -13,6 +13,7 @@ import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/GST_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/GST_ledger_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/services/GST_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
@@ -477,18 +478,15 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),
-                                                  child:
-                                                      Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputCgst ?? 0.0), style: const TextStyle(color: Colors.white)),
+                                                  child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputCgst ?? 0.0), style: const TextStyle(color: Colors.white)),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),
-                                                  child:
-                                                      Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputSgst ?? 0.0), style: const TextStyle(color: Colors.white)),
+                                                  child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputSgst ?? 0.0), style: const TextStyle(color: Colors.white)),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),
-                                                  child:
-                                                      Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputIgst ?? 0.0), style: const TextStyle(color: Colors.white)),
+                                                  child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputIgst ?? 0.0), style: const TextStyle(color: Colors.white)),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),
@@ -750,7 +748,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                             onTap: () async {
                                               try {
                                                 // Generate the PDF bytes
-                                                final pdfBytes = await generateGSTledger(PdfPageFormat.a4);
+                                                final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
 
                                                 // Create timestamp for filename
                                                 final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -903,8 +901,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                                           IconButton(
                                                                             iconSize: 30,
                                                                             onPressed: () {
-                                                                              gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value =
-                                                                                  !gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value;
+                                                                              gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value = !gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value;
                                                                             },
                                                                             icon: Image.asset('assets/images/whatsapp.png'),
                                                                           ),
@@ -934,8 +931,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                                           IconButton(
                                                                             iconSize: 35,
                                                                             onPressed: () {
-                                                                              gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value =
-                                                                                  !gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value;
+                                                                              gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value = !gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value;
                                                                             },
                                                                             icon: Image.asset('assets/images/gmail.png'),
                                                                           ),
@@ -1000,14 +996,12 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                                     mainAxisAlignment: MainAxisAlignment.end,
                                                                     children: [
                                                                       MouseRegion(
-                                                                        cursor: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                                gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
+                                                                        cursor: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value || gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
                                                                             ? SystemMouseCursors.click
                                                                             : SystemMouseCursors.forbidden,
                                                                         child: GestureDetector(
                                                                           onTap: () async {
-                                                                            if (gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                                gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value) {
+                                                                            if (gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value || gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value) {
                                                                               // Create temporary file
                                                                               final tempDir = await getTemporaryDirectory();
                                                                               final file = File('${tempDir.path}/$filename');
@@ -1027,8 +1021,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                                           child: Container(
                                                                             width: 105,
                                                                             decoration: BoxDecoration(
-                                                                              color: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                                      gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
+                                                                              color: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value || gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
                                                                                   ? const Color.fromARGB(255, 81, 89, 212)
                                                                                   : const Color.fromARGB(255, 39, 41, 73),
                                                                               borderRadius: BorderRadius.circular(5),
@@ -1089,7 +1082,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                           onTap: () async {
                                             try {
                                               // Generate the PDF bytes first
-                                              final pdfBytes = await generateGSTledger(PdfPageFormat.a4);
+                                              final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
 
                                               // Print the generated PDF
                                               await Printing.layoutPdf(
@@ -1143,7 +1136,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               await Future.delayed(const Duration(milliseconds: 300));
 
                                               // Generate PDF bytes
-                                              final pdfBytes = await generateGSTledger(PdfPageFormat.a4);
+                                              final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
 
                                               // Generate unique filename with timestamp
                                               final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -1216,9 +1209,11 @@ class _GSTLedgerState extends State<GSTLedger> {
                                         cursor: SystemMouseCursors.click,
                                         child: GestureDetector(
                                           onTap: () async {
+                                            // Generate the PDF bytes directly from your function
                                             try {
-                                              // Generate the PDF bytes directly from your function
-                                              Uint8List pdfBytes = await generateGSTledger(PdfPageFormat.a4);
+                                              // Generate the PDF bytes
+
+                                              Uint8List pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
 
                                               // Show the dialog with the same design
                                               showDialog(

@@ -49,6 +49,37 @@ mixin VoucherService {
     }
   }
 
+  dynamic add_Overdue(context, int voucherID, int index) async {
+    try {
+      Map<String, dynamic> query = {
+        "voucherid": voucherID,
+        "date": voucherController.voucherModel.extendDueDateControllers[index].value.text,
+        "feedback": voucherController.voucherModel.extendDueFeedbackControllers[index].value.text,
+      };
+      String encodedData = json.encode(query);
+      Map<String, dynamic>? response = await apiController.SendByQuerystring(encodedData, API.add_overdue);
+      if (response['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response);
+        if (value.code) {
+          await Success_dialog(context: context, title: "Upload Successfull", content: value.message!, onOk: () {});
+
+          Navigator.of(context).pop();
+        } else {
+          await Error_dialog(
+            context: context,
+            title: 'Error',
+            content: value.message ?? "",
+            onOk: () {},
+          );
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
   Future<void> Get_SUBcustomerList() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_ledgerSubscriptionCustomers);
@@ -456,11 +487,25 @@ mixin VoucherService {
 
       // Update selectedItems to match the new filtered list length
       voucherController.voucherModel.checkboxValues.value = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false);
+      voucherController.voucherModel.isExtendButton_visible = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false).obs;
+
+      voucherController.voucherModel.extendDueDateControllers.assignAll(
+        List.generate(voucherController.voucherModel.voucher_list.length, (_) => TextEditingController()),
+      );
+      voucherController.voucherModel.extendDueFeedbackControllers.assignAll(
+        List.generate(voucherController.voucherModel.voucher_list.length, (_) => TextEditingController()),
+      );
       voucherController.voucherModel.selectAll.value = false;
       voucherController.voucherModel.showDeleteButton.value = false;
     } catch (e) {
       debugPrint('Error in applySearchFilter: $e');
     }
+  }
+
+  void isExtendButton_visibile(int index) {
+    voucherController.voucherModel.isExtendButton_visible[index] =
+        voucherController.voucherModel.extendDueDateControllers[index].value.text != '' && voucherController.voucherModel.extendDueFeedbackControllers[index].value.text != '';
+    voucherController.voucherModel.isExtendButton_visible.refresh();
   }
 
   Future<void> selectfilterDate(BuildContext context, TextEditingController controller) async {
@@ -575,6 +620,14 @@ mixin VoucherService {
     voucherController.voucherModel.selectedcustomerID.value = 'None';
     // voucherController.voucherModel.filteredVouchers.value = voucherController.voucherModel.voucher_list;
     voucherController.voucherModel.checkboxValues.value = List.filled(voucherController.voucherModel.voucher_list.length, false);
+    voucherController.voucherModel.isExtendButton_visible = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false).obs;
+
+    voucherController.voucherModel.extendDueDateControllers.assignAll(
+      List.generate(voucherController.voucherModel.voucher_list.length, (_) => TextEditingController()),
+    );
+    voucherController.voucherModel.extendDueFeedbackControllers.assignAll(
+      List.generate(voucherController.voucherModel.voucher_list.length, (_) => TextEditingController()),
+    );
     voucherController.voucherModel.selectAll.value = false;
     voucherController.voucherModel.showDeleteButton.value = false;
   }

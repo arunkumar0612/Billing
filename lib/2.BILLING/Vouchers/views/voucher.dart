@@ -38,7 +38,7 @@ class _VoucherState extends State<Voucher> {
       widget.Get_SALEScustomerList();
 
       // Initialize checkboxValues after data is loaded
-      voucherController.voucherModel.checkboxValues = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false).obs;
+      // voucherController.voucherModel.checkboxValues = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false).obs;
     });
   }
 
@@ -55,9 +55,9 @@ class _VoucherState extends State<Voucher> {
     _initialized = true;
     await Future.delayed(const Duration(milliseconds: 100));
     loader.start(context); // Now safe to use
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      voucherController.voucherModel.checkboxValues = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false).obs;
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   voucherController.voucherModel.checkboxValues = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false).obs;
+    // });
     await Future.delayed(const Duration(seconds: 2));
     loader.stop();
   }
@@ -1949,9 +1949,9 @@ class _VoucherState extends State<Voucher> {
                               itemCount: voucherController.voucherModel.voucher_list.length,
                               itemBuilder: (context, index) {
                                 final voucher = voucherController.voucherModel.voucher_list[index];
-                                if (voucherController.voucherModel.checkboxValues.length != voucherController.voucherModel.voucher_list.length) {
-                                  voucherController.voucherModel.checkboxValues.value = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false);
-                                }
+                                // if (voucherController.voucherModel.checkboxValues.length != voucherController.voucherModel.voucher_list.length) {
+                                //   voucherController.voucherModel.checkboxValues.value = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false);
+                                // }
                                 // ignore: unrelated_type_equality_checks
                                 return voucher.overdueDays! > 0 || voucher.overdueHistory != null
                                     ? Container(
@@ -2196,7 +2196,7 @@ class _VoucherState extends State<Voucher> {
                                                   flex: 1,
                                                   child: Text(
                                                     textAlign: TextAlign.center,
-                                                    (voucher.overdueDays ?? 0).toString(),
+                                                    (voucher.overdueDays ?? '-').toString(),
                                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                   ),
                                                 ),
@@ -2335,96 +2335,131 @@ class _VoucherState extends State<Voucher> {
                                                   SizedBox(
                                                     width: 15,
                                                   ),
-                                                  Expanded(
-                                                    child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.end,
-                                                      children: [
-                                                        SizedBox(
-                                                          width: 380,
-                                                          // height: 100,
-                                                          child: TextFormField(
-                                                            maxLines: 4,
-                                                            controller: voucherController.voucherModel.extandduefeedbackController.value,
-                                                            style: const TextStyle(fontSize: 13, color: Colors.white),
-                                                            decoration: InputDecoration(
-                                                              contentPadding: const EdgeInsets.all(10),
-                                                              filled: true,
-                                                              fillColor: Primary_colors.Dark,
-                                                              enabledBorder: OutlineInputBorder(
-                                                                borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                                                borderRadius: BorderRadius.circular(8),
+                                                  if (voucherController.voucherModel.voucher_list[index].fullyCleared != 1)
+                                                    Expanded(
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        children: [
+                                                          SizedBox(
+                                                            width: 380,
+                                                            // height: 100,
+                                                            child: TextFormField(
+                                                              onChanged: (value) {
+                                                                widget.isExtendButton_visibile(index);
+                                                              },
+                                                              maxLines: 4,
+                                                              controller: voucherController.voucherModel.extendDueFeedbackControllers[index],
+                                                              style: const TextStyle(fontSize: 13, color: Colors.white),
+                                                              decoration: InputDecoration(
+                                                                contentPadding: const EdgeInsets.all(10),
+                                                                filled: true,
+                                                                fillColor: Primary_colors.Dark,
+                                                                enabledBorder: OutlineInputBorder(
+                                                                  borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                                                  borderRadius: BorderRadius.circular(8),
+                                                                ),
+                                                                focusedBorder: OutlineInputBorder(
+                                                                  borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                                                  borderRadius: BorderRadius.circular(8),
+                                                                ),
+                                                                hintStyle: const TextStyle(
+                                                                  fontSize: Primary_font_size.Text7,
+                                                                  color: Color.fromARGB(255, 167, 165, 165),
+                                                                ),
+                                                                hintText: 'Enter Feedback...',
+
+                                                                // prefixIcon: const Icon(
+                                                                //   Icons.feedback_outlined,s
+                                                                //   color: Colors.white,
+                                                                // ),
+                                                                // suffixIcon: Padding(
+                                                                //   padding: const EdgeInsets.only(top: 50),
+                                                                //   child: IconButton(
+                                                                //     onPressed: () {},
+                                                                //     icon: const Icon(
+                                                                //       Icons.send,
+                                                                //       color: Primary_colors.Color3,
+                                                                //     ),
+                                                                //   ),
+                                                                // ),
                                                               ),
-                                                              focusedBorder: OutlineInputBorder(
-                                                                borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                                                borderRadius: BorderRadius.circular(8),
-                                                              ),
-                                                              hintStyle: const TextStyle(
-                                                                fontSize: Primary_font_size.Text7,
-                                                                color: Color.fromARGB(255, 167, 165, 165),
-                                                              ),
-                                                              hintText: 'Enter Feedback...',
-                                                              // prefixIcon: const Icon(
-                                                              //   Icons.feedback_outlined,s
-                                                              //   color: Colors.white,
-                                                              // ),
-                                                              // suffixIcon: Padding(
-                                                              //   padding: const EdgeInsets.only(top: 50),
-                                                              //   child: IconButton(
-                                                              //     onPressed: () {},
-                                                              //     icon: const Icon(
-                                                              //       Icons.send,
-                                                              //       color: Primary_colors.Color3,
-                                                              //     ),
-                                                              //   ),
-                                                              // ),
                                                             ),
                                                           ),
-                                                        ),
-                                                        SizedBox(width: 10),
-                                                        Column(
-                                                          children: [
-                                                            SizedBox(
-                                                              width: 200,
-                                                              height: 40,
-                                                              child: TextFormField(
-                                                                style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: Primary_font_size.Text7),
-                                                                controller: voucherController.voucherModel.extanddueDateController.value,
-                                                                readOnly: true,
-                                                                onTap: () async {
-                                                                  await widget.selectfilterDate(context, voucherController.voucherModel.extanddueDateController.value);
-                                                                },
-                                                                decoration: InputDecoration(
-                                                                  filled: true,
-                                                                  fillColor: Primary_colors.Dark,
-                                                                  labelText: 'Extand Due Date',
-                                                                  labelStyle: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
-                                                                  suffixIcon: const Icon(Icons.calendar_today, size: 20, color: Color.fromARGB(255, 85, 84, 84)),
-                                                                  contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                                                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                                                                  enabledBorder: OutlineInputBorder(
-                                                                    borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                                                    borderRadius: BorderRadius.circular(8),
-                                                                  ),
-                                                                  focusedBorder: OutlineInputBorder(
-                                                                    borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                                                    borderRadius: BorderRadius.circular(8),
+                                                          SizedBox(width: 10),
+                                                          Column(
+                                                            children: [
+                                                              SizedBox(
+                                                                width: 200,
+                                                                height: 40,
+                                                                child: TextFormField(
+                                                                  style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: Primary_font_size.Text7),
+                                                                  controller: voucherController.voucherModel.extendDueDateControllers[index],
+                                                                  readOnly: true,
+                                                                  onTap: () async {
+                                                                    await widget.selectfilterDate(context, voucherController.voucherModel.extendDueDateControllers[index]);
+                                                                    widget.isExtendButton_visibile(index);
+                                                                  },
+                                                                  decoration: InputDecoration(
+                                                                    filled: true,
+                                                                    fillColor: Primary_colors.Dark,
+                                                                    labelText: 'Extand Due Date',
+                                                                    labelStyle: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                                                                    suffixIcon: const Icon(Icons.calendar_today, size: 20, color: Color.fromARGB(255, 85, 84, 84)),
+                                                                    contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                                                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                                                                    enabledBorder: OutlineInputBorder(
+                                                                      borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                                                      borderRadius: BorderRadius.circular(8),
+                                                                    ),
+                                                                    focusedBorder: OutlineInputBorder(
+                                                                      borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                                                      borderRadius: BorderRadius.circular(8),
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ),
-                                                            ),
-                                                            SizedBox(height: 10),
-                                                            SizedBox(
-                                                              width: 200,
-                                                              child: ElevatedButton(
-                                                                onPressed: () {},
-                                                                child: Text('Submit'),
+                                                              SizedBox(height: 10),
+                                                              Obx(
+                                                                () {
+                                                                  return Tooltip(
+                                                                    message: voucherController.voucherModel.isExtendButton_visible[index]
+                                                                        ? '' // No tooltip when enabled
+                                                                        : 'Ensure feedback and date input',
+                                                                    child: SizedBox(
+                                                                      width: 200,
+                                                                      child: ElevatedButton(
+                                                                        onPressed: voucherController.voucherModel.isExtendButton_visible[index]
+                                                                            ? () async {
+                                                                                widget.add_Overdue(context, voucher.voucher_id, index);
+                                                                              }
+                                                                            : null, // Disabled when false
+                                                                        style: ElevatedButton.styleFrom(
+                                                                          backgroundColor: voucherController.voucherModel.isExtendButton_visible[index] ? Colors.blueAccent : Colors.grey,
+                                                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                                                          foregroundColor: Colors.white,
+                                                                          disabledBackgroundColor: Colors.grey,
+                                                                          disabledForegroundColor: Colors.white70,
+                                                                        ),
+                                                                        child: const Text('Extend Due', style: TextStyle(fontSize: Primary_font_size.Text6)),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
                                                               ),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ],
+                                                              // SizedBox(
+                                                              //   width: 200,
+                                                              //   child: ElevatedButton(
+                                                              //     onPressed: () {
+                                                              //       widget.add_Overdue(context, voucher.voucher_id);
+                                                              //     },
+                                                              //     child: Text('Submit'),
+                                                              //   ),
+                                                              // )
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -2658,7 +2693,7 @@ class _VoucherState extends State<Voucher> {
                                                     flex: 1,
                                                     child: Text(
                                                       textAlign: TextAlign.center,
-                                                      (voucher.overdueDays ?? 0).toString(),
+                                                      (voucher.overdueDays ?? '-').toString(),
                                                       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                     ),
                                                   ),

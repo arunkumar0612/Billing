@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/models/constants/voucher_constants.dart';
@@ -29,6 +30,13 @@ class VoucherController extends GetxController {
       voucherModel.voucher_list.add(InvoicePaymentVoucher.fromJson(value.data[i]));
       voucherModel.ParentVoucher_list.add(InvoicePaymentVoucher.fromJson(value.data[i]));
       voucherModel.checkboxValues = List<bool>.filled(voucherModel.voucher_list.length, false).obs;
+      voucherModel.isExtendButton_visible = List<bool>.filled(voucherModel.voucher_list.length, false).obs;
+      voucherModel.extendDueDateControllers.assignAll(
+        List.generate(voucherModel.voucher_list.length, (_) => TextEditingController()),
+      );
+      voucherModel.extendDueFeedbackControllers.assignAll(
+        List.generate(voucherModel.voucher_list.length, (_) => TextEditingController()),
+      );
     }
   }
 

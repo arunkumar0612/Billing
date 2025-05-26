@@ -34,8 +34,9 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   var selectedvouchertype = 'Show All'.obs;
   var selectedInvoiceType = 'Show All'.obs;
   var showCustomDateRange = false.obs;
-  final extanddueDateController = TextEditingController().obs;
-  var extandduefeedbackController = TextEditingController().obs;
+  final extendDueDateControllers = <TextEditingController>[].obs;
+  final extendDueFeedbackControllers = <TextEditingController>[].obs;
+  var isExtendButton_visible = <bool>[].obs;
   final dateController = TextEditingController().obs;
   RxString selectedMonth = 'None'.obs;
   final startDateController = TextEditingController().obs;

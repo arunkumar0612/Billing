@@ -1642,6 +1642,12 @@ class _VoucherState extends State<Voucher> {
     );
   }
 
+  List<String> activeFilters = [
+    'Category: Shoes',
+    'Price: Under ₹1000',
+    'Brand: Puma',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1667,6 +1673,58 @@ class _VoucherState extends State<Voucher> {
                           'Vouchers',
                           style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text12),
                         ),
+                        Container(
+                          height: 50,
+                          width: 500,
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                          // decoration: BoxDecoration(
+                          //   color: Colors.grey[100],
+                          //   borderRadius: BorderRadius.circular(12),
+                          //   boxShadow: [
+                          //     BoxShadow(
+                          //       color: Colors.black12,
+                          //       blurRadius: 6,
+                          //       offset: Offset(0, 2),
+                          //     ),
+                          //   ],
+                          // ),
+                          child: SizedBox(
+                            height: 20,
+                            child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: activeFilters.length,
+                              separatorBuilder: (context, index) => const SizedBox(width: 8),
+                              itemBuilder: (context, index) {
+                                final filter = activeFilters[index];
+                                return Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromARGB(255, 203, 207, 252),
+                                    borderRadius: BorderRadius.circular(30),
+                                    border: Border.all(color: Primary_colors.Color3),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        filter,
+                                        style: const TextStyle(color: Color.fromARGB(255, 15, 20, 88), fontSize: 10),
+                                      ),
+                                      const SizedBox(width: 4),
+                                      // GestureDetector(
+                                      //   onTap: () {
+                                      //     setState(() {
+                                      //       // activeFilters.removeAt(index); // or trigger controller
+                                      //     });
+                                      //   },
+                                      //   child: const Icon(Icons.close, size: 18, color: Primary_colors.Color3),
+                                      // ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        )
                       ],
                     ),
                     Row(
@@ -1949,9 +2007,15 @@ class _VoucherState extends State<Voucher> {
                                                     child: MouseRegion(
                                                       cursor: SystemMouseCursors.click,
                                                       child: GestureDetector(
+                                                        behavior: HitTestBehavior.deferToChild,
                                                         onTap: () async {
                                                           if (voucher.invoiceType == 'subscription') {
                                                             bool success = await widget.GetSubscriptionPDFfile(context: context, invoiceNo: voucher.invoiceNumber);
+                                                            if (success) {
+                                                              widget.showPDF(context, voucher.invoiceNumber);
+                                                            }
+                                                          } else if (voucher.invoiceType == 'sales') {
+                                                            bool success = await widget.GetSalesPDFfile(context: context, invoiceNo: voucher.invoiceNumber);
                                                             if (success) {
                                                               widget.showPDF(context, voucher.invoiceNumber);
                                                             }

@@ -509,7 +509,7 @@ class Invoice {
     final isDebit = totalDebit > totalCredit;
 
     final formatter = NumberFormat('#,##,##0.00'); // Indian number format
-    final closingBalanceStr = formatter.format(closingAmount);
+    final closingBalanceStr = formatter.format(closingAmount.abs());
 
     return pw.Row(
       children: [

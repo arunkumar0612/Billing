@@ -190,7 +190,6 @@ mixin View_LedgerService {
           }).toList();
 
           account_LedgerController.account_LedgerModel.account_Ledger_list.value.ledgerList.assignAll(filtered);
-
           account_LedgerController.account_LedgerModel.account_Ledger_list.refresh();
         }
       } else if (view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'GST Ledger') {

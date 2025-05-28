@@ -33,7 +33,7 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   var selectedpaymentStatus = 'Show All'.obs;
   var selectedvouchertype = 'Show All'.obs;
   var selectedInvoiceType = 'Show All'.obs;
-  var showCustomDateRange = false.obs;
+
   final extendDueDateControllers = <TextEditingController>[].obs;
   final extendDueFeedbackControllers = <TextEditingController>[].obs;
   var isExtendButton_visible = <bool>[].obs;
@@ -41,6 +41,21 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   RxString selectedMonth = 'None'.obs;
   final startDateController = TextEditingController().obs;
   final endDateController = TextEditingController().obs;
+  RxString selectedsalescustomer = 'None'.obs;
+  // RxString selectedsalescustomerID = ''.obs;
+  RxString selectedsubcustomer = 'None'.obs;
+  RxString selectedcustomerID = ''.obs;
+  Rx<VoucherSelectedFilter> voucherSelectedFilter = VoucherSelectedFilter(
+    vouchertype: 'Show All',
+    invoicetype: 'Show All',
+    selectedsalescustomername: 'None',
+    selectedcustomerid: '',
+    selectedsubscriptioncustomername: 'None',
+    paymentstatus: 'Show All',
+    fromdate: '',
+    todate: '',
+  ).obs;
+
   final searchController = TextEditingController().obs;
   final amountCleared_controller = TextEditingController().obs;
   final transactionDetails_controller = TextEditingController().obs;
@@ -49,10 +64,7 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   final RxString closedDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
   var fileName = RxnString();
   var selectedFile = Rxn<File>();
-  RxString selectedsalescustomer = 'None'.obs;
-  // RxString selectedsalescustomerID = ''.obs;
-  RxString selectedsubcustomer = 'None'.obs;
-  RxString selectedcustomerID = ''.obs;
+
   var salesCustomerList = <CustomerInfo>[].obs;
   var subCustomerList = <CustomerInfo>[].obs;
 

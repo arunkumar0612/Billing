@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
@@ -462,3 +463,75 @@ final List<TimelineEntry> timelineData = [
     feedback: 'Deal confirmed',
   ),
 ];
+
+// class Voucherselectedfilter {
+//   final String vouchertype;
+//   final String invoicetype;
+//   final String selectedsalescustomername;
+//    final String selectedsalescustomername;
+//   final String paymentstatus;
+//   final DateTime fromdate;
+//   final DateTime todate;
+
+//   Voucherselectedfilter({
+//     required this.vouchertype,
+//     required this.invoicetype,
+//     required this.selectedsalescustomername,
+//      required this.selectedsalescustomername,
+//     required this.paymentstatus,
+//     required this.fromdate,
+//     required this.todate,
+//   });
+// // DateTime.parse(json['date'] ?? DateTime.now().toIso8601String()),
+//   factory Voucherselectedfilter.fromJson(Map<String, dynamic> json) {
+//     return Voucherselectedfilter(
+//       vouchertype: json['vouchertype'] ?? '',
+//       invoicetype: json['invoicetype'] ?? '',
+//       selectedsalescustomername: json['selectedsalescustomername'] ?? '',
+//             selectedsalescustomername: json['selectedsalescustomername'] ?? '',
+//       paymentstatus: json['paymentstatus'] ?? '',
+//       fromdate: DateTime.parse(json['fromdate'] ?? DateTime.now().toIso8601String()),
+//       todate: DateTime.parse(json['todate'] ?? DateTime.now().toIso8601String()),
+//     );
+//   }
+// // date.toIso8601String(),
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'vouchertype': vouchertype,
+//       'invoicetype': invoicetype,
+//       'selectedsalescustomername': selectedsalescustomername,
+//       'paymentstatus': paymentstatus,
+//       'fromdate': fromdate.toIso8601String(),
+//       'todate': todate.toIso8601String(),
+//     };
+//   }
+// }
+
+class VoucherSelectedFilter {
+  RxString vouchertype;
+  RxString invoicetype;
+  RxString selectedsalescustomername;
+  RxString selectedcustomerid;
+  RxString selectedsubscriptioncustomername;
+  RxString paymentstatus;
+  RxString fromdate;
+  RxString todate;
+
+  VoucherSelectedFilter({
+    String vouchertype = 'Show All',
+    String invoicetype = 'Show All',
+    String selectedsalescustomername = 'None',
+    String selectedcustomerid = '',
+    String selectedsubscriptioncustomername = 'None',
+    String paymentstatus = 'Show All',
+    String fromdate = '',
+    String todate = '',
+  })  : vouchertype = RxString(vouchertype),
+        invoicetype = RxString(invoicetype),
+        selectedsalescustomername = RxString(selectedsalescustomername),
+        selectedcustomerid = RxString(selectedcustomerid),
+        selectedsubscriptioncustomername = RxString(selectedsubscriptioncustomername),
+        paymentstatus = RxString(paymentstatus),
+        fromdate = RxString(fromdate),
+        todate = RxString(todate);
+}

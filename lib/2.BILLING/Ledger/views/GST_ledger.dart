@@ -18,9 +18,11 @@ import 'package:ssipl_billing/2.BILLING/Ledger/services/GST_ledger_service.dart'
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_PDF_template/GST_ledger_pdf_template.dart';
+import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
+import 'package:ssipl_billing/COMPONENTS-/showPDF.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -36,6 +38,7 @@ class GSTLedger extends StatefulWidget with GST_LedgerService, View_LedgerServic
 class _GSTLedgerState extends State<GSTLedger> {
   final View_LedgerController view_LedgerController = Get.find<View_LedgerController>();
   final GST_LedgerController gst_ledgerController = Get.find<GST_LedgerController>();
+  final MainBilling_Controller mainBilling_Controller = Get.find<MainBilling_Controller>();
 
   List<String> gst_ledger_type_list = ['Consolidated GST', 'Input GST', 'Output GST'];
   String? Selected_ledger_type = 'Consolidated GST';
@@ -63,7 +66,7 @@ class _GSTLedgerState extends State<GSTLedger> {
     await widget.get_GST_LedgerList();
     await widget.Get_SUBcustomerList();
     await widget.Get_SALEScustomerList();
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 0));
     loader.stop();
   }
 
@@ -304,7 +307,8 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                               bool success = await widget.GetSubscriptionPDFfile(
                                                                   context: context, invoiceNo: gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number);
                                                               if (success) {
-                                                                widget.showPDF(context, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number);
+                                                                showPDF(context, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number,
+                                                                    mainBilling_Controller.billingModel.pdfFile.value);
                                                               }
                                                             }
                                                           },

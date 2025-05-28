@@ -32,15 +32,6 @@ class _VoucherState extends State<Voucher> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.resetvoucherFilters();
-      widget.get_VoucherList();
-      widget.Get_SUBcustomerList();
-      widget.Get_SALEScustomerList();
-
-      // Initialize checkboxValues after data is loaded
-      // voucherController.voucherModel.checkboxValues = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false).obs;
-    });
   }
 
   @override
@@ -56,10 +47,16 @@ class _VoucherState extends State<Voucher> {
     _initialized = true;
     await Future.delayed(const Duration(milliseconds: 100));
     loader.start(context); // Now safe to use
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   voucherController.voucherModel.checkboxValues = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false).obs;
-    // });
-    await Future.delayed(const Duration(seconds: 2));
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      widget.resetvoucherFilters();
+      await widget.get_VoucherList();
+      await widget.Get_SUBcustomerList();
+      await widget.Get_SALEScustomerList();
+
+      // Initialize checkboxValues after data is loaded
+      // voucherController.voucherModel.checkboxValues = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false).obs;
+    });
+    await Future.delayed(const Duration(seconds: 1));
     loader.stop();
   }
 
@@ -148,7 +145,7 @@ class _VoucherState extends State<Voucher> {
                                       SizedBox(width: 8),
                                       Expanded(
                                         child: Text(
-                                          "Client have exceeded the transaction of 1 Lakh, so this invoice is TDS Deductable!",
+                                          "The cummulative invoice value exceeded Rs.One Lakh for this client!",
                                           style: TextStyle(color: Color.fromARGB(255, 236, 190, 64), fontWeight: FontWeight.w500, fontSize: 12),
                                         ),
                                       ),
@@ -296,7 +293,7 @@ class _VoucherState extends State<Voucher> {
                                       ),
                                       const SizedBox(height: 16),
                                       _amountRow(
-                                        "Invoice Amount:",
+                                        "Invoice Amount",
                                         "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].totalAmount)}",
                                         Colors.green,
                                       ),
@@ -314,7 +311,7 @@ class _VoucherState extends State<Voucher> {
                                           crossAxisAlignment: CrossAxisAlignment.end,
                                           children: [
                                             _amountRow(
-                                              "Receivable Amount:  ",
+                                              "Receivable Amount",
                                               "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.recievableAmount.value)}",
                                               Colors.amber,
                                             ),
@@ -370,8 +367,8 @@ class _VoucherState extends State<Voucher> {
                                       const SizedBox(height: 16),
                                       _buildEditableField(
                                         controller: voucherController.voucherModel.closedDateController,
-                                        label: 'Closed Date',
-                                        hint: 'Select closed date',
+                                        label: 'Payment received Date',
+                                        hint: 'Select Payment received date',
                                         icon: Icons.calendar_today,
                                         onTap: () => widget.selectDate(context, voucherController.voucherModel.closedDateController),
                                       ),
@@ -380,7 +377,7 @@ class _VoucherState extends State<Voucher> {
                                         controller: voucherController.voucherModel.amountCleared_controller.value,
                                         onChanged: (value) {
                                           voucherController.is_fullclear_Valid(index);
-                                          voucherController.is_amountExceeds(index);
+                                          voucherController.is_amountExceeds(index, voucherController.voucherModel.selectedValue.value);
                                           voucherController.update();
                                         },
                                         label: 'Amount Received',
@@ -393,7 +390,7 @@ class _VoucherState extends State<Voucher> {
                                       if (voucherController.voucherModel.selectedValue.value == "Partial")
                                         Text(
                                           style: const TextStyle(color: Colors.amber, fontSize: 10),
-                                          "    can clear upto  -  Rs.${(voucherController.voucherModel.voucher_list[index].pendingAmount - (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 ? voucherController.voucherModel.voucher_list[index].tdsCalculationAmount : 0.0)).roundToDouble()}",
+                                          "    can clear upto  -  Rs.${((voucherController.voucherModel.voucher_list[index].pendingAmount - 1) - (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 ? voucherController.voucherModel.voucher_list[index].tdsCalculationAmount : 0.0)).roundToDouble()}",
                                         ),
                                       if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full")
                                         const SizedBox(height: 16),
@@ -407,13 +404,13 @@ class _VoucherState extends State<Voucher> {
                                           onChanged: (value) {
                                             if (value == "Deducted") {
                                               voucherController.set_isDeducted(true);
-                                              voucherController.calculate_recievable(true, index);
+                                              voucherController.calculate_recievable(true, index, voucherController.voucherModel.selectedValue.value);
                                             } else {
                                               voucherController.set_isDeducted(false);
-                                              voucherController.calculate_recievable(false, index);
+                                              voucherController.calculate_recievable(false, index, voucherController.voucherModel.selectedValue.value);
                                             }
                                             voucherController.is_fullclear_Valid(index);
-                                            voucherController.is_amountExceeds(index);
+                                            voucherController.is_amountExceeds(index, voucherController.voucherModel.selectedValue.value);
                                             voucherController.update();
                                           },
                                         ),
@@ -499,7 +496,7 @@ class _VoucherState extends State<Voucher> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         const Text(
-                                          "UPLOAD PAYMENT RECEIPT",
+                                          "UPLOAD PAYMENT DETAILS",
                                           style: TextStyle(color: Primary_colors.Color3, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 0.5),
                                         ),
                                         const SizedBox(height: 8),
@@ -740,7 +737,7 @@ class _VoucherState extends State<Voucher> {
                           ),
                           const SizedBox(width: 12),
                           const Text(
-                            'UPDATE VOUCHER PAYMENT',
+                            'UPDATE CONSOLIDATE VOUCHER PAYMENT',
                             style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold, letterSpacing: 1.2),
                           ),
                           const Spacer(),
@@ -809,7 +806,7 @@ class _VoucherState extends State<Voucher> {
                                 SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
-                                    "The client hasn't exceeded transaction of 1 Lakh rupees, So this invoice is not Taxable!",
+                                    "The cummulative invoice value exceeded Rs.One Lakh for this client!",
                                     style: TextStyle(color: Color.fromARGB(255, 133, 236, 64), fontWeight: FontWeight.w500, fontSize: 12),
                                   ),
                                 ),
@@ -1026,8 +1023,8 @@ class _VoucherState extends State<Voucher> {
                                       const SizedBox(height: 16),
                                       _buildEditableField(
                                         controller: voucherController.voucherModel.closedDateController,
-                                        label: 'Closed Date',
-                                        hint: 'Select closed date',
+                                        label: 'Payment received Date',
+                                        hint: 'Select Payment received date',
                                         icon: Icons.calendar_today,
                                         onTap: () => widget.selectDate(context, voucherController.voucherModel.closedDateController),
                                       ),
@@ -1160,7 +1157,7 @@ class _VoucherState extends State<Voucher> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         const Text(
-                                          "UPLOAD PAYMENT RECEIPT",
+                                          "UPLOAD PAYMENT DETAILS",
                                           style: TextStyle(color: Primary_colors.Color3, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 0.5),
                                         ),
                                         const SizedBox(height: 8),
@@ -1601,14 +1598,16 @@ class _VoucherState extends State<Voucher> {
           onTap: () {
             voucherController.voucherModel.selectedValue.value = value;
             if (value == 'Partial') {
+              voucherController.resetAmountCleared();
               voucherController.set_isDeducted(false);
-              voucherController.calculate_recievable(false, index);
+              voucherController.calculate_recievable(true, index, voucherController.voucherModel.selectedValue.value);
             } else {
+              voucherController.resetAmountCleared();
               voucherController.set_isDeducted(true);
-              voucherController.calculate_recievable(true, index);
+              voucherController.calculate_recievable(true, index, voucherController.voucherModel.selectedValue.value);
             }
             voucherController.is_fullclear_Valid(index);
-            voucherController.is_amountExceeds(index);
+            voucherController.is_amountExceeds(index, 'partial');
           },
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 0),
@@ -1645,6 +1644,7 @@ class _VoucherState extends State<Voucher> {
 
   @override
   Widget build(BuildContext context) {
+    // loader.stop();
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.transparent,
@@ -2054,7 +2054,7 @@ class _VoucherState extends State<Voucher> {
                                                       },
                                                       child: Text(
                                                         voucher.invoiceNumber,
-                                                        style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                                        style: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text7),
                                                       ),
                                                     ),
                                                   ),
@@ -2194,7 +2194,7 @@ class _VoucherState extends State<Voucher> {
                                                 Expanded(
                                                   flex: 1,
                                                   child: Text(
-                                                    formatCurrency(voucher.totalAmount),
+                                                    'Rs. ${formatCurrency(voucher.totalAmount)}',
                                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                   ),
                                                 ),
@@ -2208,7 +2208,7 @@ class _VoucherState extends State<Voucher> {
                                                       child: Text(
                                                         textAlign: TextAlign.center,
                                                         voucher.dueDate == null ? '-' : formatDate(voucher.dueDate!),
-                                                        style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                                        style: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text7),
                                                       ),
                                                     ),
                                                   ),
@@ -2230,7 +2230,7 @@ class _VoucherState extends State<Voucher> {
                                                     (voucher.fullyCleared == 0 && voucher.partiallyCleared == 0)
                                                         ? 'pending'
                                                         : voucher.fullyCleared == 1
-                                                            ? 'completed'
+                                                            ? 'paid'
                                                             : voucher.partiallyCleared == 1
                                                                 ? 'partially cleared'
                                                                 : '',
@@ -2258,17 +2258,17 @@ class _VoucherState extends State<Voucher> {
                                                             final isPendingEqualsTds = voucher.pendingAmount == voucher.tdsCalculationAmount;
 
                                                             if (isPendingEqualsTds) {
-                                                              voucherController.calculate_recievable(true, index);
+                                                              voucherController.calculate_recievable(true, index, voucherController.voucherModel.selectedValue.value);
                                                               voucherController.set_isDeducted(true);
                                                             }
 
                                                             if (voucher.tdsCalculation == 1 || isPendingEqualsTds) {
-                                                              voucherController.calculate_recievable(true, index);
+                                                              voucherController.calculate_recievable(true, index, voucherController.voucherModel.selectedValue.value);
                                                             } else {
-                                                              voucherController.calculate_recievable(false, index);
+                                                              voucherController.calculate_recievable(false, index, voucherController.voucherModel.selectedValue.value);
                                                             }
 
-                                                            voucherController.is_amountExceeds(index);
+                                                            voucherController.is_amountExceeds(index, null);
                                                             voucherController.is_fullclear_Valid(index);
 
                                                             _showCloseVoucherPopup(index);
@@ -2553,10 +2553,29 @@ class _VoucherState extends State<Voucher> {
                                                         },
                                                         child: Text(
                                                           voucher.invoiceNumber,
-                                                          style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                                          style: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text7),
                                                         ),
                                                       ),
                                                     ),
+
+                                                    //     ElevatedButton(
+                                                    //   onPressed: () async {
+                                                    //     if (voucher.invoiceType == 'subscription') {
+                                                    //       bool success = await widget.GetSubscriptionPDFfile(context: context, invoiceNo: voucher.invoiceNumber);
+                                                    //       if (success) {
+                                                    //         widget.showPDF(context, voucher.invoiceNumber);
+                                                    //       }
+                                                    //     }
+                                                    //   },
+                                                    //   style: ElevatedButton.styleFrom(
+                                                    //     backgroundColor: const Color.fromARGB(0, 240, 193, 52),
+                                                    //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                                                    //   ),
+                                                    //   child: Text(
+                                                    //     voucher.invoiceNumber,
+                                                    //     style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                                    //   ),
+                                                    // )
                                                   ),
                                                   const SizedBox(width: 3),
                                                   Expanded(
@@ -2693,7 +2712,7 @@ class _VoucherState extends State<Voucher> {
                                                   Expanded(
                                                     flex: 1,
                                                     child: Text(
-                                                      formatCurrency(voucher.totalAmount),
+                                                      'Rs. ${formatCurrency(voucher.totalAmount)}',
                                                       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                     ),
                                                   ),
@@ -2707,7 +2726,7 @@ class _VoucherState extends State<Voucher> {
                                                         child: Text(
                                                           textAlign: TextAlign.center,
                                                           voucher.dueDate == null ? '-' : formatDate(voucher.dueDate!),
-                                                          style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                                          style: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text7),
                                                         ),
                                                       ),
                                                     ),
@@ -2729,7 +2748,7 @@ class _VoucherState extends State<Voucher> {
                                                       (voucher.fullyCleared == 0 && voucher.partiallyCleared == 0)
                                                           ? 'pending'
                                                           : voucher.fullyCleared == 1
-                                                              ? 'completed'
+                                                              ? 'paid'
                                                               : voucher.partiallyCleared == 1
                                                                   ? 'partially cleared'
                                                                   : '',
@@ -2757,17 +2776,17 @@ class _VoucherState extends State<Voucher> {
                                                               final isPendingEqualsTds = voucher.pendingAmount == voucher.tdsCalculationAmount;
 
                                                               if (isPendingEqualsTds) {
-                                                                voucherController.calculate_recievable(true, index);
+                                                                voucherController.calculate_recievable(true, index, voucherController.voucherModel.selectedValue.value);
                                                                 voucherController.set_isDeducted(true);
                                                               }
 
                                                               if (voucher.tdsCalculation == 1 || isPendingEqualsTds) {
-                                                                voucherController.calculate_recievable(true, index);
+                                                                voucherController.calculate_recievable(true, index, voucherController.voucherModel.selectedValue.value);
                                                               } else {
-                                                                voucherController.calculate_recievable(false, index);
+                                                                voucherController.calculate_recievable(false, index, voucherController.voucherModel.selectedValue.value);
                                                               }
 
-                                                              voucherController.is_amountExceeds(index);
+                                                              voucherController.is_amountExceeds(index, null);
                                                               voucherController.is_fullclear_Valid(index);
 
                                                               _showCloseVoucherPopup(index);
@@ -3237,7 +3256,7 @@ class _VoucherState extends State<Voucher> {
                                   border: TableBorder(horizontalInside: BorderSide(color: Colors.grey.shade400)),
                                   children: voucherController.voucherModel.voucher_list[index].paymentDetails!.map<TableRow>((payment) {
                                     final date = formatDate(payment.date);
-                                    final amount = "₹${payment.amount}";
+                                    final amount = '₹ ${formatCurrency(payment.amount)}';
                                     final transID = payment.transactionId;
                                     final txnDetails = payment.transanctionDetails == "" ? 'N/A' : payment.transanctionDetails;
 

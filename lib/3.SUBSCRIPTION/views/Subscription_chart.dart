@@ -65,7 +65,7 @@ class SubscriptionChartState extends State<SubscriptionChart> {
             children: <Widget>[
               Indicator(
                 color: Color.fromARGB(255, 128, 184, 240),
-                text: 'Completed',
+                text: 'paid',
                 isSquare: true,
               ),
               SizedBox(height: 10),

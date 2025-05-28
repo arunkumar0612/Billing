@@ -40,11 +40,15 @@ class VoucherController extends GetxController {
     }
   }
 
-  void calculate_recievable(bool TDSdeducted, int index) {
+  void resetAmountCleared() {
+    voucherModel.amountCleared_controller.value.text = '';
+  }
+
+  void calculate_recievable(bool TDSdeducted, int index, String paymentType) {
     final voucher = voucherModel.voucher_list[index];
     final tdsAmount = (voucher.tdsCalculation == 1) ? voucher.tdsCalculationAmount : 0.0;
 
-    voucherModel.recievableAmount.value = TDSdeducted ? (voucher.pendingAmount - tdsAmount).roundToDouble() : voucher.pendingAmount.roundToDouble();
+    voucherModel.recievableAmount.value = TDSdeducted ? ((voucher.pendingAmount - (paymentType == 'Partial' ? 1 : 0)) - tdsAmount).roundToDouble() : voucher.pendingAmount.roundToDouble();
 
     if (voucherModel.recievableAmount.value == 0.0) {
       voucherModel.amountCleared_controller.value.text = '0.0';
@@ -59,7 +63,7 @@ class VoucherController extends GetxController {
   //   }
   // }
 
-  void is_amountExceeds(int index) {
+  void is_amountExceeds(int index, String? paymentType) {
     final clearedText = voucherModel.amountCleared_controller.value.text;
     final voucher = voucherModel.voucher_list[index];
     final tdsAmount = (voucher.tdsCalculation == 1) ? voucher.tdsCalculationAmount : 0.0;
@@ -76,7 +80,9 @@ class VoucherController extends GetxController {
       return;
     }
 
-    final exceeds = voucherModel.selectedValue.value == "Full" ? clearedAmount > voucherModel.recievableAmount.value : clearedAmount > (voucher.pendingAmount.roundToDouble() - tdsAmount);
+    final exceeds = voucherModel.selectedValue.value == "Full"
+        ? clearedAmount > voucherModel.recievableAmount.value
+        : clearedAmount > ((voucher.pendingAmount.roundToDouble() - (paymentType == 'Partial' ? 1 : 0)) - tdsAmount);
 
     voucherModel.is_amountExceeds.value = exceeds;
   }

@@ -16,9 +16,11 @@ import 'package:ssipl_billing/2.BILLING/Ledger/services/account_ledger_service.d
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_PDF_template/account_ledger_pdf_template.dart';
+import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
+import 'package:ssipl_billing/COMPONENTS-/showPDF.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -33,6 +35,8 @@ class AccountLedger extends StatefulWidget with Account_LedgerService, main_Bill
 
 class _accountLedgerState extends State<AccountLedger> {
   final Account_LedgerController account_ledgerController = Get.find<Account_LedgerController>();
+  final MainBilling_Controller mainBilling_Controller = Get.find<MainBilling_Controller>();
+
   final loader = LoadingOverlay();
   @override
   void initState() {
@@ -54,7 +58,7 @@ class _accountLedgerState extends State<AccountLedger> {
     await Future.delayed(const Duration(milliseconds: 100));
     loader.start(context); // Now safe to use
     await widget.get_Account_LedgerList();
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 0));
     loader.stop();
   }
 
@@ -307,11 +311,30 @@ class _accountLedgerState extends State<AccountLedger> {
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(
-                                                    textAlign: TextAlign.center,
-                                                    account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].invoiceNumber,
-                                                    style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                  MouseRegion(
+                                                    cursor: SystemMouseCursors.click,
+                                                    child: GestureDetector(
+                                                      onTap: () async {
+                                                        if (account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].invoiceType == 'subscription') {
+                                                          bool success = await widget.GetSubscriptionPDFfile(
+                                                              context: context, invoiceNo: account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].invoiceNumber);
+                                                          if (success) {
+                                                            showPDF(context, account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].invoiceNumber,
+                                                                mainBilling_Controller.billingModel.pdfFile.value);
+                                                          }
+                                                        }
+                                                      },
+                                                      child: Text(
+                                                        account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].invoiceNumber,
+                                                        style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                                      ),
+                                                    ),
                                                   ),
+                                                  // Text(
+                                                  //   textAlign: TextAlign.center,
+                                                  //   account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].invoiceNumber,
+                                                  //   style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                  // ),
                                                 ],
                                               ),
                                             ),
@@ -422,13 +445,13 @@ class _accountLedgerState extends State<AccountLedger> {
                                                         const SizedBox(height: 2),
                                                         Text(
                                                           textAlign: TextAlign.start,
-                                                          'Net : ${account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].billDetails.subtotal.toString()}',
+                                                          'Net : ${formatCurrency(account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].billDetails.subtotal)}',
                                                           style: const TextStyle(color: Primary_colors.Color6, fontSize: Primary_font_size.Text5),
                                                         ),
                                                         const SizedBox(height: 2),
                                                         Text(
                                                           textAlign: TextAlign.start,
-                                                          'GST : ${account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].billDetails.totalGST.toString()}',
+                                                          'GST : ${formatCurrency(account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].billDetails.totalGST)}',
                                                           style: const TextStyle(color: Primary_colors.Color6, fontSize: Primary_font_size.Text5),
                                                         ),
                                                         // const SizedBox(height: 2),

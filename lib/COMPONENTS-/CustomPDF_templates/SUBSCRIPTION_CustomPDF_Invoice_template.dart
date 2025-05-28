@@ -185,7 +185,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
             children: [
               pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: pw.CrossAxisAlignment.end,
+                crossAxisAlignment: pw.CrossAxisAlignment.center,
                 children: [
                   pw.Container(
                     padding: const pw.EdgeInsets.only(bottom: 0, left: 2),
@@ -205,7 +205,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                       height: 110,
                       child: pw.Row(children: [
                         pw.Column(
-                          mainAxisAlignment: pw.MainAxisAlignment.end,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
                           crossAxisAlignment: pw.CrossAxisAlignment.start,
                           children: [
                             regular('Date', 10),
@@ -214,7 +214,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                           ],
                         ),
                         pw.Column(
-                          mainAxisAlignment: pw.MainAxisAlignment.end,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
                           crossAxisAlignment: pw.CrossAxisAlignment.start,
                           children: [
                             regular('  :  ', 10),
@@ -223,7 +223,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                           ],
                         ),
                         pw.Column(
-                          mainAxisAlignment: pw.MainAxisAlignment.end,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
                           crossAxisAlignment: pw.CrossAxisAlignment.start,
                           children: [
                             pw.Container(
@@ -237,7 +237,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                             pw.Container(
                               child: pw.Align(
                                 alignment: pw.Alignment.centerLeft,
-                                child: regular(instInvoice.invoiceNo, 10),
+                                child: bold(instInvoice.invoiceNo, 10),
                               ),
                             ),
                           ],
@@ -1299,7 +1299,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
           // width: 180,
           child: pw.SizedBox(
             height: 190,
-            child: pw.Image(secureshutterImage, fit: pw.BoxFit.cover),
+            child: pw.Image(secureshutterImage, fit: pw.BoxFit.fill),
           ),
         ),
       ],

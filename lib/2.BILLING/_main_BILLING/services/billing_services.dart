@@ -1,11 +1,5 @@
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/models/entities/Billing_entities.dart';
 import 'package:ssipl_billing/API/api.dart';
@@ -15,7 +9,6 @@ import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 mixin main_BillingService {
   final Invoker apiController = Get.find<Invoker>();
@@ -50,14 +43,13 @@ mixin main_BillingService {
 
   Future<void> selectDate(BuildContext context, TextEditingController controller) async {
     final DateTime now = DateTime.now();
-    final DateTime tomorrow = DateTime(now.year, now.month, now.day, 23, 59);
+    final DateTime nextYear = now.add(const Duration(days: 365)); // Limit to next year
 
-    // Step 1: Show Date Picker
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: now,
-      firstDate: DateTime(2000),
-      lastDate: tomorrow,
+      firstDate: now, // Start from today
+      lastDate: nextYear, // Allow dates up to 1 year from today
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -83,53 +75,11 @@ mixin main_BillingService {
     );
 
     if (pickedDate != null) {
-      // Step 2: Show Time Picker
-      final TimeOfDay? pickedTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              timePickerTheme: const TimePickerThemeData(
-                dialHandColor: Primary_colors.Color3,
-                entryModeIconColor: Primary_colors.Color3,
-              ),
-              colorScheme: const ColorScheme.light(
-                primary: Primary_colors.Color3,
-                onPrimary: Colors.white,
-                onSurface: Colors.black87,
-              ),
-            ),
-            child: child!,
-          );
-        },
-      );
+      final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
+          "${pickedDate.month.toString().padLeft(2, '0')}-"
+          "${pickedDate.day.toString().padLeft(2, '0')}";
 
-      if (pickedTime != null) {
-        final DateTime fullDateTime = DateTime(
-          pickedDate.year,
-          pickedDate.month,
-          pickedDate.day,
-          pickedTime.hour,
-          pickedTime.minute,
-        );
-
-        // Check if the selected datetime exceeds tomorrow
-        if (fullDateTime.isAfter(tomorrow)) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Date/time cannot exceed tomorrow.')),
-          );
-          return;
-        }
-
-        final formatted = "${fullDateTime.year.toString().padLeft(4, '0')}-"
-            "${fullDateTime.month.toString().padLeft(2, '0')}-"
-            "${fullDateTime.day.toString().padLeft(2, '0')} "
-            "${pickedTime.hour.toString().padLeft(2, '0')}:"
-            "${pickedTime.minute.toString().padLeft(2, '0')}";
-
-        controller.text = formatted;
-      }
+      controller.text = formatted;
     }
   }
 
@@ -208,111 +158,6 @@ mixin main_BillingService {
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
       return false;
-    }
-  }
-
-  void showPDF(context, String filename) async {
-    if (mainBilling_Controller.billingModel.pdfFile.value != null) {
-      await showDialog(
-        context: context,
-        builder: (context) => Dialog(
-          insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
-          child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-              height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
-              child: Stack(
-                children: [
-                  SfPdfViewer.file(mainBilling_Controller.billingModel.pdfFile.value!),
-                  Align(
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: IconButton(
-                          onPressed: () {
-                            downloadPdf(
-                                context,
-                                path
-                                    .basename(filename)
-                                    .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
-                                    .replaceAll(" ", ""),
-                                mainBilling_Controller.billingModel.pdfFile.value);
-                          },
-                          icon: const Icon(
-                            Icons.download,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ))
-                ],
-              )),
-        ),
-      );
-    }
-  }
-
-  Future<File> savePdfToTemp(Uint8List pdfData) async {
-    final tempDir = await getTemporaryDirectory();
-    final tempFile = File('${tempDir.path}/temp_pdf.pdf');
-    await tempFile.writeAsBytes(pdfData, flush: true);
-    return tempFile;
-  }
-
-  Future<void> downloadPdf(BuildContext context, String filename, File? pdfFile) async {
-    try {
-      loader.start(context);
-
-      // ✅ Let the loader show before blocking UI
-      await Future.delayed(const Duration(milliseconds: 300));
-
-      if (pdfFile == null) {
-        loader.stop();
-        if (kDebugMode) {
-          print("No PDF file found to download.");
-        }
-        Error_dialog(
-          context: context,
-          title: "No PDF Found",
-          content: "There is no PDF file to download.",
-          // showCancel: false,
-        );
-        return;
-      }
-
-      await Future.delayed(const Duration(milliseconds: 100));
-
-      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(lockParentWindow: true);
-
-      // ✅ Always stop loader after native call
-      loader.stop();
-
-      if (selectedDirectory == null) {
-        if (kDebugMode) {
-          print("User cancelled the folder selection.");
-        }
-        Error_dialog(
-          context: context,
-          title: "Cancelled",
-          content: "Download cancelled. No folder was selected.",
-          // showCancel: false,
-        );
-        return;
-      }
-
-      String savePath = "$selectedDirectory/$filename.pdf";
-      await pdfFile.copy(savePath);
-
-      Success_SnackBar(context, "✅ PDF downloaded successfully to: $savePath");
-    } catch (e) {
-      loader.stop();
-      if (kDebugMode) {
-        print("❌ Error while downloading PDF: $e");
-      }
-      Error_dialog(
-        context: context,
-        title: "Error",
-        content: "An error occurred while downloading the PDF:\n$e",
-        // showCancel: false,
-      );
     }
   }
 

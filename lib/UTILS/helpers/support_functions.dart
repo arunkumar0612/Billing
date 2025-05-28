@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -175,4 +176,11 @@ bool isGST_Local(String gstNumber) {
 
   // Return true if Tamil Nadu (33), else false
   return stateCode == '33';
+}
+
+Future<File> savePdfToTemp(Uint8List pdfData) async {
+  final tempDir = await getTemporaryDirectory();
+  final tempFile = File('${tempDir.path}/temp_pdf.pdf');
+  await tempFile.writeAsBytes(pdfData, flush: true);
+  return tempFile;
 }

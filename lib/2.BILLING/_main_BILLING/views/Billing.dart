@@ -11,6 +11,7 @@ import 'package:ssipl_billing/2.BILLING/_main_BILLING/models/entities/Billing_en
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/views/filter.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/views/piechart.dart';
+import 'package:ssipl_billing/COMPONENTS-/showPDF.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 import '../../../THEMES/style.dart';
@@ -905,7 +906,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                     onTap: () async {
                                       bool success = await widget.GetSubscriptionPDFfile(context: context, invoiceNo: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].invoiceNo);
                                       if (success) {
-                                        widget.showPDF(context, mainBilling_Controller.billingModel.subscriptionInvoiceList[index].invoiceNo);
+                                        showPDF(context, mainBilling_Controller.billingModel.subscriptionInvoiceList[index].invoiceNo, mainBilling_Controller.billingModel.pdfFile.value);
                                       }
                                     },
                                     child: Text(
@@ -987,7 +988,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 flex: 2,
                                 child: Text(
                                   textAlign: TextAlign.center,
-                                  mainBilling_Controller.billingModel.subscriptionInvoiceList[index].totalAmount.toString(),
+                                  'Rs. ${formatCurrency(double.parse(mainBilling_Controller.billingModel.subscriptionInvoiceList[index].totalAmount.toString()))}',
                                   style: const TextStyle(
                                     color: Primary_colors.Color1,
                                     fontSize: Primary_font_size.Text7,
@@ -1266,7 +1267,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                   onTap: () async {
                                     bool success = await widget.GetSalesPDFfile(context: context, invoiceNo: mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceNumber);
                                     if (success) {
-                                      widget.showPDF(context, mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceNumber);
+                                      showPDF(context, mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceNumber, mainBilling_Controller.billingModel.pdfFile.value);
                                     }
                                   },
                                   child: Text(
@@ -1332,7 +1333,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                               child: Text(
                                 // textAlign: TextAlign.center,
                                 // mainBilling_Controller.billingModel.salesInvoiceList[index].clientAddress,
-                                mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceAmount.toString(),
+                                'Rs. ${formatCurrency(double.parse(mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceAmount.toString()))}',
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),

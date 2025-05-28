@@ -3865,7 +3865,7 @@ class _VoucherState extends State<Voucher> {
             }),
             const Spacer(),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 OutlinedButton(
                   onPressed: () {

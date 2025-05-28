@@ -243,16 +243,24 @@ mixin VoucherService {
     // response;
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
-        "vouchertype": voucherController.voucherModel.selectedvouchertype.value.toLowerCase() == 'show all' ? '' : voucherController.voucherModel.selectedvouchertype.value.toLowerCase(),
-        "paymentstatus": voucherController.voucherModel.selectedpaymentStatus.value.toLowerCase() == 'show all' ? '' : voucherController.voucherModel.selectedpaymentStatus.value.toLowerCase(),
-        "invoicetype": voucherController.voucherModel.selectedInvoiceType.value.toLowerCase() == 'show all' ? '' : voucherController.voucherModel.selectedInvoiceType.value.toLowerCase(),
+        "vouchertype": voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value.toLowerCase() == 'show all'
+            ? ''
+            : voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value.toLowerCase(),
+        "paymentstatus": voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value.toLowerCase() == 'show all'
+            ? ''
+            : voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value.toLowerCase(),
+        "invoicetype": voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value.toLowerCase() == 'show all'
+            ? ''
+            : voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value.toLowerCase(),
         // "customerid": "SB_1",
-        "customerid": voucherController.voucherModel.selectedcustomerID.value == 'None' ? '' : voucherController.voucherModel.selectedcustomerID.value,
-        "startdate": voucherController.voucherModel.startDateController.value.text,
-        "enddate": voucherController.voucherModel.endDateController.value.text,
+        "customerid":
+            voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value == 'None' ? '' : voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value,
+        "startdate": voucherController.voucherModel.voucherSelectedFilter.value.fromdate.value.toString(),
+        "enddate": voucherController.voucherModel.voucherSelectedFilter.value.todate.value.toString(),
       },
       API.getvoucherlist,
     );
+    // print('asfasfasa${voucherController.voucherModel.voucherSelectedFilter.value.fromdate.toString()}');
     if (response?['statusCode'] == 200) {
       CMDlResponse value = CMDlResponse.fromJson(
         response ?? {},
@@ -591,19 +599,27 @@ mixin VoucherService {
   // }
 
   void showCustomDateRangePicker() {
-    voucherController.voucherModel.showCustomDateRange.value = true;
     voucherController.voucherModel.selectedvouchertype.value = 'Custom range';
   }
 
+//  vouchertype: 'Show All',
+//     invoicetype: 'Show All',
+//     selectedsalescustomername: 'None',
+//     selectedcustomerid: '',
+//     selectedsubscriptioncustomername: 'None',
+//     paymentstatus: 'Show All',
+//     fromdate: '',
+//     todate: '',
   void resetvoucherFilters() {
-    voucherController.voucherModel.startDateController.value.clear();
-    voucherController.voucherModel.endDateController.value.clear();
-    voucherController.voucherModel.selectedpaymentStatus.value = 'Show All';
-    voucherController.voucherModel.selectedInvoiceType.value = 'Show All';
-    voucherController.voucherModel.selectedvouchertype.value = 'Show All';
-    voucherController.voucherModel.showCustomDateRange.value = false;
-    voucherController.voucherModel.selectedsalescustomer.value = 'None';
-    voucherController.voucherModel.selectedcustomerID.value = 'None';
+    voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value = 'Show All';
+    voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value = 'Show All';
+    voucherController.voucherModel.voucherSelectedFilter.value.selectedsalescustomername.value = 'None';
+    voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value = '';
+    voucherController.voucherModel.voucherSelectedFilter.value.selectedsubscriptioncustomername.value = 'None';
+    voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value = 'Show All';
+    voucherController.voucherModel.voucherSelectedFilter.value.fromdate.value = '';
+    voucherController.voucherModel.voucherSelectedFilter.value.todate.value = '';
+
     // voucherController.voucherModel.filteredVouchers.value = voucherController.voucherModel.voucher_list;
     voucherController.voucherModel.checkboxValues.value = List.filled(voucherController.voucherModel.voucher_list.length, false);
     voucherController.voucherModel.isExtendButton_visible = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false).obs;

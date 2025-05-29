@@ -83,6 +83,47 @@ mixin main_BillingService {
     }
   }
 
+  Future<void> selectfilterDate(BuildContext context, TextEditingController controller) async {
+    final DateTime now = DateTime.now();
+    final DateTime pastLimit = DateTime(2000); // You can set your own earliest allowed date
+
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: pastLimit, // Allow dates from the past
+      lastDate: now, // Prevent selecting future dates
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Primary_colors.Color3,
+              onPrimary: Colors.white,
+              onSurface: Colors.black87,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Primary_colors.Color3,
+              ),
+            ),
+            dialogTheme: const DialogThemeData(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (pickedDate != null) {
+      final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
+          "${pickedDate.month.toString().padLeft(2, '0')}-"
+          "${pickedDate.day.toString().padLeft(2, '0')}";
+      controller.text = formatted;
+    }
+  }
+
   void get_SalesInvoiceList() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.billing_salesInvoice);
@@ -132,6 +173,32 @@ mixin main_BillingService {
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
       return false;
+    }
+  }
+
+  void GetDashboardData() async {
+    try {
+      var query = {
+        "type": mainBilling_Controller.billingModel.type.value,
+        "fromDate": mainBilling_Controller.billingModel.dashboard_startDateController.value.text,
+        "toDate": mainBilling_Controller.billingModel.dashboard_endDateController.value.text,
+      };
+      Map<String, dynamic>? response = await apiController.GetbyQueryString(query, API.get_dashboardData);
+      if (response?['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        if (value.code) {
+          mainBilling_Controller.set_dashBoardData(DashboardStats.fromJson(value.data['dashboard']));
+          // await mainBilling_Controller.PDFfileApiData(value);
+
+          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          // await Error_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        // Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      // Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 

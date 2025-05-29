@@ -237,10 +237,6 @@ mixin VoucherService {
   }
 
   Future<void> get_VoucherList() async {
-    // print('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
-    // loader.start(context);
-    // await Future.delayed(const Duration(milliseconds: 1000));
-    // response;
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
         "vouchertype": voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value.toLowerCase() == 'show all'

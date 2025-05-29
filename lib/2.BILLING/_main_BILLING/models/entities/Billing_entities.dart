@@ -328,3 +328,43 @@ class VendorInvoice {
     };
   }
 }
+
+class DashboardStats {
+  int totalInvoices;
+  double? totalAmount;
+  int paidInvoices;
+  double? paidAmount;
+  int pendingInvoices;
+  double? pendingAmount;
+
+  DashboardStats({
+    required this.totalInvoices,
+    required this.totalAmount,
+    required this.paidInvoices,
+    required this.paidAmount,
+    required this.pendingInvoices,
+    required this.pendingAmount,
+  });
+
+  factory DashboardStats.fromJson(Map<String, dynamic> json) {
+    return DashboardStats(
+      totalInvoices: json['totalInvoices'] ?? 0,
+      totalAmount: (json['totalAmount'] != null) ? double.parse(json['totalAmount']) : null,
+      paidInvoices: json['paidInvoices'] ?? 0,
+      paidAmount: (json['paidAmount'] != null) ? double.parse(json['paidAmount']) : null,
+      pendingInvoices: json['pendingInvoices'] ?? 0,
+      pendingAmount: (json['pendingAmount'] != null) ? double.parse(json['pendingAmount']) : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'totalInvoices': totalInvoices,
+      'totalAmount': totalAmount,
+      'paidInvoices': paidInvoices,
+      'paidAmount': paidAmount,
+      'pendingInvoices': pendingInvoices,
+      'pendingAmount': pendingAmount,
+    };
+  }
+}

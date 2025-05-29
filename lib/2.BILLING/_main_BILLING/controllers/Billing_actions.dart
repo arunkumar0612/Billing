@@ -33,6 +33,14 @@ class MainBilling_Controller extends GetxController {
     search('');
   }
 
+  void set_dashBoardData(DashboardStats value) {
+    billingModel.dashBoard_data.value = value;
+  }
+
+  void update_dashBoardtype(String type) {
+    billingModel.type.value = type;
+  }
+
   void search(String query) {
     billingModel.searchQuery.value = query;
 

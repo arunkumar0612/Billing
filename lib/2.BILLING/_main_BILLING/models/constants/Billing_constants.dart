@@ -22,10 +22,22 @@ class BillingModel extends GetxController with GetSingleTickerProviderStateMixin
   var selectedPackageName = 'Show All'.obs;
   late AnimationController animationController;
 
+  RxString dashboard_selectedMonth = 'None'.obs;
+  final dashboard_startDateController = TextEditingController().obs;
+  final dashboard_endDateController = TextEditingController().obs;
+  var type = 'All'.obs;
   // search customer variables
   var activeTab = 'Subscription'.obs;
   var searchQuery = "".obs;
   List<SubscriptionInvoice> allSubscriptionInvoices = [];
   List<SalesInvoice> allSalesInvoices = [];
+  var dashBoard_data = DashboardStats(
+    totalInvoices: 0,
+    totalAmount: null,
+    paidInvoices: 0,
+    paidAmount: null,
+    pendingInvoices: 0,
+    pendingAmount: null,
+  ).obs;
   // List<VendorInvoice> allVendorInvoices=[];
 }

@@ -291,14 +291,42 @@ class _accountLedgerState extends State<AccountLedger> {
                                           ),
                                           // Vertical line after 'Date' column
                                           const SizedBox(width: 3),
+                                          // Expanded(
+                                          //   flex: 2,
+                                          //   child: Padding(
+                                          //     padding: const EdgeInsets.all(10),
+                                          //     child: Text(
+                                          //       textAlign: TextAlign.center,
+                                          //       account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].voucherNumber,
+                                          //       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                          //     ),
+                                          //   ),
+                                          // ),
                                           Expanded(
                                             flex: 2,
                                             child: Padding(
-                                              padding: const EdgeInsets.all(10),
-                                              child: Text(
-                                                textAlign: TextAlign.center,
-                                                account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].voucherNumber,
-                                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                              padding: const EdgeInsets.all(0),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  MouseRegion(
+                                                    cursor: SystemMouseCursors.click,
+                                                    child: GestureDetector(
+                                                      onTap: () async {
+                                                        widget.get_VoucherDetails(context, account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].voucherId);
+                                                      },
+                                                      child: Text(
+                                                        account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].voucherNumber,
+                                                        style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  // Text(
+                                                  //   textAlign: TextAlign.center,
+                                                  //   account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].invoiceNumber,
+                                                  //   style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                  // ),
+                                                ],
                                               ),
                                             ),
                                           ),

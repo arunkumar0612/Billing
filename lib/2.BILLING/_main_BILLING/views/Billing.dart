@@ -100,8 +100,36 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                     return SizedBox(
                       child: Column(
                         children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              ShaderMask(
+                                shaderCallback: (bounds) => const LinearGradient(
+                                  colors: [Primary_colors.Color3, Primary_colors.Color4], // Example gradient
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ).createShader(bounds),
+                                child: const Icon(
+                                  Icons.currency_rupee_sharp,
+                                  size: 25.0,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const Text(
+                                'Bills & Payments',
+                                style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text13),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           SizedBox(
-                            height: 235,
+                            height: 240,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -132,144 +160,384 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                // const Text(
-                                                //   'Overview',
-                                                //   style: TextStyle(color: Primary_colors.Color1, fontSize: 20),
-                                                // ),
-                                                // const SizedBox(
-                                                //   height: 10,
-                                                // ),
-                                                Expanded(
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(16),
-                                                      // gradient: const LinearGradient(
-                                                      //   colors: [Primary_colors.Light, Color.fromARGB(255, 40, 39, 59), Primary_colors.Light],
-                                                      //   begin: Alignment.topLeft,
-                                                      //   end: Alignment.bottomRight,
-                                                      // ),
-                                                      // boxShadow: const [
-                                                      //   BoxShadow(
-                                                      //     color: Colors.black12,
-                                                      //     offset: Offset(0, 10),
-                                                      //     blurRadius: 20,
-                                                      //   ),
-                                                      // ],
-                                                    ),
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.all(16),
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        children: [
-                                                          Column(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                Obx(() {
+                                                  return Row(
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 2,
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(top: 8, left: 8),
+                                                          child: Column(
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
-                                                              const Text(
-                                                                'TOTAL',
-                                                                style: TextStyle(
-                                                                  color: Color.fromARGB(255, 186, 185, 185),
-                                                                  fontSize: 12,
-                                                                  fontWeight: FontWeight.w500,
-                                                                ),
-                                                              ),
-                                                              const Text(
-                                                                "\$17,6232",
-                                                                style: TextStyle(
-                                                                  color: Primary_colors.Color1,
-                                                                  fontSize: 28,
-                                                                  fontWeight: FontWeight.bold,
-                                                                ),
-                                                              ),
-                                                              Container(
-                                                                decoration: BoxDecoration(
-                                                                  borderRadius: BorderRadius.circular(10),
-                                                                  color: const Color.fromARGB(255, 202, 227, 253),
-                                                                ),
-                                                                child: const Padding(
-                                                                  padding: EdgeInsets.all(4),
-                                                                  child: Text(
-                                                                    '210 invoices',
-                                                                    style: TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 15, 139, 234)),
+                                                              Row(
+                                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                                children: [
+                                                                  const Text(
+                                                                    'Select date',
+                                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
                                                                   ),
-                                                                ),
-                                                              )
+                                                                  // const SizedBox(width: 8),
+                                                                  Obx(
+                                                                    () => SizedBox(
+                                                                      child: mainBilling_Controller.billingModel.dashboard_startDateController.value.text.isNotEmpty ||
+                                                                              mainBilling_Controller.billingModel.dashboard_endDateController.value.text.isNotEmpty
+                                                                          ? TextButton(
+                                                                              onPressed: () {
+                                                                                mainBilling_Controller.billingModel.dashboard_selectedMonth.value = 'None';
+                                                                                mainBilling_Controller.billingModel.dashboard_startDateController.value.clear();
+                                                                                mainBilling_Controller.billingModel.dashboard_endDateController.value.clear();
+                                                                                // widget.get_VoucherList();
+                                                                              },
+                                                                              child: const Text('Clear', style: TextStyle(fontSize: Primary_font_size.Text7)),
+                                                                            )
+                                                                          : const SizedBox(),
+                                                                    ),
+                                                                  ),
+                                                                  const Spacer(),
+                                                                  Obx(() {
+                                                                    return Container(
+                                                                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                                                                      width: 100, // Adjust width as needed
+                                                                      height: 30, // Adjust height as needed
+                                                                      child: DropdownButtonFormField<String>(
+                                                                        menuMaxHeight: 300,
+                                                                        value: mainBilling_Controller.billingModel.dashboard_selectedMonth.value,
+                                                                        items: [
+                                                                          'None',
+                                                                          'January',
+                                                                          'February',
+                                                                          'March',
+                                                                          'April',
+                                                                          'May',
+                                                                          'June',
+                                                                          'July',
+                                                                          'August',
+                                                                          'September',
+                                                                          'October',
+                                                                          'November',
+                                                                          'December'
+                                                                        ].map((String value) {
+                                                                          return DropdownMenuItem<String>(value: value, child: Text(value));
+                                                                        }).toList(),
+                                                                        onChanged: (value) {
+                                                                          mainBilling_Controller.billingModel.dashboard_selectedMonth.value = value!;
+                                                                          if (value != 'None') {
+                                                                            final monthIndex = [
+                                                                                  'January',
+                                                                                  'February',
+                                                                                  'March',
+                                                                                  'April',
+                                                                                  'May',
+                                                                                  'June',
+                                                                                  'July',
+                                                                                  'August',
+                                                                                  'September',
+                                                                                  'October',
+                                                                                  'November',
+                                                                                  'December'
+                                                                                ].indexOf(value) +
+                                                                                1;
+
+                                                                            final now = DateTime.now();
+                                                                            final year = now.year;
+                                                                            final firstDay = DateTime(year, monthIndex, 1);
+                                                                            final lastDay = monthIndex < 12 ? DateTime(year, monthIndex + 1, 0) : DateTime(year + 1, 1, 0);
+
+                                                                            String formatDate(DateTime date) {
+                                                                              return "${date.year.toString().padLeft(4, '0')}-"
+                                                                                  "${date.month.toString().padLeft(2, '0')}-"
+                                                                                  "${date.day.toString().padLeft(2, '0')}";
+                                                                            }
+
+                                                                            mainBilling_Controller.billingModel.dashboard_startDateController.value.text = formatDate(firstDay);
+                                                                            mainBilling_Controller.billingModel.dashboard_endDateController.value.text = formatDate(lastDay);
+                                                                            // widget.get_VoucherList();
+                                                                          } else {
+                                                                            mainBilling_Controller.billingModel.dashboard_startDateController.value.clear();
+                                                                            mainBilling_Controller.billingModel.dashboard_endDateController.value.clear();
+                                                                            // widget.get_VoucherList();
+                                                                          }
+                                                                        },
+                                                                        decoration: const InputDecoration(
+                                                                          isDense: true,
+                                                                          contentPadding: EdgeInsets.symmetric(vertical: 8),
+                                                                          border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                                                                          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                                                                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                                                                        ),
+                                                                        style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 154, 152, 152)),
+                                                                        dropdownColor: Primary_colors.Dark,
+                                                                      ),
+                                                                    );
+                                                                  }),
+                                                                ],
+                                                              ),
+                                                              const SizedBox(height: 15),
+                                                              Row(
+                                                                children: [
+                                                                  Expanded(
+                                                                    child: SizedBox(
+                                                                      height: 35,
+                                                                      child: TextFormField(
+                                                                        style: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                                                                        controller: mainBilling_Controller.billingModel.dashboard_startDateController.value,
+                                                                        readOnly: true,
+                                                                        onTap: () async {
+                                                                          await widget.selectfilterDate(context, mainBilling_Controller.billingModel.dashboard_startDateController.value);
+                                                                          widget.GetDashboardData();
+                                                                          // await widget.get_VoucherList();
+                                                                        },
+                                                                        decoration: InputDecoration(
+                                                                          labelText: 'From',
+                                                                          labelStyle: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                                                                          suffixIcon: const Icon(Icons.calendar_today, size: 20, color: Color.fromARGB(255, 85, 84, 84)),
+                                                                          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                                                                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                                                                          enabledBorder: OutlineInputBorder(
+                                                                            borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                                                            borderRadius: BorderRadius.circular(8),
+                                                                          ),
+                                                                          focusedBorder: OutlineInputBorder(
+                                                                            borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                                                            borderRadius: BorderRadius.circular(8),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  const SizedBox(width: 10),
+                                                                  Expanded(
+                                                                    child: SizedBox(
+                                                                      height: 35,
+                                                                      child: TextFormField(
+                                                                        style: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                                                                        controller: mainBilling_Controller.billingModel.dashboard_endDateController.value,
+                                                                        readOnly: true,
+                                                                        onTap: () async {
+                                                                          await widget.selectfilterDate(context, mainBilling_Controller.billingModel.dashboard_endDateController.value);
+                                                                          widget.GetDashboardData();
+                                                                          // await widget.get_VoucherList();
+                                                                        },
+                                                                        decoration: InputDecoration(
+                                                                          labelText: 'To',
+                                                                          labelStyle: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                                                                          suffixIcon: const Icon(Icons.calendar_today, size: 20, color: Color.fromARGB(255, 85, 84, 84)),
+                                                                          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                                                                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                                                                          enabledBorder: OutlineInputBorder(
+                                                                            borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                                                            borderRadius: BorderRadius.circular(8),
+                                                                          ),
+                                                                          focusedBorder: OutlineInputBorder(
+                                                                            borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                                                            borderRadius: BorderRadius.circular(8),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              const SizedBox(height: 35),
                                                             ],
                                                           ),
-                                                          Column(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              const Text(
-                                                                'PAID',
-                                                                style: TextStyle(
-                                                                  color: Color.fromARGB(255, 186, 185, 185),
-                                                                  fontSize: 12,
-                                                                  fontWeight: FontWeight.w500,
-                                                                ),
-                                                              ),
-                                                              const Text(
-                                                                "\$18,6232",
-                                                                style: TextStyle(
-                                                                  color: Primary_colors.Color1,
-                                                                  fontSize: 28,
-                                                                  fontWeight: FontWeight.bold,
-                                                                ),
-                                                              ),
-                                                              Container(
-                                                                decoration: BoxDecoration(
-                                                                  borderRadius: BorderRadius.circular(10),
-                                                                  color: const Color.fromARGB(255, 202, 253, 223),
-                                                                ),
-                                                                child: const Padding(
-                                                                  padding: EdgeInsets.all(4),
-                                                                  child: Text(
-                                                                    '210 invoices',
-                                                                    style: TextStyle(fontSize: Primary_font_size.Text5, color: Colors.green),
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                          Column(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              const Text(
-                                                                'UNPAID',
-                                                                style: TextStyle(
-                                                                  color: Color.fromARGB(255, 186, 185, 185),
-                                                                  fontSize: 12,
-                                                                  fontWeight: FontWeight.w500,
-                                                                ),
-                                                              ),
-                                                              const Text(
-                                                                "\$6,232",
-                                                                style: TextStyle(
-                                                                  color: Primary_colors.Color1,
-                                                                  fontSize: 28,
-                                                                  fontWeight: FontWeight.bold,
-                                                                ),
-                                                              ),
-                                                              Container(
-                                                                decoration: BoxDecoration(
-                                                                  borderRadius: BorderRadius.circular(10),
-                                                                  color: const Color.fromARGB(255, 253, 206, 202),
-                                                                ),
-                                                                child: const Padding(
-                                                                  padding: EdgeInsets.all(4),
-                                                                  child: Text(
-                                                                    '110 invoices',
-                                                                    style: TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 234, 29, 15)),
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ],
+                                                        ),
                                                       ),
-                                                    ),
+                                                      Expanded(flex: 1, child: Container()),
+                                                      Expanded(
+                                                        flex: 2,
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(right: 10),
+                                                          child: SizedBox(
+                                                            width: 200,
+                                                            height: 35,
+                                                            child: Obx(
+                                                              () => DropdownButtonFormField<String>(
+                                                                value: mainBilling_Controller.billingModel.type.value, // Use the state variable for the selected value
+                                                                items: ["Sales", "Subscription", "Purchase", "All"]
+                                                                    .map((String value) => DropdownMenuItem<String>(
+                                                                          value: value,
+                                                                          child: Text(value, style: const TextStyle(fontSize: 13, color: Colors.white)),
+                                                                        ))
+                                                                    .toList(),
+                                                                onChanged: (String? newValue) {
+                                                                  if (newValue != null) {
+                                                                    mainBilling_Controller.update_dashBoardtype(newValue);
+                                                                    widget.GetDashboardData();
+                                                                    // mainBilling_Controller.updatesalesperiod(newValue == "Monthly view" ? 'monthly' : 'yearly');
+
+                                                                    // if (newValue == "Monthly view") {
+                                                                    //   widget.GetSalesData('monthly');
+                                                                    // } else if (newValue == "Yearly view") {
+                                                                    //   widget.GetSalesData('yearly');
+                                                                    // }
+                                                                  }
+                                                                },
+                                                                decoration: InputDecoration(
+                                                                  alignLabelWithHint: false,
+                                                                  contentPadding: const EdgeInsets.all(10),
+                                                                  filled: true,
+                                                                  fillColor: Primary_colors.Dark,
+                                                                  focusedBorder: OutlineInputBorder(
+                                                                    borderRadius: BorderRadius.circular(30),
+                                                                    borderSide: const BorderSide(color: Color.fromARGB(226, 50, 50, 50)),
+                                                                  ),
+                                                                  enabledBorder: OutlineInputBorder(
+                                                                    borderRadius: BorderRadius.circular(30),
+                                                                    borderSide: const BorderSide(color: Color.fromARGB(255, 51, 50, 50)),
+                                                                  ),
+                                                                  hintText: 'Data View',
+                                                                  hintStyle: const TextStyle(
+                                                                    fontSize: Primary_font_size.Text7,
+                                                                    color: Primary_colors.Color1,
+                                                                    letterSpacing: 1,
+                                                                  ),
+                                                                ),
+                                                                dropdownColor: Primary_colors.Dark,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  );
+                                                }),
+                                                Expanded(
+                                                  child: Obx(
+                                                    () {
+                                                      return Container(
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(16),
+                                                          // gradient: const LinearGradient(
+                                                          //   colors: [Primary_colors.Light, Color.fromARGB(255, 40, 39, 59), Primary_colors.Light],
+                                                          //   begin: Alignment.topLeft,
+                                                          //   end: Alignment.bottomRight,
+                                                          // ),
+                                                          // boxShadow: const [
+                                                          //   BoxShadow(
+                                                          //     color: Colors.black12,
+                                                          //     offset: Offset(0, 10),
+                                                          //     blurRadius: 20,
+                                                          //   ),
+                                                          // ],
+                                                        ),
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.all(16),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: [
+                                                              Column(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  const Text(
+                                                                    'TOTAL',
+                                                                    style: TextStyle(
+                                                                      color: Color.fromARGB(255, 186, 185, 185),
+                                                                      fontSize: 12,
+                                                                      fontWeight: FontWeight.w500,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount ?? 0.0),
+                                                                    style: TextStyle(
+                                                                      color: Primary_colors.Color1,
+                                                                      fontSize: 28,
+                                                                      fontWeight: FontWeight.bold,
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    decoration: BoxDecoration(
+                                                                      borderRadius: BorderRadius.circular(10),
+                                                                      color: const Color.fromARGB(255, 202, 227, 253),
+                                                                    ),
+                                                                    child: Padding(
+                                                                      padding: EdgeInsets.all(4),
+                                                                      child: Text(
+                                                                        '${mainBilling_Controller.billingModel.dashBoard_data.value.totalInvoices} invoices',
+                                                                        style: TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 15, 139, 234)),
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              Column(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  const Text(
+                                                                    'PAID',
+                                                                    style: TextStyle(
+                                                                      color: Color.fromARGB(255, 186, 185, 185),
+                                                                      fontSize: 12,
+                                                                      fontWeight: FontWeight.w500,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount ?? 0.0),
+                                                                    style: TextStyle(
+                                                                      color: Primary_colors.Color1,
+                                                                      fontSize: 28,
+                                                                      fontWeight: FontWeight.bold,
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    decoration: BoxDecoration(
+                                                                      borderRadius: BorderRadius.circular(10),
+                                                                      color: const Color.fromARGB(255, 202, 253, 223),
+                                                                    ),
+                                                                    child: Padding(
+                                                                      padding: EdgeInsets.all(4),
+                                                                      child: Text(
+                                                                        '${mainBilling_Controller.billingModel.dashBoard_data.value.paidInvoices} invoices',
+                                                                        style: TextStyle(fontSize: Primary_font_size.Text5, color: Colors.green),
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              Column(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  const Text(
+                                                                    'UNPAID',
+                                                                    style: TextStyle(
+                                                                      color: Color.fromARGB(255, 186, 185, 185),
+                                                                      fontSize: 12,
+                                                                      fontWeight: FontWeight.w500,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount ?? 0.0),
+                                                                    style: TextStyle(
+                                                                      color: Primary_colors.Color1,
+                                                                      fontSize: 28,
+                                                                      fontWeight: FontWeight.bold,
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    decoration: BoxDecoration(
+                                                                      borderRadius: BorderRadius.circular(10),
+                                                                      color: const Color.fromARGB(255, 253, 206, 202),
+                                                                    ),
+                                                                    child: Padding(
+                                                                      padding: EdgeInsets.all(4),
+                                                                      child: Text(
+                                                                        '${mainBilling_Controller.billingModel.dashBoard_data.value.pendingInvoices} invoices',
+                                                                        style: TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 234, 29, 15)),
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
                                                   ),
                                                 )
                                               ],
@@ -409,7 +677,18 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                 //   ),
                                                 // ],
                                                 ),
-                                            child: const Padding(padding: EdgeInsets.all(16), child: Pie_chart()),
+                                            child: Padding(
+                                              padding: EdgeInsets.all(16),
+                                              child: Obx(
+                                                () {
+                                                  return Pie_chart(
+                                                    totalInvoices: mainBilling_Controller.billingModel.dashBoard_data.value.totalInvoices,
+                                                    paidInvoices: mainBilling_Controller.billingModel.dashBoard_data.value.paidInvoices,
+                                                    pendingInvoices: mainBilling_Controller.billingModel.dashBoard_data.value.pendingInvoices,
+                                                  );
+                                                },
+                                              ),
+                                            ),
                                           ),
                                         )
                                       ],

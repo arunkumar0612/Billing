@@ -114,6 +114,16 @@ class _TDSLedgerState extends State<TDSLedger> {
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
+                          'Voucher No',
+                          style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
                           'Invoice No',
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
@@ -237,7 +247,34 @@ class _TDSLedgerState extends State<TDSLedger> {
                               // Vertical line after 'Date' column
 
                               // Vertical line after 'Reference No' column
-
+                              Expanded(
+                                flex: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      MouseRegion(
+                                        cursor: SystemMouseCursors.click,
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            widget.get_VoucherDetails(context, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].voucherId);
+                                          },
+                                          child: Text(
+                                            tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].voucherNumber,
+                                            style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                          ),
+                                        ),
+                                      ),
+                                      // Text(
+                                      //   textAlign: TextAlign.center,
+                                      //   account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].invoiceNumber,
+                                      //   style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                      // ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                               Expanded(
                                 flex: 2,
                                 child: Padding(

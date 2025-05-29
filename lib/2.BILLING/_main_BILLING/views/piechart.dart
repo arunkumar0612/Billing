@@ -2,25 +2,53 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class Pie_chart extends StatefulWidget {
-  const Pie_chart({super.key});
+  final int? totalInvoices;
+  final int? paidInvoices;
+  final int? pendingInvoices;
+
+  const Pie_chart({
+    super.key,
+    required this.totalInvoices,
+    required this.paidInvoices,
+    required this.pendingInvoices,
+  });
 
   @override
   Pie_chartState createState() => Pie_chartState();
 }
 
 class Pie_chartState extends State<Pie_chart> {
-  int touchedIndex = -1; // Initialize touchedIndex
+  int touchedIndex = -1;
+
+  double getPercentage(int count) {
+    if ((widget.totalInvoices ?? 0) == 0) return 0;
+    return (count / widget.totalInvoices!) * 100;
+  }
 
   @override
   Widget build(BuildContext context) {
-    double maxPercentage = getMaxPercentage();
-    String maxLabel = getMaxPercentageLabel(); // Get the label for the max percentage
+    final hasData = (widget.totalInvoices ?? 0) > 0 && ((widget.paidInvoices ?? 0) > 0 || (widget.pendingInvoices ?? 0) > 0);
+
+    final sectionData = hasData
+        ? [
+            {'label': 'Paid', 'value': widget.paidInvoices ?? 0, 'color': const Color.fromARGB(255, 131, 195, 247)},
+            {'label': 'Unpaid', 'value': widget.pendingInvoices ?? 0, 'color': const Color.fromARGB(255, 249, 140, 236)},
+          ]
+        : [
+            {
+              'label': 'No Data',
+              'value': 1,
+              'color': Colors.grey.shade400,
+            }
+          ];
+
+    final maxSection = sectionData.reduce((a, b) => (a['value'] as int) > (b['value'] as int) ? a : b);
+    final maxLabel = maxSection['label'] as String;
+    final maxValue = getPercentage(maxSection['value'] as int);
 
     return Row(
       children: <Widget>[
-        const SizedBox(
-          height: 18,
-        ),
+        const SizedBox(height: 18),
         Expanded(
           child: AspectRatio(
             aspectRatio: 1,
@@ -42,140 +70,68 @@ class Pie_chartState extends State<Pie_chart> {
                     ),
                     borderData: FlBorderData(show: false),
                     sectionsSpace: 2,
-                    sections: showingSections(),
+                    sections: List.generate(sectionData.length, (i) {
+                      final isTouched = i == touchedIndex;
+                      final fontSize = isTouched ? 25.0 : 16.0;
+                      final radius = isTouched ? 60.0 : 15.0;
+
+                      final sectionValue = sectionData[i]['value'] as int;
+                      final percentage = hasData ? getPercentage(sectionValue) : 100.0;
+
+                      return PieChartSectionData(
+                        color: sectionData[i]['color'] as Color,
+                        value: percentage,
+                        title: isTouched
+                            ? hasData
+                                ? '${percentage.toStringAsFixed(0)}%'
+                                : ''
+                            : '',
+                        radius: radius,
+                        titleStyle: TextStyle(
+                          fontSize: fontSize,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          shadows: const [Shadow(color: Colors.black, blurRadius: 2)],
+                        ),
+                      );
+                    }),
                   ),
                 ),
-                // Display the label and percentage in the center
                 Text(
-                  '$maxLabel\n${maxPercentage.toStringAsFixed(0)}%', // Show label and max percentage
+                  hasData ? '$maxLabel\n${maxValue.toStringAsFixed(0)}%' : 'No Data',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 15.0,
-                    color: Colors.white,
-                  ),
+                  style: const TextStyle(fontSize: 15.0, color: Colors.white),
                 ),
               ],
             ),
           ),
         ),
-        const SizedBox(
-          width: 10,
-        ),
-        const Column(
+        const SizedBox(width: 10),
+        Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Indicator(
-              color: Color.fromARGB(255, 131, 195, 247),
-              text: 'Paid',
-              isSquare: true,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Indicator(
-              color: Color.fromARGB(255, 249, 140, 236),
-              text: 'Unpaid',
-              isSquare: true,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Indicator(
-              color: Color.fromARGB(255, 168, 122, 248),
-              text: 'Draft',
-              isSquare: true,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Indicator(
-              color: Color.fromARGB(255, 246, 224, 176),
-              text: 'Overdue',
-              isSquare: true,
-            ),
-          ],
+          children: hasData
+              ? sectionData
+                  .map((section) => Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Indicator(
+                          color: section['color'] as Color,
+                          text: '${section['label']} (${section['value']})',
+                          isSquare: true,
+                        ),
+                      ))
+                  .toList()
+              : [
+                  Indicator(
+                    color: Colors.grey,
+                    text: "No data",
+                    isSquare: true,
+                  )
+                ],
         ),
-        const SizedBox(
-          width: 28,
-        ),
+        const SizedBox(width: 28),
       ],
     );
-  }
-
-  List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
-      final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 15.0; // Increased size on hover
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-      final valueList = [40, 30, 15, 15];
-      return PieChartSectionData(
-        color: getColor(i),
-        value: valueList[i].toDouble(),
-        title: isTouched ? '${valueList[i]}%' : '', // Show value on hover
-        radius: radius,
-        titleStyle: TextStyle(
-          fontSize: fontSize,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-          shadows: shadows,
-        ),
-      );
-    });
-  }
-
-  // Utility function to get color by index
-  Color getColor(int index) {
-    switch (index) {
-      case 0:
-        return const Color.fromARGB(255, 131, 195, 247);
-      case 1:
-        return const Color.fromARGB(255, 249, 140, 236);
-      case 2:
-        return const Color.fromARGB(255, 168, 122, 248);
-      case 3:
-        return const Color.fromARGB(255, 246, 224, 176);
-      default:
-        return Colors.grey;
-    }
-  }
-
-  double getMaxPercentage() {
-    final sections = showingSections();
-    double maxValue = 0.0;
-    for (var section in sections) {
-      if (section.value > maxValue) {
-        maxValue = section.value;
-      }
-    }
-    return maxValue;
-  }
-
-  String getMaxPercentageLabel() {
-    final sections = showingSections();
-    double maxValue = 0.0;
-    int maxIndex = 0;
-
-    for (int i = 0; i < sections.length; i++) {
-      if (sections[i].value > maxValue) {
-        maxValue = sections[i].value;
-        maxIndex = i;
-      }
-    }
-
-    switch (maxIndex) {
-      case 0:
-        return 'Paid';
-      case 1:
-        return 'Unpaid';
-      case 2:
-        return 'Draft';
-      case 3:
-        return 'Overdue';
-      default:
-        return '';
-    }
   }
 }
 
@@ -203,9 +159,7 @@ class Indicator extends StatelessWidget {
             color: color,
           ),
         ),
-        const SizedBox(
-          width: 4,
-        ),
+        const SizedBox(width: 4),
         Text(
           text,
           style: const TextStyle(fontSize: 10, color: Color.fromARGB(255, 176, 176, 176)),

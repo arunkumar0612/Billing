@@ -1035,7 +1035,7 @@ mixin SubscriptionServices {
 // arunkumar.m@sporadasecure.com
   dynamic sendPDFdata(context, String jsonData, File file) async {
     try {
-      Map<String, dynamic>? response = await apiController.Multer(_sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.send_anyPDF);
+      Map<String, dynamic>? response = await apiController.Multer(_sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, [file], API.send_anyPDF);
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {

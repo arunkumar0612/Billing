@@ -412,7 +412,7 @@ mixin VoucherService {
 
       Clear_ClubVoucher voucherdata = Clear_ClubVoucher.fromJson(main_map);
       String encodedData = json.encode(voucherdata.toJson());
-      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, encodedData, file, API.clearClubVoucher);
+      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, encodedData, [file!], API.clearClubVoucher);
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
@@ -460,7 +460,7 @@ mixin VoucherService {
     ClearVoucher voucherdata = ClearVoucher.fromJson(mapData);
 
     String encodedData = json.encode(voucherdata.toJson());
-    Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, encodedData, file, API.clearVoucher);
+    Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, encodedData, file != null ? [file] : null, API.clearVoucher);
     if (response['statusCode'] == 200) {
       CMDmResponse value = CMDmResponse.fromJson(response);
       if (value.code) {

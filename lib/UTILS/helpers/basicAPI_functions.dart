@@ -33,7 +33,7 @@ Future<bool> sharePDF(context, int messageType, File pdf, String email, String p
 // arunkumar.m@sporadasecure.com
 Future<bool> sendPDFdata(context, String jsonData, File file) async {
   try {
-    Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, file, API.send_anyPDF);
+    Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, [file], API.send_anyPDF);
     if (response['statusCode'] == 200) {
       CMDmResponse value = CMDmResponse.fromJson(response);
       if (value.code) {

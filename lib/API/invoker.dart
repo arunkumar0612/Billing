@@ -108,28 +108,37 @@ class Invoker extends GetxController {
     }
   }
 
-  Future<Map<String, dynamic>> Multer(String Token, String body, File? file, String API) async {
-    final encryptedData = AES.encryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), body);
+  Future<Map<String, dynamic>> Multer(String token, String body, List<File>? files, String api) async {
+    final sessionToken = sessiontokenController.sessiontokenModel.sessiontoken.value;
+    final encryptedData = AES.encryptWithAES(sessionToken.substring(0, 16), body);
 
-    FormData formData = FormData({
-      if (file != null) "file": MultipartFile(file, filename: file.path.split('/').last), // Attach file
-      "STOKEN": sessiontokenController.sessiontokenModel.sessiontoken.value,
-      "querystring": encryptedData
-    });
-    final response = await apiService.postMulter(API, formData);
+    final formDataMap = <String, dynamic>{
+      "STOKEN": sessionToken,
+      "querystring": encryptedData,
+    };
+
+    // Add file(s) if provided
+    if (files != null && files.isNotEmpty) {
+      if (files.length == 1) {
+        formDataMap["file"] = MultipartFile(files[0], filename: files[0].path.split('/').last);
+      } else {
+        formDataMap["files"] = files.map((file) {
+          return MultipartFile(file, filename: file.path.split('/').last);
+        }).toList();
+      }
+    }
+
+    final formData = FormData(formDataMap);
+    final response = await apiService.postMulter(api, formData);
 
     if (response.statusCode == 200) {
-      final responseData = response.body;
-      String encryptedResponse = responseData['encryptedResponse'];
-      final decryptedResponse = AES.decryptWithAES(sessiontokenController.sessiontokenModel.sessiontoken.value.substring(0, 16), encryptedResponse);
-      Map<String, dynamic> decodedResponse = jsonDecode(decryptedResponse);
-      final result = <String, int>{"statusCode": response.statusCode!};
-      decodedResponse.addEntries(result.entries.map((e) => MapEntry(e.key, e.value)));
-
-      return decodedResponse;
+      final encryptedResponse = response.body['encryptedResponse'];
+      final decrypted = AES.decryptWithAES(sessionToken.substring(0, 16), encryptedResponse);
+      final decoded = jsonDecode(decrypted);
+      decoded["statusCode"] = response.statusCode!;
+      return decoded;
     } else {
-      Map<String, dynamic> reply = {"statusCode": response.statusCode, "message": "Server Error"};
-      return reply;
+      return {"statusCode": response.statusCode, "message": "Server Error"};
     }
   }
 

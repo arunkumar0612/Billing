@@ -288,7 +288,7 @@ class ClearVoucher {
       'feedback': feedback,
       'transactiondetails': transactionDetails,
       'paymentmode': paymentmode,
-      'invoicedate': invoiceDate,
+      'invoicedate': invoiceDate.toIso8601String(),
     };
   }
 }

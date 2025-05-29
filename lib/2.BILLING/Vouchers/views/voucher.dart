@@ -1,7 +1,10 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:io';
+
 import 'package:dashed_rect/dashed_rect.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,10 +12,14 @@ import 'package:get/get.dart';
 // import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/services/voucher_service.dart';
+import 'package:ssipl_billing/2.BILLING/Vouchers/views/club_voucher_receipt.dart';
+import 'package:ssipl_billing/2.BILLING/Vouchers/views/receipt_pdf_template.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
@@ -590,18 +597,80 @@ class _VoucherState extends State<Voucher> {
                                           shadowColor: Primary_colors.Color3.withOpacity(0.3),
                                         ),
                                         onPressed: () async {
-                                          await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete');
-                                          // Navigator.of(context).pop();
-                                          // ScaffoldMessenger.of(context).showSnackBar(
-                                          //   SnackBar(
-                                          //     content: const Text('Voucher closed successfully'),
-                                          //     behavior: SnackBarBehavior.floating,
-                                          //     shape: RoundedRectangleBorder(
-                                          //       borderRadius: BorderRadius.circular(8),
-                                          //     ),
-                                          //     backgroundColor: Colors.green,
-                                          //   ),
-                                          // );
+                                          // Start loader
+                                          // loader.start(context);
+
+                                          await Future.delayed(const Duration(milliseconds: 300));
+
+                                          // Generate PDF bytes using original code (unchanged)
+                                          final pdfBytes = await ReceiptPDFtemplate(
+                                              PdfPageFormat.a4,
+                                              ClearVoucher(
+                                                date: DateTime.parse(voucherController.voucherModel.closedDate.value),
+                                                voucherId: voucherController.voucherModel.voucher_list[index].voucher_id,
+                                                voucherNumber: voucherController.voucherModel.voucher_list[index].voucherNumber,
+                                                paymentStatus: voucherController.voucherModel.voucher_list[index].voucherType,
+                                                igst: voucherController.voucherModel.voucher_list[index].igst,
+                                                sgst: voucherController.voucherModel.voucher_list[index].sgst,
+                                                cgst: voucherController.voucherModel.voucher_list[index].cgst,
+                                                tds: voucherController.voucherModel.voucher_list[index].tdsCalculationAmount,
+                                                grossAmount: voucherController.voucherModel.voucher_list[index].totalAmount,
+                                                subtotal: voucherController.voucherModel.voucher_list[index].subTotal,
+                                                paidAmount: double.parse(voucherController.voucherModel.amountCleared_controller.value.text),
+                                                clientAddressName: voucherController.voucherModel.voucher_list[index].clientName,
+                                                clientAddress: voucherController.voucherModel.voucher_list[index].clientAddress,
+                                                invoiceNumber: voucherController.voucherModel.voucher_list[index].invoiceNumber,
+                                                emailId: voucherController.voucherModel.voucher_list[index].emailId,
+                                                phoneNo: voucherController.voucherModel.voucher_list[index].phoneNumber,
+                                                tdsStatus: voucherController.voucherModel.is_Deducted.value,
+                                                invoiceType: voucherController.voucherModel.voucher_list[index].invoiceType,
+                                                gstNumber: voucherController.voucherModel.voucher_list[index].gstNumber,
+                                                feedback: voucherController.voucherModel.feedback_controller.value.text,
+                                                transactionDetails: voucherController.voucherModel.transactionDetails_controller.value.text,
+                                                invoiceDate: voucherController.voucherModel.voucher_list[index].date ?? DateTime.now(),
+                                                paymentmode: voucherController.voucherModel.Selectedpaymentmode.value,
+                                              ));
+
+                                          await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete', pdfBytes);
+
+                                          // Generate unique filename with timestamp
+                                          final timestamp = DateTime.now().millisecondsSinceEpoch;
+                                          final filename = 'Receipt$timestamp.pdf';
+
+                                          // Let user select directory
+                                          String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+                                            dialogTitle: 'Select folder to save PDF',
+                                            lockParentWindow: true,
+                                          );
+
+                                          if (selectedDirectory == null) {
+                                            // loader.stop();
+                                            if (kDebugMode) {
+                                              print("User cancelled the folder selection.");
+                                            }
+                                            Error_dialog(
+                                              context: context,
+                                              title: "Cancelled",
+                                              content: "Download cancelled. No folder was selected.",
+                                            );
+                                            return;
+                                          }
+
+                                          // Save the PDF
+                                          final file = File('$selectedDirectory/$filename');
+                                          await file.writeAsBytes(pdfBytes);
+
+                                          // Complete the voucher
+
+                                          // Optional success notification
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: const Text('Voucher cleared and PDF saved successfully.'),
+                                              behavior: SnackBarBehavior.floating,
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                              backgroundColor: Colors.green,
+                                            ),
+                                          );
                                         },
                                         child: const Text(
                                           'CLEAR VOUCHER',
@@ -666,7 +735,38 @@ class _VoucherState extends State<Voucher> {
                                         onPressed: () async {
                                           bool type =
                                               voucherController.voucherModel.voucher_list[index].pendingAmount == double.parse(voucherController.voucherModel.amountCleared_controller.value.text);
-                                          await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, type ? 'complete' : 'partial');
+                                          await Future.delayed(const Duration(milliseconds: 300));
+
+                                          // Generate PDF bytes using original code (unchanged)
+                                          final pdfBytes = await ReceiptPDFtemplate(
+                                            PdfPageFormat.a4,
+                                            ClearVoucher(
+                                              date: DateTime.parse(voucherController.voucherModel.closedDate.value),
+                                              voucherId: voucherController.voucherModel.voucher_list[index].voucher_id,
+                                              voucherNumber: voucherController.voucherModel.voucher_list[index].voucherNumber,
+                                              paymentStatus: voucherController.voucherModel.voucher_list[index].voucherType,
+                                              igst: voucherController.voucherModel.voucher_list[index].igst,
+                                              sgst: voucherController.voucherModel.voucher_list[index].sgst,
+                                              cgst: voucherController.voucherModel.voucher_list[index].cgst,
+                                              tds: voucherController.voucherModel.voucher_list[index].tdsCalculationAmount,
+                                              grossAmount: voucherController.voucherModel.voucher_list[index].totalAmount,
+                                              subtotal: voucherController.voucherModel.voucher_list[index].subTotal,
+                                              paidAmount: double.parse(voucherController.voucherModel.amountCleared_controller.value.text),
+                                              clientAddressName: voucherController.voucherModel.voucher_list[index].clientName,
+                                              clientAddress: voucherController.voucherModel.voucher_list[index].clientAddress,
+                                              invoiceNumber: voucherController.voucherModel.voucher_list[index].invoiceNumber,
+                                              emailId: voucherController.voucherModel.voucher_list[index].emailId,
+                                              phoneNo: voucherController.voucherModel.voucher_list[index].phoneNumber,
+                                              tdsStatus: voucherController.voucherModel.is_Deducted.value,
+                                              invoiceType: voucherController.voucherModel.voucher_list[index].invoiceType,
+                                              gstNumber: voucherController.voucherModel.voucher_list[index].gstNumber,
+                                              feedback: voucherController.voucherModel.feedback_controller.value.text,
+                                              transactionDetails: voucherController.voucherModel.transactionDetails_controller.value.text,
+                                              invoiceDate: voucherController.voucherModel.voucher_list[index].date ?? DateTime.now(),
+                                              paymentmode: voucherController.voucherModel.Selectedpaymentmode.value,
+                                            ),
+                                          );
+                                          await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, type ? 'complete' : 'partial', pdfBytes);
                                           // Navigator.of(context).pop();
                                           // ScaffoldMessenger.of(context).showSnackBar(
                                           //   SnackBar(
@@ -1250,20 +1350,84 @@ class _VoucherState extends State<Voucher> {
                                         shadowColor: Primary_colors.Color3.withOpacity(0.3),
                                       ),
                                       onPressed: () async {
-                                        // await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete');
-                                        // Navigator.of(context).pop();
-                                        // ScaffoldMessenger.of(context).showSnackBar(
-                                        //   SnackBar(
-                                        //     content: const Text('Voucher closed successfully'),
-                                        //     behavior: SnackBarBehavior.floating,
-                                        //     shape: RoundedRectangleBorder(
-                                        //       borderRadius: BorderRadius.circular(8),
-                                        //     ),
-                                        //     backgroundColor: Colors.green,
-                                        //   ),
-                                        // );
+                                        List<Map<String, dynamic>> consolidateJSON = [];
+                                        List<int> voucherIds = [];
+                                        List<String> voucherNumbers = [];
+                                        List<String> invoiceNumbers = [];
+                                        List<InvoiceDetails> invoiceDetails = [];
+                                        List<double> grossamount = [];
+                                        for (int i = 0; i < selectedVouchers.selectedVoucherList.length; i++) {
+                                          voucherIds.add(selectedVouchers.selectedVoucherList[i].voucher_id);
+                                          voucherNumbers.add(selectedVouchers.selectedVoucherList[i].voucherNumber);
+                                          invoiceNumbers.add(selectedVouchers.selectedVoucherList[i].invoiceNumber);
+                                          invoiceDetails.add(InvoiceDetails(
+                                            invoiceDate: selectedVouchers.selectedVoucherList[i].date!,
+                                            invoiceNumber: selectedVouchers.selectedVoucherList[i].invoiceNumber,
+                                          ));
+                                          grossamount.add(selectedVouchers.selectedVoucherList[i].totalAmount);
+                                        }
+                                        final pdfBytes = await ClubVoucherReceiptPDf(
+                                          PdfPageFormat.a4,
+                                          Clear_ClubVoucher(
+                                            date: DateTime.parse(voucherController.voucherModel.closedDate.value),
+                                            totalPaidAmount:
+                                                voucherController.voucherModel.is_Deducted.value ? selectedVouchers.totalPendingAmount_withTDS : selectedVouchers.totalPendingAmount_withoutTDS,
+                                            tdsStatus: voucherController.voucherModel.is_Deducted.value,
+                                            paymentStatus: 'complete',
+                                            feedback: voucherController.voucherModel.feedback_controller.value.text,
+                                            transactionDetails: voucherController.voucherModel.transactionDetails_controller.value.text,
+                                            voucherIds: voucherIds,
+                                            voucherNumbers: voucherNumbers,
+                                            voucherList: consolidateJSON,
+                                            invoiceNumbers: invoiceNumbers,
+                                            clientAddressName: selectedVouchers.selectedVoucherList[0].clientName,
+                                            clientAddress: selectedVouchers.selectedVoucherList[0].clientAddress,
+                                            invoiceDate: voucherController.voucherModel.voucher_list[0].date!,
+                                            invoicedetails: invoiceDetails,
+                                            grossAmount: grossamount.fold(0.0, (sum, item) => sum + item),
+                                            selectedInvoiceGroup: selectedVouchers,
+                                          ),
+                                        );
 
-                                        await widget.clear_ClubVoucher(context, selectedVouchers, voucherController.voucherModel.selectedFile.value);
+                                        final timestamp = DateTime.now().millisecondsSinceEpoch;
+                                        final filename = 'Receipt$timestamp.pdf';
+
+                                        // Let user select directory
+                                        String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+                                          dialogTitle: 'Select folder to save PDF',
+                                          lockParentWindow: true,
+                                        );
+
+                                        if (selectedDirectory == null) {
+                                          // loader.stop();
+                                          if (kDebugMode) {
+                                            print("User cancelled the folder selection.");
+                                          }
+                                          Error_dialog(
+                                            context: context,
+                                            title: "Cancelled",
+                                            content: "Download cancelled. No folder was selected.",
+                                          );
+                                          return;
+                                        }
+
+                                        // Save the PDF
+                                        final file = File('$selectedDirectory/$filename');
+                                        await file.writeAsBytes(pdfBytes);
+
+                                        // Complete the voucher
+
+                                        // Optional success notification
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: const Text('Voucher cleared and PDF saved successfully.'),
+                                            behavior: SnackBarBehavior.floating,
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                            backgroundColor: Colors.green,
+                                          ),
+                                        );
+
+                                        await widget.clear_ClubVoucher(context, selectedVouchers, voucherController.voucherModel.selectedFile.value, pdfBytes);
                                       },
                                       child: const Text(
                                         'CLEAR VOUCHER',
@@ -4427,6 +4591,10 @@ class CreateVoucherBottomSheet extends StatelessWidget with VoucherService {
       );
     });
   }
+}
+
+String formatDateVoucher(DateTime date) {
+  return DateFormat('dd-MM-yyyy').format(date);
 }
 
 class ClientInfoIcon extends StatefulWidget {

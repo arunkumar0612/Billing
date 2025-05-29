@@ -18,6 +18,7 @@ import 'package:ssipl_billing/2.BILLING/Ledger/services/GST_ledger_service.dart'
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_PDF_template/GST_ledger_pdf_template.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_excel_template/excel_template.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
@@ -1285,6 +1286,85 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               const SizedBox(height: 5),
                                               const Text(
                                                 "View",
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Color.fromARGB(255, 143, 143, 143),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 40), // Space between buttons
+                                      // Download Button
+                                      MouseRegion(
+                                        cursor: SystemMouseCursors.click,
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            try {
+                                              // Start loading indicator
+                                              // loader.start(context);
+                                              await Future.delayed(const Duration(milliseconds: 300));
+
+                                              // Generate PDF bytes
+                                              final excelBytes = await GST_generateExcel(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
+
+                                              // Generate unique filename with timestamp
+                                              final timestamp = DateTime.now().millisecondsSinceEpoch;
+                                              final filename = 'GST_ledger$timestamp'; // Unique filename
+
+                                              // Let user select directory
+                                              String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+                                                dialogTitle: 'Select folder to save Excel File',
+                                                lockParentWindow: true,
+                                              );
+
+                                              // Always stop loader after native call
+                                              // loader.stop();
+
+                                              if (selectedDirectory == null) {
+                                                if (kDebugMode) {
+                                                  print("User cancelled the folder selection.");
+                                                }
+                                                Error_dialog(
+                                                  context: context,
+                                                  title: "Cancelled",
+                                                  content: "Download cancelled. No folder was selected.",
+                                                );
+                                                return;
+                                              }
+
+                                              // Save the file with unique name
+                                              String savePath = "$selectedDirectory/$filename.xlxs";
+                                              await File(savePath).writeAsBytes(excelBytes);
+
+                                              // Show success message
+                                              Success_SnackBar(context, "✅ Excel File downloaded successfully!");
+
+                                              // Optional: open the file
+                                              await OpenFilex.open(savePath);
+                                            } catch (e) {
+                                              // loader.stop();
+                                              if (kDebugMode) {
+                                                print("❌ Error while downloading PDF: $e");
+                                              }
+                                              Error_dialog(
+                                                context: context,
+                                                title: "Error",
+                                                content: "An error occurred while downloading the Excel:\n$e",
+                                              );
+                                            }
+                                          },
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Image.asset(height: 25, 'assets/images/excel.png'),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              const Text(
+                                                "Excel",
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w500,

@@ -18,6 +18,7 @@ import 'package:ssipl_billing/2.BILLING/Ledger/services/GST_ledger_service.dart'
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_PDF_template/GST_ledger_pdf_template.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_excel_template/excel_template.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
@@ -478,18 +479,15 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),
-                                                  child:
-                                                      Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputCgst ?? 0.0), style: const TextStyle(color: Colors.white)),
+                                                  child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputCgst ?? 0.0), style: const TextStyle(color: Colors.white)),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),
-                                                  child:
-                                                      Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputSgst ?? 0.0), style: const TextStyle(color: Colors.white)),
+                                                  child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputSgst ?? 0.0), style: const TextStyle(color: Colors.white)),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),
-                                                  child:
-                                                      Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputIgst ?? 0.0), style: const TextStyle(color: Colors.white)),
+                                                  child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputIgst ?? 0.0), style: const TextStyle(color: Colors.white)),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),
@@ -904,8 +902,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                                           IconButton(
                                                                             iconSize: 30,
                                                                             onPressed: () {
-                                                                              gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value =
-                                                                                  !gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value;
+                                                                              gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value = !gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value;
                                                                             },
                                                                             icon: Image.asset('assets/images/whatsapp.png'),
                                                                           ),
@@ -935,8 +932,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                                           IconButton(
                                                                             iconSize: 35,
                                                                             onPressed: () {
-                                                                              gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value =
-                                                                                  !gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value;
+                                                                              gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value = !gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value;
                                                                             },
                                                                             icon: Image.asset('assets/images/gmail.png'),
                                                                           ),
@@ -1001,14 +997,12 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                                     mainAxisAlignment: MainAxisAlignment.end,
                                                                     children: [
                                                                       MouseRegion(
-                                                                        cursor: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                                gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
+                                                                        cursor: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value || gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
                                                                             ? SystemMouseCursors.click
                                                                             : SystemMouseCursors.forbidden,
                                                                         child: GestureDetector(
                                                                           onTap: () async {
-                                                                            if (gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                                gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value) {
+                                                                            if (gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value || gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value) {
                                                                               // Create temporary file
                                                                               final tempDir = await getTemporaryDirectory();
                                                                               final file = File('${tempDir.path}/$filename');
@@ -1028,8 +1022,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                                           child: Container(
                                                                             width: 105,
                                                                             decoration: BoxDecoration(
-                                                                              color: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                                      gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
+                                                                              color: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value || gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
                                                                                   ? const Color.fromARGB(255, 81, 89, 212)
                                                                                   : const Color.fromARGB(255, 39, 41, 73),
                                                                               borderRadius: BorderRadius.circular(5),
@@ -1254,6 +1247,85 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               const SizedBox(height: 5),
                                               const Text(
                                                 "View",
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Color.fromARGB(255, 143, 143, 143),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 40), // Space between buttons
+                                      // Download Button
+                                      MouseRegion(
+                                        cursor: SystemMouseCursors.click,
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            try {
+                                              // Start loading indicator
+                                              // loader.start(context);
+                                              await Future.delayed(const Duration(milliseconds: 300));
+
+                                              // Generate PDF bytes
+                                              final excelBytes = await GST_generateExcel(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
+
+                                              // Generate unique filename with timestamp
+                                              final timestamp = DateTime.now().millisecondsSinceEpoch;
+                                              final filename = 'GST_ledger$timestamp'; // Unique filename
+
+                                              // Let user select directory
+                                              String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+                                                dialogTitle: 'Select folder to save Excel File',
+                                                lockParentWindow: true,
+                                              );
+
+                                              // Always stop loader after native call
+                                              // loader.stop();
+
+                                              if (selectedDirectory == null) {
+                                                if (kDebugMode) {
+                                                  print("User cancelled the folder selection.");
+                                                }
+                                                Error_dialog(
+                                                  context: context,
+                                                  title: "Cancelled",
+                                                  content: "Download cancelled. No folder was selected.",
+                                                );
+                                                return;
+                                              }
+
+                                              // Save the file with unique name
+                                              String savePath = "$selectedDirectory/$filename.xlxs";
+                                              await File(savePath).writeAsBytes(excelBytes);
+
+                                              // Show success message
+                                              Success_SnackBar(context, "✅ Excel File downloaded successfully!");
+
+                                              // Optional: open the file
+                                              await OpenFilex.open(savePath);
+                                            } catch (e) {
+                                              // loader.stop();
+                                              if (kDebugMode) {
+                                                print("❌ Error while downloading PDF: $e");
+                                              }
+                                              Error_dialog(
+                                                context: context,
+                                                title: "Error",
+                                                content: "An error occurred while downloading the Excel:\n$e",
+                                              );
+                                            }
+                                          },
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Image.asset(height: 25, 'assets/images/excel.png'),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              const Text(
+                                                "Excel",
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w500,

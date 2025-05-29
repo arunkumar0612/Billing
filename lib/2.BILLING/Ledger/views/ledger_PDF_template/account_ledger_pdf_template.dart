@@ -203,8 +203,8 @@ class Invoice {
               child: pw.Text(
                 label,
                 style: pw.TextStyle(
-                  fontSize: 11,
-                  fontWeight: pw.FontWeight.normal,
+                  fontSize: 10,
+                  fontWeight: pw.FontWeight.bold,
                   color: detailsColor,
                 ),
               ),
@@ -215,7 +215,7 @@ class Invoice {
               child: pw.Text(
                 ':',
                 style: pw.TextStyle(
-                  fontSize: 11,
+                  fontSize: 10,
                   fontWeight: pw.FontWeight.normal,
                   color: PdfColors.black,
                 ),
@@ -225,7 +225,7 @@ class Invoice {
               child: pw.Text(
                 value,
                 style: const pw.TextStyle(
-                  fontSize: 11,
+                  fontSize: 10,
                   color: detailsColor,
                 ),
               ),
@@ -294,8 +294,8 @@ class Invoice {
               child: pw.Text(
                 label,
                 style: pw.TextStyle(
-                  fontSize: 11,
-                  fontWeight: pw.FontWeight.normal,
+                  fontSize: 10,
+                  fontWeight: pw.FontWeight.bold,
                   color: detailsColor,
                 ),
               ),
@@ -306,7 +306,7 @@ class Invoice {
               child: pw.Text(
                 ':',
                 style: pw.TextStyle(
-                  fontSize: 11,
+                  fontSize: 10,
                   fontWeight: pw.FontWeight.normal,
                   color: PdfColors.black,
                 ),
@@ -316,7 +316,7 @@ class Invoice {
               child: pw.Text(
                 value,
                 style: const pw.TextStyle(
-                  fontSize: 11,
+                  fontSize: 10,
                   color: detailsColor,
                 ),
               ),
@@ -379,7 +379,7 @@ class Invoice {
   }
 
   List<pw.Widget> _contentTable(pw.Context context) {
-    const tableHeaders = ['S.No', 'Date', 'Invoice No', 'Description', 'Debit', 'Credit', 'Balance'];
+    const tableHeaders = ['Date', 'Invoice No', 'Description', 'Debit', 'Credit', 'Balance'];
 
     final dataRows = List<pw.TableRow>.generate(
       data.ledgerDetails.ledgerList.length,
@@ -387,7 +387,7 @@ class Invoice {
         final item = data.ledgerDetails.ledgerList[index];
         return pw.TableRow(
           children: [
-            _buildCell((index + 1).toString()),
+            // _buildCell((index + 1).toString()),
             _buildCell(formatDate(item.updatedDate)),
             _buildCell(item.invoiceNumber, alignRight: true),
             _builddescription(item.description, item.billDetails.subtotal.toString(), item.billDetails.totalGST.toString(), item.tdsAmount.toString(), isDescription: true),
@@ -412,13 +412,13 @@ class Invoice {
           verticalInside: pw.BorderSide.none,
         ),
         columnWidths: {
-          0: const pw.FlexColumnWidth(3),
-          1: const pw.FlexColumnWidth(5),
-          2: const pw.FlexColumnWidth(5),
-          3: const pw.FlexColumnWidth(12),
-          4: const pw.FlexColumnWidth(6),
-          5: const pw.FlexColumnWidth(6),
-          6: const pw.FlexColumnWidth(6),
+          0: const pw.FlexColumnWidth(5),
+          1: const pw.FlexColumnWidth(7),
+          2: const pw.FlexColumnWidth(10),
+          3: const pw.FlexColumnWidth(5),
+          4: const pw.FlexColumnWidth(5),
+          5: const pw.FlexColumnWidth(5),
+          // 6: const pw.FlexColumnWidth(5),
         },
         children: [
           pw.TableRow(
@@ -446,13 +446,13 @@ class Invoice {
           verticalInside: pw.BorderSide.none,
         ),
         columnWidths: {
-          0: const pw.FlexColumnWidth(3),
-          1: const pw.FlexColumnWidth(5),
-          2: const pw.FlexColumnWidth(5),
-          3: const pw.FlexColumnWidth(12),
-          4: const pw.FlexColumnWidth(6),
-          5: const pw.FlexColumnWidth(6),
-          6: const pw.FlexColumnWidth(6),
+          // 0: const pw.FlexColumnWidth(3),
+          0: const pw.FlexColumnWidth(5),
+          1: const pw.FlexColumnWidth(7),
+          2: const pw.FlexColumnWidth(10),
+          3: const pw.FlexColumnWidth(5),
+          4: const pw.FlexColumnWidth(5),
+          5: const pw.FlexColumnWidth(5),
         },
         children: dataRows,
       ),
@@ -473,7 +473,7 @@ class Invoice {
 
     return pw.Row(
       children: [
-        pw.Expanded(flex: 13, child: pw.Container()), // Spacer
+        pw.Expanded(flex: 16, child: pw.Container()), // Spacer
         pw.Expanded(
           flex: 30,
           child: pw.Table(
@@ -513,7 +513,7 @@ class Invoice {
 
     return pw.Row(
       children: [
-        pw.Expanded(flex: 13, child: pw.Container()), // Spacer
+        pw.Expanded(flex: 16, child: pw.Container()), // Spacer
         pw.Expanded(
           flex: 30,
           child: pw.Table(
@@ -557,7 +557,7 @@ class Invoice {
         textAlign: align == pw.Alignment.centerLeft ? pw.TextAlign.left : pw.TextAlign.right,
         softWrap: true,
         style: pw.TextStyle(
-          fontSize: 7,
+          fontSize: 9,
           fontWeight: isBold ? pw.FontWeight.bold : pw.FontWeight.normal,
         ),
       ),
@@ -570,7 +570,7 @@ class Invoice {
       alignment: isDescription ? pw.Alignment.topLeft : (alignRight ? pw.Alignment.centerRight : pw.Alignment.center),
       child: pw.Text(
         text,
-        style: const pw.TextStyle(fontSize: 7),
+        style: const pw.TextStyle(fontSize: 9),
         softWrap: true,
         // overflow: isDescription ? pw.TextOverflow.clip : pw.TextOverflow.clip,
         textAlign: alignRight ? pw.TextAlign.right : pw.TextAlign.left, // 👈 added
@@ -585,13 +585,13 @@ class Invoice {
         child: pw.Column(children: [
           pw.Text(
             text,
-            style: const pw.TextStyle(fontSize: 7),
+            style: const pw.TextStyle(fontSize: 9),
             softWrap: true,
             // overflow: isDescription ? pw.TextOverflow.clip : pw.TextOverflow.clip,
           ),
           pw.SizedBox(height: 3),
           pw.Align(
-            alignment: pw.Alignment.centerLeft,
+            alignment: pw.Alignment.center,
             child: pw.Text(
               'Net : $Sub_text1,  GST: $Sub_text2,  TDS: $Sub_text3',
               style: pw.TextStyle(fontSize: 8, fontStyle: pw.FontStyle.italic, color: PdfColors.blue900),
@@ -621,7 +621,7 @@ class Invoice {
         text,
         textAlign: pw.TextAlign.center,
         style: pw.TextStyle(
-          fontSize: 7,
+          fontSize: 10,
           fontWeight: pw.FontWeight.bold,
           color: _baseTextColor,
         ),

@@ -678,6 +678,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         Expanded(
           flex: 2,
           child: Text(
+            textAlign: TextAlign.center,
             'Amount',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -981,11 +982,11 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                   style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                 ),
                               ),
-
+                              // SizedBox(width: 5),
                               Expanded(
                                 flex: 2,
                                 child: Text(
-                                  // textAlign: TextAlign.left,
+                                  textAlign: TextAlign.center,
                                   mainBilling_Controller.billingModel.subscriptionInvoiceList[index].totalAmount.toString(),
                                   style: const TextStyle(
                                     color: Primary_colors.Color1,
@@ -994,7 +995,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 ),
                               ),
                               Expanded(
-                                flex: 3,
+                                flex: 2,
                                 child: Builder(
                                   builder: (context) {
                                     OverlayEntry? overlayEntry;
@@ -1144,8 +1145,8 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                               Expanded(
                                 flex: 2,
                                 child: Text(
-                                  // textAlign: TextAlign.center,
-                                  (mainBilling_Controller.billingModel.subscriptionInvoiceList[index].overdueDays ?? 0).toString(),
+                                  textAlign: TextAlign.left,
+                                  (mainBilling_Controller.billingModel.subscriptionInvoiceList[index].overdueDays ?? '-').toString(),
                                   style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                 ),
                               ),

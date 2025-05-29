@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
@@ -91,7 +92,6 @@ class InvoicePaymentVoucher {
       dueDate: json['Due_date'] != null ? DateTime.tryParse(json['Due_date']) : null,
       overdueDays: json['Overdue_days'],
       overdueHistory: json['Overdue_history'] != null ? List<OverdueHistory>.from(json['Overdue_history'].map((e) => OverdueHistory.fromJson(e))) : null,
-
       paymentDetails: json['payment_details'] != null ? List<TransactionDetail>.from(json['payment_details'].map((item) => TransactionDetail.fromJson(item))) : null,
     );
   }
@@ -207,6 +207,7 @@ class ClearVoucher {
   final String gstNumber;
   final String feedback;
   final String transactionDetails;
+  final DateTime invoiceDate;
 
   ClearVoucher({
     required this.date,
@@ -230,32 +231,33 @@ class ClearVoucher {
     required this.gstNumber,
     required this.feedback,
     required this.transactionDetails,
+    required this.invoiceDate,
   });
 
   factory ClearVoucher.fromJson(Map<String, dynamic> json) {
     return ClearVoucher(
-      date: DateTime.tryParse(json['date'] ?? '') ?? DateTime.now(),
-      voucherId: json['voucherid'] ?? 0,
-      voucherNumber: json['vouchernumber'] ?? '',
-      paymentStatus: json['paymentstatus'] ?? '',
-      igst: (json['IGST'] ?? 0).toDouble(),
-      sgst: (json['SGST'] ?? 0).toDouble(),
-      cgst: (json['CGST'] ?? 0).toDouble(),
-      tds: (json['tds'] ?? 0).toDouble(),
-      grossAmount: (json['grossamount'] ?? 0).toDouble(),
-      subtotal: (json['subtotal'] ?? 0).toDouble(),
-      paidAmount: (json['paidamount'] ?? 0).toDouble(),
-      clientAddressName: json['clientaddressname'] ?? '',
-      clientAddress: json['clientaddress'] ?? '',
-      invoiceNumber: json['invoicenumber'] ?? '',
-      emailId: json['emailid'] ?? '',
-      phoneNo: json['phoneno'] ?? '',
-      tdsStatus: json['tdsstatus'] ?? false,
-      invoiceType: json['invoicetype'] ?? '',
-      gstNumber: json['gstnumber'] ?? '',
-      feedback: json['feedback'] ?? '',
-      transactionDetails: json['transactiondetails'] ?? '',
-    );
+        date: DateTime.tryParse(json['date'] ?? '') ?? DateTime.now(),
+        voucherId: json['voucherid'] ?? 0,
+        voucherNumber: json['vouchernumber'] ?? '',
+        paymentStatus: json['paymentstatus'] ?? '',
+        igst: (json['IGST'] ?? 0).toDouble(),
+        sgst: (json['SGST'] ?? 0).toDouble(),
+        cgst: (json['CGST'] ?? 0).toDouble(),
+        tds: (json['tds'] ?? 0).toDouble(),
+        grossAmount: (json['grossamount'] ?? 0).toDouble(),
+        subtotal: (json['subtotal'] ?? 0).toDouble(),
+        paidAmount: (json['paidamount'] ?? 0).toDouble(),
+        clientAddressName: json['clientaddressname'] ?? '',
+        clientAddress: json['clientaddress'] ?? '',
+        invoiceNumber: json['invoicenumber'] ?? '',
+        emailId: json['emailid'] ?? '',
+        phoneNo: json['phoneno'] ?? '',
+        tdsStatus: json['tdsstatus'] ?? false,
+        invoiceType: json['invoicetype'] ?? '',
+        gstNumber: json['gstnumber'] ?? '',
+        feedback: json['feedback'] ?? '',
+        transactionDetails: json['transactiondetails'] ?? '',
+        invoiceDate: DateTime.tryParse(json['invoicedate'] ?? '') ?? DateTime.now());
   }
 
   Map<String, dynamic> toJson() {
@@ -281,6 +283,28 @@ class ClearVoucher {
       'gstnumber': gstNumber,
       'feedback': feedback,
       'transactiondetails': transactionDetails,
+      'invoicedate': invoiceDate,
+    };
+  }
+}
+
+class InvoiceDetails {
+  final String invoiceNumber;
+  final DateTime invoiceDate;
+
+  InvoiceDetails({
+    required this.invoiceNumber,
+    required this.invoiceDate,
+  });
+
+  factory InvoiceDetails.fromMap(Map<String, dynamic> map) {
+    return InvoiceDetails(invoiceNumber: map['invoicenumber'], invoiceDate: map['invoicedate']);
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'invoicenumber': invoiceNumber,
+      'invoicedate': invoiceDate,
     };
   }
 }
@@ -295,6 +319,13 @@ class Clear_ClubVoucher {
   final List<int> voucherIds;
   final List<String> voucherNumbers;
   final List<Map<String, dynamic>> voucherList;
+  final List<String> invoiceNumbers;
+  final String clientAddressName;
+  final String clientAddress;
+  final DateTime invoiceDate;
+  final List<InvoiceDetails> invoicedetails;
+  final double grossAmount;
+  final SelectedInvoiceVoucherGroup selectedInvoiceGroup;
 
   Clear_ClubVoucher({
     required this.date,
@@ -306,6 +337,13 @@ class Clear_ClubVoucher {
     required this.voucherIds,
     required this.voucherNumbers,
     required this.voucherList,
+    required this.invoiceNumbers,
+    required this.clientAddressName,
+    required this.clientAddress,
+    required this.invoiceDate,
+    required this.invoicedetails,
+    required this.grossAmount,
+    required this.selectedInvoiceGroup,
   });
 
   factory Clear_ClubVoucher.fromJson(Map<String, dynamic> json) {
@@ -319,6 +357,13 @@ class Clear_ClubVoucher {
       voucherIds: json['voucherids'] ?? '',
       voucherNumbers: json['vouchernumbers'] ?? '',
       voucherList: (json['voucherlist'] as List<dynamic>).map((item) => Map<String, dynamic>.from(item)).toList(),
+      invoiceNumbers: json['invoicenumbers'] ?? '',
+      clientAddressName: json['clientaddressname'] ?? '',
+      clientAddress: json['clientaddress'] ?? '',
+      invoiceDate: DateTime.tryParse(json['invoicedate'] ?? '') ?? DateTime.now(),
+      invoicedetails: (json['invoicedetails'] as List<dynamic>?)?.map((item) => InvoiceDetails.fromMap(item)).toList() ?? [],
+      grossAmount: (json['grossamount'] ?? 0).toDouble(),
+      selectedInvoiceGroup: SelectedInvoiceVoucherGroup.fromJson(json['selectedinvoicegroup']),
     );
   }
 
@@ -332,7 +377,14 @@ class Clear_ClubVoucher {
       'transactiondetails': transactionDetails,
       'voucherlist': voucherList,
       "voucherids": voucherIds,
-      "vouchernumbers": voucherNumbers
+      "vouchernumbers": voucherNumbers,
+      'invoicenumbers': invoiceNumbers,
+      'clientaddressname': clientAddressName,
+      'clientaddress': clientAddress,
+      'invoicedate': invoiceDate,
+      'invoicedetails': invoicedetails.map((e) => e.toMap()).toList(),
+      'grossamount': grossAmount,
+      'selectedinvoicegroup': selectedInvoiceGroup,
     };
   }
 }

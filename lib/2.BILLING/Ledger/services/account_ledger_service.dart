@@ -37,9 +37,11 @@ mixin Account_LedgerService {
     // response;
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
-        "ledgertype": view_LedgerController.view_LedgerModel.selectedtransactiontype.value.toLowerCase() == 'show all' ? '' : view_LedgerController.view_LedgerModel.selectedtransactiontype.value.toLowerCase(),
-        "paymenttype":
-            view_LedgerController.view_LedgerModel.selectedPaymenttype.value.toLowerCase() == 'show all' ? '' : view_LedgerController.view_LedgerModel.selectedPaymenttype.value.toLowerCase(), //"credit"       (or) debit,
+        "ledgertype":
+            view_LedgerController.view_LedgerModel.selectedtransactiontype.value.toLowerCase() == 'show all' ? '' : view_LedgerController.view_LedgerModel.selectedtransactiontype.value.toLowerCase(),
+        "paymenttype": view_LedgerController.view_LedgerModel.selectedPaymenttype.value.toLowerCase() == 'show all'
+            ? ''
+            : view_LedgerController.view_LedgerModel.selectedPaymenttype.value.toLowerCase(), //"credit"       (or) debit,
         "invoicetype": view_LedgerController.view_LedgerModel.selectedinvoiceType.value.toLowerCase() == 'show all'
             ? ''
             : view_LedgerController.view_LedgerModel.selectedinvoiceType.value.toLowerCase(), //sales   (or) subscription (or) vendor,

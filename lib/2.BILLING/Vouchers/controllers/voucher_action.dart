@@ -13,6 +13,10 @@ class VoucherController extends GetxController {
     voucherModel.is_Deducted.value = value;
   }
 
+  void set_modeOfPayment(String value) {
+    voucherModel.paymentMode.value = value;
+  }
+
   Future<void> PDFfileApiData(CMDmResponse value) async {
     var pdfFileData = await PDFfileData.fromJson(value); // Await async function
     var binaryData = pdfFileData.data; // Extract File object

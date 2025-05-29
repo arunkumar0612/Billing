@@ -1,9 +1,6 @@
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/GST_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
-// import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/GST_ledger_entities.dart';
-// import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/ledger_pdf_entities/GST_ledger_PDF_entities.dart';
-// import 'package:ssipl_billing/2.BILLING/GST_Ledgers/controllers/gst_Ledger_action.dart';
 import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
@@ -20,8 +17,10 @@ mixin GST_LedgerService {
     // response;
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
-        "gsttype": view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value.toLowerCase() == 'consolidate' ? '' : view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value.toLowerCase(),
-        "invoicetype": view_LedgerController.view_LedgerModel.selectedinvoiceType.value.toLowerCase() == 'show all' ? '' : view_LedgerController.view_LedgerModel.selectedinvoiceType.value.toLowerCase(),
+        "gsttype":
+            view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value.toLowerCase() == 'consolidate' ? '' : view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value.toLowerCase(),
+        "invoicetype":
+            view_LedgerController.view_LedgerModel.selectedinvoiceType.value.toLowerCase() == 'show all' ? '' : view_LedgerController.view_LedgerModel.selectedinvoiceType.value.toLowerCase(),
         // "customerid": "SB_1",
         "startdate": view_LedgerController.view_LedgerModel.startDateController.value.text,
         "enddate": view_LedgerController.view_LedgerModel.endDateController.value.text,

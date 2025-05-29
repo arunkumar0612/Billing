@@ -238,14 +238,51 @@ pw.Widget _buildReceiptent(pw.Context context, VoucherReceipt receiptData) {
 // }
 
 pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
-  final grossAmountFormatted = NumberFormat.currency(locale: 'en_IN').format(receiptData.data.selectedInvoiceGroup.totalPendingAmount_withTDS);
-  final tdsAmountFormatted = NumberFormat.currency(locale: 'en_IN').format(receiptData.data.selectedInvoiceGroup.totalTDS);
-
-  List<String> remarks = [
-    'Against invoices ${receiptData.data.invoicedetails.map((item) => '${item.invoiceNumber} dated ${DateFormat('dd-MM-yyyy').format(item.invoiceDate)}').join(', ')}, '
-        'the total amount is Rs.$grossAmountFormatted'
-        '${receiptData.data.tdsStatus ? ' and adjusted amount is Rs.${receiptData.data.selectedInvoiceGroup.totalPendingAmount_withoutTDS}' : ''}.',
-    '${receiptData.data.tdsStatus ? 'The amount adjusted as TDS is Rs.${receiptData.data.selectedInvoiceGroup.totalTDS}.' : 'No TDS has been deducted for this transaction.'}',
+  final List<pw.TextSpan> remarks = [
+    pw.TextSpan(
+      style: pw.TextStyle(fontSize: 11),
+      children: [
+        const pw.TextSpan(text: 'Against invoices '),
+        const pw.TextSpan(text: '[ '), // Normal brackets (not italic)
+        pw.TextSpan(
+          text: receiptData.data.invoicedetails.map((item) => '(${item.invoiceNumber} dated ${_formatDate(item.invoiceDate)})').join(', '),
+          style: pw.TextStyle(fontStyle: pw.FontStyle.italic), // only this is italic
+        ),
+        const pw.TextSpan(text: ' ]'), // Closing bracket, normal text
+        pw.TextSpan(text: ', total amount: Rs.${_formatCurrency(receiptData.data.selectedInvoiceGroup.totalPendingAmount_withTDS)}. '),
+        if (receiptData.data.tdsStatus) pw.TextSpan(text: ' Adjusted amount: Rs.${_formatCurrency(receiptData.data.selectedInvoiceGroup.totalPendingAmount_withoutTDS)}.'),
+      ],
+    ),
+    pw.TextSpan(
+      style: pw.TextStyle(fontSize: 11),
+      children: [
+        if (receiptData.data.tdsStatus)
+          pw.TextSpan(
+            children: [
+              const pw.TextSpan(text: 'Against TDS ('),
+              pw.TextSpan(
+                text: 'PAN:ABECS0625B dated on ${_formatDate(receiptData.data.date)}',
+                style: pw.TextStyle(fontStyle: pw.FontStyle.italic),
+              ),
+              pw.TextSpan(text: ') adjusted amount: Rs.${_formatCurrency(receiptData.data.selectedInvoiceGroup.totalTDS)}.\n'),
+              pw.TextSpan(
+                text: 'Narration: Auto generated from Voucher Numbers: [${receiptData.data.voucherNumbers.join(', ')}]',
+                style: pw.TextStyle(fontStyle: pw.FontStyle.italic),
+              ),
+            ],
+          )
+        else
+          pw.TextSpan(
+            children: [
+              const pw.TextSpan(text: 'No TDS has been deducted for this transaction.\n'),
+              pw.TextSpan(
+                text: 'Narration: Auto generated from Voucher Numbers: [${receiptData.data.voucherNumbers.join(', ')}]',
+                style: pw.TextStyle(fontStyle: pw.FontStyle.italic),
+              ),
+            ],
+          ),
+      ],
+    ),
   ];
   return pw.Padding(
     padding: const pw.EdgeInsets.only(left: 32, right: 32, top: 10),
@@ -271,7 +308,7 @@ pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
             _buildTableRow('Received from:', receiptData.data.clientAddressName),
             _buildTableRow('Amount:', 'Rs.${_formatCurrency(receiptData.data.totalPaidAmount)}'),
             _buildTableRow('Date of Payment:', _formatDate(receiptData.data.date)),
-            _buildTableRow('Mode of Payment:', receiptData.data.transactionDetails),
+            _buildTableRow('Mode of Payment:', receiptData.data.selectedPaymentMode),
             _buildTableRow('Transaction ID:', receiptData.data.transactionDetails),
           ],
         ),
@@ -303,9 +340,8 @@ pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
                     ),
                     // Text
                     pw.Expanded(
-                      child: pw.Text(
-                        remarks[index],
-                        style: pw.TextStyle(fontSize: 11),
+                      child: pw.RichText(
+                        text: remarks[index],
                       ),
                     ),
                   ],

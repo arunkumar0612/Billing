@@ -222,7 +222,7 @@ pw.Widget _buildReceiptent(pw.Context context, VoucherReceipt receiptData) {
 // pw.Widget _buildDivider(pw.Context context) {
 //   return pw.Container(
 //     width: double.infinity, // Ensure full width
-//     child: pw.Column(
+//     child: pw.Column(git
 //       crossAxisAlignment: pw.CrossAxisAlignment.stretch,
 //       children: [
 //         pw.SizedBox(height: 5),

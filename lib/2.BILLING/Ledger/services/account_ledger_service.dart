@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/account_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
@@ -8,6 +9,7 @@ import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 mixin Account_LedgerService {
@@ -114,22 +116,77 @@ mixin Account_LedgerService {
   void resetFilters() {
     account_LedgerController.account_LedgerModel.account_Ledger_list.value = account_LedgerController.account_LedgerModel.Secondaryaccount_Ledger_list.value;
   }
+
+  Future<void> selectfilterDate(BuildContext context, TextEditingController controller) async {
+    final DateTime now = DateTime.now();
+    final DateTime nextYear = now.add(const Duration(days: 365)); // Limit to next year
+
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: now, // Start from today
+      lastDate: nextYear, // Allow dates up to 1 year from today
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Primary_colors.Color3,
+              onPrimary: Colors.white,
+              onSurface: Colors.black87,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Primary_colors.Color3,
+              ),
+            ),
+            dialogTheme: const DialogThemeData(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (pickedDate != null) {
+      final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
+          "${pickedDate.month.toString().padLeft(2, '0')}-"
+          "${pickedDate.day.toString().padLeft(2, '0')}";
+
+      controller.text = formatted;
+    }
+  }
+
+  void resetaccount_LedgerFilters() {
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.transactiontype.value = 'Show All';
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.invoicetype.value = 'Show All';
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedsalescustomername.value = 'None';
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedcustomerid.value = '';
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedsubscriptioncustomername.value = 'None';
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.paymentstatus.value = 'Show All';
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value = '';
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value = '';
+
+    // account_LedgerController.account_LedgerModel.filteredVouchers.value = account_LedgerController.account_LedgerModel.account_Ledger_list;
+  }
 }
 // void applySearchFilter(String query) {
 //     try {
 //       if (query.isEmpty) {
-//         voucherController.voucherModel.filteredVouchers.assignAll(voucherController.voucherModel.voucher_list);
+//         account_LedgerController.account_LedgerModel.filteredVouchers.assignAll(account_LedgerController.account_LedgerModel.account_Ledger_list);
 //       } else {
-//         final filtered = voucherController.voucherModel.voucher_list.where((voucher) {
-//           return voucher.clientName.toLowerCase().contains(query.toLowerCase()) || voucher.voucherNumber.toLowerCase().contains(query.toLowerCase());
+//         final filtered = account_LedgerController.account_LedgerModel.account_Ledger_list.where((account_Ledger) {
+//           return account_Ledger.clientName.toLowerCase().contains(query.toLowerCase()) || account_Ledger.account_LedgerNumber.toLowerCase().contains(query.toLowerCase());
 //         }).toList();
-//         voucherController.voucherModel.filteredVouchers.assignAll(filtered);
+//         account_LedgerController.account_LedgerModel.filteredVouchers.assignAll(filtered);
 //       }
 
 //       // Update selectedItems to match the new filtered list length
-//       voucherController.voucherModel.selectedItems.value = List<bool>.filled(voucherController.voucherModel.filteredVouchers.length, false);
-//       voucherController.voucherModel.selectAll.value = false;
-//       voucherController.voucherModel.showDeleteButton.value = false;
+//       account_LedgerController.account_LedgerModel.selectedItems.value = List<bool>.filled(account_LedgerController.account_LedgerModel.filteredVouchers.length, false);
+//       account_LedgerController.account_LedgerModel.selectAll.value = false;
+//       account_LedgerController.account_LedgerModel.showDeleteButton.value = false;
 //     } catch (e) {
 //       debugPrint('Error in applySearchFilter: $e');
 //     }

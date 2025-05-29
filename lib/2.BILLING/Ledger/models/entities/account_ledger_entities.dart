@@ -1,3 +1,5 @@
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 class Description {
   String content;
   double gst;
@@ -95,7 +97,7 @@ class AccountLedgerSummary {
 
 class AccountLedger {
   final int clientLedgerId;
-  final int voucherId;
+  final int account_LedgerId;
   final String voucherNumber;
   final String clientName;
   final double tdsAmount;
@@ -113,7 +115,7 @@ class AccountLedger {
 
   AccountLedger({
     required this.clientLedgerId,
-    required this.voucherId,
+    required this.account_LedgerId,
     required this.voucherNumber,
     required this.clientName,
     required this.tdsAmount,
@@ -133,8 +135,8 @@ class AccountLedger {
   factory AccountLedger.fromJson(Map<String, dynamic> json) {
     return AccountLedger(
       clientLedgerId: json['clientledger_id'] ?? 0,
-      voucherId: json['voucher_id'] ?? 0,
-      voucherNumber: json['voucher_number'] ?? '',
+      account_LedgerId: json['account_Ledger_id'] ?? 0,
+      voucherNumber: json['voucherNumber'] ?? '',
       clientName: json['client_name'] ?? '',
       tdsAmount: (json['tdsamount'] ?? 0).toDouble(),
       gstNumber: json['gst_number'] ?? '',
@@ -154,8 +156,8 @@ class AccountLedger {
   Map<String, dynamic> toJson() {
     return {
       'clientledger_id': clientLedgerId,
-      'voucher_id': voucherId,
-      'voucher_number': voucherNumber,
+      'account_Ledger_id': account_LedgerId,
+      'voucherNumber': voucherNumber,
       'client_name': clientName,
       'tdsamount': tdsAmount,
       'gst_number': gstNumber,
@@ -330,4 +332,36 @@ class PDF_AccountLedgerSummary {
       'toDate': toDate,
     };
   }
+}
+
+class AccountLedgerSelectedFilter {
+  RxString transactiontype;
+  RxString invoicetype;
+  RxString selectedsalescustomername;
+  RxString selectedcustomerid;
+  RxString selectedsubscriptioncustomername;
+  RxString paymentstatus;
+  RxString fromdate;
+  RxString todate;
+  RxString selectedmonth;
+
+  AccountLedgerSelectedFilter(
+      {String transactiontype = 'Show All',
+      String invoicetype = 'Show All',
+      String selectedsalescustomername = 'None',
+      String selectedcustomerid = '',
+      String selectedsubscriptioncustomername = 'None',
+      String paymentstatus = 'Show All',
+      String fromdate = '',
+      String todate = '',
+      String selectedmonth = ''})
+      : transactiontype = RxString(transactiontype),
+        invoicetype = RxString(invoicetype),
+        selectedsalescustomername = RxString(selectedsalescustomername),
+        selectedcustomerid = RxString(selectedcustomerid),
+        selectedsubscriptioncustomername = RxString(selectedsubscriptioncustomername),
+        paymentstatus = RxString(paymentstatus),
+        fromdate = RxString(fromdate),
+        todate = RxString(todate),
+        selectedmonth = RxString(selectedmonth);
 }

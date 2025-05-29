@@ -66,7 +66,6 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   final RxString closedDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
   var fileName = RxnString();
   var selectedFile = Rxn<File>();
-
   var salesCustomerList = <CustomerInfo>[].obs;
   var subCustomerList = <CustomerInfo>[].obs;
 

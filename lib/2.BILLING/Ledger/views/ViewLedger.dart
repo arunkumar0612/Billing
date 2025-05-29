@@ -39,7 +39,14 @@ class _ViewLedgerState extends State<ViewLedger> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      endDrawer: _buildFilterDrawer(),
+      endDrawer: Drawer(
+          backgroundColor: Primary_colors.Light,
+          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.horizontal(right: Radius.circular(16))),
+          width: 350,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'Account Ledger' ? Account_ledger_filter() : _buildFilterDrawer(),
+          )),
       backgroundColor: Primary_colors.Dark,
       body: Column(
         children: [

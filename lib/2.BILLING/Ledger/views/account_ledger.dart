@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -1351,4 +1352,588 @@ class _accountLedgerState extends State<AccountLedger> {
   }
 
   void showSharePDFdialog() {}
+}
+
+class Account_ledger_filter extends StatefulWidget with Account_LedgerService {
+  Account_ledger_filter({super.key});
+
+  @override
+  State<Account_ledger_filter> createState() => _Account_ledger_filterState();
+}
+
+class _Account_ledger_filterState extends State<Account_ledger_filter> {
+  final Account_LedgerController account_LedgerController = Get.find<Account_LedgerController>();
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Filter Account_Ledgers',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Primary_colors.Color3),
+        ),
+        const Divider(height: 30, thickness: 1, color: Color.fromARGB(255, 97, 97, 97)),
+        const SizedBox(height: 35),
+        // Quick Date Filters
+        const Text(
+          'Account_Ledger type',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+        ),
+        const SizedBox(height: 12),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [Obx(() => _buildAccount_LedgertypeFilterChip('Show All')), Obx(() => _buildAccount_LedgertypeFilterChip('Payment')), Obx(() => _buildAccount_LedgertypeFilterChip('Receipt'))],
+        ),
+        const SizedBox(height: 35),
+
+        // Product Type Filter
+        const Text(
+          'Invoice Type',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+        ),
+        const SizedBox(height: 8),
+        Obx(
+          () => Wrap(
+            spacing: 8,
+            children: [
+              FilterChip(
+                showCheckmark: false,
+                label: const Text('Show All'),
+                selected: account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Show All',
+                onSelected: (_) {
+                  account_LedgerController.account_LedgerModel.selectedInvoiceType.value = 'Show All';
+                  account_LedgerController.account_LedgerModel.selectedsalescustomer.value = 'None';
+                  account_LedgerController.account_LedgerModel.selectedsubcustomer.value = 'None';
+                  // widget.get_Account_LedgerList();
+                },
+                backgroundColor: Primary_colors.Dark,
+                selectedColor: Primary_colors.Dark,
+                labelStyle: TextStyle(
+                  fontSize: Primary_font_size.Text7,
+                  color: account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Show All' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: BorderSide(color: account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Show All' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84)),
+                ),
+              ),
+              FilterChip(
+                label: const Text('Sales'),
+                selected: account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Sales',
+                onSelected: (_) {
+                  account_LedgerController.account_LedgerModel.selectedInvoiceType.value = 'Sales';
+                  account_LedgerController.account_LedgerModel.selectedsalescustomer.value = 'None';
+                  account_LedgerController.account_LedgerModel.selectedsubcustomer.value = 'None';
+                  // widget.get_Account_LedgerList();
+                },
+                backgroundColor: Primary_colors.Dark,
+                showCheckmark: false,
+                selectedColor: Primary_colors.Dark,
+                labelStyle: TextStyle(
+                  fontSize: Primary_font_size.Text7,
+                  color: account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Sales' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: BorderSide(color: account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Sales' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84)),
+                ),
+              ),
+              FilterChip(
+                label: const Text('Subscription'),
+                selected: account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Subscription',
+                onSelected: (_) {
+                  account_LedgerController.account_LedgerModel.selectedInvoiceType.value = 'Subscription';
+                  account_LedgerController.account_LedgerModel.selectedsalescustomer.value = 'None';
+                  account_LedgerController.account_LedgerModel.selectedsubcustomer.value = 'None';
+                  // widget.get_Account_LedgerList();
+                },
+                backgroundColor: Primary_colors.Dark,
+                showCheckmark: false,
+                selectedColor: Primary_colors.Dark,
+                labelStyle: TextStyle(
+                  fontSize: Primary_font_size.Text7,
+                  color: account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Subscription' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: BorderSide(color: account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Subscription' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84)),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Obx(
+          () => SizedBox(
+            child: account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Sales'
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 35),
+                      const Text(
+                        'Select sales client',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                      ),
+                      const SizedBox(height: 10),
+                      Obx(() {
+                        return SizedBox(
+                          height: 35,
+                          // width: 250,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: const Color.fromARGB(255, 91, 90, 90), width: 1.0),
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: DropdownSearch<String>(
+                                    popupProps: PopupProps.menu(
+                                      showSearchBox: true,
+                                      searchFieldProps: TextFieldProps(
+                                        decoration: InputDecoration(
+                                          hintText: 'Search...',
+                                          hintStyle: const TextStyle(fontSize: 12),
+                                          prefixIcon: const Icon(Icons.search, size: 18),
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(6.0),
+                                            borderSide: BorderSide(color: Colors.grey.shade300),
+                                          ),
+                                          isDense: true,
+                                        ),
+                                      ),
+                                      menuProps: MenuProps(borderRadius: BorderRadius.circular(6.0), elevation: 3),
+                                      constraints: const BoxConstraints.tightFor(height: 250), // Reduced popup height
+                                    ),
+                                    dropdownDecoratorProps: DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        iconColor: const Color.fromARGB(252, 162, 158, 158),
+                                        // labelText: "Client",
+                                        // labelStyle: TextStyle(
+                                        //   color: Colors.grey.shade600,
+                                        //   fontSize: 12,
+                                        // ),
+                                        floatingLabelStyle: TextStyle(color: Colors.blue.shade700, fontSize: 12),
+                                        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                        border: InputBorder.none,
+                                        isDense: true,
+                                      ),
+                                      baseStyle: const TextStyle(
+                                        fontSize: 12, // Smaller font size
+                                        color: Color.fromARGB(255, 138, 137, 137),
+                                      ),
+                                    ),
+                                    items: account_LedgerController.account_LedgerModel.salesCustomerList.map((customer) {
+                                      return customer.customerName;
+                                    }).toList(),
+                                    selectedItem: account_LedgerController.account_LedgerModel.selectedsalescustomer.value,
+                                    onChanged: (value) {
+                                      if (value != null) {
+                                        account_LedgerController.account_LedgerModel.selectedsalescustomer.value = value;
+                                        final customerList = account_LedgerController.account_LedgerModel.salesCustomerList;
+
+                                        // Find the index of the selected customer
+                                        final index = customerList.indexWhere((customer) => customer.customerName == value);
+                                        account_LedgerController.account_LedgerModel.selectedcustomerID.value = account_LedgerController.account_LedgerModel.salesCustomerList[index].customerId;
+                                        if (kDebugMode) {
+                                          print('Selected customer ID: ${account_LedgerController.account_LedgerModel.selectedcustomerID.value}');
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ),
+                                Obx(
+                                  () => SizedBox(
+                                    child: account_LedgerController.account_LedgerModel.selectedsalescustomer.value != 'None'
+                                        ? IconButton(
+                                            onPressed: () {
+                                              account_LedgerController.account_LedgerModel.selectedsalescustomer.value = 'None';
+                                            },
+                                            icon: const Icon(Icons.close, color: Colors.red, size: 18),
+                                          )
+                                        : const SizedBox(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                    ],
+                  )
+                : const SizedBox(),
+          ),
+        ),
+        Obx(
+          () => SizedBox(
+            child: account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Subscription'
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 35),
+                      const Text(
+                        'Select subscription customer',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                      ),
+                      const SizedBox(height: 10),
+                      Obx(() {
+                        return SizedBox(
+                          height: 35,
+                          // width: 250,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: const Color.fromARGB(255, 91, 90, 90), width: 1.0),
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: DropdownSearch<String>(
+                                    popupProps: PopupProps.menu(
+                                      showSearchBox: true,
+                                      searchFieldProps: TextFieldProps(
+                                        decoration: InputDecoration(
+                                          hintText: 'Search...',
+                                          hintStyle: const TextStyle(fontSize: 12),
+                                          prefixIcon: const Icon(Icons.search, size: 18),
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(6.0),
+                                            borderSide: BorderSide(color: Colors.grey.shade300),
+                                          ),
+                                          isDense: true,
+                                        ),
+                                      ),
+                                      menuProps: MenuProps(borderRadius: BorderRadius.circular(6.0), elevation: 3),
+                                      constraints: const BoxConstraints.tightFor(height: 250), // Reduced popup height
+                                    ),
+                                    dropdownDecoratorProps: DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        iconColor: const Color.fromARGB(252, 162, 158, 158),
+                                        // labelText: "Client",
+                                        // labelStyle: TextStyle(
+                                        //   color: Colors.grey.shade600,
+                                        //   fontSize: 12,
+                                        // ),
+                                        floatingLabelStyle: TextStyle(color: Colors.blue.shade700, fontSize: 12),
+                                        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                        border: InputBorder.none,
+                                        isDense: true,
+                                      ),
+                                      baseStyle: const TextStyle(
+                                        fontSize: 12, // Smaller font size
+                                        color: Color.fromARGB(255, 138, 137, 137),
+                                      ),
+                                    ),
+                                    items: account_LedgerController.account_LedgerModel.subCustomerList.map((customer) {
+                                      return customer.customerName;
+                                    }).toList(),
+                                    selectedItem: account_LedgerController.account_LedgerModel.selectedsubcustomer.value,
+                                    onChanged: (value) {
+                                      if (value != null) {
+                                        account_LedgerController.account_LedgerModel.selectedsubcustomer.value = value;
+                                        final customerList = account_LedgerController.account_LedgerModel.subCustomerList;
+
+                                        // Find the index of the selected customer
+                                        final index = customerList.indexWhere((customer) => customer.customerName == value);
+                                        account_LedgerController.account_LedgerModel.selectedcustomerID.value = account_LedgerController.account_LedgerModel.subCustomerList[index].customerId;
+
+                                        // print('Selected customer ID: ${view_LedgerController.view_LedgerModel.selectedsubcustomerID.value}');
+                                        // widget.get_Account_LedgerList();
+                                      }
+                                    },
+                                  ),
+                                ),
+                                Obx(
+                                  () => SizedBox(
+                                    child: account_LedgerController.account_LedgerModel.selectedsubcustomer.value != 'None'
+                                        ? IconButton(
+                                            onPressed: () {
+                                              account_LedgerController.account_LedgerModel.selectedsubcustomer.value = 'None';
+                                              account_LedgerController.account_LedgerModel.selectedcustomerID.value = 'None';
+                                              widget.get_Account_LedgerList();
+                                            },
+                                            icon: const Icon(Icons.close, color: Colors.red, size: 18),
+                                          )
+                                        : const SizedBox(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                    ],
+                  )
+                : const SizedBox(),
+          ),
+        ),
+        const SizedBox(height: 35),
+
+        // Status Filter
+        const Text(
+          'Payment Status',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+        ),
+        const SizedBox(height: 8),
+        Obx(
+          () => Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: const Color.fromARGB(255, 85, 84, 84)),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: DropdownButtonFormField<String>(
+              value: account_LedgerController.account_LedgerModel.selectedpaymentStatus.value,
+              isDense: true, // Reduces the vertical height
+              items: account_LedgerController.account_LedgerModel.paymentstatusList.map((String value) {
+                return DropdownMenuItem<String>(value: value, child: Text(value));
+              }).toList(),
+              onChanged: (value) {
+                account_LedgerController.account_LedgerModel.selectedpaymentStatus.value = value!;
+                // widget.get_Account_LedgerList();
+              },
+              decoration: const InputDecoration(
+                isDense: true, // Makes the field more compact
+                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8), // Smaller padding
+                border: InputBorder.none,
+              ),
+              style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 154, 152, 152)),
+              dropdownColor: Primary_colors.Dark,
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 35),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  'Select date',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                ),
+                // const SizedBox(width: 8),
+                Obx(
+                  () => SizedBox(
+                    child:
+                        account_LedgerController.account_LedgerModel.startDateController.value.text.isNotEmpty || account_LedgerController.account_LedgerModel.endDateController.value.text.isNotEmpty
+                            ? TextButton(
+                                onPressed: () {
+                                  account_LedgerController.account_LedgerModel.selectedMonth.value = 'None';
+                                  account_LedgerController.account_LedgerModel.startDateController.value.clear();
+                                  account_LedgerController.account_LedgerModel.endDateController.value.clear();
+                                  account_LedgerController.account_LedgerModel.selectedMonth.refresh();
+                                  account_LedgerController.account_LedgerModel.startDateController.refresh();
+                                  account_LedgerController.account_LedgerModel.endDateController.refresh();
+                                  // widget.get_Account_LedgerList();
+                                },
+                                child: const Text('Clear', style: TextStyle(fontSize: Primary_font_size.Text7)),
+                              )
+                            : const SizedBox(),
+                  ),
+                ),
+                const Spacer(),
+                Obx(
+                  () {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      width: 100, // Adjust width as needed
+                      height: 30, // Adjust height as needed
+                      child: DropdownButtonFormField<String>(
+                        menuMaxHeight: 300,
+                        value: account_LedgerController.account_LedgerModel.selectedMonth.value,
+                        items: ['None', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((String value) {
+                          return DropdownMenuItem<String>(value: value, child: Text(value));
+                        }).toList(),
+                        onChanged: (value) {
+                          account_LedgerController.account_LedgerModel.selectedMonth.value = value!;
+                          if (value != 'None') {
+                            final monthIndex = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].indexOf(value) + 1;
+
+                            final now = DateTime.now();
+                            final year = now.year;
+                            final firstDay = DateTime(year, monthIndex, 1);
+                            final lastDay = monthIndex < 12 ? DateTime(year, monthIndex + 1, 0) : DateTime(year + 1, 1, 0);
+
+                            String formatDate(DateTime date) {
+                              return "${date.year.toString().padLeft(4, '0')}-"
+                                  "${date.month.toString().padLeft(2, '0')}-"
+                                  "${date.day.toString().padLeft(2, '0')}";
+                            }
+
+                            account_LedgerController.account_LedgerModel.startDateController.value.text = formatDate(firstDay);
+                            account_LedgerController.account_LedgerModel.endDateController.value.text = formatDate(lastDay);
+                            account_LedgerController.account_LedgerModel.startDateController.refresh();
+                            account_LedgerController.account_LedgerModel.endDateController.refresh();
+                            // widget.get_Account_LedgerList();
+                          } else {
+                            account_LedgerController.account_LedgerModel.startDateController.value.clear();
+                            account_LedgerController.account_LedgerModel.endDateController.value.clear();
+                            account_LedgerController.account_LedgerModel.startDateController.refresh();
+                            account_LedgerController.account_LedgerModel.endDateController.refresh();
+                            // widget.get_Account_LedgerList();
+                          }
+                        },
+                        decoration: const InputDecoration(
+                          isDense: true,
+                          contentPadding: EdgeInsets.symmetric(vertical: 8),
+                          border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                        ),
+                        style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 154, 152, 152)),
+                        dropdownColor: Primary_colors.Dark,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 15),
+            Obx(
+              () => Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 35,
+                      child: TextFormField(
+                        style: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                        controller: account_LedgerController.account_LedgerModel.startDateController.value,
+                        readOnly: true,
+                        onTap: () async {
+                          await widget.selectfilterDate(context, account_LedgerController.account_LedgerModel.startDateController.value);
+                          // await widget.get_Account_LedgerList();
+                          account_LedgerController.account_LedgerModel.startDateController.refresh();
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'From',
+                          labelStyle: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                          suffixIcon: const Icon(Icons.calendar_today, size: 20, color: Color.fromARGB(255, 85, 84, 84)),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: SizedBox(
+                      height: 35,
+                      child: TextFormField(
+                        style: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                        controller: account_LedgerController.account_LedgerModel.endDateController.value,
+                        readOnly: true,
+                        onTap: () async {
+                          await widget.selectfilterDate(context, account_LedgerController.account_LedgerModel.endDateController.value);
+                          account_LedgerController.account_LedgerModel.endDateController.refresh();
+                          // await widget.get_Account_LedgerList();
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'To',
+                          labelStyle: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                          suffixIcon: const Icon(Icons.calendar_today, size: 20, color: Color.fromARGB(255, 85, 84, 84)),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 35),
+          ],
+        ),
+        const Spacer(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            OutlinedButton(
+              onPressed: () {
+                widget.resetaccount_LedgerFilters();
+                widget.get_Account_LedgerList();
+                Navigator.pop(context);
+              },
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Primary_colors.Color3),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              child: const Text('RESET', style: TextStyle(color: Primary_colors.Color3)),
+            ),
+            const SizedBox(width: 10),
+            ElevatedButton(
+              onPressed: () async {
+                account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.transactiontype.value = account_LedgerController.account_LedgerModel.selectedtransactiontype.value;
+                account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.invoicetype.value = account_LedgerController.account_LedgerModel.selectedInvoiceType.value;
+                account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedsalescustomername.value =
+                    account_LedgerController.account_LedgerModel.selectedsalescustomer.value;
+                account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedsubscriptioncustomername.value =
+                    account_LedgerController.account_LedgerModel.selectedsubcustomer.value;
+                account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedcustomerid.value = account_LedgerController.account_LedgerModel.selectedcustomerID.value;
+                account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.paymentstatus.value = account_LedgerController.account_LedgerModel.selectedpaymentStatus.value;
+                account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value = account_LedgerController.account_LedgerModel.startDateController.value.text;
+                account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value = account_LedgerController.account_LedgerModel.endDateController.value.text;
+                await widget.get_Account_LedgerList();
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Primary_colors.Color3,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'APPLY',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAccount_LedgertypeFilterChip(String label) {
+    final isSelected = account_LedgerController.account_LedgerModel.selectedtransactiontype.value == label;
+
+    return ChoiceChip(
+      label: Text(
+        label,
+        style: TextStyle(color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+      ),
+      selected: isSelected,
+      onSelected: (_) {
+        account_LedgerController.account_LedgerModel.selectedtransactiontype.value = label;
+        // widget.get_Account_LedgerList();
+      },
+      backgroundColor: Primary_colors.Dark,
+      selectedColor: Primary_colors.Dark,
+      labelStyle: TextStyle(color: isSelected ? Primary_colors.Color3 : Colors.black),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: BorderSide(color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84)),
+      ),
+    );
+  }
 }

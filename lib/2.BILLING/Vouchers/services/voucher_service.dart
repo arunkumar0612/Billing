@@ -445,6 +445,7 @@ mixin VoucherService {
         "gstnumber": voucherController.voucherModel.voucher_list[index].gstNumber,
         "feedback": voucherController.voucherModel.feedback_controller.value.text,
         "transactiondetails": voucherController.voucherModel.transactionDetails_controller.value.text,
+        "paymentmode": voucherController.voucherModel.Selectedpaymentmode.value
       };
       ClearVoucher voucherdata = ClearVoucher.fromJson(mapData);
 

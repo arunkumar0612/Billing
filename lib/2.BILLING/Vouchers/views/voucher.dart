@@ -415,6 +415,17 @@ class _VoucherState extends State<Voucher> {
                                           },
                                         ),
                                       const SizedBox(height: 16),
+                                      _buildDropdownField(
+                                        label: 'Payment Mode',
+                                        hint: 'Select Payment Mode',
+                                        icon: Icons.account_balance_wallet,
+                                        items: ['Bank Transfer', 'UPI Payment', 'Cash Payment', 'Cheque'],
+                                        value: voucherController.voucherModel.Selectedpaymentmode.value,
+                                        onChanged: (value) {
+                                          voucherController.voucherModel.Selectedpaymentmode.value = value!;
+                                        },
+                                      ),
+                                      const SizedBox(height: 16),
                                       _buildEditableField(
                                         controller: voucherController.voucherModel.transactionDetails_controller.value,
                                         label: 'Transaction Reference',
@@ -1836,7 +1847,7 @@ class _VoucherState extends State<Voucher> {
                             voucherController.voucherModel.selectedpaymentStatus.value = voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value;
                             voucherController.voucherModel.startDateController.value.text = voucherController.voucherModel.voucherSelectedFilter.value.fromdate.toString();
                             voucherController.voucherModel.endDateController.value.text = voucherController.voucherModel.voucherSelectedFilter.value.todate.toString();
-
+                            voucherController.voucherModel.selectedMonth.value = voucherController.voucherModel.voucherSelectedFilter.value.selectedmonth.value.toString();
                             _scaffoldKey.currentState?.openEndDrawer();
                           },
                           icon: const Icon(Icons.filter_alt_outlined, color: Primary_colors.Color1),
@@ -3736,35 +3747,38 @@ class _VoucherState extends State<Voucher> {
             ),
 
             const SizedBox(height: 35),
-            Obx(() {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Select date',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Select date',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                    ),
+                    // const SizedBox(width: 8),
+                    Obx(
+                      () => SizedBox(
+                        child: voucherController.voucherModel.startDateController.value.text.isNotEmpty || voucherController.voucherModel.endDateController.value.text.isNotEmpty
+                            ? TextButton(
+                                onPressed: () {
+                                  voucherController.voucherModel.selectedMonth.value = 'None';
+                                  voucherController.voucherModel.startDateController.value.clear();
+                                  voucherController.voucherModel.endDateController.value.clear();
+                                  voucherController.voucherModel.selectedMonth.refresh();
+                                  voucherController.voucherModel.startDateController.refresh();
+                                  voucherController.voucherModel.endDateController.refresh();
+                                  // widget.get_VoucherList();
+                                },
+                                child: const Text('Clear', style: TextStyle(fontSize: Primary_font_size.Text7)),
+                              )
+                            : const SizedBox(),
                       ),
-                      // const SizedBox(width: 8),
-                      Obx(
-                        () => SizedBox(
-                          child: voucherController.voucherModel.startDateController.value.text.isNotEmpty || voucherController.voucherModel.endDateController.value.text.isNotEmpty
-                              ? TextButton(
-                                  onPressed: () {
-                                    voucherController.voucherModel.selectedMonth.value = 'None';
-                                    voucherController.voucherModel.startDateController.value.clear();
-                                    voucherController.voucherModel.endDateController.value.clear();
-                                    // widget.get_VoucherList();
-                                  },
-                                  child: const Text('Clear', style: TextStyle(fontSize: Primary_font_size.Text7)),
-                                )
-                              : const SizedBox(),
-                        ),
-                      ),
-                      const Spacer(),
-                      Obx(() {
+                    ),
+                    const Spacer(),
+                    Obx(
+                      () {
                         return Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           width: 100, // Adjust width as needed
@@ -3793,10 +3807,14 @@ class _VoucherState extends State<Voucher> {
 
                                 voucherController.voucherModel.startDateController.value.text = formatDate(firstDay);
                                 voucherController.voucherModel.endDateController.value.text = formatDate(lastDay);
+                                voucherController.voucherModel.startDateController.refresh();
+                                voucherController.voucherModel.endDateController.refresh();
                                 // widget.get_VoucherList();
                               } else {
                                 voucherController.voucherModel.startDateController.value.clear();
                                 voucherController.voucherModel.endDateController.value.clear();
+                                voucherController.voucherModel.startDateController.refresh();
+                                voucherController.voucherModel.endDateController.refresh();
                                 // widget.get_VoucherList();
                               }
                             },
@@ -3811,11 +3829,13 @@ class _VoucherState extends State<Voucher> {
                             dropdownColor: Primary_colors.Dark,
                           ),
                         );
-                      }),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  Row(
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 15),
+                Obx(
+                  () => Row(
                     children: [
                       Expanded(
                         child: SizedBox(
@@ -3827,6 +3847,7 @@ class _VoucherState extends State<Voucher> {
                             onTap: () async {
                               await widget.selectfilterDate(context, voucherController.voucherModel.startDateController.value);
                               // await widget.get_VoucherList();
+                              voucherController.voucherModel.startDateController.refresh();
                             },
                             decoration: InputDecoration(
                               labelText: 'From',
@@ -3856,6 +3877,7 @@ class _VoucherState extends State<Voucher> {
                             readOnly: true,
                             onTap: () async {
                               await widget.selectfilterDate(context, voucherController.voucherModel.endDateController.value);
+                              voucherController.voucherModel.endDateController.refresh();
                               // await widget.get_VoucherList();
                             },
                             decoration: InputDecoration(
@@ -3878,10 +3900,10 @@ class _VoucherState extends State<Voucher> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 35),
-                ],
-              );
-            }),
+                ),
+                const SizedBox(height: 35),
+              ],
+            ),
             const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,

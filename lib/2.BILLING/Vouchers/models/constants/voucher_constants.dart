@@ -23,6 +23,7 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   var is_fullClear = false.obs;
   var is_amountExceeds = RxnBool();
   var is_Deducted = true.obs;
+  var Selectedpaymentmode = 'Bank Transfer'.obs;
   var selectedValue = 'Full'.obs;
   var paymentstatusList = [
     'Show All',
@@ -46,15 +47,16 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   RxString selectedsubcustomer = 'None'.obs;
   RxString selectedcustomerID = ''.obs;
   Rx<VoucherSelectedFilter> voucherSelectedFilter = VoucherSelectedFilter(
-    vouchertype: 'Show All',
-    invoicetype: 'Show All',
-    selectedsalescustomername: 'None',
-    selectedcustomerid: '',
-    selectedsubscriptioncustomername: 'None',
-    paymentstatus: 'Show All',
-    fromdate: '',
-    todate: '',
-  ).obs;
+          vouchertype: 'Show All',
+          invoicetype: 'Show All',
+          selectedsalescustomername: 'None',
+          selectedcustomerid: '',
+          selectedsubscriptioncustomername: 'None',
+          paymentstatus: 'Show All',
+          fromdate: '',
+          todate: '',
+          selectedmonth: 'None')
+      .obs;
 
   final searchController = TextEditingController().obs;
   final amountCleared_controller = TextEditingController().obs;
@@ -64,7 +66,6 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   final RxString closedDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
   var fileName = RxnString();
   var selectedFile = Rxn<File>();
-
   var salesCustomerList = <CustomerInfo>[].obs;
   var subCustomerList = <CustomerInfo>[].obs;
 

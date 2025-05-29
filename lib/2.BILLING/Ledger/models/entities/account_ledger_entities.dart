@@ -1,3 +1,5 @@
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 class Description {
   String content;
   double gst;
@@ -154,8 +156,8 @@ class AccountLedger {
   Map<String, dynamic> toJson() {
     return {
       'clientledger_id': clientLedgerId,
-      'voucher_id': voucherId,
-      'voucher_number': voucherNumber,
+      'voucherid': voucherId,
+      'voucherNumber': voucherNumber,
       'client_name': clientName,
       'tdsamount': tdsAmount,
       'gst_number': gstNumber,
@@ -330,4 +332,36 @@ class PDF_AccountLedgerSummary {
       'toDate': toDate,
     };
   }
+}
+
+class AccountLedgerSelectedFilter {
+  RxString transactiontype;
+  RxString invoicetype;
+  RxString selectedsalescustomername;
+  RxString selectedcustomerid;
+  RxString selectedsubscriptioncustomername;
+  RxString paymentstatus;
+  RxString fromdate;
+  RxString todate;
+  RxString selectedmonth;
+
+  AccountLedgerSelectedFilter(
+      {String transactiontype = 'Show All',
+      String invoicetype = 'Show All',
+      String selectedsalescustomername = 'None',
+      String selectedcustomerid = '',
+      String selectedsubscriptioncustomername = 'None',
+      String paymentstatus = 'Show All',
+      String fromdate = '',
+      String todate = '',
+      String selectedmonth = ''})
+      : transactiontype = RxString(transactiontype),
+        invoicetype = RxString(invoicetype),
+        selectedsalescustomername = RxString(selectedsalescustomername),
+        selectedcustomerid = RxString(selectedcustomerid),
+        selectedsubscriptioncustomername = RxString(selectedsubscriptioncustomername),
+        paymentstatus = RxString(paymentstatus),
+        fromdate = RxString(fromdate),
+        todate = RxString(todate),
+        selectedmonth = RxString(selectedmonth);
 }

@@ -640,4 +640,27 @@ mixin VoucherService {
     voucherController.voucherModel.selectAll.value = false;
     voucherController.voucherModel.showDeleteButton.value = false;
   }
+
+  void assignvoucherFilters() {
+    voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value = voucherController.voucherModel.selectedvouchertype.value;
+    voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value = voucherController.voucherModel.selectedInvoiceType.value;
+    voucherController.voucherModel.voucherSelectedFilter.value.selectedsalescustomername.value = voucherController.voucherModel.selectedsalescustomer.value;
+    voucherController.voucherModel.voucherSelectedFilter.value.selectedsubscriptioncustomername.value = voucherController.voucherModel.selectedsubcustomer.value;
+    voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value = voucherController.voucherModel.selectedcustomerID.value;
+    voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value = voucherController.voucherModel.selectedpaymentStatus.value;
+    voucherController.voucherModel.voucherSelectedFilter.value.fromdate.value = voucherController.voucherModel.startDateController.value.text;
+    voucherController.voucherModel.voucherSelectedFilter.value.todate.value = voucherController.voucherModel.endDateController.value.text;
+  }
+
+  void reassignvoucherFilters() {
+    voucherController.voucherModel.selectedvouchertype.value = voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value;
+    voucherController.voucherModel.selectedInvoiceType.value = voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value;
+    voucherController.voucherModel.selectedsalescustomer.value = voucherController.voucherModel.voucherSelectedFilter.value.selectedsalescustomername.value;
+    voucherController.voucherModel.selectedsubcustomer.value = voucherController.voucherModel.voucherSelectedFilter.value.selectedsubscriptioncustomername.value;
+    voucherController.voucherModel.selectedcustomerID.value = voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value;
+    voucherController.voucherModel.selectedpaymentStatus.value = voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value;
+    voucherController.voucherModel.startDateController.value.text = voucherController.voucherModel.voucherSelectedFilter.value.fromdate.toString();
+    voucherController.voucherModel.endDateController.value.text = voucherController.voucherModel.voucherSelectedFilter.value.todate.toString();
+    voucherController.voucherModel.selectedMonth.value = voucherController.voucherModel.voucherSelectedFilter.value.selectedmonth.value.toString();
+  }
 }

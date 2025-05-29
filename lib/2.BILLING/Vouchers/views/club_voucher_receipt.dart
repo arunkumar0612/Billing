@@ -63,8 +63,8 @@ class VoucherReceipt {
 
 const detailsColor = PdfColors.grey900;
 const tableHeaderColor = PdfColors.grey200;
-const _darkColor = PdfColors.blueGrey800;
-const _lightColor = PdfColors.white;
+// const _darkColor = PdfColors.blueGrey800;
+// const _lightColor = PdfColors.white;
 const contentHeading = PdfColors.grey;
 const accentColor = PdfColors.blueGrey900;
 
@@ -239,7 +239,7 @@ pw.Widget _buildReceiptent(pw.Context context, VoucherReceipt receiptData) {
 
 pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
   final grossAmountFormatted = NumberFormat.currency(locale: 'en_IN').format(receiptData.data.selectedInvoiceGroup.totalPendingAmount_withTDS);
-  final tdsAmountFormatted = NumberFormat.currency(locale: 'en_IN').format(receiptData.data.selectedInvoiceGroup.totalTDS);
+  // final tdsAmountFormatted = NumberFormat.currency(locale: 'en_IN').format(receiptData.data.selectedInvoiceGroup.totalTDS);
 
   List<String> remarks = [
     'Against invoices ${receiptData.data.invoicedetails.map((item) => '${item.invoiceNumber} dated ${DateFormat('dd-MM-yyyy').format(item.invoiceDate)}').join(', ')}, '

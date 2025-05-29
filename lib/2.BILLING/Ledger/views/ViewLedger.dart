@@ -153,7 +153,12 @@ class _ViewLedgerState extends State<ViewLedger> {
                                   ),
                                   const SizedBox(width: 20),
                                   IconButton(
-                                    onPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
+                                    onPressed: () {
+                                      if (view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'Account Ledger') {
+                                        widget.reassignaccount_LedgerFilters();
+                                      }
+                                      _scaffoldKey.currentState?.openEndDrawer();
+                                    },
                                     icon: const Icon(
                                       Icons.filter_alt_outlined,
                                       color: Primary_colors.Color1,

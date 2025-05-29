@@ -659,7 +659,7 @@ mixin View_LedgerService {
                                         children: voucher.paymentDetails!.map<TableRow>((payment) {
                                           final date = formatDate(payment.date);
                                           final amount = '₹ ${formatCurrency(payment.amount)}';
-                                          final transID = payment.transactionId;
+                                          // final transID = payment.transactionId;
                                           final txnDetails = payment.transanctionDetails == "" ? 'N/A' : payment.transanctionDetails;
 
                                           return TableRow(

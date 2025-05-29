@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/account_ledger_entities.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/view_ledger_entities.dart';
 
 class Account_LedgerModel extends GetxController with GetSingleTickerProviderStateMixin {
   var account_Ledger_list = AccountLedgerSummary(
@@ -29,7 +28,7 @@ class Account_LedgerModel extends GetxController with GetSingleTickerProviderSta
   var feedbackController = TextEditingController().obs;
   // var filePathController = TextEditingController().obs;
   var CCemailToggle = false.obs;
-  var selectedpaymentStatus = 'Show All'.obs;
+  var selectedpaymenttype = 'Show All'.obs;
   var selectedtransactiontype = 'Show All'.obs;
   var selectedInvoiceType = 'Show All'.obs;
   RxString selectedMonth = 'None'.obs;
@@ -39,21 +38,19 @@ class Account_LedgerModel extends GetxController with GetSingleTickerProviderSta
   // RxString selectedsalescustomerID = ''.obs;
   RxString selectedsubcustomer = 'None'.obs;
   RxString selectedcustomerID = ''.obs;
-  var paymentstatusList = [
+  var paymenttypeList = [
     'Show All',
-    'Unpaid',
-    'Partial',
-    'Complete',
+    'Debit',
+    'Credit',
   ].obs;
-  var salesCustomerList = <CustomerInfo>[].obs;
-  var subCustomerList = <CustomerInfo>[].obs;
+
   Rx<AccountLedgerSelectedFilter> account_LedgerSelectedFilter = AccountLedgerSelectedFilter(
           transactiontype: 'Show All',
           invoicetype: 'Show All',
           selectedsalescustomername: 'None',
           selectedcustomerid: '',
           selectedsubscriptioncustomername: 'None',
-          paymentstatus: 'Show All',
+          paymenttype: 'Show All',
           fromdate: '',
           todate: '',
           selectedmonth: 'None')

@@ -208,6 +208,7 @@ class ClearVoucher {
   final String gstNumber;
   final String feedback;
   final String transactionDetails;
+  final String paymentmode;
 
   ClearVoucher({
     required this.date,
@@ -231,6 +232,7 @@ class ClearVoucher {
     required this.gstNumber,
     required this.feedback,
     required this.transactionDetails,
+    required this.paymentmode,
   });
 
   factory ClearVoucher.fromJson(Map<String, dynamic> json) {
@@ -256,6 +258,7 @@ class ClearVoucher {
       gstNumber: json['gstnumber'] ?? '',
       feedback: json['feedback'] ?? '',
       transactionDetails: json['transactiondetails'] ?? '',
+      paymentmode: json['paymentmode'] ?? '',
     );
   }
 
@@ -282,6 +285,7 @@ class ClearVoucher {
       'gstnumber': gstNumber,
       'feedback': feedback,
       'transactiondetails': transactionDetails,
+      'paymentmode': paymentmode
     };
   }
 }
@@ -516,22 +520,25 @@ class VoucherSelectedFilter {
   RxString paymentstatus;
   RxString fromdate;
   RxString todate;
+  RxString selectedmonth;
 
-  VoucherSelectedFilter({
-    String vouchertype = 'Show All',
-    String invoicetype = 'Show All',
-    String selectedsalescustomername = 'None',
-    String selectedcustomerid = '',
-    String selectedsubscriptioncustomername = 'None',
-    String paymentstatus = 'Show All',
-    String fromdate = '',
-    String todate = '',
-  })  : vouchertype = RxString(vouchertype),
+  VoucherSelectedFilter(
+      {String vouchertype = 'Show All',
+      String invoicetype = 'Show All',
+      String selectedsalescustomername = 'None',
+      String selectedcustomerid = '',
+      String selectedsubscriptioncustomername = 'None',
+      String paymentstatus = 'Show All',
+      String fromdate = '',
+      String todate = '',
+      String selectedmonth = ''})
+      : vouchertype = RxString(vouchertype),
         invoicetype = RxString(invoicetype),
         selectedsalescustomername = RxString(selectedsalescustomername),
         selectedcustomerid = RxString(selectedcustomerid),
         selectedsubscriptioncustomername = RxString(selectedsubscriptioncustomername),
         paymentstatus = RxString(paymentstatus),
         fromdate = RxString(fromdate),
-        todate = RxString(todate);
+        todate = RxString(todate),
+        selectedmonth = RxString(selectedmonth);
 }

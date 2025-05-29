@@ -23,7 +23,7 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   var is_fullClear = false.obs;
   var is_amountExceeds = RxnBool();
   var is_Deducted = true.obs;
-  var Selectedpaymentmode = 'Card'.obs;
+  var Selectedpaymentmode = 'Bank Transfer'.obs;
   var selectedValue = 'Full'.obs;
   var paymentstatusList = [
     'Show All',
@@ -47,15 +47,16 @@ class VoucherModel extends GetxController with GetSingleTickerProviderStateMixin
   RxString selectedsubcustomer = 'None'.obs;
   RxString selectedcustomerID = ''.obs;
   Rx<VoucherSelectedFilter> voucherSelectedFilter = VoucherSelectedFilter(
-    vouchertype: 'Show All',
-    invoicetype: 'Show All',
-    selectedsalescustomername: 'None',
-    selectedcustomerid: '',
-    selectedsubscriptioncustomername: 'None',
-    paymentstatus: 'Show All',
-    fromdate: '',
-    todate: '',
-  ).obs;
+          vouchertype: 'Show All',
+          invoicetype: 'Show All',
+          selectedsalescustomername: 'None',
+          selectedcustomerid: '',
+          selectedsubscriptioncustomername: 'None',
+          paymentstatus: 'Show All',
+          fromdate: '',
+          todate: '',
+          selectedmonth: 'None')
+      .obs;
 
   final searchController = TextEditingController().obs;
   final amountCleared_controller = TextEditingController().obs;

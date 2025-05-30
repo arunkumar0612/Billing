@@ -28,4 +28,30 @@ class GST_LedgerModel extends GetxController with GetSingleTickerProviderStateMi
   var feedbackController = TextEditingController().obs;
   // var filePathController = TextEditingController().obs;
   var CCemailToggle = false.obs;
+
+  var selectedGSTtype = 'Consolidate'.obs;
+  var selectedInvoiceType = 'Show All'.obs;
+  RxString selectedMonth = 'None'.obs;
+  final startDateController = TextEditingController().obs;
+  final endDateController = TextEditingController().obs;
+  RxString selectedsalescustomer = 'None'.obs;
+  // RxString selectedsalescustomerID = ''.obs;
+  RxString selectedsubcustomer = 'None'.obs;
+  RxString selectedcustomerID = ''.obs;
+  var paymenttypeList = [
+    'Show All',
+    'Debit',
+    'Credit',
+  ].obs;
+
+  Rx<GSTLedgerSelectedFilter> gst_LedgerSelectedFilter = GSTLedgerSelectedFilter(
+          GSTtype: 'Consolidate',
+          invoicetype: 'Show All',
+          selectedsalescustomername: 'None',
+          selectedcustomerid: '',
+          selectedsubscriptioncustomername: 'None',
+          fromdate: '',
+          todate: '',
+          selectedmonth: 'None')
+      .obs;
 }

@@ -61,8 +61,8 @@ class VoucherReceipt {
 
 const detailsColor = PdfColors.grey900;
 const tableHeaderColor = PdfColors.grey200;
-const _darkColor = PdfColors.blueGrey800;
-const _lightColor = PdfColors.white;
+// const _darkColor = PdfColors.blueGrey800;
+// const _lightColor = PdfColors.white;
 const contentHeading = PdfColors.grey;
 const accentColor = PdfColors.blueGrey900;
 
@@ -355,7 +355,7 @@ String _formatDate(DateTime date) {
   return DateFormat('dd-MM-yyyy').format(date);
 }
 
-String _formatCurrency(double amount) {
-  final formatter = NumberFormat('#,##,##0.00'); // Indian number format
-  return formatter.format(amount);
-}
+// String _formatCurrency(double amount) {
+//   final formatter = NumberFormat('#,##,##0.00'); // Indian number format
+//   return formatter.format(amount);
+// }

@@ -18,37 +18,23 @@ mixin Account_LedgerService {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
 
   Future<void> get_Account_LedgerList() async {
-    // final ledgerData = {
-    //   "ledgertype":
-    //       view_LedgerController.view_LedgerModel.selectedtransactiontype.value.toLowerCase() == 'show all' ? '' : view_LedgerController.view_LedgerModel.selectedtransactiontype.value.toLowerCase(),
-    //   "paymenttype": view_LedgerController.view_LedgerModel.selectedPaymenttype.value.toLowerCase() == 'show all' ? '' : view_LedgerController.view_LedgerModel.selectedPaymenttype.value.toLowerCase(),
-    //   "invoicetype": view_LedgerController.view_LedgerModel.selectedinvoiceType.value.toLowerCase() == 'show all' ? '' : view_LedgerController.view_LedgerModel.selectedinvoiceType.value.toLowerCase(),
-    //   "customerid": view_LedgerController.view_LedgerModel.selectedsalescustomer.value,
-    //   "startdate": view_LedgerController.view_LedgerModel.startDateController.value.text,
-    //   "enddate": view_LedgerController.view_LedgerModel.endDateController.value.text,
-    // };
-
-    // print('--- Ledger Data ---');
-    // ledgerData.forEach((key, value) {
-    //   print('$key: $value');
-    // });
-
-    // loader.start(context);
-    // await Future.delayed(const Duration(milliseconds: 1000));
-    // response;
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
-        "ledgertype":
-            view_LedgerController.view_LedgerModel.selectedtransactiontype.value.toLowerCase() == 'show all' ? '' : view_LedgerController.view_LedgerModel.selectedtransactiontype.value.toLowerCase(),
-        "paymenttype": view_LedgerController.view_LedgerModel.selectedPaymenttype.value.toLowerCase() == 'show all'
+        "ledgertype": account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.transactiontype.value.toLowerCase() == 'show all'
             ? ''
-            : view_LedgerController.view_LedgerModel.selectedPaymenttype.value.toLowerCase(), //"credit"       (or) debit,
-        "invoicetype": view_LedgerController.view_LedgerModel.selectedinvoiceType.value.toLowerCase() == 'show all'
+            : account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.transactiontype.value.toLowerCase(),
+        "paymenttype": account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.paymenttype.value.toLowerCase() == 'show all'
             ? ''
-            : view_LedgerController.view_LedgerModel.selectedinvoiceType.value.toLowerCase(), //sales   (or) subscription (or) vendor,
-        "customerid": view_LedgerController.view_LedgerModel.selectedsubcustomerID.value == 'None' ? '' : view_LedgerController.view_LedgerModel.selectedsubcustomerID.value,
-        // "startdate": view_LedgerController.view_LedgerModel.startDateController.value.text,
-        // "enddate": view_LedgerController.view_LedgerModel.endDateController.value.text,
+            : account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.paymenttype.value.toLowerCase(),
+        "invoicetype": account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.invoicetype.value.toLowerCase() == 'show all'
+            ? ''
+            : account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.invoicetype.value.toLowerCase(),
+        // "customerid": "SB_1",
+        "customerid": account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedcustomerid.value == 'None'
+            ? ''
+            : account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedcustomerid.value,
+        "startdate": account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value.toString(),
+        "enddate": account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value.toString(),
       },
       API.getaccount_Ledgerlist,
     );
@@ -71,7 +57,7 @@ mixin Account_LedgerService {
     final ClientDetails? clientDetails;
 
     if (Sub_clientOrNot) {
-      String? clientID = view_LedgerController.view_LedgerModel.selectedsubcustomerID.value;
+      String? clientID = account_LedgerController.account_LedgerModel.selectedcustomerID.value;
 
       CustomerInfo clientData = view_LedgerController.view_LedgerModel.subCustomerList.firstWhere((element) => element.customerId == clientID);
       clientDetails = ClientDetails(
@@ -85,7 +71,7 @@ mixin Account_LedgerService {
         //     .account_LedgerModel.account_Ledger_list.value.enddate!),
       );
     } else if (Sales_clientOrNot) {
-      String? clientID = view_LedgerController.view_LedgerModel.selectedsalescustomerID.value;
+      String? clientID = account_LedgerController.account_LedgerModel.selectedcustomerID.value;
 
       CustomerInfo clientData = view_LedgerController.view_LedgerModel.salesCustomerList.firstWhere((element) => element.customerId == clientID);
       clientDetails = ClientDetails(
@@ -105,6 +91,14 @@ mixin Account_LedgerService {
         toDate: DateTime.parse(account_LedgerController.account_LedgerModel.account_Ledger_list.value.enddate!));
 
     return value;
+  }
+
+  bool isSubscription_Client() {
+    return account_LedgerController.account_LedgerModel.selectedsubcustomer.value != 'None' && account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Subscription' ? true : false;
+  }
+
+  bool isSales_Client() {
+    return account_LedgerController.account_LedgerModel.selectedsalescustomer.value != 'None' && account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Sales' ? true : false;
   }
 
   Future<void> account_Ledger_refresh() async {
@@ -164,26 +158,50 @@ mixin Account_LedgerService {
     account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedsalescustomername.value = 'None';
     account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedcustomerid.value = '';
     account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedsubscriptioncustomername.value = 'None';
-    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.paymentstatus.value = 'Show All';
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.paymenttype.value = 'Show All';
     account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value = '';
     account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value = '';
 
-    // account_LedgerController.account_LedgerModel.filteredVouchers.value = account_LedgerController.account_LedgerModel.account_Ledger_list;
+    // account_LedgerController.account_LedgerModel.filteredaccount_Ledgers.value = account_LedgerController.account_LedgerModel.account_Ledger_list;
+  }
+
+  void assignaccount_LedgerFilters() {
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.transactiontype.value = account_LedgerController.account_LedgerModel.selectedtransactiontype.value;
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.invoicetype.value = account_LedgerController.account_LedgerModel.selectedInvoiceType.value;
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedsalescustomername.value = account_LedgerController.account_LedgerModel.selectedsalescustomer.value;
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedsubscriptioncustomername.value = account_LedgerController.account_LedgerModel.selectedsubcustomer.value;
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedcustomerid.value = account_LedgerController.account_LedgerModel.selectedcustomerID.value;
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.paymenttype.value = account_LedgerController.account_LedgerModel.selectedpaymenttype.value;
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value = account_LedgerController.account_LedgerModel.startDateController.value.text;
+    account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value = account_LedgerController.account_LedgerModel.endDateController.value.text;
+  }
+
+  void reassignaccount_LedgerFilters() {
+    account_LedgerController.account_LedgerModel.selectedtransactiontype.value = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.transactiontype.value;
+    account_LedgerController.account_LedgerModel.selectedInvoiceType.value = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.invoicetype.value;
+    account_LedgerController.account_LedgerModel.selectedsalescustomer.value = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedsalescustomername.value;
+    account_LedgerController.account_LedgerModel.selectedsubcustomer.value = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedsubscriptioncustomername.value;
+    account_LedgerController.account_LedgerModel.selectedcustomerID.value = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedcustomerid.value;
+    account_LedgerController.account_LedgerModel.selectedpaymenttype.value = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.paymenttype.value;
+    account_LedgerController.account_LedgerModel.startDateController.value.text = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.toString();
+    account_LedgerController.account_LedgerModel.endDateController.value.text = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.toString();
+    account_LedgerController.account_LedgerModel.selectedMonth.value = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedmonth.value.toString();
   }
 }
+
 // void applySearchFilter(String query) {
 //     try {
 //       if (query.isEmpty) {
-//         account_LedgerController.account_LedgerModel.filteredVouchers.assignAll(account_LedgerController.account_LedgerModel.account_Ledger_list);
+//         account_LedgerController.account_LedgerModel.filteredaccount_Ledgers.assignAll(account_LedgerController.account_LedgerModel.account_Ledger_list);
 //       } else {
 //         final filtered = account_LedgerController.account_LedgerModel.account_Ledger_list.where((account_Ledger) {
 //           return account_Ledger.clientName.toLowerCase().contains(query.toLowerCase()) || account_Ledger.account_LedgerNumber.toLowerCase().contains(query.toLowerCase());
 //         }).toList();
-//         account_LedgerController.account_LedgerModel.filteredVouchers.assignAll(filtered);
+//         account_LedgerController.account_LedgerModel.filteredaccount_Ledgers.assignAll(filtered);
 //       }
 
 //       // Update selectedItems to match the new filtered list length
-//       account_LedgerController.account_LedgerModel.selectedItems.value = List<bool>.filled(account_LedgerController.account_LedgerModel.filteredVouchers.length, false);
+//       account_LedgerController.account_LedgerModel.selectedItems.value = List<bool>.filled(account_LedgerController.account_LedgerModel.filteredaccount_Ledgers.length, false);
 //       account_LedgerController.account_LedgerModel.selectAll.value = false;
 //       account_LedgerController.account_LedgerModel.showDeleteButton.value = false;
 //     } catch (e) {

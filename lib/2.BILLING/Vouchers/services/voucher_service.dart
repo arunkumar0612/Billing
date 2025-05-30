@@ -239,18 +239,14 @@ mixin VoucherService {
   Future<void> get_VoucherList() async {
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
-        "vouchertype": voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value.toLowerCase() == 'show all'
-            ? ''
-            : voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value.toLowerCase(),
-        "paymentstatus": voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value.toLowerCase() == 'show all'
-            ? ''
-            : voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value.toLowerCase(),
-        "invoicetype": voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value.toLowerCase() == 'show all'
-            ? ''
-            : voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value.toLowerCase(),
+        "vouchertype":
+            voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value.toLowerCase() == 'show all' ? '' : voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value.toLowerCase(),
+        "paymentstatus":
+            voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value.toLowerCase() == 'show all' ? '' : voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value.toLowerCase(),
+        "invoicetype":
+            voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value.toLowerCase() == 'show all' ? '' : voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value.toLowerCase(),
         // "customerid": "SB_1",
-        "customerid":
-            voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value == 'None' ? '' : voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value,
+        "customerid": voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value == 'None' ? '' : voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value,
         "startdate": voucherController.voucherModel.voucherSelectedFilter.value.fromdate.value.toString(),
         "enddate": voucherController.voucherModel.voucherSelectedFilter.value.todate.value.toString(),
       },
@@ -408,6 +404,7 @@ mixin VoucherService {
         "voucherids": voucherIds,
         "vouchernumbers": voucherNumbers,
         'invoicenumbers': invoiceNumbers,
+        'selectedpaymentmode': voucherController.voucherModel.Selectedpaymentmode.value,
       };
 
       Clear_ClubVoucher voucherdata = Clear_ClubVoucher.fromJson(main_map);

@@ -57,7 +57,7 @@ mixin Account_LedgerService {
     final ClientDetails? clientDetails;
 
     if (Sub_clientOrNot) {
-      String? clientID = view_LedgerController.view_LedgerModel.selectedsubcustomerID.value;
+      String? clientID = account_LedgerController.account_LedgerModel.selectedcustomerID.value;
 
       CustomerInfo clientData = view_LedgerController.view_LedgerModel.subCustomerList.firstWhere((element) => element.customerId == clientID);
       clientDetails = ClientDetails(
@@ -71,7 +71,7 @@ mixin Account_LedgerService {
         //     .account_LedgerModel.account_Ledger_list.value.enddate!),
       );
     } else if (Sales_clientOrNot) {
-      String? clientID = view_LedgerController.view_LedgerModel.selectedsalescustomerID.value;
+      String? clientID = account_LedgerController.account_LedgerModel.selectedcustomerID.value;
 
       CustomerInfo clientData = view_LedgerController.view_LedgerModel.salesCustomerList.firstWhere((element) => element.customerId == clientID);
       clientDetails = ClientDetails(
@@ -91,6 +91,14 @@ mixin Account_LedgerService {
         toDate: DateTime.parse(account_LedgerController.account_LedgerModel.account_Ledger_list.value.enddate!));
 
     return value;
+  }
+
+  bool isSubscription_Client() {
+    return account_LedgerController.account_LedgerModel.selectedsubcustomer.value != 'None' && account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Subscription' ? true : false;
+  }
+
+  bool isSales_Client() {
+    return account_LedgerController.account_LedgerModel.selectedsalescustomer.value != 'None' && account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Sales' ? true : false;
   }
 
   Future<void> account_Ledger_refresh() async {

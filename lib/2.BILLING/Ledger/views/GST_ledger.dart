@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -67,6 +68,9 @@ class _GSTLedgerState extends State<GSTLedger> {
     await widget.get_GST_LedgerList();
     await widget.Get_SUBcustomerList();
     await widget.Get_SALEScustomerList();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      widget.resetgst_LedgerFilters();
+    });
     await Future.delayed(const Duration(seconds: 0));
     loader.stop();
   }
@@ -313,7 +317,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                     ),
                                                     // Text(
                                                     //   textAlign: TextAlign.center,
-                                                    //   account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].invoiceNumber,
+                                                    //   GST_ledgerController.gst_LedgerModel.GST_ledger_list.value.ledgerList[index].invoiceNumber,
                                                     //   style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                     // ),
                                                   ],
@@ -458,7 +462,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                               },
                             ),
                           ),
-                          view_LedgerController.view_LedgerModel.showGSTsummary.value
+                          gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value == 'Consolidate'
                               ? Column(
                                   children: [
                                     Column(
@@ -739,7 +743,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                   ],
                                 )
                               : const SizedBox(),
-                          if (view_LedgerController.view_LedgerModel.showGSTsummary.value == false)
+                          if (gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value != 'Consolidate')
                             Column(
                               children: [
                                 const SizedBox(height: 20),
@@ -1378,7 +1382,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                     ],
                                   ),
                                 ),
-                                if (view_LedgerController.view_LedgerModel.showGSTsummary.value == false)
+                                if (gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value != 'Consolidate')
                                   Expanded(
                                     flex: 3,
                                     child: SizedBox(
@@ -1560,7 +1564,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                               ],
                             ),
                           ),
-                          if (view_LedgerController.view_LedgerModel.showGSTsummary.value == false)
+                          if (gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value != 'Consolidate')
                             Column(
                               children: [
                                 const SizedBox(height: 10),
@@ -1627,6 +1631,547 @@ class _GSTLedgerState extends State<GSTLedger> {
           ],
         );
       },
+    );
+  }
+}
+
+class GST_ledger_filter extends StatefulWidget with GST_LedgerService {
+  GST_ledger_filter({super.key});
+
+  @override
+  State<GST_ledger_filter> createState() => _GST_ledger_filterState();
+}
+
+class _GST_ledger_filterState extends State<GST_ledger_filter> {
+  final GST_LedgerController GST_ledgerController = Get.find<GST_LedgerController>();
+  final View_LedgerController view_ledgerController = Get.find<View_LedgerController>();
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Filter GST Ledgers',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Primary_colors.Color3),
+        ),
+        const Divider(height: 30, thickness: 1, color: Color.fromARGB(255, 97, 97, 97)),
+        const SizedBox(height: 35),
+        // Quick Date Filters
+        const Text(
+          'GST type',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+        ),
+        const SizedBox(height: 12),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [Obx(() => _buildGST_ledgertypeFilterChip('Consolidate')), Obx(() => _buildGST_ledgertypeFilterChip('Input')), Obx(() => _buildGST_ledgertypeFilterChip('Output'))],
+        ),
+        const SizedBox(height: 35),
+
+        // Product Type Filter
+        const Text(
+          'Invoice Type',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+        ),
+        const SizedBox(height: 8),
+        Obx(
+          () => Wrap(
+            spacing: 8,
+            children: [
+              FilterChip(
+                showCheckmark: false,
+                label: const Text('Show All'),
+                selected: GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value == 'Show All',
+                onSelected: (_) {
+                  GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value = 'Show All';
+                  GST_ledgerController.gst_LedgerModel.selectedsalescustomer.value = 'None';
+                  GST_ledgerController.gst_LedgerModel.selectedsubcustomer.value = 'None';
+                  // widget.get_GST_ledgerList();
+                },
+                backgroundColor: Primary_colors.Dark,
+                selectedColor: Primary_colors.Dark,
+                labelStyle: TextStyle(
+                  fontSize: Primary_font_size.Text7,
+                  color: GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value == 'Show All' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: BorderSide(color: GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value == 'Show All' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84)),
+                ),
+              ),
+              FilterChip(
+                label: const Text('Sales'),
+                selected: GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value == 'Sales',
+                onSelected: (_) {
+                  GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value = 'Sales';
+                  GST_ledgerController.gst_LedgerModel.selectedsalescustomer.value = 'None';
+                  GST_ledgerController.gst_LedgerModel.selectedsubcustomer.value = 'None';
+                  // widget.get_GST_ledgerList();
+                },
+                backgroundColor: Primary_colors.Dark,
+                showCheckmark: false,
+                selectedColor: Primary_colors.Dark,
+                labelStyle: TextStyle(
+                  fontSize: Primary_font_size.Text7,
+                  color: GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value == 'Sales' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: BorderSide(color: GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value == 'Sales' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84)),
+                ),
+              ),
+              FilterChip(
+                label: const Text('Subscription'),
+                selected: GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value == 'Subscription',
+                onSelected: (_) {
+                  GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value = 'Subscription';
+                  GST_ledgerController.gst_LedgerModel.selectedsalescustomer.value = 'None';
+                  GST_ledgerController.gst_LedgerModel.selectedsubcustomer.value = 'None';
+                  // widget.get_GST_ledgerList();
+                },
+                backgroundColor: Primary_colors.Dark,
+                showCheckmark: false,
+                selectedColor: Primary_colors.Dark,
+                labelStyle: TextStyle(
+                  fontSize: Primary_font_size.Text7,
+                  color: GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value == 'Subscription' ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: BorderSide(color: GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value == 'Subscription' ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84)),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Obx(
+          () => SizedBox(
+            child: GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value == 'Sales'
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 35),
+                      const Text(
+                        'Select sales client',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                      ),
+                      const SizedBox(height: 10),
+                      Obx(() {
+                        return SizedBox(
+                          height: 35,
+                          // width: 250,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: const Color.fromARGB(255, 91, 90, 90), width: 1.0),
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: DropdownSearch<String>(
+                                    popupProps: PopupProps.menu(
+                                      showSearchBox: true,
+                                      searchFieldProps: TextFieldProps(
+                                        decoration: InputDecoration(
+                                          hintText: 'Search...',
+                                          hintStyle: const TextStyle(fontSize: 12),
+                                          prefixIcon: const Icon(Icons.search, size: 18),
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(6.0),
+                                            borderSide: BorderSide(color: Colors.grey.shade300),
+                                          ),
+                                          isDense: true,
+                                        ),
+                                      ),
+                                      menuProps: MenuProps(borderRadius: BorderRadius.circular(6.0), elevation: 3),
+                                      constraints: const BoxConstraints.tightFor(height: 250), // Reduced popup height
+                                    ),
+                                    dropdownDecoratorProps: DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        iconColor: const Color.fromARGB(252, 162, 158, 158),
+                                        // labelText: "Client",
+                                        // labelStyle: TextStyle(
+                                        //   color: Colors.grey.shade600,
+                                        //   fontSize: 12,
+                                        // ),
+                                        floatingLabelStyle: TextStyle(color: Colors.blue.shade700, fontSize: 12),
+                                        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                        border: InputBorder.none,
+                                        isDense: true,
+                                      ),
+                                      baseStyle: const TextStyle(
+                                        fontSize: 12, // Smaller font size
+                                        color: Color.fromARGB(255, 138, 137, 137),
+                                      ),
+                                    ),
+                                    items: view_ledgerController.view_LedgerModel.salesCustomerList.map((customer) {
+                                      return customer.customerName;
+                                    }).toList(),
+                                    selectedItem: GST_ledgerController.gst_LedgerModel.selectedsalescustomer.value,
+                                    onChanged: (value) {
+                                      if (value != null) {
+                                        GST_ledgerController.gst_LedgerModel.selectedsalescustomer.value = value;
+                                        final customerList = view_ledgerController.view_LedgerModel.salesCustomerList;
+
+                                        // Find the index of the selected customer
+                                        final index = customerList.indexWhere((customer) => customer.customerName == value);
+                                        GST_ledgerController.gst_LedgerModel.selectedcustomerID.value = view_ledgerController.view_LedgerModel.salesCustomerList[index].customerId;
+                                        if (kDebugMode) {
+                                          print('Selected customer ID: ${GST_ledgerController.gst_LedgerModel.selectedcustomerID.value}');
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ),
+                                Obx(
+                                  () => SizedBox(
+                                    child: GST_ledgerController.gst_LedgerModel.selectedsalescustomer.value != 'None'
+                                        ? IconButton(
+                                            onPressed: () {
+                                              GST_ledgerController.gst_LedgerModel.selectedsalescustomer.value = 'None';
+                                            },
+                                            icon: const Icon(Icons.close, color: Colors.red, size: 18),
+                                          )
+                                        : const SizedBox(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                    ],
+                  )
+                : const SizedBox(),
+          ),
+        ),
+        Obx(
+          () => SizedBox(
+            child: GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value == 'Subscription'
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 35),
+                      const Text(
+                        'Select subscription customer',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                      ),
+                      const SizedBox(height: 10),
+                      Obx(() {
+                        return SizedBox(
+                          height: 35,
+                          // width: 250,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: const Color.fromARGB(255, 91, 90, 90), width: 1.0),
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: DropdownSearch<String>(
+                                    popupProps: PopupProps.menu(
+                                      showSearchBox: true,
+                                      searchFieldProps: TextFieldProps(
+                                        decoration: InputDecoration(
+                                          hintText: 'Search...',
+                                          hintStyle: const TextStyle(fontSize: 12),
+                                          prefixIcon: const Icon(Icons.search, size: 18),
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(6.0),
+                                            borderSide: BorderSide(color: Colors.grey.shade300),
+                                          ),
+                                          isDense: true,
+                                        ),
+                                      ),
+                                      menuProps: MenuProps(borderRadius: BorderRadius.circular(6.0), elevation: 3),
+                                      constraints: const BoxConstraints.tightFor(height: 250), // Reduced popup height
+                                    ),
+                                    dropdownDecoratorProps: DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        iconColor: const Color.fromARGB(252, 162, 158, 158),
+                                        // labelText: "Client",
+                                        // labelStyle: TextStyle(
+                                        //   color: Colors.grey.shade600,
+                                        //   fontSize: 12,
+                                        // ),
+                                        floatingLabelStyle: TextStyle(color: Colors.blue.shade700, fontSize: 12),
+                                        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                        border: InputBorder.none,
+                                        isDense: true,
+                                      ),
+                                      baseStyle: const TextStyle(
+                                        fontSize: 12, // Smaller font size
+                                        color: Color.fromARGB(255, 138, 137, 137),
+                                      ),
+                                    ),
+                                    items: view_ledgerController.view_LedgerModel.subCustomerList.map((customer) {
+                                      return customer.customerName;
+                                    }).toList(),
+                                    selectedItem: GST_ledgerController.gst_LedgerModel.selectedsubcustomer.value,
+                                    onChanged: (value) {
+                                      if (value != null) {
+                                        GST_ledgerController.gst_LedgerModel.selectedsubcustomer.value = value;
+                                        final customerList = view_ledgerController.view_LedgerModel.subCustomerList;
+
+                                        // Find the index of the selected customer
+                                        final index = customerList.indexWhere((customer) => customer.customerName == value);
+                                        GST_ledgerController.gst_LedgerModel.selectedcustomerID.value = view_ledgerController.view_LedgerModel.subCustomerList[index].customerId;
+
+                                        // print('Selected customer ID: ${view_LedgerController.view_LedgerModel.selectedsubcustomerID.value}');
+                                        // widget.get_GST_ledgerList();
+                                      }
+                                    },
+                                  ),
+                                ),
+                                Obx(
+                                  () => SizedBox(
+                                    child: GST_ledgerController.gst_LedgerModel.selectedsubcustomer.value != 'None'
+                                        ? IconButton(
+                                            onPressed: () {
+                                              GST_ledgerController.gst_LedgerModel.selectedsubcustomer.value = 'None';
+                                              GST_ledgerController.gst_LedgerModel.selectedcustomerID.value = 'None';
+                                              widget.get_GST_LedgerList();
+                                            },
+                                            icon: const Icon(Icons.close, color: Colors.red, size: 18),
+                                          )
+                                        : const SizedBox(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                    ],
+                  )
+                : const SizedBox(),
+          ),
+        ),
+
+        const SizedBox(height: 35),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  'Select date',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                ),
+                // const SizedBox(width: 8),
+                Obx(
+                  () => SizedBox(
+                    child: GST_ledgerController.gst_LedgerModel.startDateController.value.text.isNotEmpty || GST_ledgerController.gst_LedgerModel.endDateController.value.text.isNotEmpty
+                        ? TextButton(
+                            onPressed: () {
+                              GST_ledgerController.gst_LedgerModel.selectedMonth.value = 'None';
+                              GST_ledgerController.gst_LedgerModel.startDateController.value.clear();
+                              GST_ledgerController.gst_LedgerModel.endDateController.value.clear();
+                              GST_ledgerController.gst_LedgerModel.selectedMonth.refresh();
+                              GST_ledgerController.gst_LedgerModel.startDateController.refresh();
+                              GST_ledgerController.gst_LedgerModel.endDateController.refresh();
+                              // widget.get_GST_ledgerList();
+                            },
+                            child: const Text('Clear', style: TextStyle(fontSize: Primary_font_size.Text7)),
+                          )
+                        : const SizedBox(),
+                  ),
+                ),
+                const Spacer(),
+                Obx(
+                  () {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      width: 100, // Adjust width as needed
+                      height: 30, // Adjust height as needed
+                      child: DropdownButtonFormField<String>(
+                        menuMaxHeight: 300,
+                        value: GST_ledgerController.gst_LedgerModel.selectedMonth.value,
+                        items: ['None', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((String value) {
+                          return DropdownMenuItem<String>(value: value, child: Text(value));
+                        }).toList(),
+                        onChanged: (value) {
+                          GST_ledgerController.gst_LedgerModel.selectedMonth.value = value!;
+                          if (value != 'None') {
+                            final monthIndex = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].indexOf(value) + 1;
+
+                            final now = DateTime.now();
+                            final year = now.year;
+                            final firstDay = DateTime(year, monthIndex, 1);
+                            final lastDay = monthIndex < 12 ? DateTime(year, monthIndex + 1, 0) : DateTime(year + 1, 1, 0);
+
+                            String formatDate(DateTime date) {
+                              return "${date.year.toString().padLeft(4, '0')}-"
+                                  "${date.month.toString().padLeft(2, '0')}-"
+                                  "${date.day.toString().padLeft(2, '0')}";
+                            }
+
+                            GST_ledgerController.gst_LedgerModel.startDateController.value.text = formatDate(firstDay);
+                            GST_ledgerController.gst_LedgerModel.endDateController.value.text = formatDate(lastDay);
+                            GST_ledgerController.gst_LedgerModel.startDateController.refresh();
+                            GST_ledgerController.gst_LedgerModel.endDateController.refresh();
+                            // widget.get_GST_ledgerList();
+                          } else {
+                            GST_ledgerController.gst_LedgerModel.startDateController.value.clear();
+                            GST_ledgerController.gst_LedgerModel.endDateController.value.clear();
+                            GST_ledgerController.gst_LedgerModel.startDateController.refresh();
+                            GST_ledgerController.gst_LedgerModel.endDateController.refresh();
+                            // widget.get_GST_ledgerList();
+                          }
+                        },
+                        decoration: const InputDecoration(
+                          isDense: true,
+                          contentPadding: EdgeInsets.symmetric(vertical: 8),
+                          border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                        ),
+                        style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 154, 152, 152)),
+                        dropdownColor: Primary_colors.Dark,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 15),
+            Obx(
+              () => Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 35,
+                      child: TextFormField(
+                        style: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                        controller: GST_ledgerController.gst_LedgerModel.startDateController.value,
+                        readOnly: true,
+                        onTap: () async {
+                          await widget.selectfilterDate(context, GST_ledgerController.gst_LedgerModel.startDateController.value);
+                          // await widget.get_GST_ledgerList();
+                          GST_ledgerController.gst_LedgerModel.startDateController.refresh();
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'From',
+                          labelStyle: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                          suffixIcon: const Icon(Icons.calendar_today, size: 20, color: Color.fromARGB(255, 85, 84, 84)),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: SizedBox(
+                      height: 35,
+                      child: TextFormField(
+                        style: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                        controller: GST_ledgerController.gst_LedgerModel.endDateController.value,
+                        readOnly: true,
+                        onTap: () async {
+                          await widget.selectfilterDate(context, GST_ledgerController.gst_LedgerModel.endDateController.value);
+                          GST_ledgerController.gst_LedgerModel.endDateController.refresh();
+                          // await widget.get_GST_ledgerList();
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'To',
+                          labelStyle: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                          suffixIcon: const Icon(Icons.calendar_today, size: 20, color: Color.fromARGB(255, 85, 84, 84)),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 35),
+          ],
+        ),
+        const Spacer(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            OutlinedButton(
+              onPressed: () {
+                widget.resetgst_LedgerFilters();
+                widget.get_GST_LedgerList();
+                Navigator.pop(context);
+              },
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Primary_colors.Color3),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              child: const Text('RESET', style: TextStyle(color: Primary_colors.Color3)),
+            ),
+            const SizedBox(width: 10),
+            ElevatedButton(
+              onPressed: () async {
+                widget.assigngst_LedgerFilters();
+                await widget.get_GST_LedgerList();
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Primary_colors.Color3,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'APPLY',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGST_ledgertypeFilterChip(String label) {
+    final isSelected = GST_ledgerController.gst_LedgerModel.selectedGSTtype.value == label;
+
+    return ChoiceChip(
+      label: Text(
+        label,
+        style: TextStyle(color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+      ),
+      selected: isSelected,
+      onSelected: (_) {
+        GST_ledgerController.gst_LedgerModel.selectedGSTtype.value = label;
+        // widget.get_GST_ledgerList();
+      },
+      backgroundColor: Primary_colors.Dark,
+      selectedColor: Primary_colors.Dark,
+      labelStyle: TextStyle(color: isSelected ? Primary_colors.Color3 : Colors.black),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: BorderSide(color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84)),
+      ),
     );
   }
 }

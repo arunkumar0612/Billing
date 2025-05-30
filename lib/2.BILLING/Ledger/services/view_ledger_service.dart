@@ -156,21 +156,13 @@ mixin View_LedgerService {
     }
   }
 
-  bool isSubscription_Client() {
-    return view_LedgerController.view_LedgerModel.selectedsubcustomer.value != 'None' && view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Subscription' ? true : false;
-  }
+  // bool isGSTsubscriptionData() {
+  //   return view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Subscription' ? true : false;
+  // }
 
-  bool isSales_Client() {
-    return view_LedgerController.view_LedgerModel.selectedsalescustomer.value != 'None' && view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Sales' ? true : false;
-  }
-
-  bool isGSTsubscriptionData() {
-    return view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Subscription' ? true : false;
-  }
-
-  bool isGSTsalesData() {
-    return view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Sales' ? true : false;
-  }
+  // bool isGSTsalesData() {
+  //   return view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Sales' ? true : false;
+  // }
 
   // void showCustomDateRangePicker() {
   //   view_LedgerController.view_LedgerModel.showCustomDateRange.value = true;
@@ -787,19 +779,19 @@ mixin View_LedgerService {
     );
   }
 
-  void resetFilters() {
-    view_LedgerController.view_LedgerModel.startDateController.value.clear();
-    view_LedgerController.view_LedgerModel.endDateController.value.clear();
-    view_LedgerController.view_LedgerModel.selectedMonth.value = 'None';
-    view_LedgerController.view_LedgerModel.selectedinvoiceType.value = 'Show All';
-    view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value = 'Consolidate';
-    view_LedgerController.view_LedgerModel.selectedPaymenttype.value = 'Show All';
-    view_LedgerController.view_LedgerModel.selectedsalescustomerID.value = 'None';
-    view_LedgerController.view_LedgerModel.selectedsalescustomer.value = 'None';
-    view_LedgerController.view_LedgerModel.selectedsubcustomerID.value = 'None';
-    view_LedgerController.view_LedgerModel.selectedsubcustomer.value = 'None';
-    account_LedgerController.account_LedgerModel.account_Ledger_list.value = account_LedgerController.account_LedgerModel.Secondaryaccount_Ledger_list.value;
-    gst_LedgerController.gst_LedgerModel.gst_Ledger_list.value = gst_LedgerController.gst_LedgerModel.ParentGST_Ledgers.value;
-    tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value = tds_ledgerController.tds_LedgerModel.ParentTDS_Ledgers.value;
-  }
+  // void resetFilters() {
+  //   view_LedgerController.view_LedgerModel.startDateController.value.clear();
+  //   view_LedgerController.view_LedgerModel.endDateController.value.clear();
+  //   view_LedgerController.view_LedgerModel.selectedMonth.value = 'None';
+  //   view_LedgerController.view_LedgerModel.selectedinvoiceType.value = 'Show All';
+  //   view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value = 'Consolidate';
+  //   view_LedgerController.view_LedgerModel.selectedPaymenttype.value = 'Show All';
+  //   view_LedgerController.view_LedgerModel.selectedsalescustomerID.value = 'None';
+  //   view_LedgerController.view_LedgerModel.selectedsalescustomer.value = 'None';
+  //   view_LedgerController.view_LedgerModel.selectedsubcustomerID.value = 'None';
+  //   view_LedgerController.view_LedgerModel.selectedsubcustomer.value = 'None';
+  //   account_LedgerController.account_LedgerModel.account_Ledger_list.value = account_LedgerController.account_LedgerModel.Secondaryaccount_Ledger_list.value;
+  //   gst_LedgerController.gst_LedgerModel.gst_Ledger_list.value = gst_LedgerController.gst_LedgerModel.ParentGST_Ledgers.value;
+  //   tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value = tds_ledgerController.tds_LedgerModel.ParentTDS_Ledgers.value;
+  // }
 }

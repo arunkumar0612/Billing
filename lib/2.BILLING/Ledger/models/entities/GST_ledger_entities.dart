@@ -1,5 +1,7 @@
 // import 'dart:convert';
 
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 class GSTSummaryModel {
   final List<GSTEntryModel> gstList;
   final double inputGst;
@@ -222,8 +224,37 @@ class PaymentDetail {
 //       'fromDate': fromDate,
 //       'toDate': toDate,
 //       'gstlist':  summaryDetails.toJson(),
-    
+
 //   };
 // }
 // }
 
+class GSTLedgerSelectedFilter {
+  RxString GSTtype;
+  RxString invoicetype;
+  RxString selectedsalescustomername;
+  RxString selectedcustomerid;
+  RxString selectedsubscriptioncustomername;
+
+  RxString fromdate;
+  RxString todate;
+  RxString selectedmonth;
+
+  GSTLedgerSelectedFilter(
+      {String GSTtype = 'Consolidate',
+      String invoicetype = 'Show All',
+      String selectedsalescustomername = 'None',
+      String selectedcustomerid = '',
+      String selectedsubscriptioncustomername = 'None',
+      String fromdate = '',
+      String todate = '',
+      String selectedmonth = ''})
+      : GSTtype = RxString(GSTtype),
+        invoicetype = RxString(invoicetype),
+        selectedsalescustomername = RxString(selectedsalescustomername),
+        selectedcustomerid = RxString(selectedcustomerid),
+        selectedsubscriptioncustomername = RxString(selectedsubscriptioncustomername),
+        fromdate = RxString(fromdate),
+        todate = RxString(todate),
+        selectedmonth = RxString(selectedmonth);
+}

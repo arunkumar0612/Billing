@@ -60,6 +60,9 @@ class _accountLedgerState extends State<AccountLedger> {
     await Future.delayed(const Duration(milliseconds: 100));
     loader.start(context); // Now safe to use
     await widget.get_Account_LedgerList();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      widget.resetaccount_LedgerFilters();
+    });
     await Future.delayed(const Duration(seconds: 0));
     loader.stop();
   }

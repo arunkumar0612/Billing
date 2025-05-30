@@ -22,6 +22,7 @@ class SubscriptionInvoice {
   final String pendingPayments;
   final String planName;
   final String voucher_number;
+  final int voucher_id;
   int? overdueDays;
   List<OverdueHistory>? overdueHistory;
 
@@ -49,6 +50,7 @@ class SubscriptionInvoice {
     required this.pendingPayments,
     required this.planName,
     required this.voucher_number,
+    required this.voucher_id,
     this.overdueDays,
     this.overdueHistory,
   });
@@ -78,6 +80,7 @@ class SubscriptionInvoice {
       pendingPayments: json['pendingPayments'],
       planName: json['plan_name'],
       voucher_number: json['voucher_number'] ?? "",
+      voucher_id: json['voucher_id'],
       overdueDays: json['Overdue_days'],
       overdueHistory: json['Overdue_history'] != null ? List<OverdueHistory>.from(json['Overdue_history'].map((e) => OverdueHistory.fromJson(e))) : null,
     );
@@ -108,6 +111,7 @@ class SubscriptionInvoice {
       'pendingPayments': pendingPayments,
       'plan_name': planName,
       'voucher_number': voucher_number,
+      'voucher_id': voucher_id,
       'Overdue_days': overdueDays,
       'Overdue_history': overdueHistory?.map((e) => e.toJson()).toList(),
     };

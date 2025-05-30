@@ -362,9 +362,11 @@ class _VoucherState extends State<Voucher> {
                                     children: [
                                       Row(
                                         children: [
-                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount != voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
+                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount !=
+                                              voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
                                             _buildRadioTile(value: 'Partial', label: 'Partial', color: Colors.amber, index: index),
-                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount != voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
+                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount !=
+                                              voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
                                             const SizedBox(width: 12),
                                           _buildRadioTile(value: 'Full', label: 'Full', color: Colors.green, index: index),
                                         ],
@@ -397,7 +399,8 @@ class _VoucherState extends State<Voucher> {
                                           style: const TextStyle(color: Colors.amber, fontSize: 10),
                                           "    can clear upto  -  Rs.${((voucherController.voucherModel.voucher_list[index].pendingAmount - 1) - (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 ? voucherController.voucherModel.voucher_list[index].tdsCalculationAmount : 0.0)).roundToDouble()}",
                                         ),
-                                      if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full") const SizedBox(height: 16),
+                                      if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full")
+                                        const SizedBox(height: 16),
                                       if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full")
                                         _buildDropdownField(
                                           label: 'TDS Status',
@@ -731,7 +734,8 @@ class _VoucherState extends State<Voucher> {
                                           elevation: 2,
                                         ),
                                         onPressed: () async {
-                                          bool type = voucherController.voucherModel.voucher_list[index].pendingAmount == double.parse(voucherController.voucherModel.amountCleared_controller.value.text);
+                                          bool type =
+                                              voucherController.voucherModel.voucher_list[index].pendingAmount == double.parse(voucherController.voucherModel.amountCleared_controller.value.text);
                                           await Future.delayed(const Duration(milliseconds: 300));
 
                                           // Generate PDF bytes using original code (unchanged)
@@ -1367,7 +1371,8 @@ class _VoucherState extends State<Voucher> {
                                           PdfPageFormat.a4,
                                           Clear_ClubVoucher(
                                               date: DateTime.parse(voucherController.voucherModel.closedDate.value),
-                                              totalPaidAmount: voucherController.voucherModel.is_Deducted.value ? selectedVouchers.totalPendingAmount_withTDS : selectedVouchers.totalPendingAmount_withoutTDS,
+                                              totalPaidAmount:
+                                                  voucherController.voucherModel.is_Deducted.value ? selectedVouchers.totalPendingAmount_withTDS : selectedVouchers.totalPendingAmount_withoutTDS,
                                               tdsStatus: voucherController.voucherModel.is_Deducted.value,
                                               paymentStatus: 'complete',
                                               feedback: voucherController.voucherModel.feedback_controller.value.text,
@@ -2601,13 +2606,13 @@ class _VoucherState extends State<Voucher> {
                                                                   controller: voucherController.voucherModel.extendDueDateControllers[index],
                                                                   readOnly: true,
                                                                   onTap: () async {
-                                                                    await widget.selectfilterDate(context, voucherController.voucherModel.extendDueDateControllers[index]);
+                                                                    await widget.select_extendedDate(context, voucherController.voucherModel.extendDueDateControllers[index]);
                                                                     widget.isExtendButton_visibile(index);
                                                                   },
                                                                   decoration: InputDecoration(
                                                                     filled: true,
                                                                     fillColor: Primary_colors.Dark,
-                                                                    labelText: 'Extand Due Date',
+                                                                    labelText: 'Extend Due Date',
                                                                     labelStyle: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
                                                                     suffixIcon: const Icon(Icons.calendar_today, size: 20, color: Color.fromARGB(255, 85, 84, 84)),
                                                                     contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),

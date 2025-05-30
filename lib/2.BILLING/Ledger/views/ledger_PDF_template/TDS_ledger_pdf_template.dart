@@ -54,12 +54,13 @@ class TDSledger {
 
   Future<Uint8List> buildPdf(PdfPageFormat pageFormat) async {
     // Create a PDF document.
+    final fontRegular = pw.Font.ttf(await rootBundle.load('assets/fonts/roboto.ttf'));
+    final fontBold = pw.Font.ttf(await rootBundle.load('assets/fonts/Roboto-Bold.ttf'));
+
     final doc = pw.Document(
       theme: pw.ThemeData.withFont(
-        base: pw.Font.helvetica(),
-        bold: pw.Font.helveticaBold(),
-        italic: pw.Font.helveticaOblique(),
-        boldItalic: pw.Font.helveticaBoldOblique(),
+        base: fontRegular,
+        bold: fontBold,
       ),
     );
 

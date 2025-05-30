@@ -96,6 +96,9 @@ flutter:
     - assets/fonts/
     - assets/fonts/Helvetica.ttf
     - assets/fonts/Helvetica-Bold.ttf
+    - assets/fonts/roboto.ttf
+    - assets/fonts/Notosans.ttf
+    - assets/fonts/Roboto-Bold.ttf
   fonts:
     - family: Poppins
       fonts:

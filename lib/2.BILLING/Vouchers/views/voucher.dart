@@ -628,9 +628,6 @@ class _VoucherState extends State<Voucher> {
                                                 paymentmode: voucherController.voucherModel.Selectedpaymentmode.value,
                                               ));
 
-                                          await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete', pdfBytes);
-
-                                          // Generate unique filename with timestamp
                                           final timestamp = DateTime.now().millisecondsSinceEpoch;
                                           final filename = 'Receipt$timestamp.pdf';
 
@@ -668,6 +665,10 @@ class _VoucherState extends State<Voucher> {
                                               backgroundColor: Colors.green,
                                             ),
                                           );
+
+                                          await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete', pdfBytes);
+
+                                          // Generate unique filename with timestamp
                                         },
                                         child: const Text(
                                           'CLEAR VOUCHER',

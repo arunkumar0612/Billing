@@ -26,10 +26,13 @@ import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entitie
 Future<Uint8List> ClubVoucherReceiptPDf(PdfPageFormat pageFormat, Clear_ClubVoucher club_voucher) async {
   final receiptData = VoucherReceipt(data: club_voucher);
 
+  final fontRegular = pw.Font.ttf(await rootBundle.load('assets/fonts/roboto.ttf'));
+  final fontBold = pw.Font.ttf(await rootBundle.load('assets/fonts/Roboto-Bold.ttf'));
+
   final pdf = pw.Document(
     theme: pw.ThemeData.withFont(
-      base: pw.Font.helvetica(),
-      bold: pw.Font.helveticaBold(),
+      base: fontRegular,
+      bold: fontBold,
     ),
   );
 
@@ -240,7 +243,7 @@ pw.Widget _buildReceiptent(pw.Context context, VoucherReceipt receiptData) {
 pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
   final List<pw.TextSpan> remarks = [
     pw.TextSpan(
-      style: pw.TextStyle(fontSize: 11),
+      style: pw.TextStyle(fontSize: 10),
       children: [
         const pw.TextSpan(text: 'Against invoices '),
         const pw.TextSpan(text: '[ '), // Normal brackets (not italic)
@@ -249,12 +252,12 @@ pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
           style: pw.TextStyle(fontStyle: pw.FontStyle.italic), // only this is italic
         ),
         const pw.TextSpan(text: ' ]'), // Closing bracket, normal text
-        pw.TextSpan(text: ', total amount: Rs.${_formatCurrency(receiptData.data.selectedInvoiceGroup.totalPendingAmount_withTDS)}. '),
+        pw.TextSpan(text: ' total amount: Rs.${_formatCurrency(receiptData.data.selectedInvoiceGroup.totalPendingAmount_withTDS)}. '),
         if (receiptData.data.tdsStatus) pw.TextSpan(text: ' Adjusted amount: Rs.${_formatCurrency(receiptData.data.selectedInvoiceGroup.totalPendingAmount_withoutTDS)}.'),
       ],
     ),
     pw.TextSpan(
-      style: pw.TextStyle(fontSize: 11),
+      style: pw.TextStyle(fontSize: 10),
       children: [
         if (receiptData.data.tdsStatus)
           pw.TextSpan(
@@ -266,7 +269,7 @@ pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
               ),
               pw.TextSpan(text: ') adjusted amount: Rs.${_formatCurrency(receiptData.data.selectedInvoiceGroup.totalTDS)}.\n'),
               pw.TextSpan(
-                text: 'Narration: Auto generated from Voucher Numbers: [${receiptData.data.voucherNumbers.join(', ')}]',
+                text: 'Narration: Auto generated from Voucher Numbers: [${receiptData.data.voucherNumbers.join(', ')}].',
                 style: pw.TextStyle(fontStyle: pw.FontStyle.italic),
               ),
             ],
@@ -276,7 +279,7 @@ pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
             children: [
               const pw.TextSpan(text: 'No TDS has been deducted for this transaction.\n'),
               pw.TextSpan(
-                text: 'Narration: Auto generated from Voucher Numbers: [${receiptData.data.voucherNumbers.join(', ')}]',
+                text: 'Narration: Auto generated from Voucher Numbers: [${receiptData.data.voucherNumbers.join(', ')}].',
                 style: pw.TextStyle(fontStyle: pw.FontStyle.italic),
               ),
             ],
@@ -291,8 +294,8 @@ pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
       children: [
         pw.Center(
           child: pw.Text(
-            'Payment Confirmation Receipt',
-            style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
+            'PAYMENT CONFIRMATION RECEIPT',
+            style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold),
           ),
         ),
         pw.SizedBox(height: 20),
@@ -305,11 +308,11 @@ pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
             1: pw.FlexColumnWidth(5),
           },
           children: [
-            _buildTableRow('Received from:', receiptData.data.clientAddressName),
-            _buildTableRow('Amount:', 'Rs.${_formatCurrency(receiptData.data.totalPaidAmount)}'),
-            _buildTableRow('Date of Payment:', _formatDate(receiptData.data.date)),
-            _buildTableRow('Mode of Payment:', receiptData.data.selectedPaymentMode),
-            _buildTableRow('Transaction ID:', receiptData.data.transactionDetails),
+            _buildTableRow('Received from', receiptData.data.clientAddressName),
+            _buildTableRow('Amount', 'Rs.${_formatCurrency(receiptData.data.totalPaidAmount)}'),
+            _buildTableRow('Date of Payment', _formatDate(receiptData.data.date)),
+            _buildTableRow('Mode of Payment', receiptData.data.selectedPaymentMode),
+            _buildTableRow('Transaction Reference', receiptData.data.transactionDetails),
           ],
         ),
 
@@ -335,7 +338,7 @@ pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
                       width: 20, // fixed width for numbers
                       child: pw.Text(
                         '${index + 1}.',
-                        style: pw.TextStyle(fontSize: 11),
+                        style: pw.TextStyle(fontSize: 10),
                       ),
                     ),
                     // Text
@@ -378,9 +381,9 @@ pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
 pw.TableRow _buildTableRow(String label, String value) {
   return pw.TableRow(
     children: [
-      pw.Container(
+      pw.Padding(
         padding: const pw.EdgeInsets.all(8),
-        color: PdfColors.grey200,
+        // color: PdfColors.grey200,
         child: pw.Text(label, style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 11)),
       ),
       pw.Padding(

@@ -24,10 +24,13 @@ import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entitie
 Future<Uint8List> ReceiptPDFtemplate(PdfPageFormat pageFormat, ClearVoucher clear_voucher) async {
   final receiptData = VoucherReceipt(data: clear_voucher);
 
+  final fontRegular = pw.Font.ttf(await rootBundle.load('assets/fonts/roboto.ttf'));
+  final fontBold = pw.Font.ttf(await rootBundle.load('assets/fonts/Roboto-Bold.ttf'));
+
   final pdf = pw.Document(
     theme: pw.ThemeData.withFont(
-      base: pw.Font.helvetica(),
-      bold: pw.Font.helveticaBold(),
+      base: fontRegular,
+      bold: fontBold,
     ),
   );
 
@@ -129,8 +132,6 @@ pw.Widget _buildHeader(
 
 pw.Widget _buildFooter(pw.Context context) {
   final isNotLastPage = context.pageNumber != context.pagesCount;
-  // final now = DateTime.now();
-  // final formattedDate = '${now.day.toString().padLeft(2, '0')}-${now.month.toString().padLeft(2, '0')}-${now.year}';
 
   return pw.Row(
     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -236,12 +237,50 @@ pw.Widget _buildReceiptent(pw.Context context, VoucherReceipt receiptData) {
 // }
 
 pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
-  final tdsAmountFormatted = NumberFormat.currency(locale: 'en_IN').format(receiptData.data.grossAmount - receiptData.data.tds);
+  final List<pw.TextSpan> remarks = [
+    pw.TextSpan(
+      style: pw.TextStyle(fontSize: 10),
+      children: [
+        const pw.TextSpan(text: 'Against invoice Number '), // Normal brackets (not italic)
+        pw.TextSpan(
+          text: '${receiptData.data.invoiceNumber} dated on ${_formatDate(receiptData.data.date)},',
+          style: pw.TextStyle(fontStyle: pw.FontStyle.italic), // only this is italic
+        ),
 
-  List<String> remarks = [
-    'Against invoice ${receiptData.data.invoiceNumber} dated ${receiptData.data.date}, the total amount is Rs.${receiptData.data.grossAmount}. '
-        '${receiptData.data.tdsStatus ? ' Adjusted amount is Rs.${tdsAmountFormatted}' : ''}.',
-    '${receiptData.data.tdsStatus ? 'The amount adjusted as TDS is Rs.${receiptData.data.tds}.' : 'No TDS has been deducted for this transaction.'}',
+        pw.TextSpan(text: ' total amount: Rs.${_formatCurrency(receiptData.data.grossAmount)}. '),
+        if (receiptData.data.tdsStatus) pw.TextSpan(text: ' Adjusted amount: Rs.${_formatCurrency(receiptData.data.grossAmount - receiptData.data.tds)}.'),
+      ],
+    ),
+    pw.TextSpan(
+      style: pw.TextStyle(fontSize: 10),
+      children: [
+        if (receiptData.data.tdsStatus)
+          pw.TextSpan(
+            children: [
+              const pw.TextSpan(text: 'Against TDS ('),
+              pw.TextSpan(
+                text: 'PAN:ABECS0625B dated on ${_formatDate(receiptData.data.date)}',
+                style: pw.TextStyle(fontStyle: pw.FontStyle.italic),
+              ),
+              pw.TextSpan(text: ') adjusted amount: Rs.${_formatCurrency(receiptData.data.tds)}.\n'),
+              pw.TextSpan(
+                text: 'Narration: Auto generated from Voucher Number: ${receiptData.data.voucherNumber}.',
+                style: pw.TextStyle(fontStyle: pw.FontStyle.italic),
+              ),
+            ],
+          )
+        else
+          pw.TextSpan(
+            children: [
+              const pw.TextSpan(text: 'No TDS has been deducted for this transaction.\n'),
+              pw.TextSpan(
+                text: 'Narration: Auto generated from Voucher Number: ${receiptData.data.voucherNumber}.',
+                style: pw.TextStyle(fontStyle: pw.FontStyle.italic),
+              ),
+            ],
+          ),
+      ],
+    ),
   ];
   return pw.Padding(
     padding: const pw.EdgeInsets.only(left: 32, right: 32, top: 10),
@@ -250,8 +289,8 @@ pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
       children: [
         pw.Center(
           child: pw.Text(
-            'Payment Confirmation Receipt',
-            style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
+            'PAYMENT CONFIRMATION RECEIPT',
+            style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold),
           ),
         ),
         pw.SizedBox(height: 20),
@@ -264,11 +303,11 @@ pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
             1: pw.FlexColumnWidth(5),
           },
           children: [
-            _buildTableRow('Received from:', receiptData.data.clientAddressName),
-            _buildTableRow('Amount:', 'Rs.${receiptData.data.paidAmount.toString()}'),
-            _buildTableRow('Date of Payment:', _formatDate(receiptData.data.date)),
-            _buildTableRow('Payment Method:', receiptData.data.transactionDetails),
-            _buildTableRow('Transaction ID:', receiptData.data.transactionDetails),
+            _buildTableRow('Received from', receiptData.data.clientAddressName),
+            _buildTableRow('Amount', 'Rs.${_formatCurrency(receiptData.data.paidAmount)}'),
+            _buildTableRow('Date of Payment', _formatDate(receiptData.data.date)),
+            _buildTableRow('Payment Method', receiptData.data.paymentmode),
+            _buildTableRow('Transaction ID', receiptData.data.transactionDetails),
           ],
         ),
 
@@ -294,14 +333,13 @@ pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
                       width: 20, // fixed width for numbers
                       child: pw.Text(
                         '${index + 1}.',
-                        style: pw.TextStyle(fontSize: 11),
+                        style: pw.TextStyle(fontSize: 10),
                       ),
                     ),
                     // Text
                     pw.Expanded(
-                      child: pw.Text(
-                        remarks[index],
-                        style: pw.TextStyle(fontSize: 11),
+                      child: pw.RichText(
+                        text: remarks[index],
                       ),
                     ),
                   ],
@@ -337,15 +375,16 @@ pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
 // Helper function to build table rows
 pw.TableRow _buildTableRow(String label, String value) {
   return pw.TableRow(
+    verticalAlignment: pw.TableCellVerticalAlignment.top,
     children: [
-      pw.Container(
+      pw.Padding(
         padding: const pw.EdgeInsets.all(8),
-        color: PdfColors.grey200,
-        child: pw.Text(label, style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 11)),
+        // color: PdfColors.grey200,
+        child: pw.Text(label, maxLines: 3, softWrap: true, style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 11)),
       ),
       pw.Padding(
         padding: const pw.EdgeInsets.all(8),
-        child: pw.Text(value),
+        child: pw.Text(value, maxLines: 3, softWrap: true, style: pw.TextStyle(fontSize: 11)),
       ),
     ],
   );

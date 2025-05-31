@@ -22,8 +22,13 @@ class TDS_LedgerController extends GetxController {
     tds_LedgerModel.tds_Ledger_list.value = TDSSummaryModel.fromJson(value.data);
     // }
     tds_LedgerModel.ParentTDS_Ledgers.value = TDSSummaryModel.fromJson(value.data);
+    initialize_StartEnd_date(tds_LedgerModel.tds_Ledger_list.value.startdate!, tds_LedgerModel.tds_Ledger_list.value.enddate!);
   }
 
+  void initialize_StartEnd_date(String startDate, String endDate) {
+    tds_LedgerModel.tds_LedgerSelectedFilter.value.fromdate.value = startDate;
+    tds_LedgerModel.tds_LedgerSelectedFilter.value.todate.value = endDate;
+  }
   // void reset_tds_LedgerClear_popup() {
   //   tds_LedgerModel.recievableAmount.value = 0.0;
   //   tds_LedgerModel.is_fullClear.value = false;

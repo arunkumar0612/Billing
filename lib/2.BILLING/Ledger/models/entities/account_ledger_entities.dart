@@ -340,7 +340,7 @@ class AccountLedgerSelectedFilter {
   RxString selectedsalescustomername;
   RxString selectedcustomerid;
   RxString selectedsubscriptioncustomername;
-  RxString paymentstatus;
+  RxString paymenttype;
   RxString fromdate;
   RxString todate;
   RxString selectedmonth;
@@ -351,7 +351,7 @@ class AccountLedgerSelectedFilter {
       String selectedsalescustomername = 'None',
       String selectedcustomerid = '',
       String selectedsubscriptioncustomername = 'None',
-      String paymentstatus = 'Show All',
+      String paymenttype = 'Show All',
       String fromdate = '',
       String todate = '',
       String selectedmonth = ''})
@@ -360,7 +360,7 @@ class AccountLedgerSelectedFilter {
         selectedsalescustomername = RxString(selectedsalescustomername),
         selectedcustomerid = RxString(selectedcustomerid),
         selectedsubscriptioncustomername = RxString(selectedsubscriptioncustomername),
-        paymentstatus = RxString(paymentstatus),
+        paymenttype = RxString(paymenttype),
         fromdate = RxString(fromdate),
         todate = RxString(todate),
         selectedmonth = RxString(selectedmonth);

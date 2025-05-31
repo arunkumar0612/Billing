@@ -19,8 +19,13 @@ class GST_LedgerController extends GetxController {
     gst_LedgerModel.gst_Ledger_list.value = GSTSummaryModel.fromJson(value.data);
     // }
     gst_LedgerModel.ParentGST_Ledgers.value = GSTSummaryModel.fromJson(value.data);
+    initialize_StartEnd_date(gst_LedgerModel.gst_Ledger_list.value.startdate!, gst_LedgerModel.gst_Ledger_list.value.enddate!);
   }
 
+  void initialize_StartEnd_date(String startDate, String endDate) {
+    gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value = startDate;
+    gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value = endDate;
+  }
   // void reset_gst_LedgerClear_popup() {
   //   gst_LedgerModel.recievableAmount.value = 0.0;
   //   gst_LedgerModel.is_fullClear.value = false;

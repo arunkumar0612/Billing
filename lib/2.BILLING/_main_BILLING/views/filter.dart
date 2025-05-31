@@ -44,65 +44,65 @@ class _FilterScreenState extends State<FilterScreen> {
   final List<bool> selectedClientOptions = [false, false, false, false];
 
   // Function to handle start date time selection
-  Future<void> _selectStartDateTime(BuildContext context) async {
-    DateTime initialDate = selectedStartDateTime ?? DateTime.now();
+  // Future<void> _selectStartDateTime(BuildContext context) async {
+  //   DateTime initialDate = selectedStartDateTime ?? DateTime.now();
 
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: initialDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
+  //   final DateTime? pickedDate = await showDatePicker(
+  //     context: context,
+  //     initialDate: initialDate,
+  //     firstDate: DateTime(2000),
+  //     lastDate: DateTime(2100),
+  //   );
 
-    if (pickedDate != null) {
-      final TimeOfDay? pickedTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.fromDateTime(initialDate),
-      );
-      if (pickedTime != null) {
-        setState(() {
-          selectedStartDateTime = DateTime(
-            pickedDate.year,
-            pickedDate.month,
-            pickedDate.day,
-            pickedTime.hour,
-            pickedTime.minute,
-          );
-        });
-      }
-    }
-  }
+  //   if (pickedDate != null) {
+  //     final TimeOfDay? pickedTime = await showTimePicker(
+  //       context: context,
+  //       initialTime: TimeOfDay.fromDateTime(initialDate),
+  //     );
+  //     if (pickedTime != null) {
+  //       setState(() {
+  //         selectedStartDateTime = DateTime(
+  //           pickedDate.year,
+  //           pickedDate.month,
+  //           pickedDate.day,
+  //           pickedTime.hour,
+  //           pickedTime.minute,
+  //         );
+  //       });
+  //     }
+  //   }
+  // }
 
-  // Function to handle end date time selection
-  Future<void> _selectEndDateTime(BuildContext context) async {
-    DateTime initialDate = selectedEndDateTime ?? DateTime.now();
+  // // Function to handle end date time selection
+  // Future<void> _selectEndDateTime(BuildContext context) async {
+  //   DateTime initialDate = selectedEndDateTime ?? DateTime.now();
 
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: initialDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
+  //   final DateTime? pickedDate = await showDatePicker(
+  //     context: context,
+  //     initialDate: initialDate,
+  //     firstDate: DateTime(2000),
+  //     lastDate: DateTime(2100),
+  //   );
 
-    if (pickedDate != null) {
-      final TimeOfDay? pickedTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.fromDateTime(initialDate),
-      );
+  //   if (pickedDate != null) {
+  //     final TimeOfDay? pickedTime = await showTimePicker(
+  //       context: context,
+  //       initialTime: TimeOfDay.fromDateTime(initialDate),
+  //     );
 
-      if (pickedTime != null) {
-        setState(() {
-          selectedEndDateTime = DateTime(
-            pickedDate.year,
-            pickedDate.month,
-            pickedDate.day,
-            pickedTime.hour,
-            pickedTime.minute,
-          );
-        });
-      }
-    }
-  }
+  //     if (pickedTime != null) {
+  //       setState(() {
+  //         selectedEndDateTime = DateTime(
+  //           pickedDate.year,
+  //           pickedDate.month,
+  //           pickedDate.day,
+  //           pickedTime.hour,
+  //           pickedTime.minute,
+  //         );
+  //       });
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -461,30 +461,30 @@ class _FilterScreenState extends State<FilterScreen> {
   }
 }
 
-Widget _buildSidebarItem({
-  required String title,
-  required bool isSelected,
-  required VoidCallback onTap,
-}) {
-  return GestureDetector(
-    onTap: onTap,
-    child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-      decoration: BoxDecoration(
-        color: isSelected ? Colors.blue : Colors.transparent,
-        borderRadius: const BorderRadius.horizontal(right: Radius.circular(10)),
-      ),
-      child: Text(
-        title,
-        style: TextStyle(
-          color: isSelected ? Colors.white : Primary_colors.Color1,
-          fontWeight: FontWeight.bold,
-          fontSize: Primary_font_size.Text10,
-        ),
-      ),
-    ),
-  );
-}
+// Widget _buildSidebarItem({
+//   required String title,
+//   required bool isSelected,
+//   required VoidCallback onTap,
+// }) {
+//   return GestureDetector(
+//     onTap: onTap,
+//     child: Container(
+//       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+//       decoration: BoxDecoration(
+//         color: isSelected ? Colors.blue : Colors.transparent,
+//         borderRadius: const BorderRadius.horizontal(right: Radius.circular(10)),
+//       ),
+//       child: Text(
+//         title,
+//         style: TextStyle(
+//           color: isSelected ? Colors.white : Primary_colors.Color1,
+//           fontWeight: FontWeight.bold,
+//           fontSize: Primary_font_size.Text10,
+//         ),
+//       ),
+//     ),
+//   );
+// }
 
   // Widget _buildDateFilterList() {
   //   return Column(

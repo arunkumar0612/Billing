@@ -17,9 +17,4 @@ class View_LedgerController extends GetxController {
   //   view_LedgerModel.feedback_controller.value.clear();
   //   view_LedgerModel.closedDateController.text = view_LedgerModel.closedDate.value;
   // }
-
-  void initialize_StartEnd_date(String startDate, String endDate) {
-    view_LedgerModel.startDateController.value.text = startDate;
-    view_LedgerModel.endDateController.value.text = endDate;
-  }
 }

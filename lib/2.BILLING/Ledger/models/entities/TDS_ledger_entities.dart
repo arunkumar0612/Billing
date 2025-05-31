@@ -1,3 +1,5 @@
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 class TDSSummaryModel {
   final List<TDSEntryModel> tdsList;
   final double totalTds;
@@ -193,6 +195,35 @@ class TransactionDetail {
   }
 }
 
+class TDSLedgerSelectedFilter {
+  RxString TDStype;
+  RxString invoicetype;
+  RxString selectedsalescustomername;
+  RxString selectedcustomerid;
+  RxString selectedsubscriptioncustomername;
+
+  RxString fromdate;
+  RxString todate;
+  RxString selectedmonth;
+
+  TDSLedgerSelectedFilter(
+      {String TDStype = 'Show All',
+      String invoicetype = 'Show All',
+      String selectedsalescustomername = 'None',
+      String selectedcustomerid = '',
+      String selectedsubscriptioncustomername = 'None',
+      String fromdate = '',
+      String todate = '',
+      String selectedmonth = ''})
+      : TDStype = RxString(TDStype),
+        invoicetype = RxString(invoicetype),
+        selectedsalescustomername = RxString(selectedsalescustomername),
+        selectedcustomerid = RxString(selectedcustomerid),
+        selectedsubscriptioncustomername = RxString(selectedsubscriptioncustomername),
+        fromdate = RxString(fromdate),
+        todate = RxString(todate),
+        selectedmonth = RxString(selectedmonth);
+}
 // class PaymentDetail {
 //   final DateTime date;
 //   final double amount;

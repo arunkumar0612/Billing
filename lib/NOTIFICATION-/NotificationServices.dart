@@ -61,16 +61,16 @@ mixin BellIconFunction {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: MouseRegion(
-                                cursor: SystemMouseCursors.click,
-                                child: GestureDetector(
-                                  onTap: () => Navigator.of(context).pop(),
-                                  child: const Icon(Icons.close, color: Colors.red),
-                                ),
-                              ),
-                            ),
+                            // Align(
+                            //   alignment: Alignment.topRight,
+                            //   child: MouseRegion(
+                            //     cursor: SystemMouseCursors.click,
+                            //     child: GestureDetector(
+                            //       onTap: () => () {},
+                            //       child: const Icon(Icons.close, color: Colors.red),
+                            //     ),
+                            //   ),
+                            // ),
                             const SizedBox(height: 8),
                             Obx(() => notificationController.notificationModel.notifications.isEmpty
                                 ? const Text(

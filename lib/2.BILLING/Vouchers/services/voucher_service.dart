@@ -409,7 +409,7 @@ mixin VoucherService {
 
       Clear_ClubVoucher voucherdata = Clear_ClubVoucher.fromJson(main_map);
       String encodedData = json.encode(voucherdata.toJson());
-      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, encodedData, file, API.clearClubVoucher);
+      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, encodedData, [file!], API.clearClubVoucher);
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
@@ -457,7 +457,7 @@ mixin VoucherService {
     ClearVoucher voucherdata = ClearVoucher.fromJson(mapData);
 
     String encodedData = json.encode(voucherdata.toJson());
-    Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, encodedData, file, API.clearVoucher);
+    Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, encodedData, file != null ? [file] : null, API.clearVoucher);
     if (response['statusCode'] == 200) {
       CMDmResponse value = CMDmResponse.fromJson(response);
       if (value.code) {
@@ -636,5 +636,28 @@ mixin VoucherService {
     );
     voucherController.voucherModel.selectAll.value = false;
     voucherController.voucherModel.showDeleteButton.value = false;
+  }
+
+  void assignvoucherFilters() {
+    voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value = voucherController.voucherModel.selectedvouchertype.value;
+    voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value = voucherController.voucherModel.selectedInvoiceType.value;
+    voucherController.voucherModel.voucherSelectedFilter.value.selectedsalescustomername.value = voucherController.voucherModel.selectedsalescustomer.value;
+    voucherController.voucherModel.voucherSelectedFilter.value.selectedsubscriptioncustomername.value = voucherController.voucherModel.selectedsubcustomer.value;
+    voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value = voucherController.voucherModel.selectedcustomerID.value;
+    voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value = voucherController.voucherModel.selectedpaymentStatus.value;
+    voucherController.voucherModel.voucherSelectedFilter.value.fromdate.value = voucherController.voucherModel.startDateController.value.text;
+    voucherController.voucherModel.voucherSelectedFilter.value.todate.value = voucherController.voucherModel.endDateController.value.text;
+  }
+
+  void reassignvoucherFilters() {
+    voucherController.voucherModel.selectedvouchertype.value = voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value;
+    voucherController.voucherModel.selectedInvoiceType.value = voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value;
+    voucherController.voucherModel.selectedsalescustomer.value = voucherController.voucherModel.voucherSelectedFilter.value.selectedsalescustomername.value;
+    voucherController.voucherModel.selectedsubcustomer.value = voucherController.voucherModel.voucherSelectedFilter.value.selectedsubscriptioncustomername.value;
+    voucherController.voucherModel.selectedcustomerID.value = voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value;
+    voucherController.voucherModel.selectedpaymentStatus.value = voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value;
+    voucherController.voucherModel.startDateController.value.text = voucherController.voucherModel.voucherSelectedFilter.value.fromdate.toString();
+    voucherController.voucherModel.endDateController.value.text = voucherController.voucherModel.voucherSelectedFilter.value.todate.toString();
+    voucherController.voucherModel.selectedMonth.value = voucherController.voucherModel.voucherSelectedFilter.value.selectedmonth.value.toString();
   }
 }

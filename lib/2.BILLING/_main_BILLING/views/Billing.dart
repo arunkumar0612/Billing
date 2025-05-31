@@ -1,7 +1,10 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/views/voucher.dart';
@@ -41,7 +44,6 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
   final MainBilling_Controller mainBilling_Controller = Get.find<MainBilling_Controller>();
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     mainBilling_Controller.billingModel.animationController.dispose();
   }
@@ -71,6 +73,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
     }
   }
 
+  bool isHovered = false;
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -203,41 +206,16 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                                       child: DropdownButtonFormField<String>(
                                                                         menuMaxHeight: 300,
                                                                         value: mainBilling_Controller.billingModel.dashboard_selectedMonth.value,
-                                                                        items: [
-                                                                          'None',
-                                                                          'January',
-                                                                          'February',
-                                                                          'March',
-                                                                          'April',
-                                                                          'May',
-                                                                          'June',
-                                                                          'July',
-                                                                          'August',
-                                                                          'September',
-                                                                          'October',
-                                                                          'November',
-                                                                          'December'
-                                                                        ].map((String value) {
+                                                                        items: ['None', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+                                                                            .map((String value) {
                                                                           return DropdownMenuItem<String>(value: value, child: Text(value));
                                                                         }).toList(),
                                                                         onChanged: (value) {
                                                                           mainBilling_Controller.billingModel.dashboard_selectedMonth.value = value!;
                                                                           if (value != 'None') {
-                                                                            final monthIndex = [
-                                                                                  'January',
-                                                                                  'February',
-                                                                                  'March',
-                                                                                  'April',
-                                                                                  'May',
-                                                                                  'June',
-                                                                                  'July',
-                                                                                  'August',
-                                                                                  'September',
-                                                                                  'October',
-                                                                                  'November',
-                                                                                  'December'
-                                                                                ].indexOf(value) +
-                                                                                1;
+                                                                            final monthIndex =
+                                                                                ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].indexOf(value) +
+                                                                                    1;
 
                                                                             final now = DateTime.now();
                                                                             final year = now.year;
@@ -258,6 +236,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                                             mainBilling_Controller.billingModel.dashboard_endDateController.value.clear();
                                                                             // widget.get_VoucherList();
                                                                           }
+                                                                          widget.GetDashboardData();
                                                                         },
                                                                         decoration: const InputDecoration(
                                                                           isDense: true,
@@ -284,7 +263,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                                         controller: mainBilling_Controller.billingModel.dashboard_startDateController.value,
                                                                         readOnly: true,
                                                                         onTap: () async {
-                                                                          await widget.selectfilterDate(context, mainBilling_Controller.billingModel.dashboard_startDateController.value);
+                                                                          await widget.select_previousDates(context, mainBilling_Controller.billingModel.dashboard_startDateController.value);
                                                                           widget.GetDashboardData();
                                                                           // await widget.get_VoucherList();
                                                                         },
@@ -315,7 +294,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                                         controller: mainBilling_Controller.billingModel.dashboard_endDateController.value,
                                                                         readOnly: true,
                                                                         onTap: () async {
-                                                                          await widget.selectfilterDate(context, mainBilling_Controller.billingModel.dashboard_endDateController.value);
+                                                                          await widget.select_previousDates(context, mainBilling_Controller.billingModel.dashboard_endDateController.value);
                                                                           widget.GetDashboardData();
                                                                           // await widget.get_VoucherList();
                                                                         },
@@ -355,7 +334,14 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                             child: Obx(
                                                               () => DropdownButtonFormField<String>(
                                                                 value: mainBilling_Controller.billingModel.type.value, // Use the state variable for the selected value
-                                                                items: ["Sales", "Subscription", "Purchase", "All"]
+                                                                items: [
+                                                                  "Sales",
+                                                                  "Subscription",
+                                                                  "Purchase",
+                                                                  "Receivables",
+                                                                  "Payables",
+                                                                  "All",
+                                                                ]
                                                                     .map((String value) => DropdownMenuItem<String>(
                                                                           value: value,
                                                                           child: Text(value, style: const TextStyle(fontSize: 13, color: Colors.white)),
@@ -608,8 +594,26 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                       ),
                                                     ),
                                                     MouseRegion(
-                                                      cursor: SystemMouseCursors.click,
-                                                      child: _buildIconWithLabel(image: 'assets/images/transaction.png', label: 'View Transaction', color: Primary_colors.Color5, onPressed: () {}),
+                                                      onEnter: (_) => setState(() => isHovered = true),
+                                                      onExit: (_) => setState(() => isHovered = false),
+                                                      cursor: SystemMouseCursors.forbidden,
+                                                      child: Tooltip(
+                                                        message: 'Work in progress',
+                                                        child: Opacity(
+                                                          opacity: 0.2,
+                                                          child: AbsorbPointer(
+                                                            absorbing: isHovered, // Prevent clicks when hovered
+                                                            child: _buildIconWithLabel(
+                                                              image: 'assets/images/transaction.png',
+                                                              label: 'View Transaction',
+                                                              color: Primary_colors.Color5,
+                                                              onPressed: () {
+                                                                // Optional: disable logic here too if needed
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
                                                     )
                                                   ],
                                                 ),
@@ -632,9 +636,27 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                       ),
                                                     ),
                                                     MouseRegion(
-                                                      cursor: SystemMouseCursors.click,
-                                                      child: _buildIconWithLabel(image: 'assets/images/balancesheet.png', label: 'Balance Sheet', color: Primary_colors.Color8, onPressed: () {}),
-                                                    ),
+                                                      onEnter: (_) => setState(() => isHovered = true),
+                                                      onExit: (_) => setState(() => isHovered = false),
+                                                      cursor: SystemMouseCursors.forbidden,
+                                                      child: Tooltip(
+                                                        message: 'Work in progress',
+                                                        child: Opacity(
+                                                          opacity: 0.2,
+                                                          child: AbsorbPointer(
+                                                            absorbing: isHovered, // Prevent clicks when hovered
+                                                            child: _buildIconWithLabel(
+                                                              image: 'assets/images/balancesheet.png',
+                                                              label: 'Balance Sheet',
+                                                              color: Primary_colors.Color8,
+                                                              onPressed: () {
+                                                                // Optional: disable logic here too if needed
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
                                                   ],
                                                 ),
                                               ],
@@ -735,16 +757,12 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                 scale: TweenSequence([
                                                   TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 1.2), weight: 50),
                                                   TweenSequenceItem(tween: Tween<double>(begin: 1.2, end: 1.0), weight: 50),
-                                                ])
-                                                    .animate(CurvedAnimation(parent: mainBilling_Controller.billingModel.animationController, curve: Curves.easeInOut))
-                                                    .value, // Zoom in and return to normal
+                                                ]).animate(CurvedAnimation(parent: mainBilling_Controller.billingModel.animationController, curve: Curves.easeInOut)).value, // Zoom in and return to normal
                                                 child: Opacity(
                                                   opacity: TweenSequence([
                                                     TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.5), weight: 50),
                                                     TweenSequenceItem(tween: Tween<double>(begin: 0.5, end: 1.0), weight: 50),
-                                                  ])
-                                                      .animate(CurvedAnimation(parent: mainBilling_Controller.billingModel.animationController, curve: Curves.easeInOut))
-                                                      .value, // Fade and return to normal
+                                                  ]).animate(CurvedAnimation(parent: mainBilling_Controller.billingModel.animationController, curve: Curves.easeInOut)).value, // Fade and return to normal
                                                   child: ClipOval(
                                                     child: Image.asset(
                                                       'assets/images/reload.png',
@@ -1197,11 +1215,28 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                               ),
                               Expanded(
                                 flex: 2,
-                                child: Text(
-                                  mainBilling_Controller.billingModel.subscriptionInvoiceList[index].voucher_number,
-                                  style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      MouseRegion(
+                                        cursor: SystemMouseCursors.click,
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            widget.get_VoucherDetails(context, mainBilling_Controller.billingModel.subscriptionInvoiceList[index].voucher_id);
+                                          },
+                                          child: Text(
+                                            mainBilling_Controller.billingModel.subscriptionInvoiceList[index].voucher_number,
+                                            style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
+
                               Expanded(
                                   flex: 5,
                                   child: Row(
@@ -1210,7 +1245,6 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                         width: 35,
                                         height: 35,
                                         decoration: BoxDecoration(
-                                          // ignore: deprecated_member_use
                                           color: Primary_colors.Color5.withOpacity(0.1),
                                           shape: BoxShape.circle,
                                         ),
@@ -1390,7 +1424,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                           child: Text(
                                             // textAlign: TextAlign.left,
                                             mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate != null
-                                                ? formatDate(DateTime.parse(mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate!))
+                                                ? formatDate(DateFormat('dd-MM-yyyy').parse(mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate!))
                                                 : '-',
                                             style: const TextStyle(
                                               color: Colors.blue,
@@ -1439,17 +1473,13 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                         width: 60,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(20),
-                                          color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1
-                                              ? const Color.fromARGB(193, 103, 223, 109)
-                                              : const Color.fromARGB(208, 245, 85, 74),
+                                          color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1 ? const Color.fromARGB(193, 103, 223, 109) : const Color.fromARGB(208, 245, 85, 74),
                                         ),
                                         child: Center(
                                           child: Text(
                                             mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1 ? 'Paid' : 'Pending',
                                             style: TextStyle(
-                                                color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1
-                                                    ? const Color.fromARGB(255, 0, 0, 0)
-                                                    : const Color.fromARGB(255, 0, 0, 0),
+                                                color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1 ? const Color.fromARGB(255, 0, 0, 0) : const Color.fromARGB(255, 0, 0, 0),
                                                 fontSize: Primary_font_size.Text5,
                                                 fontWeight: FontWeight.bold),
                                           ),
@@ -1565,11 +1595,28 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                             // ),
                             Expanded(
                               flex: 2,
-                              child: Text(
-                                mainBilling_Controller.billingModel.salesInvoiceList[index].voucherNumber,
-                                style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                              child: Padding(
+                                padding: const EdgeInsets.all(0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    MouseRegion(
+                                      cursor: SystemMouseCursors.click,
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          widget.get_VoucherDetails(context, mainBilling_Controller.billingModel.salesInvoiceList[index].voucherId);
+                                        },
+                                        child: Text(
+                                          mainBilling_Controller.billingModel.salesInvoiceList[index].voucherNumber,
+                                          style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
+
                             Expanded(
                               flex: 4,
                               child: Row(
@@ -1578,7 +1625,6 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                     width: 35,
                                     height: 35,
                                     decoration: BoxDecoration(
-                                      // ignore: deprecated_member_use
                                       color: Primary_colors.Color5.withOpacity(0.1),
                                       shape: BoxShape.circle,
                                     ),
@@ -1625,17 +1671,13 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                       width: 60,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
-                                        color: mainBilling_Controller.billingModel.salesInvoiceList[index].paymentStatus == 1
-                                            ? const Color.fromARGB(193, 103, 223, 109)
-                                            : const Color.fromARGB(208, 245, 85, 74),
+                                        color: mainBilling_Controller.billingModel.salesInvoiceList[index].paymentStatus == 1 ? const Color.fromARGB(193, 103, 223, 109) : const Color.fromARGB(208, 245, 85, 74),
                                       ),
                                       child: Center(
                                         child: Text(
                                           mainBilling_Controller.billingModel.salesInvoiceList[index].paymentStatus == 1 ? 'Paid' : 'Pending',
                                           style: TextStyle(
-                                              color: mainBilling_Controller.billingModel.salesInvoiceList[index].paymentStatus == 1
-                                                  ? const Color.fromARGB(255, 0, 0, 0)
-                                                  : const Color.fromARGB(255, 0, 0, 0),
+                                              color: mainBilling_Controller.billingModel.salesInvoiceList[index].paymentStatus == 1 ? const Color.fromARGB(255, 0, 0, 0) : const Color.fromARGB(255, 0, 0, 0),
                                               fontSize: Primary_font_size.Text5,
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -1771,7 +1813,6 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                         width: 35,
                                         height: 35,
                                         decoration: BoxDecoration(
-                                          // ignore: deprecated_member_use
                                           color: Primary_colors.Color5.withOpacity(0.1),
                                           shape: BoxShape.circle,
                                         ),
@@ -1847,17 +1888,13 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                         width: 60,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(20),
-                                          color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1
-                                              ? const Color.fromARGB(193, 103, 223, 109)
-                                              : const Color.fromARGB(208, 255, 80, 68),
+                                          color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1 ? const Color.fromARGB(193, 103, 223, 109) : const Color.fromARGB(208, 255, 80, 68),
                                         ),
                                         child: Center(
                                           child: Text(
                                             mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1 ? 'Paid' : 'Pending',
                                             style: TextStyle(
-                                                color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1
-                                                    ? const Color.fromARGB(255, 0, 0, 0)
-                                                    : const Color.fromARGB(255, 0, 0, 0),
+                                                color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1 ? const Color.fromARGB(255, 0, 0, 0) : const Color.fromARGB(255, 0, 0, 0),
                                                 fontSize: Primary_font_size.Text5,
                                                 fontWeight: FontWeight.bold),
                                           ),

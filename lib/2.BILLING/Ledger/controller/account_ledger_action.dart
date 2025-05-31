@@ -21,9 +21,13 @@ class Account_LedgerController extends GetxController {
     account_LedgerModel.Secondaryaccount_Ledger_list.value = AccountLedgerSummary.fromJson(value.data);
     account_LedgerModel.account_Ledger_list.value = AccountLedgerSummary.fromJson(value.data);
 
-    view_LedgerController.initialize_StartEnd_date(account_LedgerModel.account_Ledger_list.value.startdate!, account_LedgerModel.account_Ledger_list.value.enddate!);
+    initialize_StartEnd_date(account_LedgerModel.account_Ledger_list.value.startdate!, account_LedgerModel.account_Ledger_list.value.enddate!);
   }
 
+  void initialize_StartEnd_date(String startDate, String endDate) {
+    account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value = startDate;
+    account_LedgerModel.account_LedgerSelectedFilter.value.todate.value = endDate;
+  }
   // void reset_account_LedgerClear_popup() {
   //   account_LedgerModel.recievableAmount.value = 0.0;
   //   account_LedgerModel.is_fullClear.value = false;

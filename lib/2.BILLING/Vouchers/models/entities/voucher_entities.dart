@@ -155,7 +155,8 @@ class TransactionDetail {
   final double amount;
   final String feedback;
   final int transactionId;
-  final String transanctionDetails;
+  String transanctionDetails;
+  String paymentmode;
 
   TransactionDetail({
     required this.date,
@@ -163,6 +164,7 @@ class TransactionDetail {
     required this.feedback,
     required this.transactionId,
     required this.transanctionDetails,
+    required this.paymentmode,
   });
 
   factory TransactionDetail.fromJson(Map<String, dynamic> json) {
@@ -172,6 +174,7 @@ class TransactionDetail {
       feedback: json['feedback'] ?? '',
       transactionId: json['transactionid'] ?? 0,
       transanctionDetails: json['transanctiondetails'] ?? '',
+      paymentmode: json['paymentmode'],
     );
   }
 
@@ -182,6 +185,7 @@ class TransactionDetail {
       'feedback': feedback,
       'transactionid': transactionId,
       'transanctiondetails': transanctionDetails,
+      'paymentmode': paymentmode,
     };
   }
 }

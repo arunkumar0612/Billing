@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:dashed_rect/dashed_rect.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,10 +19,18 @@ import 'package:ssipl_billing/2.BILLING/Vouchers/services/voucher_service.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/views/club_voucher_receipt.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/views/receipt_pdf_template.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
-import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
+
+class EditableTransactionRow {
+  RxBool isEditing;
+  TextEditingController controller;
+
+  EditableTransactionRow(String initialText)
+      : isEditing = false.obs,
+        controller = TextEditingController(text: initialText);
+}
 
 class Voucher extends StatefulWidget with VoucherService, main_BillingService {
   Voucher({super.key});
@@ -35,6 +42,7 @@ class Voucher extends StatefulWidget with VoucherService, main_BillingService {
 class _VoucherState extends State<Voucher> {
   final VoucherController voucherController = Get.find<VoucherController>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final RxList<EditableTransactionRow> editableRows = <EditableTransactionRow>[].obs;
 
   final loader = LoadingOverlay();
   @override
@@ -378,7 +386,7 @@ class _VoucherState extends State<Voucher> {
                                         label: 'Payment received Date',
                                         hint: 'Select Payment received date',
                                         icon: Icons.calendar_today,
-                                        onTap: () => widget.selectDate(context, voucherController.voucherModel.closedDateController),
+                                        onTap: () => widget.select_nextDates(context, voucherController.voucherModel.closedDateController),
                                       ),
                                       const SizedBox(height: 16),
                                       _buildEditableField(
@@ -643,7 +651,7 @@ class _VoucherState extends State<Voucher> {
                                           if (!await folder.exists()) {
                                             await folder.create(recursive: true);
                                           }
-                                          String tempFilePath = '$folderPath/$safeInvoiceNo.pdf';
+                                          String tempFilePath = '$folderPath/Receipt_$safeInvoiceNo.pdf';
                                           // Save the PDF
                                           final receipt = File(tempFilePath);
                                           await receipt.writeAsBytes(pdfBytes);
@@ -651,14 +659,14 @@ class _VoucherState extends State<Voucher> {
                                           // Complete the voucher
 
                                           // Optional success notification
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
-                                              content: const Text('Voucher cleared and PDF saved successfully.'),
-                                              behavior: SnackBarBehavior.floating,
-                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                              backgroundColor: Colors.green,
-                                            ),
-                                          );
+                                          // ScaffoldMessenger.of(context).showSnackBar(
+                                          //   SnackBar(
+                                          //     content: const Text('Voucher cleared and PDF saved successfully.'),
+                                          //     behavior: SnackBarBehavior.floating,
+                                          //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                          //     backgroundColor: Colors.green,
+                                          //   ),
+                                          // );
 
                                           await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete', receipt);
 
@@ -758,39 +766,33 @@ class _VoucherState extends State<Voucher> {
                                               paymentmode: voucherController.voucherModel.Selectedpaymentmode.value,
                                             ),
                                           );
-                                          String? selectedDirectory = await FilePicker.platform.getDirectoryPath(lockParentWindow: true);
+                                          // Get the system temp directory
+                                          Directory tempDir = await getTemporaryDirectory();
+                                          String safeInvoiceNo = voucherController.voucherModel.voucher_list[index].invoiceNumber.replaceAll('/', '-');
+                                          // Create folder path
+                                          String folderPath = '${tempDir.path}/$safeInvoiceNo';
+                                          Directory folder = Directory(folderPath);
 
-                                          // ✅ Always stop loader after native call
-                                          loader.stop();
-
-                                          if (selectedDirectory == null) {
-                                            if (kDebugMode) {
-                                              print("User cancelled the folder selection.");
-                                            }
-                                            Error_dialog(
-                                              context: context,
-                                              title: "Cancelled",
-                                              content: "Download cancelled. No folder was selected.",
-                                              // showCancel: false,
-                                            );
-                                            return;
+                                          // Ensure the folder exists
+                                          if (!await folder.exists()) {
+                                            await folder.create(recursive: true);
                                           }
-
+                                          String tempFilePath = '$folderPath/Receipt_$safeInvoiceNo.pdf';
                                           // Save the PDF
-                                          final receipt = File('$selectedDirectory/Receipt_${voucherController.voucherModel.voucher_list[index].invoiceNumber}');
+                                          final receipt = File(tempFilePath);
                                           await receipt.writeAsBytes(pdfBytes);
 
                                           // Complete the voucher
 
                                           // Optional success notification
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
-                                              content: const Text('Voucher cleared and PDF saved successfully.'),
-                                              behavior: SnackBarBehavior.floating,
-                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                              backgroundColor: Colors.green,
-                                            ),
-                                          );
+                                          // ScaffoldMessenger.of(context).showSnackBar(
+                                          //   SnackBar(
+                                          //     content: const Text('Voucher cleared and PDF saved successfully.'),
+                                          //     behavior: SnackBarBehavior.floating,
+                                          //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                          //     backgroundColor: Colors.green,
+                                          //   ),
+                                          // );
                                           await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, type ? 'complete' : 'partial', receipt);
                                           // Navigator.of(context).pop();
                                           // ScaffoldMessenger.of(context).showSnackBar(
@@ -1162,7 +1164,7 @@ class _VoucherState extends State<Voucher> {
                                         label: 'Payment received Date',
                                         hint: 'Select Payment received date',
                                         icon: Icons.calendar_today,
-                                        onTap: () => widget.selectDate(context, voucherController.voucherModel.closedDateController),
+                                        onTap: () => widget.select_nextDates(context, voucherController.voucherModel.closedDateController),
                                       ),
                                       const SizedBox(height: 16),
                                       _buildEditableField(
@@ -1414,45 +1416,23 @@ class _VoucherState extends State<Voucher> {
                                               selectedPaymentMode: voucherController.voucherModel.Selectedpaymentmode.value),
                                         );
 
-                                        final timestamp = DateTime.now().millisecondsSinceEpoch;
-                                        final filename = 'Receipt$timestamp.pdf';
+                                        // Get the system temp directory
+                                        Directory tempDir = await getTemporaryDirectory();
+                                        String safeInvoiceNo = 'club';
+                                        // Create folder path
+                                        String folderPath = '${tempDir.path}/$safeInvoiceNo';
+                                        Directory folder = Directory(folderPath);
 
-                                        // Let user select directory
-                                        String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
-                                          dialogTitle: 'Select folder to save PDF',
-                                          lockParentWindow: true,
-                                        );
-
-                                        if (selectedDirectory == null) {
-                                          // loader.stop();
-                                          if (kDebugMode) {
-                                            print("User cancelled the folder selection.");
-                                          }
-                                          Error_dialog(
-                                            context: context,
-                                            title: "Cancelled",
-                                            content: "Download cancelled. No folder was selected.",
-                                          );
-                                          return;
+                                        // Ensure the folder exists
+                                        if (!await folder.exists()) {
+                                          await folder.create(recursive: true);
                                         }
-
+                                        String tempFilePath = '$folderPath/Receipt_$safeInvoiceNo.pdf';
                                         // Save the PDF
-                                        final file = File('$selectedDirectory/$filename');
-                                        await file.writeAsBytes(pdfBytes);
+                                        final receipt = File(tempFilePath);
+                                        await receipt.writeAsBytes(pdfBytes);
 
-                                        // Complete the voucher
-
-                                        // Optional success notification
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                            content: const Text('Voucher cleared and PDF saved successfully.'),
-                                            behavior: SnackBarBehavior.floating,
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                            backgroundColor: Colors.green,
-                                          ),
-                                        );
-
-                                        await widget.clear_ClubVoucher(context, selectedVouchers, voucherController.voucherModel.selectedFile.value, pdfBytes);
+                                        await widget.clear_ClubVoucher(context, selectedVouchers, voucherController.voucherModel.selectedFile.value, receipt);
                                       },
                                       child: const Text(
                                         'CLEAR VOUCHER',
@@ -1788,57 +1768,77 @@ class _VoucherState extends State<Voucher> {
     );
   }
 
-  Widget _buildRadioTile({required String value, required String label, required Color color, required int index}) {
-    final isSelected = voucherController.voucherModel.selectedValue.value == value;
-
+  Widget _buildRadioTile({
+    required String value,
+    required String label,
+    required Color color,
+    required int index,
+  }) {
     return Expanded(
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          onTap: () {
-            voucherController.voucherModel.selectedValue.value = value;
-            if (value == 'Partial') {
-              voucherController.resetAmountCleared();
-              voucherController.set_isDeducted(false);
-              voucherController.calculate_recievable(true, index, voucherController.voucherModel.selectedValue.value);
-            } else {
-              voucherController.resetAmountCleared();
-              voucherController.set_isDeducted(true);
-              voucherController.calculate_recievable(true, index, voucherController.voucherModel.selectedValue.value);
-            }
-            voucherController.is_fullclear_Valid(index);
-            voucherController.is_amountExceeds(index, 'partial');
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 0),
-            decoration: BoxDecoration(
-              color: isSelected ? color.withOpacity(0.15) : Colors.grey.shade900,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: isSelected ? color : Colors.grey.shade700, width: 1.5),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Radio<String>(
-                  value: value,
-                  groupValue: voucherController.voucherModel.selectedValue.value,
-                  activeColor: color,
-                  onChanged: (val) {
-                    setState(() {
+      child: Obx(() {
+        final isSelected = voucherController.voucherModel.selectedValue.value == value;
+
+        return MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: () {
+              voucherController.voucherModel.selectedValue.value = value;
+              if (value == 'Partial') {
+                voucherController.resetAmountCleared();
+                voucherController.set_isDeducted(false);
+                voucherController.calculate_recievable(true, index, value);
+              } else {
+                voucherController.resetAmountCleared();
+                voucherController.set_isDeducted(true);
+                voucherController.calculate_recievable(true, index, value);
+              }
+              voucherController.is_fullclear_Valid(index);
+              voucherController.is_amountExceeds(index, 'partial');
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 0),
+              decoration: BoxDecoration(
+                color: isSelected ? color.withOpacity(0.15) : Colors.grey.shade900,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: isSelected ? color : Colors.grey.shade700, width: 1.5),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Radio<String>(
+                    value: value,
+                    groupValue: voucherController.voucherModel.selectedValue.value,
+                    activeColor: color,
+                    onChanged: (val) {
                       voucherController.voucherModel.selectedValue.value = val!;
-                    });
-                  },
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  label,
-                  style: TextStyle(color: isSelected ? color : Colors.grey[300], fontWeight: FontWeight.w600, fontSize: 12),
-                ),
-              ],
+                      if (val == 'Partial') {
+                        voucherController.resetAmountCleared();
+                        voucherController.set_isDeducted(false);
+                        voucherController.calculate_recievable(true, index, val);
+                      } else {
+                        voucherController.resetAmountCleared();
+                        voucherController.set_isDeducted(true);
+                        voucherController.calculate_recievable(true, index, val);
+                      }
+                      voucherController.is_fullclear_Valid(index);
+                      voucherController.is_amountExceeds(index, 'partial');
+                    },
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    label,
+                    style: TextStyle(
+                      color: isSelected ? color : Colors.grey[300],
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 
@@ -2494,6 +2494,11 @@ class _VoucherState extends State<Voucher> {
                                                         )
                                                       : ElevatedButton(
                                                           onPressed: () {
+                                                            final paymentList = voucherController.voucherModel.voucher_list[index].paymentDetails ?? [];
+                                                            editableRows.assignAll(paymentList.map((payment) {
+                                                              final detail = payment.transanctionDetails.isEmpty ? 'N/A' : payment.transanctionDetails;
+                                                              return EditableTransactionRow(detail);
+                                                            }).toList());
                                                             showVoucherClearedDialog(context, index);
                                                           },
                                                           style: ElevatedButton.styleFrom(
@@ -3012,6 +3017,11 @@ class _VoucherState extends State<Voucher> {
                                                           )
                                                         : ElevatedButton(
                                                             onPressed: () {
+                                                              final paymentList = voucherController.voucherModel.voucher_list[index].paymentDetails ?? [];
+                                                              editableRows.assignAll(paymentList.map((payment) {
+                                                                final detail = payment.transanctionDetails.isEmpty ? 'N/A' : payment.transanctionDetails;
+                                                                return EditableTransactionRow(detail);
+                                                              }).toList());
                                                               showVoucherClearedDialog(context, index);
                                                             },
                                                             style: ElevatedButton.styleFrom(
@@ -3085,7 +3095,7 @@ class _VoucherState extends State<Voucher> {
           insetPadding: EdgeInsets.all(20),
           child: Obx(() {
             return Container(
-              width: 800,
+              width: 1200,
               // padding: EdgeInsets.all(16),
               // constraints: BoxConstraints(minWidth: 300, maxWidth: 500),
               decoration: BoxDecoration(
@@ -3408,7 +3418,15 @@ class _VoucherState extends State<Voucher> {
                           child: Container(
                             color: const Color(0xFFE0E0E0),
                             child: Table(
-                              columnWidths: const {0: FlexColumnWidth(1.5), 1: FlexColumnWidth(2), 2: FlexColumnWidth(3.5), 3: FlexColumnWidth(1.5)},
+                              columnWidths: const {
+                                0: FlexColumnWidth(1.5),
+                                1: FlexColumnWidth(2),
+                                2: FlexColumnWidth(2),
+                                3: FlexColumnWidth(4),
+                                4: FlexColumnWidth(1.2),
+                                5: FlexColumnWidth(1.2),
+                                6: FlexColumnWidth(1.2),
+                              },
                               border: TableBorder(bottom: BorderSide(color: Colors.grey.shade400)),
                               children: const [
                                 TableRow(
@@ -3432,7 +3450,7 @@ class _VoucherState extends State<Voucher> {
                                     Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: Text(
-                                        'Transaction Details',
+                                        'Payment Mode',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(fontWeight: FontWeight.bold),
                                       ),
@@ -3440,7 +3458,31 @@ class _VoucherState extends State<Voucher> {
                                     Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: Text(
-                                        'View',
+                                        'Transaction Details',
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'View ref',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Receipt',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        '',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(fontWeight: FontWeight.bold),
                                       ),
@@ -3461,60 +3503,165 @@ class _VoucherState extends State<Voucher> {
                             child: ConstrainedBox(
                               constraints: const BoxConstraints(maxHeight: 200),
                               child: SingleChildScrollView(
-                                child: Table(
-                                  columnWidths: const {0: FlexColumnWidth(1.5), 1: FlexColumnWidth(2), 2: FlexColumnWidth(3.5), 3: FlexColumnWidth(1.5)},
-                                  border: TableBorder(horizontalInside: BorderSide(color: Colors.grey.shade400)),
-                                  children: voucherController.voucherModel.voucher_list[index].paymentDetails!.map<TableRow>((payment) {
-                                    final date = formatDate(payment.date);
-                                    final amount = '₹ ${formatCurrency(payment.amount)}';
-                                    final transID = payment.transactionId;
-                                    final txnDetails = payment.transanctionDetails == "" ? 'N/A' : payment.transanctionDetails;
+                                child: Obx(() => Table(
+                                      columnWidths: const {
+                                        0: FlexColumnWidth(1.5),
+                                        1: FlexColumnWidth(2),
+                                        2: FlexColumnWidth(2),
+                                        3: FlexColumnWidth(4),
+                                        4: FlexColumnWidth(1.2),
+                                        5: FlexColumnWidth(1.2),
+                                        6: FlexColumnWidth(1.2),
+                                      },
+                                      border: TableBorder(horizontalInside: BorderSide(color: Colors.grey.shade400)),
+                                      children: List<TableRow>.generate(
+                                        editableRows.length,
+                                        (i) {
+                                          final payment = voucherController.voucherModel.voucher_list[index].paymentDetails![i];
+                                          final rowState = editableRows[i];
+                                          final date = formatDate(payment.date);
+                                          final amount = '₹ ${formatCurrency(payment.amount)}';
+                                          final transID = payment.transactionId;
+                                          final paymentMode = payment.paymentmode;
 
-                                    return TableRow(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            date,
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(color: Colors.grey),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            amount,
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(color: Colors.grey),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            txnDetails,
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(color: Colors.grey),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: MouseRegion(
-                                            cursor: SystemMouseCursors.click,
-                                            child: GestureDetector(
-                                              onTap: () async {
-                                                bool success = await widget.Get_transactionPDFfile(context: context, transactionID: transID);
-                                                if (success) {
-                                                  widget.showPDF(context, "TRANSACTION_$transID");
-                                                }
-                                              },
-                                              child: Image.asset('assets/images/pdfdownload.png', width: 24, height: 24),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  }).toList(),
-                                ),
+                                          return TableRow(
+                                            children: [
+                                              // Date
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  date,
+                                                  textAlign: TextAlign.center,
+                                                  style: const TextStyle(color: Colors.grey),
+                                                ),
+                                              ),
+
+                                              // Amount Paid
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  amount,
+                                                  textAlign: TextAlign.center,
+                                                  style: const TextStyle(color: Colors.grey),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  paymentMode,
+                                                  textAlign: TextAlign.center,
+                                                  style: const TextStyle(color: Colors.grey),
+                                                ),
+                                              ),
+                                              // Transaction Details Editable
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  children: [
+                                                    Obx(() => rowState.isEditing.value
+                                                        ? Expanded(
+                                                            child: TextFormField(
+                                                              autofocus: true,
+                                                              controller: rowState.controller,
+                                                              style: const TextStyle(color: Colors.white, fontSize: 12),
+                                                              maxLines: 2,
+                                                              decoration: const InputDecoration(
+                                                                hint: Text(
+                                                                  "Enter feedback details",
+                                                                  style: TextStyle(color: Colors.grey),
+                                                                ),
+                                                                border: OutlineInputBorder(borderSide: BorderSide.none),
+                                                                isDense: true,
+                                                                contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : Expanded(
+                                                            child: Text(
+                                                              rowState.controller.text,
+                                                              textAlign: TextAlign.start,
+                                                              style: const TextStyle(color: Colors.grey),
+                                                            ),
+                                                          )),
+                                                  ],
+                                                ),
+                                              ),
+                                              // Actions
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    // PDF View
+                                                    MouseRegion(
+                                                      cursor: SystemMouseCursors.click,
+                                                      child: GestureDetector(
+                                                        onTap: () async {
+                                                          bool success = await widget.Get_transactionPDFfile(context: context, transactionID: transID);
+                                                          if (success) {
+                                                            widget.showPDF(context, "TRANSACTION_$transID");
+                                                          }
+                                                        },
+                                                        child: Image.asset('assets/images/pdfdownload.png', width: 24, height: 24),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 8),
+
+                                                    // Edit / Save Button
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    // PDF View
+                                                    MouseRegion(
+                                                      cursor: SystemMouseCursors.click,
+                                                      child: GestureDetector(
+                                                        onTap: () async {
+                                                          bool success = await widget.Get_transactionPDFfile(context: context, transactionID: transID);
+                                                          if (success) {
+                                                            widget.showPDF(context, "TRANSACTION_$transID");
+                                                          }
+                                                        },
+                                                        child: Image.asset('assets/images/order.png', width: 24, height: 24),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 8),
+
+                                                    // Edit / Save Button
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  children: [
+                                                    Obx(() => IconButton(
+                                                          icon: Icon(rowState.isEditing.value ? Icons.save : Icons.edit, size: 20),
+                                                          tooltip: rowState.isEditing.value ? "Save" : "Edit",
+                                                          onPressed: () {
+                                                            if (rowState.isEditing.value) {
+                                                              widget.update_paymentDetails(context, index, i);
+                                                            }
+                                                            rowState.isEditing.value = !rowState.isEditing.value;
+
+                                                            if (!rowState.isEditing.value) {
+                                                              payment.transanctionDetails = rowState.controller.text;
+                                                              // Add save logic here if needed
+                                                            }
+                                                          },
+                                                        )),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    )),
                               ),
                             ),
                           ),

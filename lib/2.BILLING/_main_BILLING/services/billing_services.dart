@@ -47,47 +47,47 @@ mixin main_BillingService {
     }
   }
 
-  Future<void> selectDate(BuildContext context, TextEditingController controller) async {
-    final DateTime now = DateTime.now();
-    final DateTime nextYear = now.add(const Duration(days: 365)); // Limit to next year
+  // Future<void> selectDate(BuildContext context, TextEditingController controller) async {
+  //   final DateTime now = DateTime.now();
+  //   final DateTime nextYear = now.add(const Duration(days: 365)); // Limit to next year
 
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: now,
-      firstDate: now, // Start from today
-      lastDate: nextYear, // Allow dates up to 1 year from today
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Primary_colors.Color3,
-              onPrimary: Colors.white,
-              onSurface: Colors.black87,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Primary_colors.Color3,
-              ),
-            ),
-            dialogTheme: const DialogThemeData(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
+  //   final DateTime? pickedDate = await showDatePicker(
+  //     context: context,
+  //     initialDate: now,
+  //     firstDate: now, // Start from today
+  //     lastDate: nextYear, // Allow dates up to 1 year from today
+  //     builder: (context, child) {
+  //       return Theme(
+  //         data: Theme.of(context).copyWith(
+  //           colorScheme: const ColorScheme.light(
+  //             primary: Primary_colors.Color3,
+  //             onPrimary: Colors.white,
+  //             onSurface: Colors.black87,
+  //           ),
+  //           textButtonTheme: TextButtonThemeData(
+  //             style: TextButton.styleFrom(
+  //               foregroundColor: Primary_colors.Color3,
+  //             ),
+  //           ),
+  //           dialogTheme: const DialogThemeData(
+  //             shape: RoundedRectangleBorder(
+  //               borderRadius: BorderRadius.all(Radius.circular(16)),
+  //             ),
+  //           ),
+  //         ),
+  //         child: child!,
+  //       );
+  //     },
+  //   );
 
-    if (pickedDate != null) {
-      final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
-          "${pickedDate.month.toString().padLeft(2, '0')}-"
-          "${pickedDate.day.toString().padLeft(2, '0')}";
+  //   if (pickedDate != null) {
+  //     final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
+  //         "${pickedDate.month.toString().padLeft(2, '0')}-"
+  //         "${pickedDate.day.toString().padLeft(2, '0')}";
 
-      controller.text = formatted;
-    }
-  }
+  //     controller.text = formatted;
+  //   }
+  // }
 
   Future<void> select_previousDates(BuildContext context, TextEditingController controller) async {
     final DateTime now = DateTime.now();

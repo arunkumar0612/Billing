@@ -73,6 +73,45 @@ mixin VoucherService {
     }
   }
 
+  dynamic update_paymentDetails(context, int voucherIndex, int transactionIndex) async {
+    try {
+      final voucher = voucherController.voucherModel.voucher_list[voucherIndex];
+      final paymentList = voucher.paymentDetails ?? [];
+
+      final List<Map<String, dynamic>> formattedTransactions = paymentList
+          .map((txn) => {
+                "date": txn.date.toIso8601String().split('T').first, // Formats to "YYYY-MM-DD"
+                "amount": txn.amount,
+                "feedback": txn.feedback,
+                "transactionid": txn.transactionId.toDouble(), // Convert int to double
+                "transanctiondetails": txn.transanctionDetails,
+                "paymentmode": txn.paymentmode,
+              })
+          .toList();
+
+      Map<String, dynamic> query = {
+        "paymentdetails": formattedTransactions,
+        "transactionid": voucherController.voucherModel.voucher_list[voucherIndex].paymentDetails![transactionIndex].transactionId,
+        "voucherid": voucherController.voucherModel.voucher_list[voucherIndex].voucher_id,
+        // "paymentmode": "cash",
+      };
+      String encodedData = json.encode(query);
+      Map<String, dynamic>? response = await apiController.SendByQuerystring(encodedData, API.update_transactionDetails);
+      if (response['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response);
+        if (value.code) {
+          await Success_dialog(context: context, title: "Success", content: value.message!, onOk: () {});
+        } else {
+          await Error_dialog(context: context, title: 'Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
   Future<void> Get_SUBcustomerList() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_ledgerSubscriptionCustomers);
@@ -358,7 +397,7 @@ mixin VoucherService {
     voucherController.update();
   }
 
-  dynamic clear_ClubVoucher(context, SelectedInvoiceVoucherGroup selectedVouchers, File? file, Uint8List pdfBytes) async {
+  dynamic clear_ClubVoucher(context, SelectedInvoiceVoucherGroup selectedVouchers, File? file, File receipt) async {
     try {
       List<Map<String, dynamic>> consolidateJSON = [];
       List<int> voucherIds = [];
@@ -412,8 +451,17 @@ mixin VoucherService {
       };
 
       Clear_ClubVoucher voucherdata = Clear_ClubVoucher.fromJson(main_map);
+      // String encodedData = json.encode(voucherdata.toJson());
+
       String encodedData = json.encode(voucherdata.toJson());
-      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, encodedData, [file!], API.clearClubVoucher);
+      Map<String, dynamic>? response = await apiController.Multer(
+        sessiontokenController.sessiontokenModel.sessiontoken.value,
+        encodedData,
+        [file, receipt].whereType<File>().toList(), // ✅ Corrected line
+        API.clearVoucher,
+      );
+
+      // Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, encodedData, [file!], API.clearClubVoucher);
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
@@ -461,7 +509,12 @@ mixin VoucherService {
     ClearVoucher voucherdata = ClearVoucher.fromJson(mapData);
 
     String encodedData = json.encode(voucherdata.toJson());
-    Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, encodedData, file != null ? [file, receipt] : null, API.clearVoucher);
+    Map<String, dynamic>? response = await apiController.Multer(
+      sessiontokenController.sessiontokenModel.sessiontoken.value,
+      encodedData,
+      [file, receipt].whereType<File>().toList(), // ✅ Corrected line
+      API.clearVoucher,
+    );
     if (response['statusCode'] == 200) {
       CMDmResponse value = CMDmResponse.fromJson(response);
       if (value.code) {

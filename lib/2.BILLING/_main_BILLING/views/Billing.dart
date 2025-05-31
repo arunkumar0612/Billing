@@ -59,7 +59,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
+    widget.GetDashboardData();
     widget.get_SubscriptionInvoiceList();
     widget.get_SalesInvoiceList();
   }

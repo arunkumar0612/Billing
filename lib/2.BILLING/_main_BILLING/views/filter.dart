@@ -169,7 +169,7 @@ class _FilterScreenState extends State<FilterScreen> {
                                 ),
                                 controller: mainBilling_Controller.billingModel.startDateController.value,
                                 readOnly: true,
-                                onTap: () => widget.selectDate(context, mainBilling_Controller.billingModel.startDateController.value),
+                                onTap: () => widget.select_nextDates(context, mainBilling_Controller.billingModel.startDateController.value),
                                 decoration: InputDecoration(
                                   labelText: 'From',
                                   labelStyle: const TextStyle(
@@ -212,7 +212,7 @@ class _FilterScreenState extends State<FilterScreen> {
                                 ),
                                 controller: mainBilling_Controller.billingModel.endDateController.value,
                                 readOnly: true,
-                                onTap: () => widget.selectDate(context, mainBilling_Controller.billingModel.endDateController.value),
+                                onTap: () => widget.select_nextDates(context, mainBilling_Controller.billingModel.endDateController.value),
                                 decoration: InputDecoration(
                                   labelText: 'To',
                                   labelStyle: const TextStyle(

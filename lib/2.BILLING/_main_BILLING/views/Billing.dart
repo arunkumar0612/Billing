@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -41,7 +43,6 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
   final MainBilling_Controller mainBilling_Controller = Get.find<MainBilling_Controller>();
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     mainBilling_Controller.billingModel.animationController.dispose();
   }
@@ -1272,7 +1273,6 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                         width: 35,
                                         height: 35,
                                         decoration: BoxDecoration(
-                                          // ignore: deprecated_member_use
                                           color: Primary_colors.Color5.withOpacity(0.1),
                                           shape: BoxShape.circle,
                                         ),
@@ -1657,7 +1657,6 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                     width: 35,
                                     height: 35,
                                     decoration: BoxDecoration(
-                                      // ignore: deprecated_member_use
                                       color: Primary_colors.Color5.withOpacity(0.1),
                                       shape: BoxShape.circle,
                                     ),
@@ -1850,7 +1849,6 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                         width: 35,
                                         height: 35,
                                         decoration: BoxDecoration(
-                                          // ignore: deprecated_member_use
                                           color: Primary_colors.Color5.withOpacity(0.1),
                                           shape: BoxShape.circle,
                                         ),

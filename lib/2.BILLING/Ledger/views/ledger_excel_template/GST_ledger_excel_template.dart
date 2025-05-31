@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+
 import 'package:intl/intl.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/GST_ledger_entities.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart' as xlsio;
@@ -14,7 +15,7 @@ class ExcelGSTledger {
 }
 
 Future<Uint8List> GSTledger_excelTemplate(GSTSummaryModel gstLedgerData) async {
-  final gstLedger = ExcelGSTledger(data: gstLedgerData, currentDate: DateTime.now());
+  // final gstLedger = ExcelGSTledger(data: gstLedgerData, currentDate: DateTime.now());
 
   final workbook = xlsio.Workbook();
   final sheet1 = workbook.worksheets[0];
@@ -110,7 +111,9 @@ Future<Uint8List> GSTledger_excelTemplate(GSTSummaryModel gstLedgerData) async {
   sheet2.getRangeByName('A1').cellStyle.wrapText = true;
 
   sheet2.getRangeByName('A2:J2').merge();
-  sheet2.getRangeByName('A2').setText('GST TRANSACTION LOG - (From ${_formatDate(DateTime.parse(gstLedgerData.startdate.toString()))} to ${_formatDate(DateTime.parse(gstLedgerData.enddate.toString()))})');
+  sheet2
+      .getRangeByName('A2')
+      .setText('GST TRANSACTION LOG - (From ${_formatDate(DateTime.parse(gstLedgerData.startdate.toString()))} to ${_formatDate(DateTime.parse(gstLedgerData.enddate.toString()))})');
   sheet2.getRangeByName('A2').cellStyle.bold = true;
   sheet2.getRangeByName('A2').cellStyle.fontSize = 12;
   sheet2.getRangeByName('A2').cellStyle.hAlign = xlsio.HAlignType.center;
@@ -141,22 +144,22 @@ Future<Uint8List> GSTledger_excelTemplate(GSTSummaryModel gstLedgerData) async {
   sheet2.setRowHeightInPixels(1, 40);
 
   int startRow = 4; // Assuming data starts from row 4
-  int endRow = startRow + (gstLedgerData.gstList.length) - 1;
+  // int endRow = startRow + (gstLedgerData.gstList.length) - 1;
 
   for (int i = 0; i < gstLedgerData.gstList.length; i++) {
     final row = startRow + i;
     final item = gstLedgerData.gstList[i];
 
     sheet2.getRangeByIndex(row, 1).setText(_formatDate(item.date));
-    sheet2.getRangeByIndex(row, 2).setText(item.invoice_number ?? '');
+    sheet2.getRangeByIndex(row, 2).setText(item.invoice_number);
     sheet2.getRangeByIndex(row, 3).setText(item.description ?? '');
-    sheet2.getRangeByIndex(row, 4).setText(item.gstType ?? '');
+    sheet2.getRangeByIndex(row, 4).setText(item.gstType);
     sheet2.getRangeByIndex(row, 5).setText(_formatCurrency(item.subTotal));
-    sheet2.getRangeByIndex(row, 6).setText(_formatCurrency(item.cgst ?? 0));
-    sheet2.getRangeByIndex(row, 7).setText(_formatCurrency(item.sgst ?? 0));
-    sheet2.getRangeByIndex(row, 8).setText(_formatCurrency(item.igst ?? 0));
-    sheet2.getRangeByIndex(row, 9).setText(_formatCurrency(item.totalGst ?? 0));
-    sheet2.getRangeByIndex(row, 10).setText(_formatCurrency(item.totalAmount ?? 0));
+    sheet2.getRangeByIndex(row, 6).setText(_formatCurrency(item.cgst));
+    sheet2.getRangeByIndex(row, 7).setText(_formatCurrency(item.sgst));
+    sheet2.getRangeByIndex(row, 8).setText(_formatCurrency(item.igst));
+    sheet2.getRangeByIndex(row, 9).setText(_formatCurrency(item.totalGst));
+    sheet2.getRangeByIndex(row, 10).setText(_formatCurrency(item.totalAmount));
 
     // Add borders and alignment to each row cell
     for (int col = 1; col <= 10; col++) {

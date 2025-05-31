@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -696,7 +698,7 @@ mixin main_BillingService {
                                         children: voucher.paymentDetails!.map<TableRow>((payment) {
                                           final date = formatDate(payment.date);
                                           final amount = '₹ ${formatCurrency(payment.amount)}';
-                                          final transID = payment.transactionId;
+                                          // final transID = payment.transactionId;
                                           final txnDetails = payment.transanctionDetails == "" ? 'N/A' : payment.transanctionDetails;
 
                                           return TableRow(

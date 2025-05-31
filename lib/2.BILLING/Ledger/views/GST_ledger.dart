@@ -19,7 +19,7 @@ import 'package:ssipl_billing/2.BILLING/Ledger/services/GST_ledger_service.dart'
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_PDF_template/GST_ledger_pdf_template.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_excel_template/excel_template.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_excel_template/GST_ledger_excel_template.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
@@ -1310,7 +1310,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                             await Future.delayed(const Duration(milliseconds: 300));
 
                                             // Generate PDF bytes
-                                            final excelBytes = await GST_generateExcel(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
+                                            final excelBytes = await GSTledger_excelTemplate(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
 
                                             // Generate unique filename with timestamp
                                             final timestamp = DateTime.now().millisecondsSinceEpoch;

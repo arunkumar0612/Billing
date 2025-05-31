@@ -362,11 +362,9 @@ class _VoucherState extends State<Voucher> {
                                     children: [
                                       Row(
                                         children: [
-                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount !=
-                                              voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
+                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount != voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
                                             _buildRadioTile(value: 'Partial', label: 'Partial', color: Colors.amber, index: index),
-                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount !=
-                                              voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
+                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount != voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
                                             const SizedBox(width: 12),
                                           _buildRadioTile(value: 'Full', label: 'Full', color: Colors.green, index: index),
                                         ],
@@ -399,8 +397,7 @@ class _VoucherState extends State<Voucher> {
                                           style: const TextStyle(color: Colors.amber, fontSize: 10),
                                           "    can clear upto  -  Rs.${((voucherController.voucherModel.voucher_list[index].pendingAmount - 1) - (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 ? voucherController.voucherModel.voucher_list[index].tdsCalculationAmount : 0.0)).roundToDouble()}",
                                         ),
-                                      if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full")
-                                        const SizedBox(height: 16),
+                                      if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full") const SizedBox(height: 16),
                                       if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full")
                                         _buildDropdownField(
                                           label: 'TDS Status',
@@ -734,8 +731,7 @@ class _VoucherState extends State<Voucher> {
                                           elevation: 2,
                                         ),
                                         onPressed: () async {
-                                          bool type =
-                                              voucherController.voucherModel.voucher_list[index].pendingAmount == double.parse(voucherController.voucherModel.amountCleared_controller.value.text);
+                                          bool type = voucherController.voucherModel.voucher_list[index].pendingAmount == double.parse(voucherController.voucherModel.amountCleared_controller.value.text);
                                           await Future.delayed(const Duration(milliseconds: 300));
 
                                           // Generate PDF bytes using original code (unchanged)
@@ -1371,8 +1367,7 @@ class _VoucherState extends State<Voucher> {
                                           PdfPageFormat.a4,
                                           Clear_ClubVoucher(
                                               date: DateTime.parse(voucherController.voucherModel.closedDate.value),
-                                              totalPaidAmount:
-                                                  voucherController.voucherModel.is_Deducted.value ? selectedVouchers.totalPendingAmount_withTDS : selectedVouchers.totalPendingAmount_withoutTDS,
+                                              totalPaidAmount: voucherController.voucherModel.is_Deducted.value ? selectedVouchers.totalPendingAmount_withTDS : selectedVouchers.totalPendingAmount_withoutTDS,
                                               tdsStatus: voucherController.voucherModel.is_Deducted.value,
                                               paymentStatus: 'complete',
                                               feedback: voucherController.voucherModel.feedback_controller.value.text,
@@ -3384,7 +3379,7 @@ class _VoucherState extends State<Voucher> {
                           child: Container(
                             color: const Color(0xFFE0E0E0),
                             child: Table(
-                              columnWidths: const {0: FlexColumnWidth(1.5), 1: FlexColumnWidth(2), 2: FlexColumnWidth(3.5), 3: FlexColumnWidth(1.5)},
+                              columnWidths: const {0: FlexColumnWidth(1.5), 1: FlexColumnWidth(2), 2: FlexColumnWidth(3.5), 3: FlexColumnWidth(2), 4: FlexColumnWidth(2)},
                               border: TableBorder(bottom: BorderSide(color: Colors.grey.shade400)),
                               children: const [
                                 TableRow(
@@ -3416,11 +3411,19 @@ class _VoucherState extends State<Voucher> {
                                     Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: Text(
-                                        'View',
+                                        'View Attachment',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(fontWeight: FontWeight.bold),
                                       ),
                                     ),
+                                    Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'View Receipt',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                    )
                                   ],
                                 ),
                               ],
@@ -3438,7 +3441,7 @@ class _VoucherState extends State<Voucher> {
                               constraints: const BoxConstraints(maxHeight: 200),
                               child: SingleChildScrollView(
                                 child: Table(
-                                  columnWidths: const {0: FlexColumnWidth(1.5), 1: FlexColumnWidth(2), 2: FlexColumnWidth(3.5), 3: FlexColumnWidth(1.5)},
+                                  columnWidths: const {0: FlexColumnWidth(1.5), 1: FlexColumnWidth(2), 2: FlexColumnWidth(3.5), 3: FlexColumnWidth(2), 4: FlexColumnWidth(2)},
                                   border: TableBorder(horizontalInside: BorderSide(color: Colors.grey.shade400)),
                                   children: voucherController.voucherModel.voucher_list[index].paymentDetails!.map<TableRow>((payment) {
                                     final date = formatDate(payment.date);
@@ -3484,6 +3487,21 @@ class _VoucherState extends State<Voucher> {
                                                 }
                                               },
                                               child: Image.asset('assets/images/pdfdownload.png', width: 24, height: 24),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: MouseRegion(
+                                            cursor: SystemMouseCursors.click,
+                                            child: GestureDetector(
+                                              onTap: () async {
+                                                bool success = await widget.Get_transactionPDFfile(context: context, transactionID: transID);
+                                                if (success) {
+                                                  widget.showPDF(context, "RECEIPT_$transID");
+                                                }
+                                              },
+                                              child: Image.asset('assets/images/order.png', width: 24, height: 24),
                                             ),
                                           ),
                                         ),

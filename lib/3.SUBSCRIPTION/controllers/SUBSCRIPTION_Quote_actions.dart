@@ -372,7 +372,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
   void storeFetchedPackages(Map<String, dynamic> data) {
     if (data['packagedetails'] != null) {
       quoteModel.selectedPackagesList.value = List<Map<String, dynamic>>.from(data['packagedetails']).map((packageJson) => Package.fromJson(packageJson)).toList();
-      quoteModel.selectedPackage.value = quoteModel.selectedPackagesList[0].name;
+      quoteModel.selectedPackage.value = quoteModel.selectedPackagesList[0].name.trim();
 
       for (int i = 0; i < quoteModel.selectedPackagesList.length; i++) {
         for (int j = 0; j < quoteModel.selectedPackagesList[i].sites.length; j++) {

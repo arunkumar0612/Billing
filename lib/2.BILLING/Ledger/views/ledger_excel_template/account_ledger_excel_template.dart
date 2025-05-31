@@ -221,10 +221,22 @@ Future<Uint8List> Client_AccountLedger_excelTemplate(PDF_AccountLedgerSummary ac
     ..hAlign = xlsio.HAlignType.left
     ..wrapText = true;
 
+  sheet1.getRangeByName('A6:B6').merge();
+  sheet1.getRangeByName('A6').setText('PAN:');
+  sheet1.getRangeByName('A6').cellStyle
+    ..bold = true
+    ..hAlign = xlsio.HAlignType.left;
+
+  sheet1.getRangeByName('C6:F6').merge();
+  sheet1.getRangeByName('C6').setText(accountledger.data.clientDetails?.PAN);
+  sheet1.getRangeByName('C6').cellStyle
+    ..hAlign = xlsio.HAlignType.left
+    ..wrapText = true;
+
   final headers = ['Date', 'Invoice No', 'Description', 'Debit', 'Credit', 'Balance'];
 
   for (int i = 0; i < headers.length; i++) {
-    final cell = sheet1.getRangeByIndex(6, i + 1);
+    final cell = sheet1.getRangeByIndex(7, i + 1);
     cell.setText(headers[i]);
     cell.cellStyle
       ..bold = true
@@ -243,9 +255,9 @@ Future<Uint8List> Client_AccountLedger_excelTemplate(PDF_AccountLedgerSummary ac
     } // or use autoFitColumn
   }
 
-  sheet1.setRowHeightInPixels(6, 40);
+  sheet1.setRowHeightInPixels(7, 40);
 
-  int startRow = 7; // Assuming data starts from row 4
+  int startRow = 8; // Assuming data starts from row 4
   int endRow = startRow + (accountledger.data.ledgerDetails.ledgerList.length) - 1;
 
   for (int i = 0; i < accountledger.data.ledgerDetails.ledgerList.length; i++) {

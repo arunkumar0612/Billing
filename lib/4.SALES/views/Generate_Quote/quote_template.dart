@@ -158,7 +158,7 @@ class Quotation {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular(estimate, 10),
+                            child: bold(estimate, 10),
                           ),
                         ),
                       ],
@@ -354,16 +354,25 @@ class Quotation {
 
       // ✅ Column width added
       columnWidths: {
-        0: const pw.FlexColumnWidth(1), // S.No (small)
-        1: const pw.FlexColumnWidth(5), // Item Description (large)
-        2: const pw.FlexColumnWidth(2), // HSN Code
-        3: const pw.FlexColumnWidth(2), // GST
-        4: const pw.FlexColumnWidth(3), // Price
-        5: const pw.FlexColumnWidth(2), // Quantity
-        6: const pw.FlexColumnWidth(3), // Total
+        0: const pw.FlexColumnWidth(2), // S.No (small)
+        1: const pw.FlexColumnWidth(6), // Item Description (large)
+        2: const pw.FlexColumnWidth(3), // HSN Code
+        3: const pw.FlexColumnWidth(3), // GST
+        4: const pw.FlexColumnWidth(4), // Price
+        5: const pw.FlexColumnWidth(3), // Quantity
+        6: const pw.FlexColumnWidth(4), // Total
       },
 
       cellAlignments: {
+        0: pw.Alignment.centerLeft,
+        1: pw.Alignment.centerLeft,
+        2: pw.Alignment.centerLeft,
+        3: pw.Alignment.center,
+        4: pw.Alignment.centerRight,
+        5: pw.Alignment.center,
+        6: pw.Alignment.centerRight,
+      },
+      headerAlignments: {
         0: pw.Alignment.centerLeft,
         1: pw.Alignment.centerLeft,
         2: pw.Alignment.centerLeft,
@@ -792,7 +801,7 @@ class Quotation {
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
-              regular('Sub total   :', 10),
+              regular('Sub total  :', 10),
               regular(formatzero(_total), 10),
             ],
           ),
@@ -800,7 +809,7 @@ class Quotation {
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
-              regular('IGST       :', 10),
+              regular('IGST        :', 10),
               regular(formatzero(CGST_total * 2), 10),
             ],
           ),

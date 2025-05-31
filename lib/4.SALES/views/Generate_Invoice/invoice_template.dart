@@ -169,7 +169,7 @@ class Invoice {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular(invoice_num, 10),
+                            child: bold(invoice_num, 10),
                           ),
                         ),
                       ],
@@ -365,13 +365,13 @@ class Invoice {
 
       // ✅ Added flex here
       columnWidths: {
-        0: const pw.FlexColumnWidth(1), // S.No (small)
-        1: const pw.FlexColumnWidth(5), // Item Description (big)
-        2: const pw.FlexColumnWidth(2), // HSN (medium)
-        3: const pw.FlexColumnWidth(2), // GST (small-medium)
-        4: const pw.FlexColumnWidth(3), // Price (medium, number)
-        5: const pw.FlexColumnWidth(2), // Quantity (small-medium)
-        6: const pw.FlexColumnWidth(3), // Total (medium, number)
+        0: const pw.FlexColumnWidth(2), // S.No (small)
+        1: const pw.FlexColumnWidth(6), // Item Description (big)
+        2: const pw.FlexColumnWidth(3), // HSN (medium)
+        3: const pw.FlexColumnWidth(3), // GST (small-medium)
+        4: const pw.FlexColumnWidth(4), // Price (medium, number)
+        5: const pw.FlexColumnWidth(3), // Quantity (small-medium)
+        6: const pw.FlexColumnWidth(4), // Total (medium, number)
       },
 
       cellAlignments: {
@@ -794,7 +794,7 @@ class Invoice {
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
-              regular('Sub total   :', 10),
+              regular('Sub total  :', 10),
               regular(formatzero(_total), 10),
             ],
           ),
@@ -802,7 +802,7 @@ class Invoice {
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
-              regular('IGST       :', 10),
+              regular('IGST        :', 10),
               regular(formatzero(CGST_total * 2), 10),
             ],
           ),

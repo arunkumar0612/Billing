@@ -71,6 +71,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
     }
   }
 
+  bool isHovered = false;
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -258,6 +259,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                                             mainBilling_Controller.billingModel.dashboard_endDateController.value.clear();
                                                                             // widget.get_VoucherList();
                                                                           }
+                                                                          widget.GetDashboardData();
                                                                         },
                                                                         decoration: const InputDecoration(
                                                                           isDense: true,
@@ -355,7 +357,14 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                             child: Obx(
                                                               () => DropdownButtonFormField<String>(
                                                                 value: mainBilling_Controller.billingModel.type.value, // Use the state variable for the selected value
-                                                                items: ["Sales", "Subscription", "Purchase", "All"]
+                                                                items: [
+                                                                  "Sales",
+                                                                  "Subscription",
+                                                                  "Purchase",
+                                                                  "Receivables",
+                                                                  "Payables",
+                                                                  "All",
+                                                                ]
                                                                     .map((String value) => DropdownMenuItem<String>(
                                                                           value: value,
                                                                           child: Text(value, style: const TextStyle(fontSize: 13, color: Colors.white)),
@@ -608,8 +617,26 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                       ),
                                                     ),
                                                     MouseRegion(
-                                                      cursor: SystemMouseCursors.click,
-                                                      child: _buildIconWithLabel(image: 'assets/images/transaction.png', label: 'View Transaction', color: Primary_colors.Color5, onPressed: () {}),
+                                                      onEnter: (_) => setState(() => isHovered = true),
+                                                      onExit: (_) => setState(() => isHovered = false),
+                                                      cursor: SystemMouseCursors.forbidden,
+                                                      child: Tooltip(
+                                                        message: 'Work in progress',
+                                                        child: Opacity(
+                                                          opacity: 0.2,
+                                                          child: AbsorbPointer(
+                                                            absorbing: isHovered, // Prevent clicks when hovered
+                                                            child: _buildIconWithLabel(
+                                                              image: 'assets/images/transaction.png',
+                                                              label: 'View Transaction',
+                                                              color: Primary_colors.Color5,
+                                                              onPressed: () {
+                                                                // Optional: disable logic here too if needed
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
                                                     )
                                                   ],
                                                 ),
@@ -632,9 +659,27 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                       ),
                                                     ),
                                                     MouseRegion(
-                                                      cursor: SystemMouseCursors.click,
-                                                      child: _buildIconWithLabel(image: 'assets/images/balancesheet.png', label: 'Balance Sheet', color: Primary_colors.Color8, onPressed: () {}),
-                                                    ),
+                                                      onEnter: (_) => setState(() => isHovered = true),
+                                                      onExit: (_) => setState(() => isHovered = false),
+                                                      cursor: SystemMouseCursors.forbidden,
+                                                      child: Tooltip(
+                                                        message: 'Work in progress',
+                                                        child: Opacity(
+                                                          opacity: 0.2,
+                                                          child: AbsorbPointer(
+                                                            absorbing: isHovered, // Prevent clicks when hovered
+                                                            child: _buildIconWithLabel(
+                                                              image: 'assets/images/balancesheet.png',
+                                                              label: 'Balance Sheet',
+                                                              color: Primary_colors.Color8,
+                                                              onPressed: () {
+                                                                // Optional: disable logic here too if needed
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
                                                   ],
                                                 ),
                                               ],
@@ -1197,11 +1242,28 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                               ),
                               Expanded(
                                 flex: 2,
-                                child: Text(
-                                  mainBilling_Controller.billingModel.subscriptionInvoiceList[index].voucher_number,
-                                  style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      MouseRegion(
+                                        cursor: SystemMouseCursors.click,
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            widget.get_VoucherDetails(context, mainBilling_Controller.billingModel.subscriptionInvoiceList[index].voucher_id);
+                                          },
+                                          child: Text(
+                                            mainBilling_Controller.billingModel.subscriptionInvoiceList[index].voucher_number,
+                                            style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
+
                               Expanded(
                                   flex: 5,
                                   child: Row(
@@ -1565,11 +1627,28 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                             // ),
                             Expanded(
                               flex: 2,
-                              child: Text(
-                                mainBilling_Controller.billingModel.salesInvoiceList[index].voucherNumber,
-                                style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                              child: Padding(
+                                padding: const EdgeInsets.all(0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    MouseRegion(
+                                      cursor: SystemMouseCursors.click,
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          widget.get_VoucherDetails(context, mainBilling_Controller.billingModel.salesInvoiceList[index].voucherId);
+                                        },
+                                        child: Text(
+                                          mainBilling_Controller.billingModel.salesInvoiceList[index].voucherNumber,
+                                          style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
+
                             Expanded(
                               flex: 4,
                               child: Row(

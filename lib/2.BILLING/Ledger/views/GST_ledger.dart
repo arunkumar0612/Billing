@@ -65,12 +65,13 @@ class _GSTLedgerState extends State<GSTLedger> {
     _initialized = true;
     await Future.delayed(const Duration(milliseconds: 100));
     loader.start(context); // Now safe to use
-    await widget.get_GST_LedgerList();
+
     await widget.Get_SUBcustomerList();
     await widget.Get_SALEScustomerList();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       widget.resetgst_LedgerFilters();
     });
+    await widget.get_GST_LedgerList();
     await Future.delayed(const Duration(seconds: 0));
     loader.stop();
   }

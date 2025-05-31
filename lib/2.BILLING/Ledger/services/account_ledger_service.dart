@@ -183,7 +183,7 @@ mixin Account_LedgerService {
     account_LedgerController.account_LedgerModel.selectedsubcustomer.value = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedsubscriptioncustomername.value;
     account_LedgerController.account_LedgerModel.selectedcustomerID.value = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedcustomerid.value;
     account_LedgerController.account_LedgerModel.selectedpaymenttype.value = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.paymenttype.value;
-    account_LedgerController.account_LedgerModel.startDateController.value.text = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.toString();
+    account_LedgerController.account_LedgerModel.startDateController.value.text = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value;
     account_LedgerController.account_LedgerModel.endDateController.value.text = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.toString();
     account_LedgerController.account_LedgerModel.selectedMonth.value = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedmonth.value.toString();
   }

@@ -288,7 +288,7 @@ class ClearVoucher {
       'feedback': feedback,
       'transactiondetails': transactionDetails,
       'paymentmode': paymentmode,
-      'invoicedate': invoiceDate,
+      'invoicedate': invoiceDate.toIso8601String(),
     };
   }
 }
@@ -331,6 +331,7 @@ class Clear_ClubVoucher {
   final List<InvoiceDetails> invoicedetails;
   final double grossAmount;
   final SelectedInvoiceVoucherGroup selectedInvoiceGroup;
+  final String selectedPaymentMode;
 
   Clear_ClubVoucher({
     required this.date,
@@ -349,27 +350,28 @@ class Clear_ClubVoucher {
     required this.invoicedetails,
     required this.grossAmount,
     required this.selectedInvoiceGroup,
+    required this.selectedPaymentMode,
   });
 
   factory Clear_ClubVoucher.fromJson(Map<String, dynamic> json) {
     return Clear_ClubVoucher(
-      date: DateTime.tryParse(json['date'] ?? '') ?? DateTime.now(),
-      totalPaidAmount: (json['totalpaidamount'] ?? 0).toDouble(),
-      tdsStatus: json['tdsstatus'] ?? false,
-      paymentStatus: json['paymentstatus'] ?? '',
-      feedback: json['feedback'] ?? '',
-      transactionDetails: json['transactiondetails'] ?? '',
-      voucherIds: json['voucherids'] ?? '',
-      voucherNumbers: json['vouchernumbers'] ?? '',
-      voucherList: (json['voucherlist'] as List<dynamic>).map((item) => Map<String, dynamic>.from(item)).toList(),
-      invoiceNumbers: json['invoicenumbers'] ?? '',
-      clientAddressName: json['clientaddressname'] ?? '',
-      clientAddress: json['clientaddress'] ?? '',
-      invoiceDate: DateTime.tryParse(json['invoicedate'] ?? '') ?? DateTime.now(),
-      invoicedetails: (json['invoicedetails'] as List<dynamic>?)?.map((item) => InvoiceDetails.fromMap(item)).toList() ?? [],
-      grossAmount: (json['grossamount'] ?? 0).toDouble(),
-      selectedInvoiceGroup: SelectedInvoiceVoucherGroup.fromJson(json['selectedinvoicegroup']),
-    );
+        date: DateTime.tryParse(json['date'] ?? '') ?? DateTime.now(),
+        totalPaidAmount: (json['totalpaidamount'] ?? 0).toDouble(),
+        tdsStatus: json['tdsstatus'] ?? false,
+        paymentStatus: json['paymentstatus'] ?? '',
+        feedback: json['feedback'] ?? '',
+        transactionDetails: json['transactiondetails'] ?? '',
+        voucherIds: json['voucherids'] ?? '',
+        voucherNumbers: json['vouchernumbers'] ?? '',
+        voucherList: (json['voucherlist'] as List<dynamic>).map((item) => Map<String, dynamic>.from(item)).toList(),
+        invoiceNumbers: json['invoicenumbers'] ?? '',
+        clientAddressName: json['clientaddressname'] ?? '',
+        clientAddress: json['clientaddress'] ?? '',
+        invoiceDate: DateTime.tryParse(json['invoicedate'] ?? '') ?? DateTime.now(),
+        invoicedetails: (json['invoicedetails'] as List<dynamic>?)?.map((item) => InvoiceDetails.fromMap(item)).toList() ?? [],
+        grossAmount: (json['grossamount'] ?? 0).toDouble(),
+        selectedInvoiceGroup: SelectedInvoiceVoucherGroup.fromJson(json['selectedinvoicegroup']),
+        selectedPaymentMode: json['selectedpaymentmode']);
   }
 
   Map<String, dynamic> toJson() {
@@ -390,6 +392,7 @@ class Clear_ClubVoucher {
       'invoicedetails': invoicedetails.map((e) => e.toMap()).toList(),
       'grossamount': grossAmount,
       'selectedinvoicegroup': selectedInvoiceGroup,
+      'selectedpaymentmode': selectedPaymentMode
     };
   }
 }

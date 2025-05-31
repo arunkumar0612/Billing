@@ -87,7 +87,7 @@ mixin main_BillingService {
     }
   }
 
-  Future<void> selectfilterDate(BuildContext context, TextEditingController controller) async {
+  Future<void> select_previousDates(BuildContext context, TextEditingController controller) async {
     final DateTime now = DateTime.now();
     final DateTime pastLimit = DateTime(2000); // You can set your own earliest allowed date
 
@@ -128,7 +128,7 @@ mixin main_BillingService {
     }
   }
 
-  Future<void> select_extendedDate(BuildContext context, TextEditingController controller) async {
+  Future<void> select_nextDates(BuildContext context, TextEditingController controller) async {
     final DateTime now = DateTime.now();
     final DateTime futureLimit = DateTime(2100); // You can customize how far into the future is allowed
 

@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 // import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entities.dart';
@@ -631,31 +632,21 @@ class _VoucherState extends State<Voucher> {
                                                 paymentmode: voucherController.voucherModel.Selectedpaymentmode.value,
                                               ));
 
-                                          final timestamp = DateTime.now().millisecondsSinceEpoch;
-                                          final filename = 'Receipt$timestamp.pdf';
+                                          // Get the system temp directory
+                                          Directory tempDir = await getTemporaryDirectory();
+                                          String safeInvoiceNo = voucherController.voucherModel.voucher_list[index].invoiceNumber.replaceAll('/', '-');
+                                          // Create folder path
+                                          String folderPath = '${tempDir.path}/$safeInvoiceNo';
+                                          Directory folder = Directory(folderPath);
 
-                                          // Let user select directory
-                                          String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
-                                            dialogTitle: 'Select folder to save PDF',
-                                            lockParentWindow: true,
-                                          );
-
-                                          if (selectedDirectory == null) {
-                                            // loader.stop();
-                                            if (kDebugMode) {
-                                              print("User cancelled the folder selection.");
-                                            }
-                                            Error_dialog(
-                                              context: context,
-                                              title: "Cancelled",
-                                              content: "Download cancelled. No folder was selected.",
-                                            );
-                                            return;
+                                          // Ensure the folder exists
+                                          if (!await folder.exists()) {
+                                            await folder.create(recursive: true);
                                           }
-
+                                          String tempFilePath = '$folderPath/$safeInvoiceNo.pdf';
                                           // Save the PDF
-                                          final file = File('$selectedDirectory/$filename');
-                                          await file.writeAsBytes(pdfBytes);
+                                          final receipt = File(tempFilePath);
+                                          await receipt.writeAsBytes(pdfBytes);
 
                                           // Complete the voucher
 
@@ -669,7 +660,7 @@ class _VoucherState extends State<Voucher> {
                                             ),
                                           );
 
-                                          await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete', pdfBytes);
+                                          await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete', receipt);
 
                                           // Generate unique filename with timestamp
                                         },
@@ -767,7 +758,40 @@ class _VoucherState extends State<Voucher> {
                                               paymentmode: voucherController.voucherModel.Selectedpaymentmode.value,
                                             ),
                                           );
-                                          await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, type ? 'complete' : 'partial', pdfBytes);
+                                          String? selectedDirectory = await FilePicker.platform.getDirectoryPath(lockParentWindow: true);
+
+                                          // ✅ Always stop loader after native call
+                                          loader.stop();
+
+                                          if (selectedDirectory == null) {
+                                            if (kDebugMode) {
+                                              print("User cancelled the folder selection.");
+                                            }
+                                            Error_dialog(
+                                              context: context,
+                                              title: "Cancelled",
+                                              content: "Download cancelled. No folder was selected.",
+                                              // showCancel: false,
+                                            );
+                                            return;
+                                          }
+
+                                          // Save the PDF
+                                          final receipt = File('$selectedDirectory/Receipt_${voucherController.voucherModel.voucher_list[index].invoiceNumber}');
+                                          await receipt.writeAsBytes(pdfBytes);
+
+                                          // Complete the voucher
+
+                                          // Optional success notification
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: const Text('Voucher cleared and PDF saved successfully.'),
+                                              behavior: SnackBarBehavior.floating,
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                              backgroundColor: Colors.green,
+                                            ),
+                                          );
+                                          await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, type ? 'complete' : 'partial', receipt);
                                           // Navigator.of(context).pop();
                                           // ScaffoldMessenger.of(context).showSnackBar(
                                           //   SnackBar(

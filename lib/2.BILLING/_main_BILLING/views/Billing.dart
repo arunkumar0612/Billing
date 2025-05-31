@@ -1452,7 +1452,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                           child: Text(
                                             // textAlign: TextAlign.left,
                                             mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate != null
-                                                ? formatDate(DateTime.parse(mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate!))
+                                                ? mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate!
                                                 : '-',
                                             style: const TextStyle(
                                               color: Colors.blue,

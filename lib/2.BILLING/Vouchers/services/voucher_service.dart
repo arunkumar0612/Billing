@@ -239,14 +239,18 @@ mixin VoucherService {
   Future<void> get_VoucherList() async {
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
-        "vouchertype":
-            voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value.toLowerCase() == 'show all' ? '' : voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value.toLowerCase(),
-        "paymentstatus":
-            voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value.toLowerCase() == 'show all' ? '' : voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value.toLowerCase(),
-        "invoicetype":
-            voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value.toLowerCase() == 'show all' ? '' : voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value.toLowerCase(),
+        "vouchertype": voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value.toLowerCase() == 'show all'
+            ? ''
+            : voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value.toLowerCase(),
+        "paymentstatus": voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value.toLowerCase() == 'show all'
+            ? ''
+            : voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value.toLowerCase(),
+        "invoicetype": voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value.toLowerCase() == 'show all'
+            ? ''
+            : voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value.toLowerCase(),
         // "customerid": "SB_1",
-        "customerid": voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value == 'None' ? '' : voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value,
+        "customerid":
+            voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value == 'None' ? '' : voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value,
         "startdate": voucherController.voucherModel.voucherSelectedFilter.value.fromdate.value.toString(),
         "enddate": voucherController.voucherModel.voucherSelectedFilter.value.todate.value.toString(),
       },
@@ -427,7 +431,7 @@ mixin VoucherService {
     }
   }
 
-  dynamic clearVoucher(context, int index, File? file, String VoucherType, Uint8List pdfBytes) async {
+  dynamic clearVoucher(context, int index, File? file, String VoucherType, File receipt) async {
     // try {
     final mapData = {
       "date": DateTime.parse(voucherController.voucherModel.closedDate.value),
@@ -457,7 +461,7 @@ mixin VoucherService {
     ClearVoucher voucherdata = ClearVoucher.fromJson(mapData);
 
     String encodedData = json.encode(voucherdata.toJson());
-    Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, encodedData, file != null ? [file] : null, API.clearVoucher);
+    Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, encodedData, file != null ? [file, receipt] : null, API.clearVoucher);
     if (response['statusCode'] == 200) {
       CMDmResponse value = CMDmResponse.fromJson(response);
       if (value.code) {

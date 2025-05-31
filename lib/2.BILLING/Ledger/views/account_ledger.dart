@@ -17,6 +17,7 @@ import 'package:ssipl_billing/2.BILLING/Ledger/services/account_ledger_service.d
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_PDF_template/account_ledger_pdf_template.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_excel_template/account_ledger_excel_template.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
@@ -730,11 +731,9 @@ class _accountLedgerState extends State<AccountLedger> {
                                                                       ),
                                                                     ],
                                                                   ),
-                                                                if (account_ledgerController.account_LedgerModel.CCemailToggle.value &&
-                                                                    account_ledgerController.account_LedgerModel.gmail_selectionStatus.value)
+                                                                if (account_ledgerController.account_LedgerModel.CCemailToggle.value && account_ledgerController.account_LedgerModel.gmail_selectionStatus.value)
                                                                   const SizedBox(height: 10),
-                                                                if (account_ledgerController.account_LedgerModel.CCemailToggle.value &&
-                                                                    account_ledgerController.account_LedgerModel.gmail_selectionStatus.value)
+                                                                if (account_ledgerController.account_LedgerModel.CCemailToggle.value && account_ledgerController.account_LedgerModel.gmail_selectionStatus.value)
                                                                   Row(
                                                                     crossAxisAlignment: CrossAxisAlignment.end,
                                                                     children: [
@@ -1124,6 +1123,90 @@ class _accountLedgerState extends State<AccountLedger> {
                                             const SizedBox(height: 5),
                                             const Text(
                                               "View",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color.fromARGB(255, 143, 143, 143),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 40),
+                                    MouseRegion(
+                                      cursor: SystemMouseCursors.click,
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          try {
+                                            // Start loading indicator
+                                            // loader.start(context);
+                                            await Future.delayed(const Duration(milliseconds: 300));
+                                            var parsedData = await widget.parsePDF_AccountLedger(
+                                              widget.isSubscription_Client(),
+                                              widget.isSales_Client(),
+                                            );
+
+                                            bool useClientTemplate = widget.isSubscription_Client() || widget.isSales_Client();
+
+                                            // Generate PDF bytes
+                                            final excelBytes = await generateExcel(useClientTemplate, parsedData);
+
+                                            // Generate unique filename with timestamp
+                                            final timestamp = DateTime.now().millisecondsSinceEpoch;
+                                            final filename = 'Account_ledger$timestamp'; // Unique filename
+
+                                            // Let user select directory
+                                            String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+                                              dialogTitle: 'Select folder to save Excel File',
+                                              lockParentWindow: true,
+                                            );
+
+                                            // Always stop loader after native call
+                                            // loader.stop();
+
+                                            if (selectedDirectory == null) {
+                                              if (kDebugMode) {
+                                                print("User cancelled the folder selection.");
+                                              }
+                                              Error_dialog(
+                                                context: context,
+                                                title: "Cancelled",
+                                                content: "Download cancelled. No folder was selected.",
+                                              );
+                                              return;
+                                            }
+
+                                            // Save the file with unique name
+                                            String savePath = "$selectedDirectory/$filename.xlxs";
+                                            await File(savePath).writeAsBytes(excelBytes);
+
+                                            // Show success message
+                                            Success_SnackBar(context, "✅ Excel File downloaded successfully!");
+
+                                            // Optional: open the file
+                                            await OpenFilex.open(savePath);
+                                          } catch (e) {
+                                            // loader.stop();
+                                            if (kDebugMode) {
+                                              print("❌ Error while downloading PDF: $e");
+                                            }
+                                            Error_dialog(
+                                              context: context,
+                                              title: "Error",
+                                              content: "An error occurred while downloading the Excel:\n$e",
+                                            );
+                                          }
+                                        },
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Image.asset(height: 25, 'assets/images/excel.png'),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            const Text(
+                                              "Excel",
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w500,
@@ -1718,21 +1801,20 @@ class _Account_ledger_filterState extends State<Account_ledger_filter> {
                 // const SizedBox(width: 8),
                 Obx(
                   () => SizedBox(
-                    child:
-                        account_LedgerController.account_LedgerModel.startDateController.value.text.isNotEmpty || account_LedgerController.account_LedgerModel.endDateController.value.text.isNotEmpty
-                            ? TextButton(
-                                onPressed: () {
-                                  account_LedgerController.account_LedgerModel.selectedMonth.value = 'None';
-                                  account_LedgerController.account_LedgerModel.startDateController.value.clear();
-                                  account_LedgerController.account_LedgerModel.endDateController.value.clear();
-                                  account_LedgerController.account_LedgerModel.selectedMonth.refresh();
-                                  account_LedgerController.account_LedgerModel.startDateController.refresh();
-                                  account_LedgerController.account_LedgerModel.endDateController.refresh();
-                                  // widget.get_Account_LedgerList();
-                                },
-                                child: const Text('Clear', style: TextStyle(fontSize: Primary_font_size.Text7)),
-                              )
-                            : const SizedBox(),
+                    child: account_LedgerController.account_LedgerModel.startDateController.value.text.isNotEmpty || account_LedgerController.account_LedgerModel.endDateController.value.text.isNotEmpty
+                        ? TextButton(
+                            onPressed: () {
+                              account_LedgerController.account_LedgerModel.selectedMonth.value = 'None';
+                              account_LedgerController.account_LedgerModel.startDateController.value.clear();
+                              account_LedgerController.account_LedgerModel.endDateController.value.clear();
+                              account_LedgerController.account_LedgerModel.selectedMonth.refresh();
+                              account_LedgerController.account_LedgerModel.startDateController.refresh();
+                              account_LedgerController.account_LedgerModel.endDateController.refresh();
+                              // widget.get_Account_LedgerList();
+                            },
+                            child: const Text('Clear', style: TextStyle(fontSize: Primary_font_size.Text7)),
+                          )
+                        : const SizedBox(),
                   ),
                 ),
                 const Spacer(),
@@ -1885,10 +1967,8 @@ class _Account_ledger_filterState extends State<Account_ledger_filter> {
               onPressed: () async {
                 account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.transactiontype.value = account_LedgerController.account_LedgerModel.selectedtransactiontype.value;
                 account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.invoicetype.value = account_LedgerController.account_LedgerModel.selectedInvoiceType.value;
-                account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedsalescustomername.value =
-                    account_LedgerController.account_LedgerModel.selectedsalescustomer.value;
-                account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedsubscriptioncustomername.value =
-                    account_LedgerController.account_LedgerModel.selectedsubcustomer.value;
+                account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedsalescustomername.value = account_LedgerController.account_LedgerModel.selectedsalescustomer.value;
+                account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedsubscriptioncustomername.value = account_LedgerController.account_LedgerModel.selectedsubcustomer.value;
                 account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedcustomerid.value = account_LedgerController.account_LedgerModel.selectedcustomerID.value;
                 account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.paymentstatus.value = account_LedgerController.account_LedgerModel.selectedpaymentStatus.value;
                 account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value = account_LedgerController.account_LedgerModel.startDateController.value.text;

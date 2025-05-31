@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import 'dart:typed_data';
-
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';

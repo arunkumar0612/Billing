@@ -2606,7 +2606,7 @@ class _VoucherState extends State<Voucher> {
                                                                   controller: voucherController.voucherModel.extendDueDateControllers[index],
                                                                   readOnly: true,
                                                                   onTap: () async {
-                                                                    await widget.select_extendedDate(context, voucherController.voucherModel.extendDueDateControllers[index]);
+                                                                    await widget.select_previousDates(context, voucherController.voucherModel.extendDueDateControllers[index]);
                                                                     widget.isExtendButton_visibile(index);
                                                                   },
                                                                   decoration: InputDecoration(

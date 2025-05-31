@@ -19,7 +19,7 @@ mixin main_BillingService {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final MainBilling_Controller mainBilling_Controller = Get.find<MainBilling_Controller>();
   final loader = LoadingOverlay();
-  void get_SubscriptionInvoiceList() async {
+  void get_SubscriptionInvoiceList(BuildContext context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.billing_subscriptionInvoice);
       if (response?['statusCode'] == 200) {
@@ -41,7 +41,7 @@ mixin main_BillingService {
         // Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      // Error_dialog(context: context, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -783,9 +783,9 @@ mixin main_BillingService {
     );
   }
 
-  Future<void> billing_refresh() async {
+  Future<void> billing_refresh(BuildContext context) async {
     // salesController.resetData();
-    get_SubscriptionInvoiceList();
+    get_SubscriptionInvoiceList(context);
     get_SalesInvoiceList();
   }
 

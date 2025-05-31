@@ -59,14 +59,14 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    widget.get_SubscriptionInvoiceList();
+    widget.get_SubscriptionInvoiceList(context);
     widget.get_SalesInvoiceList();
   }
 
   void _startAnimation() {
     if (!mainBilling_Controller.billingModel.animationController.isAnimating) {
       mainBilling_Controller.billingModel.animationController.forward(from: 0).then((_) {
-        widget.billing_refresh();
+        widget.billing_refresh(context);
       });
     }
   }

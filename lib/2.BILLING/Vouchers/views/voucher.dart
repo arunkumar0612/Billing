@@ -1217,6 +1217,17 @@ class _VoucherState extends State<Voucher> {
                                         },
                                       ),
                                       const SizedBox(height: 16),
+                                      _buildDropdownField(
+                                        label: 'Payment Mode',
+                                        hint: 'Select Payment Mode',
+                                        icon: Icons.account_balance_wallet,
+                                        items: ['Bank Transfer', 'UPI Payment', 'Cash Payment', 'Cheque'],
+                                        value: voucherController.voucherModel.Selectedpaymentmode.value,
+                                        onChanged: (value) {
+                                          voucherController.voucherModel.Selectedpaymentmode.value = value!;
+                                        },
+                                      ),
+                                      const SizedBox(height: 16),
                                       _buildEditableField(
                                         controller: voucherController.voucherModel.transactionDetails_controller.value,
                                         label: 'Transaction Reference',
@@ -1383,10 +1394,12 @@ class _VoucherState extends State<Voucher> {
                                         List<String> invoiceNumbers = [];
                                         List<InvoiceDetails> invoiceDetails = [];
                                         List<double> grossamount = [];
+                                        List<String> customerids = [];
                                         for (int i = 0; i < selectedVouchers.selectedVoucherList.length; i++) {
                                           voucherIds.add(selectedVouchers.selectedVoucherList[i].voucher_id);
                                           voucherNumbers.add(selectedVouchers.selectedVoucherList[i].voucherNumber);
                                           invoiceNumbers.add(selectedVouchers.selectedVoucherList[i].invoiceNumber);
+                                          customerids.add(selectedVouchers.selectedVoucherList[i].customerId);
                                           invoiceDetails.add(InvoiceDetails(
                                             invoiceDate: selectedVouchers.selectedVoucherList[i].date!,
                                             invoiceNumber: selectedVouchers.selectedVoucherList[i].invoiceNumber,
@@ -1395,25 +1408,27 @@ class _VoucherState extends State<Voucher> {
                                         }
                                         final pdfBytes = await ClubVoucherReceiptPDf(
                                           PdfPageFormat.a4,
-                                          Clear_ClubVoucher(
-                                              date: DateTime.parse(voucherController.voucherModel.closedDate.value),
-                                              totalPaidAmount:
-                                                  voucherController.voucherModel.is_Deducted.value ? selectedVouchers.totalPendingAmount_withTDS : selectedVouchers.totalPendingAmount_withoutTDS,
-                                              tdsStatus: voucherController.voucherModel.is_Deducted.value,
-                                              paymentStatus: 'complete',
-                                              feedback: voucherController.voucherModel.feedback_controller.value.text,
-                                              transactionDetails: voucherController.voucherModel.transactionDetails_controller.value.text,
-                                              voucherIds: voucherIds,
-                                              voucherNumbers: voucherNumbers,
-                                              voucherList: consolidateJSON,
-                                              invoiceNumbers: invoiceNumbers,
-                                              clientAddressName: selectedVouchers.selectedVoucherList[0].clientName,
-                                              clientAddress: selectedVouchers.selectedVoucherList[0].clientAddress,
-                                              invoiceDate: voucherController.voucherModel.voucher_list[0].date!,
-                                              invoicedetails: invoiceDetails,
-                                              grossAmount: grossamount.fold(0.0, (sum, item) => sum + item),
-                                              selectedInvoiceGroup: selectedVouchers,
-                                              selectedPaymentMode: voucherController.voucherModel.Selectedpaymentmode.value),
+                                          ClubVoucher_data(
+                                            date: DateTime.parse(voucherController.voucherModel.closedDate.value),
+                                            totalPaidAmount:
+                                                voucherController.voucherModel.is_Deducted.value ? selectedVouchers.totalPendingAmount_withTDS : selectedVouchers.totalPendingAmount_withoutTDS,
+                                            tdsStatus: voucherController.voucherModel.is_Deducted.value,
+                                            paymentStatus: 'complete',
+                                            feedback: voucherController.voucherModel.feedback_controller.value.text,
+                                            transactionDetails: voucherController.voucherModel.transactionDetails_controller.value.text,
+                                            voucherIds: voucherIds,
+                                            voucherNumbers: voucherNumbers,
+                                            voucherList: consolidateJSON,
+                                            invoiceNumbers: invoiceNumbers,
+                                            clientAddressName: selectedVouchers.selectedVoucherList[0].clientName,
+                                            clientAddress: selectedVouchers.selectedVoucherList[0].clientAddress,
+                                            invoiceDate: voucherController.voucherModel.voucher_list[0].date!,
+                                            invoicedetails: invoiceDetails,
+                                            grossAmount: grossamount.fold(0.0, (sum, item) => sum + item),
+                                            selectedInvoiceGroup: selectedVouchers,
+                                            paymentmode: voucherController.voucherModel.Selectedpaymentmode.value,
+                                            customerids: customerids,
+                                          ),
                                         );
 
                                         // Get the system temp directory

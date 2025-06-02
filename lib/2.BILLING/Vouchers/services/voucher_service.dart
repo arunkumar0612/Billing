@@ -398,85 +398,91 @@ mixin VoucherService {
   }
 
   dynamic clear_ClubVoucher(context, SelectedInvoiceVoucherGroup selectedVouchers, File? file, File receipt) async {
-    try {
-      List<Map<String, dynamic>> consolidateJSON = [];
-      List<int> voucherIds = [];
-      List<String> voucherNumbers = [];
-      List<String> invoiceNumbers = [];
-      List<Map<String, dynamic>> invoiceDetails = [];
-      for (int i = 0; i < selectedVouchers.selectedVoucherList.length; i++) {
-        voucherIds.add(selectedVouchers.selectedVoucherList[i].voucher_id);
-        voucherNumbers.add(selectedVouchers.selectedVoucherList[i].voucherNumber);
-        invoiceNumbers.add(selectedVouchers.selectedVoucherList[i].invoiceNumber);
-        invoiceDetails.add({
-          'invoicenumber': selectedVouchers.selectedVoucherList[i].invoiceNumber,
-          'invoicedate': selectedVouchers.selectedVoucherList[i].date,
-        });
-        final mapData = {
-          "voucherid": selectedVouchers.selectedVoucherList[i].voucher_id,
-          "vouchernumber": selectedVouchers.selectedVoucherList[i].voucherNumber,
-          "IGST": selectedVouchers.selectedVoucherList[i].igst,
-          "SGST": selectedVouchers.selectedVoucherList[i].sgst,
-          "CGST": selectedVouchers.selectedVoucherList[i].cgst,
-          "tds": selectedVouchers.selectedVoucherList[i].tdsCalculationAmount,
-          "tdsstatus": voucherController.voucherModel.is_Deducted.value,
-          "grossamount": selectedVouchers.selectedVoucherList[i].totalAmount,
-          "subtotal": selectedVouchers.selectedVoucherList[i].subTotal,
-          "paidamount": voucherController.voucherModel.is_Deducted.value
-              ? (selectedVouchers.selectedVoucherList[i].pendingAmount - selectedVouchers.selectedVoucherList[i].tdsCalculationAmount)
-              : selectedVouchers.selectedVoucherList[i].totalAmount,
-          "clientaddressname": selectedVouchers.selectedVoucherList[i].clientName,
-          "clientaddress": selectedVouchers.selectedVoucherList[i].clientAddress,
-          "invoicenumber": selectedVouchers.selectedVoucherList[i].invoiceNumber,
-          "emailid": selectedVouchers.selectedVoucherList[i].emailId,
-          "phoneno": selectedVouchers.selectedVoucherList[i].phoneNumber,
-          "invoicetype": selectedVouchers.selectedVoucherList[i].invoiceType,
-          "gstnumber": selectedVouchers.selectedVoucherList[i].gstNumber,
-          'invoicedate': voucherController.voucherModel.voucher_list[i].date,
-        };
-        consolidateJSON.add(mapData);
-      }
-      final main_map = {
-        "totalpaidamount": voucherController.voucherModel.is_Deducted.value ? selectedVouchers.totalPendingAmount_withTDS : selectedVouchers.totalPendingAmount_withoutTDS,
-        "voucherlist": consolidateJSON,
-        "date": voucherController.voucherModel.closedDate.value,
-        "feedback": voucherController.voucherModel.feedback_controller.value.text,
-        "transactiondetails": voucherController.voucherModel.transactionDetails_controller.value.text,
+    // try {
+    List<Map<String, dynamic>> consolidateJSON = [];
+    List<int> voucherIds = [];
+    List<String> voucherNumbers = [];
+    List<String> invoiceNumbers = [];
+    List<String> cusIDs = [];
+    List<Map<String, dynamic>> invoiceDetails = [];
+    for (int i = 0; i < selectedVouchers.selectedVoucherList.length; i++) {
+      voucherIds.add(selectedVouchers.selectedVoucherList[i].voucher_id);
+      voucherNumbers.add(selectedVouchers.selectedVoucherList[i].voucherNumber);
+      invoiceNumbers.add(selectedVouchers.selectedVoucherList[i].invoiceNumber);
+      cusIDs.add(selectedVouchers.selectedVoucherList[i].customerId);
+      invoiceDetails.add({
+        'invoicenumber': selectedVouchers.selectedVoucherList[i].invoiceNumber,
+        'invoicedate': selectedVouchers.selectedVoucherList[i].date,
+      });
+      final mapData = {
+        "voucherid": selectedVouchers.selectedVoucherList[i].voucher_id,
+        "vouchernumber": selectedVouchers.selectedVoucherList[i].voucherNumber,
+        "IGST": selectedVouchers.selectedVoucherList[i].igst,
+        "SGST": selectedVouchers.selectedVoucherList[i].sgst,
+        "CGST": selectedVouchers.selectedVoucherList[i].cgst,
+        "tds": selectedVouchers.selectedVoucherList[i].tdsCalculationAmount,
         "tdsstatus": voucherController.voucherModel.is_Deducted.value,
-        "paymentstatus": "complete",
-        "voucherids": voucherIds,
-        "vouchernumbers": voucherNumbers,
-        'invoicenumbers': invoiceNumbers,
-        'selectedpaymentmode': voucherController.voucherModel.Selectedpaymentmode.value,
+        "grossamount": selectedVouchers.selectedVoucherList[i].totalAmount,
+        "subtotal": selectedVouchers.selectedVoucherList[i].subTotal,
+        "paidamount": voucherController.voucherModel.is_Deducted.value
+            ? (selectedVouchers.selectedVoucherList[i].pendingAmount - selectedVouchers.selectedVoucherList[i].tdsCalculationAmount)
+            : selectedVouchers.selectedVoucherList[i].totalAmount,
+        "clientaddressname": selectedVouchers.selectedVoucherList[i].clientName,
+        "clientaddress": selectedVouchers.selectedVoucherList[i].clientAddress,
+        "invoicenumber": selectedVouchers.selectedVoucherList[i].invoiceNumber,
+        "emailid": selectedVouchers.selectedVoucherList[i].emailId,
+        "phoneno": selectedVouchers.selectedVoucherList[i].phoneNumber,
+        "invoicetype": selectedVouchers.selectedVoucherList[i].invoiceType,
+        "gstnumber": selectedVouchers.selectedVoucherList[i].gstNumber,
+        'invoicedate': voucherController.voucherModel.voucher_list[i].date?.toIso8601String(),
       };
-
-      Clear_ClubVoucher voucherdata = Clear_ClubVoucher.fromJson(main_map);
-      // String encodedData = json.encode(voucherdata.toJson());
-
-      String encodedData = json.encode(voucherdata.toJson());
-      Map<String, dynamic>? response = await apiController.Multer(
-        sessiontokenController.sessiontokenModel.sessiontoken.value,
-        encodedData,
-        [file, receipt].whereType<File>().toList(), // ✅ Corrected line
-        API.clearVoucher,
-      );
-
-      // Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, encodedData, [file!], API.clearClubVoucher);
-      if (response['statusCode'] == 200) {
-        CMDmResponse value = CMDmResponse.fromJson(response);
-        if (value.code) {
-          await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
-          Navigator.of(context).pop(true);
-        } else {
-          await Error_dialog(context: context, title: 'Processing Invoice', content: value.message ?? "", onOk: () {});
-        }
-      } else {
-        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
-      }
-      //await Refresher().refreshAll(context);
-    } catch (e) {
-      Error_dialog(context: context, title: "ERROR", content: "$e");
+      consolidateJSON.add(mapData);
     }
+    final main_map = {
+      "totalpaidamount": voucherController.voucherModel.is_Deducted.value ? selectedVouchers.totalPendingAmount_withTDS : selectedVouchers.totalPendingAmount_withoutTDS,
+      "voucherlist": consolidateJSON,
+      "date": voucherController.voucherModel.closedDate.value,
+      "feedback": voucherController.voucherModel.feedback_controller.value.text,
+      "transactiondetails": voucherController.voucherModel.transactionDetails_controller.value.text,
+      "tdsstatus": voucherController.voucherModel.is_Deducted.value,
+      "paymentstatus": "complete",
+      "voucherids": voucherIds,
+      "vouchernumbers": voucherNumbers,
+      'invoicenumbers': invoiceNumbers,
+      'selectedpaymentmode': voucherController.voucherModel.Selectedpaymentmode.value,
+      'selectedinvoicegroup': selectedVouchers,
+      "invoicedetails": invoiceDetails,
+      "paymentmode": voucherController.voucherModel.Selectedpaymentmode.value,
+      "customerids": cusIDs,
+    };
+
+    ClubVoucher_data voucherdata = ClubVoucher_data.fromJson(main_map);
+    // String encodedData = json.encode(voucherdata.toJson());
+    // print((voucherdata.toJson()));
+    String encodedData = json.encode(voucherdata.toJson());
+    Map<String, dynamic>? response = await apiController.Multer(
+      sessiontokenController.sessiontokenModel.sessiontoken.value,
+      encodedData,
+      [file, receipt].whereType<File>().toList(), // ✅ Corrected line
+      API.clearClubVoucher,
+    );
+
+    // Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, encodedData, [file!], API.clearClubVoucher);
+    if (response['statusCode'] == 200) {
+      CMDmResponse value = CMDmResponse.fromJson(response);
+      if (value.code) {
+        await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
+        Navigator.of(context).pop(true);
+      } else {
+        await Error_dialog(context: context, title: 'Processing Invoice', content: value.message ?? "", onOk: () {});
+      }
+    } else {
+      Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+    }
+    //await Refresher().refreshAll(context);
+    // } catch (e) {
+    //   Error_dialog(context: context, title: "ERROR", content: "$e");
+    // }
   }
 
   dynamic clearVoucher(context, int index, File? file, String VoucherType, File receipt) async {

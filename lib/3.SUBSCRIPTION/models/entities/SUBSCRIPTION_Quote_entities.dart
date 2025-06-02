@@ -220,11 +220,11 @@ class SUBSCRIPTION_Quote {
       case 4:
         return findPackageBySiteName(siteData[siteIndex].sitename)!.name;
       case 5:
-        return findPackageBySiteName(siteData[siteIndex].sitename)!.amount.toString();
+        return formatCurrency(double.parse(findPackageBySiteName(siteData[siteIndex].sitename)!.amount));
       case 6:
         return findPackageBySiteName(siteData[siteIndex].sitename)!.gstPercent.toString();
       case 7:
-        return Total_amount(siteData[siteIndex].sitename);
+        return formatCurrency(double.parse(Total_amount(siteData[siteIndex].sitename) ?? "0"));
       // case 5:
       //   return Price.toString();
       default:

@@ -23,7 +23,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entities.dart';
 
-Future<Uint8List> ClubVoucherReceiptPDf(PdfPageFormat pageFormat, Clear_ClubVoucher club_voucher) async {
+Future<Uint8List> ClubVoucherReceiptPDf(PdfPageFormat pageFormat, ClubVoucher_data club_voucher) async {
   final receiptData = VoucherReceipt(data: club_voucher);
 
   final fontRegular = pw.Font.ttf(await rootBundle.load('assets/fonts/roboto.ttf'));
@@ -57,7 +57,7 @@ Future<Uint8List> ClubVoucherReceiptPDf(PdfPageFormat pageFormat, Clear_ClubVouc
 }
 
 class VoucherReceipt {
-  final Clear_ClubVoucher data;
+  final ClubVoucher_data data;
 
   VoucherReceipt({
     required this.data,
@@ -311,7 +311,7 @@ pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
             _buildTableRow('Received from', receiptData.data.clientAddressName),
             _buildTableRow('Amount', 'Rs.${_formatCurrency(receiptData.data.totalPaidAmount)}'),
             _buildTableRow('Date of Payment', _formatDate(receiptData.data.date)),
-            _buildTableRow('Mode of Payment', receiptData.data.selectedPaymentMode),
+            _buildTableRow('Mode of Payment', receiptData.data.paymentmode),
             _buildTableRow('Transaction ref', receiptData.data.transactionDetails),
           ],
         ),

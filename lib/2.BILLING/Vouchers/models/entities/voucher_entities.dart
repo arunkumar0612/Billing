@@ -313,12 +313,12 @@ class InvoiceDetails {
   Map<String, dynamic> toMap() {
     return {
       'invoicenumber': invoiceNumber,
-      'invoicedate': invoiceDate,
+      'invoicedate': invoiceDate.toIso8601String(),
     };
   }
 }
 
-class Clear_ClubVoucher {
+class ClubVoucher_data {
   final DateTime date;
   final double totalPaidAmount;
   final bool tdsStatus;
@@ -335,9 +335,11 @@ class Clear_ClubVoucher {
   final List<InvoiceDetails> invoicedetails;
   final double grossAmount;
   final SelectedInvoiceVoucherGroup selectedInvoiceGroup;
-  final String selectedPaymentMode;
+  // final String selectedPaymentMode;
+  final String paymentmode;
+  final List<String> customerids;
 
-  Clear_ClubVoucher({
+  ClubVoucher_data({
     required this.date,
     required this.totalPaidAmount,
     required this.tdsStatus,
@@ -354,28 +356,33 @@ class Clear_ClubVoucher {
     required this.invoicedetails,
     required this.grossAmount,
     required this.selectedInvoiceGroup,
-    required this.selectedPaymentMode,
+    // required this.selectedPaymentMode,
+    required this.paymentmode,
+    required this.customerids,
   });
 
-  factory Clear_ClubVoucher.fromJson(Map<String, dynamic> json) {
-    return Clear_ClubVoucher(
-        date: DateTime.tryParse(json['date'] ?? '') ?? DateTime.now(),
-        totalPaidAmount: (json['totalpaidamount'] ?? 0).toDouble(),
-        tdsStatus: json['tdsstatus'] ?? false,
-        paymentStatus: json['paymentstatus'] ?? '',
-        feedback: json['feedback'] ?? '',
-        transactionDetails: json['transactiondetails'] ?? '',
-        voucherIds: json['voucherids'] ?? '',
-        voucherNumbers: json['vouchernumbers'] ?? '',
-        voucherList: (json['voucherlist'] as List<dynamic>).map((item) => Map<String, dynamic>.from(item)).toList(),
-        invoiceNumbers: json['invoicenumbers'] ?? '',
-        clientAddressName: json['clientaddressname'] ?? '',
-        clientAddress: json['clientaddress'] ?? '',
-        invoiceDate: DateTime.tryParse(json['invoicedate'] ?? '') ?? DateTime.now(),
-        invoicedetails: (json['invoicedetails'] as List<dynamic>?)?.map((item) => InvoiceDetails.fromMap(item)).toList() ?? [],
-        grossAmount: (json['grossamount'] ?? 0).toDouble(),
-        selectedInvoiceGroup: SelectedInvoiceVoucherGroup.fromJson(json['selectedinvoicegroup']),
-        selectedPaymentMode: json['selectedpaymentmode']);
+  factory ClubVoucher_data.fromJson(Map<String, dynamic> json) {
+    return ClubVoucher_data(
+      date: DateTime.tryParse(json['date'] ?? '') ?? DateTime.now(),
+      totalPaidAmount: (json['totalpaidamount'] ?? 0).toDouble(),
+      tdsStatus: json['tdsstatus'] ?? false,
+      paymentStatus: json['paymentstatus'] ?? '',
+      feedback: json['feedback'] ?? '',
+      transactionDetails: json['transactiondetails'] ?? '',
+      voucherIds: json['voucherids'] ?? '',
+      voucherNumbers: json['vouchernumbers'] ?? '',
+      voucherList: (json['voucherlist'] as List<dynamic>).map((item) => Map<String, dynamic>.from(item)).toList(),
+      invoiceNumbers: json['invoicenumbers'] ?? '',
+      clientAddressName: json['clientaddressname'] ?? '',
+      clientAddress: json['clientaddress'] ?? '',
+      invoiceDate: DateTime.tryParse(json['invoicedate'] ?? '') ?? DateTime.now(),
+      invoicedetails: (json['invoicedetails'] as List<dynamic>?)?.map((item) => InvoiceDetails.fromMap(item)).toList() ?? [],
+      grossAmount: (json['grossamount'] ?? 0).toDouble(),
+      selectedInvoiceGroup: json['selectedinvoicegroup'],
+      // selectedPaymentMode: json['selectedpaymentmode'],
+      paymentmode: json['paymentmode'] ?? '',
+      customerids: json['customerids'],
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -392,11 +399,13 @@ class Clear_ClubVoucher {
       'invoicenumbers': invoiceNumbers,
       'clientaddressname': clientAddressName,
       'clientaddress': clientAddress,
-      'invoicedate': invoiceDate,
+      'invoicedate': invoiceDate.toIso8601String(),
       'invoicedetails': invoicedetails.map((e) => e.toMap()).toList(),
       'grossamount': grossAmount,
-      'selectedinvoicegroup': selectedInvoiceGroup,
-      'selectedpaymentmode': selectedPaymentMode
+      'selectedinvoicegroup': selectedInvoiceGroup.toJson(),
+      // 'selectedpaymentmode': selectedPaymentMode,
+      'paymentmode': paymentmode,
+      'customerids': customerids,
     };
   }
 }

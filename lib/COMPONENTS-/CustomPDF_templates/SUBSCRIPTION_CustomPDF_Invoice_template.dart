@@ -354,7 +354,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                         padding: const pw.EdgeInsets.symmetric(horizontal: 0),
                         child: pw.Text(
                           // 'Annexed',
-                          instInvoice.billPlanDetails.planCharges,
+                          formatCurrency(double.parse(instInvoice.billPlanDetails.planCharges)),
                           textAlign: pw.TextAlign.start,
                           style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor),
                           softWrap: true, // Ensure text wraps within the container
@@ -380,7 +380,7 @@ class SUBSCRIPTION_MaualInvoiceTemplate {
                         padding: const pw.EdgeInsets.symmetric(horizontal: 0),
                         child: pw.Text(
                           // '0.00°',
-                          instInvoice.billPlanDetails.internetCharges.toString(),
+                          formatCurrency(instInvoice.billPlanDetails.internetCharges),
                           textAlign: pw.TextAlign.start,
                           style: pw.TextStyle(font: Helvetica, fontSize: 10, lineSpacing: 2, color: _darkColor),
                           softWrap: true, // Ensure text wraps within the container

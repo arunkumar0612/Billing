@@ -8,7 +8,7 @@ import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
 class MainBilling_Controller extends GetxController {
   var billingModel = BillingModel();
-  var subscriptionFilteredModel = BillingModel().subscriptionInvoiceList;
+  // var subscriptionFilteredModel = BillingModel().subscriptionInvoiceList;
   var salesFilteredModel = BillingModel().salesInvoiceList;
   var vendorFilteredModel = BillingModel().vendorInvoiceList;
 
@@ -20,6 +20,7 @@ class MainBilling_Controller extends GetxController {
   void addto_SalesInvoiceList(SalesInvoice element) {
     billingModel.salesInvoiceList.add(element);
     billingModel.allSalesInvoices.add(element);
+    // print('object');
   }
 
   void addto_VenorInvoiceList(SubscriptionInvoice element) {

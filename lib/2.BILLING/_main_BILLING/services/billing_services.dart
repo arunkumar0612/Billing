@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -21,29 +22,115 @@ mixin main_BillingService {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final MainBilling_Controller mainBilling_Controller = Get.find<MainBilling_Controller>();
   final loader = LoadingOverlay();
-  void get_SubscriptionInvoiceList() async {
+
+  Future<void> Get_Mainbilling_SUBcustomerList() async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyToken(API.billing_subscriptionInvoice);
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_ledgerSubscriptionCustomers);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          mainBilling_Controller.billingModel.allSubscriptionInvoices.clear();
+          mainBilling_Controller.billingModel.subCustomerList.value = value.data.map((e) => MainbillingCustomerInfo.fromJson(e)).toList();
+          // print('ijhietjwe${view_LedgerController.view_LedgerModel.subCustomerList}');
+          // salesController.addToCustompdfList(value);
+        } else {
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
+          // await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
+        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("error : $e");
+      }
+      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
+
+  Future<void> Get_Mainbilling_SALEScustomerList(BuildContext context) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.get_ledgerSalesCustomers);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          mainBilling_Controller.billingModel.salesCustomerList.value = value.data.map((e) => MainbillingCustomerInfo.fromJson(e)).toList();
+          // print(view_LedgerController.view_LedgerModel.salesCustomerList);
+          // salesController.addToCustompdfList(value);
+        } else {
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
+          await Error_dialog(context: context, title: 'Sales List', content: value.message ?? 'Error');
+          // await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
+
+        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("error : $e");
+      }
+      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
+
+  void get_SubscriptionInvoiceList(BuildContext context) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({
+        "plantype": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.plantype.value.toLowerCase() == 'show all'
+            ? ''
+            : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.plantype.value.toLowerCase(),
+        "paymentstatus": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value.toLowerCase() == 'show all'
+            ? ''
+            : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value.toLowerCase(),
+
+        // "customerid": "SB_1",
+        "customerid": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value == 'None'
+            ? ''
+            : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value,
+        "startdate": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.fromdate.value.toString(),
+        "enddate": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.todate.value.toString(),
+      }, API.billing_subscriptionInvoice);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          mainBilling_Controller.billingModel.subscriptionInvoiceList.clear();
           mainBilling_Controller.billingModel.allSubscriptionInvoices.clear();
           for (int i = 0; i < value.data.length; i++) {
             mainBilling_Controller.addto_SubscriptionInvoiceList(SubscriptionInvoice.fromJson(value.data[i]));
             // print(value.data[i]['Overdue_history']);
           }
-
           // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
           // clientreqController.update_OrganizationList(value);
         } else {
-          // await Error_dialog(context: context, title: 'Fetching Organization List Error', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Subscription invoice List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        // Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      // Error_dialog(context: context, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
+  String formatNumber(int number) {
+    if (number >= 10000000) {
+      return "₹ ${(number / 10000000).toStringAsFixed(1)}Cr";
+    } else if (number >= 100000) {
+      return "₹ ${(number / 100000).toStringAsFixed(1)}L";
+    } else if (number >= 1000) {
+      return "₹ ${(number / 1000).toStringAsFixed(1)}K";
+    } else {
+      return "₹ $number";
     }
   }
 
@@ -171,9 +258,20 @@ mixin main_BillingService {
     }
   }
 
-  void get_SalesInvoiceList() async {
+  void get_SalesInvoiceList(BuildContext context) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyToken(API.billing_salesInvoice);
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({
+        "paymentstatus": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value.toLowerCase() == 'show all'
+            ? ''
+            : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value.toLowerCase(),
+
+        // "customerid": "SB_1",
+        "customerid": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value == 'None'
+            ? ''
+            : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value,
+        "startdate": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.fromdate.value.toString(),
+        "enddate": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.todate.value.toString(),
+      }, API.billing_salesInvoice);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
@@ -187,13 +285,13 @@ mixin main_BillingService {
           // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
           // clientreqController.update_OrganizationList(value);
         } else {
-          // await Error_dialog(context: context, title: 'Fetching Organization List Error', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Fetching Organization List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        // Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      // Error_dialog(context: context, title: "ERROR", content: "$e");
+      Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -826,23 +924,99 @@ mixin main_BillingService {
     );
   }
 
-  Future<void> billing_refresh() async {
+  Future<void> billing_refresh(BuildContext context) async {
     // salesController.resetData();
-    get_SubscriptionInvoiceList();
-    get_SalesInvoiceList();
+    get_SubscriptionInvoiceList(context);
+    get_SalesInvoiceList(context);
   }
 
-  void resetFilters() {
-    mainBilling_Controller.billingModel.startDateController.value.clear();
-    mainBilling_Controller.billingModel.endDateController.value.clear();
-    mainBilling_Controller.billingModel.selectedPaymentStatus.value = 'Show All';
-    mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Show All';
-    mainBilling_Controller.billingModel.selectedQuickFilter.value = 'Show All';
-    mainBilling_Controller.billingModel.selectedPackageName.value = 'Show All';
-    mainBilling_Controller.billingModel.showCustomDateRange.value = false;
-    // voucherController.voucherModel.filteredVouchers.value = voucherController.voucherModel.voucher_list;
-    // voucherController.voucherModel.selectedItems.value = List.filled(voucherController.voucherModel.voucher_list.length, false);
-    // voucherController.voucherModel.selectAll.value = false;
-    // voucherController.voucherModel.showDeleteButton.value = false;
+  Future<void> selectfilterDate(BuildContext context, TextEditingController controller) async {
+    final DateTime now = DateTime.now();
+    final DateTime nextYear = now.add(const Duration(days: 365)); // Limit to next year
+
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: now, // Start from today
+      lastDate: nextYear, // Allow dates up to 1 year from today
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Primary_colors.Color3,
+              onPrimary: Colors.white,
+              onSurface: Colors.black87,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Primary_colors.Color3,
+              ),
+            ),
+            dialogTheme: const DialogThemeData(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (pickedDate != null) {
+      final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
+          "${pickedDate.month.toString().padLeft(2, '0')}-"
+          "${pickedDate.day.toString().padLeft(2, '0')}";
+
+      controller.text = formatted;
+    }
   }
+
+  void resetmainbilling_Filters() {
+    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.plantype.value = 'Show All';
+    // mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = 'Show All';
+    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedsalescustomername.value = 'None';
+    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value = '';
+    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedsubscriptioncustomername.value = 'None';
+    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value = 'Show All';
+    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.fromdate.value = '';
+    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.todate.value = '';
+    // mainBilling_Controller.billingModel.filteredmainbilling_s.value = mainBilling_Controller.billingModel.mainbilling__list;
+  }
+
+  void assignmainbilling_Filters() {
+    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.plantype.value = mainBilling_Controller.billingModel.selectedplantype.value;
+    // mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = mainBilling_Controller.billingModel.selectedInvoiceType.value;
+    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedsalescustomername.value = mainBilling_Controller.billingModel.selectedsalescustomer.value;
+    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedsubscriptioncustomername.value = mainBilling_Controller.billingModel.selectedsubcustomer.value;
+    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value = mainBilling_Controller.billingModel.selectedcustomerID.value;
+    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value = mainBilling_Controller.billingModel.selectedpaymentstatus.value;
+    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.fromdate.value = mainBilling_Controller.billingModel.startDateController.value.text;
+    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.todate.value = mainBilling_Controller.billingModel.endDateController.value.text;
+  }
+
+  void reassignmainbilling_Filters() {
+    mainBilling_Controller.billingModel.selectedplantype.value = mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.plantype.value;
+    // mainBilling_Controller.billingModel.selectedInvoiceType.value = mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value;
+    mainBilling_Controller.billingModel.selectedsalescustomer.value = mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedsalescustomername.value;
+    mainBilling_Controller.billingModel.selectedsubcustomer.value = mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedsubscriptioncustomername.value;
+    mainBilling_Controller.billingModel.selectedcustomerID.value = mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value;
+    mainBilling_Controller.billingModel.selectedpaymentstatus.value = mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value;
+    mainBilling_Controller.billingModel.startDateController.value.text = mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.fromdate.value;
+    mainBilling_Controller.billingModel.endDateController.value.text = mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.todate.toString();
+    mainBilling_Controller.billingModel.selectedMonth.value = mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedmonth.value.toString();
+  }
+  // void resetFilters() {
+  //   mainBilling_Controller.billingModel.startDateController.value.clear();
+  //   mainBilling_Controller.billingModel.endDateController.value.clear();
+  //   mainBilling_Controller.billingModel.selectedPaymentStatus.value = 'Show All';
+  //   mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Show All';
+  //   mainBilling_Controller.billingModel.selectedQuickFilter.value = 'Show All';
+  //   mainBilling_Controller.billingModel.selectedPackageName.value = 'Show All';
+  //   mainBilling_Controller.billingModel.showCustomDateRange.value = false;
+  //   // voucherController.voucherModel.filteredVouchers.value = voucherController.voucherModel.voucher_list;
+  //   // voucherController.voucherModel.selectedItems.value = List.filled(voucherController.voucherModel.voucher_list.length, false);
+  //   // voucherController.voucherModel.selectAll.value = false;
+  //   // voucherController.voucherModel.showDeleteButton.value = false;
+  // }
 }

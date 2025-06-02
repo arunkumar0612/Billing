@@ -13,6 +13,7 @@ import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/view_ledger_entit
 import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entities.dart';
 import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/API/invoker.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
@@ -55,7 +56,7 @@ mixin View_LedgerService {
     }
   }
 
-  Future<void> Get_SALEScustomerList() async {
+  Future<void> Get_SALEScustomerList(BuildContext context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_ledgerSalesCustomers);
       if (response?['statusCode'] == 200) {
@@ -68,12 +69,14 @@ mixin View_LedgerService {
           if (kDebugMode) {
             print("error : ${value.message}");
           }
+          await Error_dialog(context: context, title: 'Sales List', content: value.message ?? 'Error');
           // await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
         if (kDebugMode) {
           print("error : ${"please contact administration"}");
         }
+
         // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {

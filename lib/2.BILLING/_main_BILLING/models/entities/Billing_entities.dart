@@ -1,3 +1,5 @@
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 class SubscriptionInvoice {
   final int recurredBillId;
   final int subscriptionBillId;
@@ -77,7 +79,7 @@ class SubscriptionInvoice {
       planType: json['plantype'],
       billMode: json['billmode'],
       paymentStatus: json['payment_status'],
-      pendingPayments: json['pendingPayments'],
+      pendingPayments: json['pendingPayments'] ?? "",
       planName: json['plan_name'],
       voucher_number: json['voucher_number'] ?? "",
       voucher_id: json['voucher_id'],
@@ -192,7 +194,7 @@ class SalesInvoice {
       billingAddress: json['billing_address'] as String,
       gstNumber: json['gstnumber'] as String,
       emailId: json['email_id'] as String,
-      phoneNo: json['phone_no'] as String,
+      phoneNo: json['phone_number'] as String,
       ccEmail: json['ccemail'] as String,
       invoiceAmount: (json['invoice_amount'] as num).toDouble(),
       processId: json['processid'] as int,
@@ -371,4 +373,68 @@ class DashboardStats {
       'pendingAmount': pendingAmount,
     };
   }
+}
+
+class MainbillingCustomerInfo {
+  final String customerId;
+  final String customerName;
+  final String customerPhoneNo;
+  final String customerGstNo;
+
+  MainbillingCustomerInfo({
+    required this.customerId,
+    required this.customerName,
+    required this.customerPhoneNo,
+    required this.customerGstNo,
+  });
+
+  factory MainbillingCustomerInfo.fromJson(Map<String, dynamic> json) {
+    return MainbillingCustomerInfo(
+      customerId: json['customer_id'] ?? '',
+      customerName: json['customer_name'] ?? '',
+      customerPhoneNo: json['customer_phoneno'] ?? '',
+      customerGstNo: json['customer_gstno'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'customer_id': customerId,
+      'customer_name': customerName,
+      'customer_phoneno': customerPhoneNo,
+      'customer_gstno': customerGstNo,
+    };
+  }
+}
+
+class MainbillingSelectedFilter {
+  RxString plantype;
+  RxString invoicetype;
+  RxString selectedsalescustomername;
+  RxString selectedcustomerid;
+  RxString selectedsubscriptioncustomername;
+  RxString paymentstatus;
+  RxString fromdate;
+  RxString todate;
+  RxString selectedmonth;
+
+  MainbillingSelectedFilter(
+      {String plantype = 'Show All',
+      String invoicetype = 'Subscription',
+      String selectedsalescustomername = 'None',
+      String selectedcustomerid = '',
+      String selectedsubscriptioncustomername = 'None',
+      String paymentstatus = 'Show All',
+      String fromdate = '',
+      String todate = '',
+      String selectedmonth = ''})
+      : plantype = RxString(plantype),
+        invoicetype = RxString(invoicetype),
+        selectedsalescustomername = RxString(selectedsalescustomername),
+        selectedcustomerid = RxString(selectedcustomerid),
+        selectedsubscriptioncustomername = RxString(selectedsubscriptioncustomername),
+        paymentstatus = RxString(paymentstatus),
+        fromdate = RxString(fromdate),
+        todate = RxString(todate),
+        selectedmonth = RxString(selectedmonth);
 }

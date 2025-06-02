@@ -36,18 +36,34 @@ class _FilterScreenState extends State<FilterScreen> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Primary_colors.Color3),
               ),
               const Divider(height: 30, thickness: 1, color: Color.fromARGB(255, 97, 97, 97)),
-              const SizedBox(height: 35),
-              // Quick Date Filters
-              const Text(
-                'Plan type',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
-              ),
-              const SizedBox(height: 12),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [Obx(() => _buildmainBilling_typeFilterChip('Show All')), Obx(() => _buildmainBilling_typeFilterChip('Prepaid')), Obx(() => _buildmainBilling_typeFilterChip('Postpaid'))],
-              ),
+              if (mainBilling_Controller.billingModel.selectedInvoiceType.value == 'Subscription')
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 35),
+                    // Quick Date Filters
+                    const Text(
+                      'Plan type',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                    ),
+                    const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        Obx(
+                          () => _buildmainBilling_typeFilterChip('Show All'),
+                        ),
+                        Obx(
+                          () => _buildmainBilling_typeFilterChip('Prepaid'),
+                        ),
+                        Obx(
+                          () => _buildmainBilling_typeFilterChip('Postpaid'),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
 
               // Product Type Filter
 

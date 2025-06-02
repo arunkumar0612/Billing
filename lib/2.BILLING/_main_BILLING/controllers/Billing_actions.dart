@@ -20,7 +20,7 @@ class MainBilling_Controller extends GetxController {
   void addto_SalesInvoiceList(SalesInvoice element) {
     billingModel.salesInvoiceList.add(element);
     billingModel.allSalesInvoices.add(element);
-    print('object');
+    // print('object');
   }
 
   void addto_VenorInvoiceList(SubscriptionInvoice element) {

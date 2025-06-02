@@ -171,7 +171,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                   Expanded(
                                                     flex: 2,
                                                     child: Padding(
-                                                      padding: const EdgeInsets.only(top: 8, left: 8),
+                                                      padding: const EdgeInsets.all(16),
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
@@ -345,7 +345,6 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                               ),
                                                             ],
                                                           ),
-                                                          const SizedBox(height: 35),
                                                         ],
                                                       ),
                                                     ),
@@ -354,7 +353,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                   Expanded(
                                                     flex: 2,
                                                     child: Padding(
-                                                      padding: const EdgeInsets.only(right: 10),
+                                                      padding: const EdgeInsets.only(right: 16),
                                                       child: SizedBox(
                                                         width: 200,
                                                         height: 35,
@@ -436,7 +435,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                       // ],
                                                     ),
                                                     child: Padding(
-                                                      padding: const EdgeInsets.all(16),
+                                                      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                                                       child: Row(
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -454,7 +453,9 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                                 ),
                                                               ),
                                                               Text(
-                                                                formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount ?? 0.0),
+                                                                widget.formatNumber(int.tryParse(mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount.toString()) ?? 0),
+
+                                                                // formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount ?? 0.0),
                                                                 style: TextStyle(
                                                                   color: Primary_colors.Color1,
                                                                   fontSize: 28,
@@ -489,7 +490,8 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                                 ),
                                                               ),
                                                               Text(
-                                                                formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount ?? 0.0),
+                                                                widget.formatNumber(int.tryParse(mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount.toString()) ?? 0),
+                                                                // formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount ?? 0.0),
                                                                 style: TextStyle(
                                                                   color: Primary_colors.Color1,
                                                                   fontSize: 28,
@@ -524,7 +526,8 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                                 ),
                                                               ),
                                                               Text(
-                                                                formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount ?? 0.0),
+                                                                widget.formatNumber(int.tryParse(mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount.toString()) ?? 0),
+                                                                // formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount ?? 0.0),
                                                                 style: TextStyle(
                                                                   color: Primary_colors.Color1,
                                                                   fontSize: 28,
@@ -756,10 +759,27 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                             child: TabBar(
                               indicatorColor: Primary_colors.Color5,
                               onTap: (index) {
-                                if (index == 0) mainBilling_Controller.setActiveTab('Subscription');
-                                if (index == 1) mainBilling_Controller.setActiveTab('Sales');
-                                if (index == 2) mainBilling_Controller.setActiveTab('Vendor');
+                                if (index == 0) {
+                                  mainBilling_Controller.setActiveTab('Subscription');
+
+                                  mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = 'Subscription';
+                                  mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Subscription';
+                                }
+                                if (index == 1) {
+                                  mainBilling_Controller.setActiveTab('Sales');
+
+                                  mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = 'Sales';
+                                  mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Sales';
+                                }
+                                if (index == 2) {
+                                  mainBilling_Controller.setActiveTab('Vendor');
+
+                                  mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = 'Vendor';
+                                  mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Vendor';
+                                }
                                 widget.resetmainbilling_Filters();
+                                widget.get_SalesInvoiceList(context);
+                                widget.get_SubscriptionInvoiceList(context);
                               },
                               tabs: const [
                                 Text('Subscription'),
@@ -772,6 +792,14 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
+                                Expanded(
+                                  child: Obx(
+                                    () => SizedBox(
+                                      height: 20,
+                                      child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: mainBilling_selectedfilter()),
+                                    ),
+                                  ),
+                                ),
                                 MouseRegion(
                                   cursor: SystemMouseCursors.click,
                                   child: GestureDetector(
@@ -959,35 +987,39 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
     return const Row(
       children: [
         Expanded(
-          flex: 2,
+          flex: 1,
           child: Text(
+            textAlign: TextAlign.center,
             'Date',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
+        const SizedBox(width: 8),
         Expanded(
-          flex: 2,
+          flex: 1,
           child: Text(
             'Invoice No',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
+        const SizedBox(width: 8),
         Expanded(
-          flex: 2,
+          flex: 1,
           child: Text(
             'Voucher No',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
+        const SizedBox(width: 8),
         Expanded(
-          flex: 5,
+          flex: 3,
           child: Text(
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.start,
             'Client Name',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
-        SizedBox(width: 10),
+        SizedBox(width: 8),
         Expanded(
           flex: 1,
           child: Text(
@@ -995,6 +1027,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
+        const SizedBox(width: 8),
         Expanded(
           flex: 2,
           child: Text(
@@ -1002,42 +1035,40 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
+        const SizedBox(width: 8),
         Expanded(
           flex: 2,
           child: Text(
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.end,
             'Amount',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
+        SizedBox(width: 8),
         Expanded(
-          flex: 2,
+          flex: 1,
           child: Text(
+            textAlign: TextAlign.center,
             'Duedate',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
+        const SizedBox(width: 8),
         Expanded(
-          flex: 2,
+          flex: 1,
           child: Text(
             'Overdue',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
+        const SizedBox(width: 8),
         Expanded(
-          flex: 2,
+          flex: 1,
           child: Text(
             'Status',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
-        Expanded(
-          flex: 2,
-          child: Text(
-            '',
-            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-          ),
-        )
       ],
     );
   }
@@ -1159,9 +1190,6 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
   Widget Subscription() {
     return Obx(
       () {
-        mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = 'Subscription';
-        mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Subscription';
-
         return mainBilling_Controller.billingModel.subscriptionInvoiceList.isEmpty
             ? Center(
                 child: Stack(
@@ -1221,14 +1249,15 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                             child: Row(
                               children: [
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: Text(
                                     formatDate(mainBilling_Controller.billingModel.subscriptionInvoiceList[index].date),
                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                   ),
                                 ),
+                                const SizedBox(width: 8),
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: MouseRegion(
                                     cursor: SystemMouseCursors.click,
                                     child: GestureDetector(
@@ -1245,8 +1274,9 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                     ),
                                   ),
                                 ),
+                                const SizedBox(width: 8),
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: Padding(
                                     padding: const EdgeInsets.all(0),
                                     child: Column(
@@ -1268,28 +1298,28 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                     ),
                                   ),
                                 ),
-
+                                const SizedBox(width: 8),
                                 Expanded(
-                                    flex: 5,
+                                    flex: 3,
                                     child: Row(
                                       children: [
-                                        Container(
-                                          width: 35,
-                                          height: 35,
-                                          decoration: BoxDecoration(
-                                            color: Primary_colors.Color5.withOpacity(0.1),
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: ClipOval(
-                                            child: Image.asset(
-                                              'assets/images/black.jpg',
-                                              fit: BoxFit.cover, // Ensures the image covers the container
-                                              width: double.infinity, // Makes the image fill the container's width
-                                              height: double.infinity, // Makes the image fill the container's height
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 5),
+                                        // Container(
+                                        //   width: 35,
+                                        //   height: 35,
+                                        //   decoration: BoxDecoration(
+                                        //     color: Primary_colors.Color5.withOpacity(0.1),
+                                        //     shape: BoxShape.circle,
+                                        //   ),
+                                        //   child: ClipOval(
+                                        //     child: Image.asset(
+                                        //       'assets/images/black.jpg',
+                                        //       fit: BoxFit.cover, // Ensures the image covers the container
+                                        //       width: double.infinity, // Makes the image fill the container's width
+                                        //       height: double.infinity, // Makes the image fill the container's height
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        // const SizedBox(width: 10),
                                         Expanded(
                                           child: Text(
                                             softWrap: true,
@@ -1305,7 +1335,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                         ),
                                       ],
                                     )),
-                                const SizedBox(width: 10),
+                                const SizedBox(width: 8),
 
                                 // Expanded(
                                 //   flex: 2,
@@ -1321,6 +1351,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                   ),
                                 ),
+                                const SizedBox(width: 8),
                                 Expanded(
                                   flex: 2,
                                   child: Text(
@@ -1328,11 +1359,11 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                   ),
                                 ),
-                                // SizedBox(width: 5),
+                                const SizedBox(width: 8),
                                 Expanded(
                                   flex: 2,
                                   child: Text(
-                                    textAlign: TextAlign.center,
+                                    textAlign: TextAlign.end,
                                     'Rs. ${formatCurrency(double.parse(mainBilling_Controller.billingModel.subscriptionInvoiceList[index].totalAmount.toString()))}',
                                     style: const TextStyle(
                                       color: Primary_colors.Color1,
@@ -1340,8 +1371,9 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                     ),
                                   ),
                                 ),
+                                SizedBox(width: 8),
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: Builder(
                                     builder: (context) {
                                       OverlayEntry? overlayEntry;
@@ -1443,7 +1475,8 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                       }
 
                                       return Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           MouseRegion(
                                             cursor: SystemMouseCursors.click,
@@ -1452,16 +1485,14 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                             child: const Icon(Icons.info_outline, size: 20, color: Colors.blue),
                                           ),
                                           const SizedBox(width: 3),
-                                          Expanded(
-                                            child: Text(
-                                              // textAlign: TextAlign.left,
-                                              mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate != null
-                                                  ? formatDate(DateFormat('dd-MM-yyyy').parse(mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate!))
-                                                  : '-',
-                                              style: const TextStyle(
-                                                color: Colors.blue,
-                                                fontSize: Primary_font_size.Text7,
-                                              ),
+                                          Text(
+                                            // textAlign: TextAlign.left,
+                                            mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate != null
+                                                ? formatDate(DateFormat('dd-MM-yyyy').parse(mainBilling_Controller.billingModel.subscriptionInvoiceList[index].dueDate!))
+                                                : '-',
+                                            style: const TextStyle(
+                                              color: Colors.blue,
+                                              fontSize: Primary_font_size.Text7,
                                             ),
                                           )
                                         ],
@@ -1469,7 +1500,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                     },
                                   ),
                                 ),
-
+                                const SizedBox(width: 8),
                                 // Expanded(
                                 //     flex: 2,
                                 //     child: MouseRegion(
@@ -1489,15 +1520,16 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 //       ),
                                 //     )),
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: Text(
                                     textAlign: TextAlign.left,
                                     (mainBilling_Controller.billingModel.subscriptionInvoiceList[index].overdueDays ?? '-').toString(),
                                     style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                   ),
                                 ),
+                                const SizedBox(width: 8),
                                 Expanded(
-                                    flex: 2,
+                                    flex: 1,
                                     child: Row(
                                       children: [
                                         Container(
@@ -1523,7 +1555,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                         ),
                                       ],
                                     )),
-                                const Expanded(flex: 2, child: Icon(Icons.keyboard_control))
+                                // const Expanded(flex: 2, child: Icon(Icons.keyboard_control))
                               ],
                             ),
                           ),
@@ -1538,8 +1570,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
 
   Widget Sales() {
     return Obx(() {
-      mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = 'Sales';
-      mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Sales';
+      // mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = 'Sales';
 
       return mainBilling_Controller.billingModel.salesInvoiceList.isEmpty
           ? Center(
@@ -1769,9 +1800,6 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
   Widget Vendor() {
     return Obx(
       () {
-        mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = 'Vendor';
-        mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Vendor';
-
         return mainBilling_Controller.billingModel.subscriptionInvoiceList.isEmpty
             ? Center(
                 child: Stack(
@@ -2016,5 +2044,97 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         ),
       );
     });
+  }
+
+  Widget mainBilling_selectedfilter() {
+    return Row(
+      children: [
+        if (mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.plantype.value != 'Show All')
+          _buildselectedFiltersChip(
+            mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.plantype.value,
+            onRemove: () async {
+              mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.plantype.value = 'Show All';
+              widget.get_SalesInvoiceList(context);
+              widget.get_SubscriptionInvoiceList(context);
+            },
+          ),
+        if (mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value != 'Show All')
+          Row(
+            children: [
+              if (mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value == 'Sales' &&
+                  mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedsalescustomername.value != 'None')
+                Row(
+                  children: [
+                    const SizedBox(width: 5),
+                    _buildselectedFiltersChip(
+                      mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedsalescustomername.value,
+                      onRemove: () async {
+                        mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedsalescustomername.value = 'None';
+                        mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value = '';
+                        widget.get_SalesInvoiceList(context);
+                        widget.get_SubscriptionInvoiceList(context);
+                      },
+                    ),
+                  ],
+                ),
+              if (mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value == 'Subscription' &&
+                  mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedsubscriptioncustomername.value != 'None')
+                Row(
+                  children: [
+                    const SizedBox(width: 5),
+                    _buildselectedFiltersChip(
+                      mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedsubscriptioncustomername.value,
+                      onRemove: () async {
+                        mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedsubscriptioncustomername.value = 'None';
+                        mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value = '';
+                        widget.get_SalesInvoiceList(context);
+                        widget.get_SubscriptionInvoiceList(context);
+                      },
+                    ),
+                  ],
+                ),
+            ],
+          ),
+        if (mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value != 'Show All')
+          _buildselectedFiltersChip(
+            mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value,
+            onRemove: () async {
+              mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value = 'Show All';
+              widget.get_SalesInvoiceList(context);
+              widget.get_SubscriptionInvoiceList(context);
+            },
+          ),
+        const SizedBox(width: 5),
+      ],
+    );
+  }
+
+  Widget _buildselectedFiltersChip(String label, {required VoidCallback onRemove}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 203, 207, 252),
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(color: Primary_colors.Color3),
+      ),
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: const TextStyle(color: Color.fromARGB(255, 15, 20, 88), fontSize: Primary_font_size.Text8),
+          ),
+          const SizedBox(width: 4),
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () async {
+                onRemove();
+              },
+              child: const Icon(Icons.cancel_sharp, size: 16, color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

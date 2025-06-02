@@ -260,7 +260,7 @@ class TDSledger {
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
                   buildInfoRow('Date', _formatDate(DateTime.now())),
-                  buildInfoRow('Name', 'SPORADA SECURE INDIA PRIVATE LIMITED'),
+                  buildInfoRow('Firm Name', 'SPORADA SECURE INDIA PRIVATE LIMITED'),
                   buildInfoRow('TAN Number', 'ABECS0625B'),
                 ],
               ),

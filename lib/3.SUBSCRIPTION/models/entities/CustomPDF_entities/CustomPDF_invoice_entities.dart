@@ -341,8 +341,7 @@ class FinalCalculation {
       cgst: cgst,
       sgst: sgst,
       roundOff: formatCurrencyRoundedPaisa(total),
-      differene:
-          '${((double.parse(formatCurrencyRoundedPaisa(total).replaceAll(',', '')) - total) >= 0 ? '+' : '')}${(double.parse(formatCurrencyRoundedPaisa(total).replaceAll(',', '')) - total).toStringAsFixed(2)}',
+      differene: '${((double.parse(formatCurrencyRoundedPaisa(total).replaceAll(',', '')) - total) >= 0 ? '+' : '')}${(double.parse(formatCurrencyRoundedPaisa(total).replaceAll(',', '')) - total).toStringAsFixed(2)}',
       total: total,
       pendingAmount: pendingAmount,
       grandTotal: grandTotal,

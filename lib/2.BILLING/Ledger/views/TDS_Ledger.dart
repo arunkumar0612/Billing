@@ -18,6 +18,7 @@ import 'package:ssipl_billing/2.BILLING/Ledger/services/TDS_ledger_service.dart'
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_PDF_template/TDS_ledger_pdf_template.dart';
+import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_excel_template/TDS_ledger_excel_template.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
@@ -101,6 +102,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'S.No',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -111,6 +113,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'Date',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -121,6 +124,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'Voucher No',
+                          textAlign: TextAlign.start,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -131,6 +135,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'Invoice No',
+                          textAlign: TextAlign.start,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -141,12 +146,13 @@ class _TDSLedgerState extends State<TDSLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'PAN No',
+                          textAlign: TextAlign.start,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
                     ),
                     Expanded(
-                      flex: 4,
+                      flex: 5,
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
@@ -162,16 +168,18 @@ class _TDSLedgerState extends State<TDSLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'TDS Type',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
                     ),
                     Expanded(
-                      flex: 3,
+                      flex: 2,
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
-                          'Invoice Amount',
+                          'Invoice Amount(\u20B9)',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -182,6 +190,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'Debit(\u20B9)',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -192,6 +201,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'Credit(\u20B9)',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -235,6 +245,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                 padding: const EdgeInsets.all(10),
                                                 child: Text(
                                                   (index + 1).toString(),
+                                                  textAlign: TextAlign.center,
                                                   style: const TextStyle(
                                                     color: Primary_colors.Color1,
                                                     fontSize: Primary_font_size.Text7,
@@ -250,6 +261,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 formatDate(tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].rowUpdatedDate),
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -272,6 +284,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                       },
                                                       child: Text(
                                                         tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].voucherNumber,
+                                                        textAlign: TextAlign.end,
                                                         style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
                                                       ),
                                                     ),
@@ -297,11 +310,10 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                       child: GestureDetector(
                                                         onTap: () async {
                                                           if (tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoiceType == 'subscription') {
-                                                            bool success = await widget.GetSubscriptionPDFfile(
-                                                                context: context, invoiceNo: tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number);
+                                                            bool success =
+                                                                await widget.GetSubscriptionPDFfile(context: context, invoiceNo: tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number);
                                                             if (success) {
-                                                              showPDF(context, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number,
-                                                                  mainBilling_Controller.billingModel.pdfFile.value);
+                                                              showPDF(context, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number, mainBilling_Controller.billingModel.pdfFile.value);
                                                             }
                                                           }
                                                         },
@@ -330,10 +342,11 @@ class _TDSLedgerState extends State<TDSLedger> {
                                           ),
                                           // Vertical line after 'clientname' column
                                           Expanded(
-                                            flex: 4,
+                                            flex: 5,
                                             child: Padding(
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
+                                                textAlign: TextAlign.start,
                                                 tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].description ?? "-",
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
@@ -345,17 +358,19 @@ class _TDSLedgerState extends State<TDSLedger> {
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].tdsType,
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
                                           ),
                                           // Vertical line after 'Debit' column
                                           Expanded(
-                                            flex: 3,
+                                            flex: 2,
                                             child: Padding(
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 formatCurrency(tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].totalAmount),
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -366,6 +381,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 formatCurrency(tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].debitAmount),
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -376,6 +392,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 formatCurrency(tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].creditAmount),
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -783,8 +800,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                                         IconButton(
                                                                           iconSize: 30,
                                                                           onPressed: () {
-                                                                            tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value =
-                                                                                !tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value;
+                                                                            tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value = !tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value;
                                                                           },
                                                                           icon: Image.asset('assets/images/whatsapp.png'),
                                                                         ),
@@ -814,8 +830,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                                         IconButton(
                                                                           iconSize: 35,
                                                                           onPressed: () {
-                                                                            tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value =
-                                                                                !tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value;
+                                                                            tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value = !tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value;
                                                                           },
                                                                           icon: Image.asset('assets/images/gmail.png'),
                                                                         ),
@@ -880,14 +895,12 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                                   mainAxisAlignment: MainAxisAlignment.end,
                                                                   children: [
                                                                     MouseRegion(
-                                                                      cursor: tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                              tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value
+                                                                      cursor: tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value || tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value
                                                                           ? SystemMouseCursors.click
                                                                           : SystemMouseCursors.forbidden,
                                                                       child: GestureDetector(
                                                                         onTap: () async {
-                                                                          if (tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                              tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value) {
+                                                                          if (tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value || tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value) {
                                                                             // Create temporary file
                                                                             final tempDir = await getTemporaryDirectory();
                                                                             final file = File('${tempDir.path}/$filename');
@@ -907,8 +920,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                                         child: Container(
                                                                           width: 105,
                                                                           decoration: BoxDecoration(
-                                                                            color: tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                                    tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value
+                                                                            color: tds_ledgerController.tds_LedgerModel.whatsapp_selectionStatus.value || tds_ledgerController.tds_LedgerModel.gmail_selectionStatus.value
                                                                                 ? const Color.fromARGB(255, 81, 89, 212)
                                                                                 : const Color.fromARGB(255, 39, 41, 73),
                                                                             borderRadius: BorderRadius.circular(5),
@@ -1131,6 +1143,85 @@ class _TDSLedgerState extends State<TDSLedger> {
                                             const SizedBox(height: 5),
                                             const Text(
                                               "View",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color.fromARGB(255, 143, 143, 143),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 40), // Space between buttons
+                                    // Download Button
+                                    MouseRegion(
+                                      cursor: SystemMouseCursors.click,
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          try {
+                                            // Start loading indicator
+                                            // loader.start(context);
+                                            await Future.delayed(const Duration(milliseconds: 300));
+
+                                            // Generate PDF bytes
+                                            final excelBytes = await TDSledger_excelTemplate(tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value);
+
+                                            // Generate unique filename with timestamp
+                                            final timestamp = DateTime.now().millisecondsSinceEpoch;
+                                            final filename = 'TDS_ledger$timestamp'; // Unique filename
+
+                                            // Let user select directory
+                                            String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+                                              dialogTitle: 'Select folder to save Excel File',
+                                              lockParentWindow: true,
+                                            );
+
+                                            // Always stop loader after native call
+                                            // loader.stop();
+
+                                            if (selectedDirectory == null) {
+                                              if (kDebugMode) {
+                                                print("User cancelled the folder selection.");
+                                              }
+                                              Error_dialog(
+                                                context: context,
+                                                title: "Cancelled",
+                                                content: "Download cancelled. No folder was selected.",
+                                              );
+                                              return;
+                                            }
+
+                                            // Save the file with unique name
+                                            String savePath = "$selectedDirectory/$filename.xlxs";
+                                            await File(savePath).writeAsBytes(excelBytes);
+
+                                            // Show success message
+                                            Success_SnackBar(context, "✅ Excel File downloaded successfully!");
+
+                                            // Optional: open the file
+                                            await OpenFilex.open(savePath);
+                                          } catch (e) {
+                                            // loader.stop();
+                                            if (kDebugMode) {
+                                              print("❌ Error while downloading PDF: $e");
+                                            }
+                                            Error_dialog(
+                                              context: context,
+                                              title: "Error",
+                                              content: "An error occurred while downloading the Excel:\n$e",
+                                            );
+                                          }
+                                        },
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Image.asset(height: 25, 'assets/images/excel.png'),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            const Text(
+                                              "Excel",
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w500,

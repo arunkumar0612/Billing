@@ -102,20 +102,24 @@ class _GSTLedgerState extends State<GSTLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'S.No',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
                     ),
+                    SizedBox(width: 3),
                     Expanded(
                       flex: 2,
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'Date',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
                     ),
+                    SizedBox(width: 3),
                     Expanded(
                       flex: 2,
                       child: Padding(
@@ -126,6 +130,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                         ),
                       ),
                     ),
+                    SizedBox(width: 3),
                     Expanded(
                       flex: 2,
                       child: Padding(
@@ -136,18 +141,21 @@ class _GSTLedgerState extends State<GSTLedger> {
                         ),
                       ),
                     ),
+                    SizedBox(width: 3),
                     Expanded(
-                      flex: 3,
+                      flex: 2,
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'GST No',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
                     ),
+                    SizedBox(width: 3),
                     Expanded(
-                      flex: 4,
+                      flex: 5,
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
@@ -157,72 +165,86 @@ class _GSTLedgerState extends State<GSTLedger> {
                         ),
                       ),
                     ),
+                    SizedBox(width: 3),
                     Expanded(
                       flex: 2,
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'GST Type',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
                     ),
+                    // SizedBox(width: 3),
                     Expanded(
                       flex: 2,
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'Taxable Value(\u20B9)',
+                          textAlign: TextAlign.start,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
                     ),
+                    SizedBox(width: 3),
                     Expanded(
                       flex: 2,
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'Gross Amount(\u20B9)',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
                     ),
+                    SizedBox(width: 3),
                     Expanded(
                       flex: 2,
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'CGST(\u20B9)',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
                     ),
+                    SizedBox(width: 3),
                     Expanded(
                       flex: 2,
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'SGST(\u20B9)',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
                     ),
+                    SizedBox(width: 3),
                     Expanded(
                       flex: 2,
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'IGST(\u20B9)',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
                     ),
+                    SizedBox(width: 3),
                     Expanded(
                       flex: 2,
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'Total GST(\u20B9)',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -265,6 +287,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                 padding: const EdgeInsets.all(10),
                                                 child: Text(
                                                   (index + 1).toString(),
+                                                  textAlign: TextAlign.center,
                                                   style: const TextStyle(
                                                     color: Primary_colors.Color1,
                                                     fontSize: Primary_font_size.Text7,
@@ -280,22 +303,23 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 formatDate(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].date),
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
                                           ),
                                           // Vertical line after 'Date' column
 
-                                          Expanded(
-                                            flex: 2,
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(10),
-                                              child: Text(
-                                                gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].voucherNumber,
-                                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
-                                              ),
-                                            ),
-                                          ),
+                                          // Expanded(
+                                          //   flex: 2,
+                                          //   child: Padding(
+                                          //     padding: const EdgeInsets.all(10),
+                                          //     child: Text(
+                                          //       gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].voucherNumber,
+                                          //       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                          //     ),
+                                          //   ),
+                                          // ),
                                           // Vertical line after 'Reference No' column
                                           Expanded(
                                             flex: 2,
@@ -337,11 +361,10 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                       child: GestureDetector(
                                                         onTap: () async {
                                                           if (gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoiceType == 'subscription') {
-                                                            bool success = await widget.GetSubscriptionPDFfile(
-                                                                context: context, invoiceNo: gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number);
+                                                            bool success =
+                                                                await widget.GetSubscriptionPDFfile(context: context, invoiceNo: gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number);
                                                             if (success) {
-                                                              showPDF(context, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number,
-                                                                  mainBilling_Controller.billingModel.pdfFile.value);
+                                                              showPDF(context, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number, mainBilling_Controller.billingModel.pdfFile.value);
                                                             }
                                                           }
                                                         },
@@ -355,14 +378,15 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                 )),
                                           ),
                                           Expanded(
-                                            flex: 3,
+                                            flex: 2,
                                             child: Padding(
                                                 padding: const EdgeInsets.all(10),
                                                 child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
                                                   children: [
                                                     Text(
                                                       gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].gstNumber,
+                                                      textAlign: TextAlign.start,
                                                       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                     ),
                                                   ],
@@ -370,21 +394,26 @@ class _GSTLedgerState extends State<GSTLedger> {
                                           ),
                                           // Vertical line after 'clientname' column
                                           Expanded(
-                                            flex: 4,
+                                            flex: 5,
                                             child: Padding(
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].description ?? "-",
+                                                textAlign: TextAlign.start,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
                                           ),
+                                          // SizedBox(
+                                          //   width: 3,
+                                          // ),
                                           Expanded(
                                             flex: 2,
                                             child: Padding(
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].gstType,
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -396,6 +425,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].subTotal),
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -406,6 +436,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].totalAmount),
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -416,6 +447,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].cgst),
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -426,6 +458,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].sgst),
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -436,6 +469,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].igst),
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -447,6 +481,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].totalGst),
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(
                                                   color: Color.fromARGB(255, 166, 255, 93),
                                                   fontSize: Primary_font_size.Text8,
@@ -485,24 +520,24 @@ class _GSTLedgerState extends State<GSTLedger> {
                                             decoration: BoxDecoration(color: Color.fromARGB(122, 100, 110, 255)),
                                             children: [
                                               Padding(
-                                                padding: EdgeInsets.all(8.0),
+                                                padding: const EdgeInsets.all(8),
                                                 child: Text('Category', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                                               ),
                                               Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Text('CGST (₹)', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                                                padding: const EdgeInsets.all(8),
+                                                child: Text('CGST (₹)', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                                               ),
                                               Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Text('SGST (₹)', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                                                padding: const EdgeInsets.all(8),
+                                                child: Text('SGST (₹)', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                                               ),
                                               Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Text('IGST (₹)', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                                                padding: const EdgeInsets.all(8),
+                                                child: Text('IGST (₹)', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                                               ),
                                               Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Text('Total GST (₹)', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                                                padding: const EdgeInsets.all(8),
+                                                child: Text('Total GST (₹)', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                                               ),
                                             ],
                                           ),
@@ -514,20 +549,26 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                 child: Text('Output GST', style: TextStyle(color: Colors.white)),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputCgst ?? 0.0), style: const TextStyle(color: Colors.white)),
+                                                padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
+                                                child: Text(
+                                                  formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputCgst ?? 0.0),
+                                                  textAlign: TextAlign.right,
+                                                  style: const TextStyle(color: Colors.white),
+                                                ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputSgst ?? 0.0), style: const TextStyle(color: Colors.white)),
+                                                padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputSgst ?? 0.0),
+                                                    textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputIgst ?? 0.0), style: const TextStyle(color: Colors.white)),
+                                                padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputIgst ?? 0.0),
+                                                    textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputGst), style: const TextStyle(color: Colors.white)),
+                                                padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputGst), textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                             ],
                                           ),
@@ -539,20 +580,23 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                 child: Text('Input GST', style: TextStyle(color: Colors.white)),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputCgst ?? 0.0), style: const TextStyle(color: Colors.white)),
+                                                padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputCgst ?? 0.0),
+                                                    textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputSgst ?? 0.0), style: const TextStyle(color: Colors.white)),
+                                                padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputSgst ?? 0.0),
+                                                    textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputIgst ?? 0.0), style: const TextStyle(color: Colors.white)),
+                                                padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputIgst ?? 0.0),
+                                                    textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputGst), style: const TextStyle(color: Colors.white)),
+                                                padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputGst), textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                             ],
                                           ),
@@ -564,168 +608,197 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                 child: Text('GST Payable/ refundable', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(8.0),
+                                                padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
                                                 child: Stack(
                                                   children: [
                                                     // Bottom shadow for the recessed effect
-                                                    Text(
-                                                      formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalCgst ?? 0.0),
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.bold,
-                                                        letterSpacing: 2,
-                                                        color: Colors.white.withOpacity(0.2),
-                                                        shadows: const [
-                                                          Shadow(
-                                                            offset: Offset(2, 2),
-                                                            blurRadius: 2,
-                                                            color: Colors.black,
-                                                          ),
-                                                        ],
+                                                    Align(
+                                                      alignment: Alignment.centerRight,
+                                                      child: Text(
+                                                        formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalCgst ?? 0.0),
+                                                        textAlign: TextAlign.right,
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.bold,
+                                                          letterSpacing: 2,
+                                                          color: Colors.white.withOpacity(0.2),
+                                                          shadows: const [
+                                                            Shadow(
+                                                              offset: Offset(2, 2),
+                                                              blurRadius: 2,
+                                                              color: Colors.black,
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
+
                                                     // Top layer to give the 3D embossed effect
-                                                    Text(
-                                                      formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalCgst ?? 0.0),
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.bold,
-                                                        letterSpacing: 2,
-                                                        foreground: Paint()
-                                                          ..shader = LinearGradient(
-                                                            colors: [
-                                                              Colors.black.withOpacity(0.8),
-                                                              const Color.fromARGB(255, 255, 223, 0),
-                                                            ],
-                                                            begin: Alignment.topLeft,
-                                                            end: Alignment.bottomRight,
-                                                          ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
+                                                    Align(
+                                                      alignment: Alignment.centerRight,
+                                                      child: Text(
+                                                        formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalCgst ?? 0.0),
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.bold,
+                                                          letterSpacing: 2,
+                                                          foreground: Paint()
+                                                            ..shader = LinearGradient(
+                                                              colors: [
+                                                                Colors.black.withOpacity(0.8),
+                                                                const Color.fromARGB(255, 255, 223, 0),
+                                                              ],
+                                                              begin: Alignment.topLeft,
+                                                              end: Alignment.bottomRight,
+                                                            ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
+                                                child: Stack(
+                                                  children: [
+                                                    // Bottom shadow for the recessed effect
+                                                    Align(
+                                                      alignment: Alignment.centerRight,
+                                                      child: Text(
+                                                        formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalSgst ?? 0.0),
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.bold,
+                                                          letterSpacing: 2,
+                                                          color: Colors.white.withOpacity(0.2),
+                                                          shadows: const [
+                                                            Shadow(
+                                                              offset: Offset(2, 2),
+                                                              blurRadius: 2,
+                                                              color: Colors.black,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+
+                                                    // Top layer to give the 3D embossed effect
+                                                    Align(
+                                                      alignment: Alignment.centerRight,
+                                                      child: Text(
+                                                        formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalSgst ?? 0.0),
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.bold,
+                                                          letterSpacing: 2,
+                                                          foreground: Paint()
+                                                            ..shader = LinearGradient(
+                                                              colors: [
+                                                                Colors.black.withOpacity(0.8),
+                                                                const Color.fromARGB(255, 255, 223, 0),
+                                                              ],
+                                                              begin: Alignment.topLeft,
+                                                              end: Alignment.bottomRight,
+                                                            ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(8.0),
+                                                padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
                                                 child: Stack(
                                                   children: [
                                                     // Bottom shadow for the recessed effect
-                                                    Text(
-                                                      formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalSgst ?? 0.0),
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.bold,
-                                                        letterSpacing: 2,
-                                                        color: Colors.white.withOpacity(0.2),
-                                                        shadows: const [
-                                                          Shadow(
-                                                            offset: Offset(2, 2),
-                                                            blurRadius: 2,
-                                                            color: Colors.black,
-                                                          ),
-                                                        ],
+                                                    Align(
+                                                      alignment: Alignment.centerRight,
+                                                      child: Text(
+                                                        formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalIgst ?? 0.0),
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.bold,
+                                                          letterSpacing: 2,
+                                                          color: Colors.white.withOpacity(0.2),
+                                                          shadows: const [
+                                                            Shadow(
+                                                              offset: Offset(2, 2),
+                                                              blurRadius: 2,
+                                                              color: Colors.black,
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
+
                                                     // Top layer to give the 3D embossed effect
-                                                    Text(
-                                                      formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalSgst ?? 0.0),
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.bold,
-                                                        letterSpacing: 2,
-                                                        foreground: Paint()
-                                                          ..shader = LinearGradient(
-                                                            colors: [
-                                                              Colors.black.withOpacity(0.8),
-                                                              const Color.fromARGB(255, 255, 223, 0),
-                                                            ],
-                                                            begin: Alignment.topLeft,
-                                                            end: Alignment.bottomRight,
-                                                          ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
+                                                    Align(
+                                                      alignment: Alignment.centerRight,
+                                                      child: Text(
+                                                        formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalIgst ?? 0.0),
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.bold,
+                                                          letterSpacing: 2,
+                                                          foreground: Paint()
+                                                            ..shader = LinearGradient(
+                                                              colors: [
+                                                                Colors.black.withOpacity(0.8),
+                                                                const Color.fromARGB(255, 255, 223, 0),
+                                                              ],
+                                                              begin: Alignment.topLeft,
+                                                              end: Alignment.bottomRight,
+                                                            ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(8.0),
+                                                padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
                                                 child: Stack(
                                                   children: [
                                                     // Bottom shadow for the recessed effect
-                                                    Text(
-                                                      formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalIgst ?? 0.0),
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.bold,
-                                                        letterSpacing: 2,
-                                                        color: Colors.white.withOpacity(0.2),
-                                                        shadows: const [
-                                                          Shadow(
-                                                            offset: Offset(2, 2),
-                                                            blurRadius: 2,
-                                                            color: Colors.black,
-                                                          ),
-                                                        ],
+                                                    Align(
+                                                      alignment: Alignment.centerRight,
+                                                      child: Text(
+                                                        formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalGst),
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.bold,
+                                                          letterSpacing: 2,
+                                                          color: Colors.white.withOpacity(0.2),
+                                                          shadows: const [
+                                                            Shadow(
+                                                              offset: Offset(2, 2),
+                                                              blurRadius: 2,
+                                                              color: Colors.black,
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
+
                                                     // Top layer to give the 3D embossed effect
-                                                    Text(
-                                                      formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalIgst ?? 0.0),
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.bold,
-                                                        letterSpacing: 2,
-                                                        foreground: Paint()
-                                                          ..shader = LinearGradient(
-                                                            colors: [
-                                                              Colors.black.withOpacity(0.8),
-                                                              const Color.fromARGB(255, 255, 223, 0),
-                                                            ],
-                                                            begin: Alignment.topLeft,
-                                                            end: Alignment.bottomRight,
-                                                          ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Stack(
-                                                  children: [
-                                                    // Bottom shadow for the recessed effect
-                                                    Text(
-                                                      formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalGst),
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.bold,
-                                                        letterSpacing: 2,
-                                                        color: Colors.white.withOpacity(0.2),
-                                                        shadows: const [
-                                                          Shadow(
-                                                            offset: Offset(2, 2),
-                                                            blurRadius: 2,
-                                                            color: Colors.black,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    // Top layer to give the 3D embossed effect
-                                                    Text(
-                                                      formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalGst),
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.bold,
-                                                        letterSpacing: 2,
-                                                        foreground: Paint()
-                                                          ..shader = LinearGradient(
-                                                            colors: [
-                                                              Colors.black.withOpacity(0.8),
-                                                              const Color.fromARGB(255, 255, 223, 0),
-                                                            ],
-                                                            begin: Alignment.topLeft,
-                                                            end: Alignment.bottomRight,
-                                                          ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
+                                                    Align(
+                                                      alignment: Alignment.centerRight,
+                                                      child: Text(
+                                                        formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.totalGst),
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.bold,
+                                                          letterSpacing: 2,
+                                                          foreground: Paint()
+                                                            ..shader = LinearGradient(
+                                                              colors: [
+                                                                Colors.black.withOpacity(0.8),
+                                                                const Color.fromARGB(255, 255, 223, 0),
+                                                              ],
+                                                              begin: Alignment.topLeft,
+                                                              end: Alignment.bottomRight,
+                                                            ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
@@ -938,8 +1011,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                                         IconButton(
                                                                           iconSize: 30,
                                                                           onPressed: () {
-                                                                            gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value =
-                                                                                !gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value;
+                                                                            gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value = !gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value;
                                                                           },
                                                                           icon: Image.asset('assets/images/whatsapp.png'),
                                                                         ),
@@ -969,8 +1041,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                                         IconButton(
                                                                           iconSize: 35,
                                                                           onPressed: () {
-                                                                            gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value =
-                                                                                !gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value;
+                                                                            gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value = !gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value;
                                                                           },
                                                                           icon: Image.asset('assets/images/gmail.png'),
                                                                         ),
@@ -1035,14 +1106,12 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                                   mainAxisAlignment: MainAxisAlignment.end,
                                                                   children: [
                                                                     MouseRegion(
-                                                                      cursor: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                              gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
+                                                                      cursor: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value || gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
                                                                           ? SystemMouseCursors.click
                                                                           : SystemMouseCursors.forbidden,
                                                                       child: GestureDetector(
                                                                         onTap: () async {
-                                                                          if (gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                              gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value) {
+                                                                          if (gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value || gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value) {
                                                                             // Create temporary file
                                                                             final tempDir = await getTemporaryDirectory();
                                                                             final file = File('${tempDir.path}/$filename');
@@ -1062,8 +1131,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                                         child: Container(
                                                                           width: 105,
                                                                           decoration: BoxDecoration(
-                                                                            color: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                                    gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
+                                                                            color: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value || gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
                                                                                 ? const Color.fromARGB(255, 81, 89, 212)
                                                                                 : const Color.fromARGB(255, 39, 41, 73),
                                                                             borderRadius: BorderRadius.circular(5),

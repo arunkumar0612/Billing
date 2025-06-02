@@ -161,13 +161,13 @@ pw.Widget _buildFooter(pw.Context context) {
                 color: PdfColors.grey900,
               ),
             ),
-          // pw.Text(
-          //   'Printed on: $formattedDate',
-          //   style: const pw.TextStyle(
-          //     fontSize: 10,
-          //     color: PdfColors.grey900,
-          //   ),
-          // ),
+          pw.Text(
+            'Printed on: ${_formatDate(DateTime.now())}',
+            style: const pw.TextStyle(
+              fontSize: 10,
+              color: PdfColors.grey900,
+            ),
+          ),
         ],
       ),
     ],
@@ -264,7 +264,7 @@ pw.Widget _buildReceipt(pw.Context context, VoucherReceipt receiptData) {
             children: [
               const pw.TextSpan(text: 'Against TDS ('),
               pw.TextSpan(
-                text: 'PAN:ABECS0625B dated on ${_formatDate(receiptData.data.date)}',
+                text: 'PAN:ABECS0625B dated on ${_formatDate(receiptData.data.invoiceDate)}',
                 style: pw.TextStyle(fontStyle: pw.FontStyle.italic),
               ),
               pw.TextSpan(text: ') adjusted amount: Rs.${_formatCurrency(receiptData.data.selectedInvoiceGroup.totalTDS)}.\n'),

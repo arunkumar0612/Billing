@@ -109,11 +109,14 @@ void showPDF(BuildContext context, String filename, File? pdfFile) async {
                                           pdfFile,
                                         );
                                       },
-                                      icon: const Icon(Icons.download, color: Colors.green),
+                                      icon: const Icon(Icons.download_sharp, color: Colors.green, size: 22),
                                     ),
-                                    Text('download', style: TextStyle(fontSize: 12)),
+                                    Text('Download', style: TextStyle(fontSize: 10, fontStyle: FontStyle.italic)),
                                   ],
                                 ),
+                              ),
+                              SizedBox(
+                                width: 8,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(right: 20, bottom: 20),
@@ -128,9 +131,9 @@ void showPDF(BuildContext context, String filename, File? pdfFile) async {
                                           pdfFile,
                                         );
                                       },
-                                      icon: const Icon(Icons.share, color: Colors.blue),
+                                      icon: const Icon(Icons.share, color: Colors.blue, size: 22),
                                     ),
-                                    Text('share', style: TextStyle(fontSize: 12)),
+                                    Text('Share', style: TextStyle(fontSize: 10, fontStyle: FontStyle.italic)),
                                   ],
                                 ),
                               ),

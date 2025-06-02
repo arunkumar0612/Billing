@@ -102,6 +102,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'S.No',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -112,6 +113,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'Date',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -122,6 +124,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'Voucher No',
+                          textAlign: TextAlign.start,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -132,6 +135,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'Invoice No',
+                          textAlign: TextAlign.start,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -142,12 +146,13 @@ class _TDSLedgerState extends State<TDSLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'PAN No',
+                          textAlign: TextAlign.start,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
                     ),
                     Expanded(
-                      flex: 4,
+                      flex: 5,
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
@@ -163,16 +168,18 @@ class _TDSLedgerState extends State<TDSLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'TDS Type',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
                     ),
                     Expanded(
-                      flex: 3,
+                      flex: 2,
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
-                          'Invoice Amount',
+                          'Invoice Amount(\u20B9)',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -183,6 +190,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'Debit(\u20B9)',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -193,6 +201,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           'Credit(\u20B9)',
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -236,6 +245,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                 padding: const EdgeInsets.all(10),
                                                 child: Text(
                                                   (index + 1).toString(),
+                                                  textAlign: TextAlign.center,
                                                   style: const TextStyle(
                                                     color: Primary_colors.Color1,
                                                     fontSize: Primary_font_size.Text7,
@@ -251,6 +261,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 formatDate(tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].rowUpdatedDate),
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -273,6 +284,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                       },
                                                       child: Text(
                                                         tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].voucherNumber,
+                                                        textAlign: TextAlign.end,
                                                         style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
                                                       ),
                                                     ),
@@ -330,10 +342,11 @@ class _TDSLedgerState extends State<TDSLedger> {
                                           ),
                                           // Vertical line after 'clientname' column
                                           Expanded(
-                                            flex: 4,
+                                            flex: 5,
                                             child: Padding(
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
+                                                textAlign: TextAlign.start,
                                                 tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].description ?? "-",
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
@@ -345,17 +358,19 @@ class _TDSLedgerState extends State<TDSLedger> {
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].tdsType,
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
                                           ),
                                           // Vertical line after 'Debit' column
                                           Expanded(
-                                            flex: 3,
+                                            flex: 2,
                                             child: Padding(
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 formatCurrency(tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].totalAmount),
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -366,6 +381,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 formatCurrency(tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].debitAmount),
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -376,6 +392,7 @@ class _TDSLedgerState extends State<TDSLedger> {
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
                                                 formatCurrency(tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].creditAmount),
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),

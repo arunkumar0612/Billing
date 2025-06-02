@@ -96,6 +96,7 @@ class _accountLedgerState extends State<AccountLedger> {
                         padding: EdgeInsets.all(0),
                         child: Text(
                           'S.No',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Primary_colors.Color1,
                             fontWeight: FontWeight.bold,
@@ -159,7 +160,7 @@ class _accountLedgerState extends State<AccountLedger> {
                         padding: EdgeInsets.all(0),
                         child: Text(
                           'Name',
-                          textAlign: TextAlign.start,
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -231,7 +232,7 @@ class _accountLedgerState extends State<AccountLedger> {
                         padding: EdgeInsets.all(0),
                         child: Text(
                           'Balance',
-                          textAlign: TextAlign.end,
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                         ),
                       ),
@@ -273,7 +274,7 @@ class _accountLedgerState extends State<AccountLedger> {
                                               child: Padding(
                                                 padding: const EdgeInsets.all(0),
                                                 child: Text(
-                                                  textAlign: TextAlign.start,
+                                                  textAlign: TextAlign.center,
                                                   (index + 1).toString(),
                                                   style: const TextStyle(
                                                     color: Primary_colors.Color1,
@@ -344,7 +345,7 @@ class _accountLedgerState extends State<AccountLedger> {
                                             child: Padding(
                                               padding: const EdgeInsets.all(0),
                                               child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
                                                   MouseRegion(
                                                     cursor: SystemMouseCursors.click,
@@ -555,7 +556,7 @@ class _accountLedgerState extends State<AccountLedger> {
                                             child: Padding(
                                               padding: const EdgeInsets.all(0),
                                               child: Text(
-                                                textAlign: TextAlign.end,
+                                                textAlign: TextAlign.center,
                                                 convertAmountWithDrCr(formatCurrency(account_ledgerController.account_LedgerModel.account_Ledger_list.value.ledgerList[index].balance)),
                                                 style: const TextStyle(
                                                   color: Color.fromARGB(255, 255, 255, 255),
@@ -1230,7 +1231,7 @@ class _accountLedgerState extends State<AccountLedger> {
                                 child: SizedBox(
                                   child: Row(
                                     children: [
-                                      const SizedBox(width: 5),
+                                      const SizedBox(width: 25),
                                       Expanded(
                                         flex: 2,
                                         child: Stack(
@@ -1272,6 +1273,9 @@ class _accountLedgerState extends State<AccountLedger> {
                                             ),
                                           ],
                                         ),
+                                      ),
+                                      SizedBox(
+                                        width: 15,
                                       ),
                                       Expanded(
                                         flex: 2,

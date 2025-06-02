@@ -3379,7 +3379,7 @@ class _VoucherState extends State<Voucher> {
                           child: Container(
                             color: const Color(0xFFE0E0E0),
                             child: Table(
-                              columnWidths: const {0: FlexColumnWidth(1.5), 1: FlexColumnWidth(2), 2: FlexColumnWidth(3.5), 3: FlexColumnWidth(2), 4: FlexColumnWidth(2)},
+                              columnWidths: const {0: FlexColumnWidth(1.5), 1: FlexColumnWidth(2), 2: FlexColumnWidth(3.5), 3: FlexColumnWidth(1.5)},
                               border: TableBorder(bottom: BorderSide(color: Colors.grey.shade400)),
                               children: const [
                                 TableRow(
@@ -3411,19 +3411,11 @@ class _VoucherState extends State<Voucher> {
                                     Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: Text(
-                                        'View Attachment',
+                                        'View',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(fontWeight: FontWeight.bold),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'View Receipt',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontWeight: FontWeight.bold),
-                                      ),
-                                    )
                                   ],
                                 ),
                               ],
@@ -3441,7 +3433,7 @@ class _VoucherState extends State<Voucher> {
                               constraints: const BoxConstraints(maxHeight: 200),
                               child: SingleChildScrollView(
                                 child: Table(
-                                  columnWidths: const {0: FlexColumnWidth(1.5), 1: FlexColumnWidth(2), 2: FlexColumnWidth(3.5), 3: FlexColumnWidth(2), 4: FlexColumnWidth(2)},
+                                  columnWidths: const {0: FlexColumnWidth(1.5), 1: FlexColumnWidth(2), 2: FlexColumnWidth(3.5), 3: FlexColumnWidth(1.5)},
                                   border: TableBorder(horizontalInside: BorderSide(color: Colors.grey.shade400)),
                                   children: voucherController.voucherModel.voucher_list[index].paymentDetails!.map<TableRow>((payment) {
                                     final date = formatDate(payment.date);
@@ -3487,21 +3479,6 @@ class _VoucherState extends State<Voucher> {
                                                 }
                                               },
                                               child: Image.asset('assets/images/pdfdownload.png', width: 24, height: 24),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: MouseRegion(
-                                            cursor: SystemMouseCursors.click,
-                                            child: GestureDetector(
-                                              onTap: () async {
-                                                bool success = await widget.Get_transactionPDFfile(context: context, transactionID: transID);
-                                                if (success) {
-                                                  widget.showPDF(context, "RECEIPT_$transID");
-                                                }
-                                              },
-                                              child: Image.asset('assets/images/order.png', width: 24, height: 24),
                                             ),
                                           ),
                                         ),

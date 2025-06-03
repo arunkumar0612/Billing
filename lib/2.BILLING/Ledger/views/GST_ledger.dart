@@ -17,7 +17,6 @@ import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dar
 // import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/GST_ledger_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/services/GST_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
-import 'package:ssipl_billing/2.BILLING/Ledger/views/ViewLedger.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_PDF_template/GST_ledger_pdf_template.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_excel_template/GST_ledger_excel_template.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
@@ -361,10 +360,11 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                       child: GestureDetector(
                                                         onTap: () async {
                                                           if (gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoiceType == 'subscription') {
-                                                            bool success =
-                                                                await widget.GetSubscriptionPDFfile(context: context, invoiceNo: gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number);
+                                                            bool success = await widget.GetSubscriptionPDFfile(
+                                                                context: context, invoiceNo: gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number);
                                                             if (success) {
-                                                              showPDF(context, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number, mainBilling_Controller.billingModel.pdfFile.value);
+                                                              showPDF(context, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number,
+                                                                  mainBilling_Controller.billingModel.pdfFile.value);
                                                             }
                                                           }
                                                         },
@@ -568,7 +568,8 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputGst), textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputGst),
+                                                    textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                             ],
                                           ),
@@ -596,7 +597,8 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputGst), textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputGst),
+                                                    textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                             ],
                                           ),
@@ -1011,7 +1013,8 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                                         IconButton(
                                                                           iconSize: 30,
                                                                           onPressed: () {
-                                                                            gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value = !gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value;
+                                                                            gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value =
+                                                                                !gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value;
                                                                           },
                                                                           icon: Image.asset('assets/images/whatsapp.png'),
                                                                         ),
@@ -1041,7 +1044,8 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                                         IconButton(
                                                                           iconSize: 35,
                                                                           onPressed: () {
-                                                                            gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value = !gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value;
+                                                                            gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value =
+                                                                                !gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value;
                                                                           },
                                                                           icon: Image.asset('assets/images/gmail.png'),
                                                                         ),
@@ -1106,12 +1110,14 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                                   mainAxisAlignment: MainAxisAlignment.end,
                                                                   children: [
                                                                     MouseRegion(
-                                                                      cursor: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value || gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
+                                                                      cursor: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value ||
+                                                                              gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
                                                                           ? SystemMouseCursors.click
                                                                           : SystemMouseCursors.forbidden,
                                                                       child: GestureDetector(
                                                                         onTap: () async {
-                                                                          if (gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value || gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value) {
+                                                                          if (gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value ||
+                                                                              gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value) {
                                                                             // Create temporary file
                                                                             final tempDir = await getTemporaryDirectory();
                                                                             final file = File('${tempDir.path}/$filename');
@@ -1131,7 +1137,8 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                                         child: Container(
                                                                           width: 105,
                                                                           decoration: BoxDecoration(
-                                                                            color: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value || gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
+                                                                            color: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value ||
+                                                                                    gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
                                                                                 ? const Color.fromARGB(255, 81, 89, 212)
                                                                                 : const Color.fromARGB(255, 39, 41, 73),
                                                                             borderRadius: BorderRadius.circular(5),

@@ -93,6 +93,8 @@ class API {
   static String add_overdue = "http://192.168.0.200:8081/billing/addoverduedetails";
   static String clearVoucher = "http://192.168.0.200:8081/billing/clearvoucher";
   static String get_transactionBinaryfile = "http://192.168.0.200:8081/billing/gettransactionfile";
+  static String get_receiptBinaryfile = "http://192.168.0.200:8081/billing/getreceiptfile";
+
   static String clearClubVoucher = "http://192.168.0.200:8081/billing/clearconsolidatevoucher";
 
   static String getaccount_Ledgerlist = "http://192.168.0.200:8081/billing/accountledger";

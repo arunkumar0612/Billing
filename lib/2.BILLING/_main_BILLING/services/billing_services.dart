@@ -13,6 +13,7 @@ import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
+import 'package:ssipl_billing/COMPONENTS-/showPDF.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
@@ -119,6 +120,50 @@ mixin main_BillingService {
       }
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
+  Future<bool> Get_transactionPDFfile({required BuildContext context, required int transactionID}) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"transactionid": transactionID}, API.get_transactionBinaryfile);
+      if (response?['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        if (value.code) {
+          await mainBilling_Controller.PDFfileApiData(value);
+          return true;
+          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Error_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+      return false;
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+      return false;
+    }
+  }
+
+  Future<bool> Get_receiptPDFfile({required BuildContext context, required int transactionID}) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"transactionid": transactionID}, API.get_receiptBinaryfile);
+      if (response?['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        if (value.code) {
+          await mainBilling_Controller.PDFfileApiData(value);
+          return true;
+          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Error_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+      return false;
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+      return false;
     }
   }
 
@@ -831,13 +876,37 @@ mixin main_BillingService {
                                                   cursor: SystemMouseCursors.click,
                                                   child: GestureDetector(
                                                     onTap: () async {
-                                                      // bool success = await widget.Get_transactionPDFfile(context: context, transactionID: transID);
-                                                      // if (success) {
-                                                      //   widget.showPDF(context, "TRANSACTION_$transID");
-                                                      // }
+                                                      bool success = await Get_transactionPDFfile(context: context, transactionID: payment.transactionId);
+                                                      if (success) {
+                                                        showPDF(context, "TRANSACTION_${payment.transactionId}", mainBilling_Controller.billingModel.pdfFile.value);
+                                                      }
                                                     },
                                                     child: Image.asset('assets/images/pdfdownload.png', width: 24, height: 24),
                                                   ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    // PDF View
+                                                    MouseRegion(
+                                                      cursor: SystemMouseCursors.click,
+                                                      child: GestureDetector(
+                                                        onTap: () async {
+                                                          bool success = await Get_receiptPDFfile(context: context, transactionID: payment.transactionId);
+                                                          if (success) {
+                                                            showPDF(context, "RECEIPT_${payment.transactionId}", mainBilling_Controller.billingModel.pdfFile.value);
+                                                          }
+                                                        },
+                                                        child: Image.asset('assets/images/order.png', width: 24, height: 24),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 8),
+
+                                                    // Edit / Save Button
+                                                  ],
                                                 ),
                                               ),
                                             ],

@@ -30,6 +30,7 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
     clientreqController.initializeTabController(TabController(length: 3, vsync: this));
     widget.get_productSuggestionList(context);
     widget.get_OrganizationList(context);
+    widget.get_CompanyList(context, 0);
   }
 
   // @override

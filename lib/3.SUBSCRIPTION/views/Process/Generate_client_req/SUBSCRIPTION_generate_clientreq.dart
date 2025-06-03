@@ -26,6 +26,7 @@ class _GenerateclientreqState extends State<SUBSCRIPTION_Generate_clientreq> wit
     super.initState();
     clientreqController.initializeTabController(TabController(length: 3, vsync: this));
     widget.get_OrganizationList(context);
+    widget.get_CompanyList(context, 0);
   }
 
   @override

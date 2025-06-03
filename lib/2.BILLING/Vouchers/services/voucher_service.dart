@@ -27,27 +27,6 @@ mixin VoucherService {
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final loader = LoadingOverlay();
-  Future<bool> Get_transactionPDFfile({required BuildContext context, required int transactionID}) async {
-    try {
-      Map<String, dynamic>? response = await apiController.GetbyQueryString({"transactionid": transactionID}, API.get_transactionBinaryfile);
-      if (response?['statusCode'] == 200) {
-        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
-        if (value.code) {
-          await voucherController.PDFfileApiData(value);
-          return true;
-          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
-        } else {
-          await Error_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
-        }
-      } else {
-        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
-      }
-      return false;
-    } catch (e) {
-      Error_dialog(context: context, title: "ERROR", content: "$e");
-      return false;
-    }
-  }
 
   dynamic add_Overdue(context, int voucherID, int index) async {
     try {

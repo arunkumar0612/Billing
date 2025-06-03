@@ -453,8 +453,12 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                                 ),
                                                               ),
                                                               Text(
-                                                                widget.formatNumber(int.tryParse(mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount.toString()) ?? 0),
-
+                                                                mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount != null
+                                                                    ? widget.formatNumber((mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount is double
+                                                                            ? mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount
+                                                                            : double.parse(mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount.toString()))!
+                                                                        .toInt())
+                                                                    : '0',
                                                                 // formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount ?? 0.0),
                                                                 style: TextStyle(
                                                                   color: Primary_colors.Color1,
@@ -490,7 +494,14 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                                 ),
                                                               ),
                                                               Text(
-                                                                widget.formatNumber(int.tryParse(mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount.toString()) ?? 0),
+                                                                mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount != null
+                                                                    ? widget.formatNumber((mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount is double
+                                                                            ? mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount
+                                                                            : double.parse(mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount.toString()))!
+                                                                        .toInt())
+                                                                    : '0',
+
+                                                                // widget.formatNumber(int.tryParse(mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount.toString()) ?? 0),
                                                                 // formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount ?? 0.0),
                                                                 style: TextStyle(
                                                                   color: Primary_colors.Color1,
@@ -526,7 +537,14 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                                 ),
                                                               ),
                                                               Text(
-                                                                widget.formatNumber(int.tryParse(mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount.toString()) ?? 0),
+                                                                mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount != null
+                                                                    ? widget.formatNumber((mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount is double
+                                                                            ? mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount
+                                                                            : double.parse(mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount.toString()))!
+                                                                        .toInt())
+                                                                    : '0',
+
+                                                                // widget.formatNumber(int.tryParse(mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount.toString()) ?? 0),
                                                                 // formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount ?? 0.0),
                                                                 style: TextStyle(
                                                                   color: Primary_colors.Color1,
@@ -1539,11 +1557,17 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                             borderRadius: BorderRadius.circular(20),
                                             color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1
                                                 ? const Color.fromARGB(193, 103, 223, 109)
-                                                : const Color.fromARGB(208, 245, 85, 74),
+                                                : mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 2
+                                                    ? const Color.fromARGB(208, 255, 251, 20)
+                                                    : const Color.fromARGB(208, 245, 85, 74),
                                           ),
                                           child: Center(
                                             child: Text(
-                                              mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1 ? 'Paid' : 'Pending',
+                                              mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1
+                                                  ? 'Paid'
+                                                  : mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 2
+                                                      ? 'Partial'
+                                                      : 'Unpaid',
                                               style: TextStyle(
                                                   color: mainBilling_Controller.billingModel.subscriptionInvoiceList[index].paymentStatus == 1
                                                       ? const Color.fromARGB(255, 0, 0, 0)

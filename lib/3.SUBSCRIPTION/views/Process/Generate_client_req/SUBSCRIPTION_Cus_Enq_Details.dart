@@ -106,12 +106,12 @@ class enquryDetailsState extends State<enquryDetails> {
                                     clientreqController.updateOrgName(newValue!);
                                     widget.on_Orgselected(context, newValue);
                                   },
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please Select customer type';
-                                    }
-                                    return null;
-                                  },
+                                  // validator: (value) {
+                                  //   if (value == null || value.isEmpty) {
+                                  //     return 'Please Select customer type';
+                                  //   }
+                                  //   return null;
+                                  // },
                                 ),
                               ),
                             if (clientreqController.clientReqModel.customerType.value == 'Existing') const SizedBox(height: 25),
@@ -217,7 +217,9 @@ class enquryDetailsState extends State<enquryDetails> {
                               controller: clientreqController.clientReqModel.gstController.value,
                               icon: Icons.receipt,
                               validator: (value) {
-                                return Validators.GST_validator(value);
+                                return null;
+
+                                // return Validators.GST_validator(value);
                               },
                             ),
                             if (clientreqController.clientReqModel.customerType.value != 'Existing') const SizedBox(height: 25),

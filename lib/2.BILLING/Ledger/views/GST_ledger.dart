@@ -821,19 +821,19 @@ class _GSTLedgerState extends State<GSTLedger> {
                               Row(
                                 children: [
                                   const SizedBox(width: 20),
-                                  Expanded(
-                                    flex: 11,
-                                    child: Container(),
-                                  ),
-                                  Expanded(
-                                    flex: 3,
-                                    child: SizedBox(
-                                      height: 5,
-                                      child: CustomPaint(
-                                        painter: DottedLinePainter(),
-                                      ),
-                                    ),
-                                  ),
+                                  // Expanded(
+                                  //   flex: 11,
+                                  //   child: Container(),
+                                  // ),
+                                  // Expanded(
+                                  //   flex: 3,
+                                  //   child: SizedBox(
+                                  //     height: 5,
+                                  //     child: CustomPaint(
+                                  //       painter: DottedLinePainter(),
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ],
@@ -1448,212 +1448,212 @@ class _GSTLedgerState extends State<GSTLedger> {
                                   ],
                                 ),
                               ),
-                              if (gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value != 'Consolidate')
-                                Expanded(
-                                  flex: 3,
-                                  child: SizedBox(
-                                    child: Row(
-                                      children: [
-                                        const SizedBox(width: 10),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Stack(
-                                            children: [
-                                              // Bottom shadow for the recessed effect
-                                              Text(
-                                                'Rs. 2389',
-                                                style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 2,
-                                                  color: Colors.white.withOpacity(0.2),
-                                                  shadows: const [
-                                                    Shadow(
-                                                      offset: Offset(2, 2),
-                                                      blurRadius: 2,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              // Top layer to give the 3D embossed effect
-                                              Text(
-                                                'Rs. 2389',
-                                                style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 2,
-                                                  foreground: Paint()
-                                                    ..shader = LinearGradient(
-                                                      colors: [
-                                                        Colors.black.withOpacity(0.8),
-                                                        const Color.fromARGB(255, 255, 223, 0),
-                                                      ],
-                                                      begin: Alignment.topLeft,
-                                                      end: Alignment.bottomRight,
-                                                    ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Stack(
-                                            children: [
-                                              // Bottom shadow for the recessed effect
-                                              Text(
-                                                'Rs. 2389',
-                                                style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 2,
-                                                  color: Colors.white.withOpacity(0.2),
-                                                  shadows: const [
-                                                    Shadow(
-                                                      offset: Offset(2, 2),
-                                                      blurRadius: 2,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              // Top layer to give the 3D embossed effect
-                                              Text(
-                                                'Rs. 2389',
-                                                style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 2,
-                                                  foreground: Paint()
-                                                    ..shader = LinearGradient(
-                                                      colors: [
-                                                        Colors.black.withOpacity(0.8),
-                                                        const Color.fromARGB(255, 255, 223, 0),
-                                                      ],
-                                                      begin: Alignment.topLeft,
-                                                      end: Alignment.bottomRight,
-                                                    ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Stack(
-                                            children: [
-                                              // Bottom shadow for the recessed effect
-                                              Text(
-                                                'Rs. 2389',
-                                                style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 2,
-                                                  color: Colors.white.withOpacity(0.2),
-                                                  shadows: const [
-                                                    Shadow(
-                                                      offset: Offset(2, 2),
-                                                      blurRadius: 2,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              // Top layer to give the 3D embossed effect
-                                              Text(
-                                                'Rs. 2389',
-                                                style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 2,
-                                                  foreground: Paint()
-                                                    ..shader = LinearGradient(
-                                                      colors: [
-                                                        Colors.black.withOpacity(0.8),
-                                                        const Color.fromARGB(255, 255, 223, 0),
-                                                      ],
-                                                      begin: Alignment.topLeft,
-                                                      end: Alignment.bottomRight,
-                                                    ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Stack(
-                                            children: [
-                                              // Bottom shadow for the recessed effect
-                                              Text(
-                                                '- Rs.2389',
-                                                style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 2,
-                                                  color: Colors.white.withOpacity(0.2),
-                                                  shadows: const [
-                                                    Shadow(
-                                                      offset: Offset(2, 2),
-                                                      blurRadius: 2,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              // Top layer to give the 3D embossed effect
-                                              Text(
-                                                '- Rs.2389',
-                                                style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 2,
-                                                  foreground: Paint()
-                                                    ..shader = LinearGradient(
-                                                      colors: [
-                                                        Colors.black.withOpacity(0.8),
-                                                        const Color.fromARGB(255, 255, 223, 0),
-                                                      ],
-                                                      begin: Alignment.topLeft,
-                                                      end: Alignment.bottomRight,
-                                                    ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                              // if (gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value != 'Consolidate')
+                              //   Expanded(
+                              //     flex: 3,
+                              //     child: SizedBox(
+                              //       child: Row(
+                              //         children: [
+                              //           const SizedBox(width: 10),
+                              //           Expanded(
+                              //             flex: 2,
+                              //             child: Stack(
+                              //               children: [
+                              //                 // Bottom shadow for the recessed effect
+                              //                 Text(
+                              //                   'Rs. 2389',
+                              //                   style: TextStyle(
+                              //                     fontSize: 17,
+                              //                     fontWeight: FontWeight.bold,
+                              //                     letterSpacing: 2,
+                              //                     color: Colors.white.withOpacity(0.2),
+                              //                     shadows: const [
+                              //                       Shadow(
+                              //                         offset: Offset(2, 2),
+                              //                         blurRadius: 2,
+                              //                         color: Colors.black,
+                              //                       ),
+                              //                     ],
+                              //                   ),
+                              //                 ),
+                              //                 // Top layer to give the 3D embossed effect
+                              //                 Text(
+                              //                   'Rs. 2389',
+                              //                   style: TextStyle(
+                              //                     fontSize: 17,
+                              //                     fontWeight: FontWeight.bold,
+                              //                     letterSpacing: 2,
+                              //                     foreground: Paint()
+                              //                       ..shader = LinearGradient(
+                              //                         colors: [
+                              //                           Colors.black.withOpacity(0.8),
+                              //                           const Color.fromARGB(255, 255, 223, 0),
+                              //                         ],
+                              //                         begin: Alignment.topLeft,
+                              //                         end: Alignment.bottomRight,
+                              //                       ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
+                              //                   ),
+                              //                 ),
+                              //               ],
+                              //             ),
+                              //           ),
+                              //           Expanded(
+                              //             flex: 2,
+                              //             child: Stack(
+                              //               children: [
+                              //                 // Bottom shadow for the recessed effect
+                              //                 Text(
+                              //                   'Rs. 2389',
+                              //                   style: TextStyle(
+                              //                     fontSize: 17,
+                              //                     fontWeight: FontWeight.bold,
+                              //                     letterSpacing: 2,
+                              //                     color: Colors.white.withOpacity(0.2),
+                              //                     shadows: const [
+                              //                       Shadow(
+                              //                         offset: Offset(2, 2),
+                              //                         blurRadius: 2,
+                              //                         color: Colors.black,
+                              //                       ),
+                              //                     ],
+                              //                   ),
+                              //                 ),
+                              //                 // Top layer to give the 3D embossed effect
+                              //                 Text(
+                              //                   'Rs. 2389',
+                              //                   style: TextStyle(
+                              //                     fontSize: 17,
+                              //                     fontWeight: FontWeight.bold,
+                              //                     letterSpacing: 2,
+                              //                     foreground: Paint()
+                              //                       ..shader = LinearGradient(
+                              //                         colors: [
+                              //                           Colors.black.withOpacity(0.8),
+                              //                           const Color.fromARGB(255, 255, 223, 0),
+                              //                         ],
+                              //                         begin: Alignment.topLeft,
+                              //                         end: Alignment.bottomRight,
+                              //                       ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
+                              //                   ),
+                              //                 ),
+                              //               ],
+                              //             ),
+                              //           ),
+                              //           Expanded(
+                              //             flex: 2,
+                              //             child: Stack(
+                              //               children: [
+                              //                 // Bottom shadow for the recessed effect
+                              //                 Text(
+                              //                   'Rs. 2389',
+                              //                   style: TextStyle(
+                              //                     fontSize: 17,
+                              //                     fontWeight: FontWeight.bold,
+                              //                     letterSpacing: 2,
+                              //                     color: Colors.white.withOpacity(0.2),
+                              //                     shadows: const [
+                              //                       Shadow(
+                              //                         offset: Offset(2, 2),
+                              //                         blurRadius: 2,
+                              //                         color: Colors.black,
+                              //                       ),
+                              //                     ],
+                              //                   ),
+                              //                 ),
+                              //                 // Top layer to give the 3D embossed effect
+                              //                 Text(
+                              //                   'Rs. 2389',
+                              //                   style: TextStyle(
+                              //                     fontSize: 17,
+                              //                     fontWeight: FontWeight.bold,
+                              //                     letterSpacing: 2,
+                              //                     foreground: Paint()
+                              //                       ..shader = LinearGradient(
+                              //                         colors: [
+                              //                           Colors.black.withOpacity(0.8),
+                              //                           const Color.fromARGB(255, 255, 223, 0),
+                              //                         ],
+                              //                         begin: Alignment.topLeft,
+                              //                         end: Alignment.bottomRight,
+                              //                       ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
+                              //                   ),
+                              //                 ),
+                              //               ],
+                              //             ),
+                              //           ),
+                              //           Expanded(
+                              //             flex: 2,
+                              //             child: Stack(
+                              //               children: [
+                              //                 // Bottom shadow for the recessed effect
+                              //                 Text(
+                              //                   '- Rs.2389',
+                              //                   style: TextStyle(
+                              //                     fontSize: 17,
+                              //                     fontWeight: FontWeight.bold,
+                              //                     letterSpacing: 2,
+                              //                     color: Colors.white.withOpacity(0.2),
+                              //                     shadows: const [
+                              //                       Shadow(
+                              //                         offset: Offset(2, 2),
+                              //                         blurRadius: 2,
+                              //                         color: Colors.black,
+                              //                       ),
+                              //                     ],
+                              //                   ),
+                              //                 ),
+                              //                 // Top layer to give the 3D embossed effect
+                              //                 Text(
+                              //                   '- Rs.2389',
+                              //                   style: TextStyle(
+                              //                     fontSize: 17,
+                              //                     fontWeight: FontWeight.bold,
+                              //                     letterSpacing: 2,
+                              //                     foreground: Paint()
+                              //                       ..shader = LinearGradient(
+                              //                         colors: [
+                              //                           Colors.black.withOpacity(0.8),
+                              //                           const Color.fromARGB(255, 255, 223, 0),
+                              //                         ],
+                              //                         begin: Alignment.topLeft,
+                              //                         end: Alignment.bottomRight,
+                              //                       ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
+                              //                   ),
+                              //                 ),
+                              //               ],
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     ),
+                              //   ),
                             ],
                           ),
                         ),
-                        if (gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value != 'Consolidate')
-                          Column(
-                            children: [
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  const SizedBox(width: 20),
-                                  Expanded(
-                                    flex: 11,
-                                    child: Container(),
-                                  ),
-                                  Expanded(
-                                    flex: 3,
-                                    child: SizedBox(
-                                      height: 5,
-                                      child: CustomPaint(
-                                        painter: DottedLinePainter(),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                        // if (gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value != 'Consolidate')
+                        //   Column(
+                        //     children: [
+                        //       const SizedBox(height: 10),
+                        //       Row(
+                        //         children: [
+                        //           const SizedBox(width: 20),
+                        //           Expanded(
+                        //             flex: 11,
+                        //             child: Container(),
+                        //           ),
+                        //           Expanded(
+                        //             flex: 3,
+                        //             child: SizedBox(
+                        //               height: 5,
+                        //               child: CustomPaint(
+                        //                 painter: DottedLinePainter(),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ],
+                        //   ),
                       ],
                     )
                   : Center(
@@ -1682,7 +1682,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                           Padding(
                             padding: const EdgeInsets.only(top: 204),
                             child: Text(
-                              'generate a Ledger to see it listed here.',
+                              'Generate a Voucher to see it listed here.',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,

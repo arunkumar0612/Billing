@@ -81,7 +81,7 @@ Future<Uint8List> Consolidated_AccountLedger_excelTemplate(PDF_AccountLedgerSumm
 
     sheet1.getRangeByIndex(row, 1).setText(_formatDate(item.updatedDate));
     sheet1.getRangeByIndex(row, 2).setText(item.invoiceNumber);
-    sheet1.getRangeByIndex(row, 3).setText(item.description);
+    sheet1.getRangeByIndex(row, 3).setText('${item.description}\nNet: ${_formatCurrency(item.billDetails.subtotal)}, GST: ${_formatCurrency(item.billDetails.totalGST)}, TDS: ${item.tdsAmount}');
     sheet1.getRangeByIndex(row, 4).setText(_formatCurrency(item.debitAmount));
     sheet1.getRangeByIndex(row, 5).setText(_formatCurrency(item.creditAmount));
     final parsedBalance = parseBalanceWithSuffix(item.balance.toString());
@@ -284,7 +284,7 @@ Future<Uint8List> Client_AccountLedger_excelTemplate(PDF_AccountLedgerSummary ac
 
     sheet1.getRangeByIndex(row, 1).setText(_formatDate(item.updatedDate));
     sheet1.getRangeByIndex(row, 2).setText(item.invoiceNumber);
-    sheet1.getRangeByIndex(row, 3).setText(item.description);
+    sheet1.getRangeByIndex(row, 3).setText('${item.description}\nNet: ${_formatCurrency(item.billDetails.subtotal)}, GST: ${_formatCurrency(item.billDetails.totalGST)}, TDS: ${item.tdsAmount}');
     sheet1.getRangeByIndex(row, 4).setText(_formatCurrency(item.debitAmount));
     sheet1.getRangeByIndex(row, 5).setText(_formatCurrency(item.creditAmount));
     final parsedBalance = parseBalanceWithSuffix(item.balance.toString());

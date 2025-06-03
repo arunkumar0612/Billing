@@ -3581,10 +3581,8 @@ class _VoucherState extends State<Voucher> {
                                                               style: const TextStyle(color: Colors.white, fontSize: 12),
                                                               maxLines: 2,
                                                               decoration: const InputDecoration(
-                                                                hint: Text(
-                                                                  "Enter feedback details",
-                                                                  style: TextStyle(color: Colors.grey),
-                                                                ),
+                                                                hintText: "Enter feedback details",
+                                                                hintStyle: TextStyle(color: Colors.grey),
                                                                 border: OutlineInputBorder(borderSide: BorderSide.none),
                                                                 isDense: true,
                                                                 contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),

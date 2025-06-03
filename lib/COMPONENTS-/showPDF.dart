@@ -67,26 +67,6 @@ void showPDF(BuildContext context, String filename, File? pdfFile) async {
                       },
                     ),
 
-                    // Navigation Arrows
-                    // Align(
-                    //   alignment: Alignment.centerLeft,
-                    //   child: IconButton(
-                    //     icon: Icon(Icons.arrow_left, size: 30, color: Colors.black),
-                    //     onPressed: () {
-                    //       _pdfController.previousPage();
-                    //     },
-                    //   ),
-                    // ),
-                    // Align(
-                    //   alignment: Alignment.centerRight,
-                    //   child: IconButton(
-                    //     icon: Icon(Icons.arrow_right, size: 30, color: Colors.black),
-                    //     onPressed: () {
-                    //       _pdfController.nextPage();
-                    //     },
-                    //   ),
-                    // ),
-
                     // Bottom Buttons
                     Align(
                       alignment: Alignment.bottomRight,
@@ -96,77 +76,132 @@ void showPDF(BuildContext context, String filename, File? pdfFile) async {
                           // Download & Share
                           Row(
                             children: [
+                              // Download Button
                               Padding(
                                 padding: const EdgeInsets.only(left: 5, bottom: 20),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        downloadPdf(
-                                          context,
-                                          path.basename(filename).replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '').replaceAll(" ", ""),
-                                          pdfFile,
-                                        );
-                                      },
-                                      icon: const Icon(Icons.download_sharp, color: Colors.green, size: 22),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.green[50], // Light background
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(color: Colors.green),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black12,
+                                            blurRadius: 2,
+                                            offset: Offset(0, 1),
+                                          ),
+                                        ],
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          downloadPdf(
+                                            context,
+                                            path.basename(filename).replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '').replaceAll(" ", ""),
+                                            pdfFile,
+                                          );
+                                        },
+                                        icon: const Icon(Icons.download_sharp, color: Colors.green, size: 22),
+                                      ),
                                     ),
-                                    Text('Download', style: TextStyle(fontSize: 10, fontStyle: FontStyle.italic)),
+                                    const SizedBox(height: 4),
+                                    Text('Download', style: TextStyle(fontSize: 10, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
                                   ],
                                 ),
                               ),
-                              SizedBox(
-                                width: 8,
-                              ),
+                              const SizedBox(width: 8),
+
+                              // Share Button
                               Padding(
                                 padding: const EdgeInsets.only(right: 20, bottom: 20),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        shareAnyPDF(
-                                          context,
-                                          path.basename(filename).replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '').replaceAll(" ", ""),
-                                          pdfFile,
-                                        );
-                                      },
-                                      icon: const Icon(Icons.share, color: Colors.blue, size: 22),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue[50], // Light background
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(color: Colors.blue),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black12,
+                                            blurRadius: 2,
+                                            offset: Offset(0, 1),
+                                          ),
+                                        ],
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          shareAnyPDF(
+                                            context,
+                                            path.basename(filename).replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '').replaceAll(" ", ""),
+                                            pdfFile,
+                                          );
+                                        },
+                                        icon: const Icon(Icons.share, color: Colors.blue, size: 22),
+                                      ),
                                     ),
-                                    Text('Share', style: TextStyle(fontSize: 10, fontStyle: FontStyle.italic)),
+                                    const SizedBox(height: 4),
+                                    Text('Share', style: TextStyle(fontSize: 10, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
                                   ],
                                 ),
                               ),
                             ],
                           ),
 
-                          // Page Indicator
+                          // Page Navigation
                           Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(right: 2, bottom: 10),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        _pdfController.previousPage();
-                                      },
-                                      icon: const Icon(Icons.arrow_left_sharp, color: Colors.black),
+                                child: Container(
+                                  decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(20), boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      blurRadius: 2,
+                                      offset: Offset(0, 1),
                                     ),
-                                    Text(
-                                      'Page ($currentPage / $totalPages)',
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        _pdfController.nextPage();
-                                      },
-                                      icon: const Icon(Icons.arrow_right_sharp, color: Colors.black),
-                                    ),
-                                  ],
+                                  ]),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          _pdfController.previousPage();
+                                        },
+                                        icon: Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,
+                                          ),
+                                          child: const Icon(Icons.arrow_left_sharp, color: Colors.black),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                                        child: Text(
+                                          'Page ($currentPage / $totalPages)',
+                                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          _pdfController.nextPage();
+                                        },
+                                        icon: Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,
+                                          ),
+                                          child: const Icon(Icons.arrow_right_sharp, color: Colors.black),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],

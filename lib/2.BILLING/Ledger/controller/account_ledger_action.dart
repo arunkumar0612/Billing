@@ -28,6 +28,7 @@ class Account_LedgerController extends GetxController {
     account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value = startDate;
     account_LedgerModel.account_LedgerSelectedFilter.value.todate.value = endDate;
   }
+
   // void reset_account_LedgerClear_popup() {
   //   account_LedgerModel.recievableAmount.value = 0.0;
   //   account_LedgerModel.is_fullClear.value = false;

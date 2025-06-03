@@ -599,9 +599,9 @@ class _VoucherState extends State<Voucher> {
                                                       ),
                                                       onPressed: () async {
                                                         // Start loader
-                                                        // loader.start(context);
+                                                        loader.start(context);
 
-                                                        await Future.delayed(const Duration(milliseconds: 300));
+                                                        // await Future.delayed(const Duration(milliseconds: 300));
 
                                                         // Generate PDF bytes using original code (unchanged)
                                                         final pdfBytes = await ReceiptPDFtemplate(
@@ -661,7 +661,7 @@ class _VoucherState extends State<Voucher> {
                                                         // );
 
                                                         await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete', receipt);
-
+                                                        loader.stop();
                                                         // Generate unique filename with timestamp
                                                       },
                                                       child: const Text(

@@ -487,7 +487,7 @@ mixin VoucherService {
 
   dynamic clearVoucher(context, int index, File? file, String VoucherType, File receipt) async {
     try {
-      loader.start(context);
+      // loader.start(context);
       final mapData = {
         "date": DateTime.parse(voucherController.voucherModel.closedDate.value),
         "voucherid": voucherController.voucherModel.voucher_list[index].voucher_id,
@@ -527,18 +527,15 @@ mixin VoucherService {
         if (value.code) {
           await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
           Navigator.of(context).pop(true);
-          loader.stop();
         } else {
           await Error_dialog(context: context, title: 'Processing Invoice', content: value.message ?? "", onOk: () {});
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
-        loader.stop();
       }
       // await Refresher().refreshAll(context);
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
-      loader.stop();
     }
   }
 

@@ -157,14 +157,14 @@ class Quotation {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("TAA/TRY/AB80/2024", 10),
+                            child: bold("TAA/TRY/AB80/2024", 10),
                           ),
                         ),
                         pw.SizedBox(height: 5),
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular("SSIPL/250301", 10),
+                            child: bold("SSIPL/250301", 10),
                           ),
                         ),
                       ],

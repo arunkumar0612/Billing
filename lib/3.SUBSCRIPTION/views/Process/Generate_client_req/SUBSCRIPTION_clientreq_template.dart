@@ -33,14 +33,7 @@ Future<Uint8List> generateClientReq({
 
 class SUBSCRIPTION_Client_requirement {
   SUBSCRIPTION_Client_requirement(
-      {required this.sites,
-      required this.baseColor,
-      required this.accentColor,
-      required this.client_addr_name,
-      required this.client_addr,
-      required this.bill_addr_name,
-      required this.bill_addr,
-      required this.imagePath});
+      {required this.sites, required this.baseColor, required this.accentColor, required this.client_addr_name, required this.client_addr, required this.bill_addr_name, required this.bill_addr, required this.imagePath});
   final SUBSCRIPTION_ClientreqController clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
 
   String client_addr_name = "";
@@ -251,9 +244,9 @@ class SUBSCRIPTION_Client_requirement {
       // ✅ Cell Alignments
       cellAlignments: {
         0: pw.Alignment.center, // S.No - Center
-        1: pw.Alignment.centerLeft, // Site Name - Left
+        1: pw.Alignment.center, // Site Name - Left
         2: pw.Alignment.center, // Camera Quantity - Center
-        3: pw.Alignment.centerLeft, // Site Address - Left
+        3: pw.Alignment.center, // Site Address - Left
       },
 
       headerStyle: pw.TextStyle(

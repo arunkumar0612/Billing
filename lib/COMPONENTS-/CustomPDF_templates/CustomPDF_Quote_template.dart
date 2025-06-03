@@ -9,8 +9,7 @@ import '../../4.SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entit
 import '../../4.SALES/models/entities/Quote_entities.dart';
 import '../../UTILS/helpers/support_functions.dart';
 
-Future<Uint8List> generate_CustomPDFQuote(
-    PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, quote_gstTotals, isGST_local) async {
+Future<Uint8List> generate_CustomPDFQuote(PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, quote_gstTotals, isGST_local) async {
   final quotation = Quotation(
     date: date,
     products: products,
@@ -165,7 +164,7 @@ class Quotation {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular(estimate, 10),
+                            child: bold(estimate, 10),
                           ),
                         ),
                       ],

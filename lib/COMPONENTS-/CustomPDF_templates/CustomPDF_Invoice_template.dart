@@ -9,8 +9,7 @@ import '../../4.SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entit
 import '../../4.SALES/models/entities/Invoice_entities.dart';
 import '../../UTILS/helpers/support_functions.dart';
 
-Future<Uint8List> generate_CustomPDFInvoice(
-    PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, invoice_num, title, gst, invoice_gstTotals, isGST_local) async {
+Future<Uint8List> generate_CustomPDFInvoice(PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, invoice_num, title, gst, invoice_gstTotals, isGST_local) async {
   final invoice = MaualInvoiceTemplate(
     date: date,
     products: products,
@@ -167,7 +166,7 @@ class MaualInvoiceTemplate {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular(invoiceNo, 10),
+                            child: bold(invoiceNo, 10),
                           ),
                         ),
                       ],
@@ -1065,7 +1064,7 @@ class MaualInvoiceTemplate {
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
-              regular('IGST       :', 10),
+              regular('IGST         :', 10),
               regular(formatzero(CGST_total * 2), 10),
             ],
           ),
@@ -1074,7 +1073,7 @@ class MaualInvoiceTemplate {
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
               regular(
-                'Round off : ${((double.parse(formatCurrencyRoundedPaisa(_grandTotal).replaceAll(',', '')) - _grandTotal) >= 0 ? '+' : '')}${(double.parse(formatCurrencyRoundedPaisa(_grandTotal).replaceAll(',', '')) - _grandTotal).toStringAsFixed(2)}',
+                'Round off  : ${((double.parse(formatCurrencyRoundedPaisa(_grandTotal).replaceAll(',', '')) - _grandTotal) >= 0 ? '+' : '')}${(double.parse(formatCurrencyRoundedPaisa(_grandTotal).replaceAll(',', '')) - _grandTotal).toStringAsFixed(2)}',
                 10,
               ),
               regular(formatCurrencyRoundedPaisa(_grandTotal), 10),

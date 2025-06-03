@@ -157,14 +157,14 @@ class Delivery_challan {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular(invoice_num, 10),
+                            child: bold(invoice_num, 10),
                           ),
                         ),
                         pw.SizedBox(height: 5),
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular(dc_num, 10),
+                            child: bold(dc_num, 10),
                           ),
                         ),
                       ],

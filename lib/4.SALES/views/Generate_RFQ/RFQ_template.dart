@@ -92,10 +92,10 @@ class Request_for_quote {
           title(context),
           pw.SizedBox(height: 10),
           _contentTable(context),
-          pw.Divider(
-            color: PdfColors.grey500,
-            thickness: 0.2,
-          ),
+          // pw.Divider(
+          //   color: PdfColors.grey500,
+          //   thickness: 0.2,
+          // ),
           pw.SizedBox(height: 10),
           tax_tabl(context),
         ],
@@ -167,7 +167,7 @@ class Request_for_quote {
                             // width: 100,
                             child: pw.Align(
                               alignment: pw.Alignment.centerLeft,
-                              child: regular(RFQ_no, 10),
+                              child: bold(RFQ_no, 10),
                             ),
                           ),
                         ],

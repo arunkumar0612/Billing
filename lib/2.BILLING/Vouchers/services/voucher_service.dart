@@ -486,56 +486,60 @@ mixin VoucherService {
   }
 
   dynamic clearVoucher(context, int index, File? file, String VoucherType, File receipt) async {
-    // try {
-    final mapData = {
-      "date": DateTime.parse(voucherController.voucherModel.closedDate.value),
-      "voucherid": voucherController.voucherModel.voucher_list[index].voucher_id,
-      "vouchernumber": voucherController.voucherModel.voucher_list[index].voucherNumber,
-      "paymentstatus": VoucherType,
-      "IGST": voucherController.voucherModel.voucher_list[index].igst,
-      "SGST": voucherController.voucherModel.voucher_list[index].sgst,
-      "CGST": voucherController.voucherModel.voucher_list[index].cgst,
-      "tds": voucherController.voucherModel.voucher_list[index].tdsCalculationAmount,
-      "grossamount": voucherController.voucherModel.voucher_list[index].totalAmount,
-      "subtotal": voucherController.voucherModel.voucher_list[index].subTotal,
-      "paidamount": double.parse(voucherController.voucherModel.amountCleared_controller.value.text),
-      "clientaddressname": voucherController.voucherModel.voucher_list[index].clientName,
-      "clientaddress": voucherController.voucherModel.voucher_list[index].clientAddress,
-      "invoicenumber": voucherController.voucherModel.voucher_list[index].invoiceNumber,
-      "emailid": voucherController.voucherModel.voucher_list[index].emailId,
-      "phoneno": voucherController.voucherModel.voucher_list[index].phoneNumber,
-      "tdsstatus": voucherController.voucherModel.is_Deducted.value,
-      "invoicetype": voucherController.voucherModel.voucher_list[index].invoiceType,
-      "gstnumber": voucherController.voucherModel.voucher_list[index].gstNumber,
-      "feedback": voucherController.voucherModel.feedback_controller.value.text,
-      "transactiondetails": voucherController.voucherModel.transactionDetails_controller.value.text,
-      "invoicedate": voucherController.voucherModel.voucher_list[index].date,
-      "paymentmode": voucherController.voucherModel.Selectedpaymentmode.value
-    };
-    ClearVoucher voucherdata = ClearVoucher.fromJson(mapData);
+    try {
+      loader.start(context);
+      final mapData = {
+        "date": DateTime.parse(voucherController.voucherModel.closedDate.value),
+        "voucherid": voucherController.voucherModel.voucher_list[index].voucher_id,
+        "vouchernumber": voucherController.voucherModel.voucher_list[index].voucherNumber,
+        "paymentstatus": VoucherType,
+        "IGST": voucherController.voucherModel.voucher_list[index].igst,
+        "SGST": voucherController.voucherModel.voucher_list[index].sgst,
+        "CGST": voucherController.voucherModel.voucher_list[index].cgst,
+        "tds": voucherController.voucherModel.voucher_list[index].tdsCalculationAmount,
+        "grossamount": voucherController.voucherModel.voucher_list[index].totalAmount,
+        "subtotal": voucherController.voucherModel.voucher_list[index].subTotal,
+        "paidamount": double.parse(voucherController.voucherModel.amountCleared_controller.value.text),
+        "clientaddressname": voucherController.voucherModel.voucher_list[index].clientName,
+        "clientaddress": voucherController.voucherModel.voucher_list[index].clientAddress,
+        "invoicenumber": voucherController.voucherModel.voucher_list[index].invoiceNumber,
+        "emailid": voucherController.voucherModel.voucher_list[index].emailId,
+        "phoneno": voucherController.voucherModel.voucher_list[index].phoneNumber,
+        "tdsstatus": voucherController.voucherModel.is_Deducted.value,
+        "invoicetype": voucherController.voucherModel.voucher_list[index].invoiceType,
+        "gstnumber": voucherController.voucherModel.voucher_list[index].gstNumber,
+        "feedback": voucherController.voucherModel.feedback_controller.value.text,
+        "transactiondetails": voucherController.voucherModel.transactionDetails_controller.value.text,
+        "invoicedate": voucherController.voucherModel.voucher_list[index].date,
+        "paymentmode": voucherController.voucherModel.Selectedpaymentmode.value
+      };
+      ClearVoucher voucherdata = ClearVoucher.fromJson(mapData);
 
-    String encodedData = json.encode(voucherdata.toJson());
-    Map<String, dynamic>? response = await apiController.Multer(
-      sessiontokenController.sessiontokenModel.sessiontoken.value,
-      encodedData,
-      [file, receipt].whereType<File>().toList(), // ✅ Corrected line
-      API.clearVoucher,
-    );
-    if (response['statusCode'] == 200) {
-      CMDmResponse value = CMDmResponse.fromJson(response);
-      if (value.code) {
-        await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
-        Navigator.of(context).pop(true);
+      String encodedData = json.encode(voucherdata.toJson());
+      Map<String, dynamic>? response = await apiController.Multer(
+        sessiontokenController.sessiontokenModel.sessiontoken.value,
+        encodedData,
+        [file, receipt].whereType<File>().toList(), // ✅ Corrected line
+        API.clearVoucher,
+      );
+      if (response['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response);
+        if (value.code) {
+          await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
+          Navigator.of(context).pop(true);
+          loader.stop();
+        } else {
+          await Error_dialog(context: context, title: 'Processing Invoice', content: value.message ?? "", onOk: () {});
+        }
       } else {
-        await Error_dialog(context: context, title: 'Processing Invoice', content: value.message ?? "", onOk: () {});
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        loader.stop();
       }
-    } else {
-      Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      // await Refresher().refreshAll(context);
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+      loader.stop();
     }
-    //await Refresher().refreshAll(context);
-    // } catch (e) {
-    //   Error_dialog(context: context, title: "ERROR", content: "$e");
-    // }
   }
 
   Future<void> applySearchFilter(String query) async {

@@ -1424,7 +1424,7 @@ class _accountLedgerState extends State<AccountLedger> {
                           Padding(
                             padding: const EdgeInsets.only(top: 204),
                             child: Text(
-                              'generate a Ledger to see it listed here.',
+                              'Generate a Voucher to see it listed here.',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,

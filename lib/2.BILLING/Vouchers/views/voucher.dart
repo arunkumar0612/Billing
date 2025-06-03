@@ -528,7 +528,7 @@ class _VoucherState extends State<Voucher> {
                                         ),
                                         const SizedBox(height: 8),
                                         SizedBox(
-                                          height: 118,
+                                          height: 148,
                                           child: MouseRegion(
                                             cursor: SystemMouseCursors.click,
                                             child: GestureDetector(
@@ -568,256 +568,260 @@ class _VoucherState extends State<Voucher> {
                                             ),
                                           ),
                                         ),
+                                        const SizedBox(height: 24),
+
+                                        // Action Buttons
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            OutlinedButton(
+                                              style: OutlinedButton.styleFrom(
+                                                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                                side: const BorderSide(color: Colors.grey),
+                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                              ),
+                                              onPressed: () => Navigator.of(context).pop(),
+                                              child: const Text(
+                                                'CANCEL',
+                                                style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                                              ),
+                                            ),
+                                            if (voucherController.voucherModel.selectedValue.value == "Full") const SizedBox(width: 16),
+                                            if (voucherController.voucherModel.selectedValue.value == "Full")
+                                              voucherController.voucherModel.is_fullClear.value && voucherController.voucherModel.is_amountExceeds.value == false
+                                                  ? ElevatedButton(
+                                                      style: ElevatedButton.styleFrom(
+                                                        backgroundColor: Primary_colors.Color3,
+                                                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                                        elevation: 2,
+                                                        shadowColor: Primary_colors.Color3.withOpacity(0.3),
+                                                      ),
+                                                      onPressed: () async {
+                                                        // Start loader
+                                                        // loader.start(context);
+
+                                                        await Future.delayed(const Duration(milliseconds: 300));
+
+                                                        // Generate PDF bytes using original code (unchanged)
+                                                        final pdfBytes = await ReceiptPDFtemplate(
+                                                            PdfPageFormat.a4,
+                                                            ClearVoucher(
+                                                              date: DateTime.parse(voucherController.voucherModel.closedDate.value),
+                                                              voucherId: voucherController.voucherModel.voucher_list[index].voucher_id,
+                                                              voucherNumber: voucherController.voucherModel.voucher_list[index].voucherNumber,
+                                                              paymentStatus: voucherController.voucherModel.voucher_list[index].voucherType,
+                                                              igst: voucherController.voucherModel.voucher_list[index].igst,
+                                                              sgst: voucherController.voucherModel.voucher_list[index].sgst,
+                                                              cgst: voucherController.voucherModel.voucher_list[index].cgst,
+                                                              tds: voucherController.voucherModel.voucher_list[index].tdsCalculationAmount,
+                                                              grossAmount: voucherController.voucherModel.voucher_list[index].totalAmount,
+                                                              subtotal: voucherController.voucherModel.voucher_list[index].subTotal,
+                                                              paidAmount: double.parse(voucherController.voucherModel.amountCleared_controller.value.text),
+                                                              clientAddressName: voucherController.voucherModel.voucher_list[index].clientName,
+                                                              clientAddress: voucherController.voucherModel.voucher_list[index].clientAddress,
+                                                              invoiceNumber: voucherController.voucherModel.voucher_list[index].invoiceNumber,
+                                                              emailId: voucherController.voucherModel.voucher_list[index].emailId,
+                                                              phoneNo: voucherController.voucherModel.voucher_list[index].phoneNumber,
+                                                              tdsStatus: voucherController.voucherModel.is_Deducted.value,
+                                                              invoiceType: voucherController.voucherModel.voucher_list[index].invoiceType,
+                                                              gstNumber: voucherController.voucherModel.voucher_list[index].gstNumber,
+                                                              feedback: voucherController.voucherModel.feedback_controller.value.text,
+                                                              transactionDetails: voucherController.voucherModel.transactionDetails_controller.value.text,
+                                                              invoiceDate: voucherController.voucherModel.voucher_list[index].date ?? DateTime.now(),
+                                                              paymentmode: voucherController.voucherModel.Selectedpaymentmode.value,
+                                                            ));
+
+                                                        // Get the system temp directory
+                                                        Directory tempDir = await getTemporaryDirectory();
+                                                        String safeInvoiceNo = voucherController.voucherModel.voucher_list[index].invoiceNumber.replaceAll('/', '-');
+                                                        // Create folder path
+                                                        String folderPath = '${tempDir.path}/$safeInvoiceNo';
+                                                        Directory folder = Directory(folderPath);
+
+                                                        // Ensure the folder exists
+                                                        if (!await folder.exists()) {
+                                                          await folder.create(recursive: true);
+                                                        }
+                                                        String tempFilePath = '$folderPath/Receipt_$safeInvoiceNo.pdf';
+                                                        // Save the PDF
+                                                        final receipt = File(tempFilePath);
+                                                        await receipt.writeAsBytes(pdfBytes);
+
+                                                        // Complete the voucher
+
+                                                        // Optional success notification
+                                                        // ScaffoldMessenger.of(context).showSnackBar(
+                                                        //   SnackBar(
+                                                        //     content: const Text('Voucher cleared and PDF saved successfully.'),
+                                                        //     behavior: SnackBarBehavior.floating,
+                                                        //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                                        //     backgroundColor: Colors.green,
+                                                        //   ),
+                                                        // );
+
+                                                        await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete', receipt);
+
+                                                        // Generate unique filename with timestamp
+                                                      },
+                                                      child: const Text(
+                                                        'CLEAR VOUCHER',
+                                                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                                      ),
+                                                    )
+                                                  : voucherController.voucherModel.is_amountExceeds.value == true || voucherController.voucherModel.is_amountExceeds.value == null
+                                                      ? Expanded(
+                                                          child: const SizedBox(
+                                                            width: 250,
+                                                            child: Text("The recieved amount is either empty or exceeds the recievable amount",
+                                                                style: TextStyle(color: Colors.amber, fontSize: Primary_font_size.Text5)),
+                                                          ),
+                                                        )
+                                                      : MouseRegion(
+                                                          cursor: SystemMouseCursors.forbidden,
+                                                          child: Container(
+                                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.grey),
+                                                            child: const Padding(
+                                                              padding: EdgeInsets.all(8.0),
+                                                              child: Text("CLEAR VOUCHER", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                                                            ),
+                                                          ),
+                                                        ),
+
+                                            // if (voucherController.voucherModel.selectedValue.value == "Full")
+                                            //   voucherController.voucherModel.is_amountExceeds.value == false
+                                            //       ? ElevatedButton(
+                                            //           style: ElevatedButton.styleFrom(
+                                            //             backgroundColor: Primary_colors.Color3,
+                                            //             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                            //             shape: RoundedRectangleBorder(
+                                            //               borderRadius: BorderRadius.circular(8),
+                                            //             ),
+                                            //             elevation: 2,
+                                            //             shadowColor: Primary_colors.Color3.withOpacity(0.3),
+                                            //           ),
+                                            //           onPressed: () async {
+                                            //             await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete');
+                                            //           },
+                                            //           child: const Text(
+                                            //             'CLEAR VOUCHER',
+                                            //             style: TextStyle(
+                                            //               color: Colors.white,
+                                            //               fontWeight: FontWeight.bold,
+                                            //             ),
+                                            //           ),
+                                            //         )
+                                            //       : const SizedBox(
+                                            //           width: 250,
+                                            //           child: Text(
+                                            //             "The recieved amount is either empty or exceeds the recievable amount",
+                                            //             style: TextStyle(color: Colors.amber, fontSize: 12),
+                                            //           )),
+                                            if (voucherController.voucherModel.selectedValue.value == "Partial") const SizedBox(width: 16),
+                                            if (voucherController.voucherModel.selectedValue.value == "Partial")
+                                              (voucherController.voucherModel.is_amountExceeds.value == false)
+                                                  ? ElevatedButton(
+                                                      style: ElevatedButton.styleFrom(
+                                                        backgroundColor: Colors.orange,
+                                                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                                        elevation: 2,
+                                                      ),
+                                                      onPressed: () async {
+                                                        bool type = voucherController.voucherModel.voucher_list[index].pendingAmount ==
+                                                            double.parse(voucherController.voucherModel.amountCleared_controller.value.text);
+                                                        await Future.delayed(const Duration(milliseconds: 300));
+
+                                                        // Generate PDF bytes using original code (unchanged)
+                                                        final pdfBytes = await ReceiptPDFtemplate(
+                                                          PdfPageFormat.a4,
+                                                          ClearVoucher(
+                                                            date: DateTime.parse(voucherController.voucherModel.closedDate.value),
+                                                            voucherId: voucherController.voucherModel.voucher_list[index].voucher_id,
+                                                            voucherNumber: voucherController.voucherModel.voucher_list[index].voucherNumber,
+                                                            paymentStatus: voucherController.voucherModel.voucher_list[index].voucherType,
+                                                            igst: voucherController.voucherModel.voucher_list[index].igst,
+                                                            sgst: voucherController.voucherModel.voucher_list[index].sgst,
+                                                            cgst: voucherController.voucherModel.voucher_list[index].cgst,
+                                                            tds: voucherController.voucherModel.voucher_list[index].tdsCalculationAmount,
+                                                            grossAmount: voucherController.voucherModel.voucher_list[index].totalAmount,
+                                                            subtotal: voucherController.voucherModel.voucher_list[index].subTotal,
+                                                            paidAmount: double.parse(voucherController.voucherModel.amountCleared_controller.value.text),
+                                                            clientAddressName: voucherController.voucherModel.voucher_list[index].clientName,
+                                                            clientAddress: voucherController.voucherModel.voucher_list[index].clientAddress,
+                                                            invoiceNumber: voucherController.voucherModel.voucher_list[index].invoiceNumber,
+                                                            emailId: voucherController.voucherModel.voucher_list[index].emailId,
+                                                            phoneNo: voucherController.voucherModel.voucher_list[index].phoneNumber,
+                                                            tdsStatus: voucherController.voucherModel.is_Deducted.value,
+                                                            invoiceType: voucherController.voucherModel.voucher_list[index].invoiceType,
+                                                            gstNumber: voucherController.voucherModel.voucher_list[index].gstNumber,
+                                                            feedback: voucherController.voucherModel.feedback_controller.value.text,
+                                                            transactionDetails: voucherController.voucherModel.transactionDetails_controller.value.text,
+                                                            invoiceDate: voucherController.voucherModel.voucher_list[index].date ?? DateTime.now(),
+                                                            paymentmode: voucherController.voucherModel.Selectedpaymentmode.value,
+                                                          ),
+                                                        );
+                                                        // Get the system temp directory
+                                                        Directory tempDir = await getTemporaryDirectory();
+                                                        String safeInvoiceNo = voucherController.voucherModel.voucher_list[index].invoiceNumber.replaceAll('/', '-');
+                                                        // Create folder path
+                                                        String folderPath = '${tempDir.path}/$safeInvoiceNo';
+                                                        Directory folder = Directory(folderPath);
+
+                                                        // Ensure the folder exists
+                                                        if (!await folder.exists()) {
+                                                          await folder.create(recursive: true);
+                                                        }
+                                                        String tempFilePath = '$folderPath/Receipt_$safeInvoiceNo.pdf';
+                                                        // Save the PDF
+                                                        final receipt = File(tempFilePath);
+                                                        await receipt.writeAsBytes(pdfBytes);
+
+                                                        // Complete the voucher
+
+                                                        // Optional success notification
+                                                        // ScaffoldMessenger.of(context).showSnackBar(
+                                                        //   SnackBar(
+                                                        //     content: const Text('Voucher cleared and PDF saved successfully.'),
+                                                        //     behavior: SnackBarBehavior.floating,
+                                                        //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                                        //     backgroundColor: Colors.green,
+                                                        //   ),
+                                                        // );
+                                                        await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, type ? 'complete' : 'partial', receipt);
+                                                        // Navigator.of(context).pop();
+                                                        // ScaffoldMessenger.of(context).showSnackBar(
+                                                        //   SnackBar(
+                                                        //     content: const Text('Voucher partially cleared'),
+                                                        //     behavior: SnackBarBehavior.floating,
+                                                        //     shape: RoundedRectangleBorder(
+                                                        //       borderRadius: BorderRadius.circular(8),
+                                                        //     ),
+                                                        //     backgroundColor: Colors.blue,
+                                                        //   ),
+                                                        // );
+                                                      },
+                                                      child: const Text(
+                                                        'PARTIALLY CLEAR',
+                                                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                                      ),
+                                                    )
+                                                  : Expanded(
+                                                      child: const SizedBox(
+                                                        width: 250,
+                                                        child: Text(
+                                                          "1. The recieved amount is either empty\n2. Partial payment is limited to 98% of the Gross amount",
+                                                          style: TextStyle(color: Colors.amber, fontSize: Primary_font_size.Text6),
+                                                        ),
+                                                      ),
+                                                    ),
+                                          ],
+                                        ),
                                       ],
                                     ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 24),
-
-                          // Action Buttons
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                                  side: const BorderSide(color: Colors.grey),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                ),
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: const Text(
-                                  'CANCEL',
-                                  style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              if (voucherController.voucherModel.selectedValue.value == "Full") const SizedBox(width: 16),
-                              if (voucherController.voucherModel.selectedValue.value == "Full")
-                                voucherController.voucherModel.is_fullClear.value && voucherController.voucherModel.is_amountExceeds.value == false
-                                    ? ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Primary_colors.Color3,
-                                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                          elevation: 2,
-                                          shadowColor: Primary_colors.Color3.withOpacity(0.3),
-                                        ),
-                                        onPressed: () async {
-                                          // Start loader
-                                          // loader.start(context);
-
-                                          await Future.delayed(const Duration(milliseconds: 300));
-
-                                          // Generate PDF bytes using original code (unchanged)
-                                          final pdfBytes = await ReceiptPDFtemplate(
-                                              PdfPageFormat.a4,
-                                              ClearVoucher(
-                                                date: DateTime.parse(voucherController.voucherModel.closedDate.value),
-                                                voucherId: voucherController.voucherModel.voucher_list[index].voucher_id,
-                                                voucherNumber: voucherController.voucherModel.voucher_list[index].voucherNumber,
-                                                paymentStatus: voucherController.voucherModel.voucher_list[index].voucherType,
-                                                igst: voucherController.voucherModel.voucher_list[index].igst,
-                                                sgst: voucherController.voucherModel.voucher_list[index].sgst,
-                                                cgst: voucherController.voucherModel.voucher_list[index].cgst,
-                                                tds: voucherController.voucherModel.voucher_list[index].tdsCalculationAmount,
-                                                grossAmount: voucherController.voucherModel.voucher_list[index].totalAmount,
-                                                subtotal: voucherController.voucherModel.voucher_list[index].subTotal,
-                                                paidAmount: double.parse(voucherController.voucherModel.amountCleared_controller.value.text),
-                                                clientAddressName: voucherController.voucherModel.voucher_list[index].clientName,
-                                                clientAddress: voucherController.voucherModel.voucher_list[index].clientAddress,
-                                                invoiceNumber: voucherController.voucherModel.voucher_list[index].invoiceNumber,
-                                                emailId: voucherController.voucherModel.voucher_list[index].emailId,
-                                                phoneNo: voucherController.voucherModel.voucher_list[index].phoneNumber,
-                                                tdsStatus: voucherController.voucherModel.is_Deducted.value,
-                                                invoiceType: voucherController.voucherModel.voucher_list[index].invoiceType,
-                                                gstNumber: voucherController.voucherModel.voucher_list[index].gstNumber,
-                                                feedback: voucherController.voucherModel.feedback_controller.value.text,
-                                                transactionDetails: voucherController.voucherModel.transactionDetails_controller.value.text,
-                                                invoiceDate: voucherController.voucherModel.voucher_list[index].date ?? DateTime.now(),
-                                                paymentmode: voucherController.voucherModel.Selectedpaymentmode.value,
-                                              ));
-
-                                          // Get the system temp directory
-                                          Directory tempDir = await getTemporaryDirectory();
-                                          String safeInvoiceNo = voucherController.voucherModel.voucher_list[index].invoiceNumber.replaceAll('/', '-');
-                                          // Create folder path
-                                          String folderPath = '${tempDir.path}/$safeInvoiceNo';
-                                          Directory folder = Directory(folderPath);
-
-                                          // Ensure the folder exists
-                                          if (!await folder.exists()) {
-                                            await folder.create(recursive: true);
-                                          }
-                                          String tempFilePath = '$folderPath/Receipt_$safeInvoiceNo.pdf';
-                                          // Save the PDF
-                                          final receipt = File(tempFilePath);
-                                          await receipt.writeAsBytes(pdfBytes);
-
-                                          // Complete the voucher
-
-                                          // Optional success notification
-                                          // ScaffoldMessenger.of(context).showSnackBar(
-                                          //   SnackBar(
-                                          //     content: const Text('Voucher cleared and PDF saved successfully.'),
-                                          //     behavior: SnackBarBehavior.floating,
-                                          //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                          //     backgroundColor: Colors.green,
-                                          //   ),
-                                          // );
-
-                                          await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete', receipt);
-
-                                          // Generate unique filename with timestamp
-                                        },
-                                        child: const Text(
-                                          'CLEAR VOUCHER',
-                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                                        ),
-                                      )
-                                    : voucherController.voucherModel.is_amountExceeds.value == true || voucherController.voucherModel.is_amountExceeds.value == null
-                                        ? const SizedBox(
-                                            width: 250,
-                                            child: Text("The recieved amount is either empty or exceeds the recievable amount", style: TextStyle(color: Colors.amber, fontSize: 12)),
-                                          )
-                                        : MouseRegion(
-                                            cursor: SystemMouseCursors.forbidden,
-                                            child: Container(
-                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.grey),
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Text("CLEAR VOUCHER", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                                              ),
-                                            ),
-                                          ),
-
-                              // if (voucherController.voucherModel.selectedValue.value == "Full")
-                              //   voucherController.voucherModel.is_amountExceeds.value == false
-                              //       ? ElevatedButton(
-                              //           style: ElevatedButton.styleFrom(
-                              //             backgroundColor: Primary_colors.Color3,
-                              //             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                              //             shape: RoundedRectangleBorder(
-                              //               borderRadius: BorderRadius.circular(8),
-                              //             ),
-                              //             elevation: 2,
-                              //             shadowColor: Primary_colors.Color3.withOpacity(0.3),
-                              //           ),
-                              //           onPressed: () async {
-                              //             await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete');
-                              //           },
-                              //           child: const Text(
-                              //             'CLEAR VOUCHER',
-                              //             style: TextStyle(
-                              //               color: Colors.white,
-                              //               fontWeight: FontWeight.bold,
-                              //             ),
-                              //           ),
-                              //         )
-                              //       : const SizedBox(
-                              //           width: 250,
-                              //           child: Text(
-                              //             "The recieved amount is either empty or exceeds the recievable amount",
-                              //             style: TextStyle(color: Colors.amber, fontSize: 12),
-                              //           )),
-                              if (voucherController.voucherModel.selectedValue.value == "Partial") const SizedBox(width: 16),
-                              if (voucherController.voucherModel.selectedValue.value == "Partial")
-                                (voucherController.voucherModel.is_amountExceeds.value == false)
-                                    ? ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.orange,
-                                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                          elevation: 2,
-                                        ),
-                                        onPressed: () async {
-                                          bool type =
-                                              voucherController.voucherModel.voucher_list[index].pendingAmount == double.parse(voucherController.voucherModel.amountCleared_controller.value.text);
-                                          await Future.delayed(const Duration(milliseconds: 300));
-
-                                          // Generate PDF bytes using original code (unchanged)
-                                          final pdfBytes = await ReceiptPDFtemplate(
-                                            PdfPageFormat.a4,
-                                            ClearVoucher(
-                                              date: DateTime.parse(voucherController.voucherModel.closedDate.value),
-                                              voucherId: voucherController.voucherModel.voucher_list[index].voucher_id,
-                                              voucherNumber: voucherController.voucherModel.voucher_list[index].voucherNumber,
-                                              paymentStatus: voucherController.voucherModel.voucher_list[index].voucherType,
-                                              igst: voucherController.voucherModel.voucher_list[index].igst,
-                                              sgst: voucherController.voucherModel.voucher_list[index].sgst,
-                                              cgst: voucherController.voucherModel.voucher_list[index].cgst,
-                                              tds: voucherController.voucherModel.voucher_list[index].tdsCalculationAmount,
-                                              grossAmount: voucherController.voucherModel.voucher_list[index].totalAmount,
-                                              subtotal: voucherController.voucherModel.voucher_list[index].subTotal,
-                                              paidAmount: double.parse(voucherController.voucherModel.amountCleared_controller.value.text),
-                                              clientAddressName: voucherController.voucherModel.voucher_list[index].clientName,
-                                              clientAddress: voucherController.voucherModel.voucher_list[index].clientAddress,
-                                              invoiceNumber: voucherController.voucherModel.voucher_list[index].invoiceNumber,
-                                              emailId: voucherController.voucherModel.voucher_list[index].emailId,
-                                              phoneNo: voucherController.voucherModel.voucher_list[index].phoneNumber,
-                                              tdsStatus: voucherController.voucherModel.is_Deducted.value,
-                                              invoiceType: voucherController.voucherModel.voucher_list[index].invoiceType,
-                                              gstNumber: voucherController.voucherModel.voucher_list[index].gstNumber,
-                                              feedback: voucherController.voucherModel.feedback_controller.value.text,
-                                              transactionDetails: voucherController.voucherModel.transactionDetails_controller.value.text,
-                                              invoiceDate: voucherController.voucherModel.voucher_list[index].date ?? DateTime.now(),
-                                              paymentmode: voucherController.voucherModel.Selectedpaymentmode.value,
-                                            ),
-                                          );
-                                          // Get the system temp directory
-                                          Directory tempDir = await getTemporaryDirectory();
-                                          String safeInvoiceNo = voucherController.voucherModel.voucher_list[index].invoiceNumber.replaceAll('/', '-');
-                                          // Create folder path
-                                          String folderPath = '${tempDir.path}/$safeInvoiceNo';
-                                          Directory folder = Directory(folderPath);
-
-                                          // Ensure the folder exists
-                                          if (!await folder.exists()) {
-                                            await folder.create(recursive: true);
-                                          }
-                                          String tempFilePath = '$folderPath/Receipt_$safeInvoiceNo.pdf';
-                                          // Save the PDF
-                                          final receipt = File(tempFilePath);
-                                          await receipt.writeAsBytes(pdfBytes);
-
-                                          // Complete the voucher
-
-                                          // Optional success notification
-                                          // ScaffoldMessenger.of(context).showSnackBar(
-                                          //   SnackBar(
-                                          //     content: const Text('Voucher cleared and PDF saved successfully.'),
-                                          //     behavior: SnackBarBehavior.floating,
-                                          //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                          //     backgroundColor: Colors.green,
-                                          //   ),
-                                          // );
-                                          await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, type ? 'complete' : 'partial', receipt);
-                                          // Navigator.of(context).pop();
-                                          // ScaffoldMessenger.of(context).showSnackBar(
-                                          //   SnackBar(
-                                          //     content: const Text('Voucher partially cleared'),
-                                          //     behavior: SnackBarBehavior.floating,
-                                          //     shape: RoundedRectangleBorder(
-                                          //       borderRadius: BorderRadius.circular(8),
-                                          //     ),
-                                          //     backgroundColor: Colors.blue,
-                                          //   ),
-                                          // );
-                                        },
-                                        child: const Text(
-                                          'PARTIALLY CLEAR',
-                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                                        ),
-                                      )
-                                    : const SizedBox(
-                                        width: 250,
-                                        child: Text(
-                                          "1. The recieved amount is either empty\n2. Partial payment is limited to 98% of the Gross amount",
-                                          style: TextStyle(color: Colors.amber, fontSize: 12),
-                                        ),
-                                      ),
                             ],
                           ),
                         ],
@@ -2098,9 +2102,10 @@ class _VoucherState extends State<Voucher> {
                           ),
                           const SizedBox(width: 3),
                           const Expanded(
-                            flex: 2,
+                            flex: 1,
                             child: Text(
                               'Date',
+                              textAlign: TextAlign.center,
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
                           ),
@@ -2109,6 +2114,7 @@ class _VoucherState extends State<Voucher> {
                             flex: 2,
                             child: Text(
                               'Voucher Number',
+                              textAlign: TextAlign.center,
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
                           ),
@@ -2117,6 +2123,7 @@ class _VoucherState extends State<Voucher> {
                             flex: 2,
                             child: Text(
                               'Invoice Number',
+                              textAlign: TextAlign.left,
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
                           ),
@@ -2133,6 +2140,7 @@ class _VoucherState extends State<Voucher> {
                             flex: 3,
                             child: Text(
                               'Client',
+                              textAlign: TextAlign.center,
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
                           ),
@@ -2142,6 +2150,7 @@ class _VoucherState extends State<Voucher> {
                             flex: 2,
                             child: Text(
                               'GSTIN',
+                              textAlign: TextAlign.center,
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
                           ),
@@ -2150,6 +2159,7 @@ class _VoucherState extends State<Voucher> {
                             flex: 1,
                             child: Text(
                               'Amount',
+                              textAlign: TextAlign.center,
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
                           ),
@@ -2157,7 +2167,7 @@ class _VoucherState extends State<Voucher> {
                           const Expanded(
                             flex: 1,
                             child: Text(
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.right,
                               'Due Date',
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
@@ -2166,7 +2176,7 @@ class _VoucherState extends State<Voucher> {
                           const Expanded(
                             flex: 1,
                             child: Text(
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.right,
                               'OverDue days',
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
@@ -2175,7 +2185,7 @@ class _VoucherState extends State<Voucher> {
                           const Expanded(
                             flex: 1,
                             child: Text(
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.right,
                               'Status',
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
@@ -2243,7 +2253,7 @@ class _VoucherState extends State<Voucher> {
                                                 ),
                                                 const SizedBox(width: 3),
                                                 Expanded(
-                                                  flex: 2,
+                                                  flex: 1,
                                                   child: Text(
                                                     voucher.date != null ? formatDate(voucher.date!) : '-',
                                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
@@ -2254,6 +2264,7 @@ class _VoucherState extends State<Voucher> {
                                                   flex: 2,
                                                   child: Text(
                                                     voucher.voucherNumber,
+                                                    textAlign: TextAlign.center,
                                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                   ),
                                                 ),
@@ -2753,9 +2764,10 @@ class _VoucherState extends State<Voucher> {
                                                   ),
                                                   const SizedBox(width: 3),
                                                   Expanded(
-                                                    flex: 2,
+                                                    flex: 1,
                                                     child: Text(
                                                       voucher.date != null ? formatDate(voucher.date!) : '-',
+                                                      textAlign: TextAlign.center,
                                                       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                     ),
                                                   ),
@@ -2764,6 +2776,7 @@ class _VoucherState extends State<Voucher> {
                                                     flex: 2,
                                                     child: Text(
                                                       voucher.voucherNumber,
+                                                      textAlign: TextAlign.center,
                                                       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                     ),
                                                   ),
@@ -2783,6 +2796,7 @@ class _VoucherState extends State<Voucher> {
                                                         },
                                                         child: Text(
                                                           voucher.invoiceNumber,
+                                                          textAlign: TextAlign.left,
                                                           style: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text7),
                                                         ),
                                                       ),
@@ -2812,6 +2826,7 @@ class _VoucherState extends State<Voucher> {
                                                     flex: 2,
                                                     child: Text(
                                                       voucher.voucherType,
+                                                      textAlign: TextAlign.left,
                                                       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                     ),
                                                   ),
@@ -2922,6 +2937,7 @@ class _VoucherState extends State<Voucher> {
                                                               child: Text(
                                                                 maxLines: 5,
                                                                 voucher.clientName,
+                                                                textAlign: TextAlign.left,
                                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                               ),
                                                             ),
@@ -2935,6 +2951,7 @@ class _VoucherState extends State<Voucher> {
                                                     flex: 2,
                                                     child: Text(
                                                       voucher.gstNumber,
+                                                      textAlign: TextAlign.center,
                                                       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                     ),
                                                   ),
@@ -2994,62 +3011,65 @@ class _VoucherState extends State<Voucher> {
                                                       ),
                                                     ),
                                                   ),
-                                                  const SizedBox(width: 3),
-                                                  SizedBox(
-                                                    width: 125,
-                                                    child: (voucher.fullyCleared == 0)
-                                                        ? ElevatedButton(
-                                                            onPressed: () {
-                                                              voucherController.reset_voucherClear_popup();
+                                                  const SizedBox(width: 13),
+                                                  Align(
+                                                    alignment: Alignment.centerRight,
+                                                    child: SizedBox(
+                                                      width: 125,
+                                                      child: (voucher.fullyCleared == 0)
+                                                          ? ElevatedButton(
+                                                              onPressed: () {
+                                                                voucherController.reset_voucherClear_popup();
 
-                                                              final voucher = voucherController.voucherModel.voucher_list[index];
-                                                              final isPendingEqualsTds = voucher.pendingAmount == voucher.tdsCalculationAmount;
+                                                                final voucher = voucherController.voucherModel.voucher_list[index];
+                                                                final isPendingEqualsTds = voucher.pendingAmount == voucher.tdsCalculationAmount;
 
-                                                              if (isPendingEqualsTds) {
-                                                                voucherController.calculate_recievable(true, index, voucherController.voucherModel.selectedValue.value);
-                                                                voucherController.set_isDeducted(true);
-                                                              }
+                                                                if (isPendingEqualsTds) {
+                                                                  voucherController.calculate_recievable(true, index, voucherController.voucherModel.selectedValue.value);
+                                                                  voucherController.set_isDeducted(true);
+                                                                }
 
-                                                              if (voucher.tdsCalculation == 1 || isPendingEqualsTds) {
-                                                                voucherController.calculate_recievable(true, index, voucherController.voucherModel.selectedValue.value);
-                                                              } else {
-                                                                voucherController.calculate_recievable(false, index, voucherController.voucherModel.selectedValue.value);
-                                                              }
+                                                                if (voucher.tdsCalculation == 1 || isPendingEqualsTds) {
+                                                                  voucherController.calculate_recievable(true, index, voucherController.voucherModel.selectedValue.value);
+                                                                } else {
+                                                                  voucherController.calculate_recievable(false, index, voucherController.voucherModel.selectedValue.value);
+                                                                }
 
-                                                              voucherController.is_amountExceeds(index, null);
-                                                              voucherController.is_fullclear_Valid(index);
+                                                                voucherController.is_amountExceeds(index, null);
+                                                                voucherController.is_fullclear_Valid(index);
 
-                                                              _showCloseVoucherPopup(index);
-                                                            },
-                                                            style: ElevatedButton.styleFrom(
-                                                              backgroundColor: const Color.fromARGB(255, 240, 193, 52),
-                                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                                                _showCloseVoucherPopup(index);
+                                                              },
+                                                              style: ElevatedButton.styleFrom(
+                                                                backgroundColor: const Color.fromARGB(255, 240, 193, 52),
+                                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                                              ),
+                                                              child: const Text(
+                                                                'Update Payment',
+                                                                style: TextStyle(color: Colors.black, fontSize: Primary_font_size.Text6),
+                                                              ),
+                                                            )
+                                                          : ElevatedButton(
+                                                              onPressed: () {
+                                                                final paymentList = voucherController.voucherModel.voucher_list[index].paymentDetails ?? [];
+                                                                editableRows.assignAll(paymentList.map((payment) {
+                                                                  final detail = payment.transanctionDetails.isEmpty ? 'N/A' : payment.transanctionDetails;
+                                                                  return EditableTransactionRow(detail);
+                                                                }).toList());
+                                                                showVoucherClearedDialog(context, index);
+                                                              },
+                                                              style: ElevatedButton.styleFrom(
+                                                                backgroundColor: const Color.fromARGB(255, 107, 183, 109),
+                                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                                              ),
+                                                              child: const Text(
+                                                                'View Details',
+                                                                style: TextStyle(color: Colors.black, fontSize: Primary_font_size.Text6),
+                                                              ),
                                                             ),
-                                                            child: const Text(
-                                                              'Update Payment',
-                                                              style: TextStyle(color: Colors.black, fontSize: Primary_font_size.Text6),
-                                                            ),
-                                                          )
-                                                        : ElevatedButton(
-                                                            onPressed: () {
-                                                              final paymentList = voucherController.voucherModel.voucher_list[index].paymentDetails ?? [];
-                                                              editableRows.assignAll(paymentList.map((payment) {
-                                                                final detail = payment.transanctionDetails.isEmpty ? 'N/A' : payment.transanctionDetails;
-                                                                return EditableTransactionRow(detail);
-                                                              }).toList());
-                                                              showVoucherClearedDialog(context, index);
-                                                            },
-                                                            style: ElevatedButton.styleFrom(
-                                                              backgroundColor: const Color.fromARGB(255, 107, 183, 109),
-                                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                                                            ),
-                                                            child: const Text(
-                                                              'View Details',
-                                                              style: TextStyle(color: Colors.black, fontSize: Primary_font_size.Text6),
-                                                            ),
-                                                          ),
+                                                    ),
                                                   ),
-                                                  SizedBox(width: 35),
+                                                  // SizedBox(width: 35),
                                                 ],
                                               ),
                                             ),
@@ -3080,7 +3100,7 @@ class _VoucherState extends State<Voucher> {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 204),
                                     child: Text(
-                                      'Generate a Voucher to see it listed here.',
+                                      'Generate a invoice to see it listed here.',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(fontSize: 14, color: Colors.blueGrey[400], height: 1.4),
                                     ),
@@ -3204,6 +3224,7 @@ class _VoucherState extends State<Voucher> {
                                 children: [
                                   const Text(
                                     'Invoice Number',
+                                    // textAlign: TextAlign.left,
                                     style: TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
                                   ),
                                   Row(

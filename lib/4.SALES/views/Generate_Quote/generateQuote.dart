@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/controllers/Sales_actions.dart';
 import 'package:ssipl_billing/4.SALES/services/Quotation_services/QuoteDetails_service.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_Quote/post_Quote.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDFviewonly.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -40,19 +41,19 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
     super.dispose();
   }
 
-  void _showReadablePdf() {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-          height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
-          child: SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
-        ),
-      ),
-    );
-  }
+  // void _showReadablePdf() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => Dialog(
+  //       insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+  //       child: SizedBox(
+  //         width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+  //         height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
+  //         child: SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +94,8 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
                         ],
                       ),
                       onDoubleTap: () {
-                        _showReadablePdf();
+                        PDFviewonly(context, salesController.salesModel.pdfFile.value!);
+                        // _showReadablePdf();
                       },
                     ),
                   ),

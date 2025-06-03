@@ -21,6 +21,7 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/views/Recurring_Invoice/recurringIn
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Subscription_chart.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/importXL.dart';
+import 'package:ssipl_billing/COMPONENTS-/showPDF.dart';
 import 'package:ssipl_billing/NOTIFICATION-/NotificationServices.dart';
 import 'package:ssipl_billing/NOTIFICATION-/Notification_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
@@ -1316,8 +1317,10 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                               bool success =
                                                                   await widget.GetPDFfile(context, subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                               if (success) {
-                                                                widget.showPDF(context,
-                                                                    "${subscriptionController.subscriptionModel.processList[index].customer_name}${subscriptionController.subscriptionModel.processList[index].title}${subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname}");
+                                                                showPDF(
+                                                                    context,
+                                                                    "${subscriptionController.subscriptionModel.processList[index].customer_name}${subscriptionController.subscriptionModel.processList[index].title}${subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Eventname}",
+                                                                    subscriptionController.subscriptionModel.pdfFile.value!);
                                                               }
                                                             },
                                                           ),

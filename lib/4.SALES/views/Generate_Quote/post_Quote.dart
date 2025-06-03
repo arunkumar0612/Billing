@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 import 'package:ssipl_billing/4.SALES/controllers/Quote_actions.dart';
 import 'package:ssipl_billing/4.SALES/services/Quotation_services/QuotePost_services.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDFviewonly.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
@@ -196,7 +197,8 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                         ),
                         onDoubleTap: () {
                           if (quoteController.quoteModel.selectedPdf.value != null) {
-                            widget.showReadablePdf(context);
+                            PDFviewonly(context, quoteController.quoteModel.selectedPdf.value!);
+                            // widget.showReadablePdf(context);
                           } else {
                             Get.snackbar("No data", "Maximizing is restricted!");
                             Get.smartManagement;

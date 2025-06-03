@@ -28,6 +28,7 @@ import 'package:ssipl_billing/4.SALES/views/CustomPDF/Quote/CustomPDF_Quote_desi
 import 'package:ssipl_billing/4.SALES/views/Sales_chart.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
+import 'package:ssipl_billing/COMPONENTS-/showPDF.dart';
 import 'package:ssipl_billing/NOTIFICATION-/NotificationServices.dart';
 import 'package:ssipl_billing/NOTIFICATION-/Notification_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
@@ -1287,8 +1288,10 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                           bool success = await widget.GetSalesPDFfile(
                                                                               context: context, eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                           if (success) {
-                                                                            widget.showPDF(context,
-                                                                                "${salesController.salesModel.processList[index].customer_name}${salesController.salesModel.processList[index].title}${salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname}");
+                                                                            showPDF(
+                                                                                context,
+                                                                                "${salesController.salesModel.processList[index].customer_name}${salesController.salesModel.processList[index].title}${salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname}",
+                                                                                salesController.salesModel.pdfFile.value!);
                                                                           }
                                                                         },
                                                                       ),

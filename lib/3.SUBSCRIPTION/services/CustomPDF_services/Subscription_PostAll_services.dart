@@ -16,7 +16,7 @@ import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart' show CMDlResponse, CMDmResponse;
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart' show SessiontokenController;
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 mixin SUBSCRIPTION_PostServices {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
@@ -36,19 +36,19 @@ mixin SUBSCRIPTION_PostServices {
     pdfpopup_controller.setpdfLoading(true);
   }
 
-  void showReadablePdf(context) {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-          height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
-          child: SfPdfViewer.file(pdfpopup_controller.pdfModel.value.genearatedPDF.value!),
-        ),
-      ),
-    );
-  }
+  // void showReadablePdf(context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => Dialog(
+  //       insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+  //       child: SizedBox(
+  //         width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+  //         height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
+  //         child: SfPdfViewer.file(pdfpopup_controller.pdfModel.value.genearatedPDF.value!),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Future<void> printPdf() async {
     if (kDebugMode) {

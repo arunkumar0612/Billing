@@ -1,13 +1,11 @@
 // ignore_for_file: depend_on_referenced_packages
-
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:path/path.dart' as path;
+// import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/view_ledger_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
@@ -20,7 +18,7 @@ import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 mixin VoucherService {
   final VoucherController voucherController = Get.find<VoucherController>();
@@ -170,44 +168,44 @@ mixin VoucherService {
     }
   }
 
-  void showPDF(context, String filename) async {
-    if (voucherController.voucherModel.pdfFile.value != null) {
-      await showDialog(
-        context: context,
-        builder: (context) => Dialog(
-          insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
-          child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-              height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
-              child: Stack(
-                children: [
-                  SfPdfViewer.file(voucherController.voucherModel.pdfFile.value!),
-                  Align(
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: IconButton(
-                          onPressed: () {
-                            downloadPdf(
-                                context,
-                                path
-                                    .basename(filename)
-                                    .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
-                                    .replaceAll(" ", ""),
-                                voucherController.voucherModel.pdfFile.value);
-                          },
-                          icon: const Icon(
-                            Icons.download,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ))
-                ],
-              )),
-        ),
-      );
-    }
-  }
+  // void showPDF(context, String filename) async {
+  //   if (voucherController.voucherModel.pdfFile.value != null) {
+  //     await showDialog(
+  //       context: context,
+  //       builder: (context) => Dialog(
+  //         insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+  //         child: SizedBox(
+  //             width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+  //             height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
+  //             child: Stack(
+  //               children: [
+  //                 SfPdfViewer.file(voucherController.voucherModel.pdfFile.value!),
+  //                 Align(
+  //                     alignment: Alignment.bottomRight,
+  //                     child: Padding(
+  //                       padding: const EdgeInsets.all(20),
+  //                       child: IconButton(
+  //                         onPressed: () {
+  //                           downloadPdf(
+  //                               context,
+  //                               path
+  //                                   .basename(filename)
+  //                                   .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
+  //                                   .replaceAll(" ", ""),
+  //                               voucherController.voucherModel.pdfFile.value);
+  //                         },
+  //                         icon: const Icon(
+  //                           Icons.download,
+  //                           color: Colors.blue,
+  //                         ),
+  //                       ),
+  //                     ))
+  //               ],
+  //             )),
+  //       ),
+  //     );
+  //   }
+  // }
 
   Future<File> savePdfToTemp(Uint8List pdfData) async {
     final tempDir = await getTemporaryDirectory();

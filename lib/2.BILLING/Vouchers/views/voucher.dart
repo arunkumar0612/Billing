@@ -20,6 +20,7 @@ import 'package:ssipl_billing/2.BILLING/Vouchers/views/club_voucher_receipt.dart
 import 'package:ssipl_billing/2.BILLING/Vouchers/views/receipt_pdf_template.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
+import 'package:ssipl_billing/COMPONENTS-/showPDF.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
@@ -1751,7 +1752,8 @@ class _VoucherState extends State<Voucher> {
                     transactionID: voucherController.voucherModel.voucher_list[voucherIndex].paymentDetails![transactionIndex].transactionId,
                   );
                   if (success) {
-                    widget.showPDF(context, "TRANSACTION_${voucherController.voucherModel.voucher_list[voucherIndex].paymentDetails?[transactionIndex].transactionId}");
+                    showPDF(context, "TRANSACTION_${voucherController.voucherModel.voucher_list[voucherIndex].paymentDetails?[transactionIndex].transactionId}",
+                        voucherController.voucherModel.pdfFile.value!);
                   }
                 },
                 icon: Image.asset(height: 30, 'assets/images/pdfdownload.png'),
@@ -2281,12 +2283,12 @@ class _VoucherState extends State<Voucher> {
                                                         if (voucher.invoiceType == 'subscription') {
                                                           bool success = await widget.GetSubscriptionPDFfile(context: context, invoiceNo: voucher.invoiceNumber);
                                                           if (success) {
-                                                            widget.showPDF(context, voucher.invoiceNumber);
+                                                            showPDF(context, voucher.invoiceNumber, voucherController.voucherModel.pdfFile.value!);
                                                           }
                                                         } else if (voucher.invoiceType == 'sales') {
                                                           bool success = await widget.GetSalesPDFfile(context: context, invoiceNo: voucher.invoiceNumber);
                                                           if (success) {
-                                                            widget.showPDF(context, voucher.invoiceNumber);
+                                                            showPDF(context, voucher.invoiceNumber, voucherController.voucherModel.pdfFile.value!);
                                                           }
                                                         }
                                                       },
@@ -2792,7 +2794,7 @@ class _VoucherState extends State<Voucher> {
                                                           if (voucher.invoiceType == 'subscription') {
                                                             bool success = await widget.GetSubscriptionPDFfile(context: context, invoiceNo: voucher.invoiceNumber);
                                                             if (success) {
-                                                              widget.showPDF(context, voucher.invoiceNumber);
+                                                              showPDF(context, voucher.invoiceNumber, voucherController.voucherModel.pdfFile.value!);
                                                             }
                                                           }
                                                         },
@@ -3635,7 +3637,7 @@ class _VoucherState extends State<Voucher> {
                                                         onTap: () async {
                                                           bool success = await widget.Get_transactionPDFfile(context: context, transactionID: transID);
                                                           if (success) {
-                                                            widget.showPDF(context, "TRANSACTION_$transID");
+                                                            showPDF(context, "TRANSACTION_$transID", voucherController.voucherModel.pdfFile.value!);
                                                           }
                                                         },
                                                         child: Image.asset('assets/images/pdfdownload.png', width: 24, height: 24),
@@ -3659,7 +3661,7 @@ class _VoucherState extends State<Voucher> {
                                                         onTap: () async {
                                                           bool success = await widget.Get_transactionPDFfile(context: context, transactionID: transID);
                                                           if (success) {
-                                                            widget.showPDF(context, "TRANSACTION_$transID");
+                                                            showPDF(context, "TRANSACTION_$transID", voucherController.voucherModel.pdfFile.value!);
                                                           }
                                                         },
                                                         child: Image.asset('assets/images/order.png', width: 24, height: 24),

@@ -6,7 +6,7 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_client_req/S
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_client_req/SUBSCRIPTION_clientreq_note.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Process/Generate_client_req/SUBSCRIPTION_clientreq_sites.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class SUBSCRIPTION_Generate_clientreq extends StatefulWidget with SUBSCRIPTION_ClientreqDetailsService {
   final String? value;
@@ -35,19 +35,19 @@ class _GenerateclientreqState extends State<SUBSCRIPTION_Generate_clientreq> wit
   }
 
   // ignore: unused_element
-  void _showReadablePdf() {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-          height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
-          child: SfPdfViewer.file(clientreqController.clientReqModel.selectedPdf.value),
-        ),
-      ),
-    );
-  }
+  // void _showReadablePdf() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => Dialog(
+  //       insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+  //       child: SizedBox(
+  //         width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+  //         height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
+  //         child: SfPdfViewer.file(clientreqController.clientReqModel.selectedPdf.value),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

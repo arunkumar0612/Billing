@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 import 'package:ssipl_billing/4.SALES/controllers/RFQ_actions.dart';
 import 'package:ssipl_billing/4.SALES/services/RFQ_services/RFQ_Post_services.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDFviewonly.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
@@ -197,7 +198,8 @@ class PostRfqState extends State<PostRfq> with SingleTickerProviderStateMixin {
                         ),
                         onDoubleTap: () {
                           if (rfqController.rfqModel.selectedPdf.value != null) {
-                            widget.showReadablePdf(context);
+                            PDFviewonly(context, rfqController.rfqModel.selectedPdf.value!);
+                            // widget.showReadablePdf(context);
                           } else {
                             Get.snackbar("No data", "Maximizing is restricted!");
                             Get.smartManagement;

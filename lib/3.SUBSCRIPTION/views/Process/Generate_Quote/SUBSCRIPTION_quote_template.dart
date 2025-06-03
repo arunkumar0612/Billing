@@ -126,7 +126,7 @@ class SUBSCRIPTION_Quotation {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular(instQuote.quoteNo, 10),
+                            child: bold(instQuote.quoteNo, 10),
                           ),
                         ),
                       ],

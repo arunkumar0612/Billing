@@ -3,15 +3,12 @@
 import 'dart:io';
 
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
-import 'package:printing/printing.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/GST_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
 // import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/GST_ledger_entities.dart';
@@ -21,11 +18,13 @@ import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_PDF_template/GST_led
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_excel_template/GST_ledger_excel_template.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
-import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDFviewonly.dart';
+import 'package:ssipl_billing/COMPONENTS-/downloadPDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/printPDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/sharePDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/showPDF.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../../THEMES/style.dart';
 
@@ -858,321 +857,14 @@ class _GSTLedgerState extends State<GSTLedger> {
                                         cursor: SystemMouseCursors.click,
                                         child: GestureDetector(
                                           onTap: () async {
-                                            try {
-                                              // Generate the PDF bytes
-                                              final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
-
-                                              // Create timestamp for filename
-                                              final timestamp = DateTime.now().millisecondsSinceEpoch;
-                                              final filename = 'ledger_$timestamp.pdf';
-
-                                              // Show the share dialog
-                                              gst_ledgerController.clear_sharedata();
-                                              showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return Obx(
-                                                    () {
-                                                      return AlertDialog(
-                                                        titlePadding: const EdgeInsets.all(5),
-                                                        backgroundColor: const Color.fromARGB(255, 194, 198, 253),
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(10),
-                                                        ),
-                                                        title: Container(
-                                                          decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(7),
-                                                            color: Primary_colors.Color3,
-                                                          ),
-                                                          child: const Padding(
-                                                            padding: EdgeInsets.all(7),
-                                                            child: Text(
-                                                              "Share",
-                                                              style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        content: IntrinsicHeight(
-                                                          child: SizedBox(
-                                                            width: 500,
-                                                            child: Column(
-                                                              children: [
-                                                                Row(
-                                                                  children: [
-                                                                    const Text("File name"),
-                                                                    const SizedBox(width: 20),
-                                                                    const Text(":"),
-                                                                    const SizedBox(width: 20),
-                                                                    Expanded(
-                                                                      child: Text(filename), // Using generated filename
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                if (gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value) const SizedBox(height: 20),
-                                                                if (gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value)
-                                                                  Row(
-                                                                    children: [
-                                                                      const Text("whatsapp"),
-                                                                      const SizedBox(width: 20),
-                                                                      const Text(":"),
-                                                                      const SizedBox(width: 20),
-                                                                      Expanded(
-                                                                        child: TextFormField(
-                                                                          controller: gst_ledgerController.gst_LedgerModel.phoneController.value,
-                                                                          style: const TextStyle(fontSize: 13, color: Colors.black),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                if (gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value) const SizedBox(height: 20),
-                                                                if (gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value)
-                                                                  Row(
-                                                                    children: [
-                                                                      const Text("E-mail"),
-                                                                      const SizedBox(width: 50),
-                                                                      const Text(":"),
-                                                                      const SizedBox(width: 20),
-                                                                      Expanded(
-                                                                        child: SizedBox(
-                                                                          child: TextFormField(
-                                                                            readOnly: false,
-                                                                            style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
-                                                                            controller: gst_ledgerController.gst_LedgerModel.emailController.value,
-                                                                            decoration: InputDecoration(
-                                                                              suffixIcon: MouseRegion(
-                                                                                cursor: SystemMouseCursors.click,
-                                                                                child: GestureDetector(
-                                                                                  onTap: () {
-                                                                                    gst_ledgerController.toggleCCemailvisibility(!gst_ledgerController.gst_LedgerModel.CCemailToggle.value);
-                                                                                  },
-                                                                                  child: SizedBox(
-                                                                                    height: 20,
-                                                                                    width: 20,
-                                                                                    child: Stack(
-                                                                                      children: [
-                                                                                        Align(
-                                                                                          alignment: Alignment.center,
-                                                                                          child: Icon(
-                                                                                            gst_ledgerController.gst_LedgerModel.CCemailToggle.value
-                                                                                                ? Icons.closed_caption_outlined
-                                                                                                : Icons.closed_caption_disabled_outlined,
-                                                                                            color: Primary_colors.Dark,
-                                                                                          ),
-                                                                                        ),
-                                                                                        const Align(
-                                                                                          alignment: Alignment.bottomRight,
-                                                                                          child: Icon(
-                                                                                            size: 15,
-                                                                                            Icons.add,
-                                                                                            color: Primary_colors.Dark,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                if (gst_ledgerController.gst_LedgerModel.CCemailToggle.value && gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value)
-                                                                  const SizedBox(height: 10),
-                                                                if (gst_ledgerController.gst_LedgerModel.CCemailToggle.value && gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value)
-                                                                  Row(
-                                                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                                                    children: [
-                                                                      const Text(
-                                                                        '                                      Cc :',
-                                                                        style: TextStyle(fontSize: 13, color: Primary_colors.Dark, fontWeight: FontWeight.bold),
-                                                                      ),
-                                                                      const SizedBox(width: 10),
-                                                                      Expanded(
-                                                                        child: SizedBox(
-                                                                          child: TextFormField(
-                                                                            scrollPadding: const EdgeInsets.only(top: 10),
-                                                                            style: const TextStyle(fontSize: Primary_font_size.Text7, color: Colors.black),
-                                                                            controller: gst_ledgerController.gst_LedgerModel.CCemailController.value,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                const SizedBox(height: 20),
-                                                                Row(
-                                                                  children: [
-                                                                    const Text("Select"),
-                                                                    const SizedBox(width: 50),
-                                                                    const Text(":"),
-                                                                    const SizedBox(width: 20),
-                                                                    Stack(
-                                                                      alignment: FractionalOffset.topRight,
-                                                                      children: [
-                                                                        IconButton(
-                                                                          iconSize: 30,
-                                                                          onPressed: () {
-                                                                            gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value =
-                                                                                !gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value;
-                                                                          },
-                                                                          icon: Image.asset('assets/images/whatsapp.png'),
-                                                                        ),
-                                                                        if (gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value)
-                                                                          Align(
-                                                                            child: Container(
-                                                                              decoration: BoxDecoration(
-                                                                                borderRadius: BorderRadius.circular(50),
-                                                                                color: Colors.blue,
-                                                                              ),
-                                                                              child: const Padding(
-                                                                                padding: EdgeInsets.all(2),
-                                                                                child: Icon(
-                                                                                  Icons.check,
-                                                                                  color: Colors.white,
-                                                                                  size: 12,
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          )
-                                                                      ],
-                                                                    ),
-                                                                    const SizedBox(width: 20),
-                                                                    Stack(
-                                                                      alignment: FractionalOffset.topRight,
-                                                                      children: [
-                                                                        IconButton(
-                                                                          iconSize: 35,
-                                                                          onPressed: () {
-                                                                            gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value =
-                                                                                !gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value;
-                                                                          },
-                                                                          icon: Image.asset('assets/images/gmail.png'),
-                                                                        ),
-                                                                        if (gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value)
-                                                                          Align(
-                                                                            child: Container(
-                                                                              decoration: BoxDecoration(
-                                                                                borderRadius: BorderRadius.circular(50),
-                                                                                color: Colors.blue,
-                                                                              ),
-                                                                              child: const Padding(
-                                                                                padding: EdgeInsets.all(2),
-                                                                                child: Icon(
-                                                                                  Icons.check,
-                                                                                  color: Colors.white,
-                                                                                  size: 12,
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          )
-                                                                      ],
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                const SizedBox(height: 20),
-                                                                Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                                  children: [
-                                                                    Align(
-                                                                      alignment: Alignment.bottomLeft,
-                                                                      child: SizedBox(
-                                                                        width: 380,
-                                                                        child: TextFormField(
-                                                                          maxLines: 5,
-                                                                          controller: gst_ledgerController.gst_LedgerModel.feedbackController.value,
-                                                                          style: const TextStyle(fontSize: 13, color: Colors.white),
-                                                                          decoration: InputDecoration(
-                                                                            contentPadding: const EdgeInsets.all(10),
-                                                                            filled: true,
-                                                                            fillColor: Primary_colors.Dark,
-                                                                            focusedBorder: OutlineInputBorder(
-                                                                              borderRadius: BorderRadius.circular(10),
-                                                                              borderSide: const BorderSide(color: Colors.transparent),
-                                                                            ),
-                                                                            enabledBorder: OutlineInputBorder(
-                                                                              borderRadius: BorderRadius.circular(10),
-                                                                              borderSide: const BorderSide(color: Colors.transparent),
-                                                                            ),
-                                                                            hintStyle: const TextStyle(
-                                                                              fontSize: Primary_font_size.Text7,
-                                                                              color: Color.fromARGB(255, 167, 165, 165),
-                                                                            ),
-                                                                            hintText: 'Enter Feedback...',
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                const SizedBox(height: 20),
-                                                                Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                                  children: [
-                                                                    MouseRegion(
-                                                                      cursor: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                              gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
-                                                                          ? SystemMouseCursors.click
-                                                                          : SystemMouseCursors.forbidden,
-                                                                      child: GestureDetector(
-                                                                        onTap: () async {
-                                                                          if (gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                              gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value) {
-                                                                            // Create temporary file
-                                                                            final tempDir = await getTemporaryDirectory();
-                                                                            final file = File('${tempDir.path}/$filename');
-                                                                            await file.writeAsBytes(pdfBytes);
-
-                                                                            // Share the file
-                                                                            // You'll need to implement your sharing logic here
-                                                                            // For example using share_plus package:
-                                                                            // await Share.shareXFiles([XFile(file.path)], ...);
-
-                                                                            // Or call your existing sharing method:
-                                                                            // widget.postData_sendPDF(context, widget.fetch_messageType(), file);
-
-                                                                            Navigator.pop(context); // Close dialog after sharing
-                                                                          }
-                                                                        },
-                                                                        child: Container(
-                                                                          width: 105,
-                                                                          decoration: BoxDecoration(
-                                                                            color: gst_ledgerController.gst_LedgerModel.whatsapp_selectionStatus.value ||
-                                                                                    gst_ledgerController.gst_LedgerModel.gmail_selectionStatus.value
-                                                                                ? const Color.fromARGB(255, 81, 89, 212)
-                                                                                : const Color.fromARGB(255, 39, 41, 73),
-                                                                            borderRadius: BorderRadius.circular(5),
-                                                                          ),
-                                                                          child: const Padding(
-                                                                            padding: EdgeInsets.only(left: 5, right: 5, top: 8, bottom: 8),
-                                                                            child: Center(
-                                                                              child: Text(
-                                                                                "Send",
-                                                                                style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text7),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  );
-                                                },
-                                              );
-                                            } catch (e) {
-                                              Error_dialog(
-                                                context: context,
-                                                title: "Error",
-                                                content: "Failed to generate PDF for sharing:\n$e",
-                                              );
-                                            }
+                                            final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
+                                            Directory tempDir = await getTemporaryDirectory();
+                                            String fileName =
+                                                ('GST_LEDGER(${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
+                                            String filePath = '${tempDir.path}/$fileName.pdf';
+                                            File file = File(filePath);
+                                            await file.writeAsBytes(pdfBytes);
+                                            shareAnyPDF(context, filePath, file);
                                           },
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
@@ -1197,29 +889,8 @@ class _GSTLedgerState extends State<GSTLedger> {
                                       cursor: SystemMouseCursors.click,
                                       child: GestureDetector(
                                         onTap: () async {
-                                          try {
-                                            // Generate the PDF bytes first
-                                            final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
-
-                                            // Print the generated PDF
-                                            await Printing.layoutPdf(
-                                              onLayout: (PdfPageFormat format) async => pdfBytes,
-                                            );
-
-                                            if (kDebugMode) {
-                                              print('PDF printed successfully');
-                                            }
-                                          } catch (e) {
-                                            if (kDebugMode) {
-                                              print('Error printing PDF: $e');
-                                            }
-                                            // Show error dialog if needed
-                                            Error_dialog(
-                                              context: context,
-                                              title: "Print Error",
-                                              content: "An error occurred while printing:\n$e",
-                                            );
-                                          }
+                                          final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
+                                          printPDF(context, pdfBytes);
                                         },
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
@@ -1247,59 +918,14 @@ class _GSTLedgerState extends State<GSTLedger> {
                                       cursor: SystemMouseCursors.click,
                                       child: GestureDetector(
                                         onTap: () async {
-                                          try {
-                                            // Start loading indicator
-                                            // loader.start(context);
-                                            await Future.delayed(const Duration(milliseconds: 300));
-
-                                            // Generate PDF bytes
-                                            final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
-
-                                            // Generate unique filename with timestamp
-                                            final timestamp = DateTime.now().millisecondsSinceEpoch;
-                                            final filename = 'GST_ledger$timestamp'; // Unique filename
-
-                                            // Let user select directory
-                                            String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
-                                              dialogTitle: 'Select folder to save PDF',
-                                              lockParentWindow: true,
-                                            );
-
-                                            // Always stop loader after native call
-                                            // loader.stop();
-
-                                            if (selectedDirectory == null) {
-                                              if (kDebugMode) {
-                                                print("User cancelled the folder selection.");
-                                              }
-                                              Error_dialog(
-                                                context: context,
-                                                title: "Cancelled",
-                                                content: "Download cancelled. No folder was selected.",
-                                              );
-                                              return;
-                                            }
-
-                                            // Save the file with unique name
-                                            String savePath = "$selectedDirectory/$filename.pdf";
-                                            await File(savePath).writeAsBytes(pdfBytes);
-
-                                            // Show success message
-                                            Success_SnackBar(context, "✅ PDF downloaded successfully!");
-
-                                            // Optional: open the file
-                                            await OpenFilex.open(savePath);
-                                          } catch (e) {
-                                            // loader.stop();
-                                            if (kDebugMode) {
-                                              print("❌ Error while downloading PDF: $e");
-                                            }
-                                            Error_dialog(
-                                              context: context,
-                                              title: "Error",
-                                              content: "An error occurred while downloading the PDF:\n$e",
-                                            );
-                                          }
+                                          final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
+                                          Directory tempDir = await getTemporaryDirectory();
+                                          String fileName =
+                                              ('GST_LEDGER(${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
+                                          String filePath = '${tempDir.path}/$fileName.pdf';
+                                          File file = File(filePath);
+                                          await file.writeAsBytes(pdfBytes);
+                                          downloadPdf(context, fileName, file);
                                         },
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
@@ -1326,35 +952,15 @@ class _GSTLedgerState extends State<GSTLedger> {
                                       cursor: SystemMouseCursors.click,
                                       child: GestureDetector(
                                         onTap: () async {
-                                          // Generate the PDF bytes directly from your function
-                                          try {
-                                            // Generate the PDF bytes
+                                          final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
+                                          Directory tempDir = await getTemporaryDirectory();
+                                          String fileName =
+                                              ('GST_LEDGER(${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
+                                          String filePath = '${tempDir.path}/$fileName.pdf';
+                                          File file = File(filePath);
+                                          await file.writeAsBytes(pdfBytes);
 
-                                            Uint8List pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
-
-                                            // Show the dialog with the same design
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) => Dialog(
-                                                insetPadding: const EdgeInsets.all(20), // Same padding
-                                                child: SizedBox(
-                                                  width: MediaQuery.of(context).size.width * 0.35, // Same width (35%)
-                                                  height: MediaQuery.of(context).size.height * 0.95, // Same height (95%)
-                                                  child: SfPdfViewer.memory(
-                                                    pdfBytes, // Using the generated PDF bytes
-                                                    canShowPaginationDialog: true,
-                                                    scrollDirection: PdfScrollDirection.vertical,
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          } catch (e) {
-                                            Error_dialog(
-                                              context: context,
-                                              title: "Error",
-                                              content: "Failed to generate PDF:\n$e",
-                                            );
-                                          }
+                                          PDFviewonly(context, file);
                                         },
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
@@ -1379,59 +985,14 @@ class _GSTLedgerState extends State<GSTLedger> {
                                       cursor: SystemMouseCursors.click,
                                       child: GestureDetector(
                                         onTap: () async {
-                                          try {
-                                            // Start loading indicator
-                                            // loader.start(context);
-                                            await Future.delayed(const Duration(milliseconds: 300));
-
-                                            // Generate PDF bytes
-                                            final excelBytes = await GSTledger_excelTemplate(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
-
-                                            // Generate unique filename with timestamp
-                                            final timestamp = DateTime.now().millisecondsSinceEpoch;
-                                            final filename = 'GST_ledger$timestamp'; // Unique filename
-
-                                            // Let user select directory
-                                            String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
-                                              dialogTitle: 'Select folder to save Excel File',
-                                              lockParentWindow: true,
-                                            );
-
-                                            // Always stop loader after native call
-                                            // loader.stop();
-
-                                            if (selectedDirectory == null) {
-                                              if (kDebugMode) {
-                                                print("User cancelled the folder selection.");
-                                              }
-                                              Error_dialog(
-                                                context: context,
-                                                title: "Cancelled",
-                                                content: "Download cancelled. No folder was selected.",
-                                              );
-                                              return;
-                                            }
-
-                                            // Save the file with unique name
-                                            String savePath = "$selectedDirectory/$filename.xlxs";
-                                            await File(savePath).writeAsBytes(excelBytes);
-
-                                            // Show success message
-                                            Success_SnackBar(context, "✅ Excel File downloaded successfully!");
-
-                                            // Optional: open the file
-                                            await OpenFilex.open(savePath);
-                                          } catch (e) {
-                                            // loader.stop();
-                                            if (kDebugMode) {
-                                              print("❌ Error while downloading PDF: $e");
-                                            }
-                                            Error_dialog(
-                                              context: context,
-                                              title: "Error",
-                                              content: "An error occurred while downloading the Excel:\n$e",
-                                            );
-                                          }
+                                          final excelBytes = await GSTledger_excelTemplate(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
+                                          Directory tempDir = await getTemporaryDirectory();
+                                          String fileName =
+                                              ('GST_LEDGER(${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
+                                          String filePath = '${tempDir.path}/$fileName.pdf';
+                                          File file = File(filePath);
+                                          await file.writeAsBytes(excelBytes);
+                                          downloadExcel(context, fileName, file);
                                         },
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,

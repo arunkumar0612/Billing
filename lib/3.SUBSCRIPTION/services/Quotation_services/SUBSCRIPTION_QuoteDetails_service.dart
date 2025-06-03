@@ -41,7 +41,7 @@ mixin SUBSCRIPTION_QuotedetailsService {
 
   void get_CompanyBasedPackages(context, int companyid) async {
     try {
-      Map<String, dynamic> body = {"companyid": 2};
+      Map<String, dynamic> body = {"companyid": companyid};
       Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.get_CompanyBasedPackageList);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});

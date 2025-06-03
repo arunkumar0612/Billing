@@ -94,9 +94,8 @@ mixin main_BillingService {
             : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value.toLowerCase(),
 
         // "customerid": "SB_1",
-        "customerid": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value == 'None'
-            ? ''
-            : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value,
+        "customerid":
+            mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value == 'None' ? '' : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value,
         "startdate": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.fromdate.value.toString(),
         "enddate": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.todate.value.toString(),
       }, API.billing_subscriptionInvoice);
@@ -266,9 +265,8 @@ mixin main_BillingService {
             : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value.toLowerCase(),
 
         // "customerid": "SB_1",
-        "customerid": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value == 'None'
-            ? ''
-            : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value,
+        "customerid":
+            mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value == 'None' ? '' : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value,
         "startdate": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.fromdate.value.toString(),
         "enddate": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.todate.value.toString(),
       }, API.billing_salesInvoice);

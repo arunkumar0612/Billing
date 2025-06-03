@@ -724,6 +724,7 @@ class _VoucherState extends State<Voucher> {
                                                         elevation: 2,
                                                       ),
                                                       onPressed: () async {
+                                                        loader.start(context);
                                                         bool type = voucherController.voucherModel.voucher_list[index].pendingAmount == double.parse(voucherController.voucherModel.amountCleared_controller.value.text);
                                                         await Future.delayed(const Duration(milliseconds: 300));
 
@@ -795,6 +796,7 @@ class _VoucherState extends State<Voucher> {
                                                         //     backgroundColor: Colors.blue,
                                                         //   ),
                                                         // );
+                                                        loader.stop();
                                                       },
                                                       child: const Text(
                                                         'PARTIALLY CLEAR',

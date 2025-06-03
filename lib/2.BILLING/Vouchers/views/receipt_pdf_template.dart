@@ -158,13 +158,13 @@ pw.Widget _buildFooter(pw.Context context) {
                 color: PdfColors.grey900,
               ),
             ),
-          pw.Text(
-            'Printed on: ${_formatDate(DateTime.now())}',
-            style: const pw.TextStyle(
-              fontSize: 10,
-              color: PdfColors.grey900,
-            ),
-          ),
+          // pw.Text(
+          //   'Printed on: ${_formatDate(DateTime.now())}',
+          //   style: const pw.TextStyle(
+          //     fontSize: 10,
+          //     color: PdfColors.grey900,
+          //   ),
+          // ),
         ],
       ),
     ],
@@ -208,7 +208,14 @@ pw.Widget _buildReceiptent(pw.Context context, VoucherReceipt receiptData) {
                 color: detailsColor,
               ),
             ),
-            pw.SizedBox(height: 3),
+            pw.SizedBox(height: 5),
+            pw.Text(
+              'Date:' '${_formatDate(DateTime.now())}',
+              style: const pw.TextStyle(
+                fontSize: 10,
+                color: detailsColor,
+              ),
+            ),
           ],
         ),
       ),

@@ -737,9 +737,11 @@ class _accountLedgerState extends State<AccountLedger> {
                                                                       ),
                                                                     ],
                                                                   ),
-                                                                if (account_ledgerController.account_LedgerModel.CCemailToggle.value && account_ledgerController.account_LedgerModel.gmail_selectionStatus.value)
+                                                                if (account_ledgerController.account_LedgerModel.CCemailToggle.value &&
+                                                                    account_ledgerController.account_LedgerModel.gmail_selectionStatus.value)
                                                                   const SizedBox(height: 10),
-                                                                if (account_ledgerController.account_LedgerModel.CCemailToggle.value && account_ledgerController.account_LedgerModel.gmail_selectionStatus.value)
+                                                                if (account_ledgerController.account_LedgerModel.CCemailToggle.value &&
+                                                                    account_ledgerController.account_LedgerModel.gmail_selectionStatus.value)
                                                                   Row(
                                                                     crossAxisAlignment: CrossAxisAlignment.end,
                                                                     children: [
@@ -1099,13 +1101,14 @@ class _accountLedgerState extends State<AccountLedger> {
                                             Uint8List pdfBytes = await generateAccountLedger(PdfPageFormat.a4, parsedData);
 
                                             // // Show the dialog with the same design
+
                                             showDialog(
                                               context: context,
                                               builder: (context) => Dialog(
                                                 insetPadding: const EdgeInsets.all(20), // Same padding
                                                 child: SizedBox(
                                                   width: MediaQuery.of(context).size.width * 0.35, // Same width (35%)
-                                                  height: MediaQuery.of(context).size.height * 0.95, // Same height (95%)
+                                                  height: MediaQuery.of(context).size.height * 0.95, // Same height (95%)\
                                                   child: SfPdfViewer.memory(
                                                     pdfBytes, // Using the generated PDF bytes
                                                     canShowPaginationDialog: true,
@@ -1811,20 +1814,21 @@ class _Account_ledger_filterState extends State<Account_ledger_filter> {
                 // const SizedBox(width: 8),
                 Obx(
                   () => SizedBox(
-                    child: account_LedgerController.account_LedgerModel.startDateController.value.text.isNotEmpty || account_LedgerController.account_LedgerModel.endDateController.value.text.isNotEmpty
-                        ? TextButton(
-                            onPressed: () {
-                              account_LedgerController.account_LedgerModel.selectedMonth.value = 'None';
-                              account_LedgerController.account_LedgerModel.startDateController.value.clear();
-                              account_LedgerController.account_LedgerModel.endDateController.value.clear();
-                              account_LedgerController.account_LedgerModel.selectedMonth.refresh();
-                              account_LedgerController.account_LedgerModel.startDateController.refresh();
-                              account_LedgerController.account_LedgerModel.endDateController.refresh();
-                              // widget.get_Account_LedgerList();
-                            },
-                            child: const Text('Clear', style: TextStyle(fontSize: Primary_font_size.Text7)),
-                          )
-                        : const SizedBox(),
+                    child:
+                        account_LedgerController.account_LedgerModel.startDateController.value.text.isNotEmpty || account_LedgerController.account_LedgerModel.endDateController.value.text.isNotEmpty
+                            ? TextButton(
+                                onPressed: () {
+                                  account_LedgerController.account_LedgerModel.selectedMonth.value = 'None';
+                                  account_LedgerController.account_LedgerModel.startDateController.value.clear();
+                                  account_LedgerController.account_LedgerModel.endDateController.value.clear();
+                                  account_LedgerController.account_LedgerModel.selectedMonth.refresh();
+                                  account_LedgerController.account_LedgerModel.startDateController.refresh();
+                                  account_LedgerController.account_LedgerModel.endDateController.refresh();
+                                  // widget.get_Account_LedgerList();
+                                },
+                                child: const Text('Clear', style: TextStyle(fontSize: Primary_font_size.Text7)),
+                              )
+                            : const SizedBox(),
                   ),
                 ),
                 const Spacer(),

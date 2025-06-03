@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -17,15 +15,15 @@ class VoucherController extends GetxController {
     voucherModel.Selectedpaymentmode.value = value;
   }
 
-  Future<void> PDFfileApiData(CMDmResponse value) async {
-    var pdfFileData = await PDFfileData.fromJson(value); // Await async function
-    var binaryData = pdfFileData.data; // Extract File object
-    await updatePDFfile(binaryData);
-  }
+  // Future<void> PDFfileApiData(CMDmResponse value) async {
+  //   var pdfFileData = await PDFfileData.fromJson(value); // Await async function
+  //   var binaryData = pdfFileData.data; // Extract File object
+  //   await updatePDFfile(binaryData);
+  // }
 
-  Future<void> updatePDFfile(File value) async {
-    voucherModel.pdfFile.value = value;
-  }
+  // Future<void> updatePDFfile(File value) async {
+  //   voucherModel.pdfFile.value = value;
+  // }
 
   void add_Voucher(CMDlResponse value) {
     voucherModel.voucher_list.clear();

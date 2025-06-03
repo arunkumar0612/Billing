@@ -818,6 +818,14 @@ mixin main_BillingService {
                                             style: TextStyle(fontWeight: FontWeight.bold),
                                           ),
                                         ),
+                                        Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Receipt',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],

@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:ssipl_billing/view_send_pdf.dart';
-import 'package:path/path.dart' as path;
+// import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/4.SALES/controllers/ClientReq_actions.dart';
 import 'package:ssipl_billing/4.SALES/controllers/DC_actions.dart';
@@ -21,7 +21,7 @@ import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../API/api.dart';
 import '../../API/invoker.dart';
@@ -230,44 +230,44 @@ mixin SalesServices {
     }
   }
 
-  void showPDF(context, String filename) async {
-    if (salesController.salesModel.pdfFile.value != null) {
-      await showDialog(
-        context: context,
-        builder: (context) => Dialog(
-          insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
-          child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-              height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
-              child: Stack(
-                children: [
-                  SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
-                  Align(
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: IconButton(
-                          onPressed: () {
-                            downloadPdf(
-                                context,
-                                path
-                                    .basename(filename)
-                                    .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
-                                    .replaceAll(" ", ""),
-                                salesController.salesModel.pdfFile.value);
-                          },
-                          icon: const Icon(
-                            Icons.download,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ))
-                ],
-              )),
-        ),
-      );
-    }
-  }
+  // void showPDF(context, String filename) async {
+  //   if (salesController.salesModel.pdfFile.value != null) {
+  //     await showDialog(
+  //       context: context,
+  //       builder: (context) => Dialog(
+  //         insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+  //         child: SizedBox(
+  //             width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+  //             height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
+  //             child: Stack(
+  //               children: [
+  //                 SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
+  //                 Align(
+  //                     alignment: Alignment.bottomRight,
+  //                     child: Padding(
+  //                       padding: const EdgeInsets.all(20),
+  //                       child: IconButton(
+  //                         onPressed: () {
+  //                           downloadPdf(
+  //                               context,
+  //                               path
+  //                                   .basename(filename)
+  //                                   .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
+  //                                   .replaceAll(" ", ""),
+  //                               salesController.salesModel.pdfFile.value);
+  //                         },
+  //                         icon: const Icon(
+  //                           Icons.download,
+  //                           color: Colors.blue,
+  //                         ),
+  //                       ),
+  //                     ))
+  //               ],
+  //             )),
+  //       ),
+  //     );
+  //   }
+  // }
 
   Future<File> savePdfToTemp(Uint8List pdfData) async {
     final tempDir = await getTemporaryDirectory();

@@ -3,9 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:path/path.dart' as path;
-import 'package:ssipl_billing/COMPONENTS-/downloadPDF.dart';
-import 'package:ssipl_billing/COMPONENTS-/sharePDF.dart';
+
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 Widget buildPdfViewer(
@@ -32,7 +30,7 @@ Widget buildPdfViewer(
   }
 }
 
-void showPDF(BuildContext context, String filename, File? pdfFile) async {
+void PDFviewonly(BuildContext context, File? pdfFile) async {
   await Future.delayed(Duration(milliseconds: 500)); // ensure file write is completed
 
   if (pdfFile != null) {
@@ -71,85 +69,9 @@ void showPDF(BuildContext context, String filename, File? pdfFile) async {
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           // Download & Share
-                          Row(
-                            children: [
-                              // Download Button
-                              Padding(
-                                padding: const EdgeInsets.only(left: 5, bottom: 20),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.green[50], // Light background
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(color: Colors.green),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black12,
-                                            blurRadius: 2,
-                                            offset: Offset(0, 1),
-                                          ),
-                                        ],
-                                      ),
-                                      child: IconButton(
-                                        onPressed: () {
-                                          downloadPdf(
-                                            context,
-                                            path.basename(filename).replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '').replaceAll(" ", ""),
-                                            pdfFile,
-                                          );
-                                        },
-                                        icon: const Icon(Icons.download_sharp, color: Colors.green, size: 22),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text('Download', style: TextStyle(fontSize: 10, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-
-                              // Share Button
-                              Padding(
-                                padding: const EdgeInsets.only(right: 20, bottom: 20),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.blue[50], // Light background
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(color: Colors.blue),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black12,
-                                            blurRadius: 2,
-                                            offset: Offset(0, 1),
-                                          ),
-                                        ],
-                                      ),
-                                      child: IconButton(
-                                        onPressed: () {
-                                          shareAnyPDF(
-                                            context,
-                                            path.basename(filename).replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '').replaceAll(" ", ""),
-                                            pdfFile,
-                                          );
-                                        },
-                                        icon: const Icon(Icons.share, color: Colors.blue, size: 22),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text('Share', style: TextStyle(fontSize: 10, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
 
                           // Page Navigation
                           Column(

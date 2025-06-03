@@ -9,6 +9,7 @@ import 'package:path/path.dart' as path;
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/CustomPDF_Controllers/SUBSCRIPTION_CustomPDF_Invoice_actions.dart' show SUBSCRIPTION_CustomPDF_InvoiceController;
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/CustomPDF_services/Subscription_PostAll_services.dart' show SUBSCRIPTION_PostServices;
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDFviewonly.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart' show BasicButton;
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart' show BasicTextfield;
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart' show SessiontokenController;
@@ -198,7 +199,8 @@ class Subscription_PostInvoiceState extends State<SUBSCRIPTION_PostInvoice> with
                         ),
                         onDoubleTap: () {
                           if (pdfpopup_controller.pdfModel.value.genearatedPDF.value != null) {
-                            widget.showReadablePdf(context);
+                            PDFviewonly(context, pdfpopup_controller.pdfModel.value.genearatedPDF.value!);
+                            // widget.showReadablePdf(context);
                           } else {
                             Get.snackbar("No data", "Maximizing is restricted!");
                             Get.smartManagement;

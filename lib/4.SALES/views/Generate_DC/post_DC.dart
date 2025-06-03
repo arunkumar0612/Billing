@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 import 'package:ssipl_billing/4.SALES/controllers/DC_actions.dart';
 import 'package:ssipl_billing/4.SALES/services/DC_services/DcPost_services.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDFviewonly.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
@@ -196,7 +197,8 @@ class PostDcState extends State<PostDc> with SingleTickerProviderStateMixin {
                         ),
                         onDoubleTap: () {
                           if (dcController.dcModel.selectedPdf.value != null) {
-                            widget.showReadablePdf(context);
+                            PDFviewonly(context, dcController.dcModel.selectedPdf.value!);
+                            // widget.showReadablePdf(context);
                           } else {
                             Get.snackbar("No data", "Maximizing is restricted!");
                             Get.smartManagement;

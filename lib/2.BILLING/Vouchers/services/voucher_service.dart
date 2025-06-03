@@ -7,8 +7,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/view_ledger_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/controllers/voucher_action.dart';
 import 'package:ssipl_billing/2.BILLING/Vouchers/models/entities/voucher_entities.dart';
@@ -20,7 +18,6 @@ import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 mixin VoucherService {
   final VoucherController voucherController = Get.find<VoucherController>();
@@ -149,110 +146,110 @@ mixin VoucherService {
     }
   }
 
-  void showPDF(context, String filename) async {
-    if (voucherController.voucherModel.pdfFile.value != null) {
-      await showDialog(
-        context: context,
-        builder: (context) => Dialog(
-          insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
-          child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-              height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
-              child: Stack(
-                children: [
-                  SfPdfViewer.file(voucherController.voucherModel.pdfFile.value!),
-                  Align(
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: IconButton(
-                          onPressed: () {
-                            downloadPdf(
-                                context,
-                                path
-                                    .basename(filename)
-                                    .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
-                                    .replaceAll(" ", ""),
-                                voucherController.voucherModel.pdfFile.value);
-                          },
-                          icon: const Icon(
-                            Icons.download,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ))
-                ],
-              )),
-        ),
-      );
-    }
-  }
+  // void showPDF(context, String filename) async {
+  //   if (voucherController.voucherModel.pdfFile.value != null) {
+  //     await showDialog(
+  //       context: context,
+  //       builder: (context) => Dialog(
+  //         insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
+  //         child: SizedBox(
+  //             width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
+  //             height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
+  //             child: Stack(
+  //               children: [
+  //                 SfPdfViewer.file(voucherController.voucherModel.pdfFile.value!),
+  //                 Align(
+  //                     alignment: Alignment.bottomRight,
+  //                     child: Padding(
+  //                       padding: const EdgeInsets.all(20),
+  //                       child: IconButton(
+  //                         onPressed: () {
+  //                           downloadPdf(
+  //                               context,
+  //                               path
+  //                                   .basename(filename)
+  //                                   .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
+  //                                   .replaceAll(" ", ""),
+  //                               voucherController.voucherModel.pdfFile.value);
+  //                         },
+  //                         icon: const Icon(
+  //                           Icons.download,
+  //                           color: Colors.blue,
+  //                         ),
+  //                       ),
+  //                     ))
+  //               ],
+  //             )),
+  //       ),
+  //     );
+  //   }
+  // }
 
-  Future<File> savePdfToTemp(Uint8List pdfData) async {
-    final tempDir = await getTemporaryDirectory();
-    final tempFile = File('${tempDir.path}/temp_pdf.pdf');
-    await tempFile.writeAsBytes(pdfData, flush: true);
-    return tempFile;
-  }
+  // Future<File> savePdfToTemp(Uint8List pdfData) async {
+  //   final tempDir = await getTemporaryDirectory();
+  //   final tempFile = File('${tempDir.path}/temp_pdf.pdf');
+  //   await tempFile.writeAsBytes(pdfData, flush: true);
+  //   return tempFile;
+  // }
 
-  Future<void> downloadPdf(BuildContext context, String filename, File? pdfFile) async {
-    try {
-      loader.start(context);
+  // Future<void> downloadPdf(BuildContext context, String filename, File? pdfFile) async {
+  //   try {
+  //     loader.start(context);
 
-      // ✅ Let the loader show before blocking UI
-      await Future.delayed(const Duration(milliseconds: 300));
+  //     // ✅ Let the loader show before blocking UI
+  //     await Future.delayed(const Duration(milliseconds: 300));
 
-      if (pdfFile == null) {
-        loader.stop();
-        if (kDebugMode) {
-          print("No PDF file found to download.");
-        }
-        Error_dialog(
-          context: context,
-          title: "No PDF Found",
-          content: "There is no PDF file to download.",
-          // showCancel: false,
-        );
-        return;
-      }
+  //     if (pdfFile == null) {
+  //       loader.stop();
+  //       if (kDebugMode) {
+  //         print("No PDF file found to download.");
+  //       }
+  //       Error_dialog(
+  //         context: context,
+  //         title: "No PDF Found",
+  //         content: "There is no PDF file to download.",
+  //         // showCancel: false,
+  //       );
+  //       return;
+  //     }
 
-      await Future.delayed(const Duration(milliseconds: 100));
+  //     await Future.delayed(const Duration(milliseconds: 100));
 
-      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(lockParentWindow: true);
+  //     String? selectedDirectory = await FilePicker.platform.getDirectoryPath(lockParentWindow: true);
 
-      // ✅ Always stop loader after native call
-      loader.stop();
+  //     // ✅ Always stop loader after native call
+  //     loader.stop();
 
-      if (selectedDirectory == null) {
-        if (kDebugMode) {
-          print("User cancelled the folder selection.");
-        }
-        Error_dialog(
-          context: context,
-          title: "Cancelled",
-          content: "Download cancelled. No folder was selected.",
-          // showCancel: false,
-        );
-        return;
-      }
+  //     if (selectedDirectory == null) {
+  //       if (kDebugMode) {
+  //         print("User cancelled the folder selection.");
+  //       }
+  //       Error_dialog(
+  //         context: context,
+  //         title: "Cancelled",
+  //         content: "Download cancelled. No folder was selected.",
+  //         // showCancel: false,
+  //       );
+  //       return;
+  //     }
 
-      String savePath = "$selectedDirectory/$filename.pdf";
-      await pdfFile.copy(savePath);
+  //     String savePath = "$selectedDirectory/$filename.pdf";
+  //     await pdfFile.copy(savePath);
 
-      Success_SnackBar(context, "✅ PDF downloaded successfully to: $savePath");
-    } catch (e) {
-      loader.stop();
-      if (kDebugMode) {
-        print("❌ Error while downloading PDF: $e");
-      }
-      Error_dialog(
-        context: context,
-        title: "Error",
-        content: "An error occurred while downloading the PDF:\n$e",
-        // showCancel: false,
-      );
-    }
-  }
+  //     Success_SnackBar(context, "✅ PDF downloaded successfully to: $savePath");
+  //   } catch (e) {
+  //     loader.stop();
+  //     if (kDebugMode) {
+  //       print("❌ Error while downloading PDF: $e");
+  //     }
+  //     Error_dialog(
+  //       context: context,
+  //       title: "Error",
+  //       content: "An error occurred while downloading the PDF:\n$e",
+  //       // showCancel: false,
+  //     );
+  //   }
+  // }
 
   Future<void> get_VoucherList() async {
     Map<String, dynamic>? response = await apiController.GetbyQueryString(

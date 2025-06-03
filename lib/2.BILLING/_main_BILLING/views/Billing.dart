@@ -169,7 +169,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                               return Row(
                                                 children: [
                                                   Expanded(
-                                                    flex: 2,
+                                                    flex: 5,
                                                     child: Padding(
                                                       padding: const EdgeInsets.all(16),
                                                       child: Column(
@@ -350,68 +350,65 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                     ),
                                                   ),
                                                   Expanded(flex: 1, child: Container()),
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.only(right: 16),
-                                                      child: SizedBox(
-                                                        width: 200,
-                                                        height: 35,
-                                                        child: Obx(
-                                                          () => DropdownButtonFormField<String>(
-                                                            value: mainBilling_Controller.billingModel.type.value, // Use the state variable for the selected value
-                                                            items: [
-                                                              "Sales",
-                                                              "Subscription",
-                                                              "Purchase",
-                                                              "Receivables",
-                                                              "Payables",
-                                                              "All",
-                                                            ]
-                                                                .map((String value) => DropdownMenuItem<String>(
-                                                                      value: value,
-                                                                      child: Text(value, style: const TextStyle(fontSize: 13, color: Colors.white)),
-                                                                    ))
-                                                                .toList(),
-                                                            onChanged: (String? newValue) {
-                                                              if (newValue != null) {
-                                                                mainBilling_Controller.update_dashBoardtype(newValue);
-                                                                widget.GetDashboardData();
-                                                                // mainBilling_Controller.updatesalesperiod(newValue == "Monthly view" ? 'monthly' : 'yearly');
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(right: 16),
+                                                    child: SizedBox(
+                                                      width: 200,
+                                                      height: 35,
+                                                      child: Obx(
+                                                        () => DropdownButtonFormField<String>(
+                                                          value: mainBilling_Controller.billingModel.type.value, // Use the state variable for the selected value
+                                                          items: [
+                                                            "Sales",
+                                                            "Subscription",
+                                                            "Purchase",
+                                                            "Receivables",
+                                                            "Payables",
+                                                            "All",
+                                                          ]
+                                                              .map((String value) => DropdownMenuItem<String>(
+                                                                    value: value,
+                                                                    child: Text(value, style: const TextStyle(fontSize: 13, color: Colors.white)),
+                                                                  ))
+                                                              .toList(),
+                                                          onChanged: (String? newValue) {
+                                                            if (newValue != null) {
+                                                              mainBilling_Controller.update_dashBoardtype(newValue);
+                                                              widget.GetDashboardData();
+                                                              // mainBilling_Controller.updatesalesperiod(newValue == "Monthly view" ? 'monthly' : 'yearly');
 
-                                                                // if (newValue == "Monthly view") {
-                                                                //   widget.GetSalesData('monthly');
-                                                                // } else if (newValue == "Yearly view") {
-                                                                //   widget.GetSalesData('yearly');
-                                                                // }
-                                                              }
-                                                            },
-                                                            decoration: InputDecoration(
-                                                              alignLabelWithHint: false,
-                                                              contentPadding: const EdgeInsets.all(10),
-                                                              filled: true,
-                                                              fillColor: Primary_colors.Dark,
-                                                              focusedBorder: OutlineInputBorder(
-                                                                borderRadius: BorderRadius.circular(30),
-                                                                borderSide: const BorderSide(color: Color.fromARGB(226, 50, 50, 50)),
-                                                              ),
-                                                              enabledBorder: OutlineInputBorder(
-                                                                borderRadius: BorderRadius.circular(30),
-                                                                borderSide: const BorderSide(color: Color.fromARGB(255, 51, 50, 50)),
-                                                              ),
-                                                              hintText: 'Data View',
-                                                              hintStyle: const TextStyle(
-                                                                fontSize: Primary_font_size.Text7,
-                                                                color: Primary_colors.Color1,
-                                                                letterSpacing: 1,
-                                                              ),
+                                                              // if (newValue == "Monthly view") {
+                                                              //   widget.GetSalesData('monthly');
+                                                              // } else if (newValue == "Yearly view") {
+                                                              //   widget.GetSalesData('yearly');
+                                                              // }
+                                                            }
+                                                          },
+                                                          decoration: InputDecoration(
+                                                            alignLabelWithHint: false,
+                                                            contentPadding: const EdgeInsets.all(10),
+                                                            filled: true,
+                                                            fillColor: Primary_colors.Dark,
+                                                            focusedBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(30),
+                                                              borderSide: const BorderSide(color: Color.fromARGB(226, 50, 50, 50)),
                                                             ),
-                                                            dropdownColor: Primary_colors.Dark,
+                                                            enabledBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(30),
+                                                              borderSide: const BorderSide(color: Color.fromARGB(255, 51, 50, 50)),
+                                                            ),
+                                                            hintText: 'Data View',
+                                                            hintStyle: const TextStyle(
+                                                              fontSize: Primary_font_size.Text7,
+                                                              color: Primary_colors.Color1,
+                                                              letterSpacing: 1,
+                                                            ),
                                                           ),
+                                                          dropdownColor: Primary_colors.Dark,
                                                         ),
                                                       ),
                                                     ),
-                                                  )
+                                                  ),
                                                 ],
                                               );
                                             }),
@@ -1004,8 +1001,8 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
   Widget SubscriptionHeaders() {
     return const Row(
       children: [
-        Expanded(
-          flex: 1,
+        SizedBox(
+          width: 80,
           child: Text(
             textAlign: TextAlign.center,
             'Date',
@@ -1047,7 +1044,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         ),
         const SizedBox(width: 8),
         Expanded(
-          flex: 2,
+          flex: 1,
           child: Text(
             'Package',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
@@ -1055,16 +1052,16 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         ),
         const SizedBox(width: 8),
         Expanded(
-          flex: 2,
+          flex: 1,
           child: Text(
-            textAlign: TextAlign.end,
+            textAlign: TextAlign.start,
             'Amount',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
         SizedBox(width: 8),
         Expanded(
-          flex: 1,
+          flex: 2,
           child: Text(
             textAlign: TextAlign.center,
             'Duedate',
@@ -1072,16 +1069,16 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
           ),
         ),
         const SizedBox(width: 8),
-        Expanded(
-          flex: 1,
+        SizedBox(
+          width: 70,
           child: Text(
             'Overdue',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
         const SizedBox(width: 8),
-        Expanded(
-          flex: 1,
+        SizedBox(
+          width: 70,
           child: Text(
             'Status',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
@@ -1095,56 +1092,55 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
     return const Row(
       children: [
         Expanded(
-          flex: 2,
+          flex: 1,
           child: Text(
             'Date',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
+        SizedBox(width: 8),
         Expanded(
-          flex: 2,
+          flex: 1,
           child: Text(
             'Invoice No',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
+        SizedBox(width: 8),
         Expanded(
-          flex: 2,
+          flex: 1,
           child: Text(
             'Voucher No',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
+        SizedBox(width: 8),
         Expanded(
-          flex: 4,
+          flex: 6,
           child: Text(
             textAlign: TextAlign.start,
             'Client Name',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
-        SizedBox(width: 10),
+        SizedBox(width: 8),
         Expanded(
           flex: 2,
           child: Text(
+            textAlign: TextAlign.start,
             'Amount',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
+        SizedBox(width: 8),
         Expanded(
           flex: 2,
           child: Text(
+            textAlign: TextAlign.center,
             'Status',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
         ),
-        Expanded(
-          flex: 2,
-          child: Text(
-            '',
-            style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-          ),
-        )
       ],
     );
   }
@@ -1246,7 +1242,8 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                   ],
                 ),
               )
-            : Obx(() => ListView.separated(
+            : Obx(
+                () => ListView.separated(
                   separatorBuilder: (context, index) => Container(
                     height: 1,
                     color: const Color.fromARGB(94, 125, 125, 125),
@@ -1266,13 +1263,14 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                             padding: const EdgeInsets.all(10),
                             child: Row(
                               children: [
-                                Expanded(
-                                  flex: 1,
+                                SizedBox(
+                                  width: 80,
                                   child: Text(
                                     formatDate(mainBilling_Controller.billingModel.subscriptionInvoiceList[index].date),
                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                   ),
                                 ),
+
                                 const SizedBox(width: 8),
                                 Expanded(
                                   flex: 1,
@@ -1371,7 +1369,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 ),
                                 const SizedBox(width: 8),
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: Text(
                                     mainBilling_Controller.billingModel.subscriptionInvoiceList[index].planName,
                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
@@ -1379,9 +1377,9 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 ),
                                 const SizedBox(width: 8),
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: Text(
-                                    textAlign: TextAlign.end,
+                                    textAlign: TextAlign.start,
                                     'Rs. ${formatCurrency(double.parse(mainBilling_Controller.billingModel.subscriptionInvoiceList[index].totalAmount.toString()))}',
                                     style: const TextStyle(
                                       color: Primary_colors.Color1,
@@ -1391,7 +1389,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 ),
                                 SizedBox(width: 8),
                                 Expanded(
-                                  flex: 1,
+                                  flex: 2,
                                   child: Builder(
                                     builder: (context) {
                                       OverlayEntry? overlayEntry;
@@ -1402,12 +1400,10 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                         final RenderBox renderBox = context.findRenderObject() as RenderBox;
                                         final Offset offset = renderBox.localToGlobal(Offset.zero);
                                         final Size size = renderBox.size;
-
                                         double top;
-                                        double left = offset.dx - 80;
-
+                                        double left = offset.dx - 150;
                                         if (offset.dy > 320) {
-                                          top = offset.dy - 320;
+                                          top = offset.dy - 130;
                                         } else {
                                           top = offset.dy + size.height + 5;
                                         }
@@ -1537,8 +1533,8 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 //         ),
                                 //       ),
                                 //     )),
-                                Expanded(
-                                  flex: 1,
+                                SizedBox(
+                                  width: 70,
                                   child: Text(
                                     textAlign: TextAlign.left,
                                     (mainBilling_Controller.billingModel.subscriptionInvoiceList[index].overdueDays ?? '-').toString(),
@@ -1546,8 +1542,8 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                   ),
                                 ),
                                 const SizedBox(width: 8),
-                                Expanded(
-                                    flex: 1,
+                                SizedBox(
+                                    width: 70,
                                     child: Row(
                                       children: [
                                         Container(
@@ -1587,7 +1583,8 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                       ),
                     );
                   },
-                ));
+                ),
+              );
       },
     );
   }
@@ -1655,15 +1652,15 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                         child: Row(
                           children: [
                             Expanded(
-                              flex: 2,
+                              flex: 1,
                               child: Text(
                                 formatDate(mainBilling_Controller.billingModel.salesInvoiceList[index].date),
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
-
+                            SizedBox(width: 8),
                             Expanded(
-                              flex: 2,
+                              flex: 1,
                               child: MouseRegion(
                                 cursor: SystemMouseCursors.click,
                                 child: GestureDetector(
@@ -1680,6 +1677,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 ),
                               ),
                             ),
+                            SizedBox(width: 8),
                             // Expanded(
                             //   flex: 2,
                             //   child: Text(
@@ -1688,7 +1686,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                             //   ),
                             // ),
                             Expanded(
-                              flex: 2,
+                              flex: 1,
                               child: Padding(
                                 padding: const EdgeInsets.all(0),
                                 child: Column(
@@ -1710,28 +1708,29 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 ),
                               ),
                             ),
-
+                            SizedBox(width: 8),
                             Expanded(
-                              flex: 4,
+                              flex: 6,
                               child: Row(
                                 children: [
-                                  Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: BoxDecoration(
-                                      color: Primary_colors.Color5.withOpacity(0.1),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: ClipOval(
-                                      child: Image.asset(
-                                        'assets/images/black.jpg',
-                                        fit: BoxFit.cover,
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 5),
+                                  // Container(
+                                  //   width: 35,
+                                  //   height: 35,
+                                  //   decoration: BoxDecoration(
+                                  //     color: Primary_colors.Color5.withOpacity(0.1),
+                                  //     shape: BoxShape.circle,
+                                  //   ),
+                                  //   child: ClipOval(
+                                  //     child: Image.asset(
+                                  //       'assets/images/black.jpg',
+                                  //       fit: BoxFit.cover,
+                                  //       width: double.infinity,
+                                  //       height: double.infinity,
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  // const SizedBox(width: 5),
+
                                   Expanded(
                                     child: Text(
                                       softWrap: true,
@@ -1744,21 +1743,24 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 ],
                               ),
                             ),
+                            SizedBox(width: 8),
                             // const SizedBox(
                             //   width: 10,
                             // ),
                             Expanded(
                               flex: 2,
                               child: Text(
-                                // textAlign: TextAlign.center,
+                                textAlign: TextAlign.start,
                                 // mainBilling_Controller.billingModel.salesInvoiceList[index].clientAddress,
                                 'Rs. ${formatCurrency(double.parse(mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceAmount.toString()))}',
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
                             ),
+                            SizedBox(width: 8),
                             Expanded(
                                 flex: 2,
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
                                       height: 22,
@@ -1809,7 +1811,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                             //     ],
                             //   ),
                             // ),
-                            const Expanded(flex: 2, child: Icon(Icons.keyboard_control))
+                            // const Expanded(flex: 2, child: Icon(Icons.keyboard_control))
                           ],
                         ),
                       ),

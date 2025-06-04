@@ -8,7 +8,8 @@ import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_Invoice_actions.dart';
 import 'package:ssipl_billing/4.SALES/services/CustomPDF_services/Invoice/PostAll_Invoice_services.dart';
-import 'package:ssipl_billing/COMPONENTS-/PDFviewonly.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/downloadPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
@@ -647,8 +648,7 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                               cursor: SystemMouseCursors.click,
                               child: GestureDetector(
                                 onTap: () {
-                                  widget.downloadPdf(
-                                      context, path.basename(pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path ?? ""), pdfpopup_controller.pdfModel.value.genearatedPDF.value);
+                                  downloadPdf(context, path.basename(pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path ?? ""), pdfpopup_controller.pdfModel.value.genearatedPDF.value);
                                 },
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,

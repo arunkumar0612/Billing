@@ -34,20 +34,6 @@ mixin SUBSCRIPTION_QuotePostServices {
     quoteController.setpdfLoading(true);
   }
 
-  // void showReadablePdf(context) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => Dialog(
-  //       insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
-  //       child: SizedBox(
-  //         width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-  //         height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
-  //         child: SfPdfViewer.file(quoteController.quoteModel.selectedPdf.value!),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Future<void> printPdf() async {
     if (kDebugMode) {
       print('Selected PDF Path: ${quoteController.quoteModel.selectedPdf.value}');

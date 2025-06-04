@@ -8,7 +8,8 @@ import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_Quote_actions.dart';
 import 'package:ssipl_billing/4.SALES/services/CustomPDF_services/Quote/PostAll_Quote_services.dart';
-import 'package:ssipl_billing/COMPONENTS-/PDFviewonly.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/downloadPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
@@ -83,115 +84,6 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                                       ],
                                     ),
                                   ),
-                            // Align(
-                            //   alignment: AlignmentDirectional.bottomEnd,
-                            //   child: Padding(
-                            //     padding: const EdgeInsets.all(5),
-                            //     child: Column(
-                            //       mainAxisAlignment: MainAxisAlignment.end,
-                            //       children: [
-                            //         // Container(
-                            //         //   decoration: BoxDecoration(
-                            //         //     borderRadius: BorderRadius.circular(50),
-                            //         //     // boxShadow: [
-                            //         //     //   BoxShadow(
-                            //         //     //     color: const Color.fromARGB(255, 184, 184, 184).withOpacity(0.8),
-                            //         //     //     spreadRadius: 1,
-                            //         //     //     blurRadius: 5,
-                            //         //     //     offset: const Offset(0, 3),
-                            //         //     //   ),
-                            //         //     // ],
-                            //         //   ),
-                            //         //   child: IconButton(
-                            //         //     splashColor: Colors.transparent,
-                            //         //     highlightColor: Colors.transparent,
-                            //         //     onPressed: () {
-                            //         //       widget.downloadPdf(path.basename(pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path ?? ""));
-                            //         //     },
-                            //         //     icon: const Icon(
-                            //         //       Icons.download_outlined,
-                            //         //       color: Colors.blue,
-                            //         //     ),
-                            //         //   ),
-                            //         // ),
-                            //         // const SizedBox(
-                            //         //   height: 10,
-                            //         // ),
-                            //         // Container(
-                            //         //   decoration: BoxDecoration(
-                            //         //     borderRadius: BorderRadius.circular(50),
-                            //         //     // boxShadow: [
-                            //         //     //   BoxShadow(
-                            //         //     //     color: const Color.fromARGB(255, 184, 184, 184).withOpacity(0.8),
-                            //         //     //     spreadRadius: 1,
-                            //         //     //     blurRadius: 5,
-                            //         //     //     offset: const Offset(0, 3),
-                            //         //     //   ),
-                            //         //     // ],
-                            //         //   ),
-                            //         //   child: IconButton(
-                            //         //     // splashColor: Colors.transparent,
-                            //         //     // highlightColor: Colors.transparent,
-                            //         //     onPressed: () {
-                            //         //       widget.printPdf();
-                            //         //     },
-                            //         //     icon: const Icon(
-                            //         //       Icons.print,
-                            //         //       color: Colors.redAccent,
-                            //         //     ),
-                            //         //   ),
-                            //         // ),
-
-                            //         GestureDetector(
-                            //           onTap: () {
-                            //             widget.printPdf();
-                            //           },
-                            //           child: Column(
-                            //             mainAxisSize: MainAxisSize.min,
-                            //             children: [
-                            //               Image.asset(height: 40, 'assets/images/printer.png'),
-                            //               const SizedBox(
-                            //                 height: 5,
-                            //               ),
-                            //               const Text(
-                            //                 "Print",
-                            //                 style: TextStyle(
-                            //                   fontSize: 14,
-                            //                   fontWeight: FontWeight.w500,
-                            //                   color: Color.fromARGB(255, 143, 143, 143),
-                            //                 ),
-                            //               ),
-                            //             ],
-                            //           ),
-                            //         ),
-                            //         const SizedBox(height: 20), // Space between buttons
-                            //         // Download Button
-                            //         GestureDetector(
-                            //           onTap: () {
-                            //             widget.downloadPdf(path.basename(pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path ?? ""));
-                            //           },
-                            //           child: Column(
-                            //             mainAxisSize: MainAxisSize.min,
-                            //             children: [
-                            //               Image.asset(height: 40, 'assets/images/pdfdownload.png'),
-                            //               const SizedBox(
-                            //                 height: 5,
-                            //               ),
-                            //               const Text(
-                            //                 "Download",
-                            //                 style: TextStyle(
-                            //                   fontSize: 14,
-                            //                   fontWeight: FontWeight.w500,
-                            //                   color: Color.fromARGB(255, 143, 143, 143),
-                            //                 ),
-                            //               ),
-                            //             ],
-                            //           ),
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // )
                           ],
                         ),
                         onDoubleTap: () {
@@ -647,8 +539,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                               cursor: SystemMouseCursors.click,
                               child: GestureDetector(
                                 onTap: () {
-                                  widget.downloadPdf(
-                                      context, path.basename(pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path ?? ""), pdfpopup_controller.pdfModel.value.genearatedPDF.value);
+                                  downloadPdf(context, path.basename(pdfpopup_controller.pdfModel.value.genearatedPDF.value?.path ?? ""), pdfpopup_controller.pdfModel.value.genearatedPDF.value);
                                 },
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,

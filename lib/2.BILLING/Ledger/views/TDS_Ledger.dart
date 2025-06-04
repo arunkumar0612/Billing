@@ -19,11 +19,11 @@ import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_excel_template/TDS_l
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
-import 'package:ssipl_billing/COMPONENTS-/PDFviewonly.dart';
-import 'package:ssipl_billing/COMPONENTS-/downloadPDF.dart';
-import 'package:ssipl_billing/COMPONENTS-/printPDF.dart';
-import 'package:ssipl_billing/COMPONENTS-/sharePDF.dart';
-import 'package:ssipl_billing/COMPONENTS-/showPDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/downloadPDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/printPDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/sharePDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/showPDF.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 import '../../../THEMES/style.dart';

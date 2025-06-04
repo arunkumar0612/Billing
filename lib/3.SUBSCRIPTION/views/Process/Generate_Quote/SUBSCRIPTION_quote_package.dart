@@ -229,93 +229,91 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
   }
 
   Widget _buildPendingSitesSection() {
-    return Obx(
-      () {
-        // Get all sites that aren't assigned to any package
-        final pendingSites = quoteController.quoteModel.QuoteSiteDetails.where((site) {
-          return !quoteController.quoteModel.selectedPackagesList.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.sitename == site.sitename));
-        }).toList();
+    return Obx(() {
+      // Get all sites that aren't assigned to any package
+      final pendingSites = quoteController.quoteModel.QuoteSiteDetails.where((site) {
+        return !quoteController.quoteModel.selectedPackagesList.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.sitename == site.sitename));
+      }).toList();
 
-        // Check if all sites are assigned
-        // final allSitesAssigned = pendingSites.isEmpty;
+      // Check if all sites are assigned
+      // final allSitesAssigned = pendingSites.isEmpty;
 
-        return Container(
-          decoration: BoxDecoration(
-            color: Primary_colors.Dark,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
+      return Container(
+        decoration: BoxDecoration(
+          color: Primary_colors.Dark,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.3,
               ),
-            ],
-          ),
-          child: Column(
-            children: [
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.3,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Pending Sites',
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              color: Primary_colors.Color1,
-                              fontWeight: FontWeight.bold,
-                              fontSize: Primary_font_size.Text10,
-                            ),
-                      ),
-                      const SizedBox(height: 15),
-                      Expanded(
-                        child: pendingSites.isEmpty
-                            ? Center(
-                                child: Text(
-                                  'No pending sites',
-                                  style: TextStyle(
-                                    color: Colors.grey[400],
-                                    fontSize: 16,
-                                  ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    Text(
+                      'Pending Sites',
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            color: Primary_colors.Color1,
+                            fontWeight: FontWeight.bold,
+                            fontSize: Primary_font_size.Text10,
+                          ),
+                    ),
+                    const SizedBox(height: 15),
+                    Expanded(
+                      child: pendingSites.isEmpty
+                          ? Center(
+                              child: Text(
+                                'No pending sites',
+                                style: TextStyle(
+                                  color: Colors.grey[400],
+                                  fontSize: 16,
                                 ),
-                              )
-                            : ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: pendingSites.length,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(bottom: 5),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Primary_colors.Light,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          '${index + 1} . ${pendingSites[index].sitename}',
-                                          style: const TextStyle(
-                                            color: Color.fromARGB(255, 181, 181, 181),
-                                            fontSize: Primary_font_size.Text8,
-                                          ),
+                              ),
+                            )
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: pendingSites.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Primary_colors.Light,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        '${index + 1} . ${pendingSites[index].sitename}',
+                                        style: const TextStyle(
+                                          color: Color.fromARGB(255, 181, 181, 181),
+                                          fontSize: Primary_font_size.Text8,
                                         ),
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
-                      ),
-                    ],
-                  ),
+                                  ),
+                                );
+                              },
+                            ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        );
-      },
-    );
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildBottomSection() {
@@ -347,32 +345,30 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
               },
             ),
             const SizedBox(width: 30),
-            Obx(
-              () {
-                final pendingSites = quoteController.quoteModel.QuoteSiteDetails.where((site) {
-                  return !quoteController.quoteModel.selectedPackagesList.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.sitename == site.sitename));
-                }).toList();
-                final hasPackages = quoteController.quoteModel.selectedPackagesList.isNotEmpty && pendingSites.isEmpty;
-                return BasicButton(
-                    colors: hasPackages ? Colors.green : Colors.grey,
-                    text: 'Submit',
-                    onPressed: () {
-                      if (hasPackages) {
-                        quoteController.nextTab();
-                      } else {
-                        Get.snackbar("WARNING", "Please ensure the all sites have mapped to packages!");
-                      }
-
-                      // print(quoteController.quoteModel.selectedPackagesList[0].sites[0].mailType);
+            Obx(() {
+              final pendingSites = quoteController.quoteModel.QuoteSiteDetails.where((site) {
+                return !quoteController.quoteModel.selectedPackagesList.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.sitename == site.sitename));
+              }).toList();
+              final hasPackages = quoteController.quoteModel.selectedPackagesList.isNotEmpty && pendingSites.isEmpty;
+              return BasicButton(
+                  colors: hasPackages ? Colors.green : Colors.grey,
+                  text: 'Submit',
+                  onPressed: () {
+                    if (hasPackages) {
+                      quoteController.nextTab();
+                    } else {
+                      Get.snackbar("WARNING", "Please ensure the all sites have mapped to packages!");
                     }
-                    //  hasPackages
-                    //     ? () {
-                    //         quoteController.submitPackages();
-                    //       }
-                    //     : null,
-                    );
-              },
-            ),
+
+                    // print(quoteController.quoteModel.selectedPackagesList[0].sites[0].mailType);
+                  }
+                  //  hasPackages
+                  //     ? () {
+                  //         quoteController.submitPackages();
+                  //       }
+                  //     : null,
+                  );
+            }),
           ],
         ),
       ],
@@ -681,202 +677,178 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
   }
 
   Widget _buildPackageDetailsTab(Package details) {
-    // Check if this is a custom package
     final isCustomPackage = quoteController.quoteModel.customPackage.value?.name == details.name;
     final packageIndex = quoteController.quoteModel.selectedPackagesList.indexWhere((p) => p.name == details.name);
     final package = quoteController.quoteModel.selectedPackagesList[packageIndex];
 
-    // Initialize edit mode controller if not exists
-    if (!package.editingMode.value) {
-      package.editingMode.value = false;
-      package.tempName.text = details.name;
-      package.tempcameracount.value = details.cameracount;
-      package.tempAmount.value = details.amount;
-      // package.tempAdditionalCameras.value = details['additional_cameras'];
-      package.tempDescription.value = details.description;
-    }
-    return Obx(() {
-      return Column(
-        children: [
-          if (isCustomPackage && package.editingMode.value == false)
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: OutlinedButton(
+    return Column(
+      children: [
+        // Edit button - only for custom packages not in edit mode
+        if (isCustomPackage)
+          Obx(() {
+            if (!package.editingMode.value) {
+              return Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 0),
+                  child: OutlinedButton(
                     onPressed: () {
-                      if (package.editingMode.value) {
-                        // Cancel editing - reset temp values
-                        package.tempName.text = details.name;
-                        package.tempcameracount.value = details.cameracount;
-                        package.tempAmount.value = details.amount;
-                        // package.tempAdditionalCameras.value = details['additional_cameras'];
-                        package.tempDescription.value = details.description;
-                      }
-                      package.editingMode.value = !package.editingMode.value;
+                      package.editingMode.value = true;
+                      // package.nameController?.text = details.name;
+                      // package.cameraCountController?.text = details.cameracount;
+                      // package.amountController?.text = details.amount;
+                      // package.descriptionController?.text = details.description;
                     },
                     child: const Text(
                       'Edit',
                       style: TextStyle(fontSize: Primary_font_size.Text10),
-                    )),
-              ),
-            ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.only(left: 15, right: 15, top: isCustomPackage && package.editingMode.value == false ? 0 : 15),
-                child: Stack(
-                  // crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            const Text(
-                              '📷',
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            const SizedBox(width: 10),
-                            const SizedBox(
-                              width: 150,
-                              child: Text(
-                                'Package Name',
-                                style: TextStyle(
-                                  fontSize: Primary_font_size.Text8,
-                                  color: Primary_colors.Color3,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            isCustomPackage && package.editingMode.value
-                                ? Expanded(
-                                    child: TextField(
-                                      controller: package.tempName,
-                                      onChanged: (value) => package.tempName.text = value,
-                                      decoration: const InputDecoration(
-                                        isDense: true,
-                                        contentPadding: EdgeInsets.zero,
-                                        border: InputBorder.none,
-                                      ),
-                                      style: const TextStyle(
-                                        fontSize: Primary_font_size.Text8,
-                                        fontWeight: FontWeight.bold,
-                                        color: Primary_colors.Color1,
-                                      ),
-                                    ),
-                                  )
-                                : Text(
-                                    details.name,
-                                    style: const TextStyle(
-                                      fontSize: Primary_font_size.Text8,
-                                      fontWeight: FontWeight.bold,
-                                      color: Primary_colors.Color1,
-                                    ),
-                                  ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        _buildDetailRow(
-                          icon: Icons.videocam_outlined,
-                          title: 'Camera Count',
-                          value: package.editingMode.value ? package.tempcameracount.value : details.cameracount,
-                          isEditable: isCustomPackage && package.editingMode.value,
-                          onChanged: (value) => package.tempcameracount.value = value,
-                        ),
-                        const SizedBox(height: 12),
-                        _buildDetailRow(
-                          icon: Icons.attach_money_outlined,
-                          title: 'Package Amount',
-                          value: package.editingMode.value ? package.tempAmount.value : details.amount,
-                          isEditable: isCustomPackage && package.editingMode.value,
-                          onChanged: (value) => package.tempAmount.value = value,
-                        ),
-                        const SizedBox(height: 12),
-                        // _buildDetailRow(
-                        //   icon: Icons.money_off_csred_outlined,
-                        //   title: 'Additional Camera',
-                        //   // value: package.editingMode.value ? package.tempAdditionalCameras.value : details['additional_cameras']!,
-                        //   isEditable: isCustomPackage && package.editingMode.value,
-                        //   // onChanged: (value) => package.tempAdditionalCameras.value = value,
-                        // ),
-                        // const SizedBox(height: 12),
-                        _buildDetailRow(
-                          icon: Icons.description_outlined,
-                          title: 'Description',
-                          value: package.editingMode.value ? package.tempDescription.value : details.description,
-                          isEditable: isCustomPackage && package.editingMode.value,
-                          onChanged: (value) => package.tempDescription.value = value,
-                        ),
-                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          if (isCustomPackage && package.editingMode.value) ...[
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 20,
-                    child: TextButton(
-                      onPressed: () {
-                        // Cancel editing
-                        package.editingMode.value = false;
-                      },
-                      child: const Text('Cancel'),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  SizedBox(
-                    height: 20,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          package.name = package.tempName.text;
-                          package.cameracount = package.tempcameracount.value;
-                          package.amount = package.tempAmount.value;
-                          // package.additionalCameras = package.tempAdditionalCameras.value;
-                          package.description = package.tempDescription.value;
-                          package.editingMode.value = false;
+              );
+            }
+            return const SizedBox.shrink();
+          }),
 
-                          // Update the custom package reference
-                          if (quoteController.quoteModel.customPackage.value != null) {
-                            quoteController.quoteModel.customPackage.value = package;
-                          }
-                          Error_SnackBar(
-                            context,
-                            'Package updated successfully',
-                          );
-                        });
-                        // Save changes
-                      },
-                      child: const Text('Save'),
-                    ),
-                  ),
-                ],
+        // Main content
+        Expanded(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: 15,
+                right: 15,
+                top: 15,
               ),
+              child: Obx(() {
+                return Column(
+                  children: [
+                    // Package Name Row
+                    // Row(
+                    //   children: [
+                    //     const Text('📷', style: TextStyle(fontSize: 15)),
+                    //     const SizedBox(width: 10),
+                    //     const SizedBox(
+                    //       width: 150,
+                    //       child: Text(
+                    //         'Package Name',
+                    //         style: TextStyle(
+                    //           fontSize: Primary_font_size.Text8,
+                    //           color: Primary_colors.Color3,
+                    //           fontWeight: FontWeight.w500,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     if (package.editingMode.value)
+                    //       Expanded(
+                    //         child: TextField(
+                    //           controller: package.nameController,
+                    //           decoration: const InputDecoration(
+                    //             isDense: true,
+                    //             contentPadding: EdgeInsets.zero,
+                    //             border: InputBorder.none,
+                    //           ),
+                    //           style: const TextStyle(
+                    //             fontSize: Primary_font_size.Text8,
+                    //             fontWeight: FontWeight.bold,
+                    //             color: Primary_colors.Color1,
+                    //           ),
+                    //         ),
+                    //       )
+                    //     else
+                    //       Text(
+                    //         details.name,
+                    //         style: const TextStyle(
+                    //           fontSize: Primary_font_size.Text8,
+                    //           fontWeight: FontWeight.bold,
+                    //           color: Primary_colors.Color1,
+                    //         ),
+                    //       ),
+                    //   ],
+                    // ),
+                    _buildDetailRow(
+                      icon: Icons.camera_alt_outlined,
+                      title: 'Package Name',
+                      controller: package.nameController!,
+                      isEditable: package.editingMode.value,
+                    ),
+                    const SizedBox(height: 12),
+
+                    // Other fields
+                    _buildDetailRow(
+                      icon: Icons.videocam_outlined,
+                      title: 'Camera Count',
+                      controller: package.cameraCountController!,
+                      isEditable: package.editingMode.value,
+                    ),
+                    const SizedBox(height: 12),
+                    _buildDetailRow(
+                      icon: Icons.attach_money_outlined,
+                      title: 'Package Amount',
+                      controller: package.amountController!,
+                      isEditable: package.editingMode.value,
+                    ),
+                    const SizedBox(height: 12),
+                    _buildDetailRow(
+                      icon: Icons.description_outlined,
+                      title: 'Description',
+                      controller: package.descriptionController!,
+                      isEditable: package.editingMode.value,
+                    ),
+                    if (package.editingMode.value)
+                      Column(
+                        children: [
+                          const SizedBox(height: 15),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  package.cancelEditing();
+                                  package.editingMode.value = false;
+                                },
+                                child: const Text('Cancel'),
+                              ),
+                              const SizedBox(width: 16),
+                              ElevatedButton(
+                                onPressed: () {
+                                  package.saveChanges();
+                                  if (quoteController.quoteModel.customPackage.value != null) {
+                                    quoteController.quoteModel.customPackage.value = package;
+                                  }
+                                  Error_SnackBar(
+                                    context,
+                                    'Package updated successfully',
+                                  );
+                                  package.editingMode.value = false;
+                                },
+                                child: const Text('Save'),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      )
+                  ],
+                );
+              }),
             ),
-            const SizedBox(height: 10),
-          ],
-        ],
-      );
-    });
+          ),
+        ),
+
+        // Save/Cancel buttons
+        // if (isCustomPackage)
+        //   Obx(() {
+        //     return const SizedBox.shrink();
+        //   }),
+      ],
+    );
   }
 
   Widget _buildDetailRow({
     required IconData icon,
     required String title,
-    required String value,
+    required TextEditingController controller,
     bool isEditable = false,
-    Function(String)? onChanged,
   }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -898,30 +870,27 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                   ),
                 ),
               ),
-              isEditable
-                  ? Expanded(
-                      child: TextField(
-                        controller: TextEditingController(text: value),
-                        onChanged: onChanged,
-                        decoration: const InputDecoration(
-                          isDense: true,
-                          contentPadding: EdgeInsets.zero,
-                          border: InputBorder.none,
-                        ),
-                        style: const TextStyle(
-                          fontSize: Primary_font_size.Text8,
-                          color: Color.fromARGB(255, 198, 197, 197),
-                        ),
-                      ),
-                    )
-                  : Expanded(
-                      child: Text(
-                      value,
-                      style: const TextStyle(
-                        fontSize: Primary_font_size.Text8,
-                        color: Color.fromARGB(255, 198, 197, 197),
-                      ),
-                    )),
+              Expanded(
+                  child: isEditable
+                      ? TextField(
+                          controller: controller,
+                          decoration: const InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.zero,
+                            border: InputBorder.none,
+                          ),
+                          style: const TextStyle(
+                            fontSize: Primary_font_size.Text8,
+                            color: Color.fromARGB(255, 198, 197, 197),
+                          ),
+                        )
+                      : Text(
+                          controller.text,
+                          style: const TextStyle(
+                            fontSize: Primary_font_size.Text8,
+                            color: Color.fromARGB(255, 198, 197, 197),
+                          ),
+                        )),
             ],
           ),
         ),
@@ -1177,13 +1146,26 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                                     ),
                                   ),
                                   onPressed: () {
-                                    // Update the package with selected sites
-                                    package.sites = package.selectedIndices.map((index) => availableSites[index]).toList();
-                                    package.showSiteList.value = false;
-                                    setState(() {});
+                                    if (package.selectedIndices.isNotEmpty) {
+                                      // Get the newly selected sites
+                                      final newSites = package.selectedIndices.map((index) => availableSites[index]).toList();
+
+                                      // Combine with existing sites, avoiding duplicates
+                                      final updatedSites = {...package.sites, ...newSites}.toList();
+
+                                      // Update the package
+                                      package.sites = updatedSites;
+                                      package.selectedIndices.clear(); // Clear selection
+                                      package.showSiteList.value = false;
+
+                                      setState(() {});
+                                      Success_SnackBar(context, 'Sites added successfully');
+                                    } else {
+                                      Error_SnackBar(context, 'Please select at least one site');
+                                    }
                                   },
                                   child: const Text(
-                                    'Save Selection',
+                                    'Add Selected Sites',
                                     style: TextStyle(color: Color.fromARGB(255, 58, 162, 248)),
                                   ),
                                 ),

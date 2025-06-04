@@ -30,27 +30,6 @@ class _GenerateclientreqState extends State<SUBSCRIPTION_Generate_clientreq> wit
   }
 
   @override
-  void dispose() {
-    // clientreqController.clientReqModel.tabController.value?.dispose();
-    super.dispose();
-  }
-
-  // ignore: unused_element
-  // void _showReadablePdf() {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => Dialog(
-  //       insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
-  //       child: SizedBox(
-  //         width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-  //         height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
-  //         child: SfPdfViewer.file(clientreqController.clientReqModel.selectedPdf.value),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Primary_colors.Dark,

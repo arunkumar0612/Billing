@@ -12,7 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:path/path.dart' as path;
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
-import 'package:ssipl_billing/COMPONENTS-/PDFviewonly.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/COMPONENTS-/cards.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -1441,21 +1441,6 @@ class generateinvoice_popupState extends State<generateinvoice_popup> with Singl
       });
     }
   }
-
-  // Function to show PDF in readable size
-  // void _showReadablePdf() {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => Dialog(
-  //       insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
-  //       child: SizedBox(
-  //         width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-  //         height: MediaQuery.of(context).size.height * 0.8, // 80% of screen height
-  //         child: SfPdfViewer.file(_selectedPdf),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Future<void> printPdf() async {
     if (kDebugMode) {

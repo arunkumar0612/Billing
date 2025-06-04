@@ -2,7 +2,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +16,7 @@ import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart' show Error_dialog, Success_SnackBar, Success_dialog, Warning_dialog;
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart' show SessiontokenController;
 import 'package:ssipl_billing/THEMES/style.dart';
+
 // import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../API/invoker.dart';
@@ -521,86 +521,6 @@ mixin SubscriptionServices {
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
       return false;
-    }
-  }
-
-  // void showPDF(context, String filename) async {
-  //   if (_subscriptionController.subscriptionModel.pdfFile.value != null) {
-  //     await showDialog(
-  //       context: context,
-  //       builder: (context) => Dialog(
-  //         insetPadding: const EdgeInsets.all(20), // Adjust padding to keep it from being full screen
-  //         child: SizedBox(
-  //             width: MediaQuery.of(context).size.width * 0.35, // 85% of screen width
-  //             height: MediaQuery.of(context).size.height * 0.95, // 80% of screen height
-  //             child: Stack(
-  //               children: [
-  //                 SfPdfViewer.file(_subscriptionController.subscriptionModel.pdfFile.value!),
-  //                 Align(
-  //                     alignment: Alignment.bottomRight,
-  //                     child: Padding(
-  //                       padding: const EdgeInsets.all(20),
-  //                       child: IconButton(
-  //                         onPressed: () {
-  //                           downloadPdf(
-  //                               context,
-  //                               path
-  //                                   .basename(filename)
-  //                                   .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
-  //                                   .replaceAll(" ", ""),
-  //                               _subscriptionController.subscriptionModel.pdfFile.value);
-  //                         },
-  //                         icon: const Icon(
-  //                           Icons.download,
-  //                           color: Colors.blue,
-  //                         ),
-  //                       ),
-  //                     ))
-  //               ],
-  //             )),
-  //       ),
-  //     );
-  //   }
-  // }
-
-  Future<void> downloadPdf(BuildContext context, String filename, File? pdfFile) async {
-    try {
-      // final pdfFile = _subscriptionController.subscriptionModel.pdfFile.value;
-
-      if (pdfFile == null) {
-        if (kDebugMode) {
-          print("No PDF file found to download.");
-        }
-        return;
-      }
-
-      // Let the user pick a folder to save the file
-      String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
-
-      // Check if the user canceled folder selection
-      if (selectedDirectory == null) {
-        Error_dialog(
-          context: context,
-          title: "Error",
-          content: "Cannot find the path. Please select a folder to save the PDF.",
-          // showCancel: false,
-        );
-        return;
-      }
-
-      // Define the destination path
-      String savePath = "$selectedDirectory/$filename.pdf";
-
-      // Copy the PDF file to the selected directory
-      await pdfFile.copy(savePath);
-      Success_SnackBar(context, "PDF downloaded successfully to: $savePath");
-    } catch (e) {
-      Error_dialog(
-        context: context,
-        title: "Error",
-        content: "Error downloading PDF: $e",
-        // showCancel: false,
-      );
     }
   }
 

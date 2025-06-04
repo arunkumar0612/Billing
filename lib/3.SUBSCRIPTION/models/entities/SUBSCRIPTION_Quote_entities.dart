@@ -275,12 +275,22 @@ class Package {
   RxBool editingMode = false.obs;
 
   // Temp values for editing
-  late TextEditingController tempName;
+  RxString tempName = ''.obs;
   RxString tempDescription = ''.obs;
   RxString tempcameracount = ''.obs;
   RxString tempAmount = ''.obs;
   // RxString tempAdditionalCameras = ''.obs;
   RxString tempShow = ''.obs;
+  TextEditingController? nameController;
+  TextEditingController? cameraCountController;
+  TextEditingController? amountController;
+  TextEditingController? descriptionController;
+  void disposeControllers() {
+    nameController?.dispose();
+    cameraCountController?.dispose();
+    amountController?.dispose();
+    descriptionController?.dispose();
+  }
 
   Package({
     required this.name,
@@ -297,8 +307,12 @@ class Package {
     selectedIndices = <int>[].obs;
     showSiteList = false.obs;
     editingMode = false.obs;
+    nameController = TextEditingController(text: name);
+    cameraCountController = TextEditingController(text: cameracount);
+    amountController = TextEditingController(text: amount);
+    descriptionController = TextEditingController(text: description);
 
-    tempName = TextEditingController(text: name);
+    tempName = name.obs;
     tempDescription = description.obs;
     tempcameracount = cameracount.obs;
     tempAmount = amount.obs;
@@ -334,7 +348,7 @@ class Package {
 
   // Save changes from temp fields
   void saveChanges() {
-    name = tempName.text;
+    name = tempName.value;
     description = tempDescription.value;
     cameracount = tempcameracount.value;
     amount = tempAmount.value;
@@ -345,7 +359,7 @@ class Package {
 
   // Cancel edit
   void cancelEditing() {
-    tempName.text = name;
+    tempName.value = name;
     tempDescription.value = description;
     tempcameracount.value = cameracount;
     tempAmount.value = amount;

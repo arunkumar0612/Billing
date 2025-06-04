@@ -347,7 +347,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     quoteModel.Quote_recommendationList.isEmpty ? quoteModel.recommendationHeadingController.value.clear() : null;
   }
 
-  void update_requiredData(CMDmResponse value, String eventtype) {
+  Future<void> update_requiredData(CMDmResponse value, String eventtype) async {
     if (kDebugMode) {
       print(value.data);
     }
@@ -372,7 +372,7 @@ class SUBSCRIPTION_QuoteController extends GetxController {
   void storeFetchedPackages(Map<String, dynamic> data) {
     if (data['packagedetails'] != null) {
       quoteModel.selectedPackagesList.value = List<Map<String, dynamic>>.from(data['packagedetails']).map((packageJson) => Package.fromJson(packageJson)).toList();
-      quoteModel.selectedPackage.value = quoteModel.selectedPackagesList[0].name.trim();
+      if (quoteModel.selectedPackagesList.isNotEmpty) quoteModel.selectedPackage.value = quoteModel.selectedPackagesList[0].name.trim();
 
       for (int i = 0; i < quoteModel.selectedPackagesList.length; i++) {
         for (int j = 0; j < quoteModel.selectedPackagesList[i].sites.length; j++) {

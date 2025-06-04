@@ -21,7 +21,7 @@ import 'package:ssipl_billing/2.BILLING/Vouchers/views/receipt_pdf_template.dart
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
-import 'package:ssipl_billing/COMPONENTS-/showPDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/showPDF.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
@@ -375,9 +375,11 @@ class _VoucherState extends State<Voucher> {
                                     children: [
                                       Row(
                                         children: [
-                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount != voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
+                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount !=
+                                              voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
                                             _buildRadioTile(value: 'Partial', label: 'Partial', color: Colors.amber, index: index),
-                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount != voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
+                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount !=
+                                              voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
                                             const SizedBox(width: 12),
                                           _buildRadioTile(value: 'Full', label: 'Full', color: Colors.green, index: index),
                                         ],
@@ -410,7 +412,8 @@ class _VoucherState extends State<Voucher> {
                                           style: const TextStyle(color: Colors.amber, fontSize: 10),
                                           "    can clear upto  -  Rs.${((voucherController.voucherModel.voucher_list[index].pendingAmount - 1) - (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 ? voucherController.voucherModel.voucher_list[index].tdsCalculationAmount : 0.0)).roundToDouble()}",
                                         ),
-                                      if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full") const SizedBox(height: 16),
+                                      if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full")
+                                        const SizedBox(height: 16),
                                       if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full")
                                         _buildDropdownField(
                                           label: 'TDS Status',
@@ -674,7 +677,8 @@ class _VoucherState extends State<Voucher> {
                                                       ? Expanded(
                                                           child: const SizedBox(
                                                             width: 250,
-                                                            child: Text("The recieved amount is either empty or exceeds the recievable amount", style: TextStyle(color: Colors.amber, fontSize: Primary_font_size.Text5)),
+                                                            child: Text("The recieved amount is either empty or exceeds the recievable amount",
+                                                                style: TextStyle(color: Colors.amber, fontSize: Primary_font_size.Text5)),
                                                           ),
                                                         )
                                                       : MouseRegion(
@@ -729,7 +733,8 @@ class _VoucherState extends State<Voucher> {
                                                       ),
                                                       onPressed: () async {
                                                         loader.start(context);
-                                                        bool type = voucherController.voucherModel.voucher_list[index].pendingAmount == double.parse(voucherController.voucherModel.amountCleared_controller.value.text);
+                                                        bool type = voucherController.voucherModel.voucher_list[index].pendingAmount ==
+                                                            double.parse(voucherController.voucherModel.amountCleared_controller.value.text);
                                                         await Future.delayed(const Duration(milliseconds: 300));
 
                                                         // Generate PDF bytes using original code (unchanged)
@@ -1415,7 +1420,8 @@ class _VoucherState extends State<Voucher> {
                                           PdfPageFormat.a4,
                                           ClubVoucher_data(
                                             date: DateTime.parse(voucherController.voucherModel.closedDate.value),
-                                            totalPaidAmount: voucherController.voucherModel.is_Deducted.value ? selectedVouchers.totalPendingAmount_withTDS : selectedVouchers.totalPendingAmount_withoutTDS,
+                                            totalPaidAmount:
+                                                voucherController.voucherModel.is_Deducted.value ? selectedVouchers.totalPendingAmount_withTDS : selectedVouchers.totalPendingAmount_withoutTDS,
                                             tdsStatus: voucherController.voucherModel.is_Deducted.value,
                                             paymentStatus: 'complete',
                                             feedback: voucherController.voucherModel.feedback_controller.value.text,
@@ -2291,7 +2297,7 @@ class _VoucherState extends State<Voucher> {
                                                       },
                                                       child: Text(
                                                         voucher.invoiceNumber,
-                                                        style: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text7),
+                                                        style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
                                                       ),
                                                     ),
                                                   ),
@@ -2798,29 +2804,10 @@ class _VoucherState extends State<Voucher> {
                                                         child: Text(
                                                           voucher.invoiceNumber,
                                                           textAlign: TextAlign.left,
-                                                          style: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text7),
+                                                          style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
                                                         ),
                                                       ),
                                                     ),
-
-                                                    //     ElevatedButton(
-                                                    //   onPressed: () async {
-                                                    //     if (voucher.invoiceType == 'subscription') {
-                                                    //       bool success = await widget.GetSubscriptionPDFfile(context: context, invoiceNo: voucher.invoiceNumber);
-                                                    //       if (success) {
-                                                    //         widget.showPDF(context, voucher.invoiceNumber);
-                                                    //       }
-                                                    //     }
-                                                    //   },
-                                                    //   style: ElevatedButton.styleFrom(
-                                                    //     backgroundColor: const Color.fromARGB(0, 240, 193, 52),
-                                                    //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-                                                    //   ),
-                                                    //   child: Text(
-                                                    //     voucher.invoiceNumber,
-                                                    //     style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
-                                                    //   ),
-                                                    // )
                                                   ),
                                                   const SizedBox(width: 3),
                                                   Expanded(

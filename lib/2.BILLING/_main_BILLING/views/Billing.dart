@@ -1013,6 +1013,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         Expanded(
           flex: 1,
           child: Text(
+            textAlign: TextAlign.center,
             'Invoice No',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -1021,6 +1022,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         Expanded(
           flex: 1,
           child: Text(
+            textAlign: TextAlign.center,
             'Voucher No',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -1038,6 +1040,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         Expanded(
           flex: 1,
           child: Text(
+            textAlign: TextAlign.center,
             'Type',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -1046,6 +1049,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         Expanded(
           flex: 1,
           child: Text(
+            textAlign: TextAlign.center,
             'Package',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -1094,6 +1098,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         Expanded(
           flex: 1,
           child: Text(
+            textAlign: TextAlign.center,
             'Date',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -1102,6 +1107,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         Expanded(
           flex: 1,
           child: Text(
+            textAlign: TextAlign.center,
             'Invoice No',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -1110,6 +1116,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         Expanded(
           flex: 1,
           child: Text(
+            textAlign: TextAlign.center,
             'Voucher No',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -1284,6 +1291,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                         }
                                       },
                                       child: Text(
+                                        textAlign: TextAlign.center,
                                         mainBilling_Controller.billingModel.subscriptionInvoiceList[index].invoiceNo,
                                         style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
                                       ),
@@ -1296,7 +1304,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                   child: Padding(
                                     padding: const EdgeInsets.all(0),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         MouseRegion(
                                           cursor: SystemMouseCursors.click,
@@ -1305,6 +1313,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                               widget.get_VoucherDetails(context, mainBilling_Controller.billingModel.subscriptionInvoiceList[index].voucher_id);
                                             },
                                             child: Text(
+                                              textAlign: TextAlign.center,
                                               mainBilling_Controller.billingModel.subscriptionInvoiceList[index].voucher_number,
                                               style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
                                             ),
@@ -1363,6 +1372,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 Expanded(
                                   flex: 1,
                                   child: Text(
+                                    textAlign: TextAlign.center,
                                     mainBilling_Controller.billingModel.subscriptionInvoiceList[index].planType,
                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                   ),
@@ -1371,6 +1381,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 Expanded(
                                   flex: 1,
                                   child: Text(
+                                    textAlign: TextAlign.center,
                                     mainBilling_Controller.billingModel.subscriptionInvoiceList[index].planName,
                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                   ),
@@ -1654,6 +1665,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                             Expanded(
                               flex: 1,
                               child: Text(
+                                textAlign: TextAlign.center,
                                 formatDate(mainBilling_Controller.billingModel.salesInvoiceList[index].date),
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
@@ -1671,6 +1683,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                     }
                                   },
                                   child: Text(
+                                    textAlign: TextAlign.center,
                                     mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceNumber,
                                     style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
                                   ),
@@ -1690,7 +1703,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                               child: Padding(
                                 padding: const EdgeInsets.all(0),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     MouseRegion(
                                       cursor: SystemMouseCursors.click,
@@ -1699,6 +1712,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                           widget.get_VoucherDetails(context, mainBilling_Controller.billingModel.salesInvoiceList[index].voucherId);
                                         },
                                         child: Text(
+                                          textAlign: TextAlign.center,
                                           mainBilling_Controller.billingModel.salesInvoiceList[index].voucherNumber,
                                           style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
                                         ),

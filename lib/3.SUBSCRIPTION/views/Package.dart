@@ -88,7 +88,10 @@ class _PackagepageState extends State<Packagepage> {
                                 decoration: InputDecoration(
                                   hintText: 'Search packages...',
                                   hintStyle: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: Primary_font_size.Text8, letterSpacing: 1),
-                                  prefixIcon: Icon(Icons.search, color: Colors.white.withOpacity(0.7)),
+                                  prefixIcon: Icon(
+                                    Icons.search,
+                                    color: Colors.white.withOpacity(0.7),
+                                  ),
                                   border: InputBorder.none,
                                   contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                                 ),

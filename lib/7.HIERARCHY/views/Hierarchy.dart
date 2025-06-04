@@ -110,25 +110,25 @@ class _Enterprise_HierarchyState extends State<Enterprise_Hierarchy> with Single
                                   repeatForever: true,
                                   animatedTexts: [
                                     TypewriterAnimatedText(
-                                      "Search from the list...",
+                                      "Search from the Live...",
                                       textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
                                       speed: const Duration(milliseconds: 100),
                                     ),
                                     TypewriterAnimatedText(
-                                      "Enter customer name...",
+                                      "Search from the Demo...",
                                       textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
                                       speed: const Duration(milliseconds: 100),
                                     ),
-                                    TypewriterAnimatedText(
-                                      "Find an invoice...",
-                                      textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
-                                      speed: const Duration(milliseconds: 100),
-                                    ),
-                                    TypewriterAnimatedText(
-                                      "Find a Quotation...",
-                                      textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
-                                      speed: const Duration(milliseconds: 100),
-                                    ),
+                                    // TypewriterAnimatedText(
+                                    //   "Find an invoice...",
+                                    //   textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
+                                    //   speed: const Duration(milliseconds: 100),
+                                    // ),
+                                    // TypewriterAnimatedText(
+                                    //   "Find a Quotation...",
+                                    //   textStyle: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 185, 183, 183), letterSpacing: 1),
+                                    //   speed: const Duration(milliseconds: 100),
+                                    // ),
                                   ],
                                 ),
                               ),

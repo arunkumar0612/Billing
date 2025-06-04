@@ -149,11 +149,11 @@ class _BranchEditorState extends State<BranchEditor> {
                             child: Column(
                               children: [
                                 buildTextField("Branch ID", widget.controller.hierarchyModel.branch_IdController.value, true),
-                                buildTextField("Branch Name", widget.controller.hierarchyModel.branch_NameController.value, false),
-                                buildTextField("Branch Code", widget.controller.hierarchyModel.branch_CodeController.value, true),
+                                buildTextField("Branch Name", widget.controller.hierarchyModel.branch_NameController.value, true),
+                                buildTextField("Branch Code", widget.controller.hierarchyModel.branch_CodeController.value, false),
                                 buildTextField("Client Address Name", widget.controller.hierarchyModel.branch_clientAddressNameController.value, false),
                                 buildTextField("Client Address", widget.controller.hierarchyModel.branch_clientAddressController.value, false),
-                                buildTextField("GST Number", widget.controller.hierarchyModel.branch_gstNumberController.value, true),
+                                buildTextField("GST Number", widget.controller.hierarchyModel.branch_gstNumberController.value, false),
                                 buildTextField("Email ID", widget.controller.hierarchyModel.branch_emailIdController.value, false),
                                 buildTextField("Contact Person", widget.controller.hierarchyModel.branch_contact_personController.value, false),
                                 buildTextField("Contact Number", widget.controller.hierarchyModel.branch_contactNumberController.value, false),
@@ -203,7 +203,7 @@ class _BranchEditorState extends State<BranchEditor> {
                                             );
 
                                             if (pickedDate != null) {
-                                              String formattedDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(pickedDate.toUtc());
+                                              String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
                                               widget.controller.hierarchyModel.branch_fromDateController.value.text = formattedDate;
                                             }
                                           },
@@ -263,10 +263,9 @@ class _BranchEditorState extends State<BranchEditor> {
                                               firstDate: DateTime(2000),
                                               lastDate: DateTime(2100),
                                             );
-
                                             if (pickedDate != null) {
-                                              String formattedDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(pickedDate.toUtc());
-                                              widget.controller.hierarchyModel.branch_toDateController.value.text = formattedDate;
+                                              String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                              widget.controller.hierarchyModel.branch_fromDateController.value.text = formattedDate;
                                             }
                                           },
                                           style: const TextStyle(

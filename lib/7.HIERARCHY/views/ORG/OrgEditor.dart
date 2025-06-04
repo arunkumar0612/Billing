@@ -139,8 +139,8 @@ class _OrganizationEditorState extends State<OrganizationEditor> {
                               children: [
                                 buildTextField("Organization ID", widget.controller.hierarchyModel.org_IdController.value, true),
                                 buildTextField("Email ID", widget.controller.hierarchyModel.org_emailIdController.value, false),
-                                buildTextField("Organization Name", widget.controller.hierarchyModel.org_NameController.value, true),
-                                buildTextField("Org Code", widget.controller.hierarchyModel.org_CodeController.value, true),
+                                buildTextField("Organization Name", widget.controller.hierarchyModel.org_NameController.value, false),
+                                buildTextField("Org Code", widget.controller.hierarchyModel.org_CodeController.value, false),
                                 buildTextField("Address", widget.controller.hierarchyModel.org_addressController.value, false),
                                 buildTextField("Site Type", widget.controller.hierarchyModel.org_siteTypeController.value, true),
                                 buildTextField("Contact No", widget.controller.hierarchyModel.org_contactnoController.value, false),

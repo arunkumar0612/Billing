@@ -4,8 +4,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
-import 'package:ssipl_billing/COMPONENTS-/downloadPDF.dart';
-import 'package:ssipl_billing/COMPONENTS-/sharePDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/downloadPDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/sharePDF.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 Widget buildPdfViewer(

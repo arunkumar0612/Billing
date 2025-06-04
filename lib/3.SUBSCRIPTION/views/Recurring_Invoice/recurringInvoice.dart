@@ -10,9 +10,11 @@ import 'package:path/path.dart' as path;
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/Subscription_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/subscription_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
-import 'package:ssipl_billing/COMPONENTS-/sharePDF.dart';
-import 'package:ssipl_billing/COMPONENTS-/showPDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/downloadPDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/sharePDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/showPDF.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 class Recurringinvoice extends StatefulWidget with SubscriptionServices {
   Recurringinvoice({super.key});
@@ -60,7 +62,7 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                             ),
                             SizedBox(width: 5),
                             Expanded(
-                              flex: 4,
+                              flex: 6,
                               child: Text(
                                 'Client',
                                 style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
@@ -76,8 +78,9 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                             ),
                             SizedBox(width: 5),
                             Expanded(
-                              flex: 2,
+                              flex: 1,
                               child: Text(
+                                textAlign: TextAlign.right,
                                 'Amount',
                                 style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                               ),
@@ -91,8 +94,9 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                             //   ),
                             // ),
                             Expanded(
-                              flex: 1,
+                              flex: 2,
                               child: Text(
+                                textAlign: TextAlign.center,
                                 'View',
                                 style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                               ),
@@ -147,7 +151,7 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                             ),
                                             const SizedBox(width: 5),
                                             Expanded(
-                                              flex: 4,
+                                              flex: 6,
                                               child: Text(
                                                 subscriptionController.subscriptionModel.reccuringInvoice_list[index].clientAddressName,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
@@ -163,36 +167,14 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                             ),
                                             const SizedBox(width: 5),
                                             Expanded(
-                                              flex: 2,
+                                              flex: 1,
                                               child: Text(
-                                                subscriptionController.subscriptionModel.reccuringInvoice_list[index].totalAmount.toString(),
+                                                formatCurrency(double.parse(subscriptionController.subscriptionModel.reccuringInvoice_list[index].totalAmount.toString())),
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                textAlign: TextAlign.right,
                                               ),
                                             ),
                                             const SizedBox(width: 5),
-                                            // Expanded(
-                                            //     flex: 2,
-                                            //     child: Row(
-                                            //       children: [
-                                            //         Container(
-                                            //           height: 22,
-                                            //           width: 60,
-                                            //           decoration: BoxDecoration(
-                                            //             borderRadius: BorderRadius.circular(20),
-                                            //             color: subscriptionController. subscriptionModel.reccuringInvoice_list[index]. == 'Paid' ? const Color.fromARGB(193, 222, 244, 223) : const Color.fromARGB(208, 244, 214, 212),
-                                            //           ),
-                                            //           child: Center(
-                                            //             child: Text(
-                                            //               invoice_list[index]['Status'],
-                                            //               style: TextStyle(
-                                            //                   color: invoice_list[index]['Status'] == 'Paid' ? const Color.fromARGB(255, 0, 122, 4) : Colors.red,
-                                            //                   fontSize: Primary_font_size.Text5,
-                                            //                   fontWeight: FontWeight.bold),
-                                            //             ),
-                                            //           ),
-                                            //         ),
-                                            //       ],
-                                            //     )),
 
                                             Expanded(
                                               flex: 2,
@@ -253,7 +235,7 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                                       bool success = await widget.Get_RecurredPDFfile(context, subscriptionController.subscriptionModel.reccuringInvoice_list[index].recurredbillid);
 
                                                       if (success) {
-                                                        widget.downloadPdf(
+                                                        downloadPdf(
                                                             context,
                                                             subscriptionController.subscriptionModel.reccuringInvoice_list[index].pdfPathString
                                                                 .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols

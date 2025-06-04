@@ -14,7 +14,9 @@ import 'package:ssipl_billing/2.BILLING/_main_BILLING/models/entities/Billing_en
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/views/filter.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/views/piechart.dart';
-import 'package:ssipl_billing/COMPONENTS-/showPDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/showPDF.dart';
+import 'package:ssipl_billing/NOTIFICATION-/NotificationServices.dart';
+import 'package:ssipl_billing/NOTIFICATION-/Notification_actions.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 import '../../../THEMES/style.dart';
@@ -33,7 +35,7 @@ PageRouteBuilder _createCustomPageRoute(Widget Function() navigation) {
   );
 }
 
-class Billing extends StatefulWidget with main_BillingService {
+class Billing extends StatefulWidget with main_BillingService, BellIconFunction {
   Billing({super.key});
 
   @override
@@ -42,6 +44,8 @@ class Billing extends StatefulWidget with main_BillingService {
 
 class _BillingState extends State<Billing> with TickerProviderStateMixin {
   final MainBilling_Controller mainBilling_Controller = Get.find<MainBilling_Controller>();
+  final NotificationController notificationController = Get.find<NotificationController>();
+
   @override
   void dispose() {
     super.dispose();
@@ -814,6 +818,65 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                       child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: mainBilling_selectedfilter()),
                                     ),
                                   ),
+                                ),
+                                Obx(() {
+                                  return Stack(
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: MouseRegion(
+                                          onEnter: (_) => notificationController.notificationModel.isHovered.value = true,
+                                          onExit: (_) => notificationController.notificationModel.isHovered.value = false,
+                                          cursor: SystemMouseCursors.click,
+                                          child: GestureDetector(
+                                              onTap: () => widget.showNotification(context),
+                                              child: ShaderMask(
+                                                shaderCallback: (Rect bounds) {
+                                                  return const LinearGradient(
+                                                    colors:
+                                                        // notificationController.notificationModel.notifications.isNotEmpty ?
+
+                                                        [Colors.black, Color.fromARGB(164, 255, 191, 0), Colors.amber],
+                                                    // :  [Colors.amber],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ).createShader(bounds);
+                                                },
+                                                blendMode: BlendMode.srcIn,
+                                                child: const Icon(
+                                                  Icons.notifications,
+                                                  size: 30,
+                                                ),
+                                              )),
+                                        ),
+                                      ),
+                                      if (notificationController.notificationModel.notifications.isNotEmpty)
+                                        Align(
+                                          alignment: Alignment.topRight,
+                                          child: Container(
+                                            height: 15,
+                                            width: 15,
+                                            decoration: BoxDecoration(
+                                              color: notificationController.notificationModel.notifications.isNotEmpty ? Colors.red : Colors.blue,
+                                              borderRadius: BorderRadius.circular(50),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                notificationController.notificationModel.notifications.length > 9 ? '9+' : '${notificationController.notificationModel.notifications.length}',
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  );
+                                }),
+                                SizedBox(
+                                  width: 10,
                                 ),
                                 MouseRegion(
                                   cursor: SystemMouseCursors.click,

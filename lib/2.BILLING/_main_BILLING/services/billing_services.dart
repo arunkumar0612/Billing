@@ -12,8 +12,8 @@ import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
+import 'package:ssipl_billing/COMPONENTS-/PDF_methods/showPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
-import 'package:ssipl_billing/COMPONENTS-/showPDF.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
@@ -95,8 +95,9 @@ mixin main_BillingService {
             : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value.toLowerCase(),
 
         // "customerid": "SB_1",
-        "customerid":
-            mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value == 'None' ? '' : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value,
+        "customerid": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value == 'None'
+            ? ''
+            : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value,
         "startdate": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.fromdate.value.toString(),
         "enddate": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.todate.value.toString(),
       }, API.billing_subscriptionInvoice);
@@ -310,8 +311,9 @@ mixin main_BillingService {
             : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value.toLowerCase(),
 
         // "customerid": "SB_1",
-        "customerid":
-            mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value == 'None' ? '' : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value,
+        "customerid": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value == 'None'
+            ? ''
+            : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value,
         "startdate": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.fromdate.value.toString(),
         "enddate": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.todate.value.toString(),
       }, API.billing_salesInvoice);

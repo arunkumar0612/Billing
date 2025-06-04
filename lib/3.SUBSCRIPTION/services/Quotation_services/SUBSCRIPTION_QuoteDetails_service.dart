@@ -24,7 +24,8 @@ mixin SUBSCRIPTION_QuotedetailsService {
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
-          quoteController.update_requiredData(value, eventtype);
+          await quoteController.update_requiredData(value, eventtype);
+          get_CompanyBasedPackages(context, quoteController.quoteModel.companyid.value);
         } else {
           await Error_dialog(context: context, title: 'PRE - LOADER', content: value.message ?? "", onOk: () {});
           Navigator.of(context).pop();

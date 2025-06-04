@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
@@ -280,6 +281,16 @@ class Package {
   RxString tempAmount = ''.obs;
   // RxString tempAdditionalCameras = ''.obs;
   RxString tempShow = ''.obs;
+  TextEditingController? nameController;
+  TextEditingController? cameraCountController;
+  TextEditingController? amountController;
+  TextEditingController? descriptionController;
+  void disposeControllers() {
+    nameController?.dispose();
+    cameraCountController?.dispose();
+    amountController?.dispose();
+    descriptionController?.dispose();
+  }
 
   Package({
     required this.name,
@@ -296,6 +307,10 @@ class Package {
     selectedIndices = <int>[].obs;
     showSiteList = false.obs;
     editingMode = false.obs;
+    nameController = TextEditingController(text: name);
+    cameraCountController = TextEditingController(text: cameracount);
+    amountController = TextEditingController(text: amount);
+    descriptionController = TextEditingController(text: description);
 
     tempName = name.obs;
     tempDescription = description.obs;

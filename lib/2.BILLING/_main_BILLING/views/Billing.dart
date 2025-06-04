@@ -85,657 +85,100 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Center(
-      child: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          endDrawer: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Expanded(
-                child: Container(
-                  width: 350,
-                ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Container(width: 350, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Primary_colors.Dark), child: FilterScreen()),
-              ),
-            ],
+    return MaterialApp(
+      title: 'ERP',
+      // home: const IAM(),
+      initialRoute: '/IAM', // Set the initial route
+      // getPages: AppRoutes.routes,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        iconTheme: const IconThemeData(color: Colors.white),
+        primaryColor: Primary_colors.Color3,
+        useMaterial3: false,
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: Primary_colors.Color3,
+          selectionColor: Color.fromARGB(255, 130, 223, 230),
+        ),
+        scrollbarTheme: ScrollbarThemeData(
+          trackColor: WidgetStateProperty.all(
+            const Color.fromARGB(255, 229, 204, 10),
           ),
-          backgroundColor: Primary_colors.Dark,
-          body: Center(
-            child: Builder(
-              builder: (BuildContext context) {
-                return SizedBox(
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          ShaderMask(
-                            shaderCallback: (bounds) => const LinearGradient(
-                              colors: [Primary_colors.Color3, Primary_colors.Color4], // Example gradient
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ).createShader(bounds),
-                            child: const Icon(
-                              Icons.currency_rupee_sharp,
-                              size: 25.0,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Text(
-                            'Bills & Payments',
-                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text13),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                        height: 240,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+          trackBorderColor: WidgetStateProperty.all(
+            Primary_colors.Color3,
+          ),
+          thumbColor: const WidgetStatePropertyAll(
+            Color.fromARGB(255, 90, 90, 90),
+          ),
+        ),
+        fontFamily: 'Poppins',
+      ),
+      home: Center(
+        child: DefaultTabController(
+          length: 3,
+          child: Scaffold(
+            endDrawer: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: Container(
+                    width: 350,
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Container(width: 350, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Primary_colors.Dark), child: FilterScreen()),
+                ),
+              ],
+            ),
+            backgroundColor: Primary_colors.Dark,
+            body: Center(
+              child: Builder(
+                builder: (BuildContext context) {
+                  return SizedBox(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
                           children: [
-                            Expanded(
-                              flex: 2,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    flex: 2,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(16),
-                                          // gradient: const LinearGradient(
-                                          //   colors: [Primary_colors.Light, Color.fromARGB(255, 40, 39, 59), Primary_colors.Light],
-                                          //   begin: Alignment.topLeft,
-                                          //   end: Alignment.bottomRight,
-                                          // ),
-                                          // boxShadow: const [
-                                          //   BoxShadow(
-                                          //     color: Colors.black12,
-                                          //     offset: Offset(0, 10),
-                                          //     blurRadius: 20,
-                                          //   ),
-                                          // ],
-                                          color: Primary_colors.Light),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(0),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Obx(() {
-                                              return Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 5,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.all(16),
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          Row(
-                                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                                            children: [
-                                                              const Text(
-                                                                'Select date',
-                                                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
-                                                              ),
-                                                              // const SizedBox(width: 8),
-                                                              Obx(
-                                                                () => SizedBox(
-                                                                  child: mainBilling_Controller.billingModel.dashboard_startDateController.value.text.isNotEmpty ||
-                                                                          mainBilling_Controller.billingModel.dashboard_endDateController.value.text.isNotEmpty
-                                                                      ? TextButton(
-                                                                          onPressed: () {
-                                                                            mainBilling_Controller.billingModel.dashboard_selectedMonth.value = 'None';
-                                                                            mainBilling_Controller.billingModel.dashboard_startDateController.value.clear();
-                                                                            mainBilling_Controller.billingModel.dashboard_endDateController.value.clear();
-                                                                            // widget.get_VoucherList();
-                                                                          },
-                                                                          child: const Text('Clear', style: TextStyle(fontSize: Primary_font_size.Text7)),
-                                                                        )
-                                                                      : const SizedBox(),
-                                                                ),
-                                                              ),
-                                                              const Spacer(),
-                                                              Obx(() {
-                                                                return Container(
-                                                                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                                                                  width: 100, // Adjust width as needed
-                                                                  height: 30, // Adjust height as needed
-                                                                  child: DropdownButtonFormField<String>(
-                                                                    menuMaxHeight: 300,
-                                                                    value: mainBilling_Controller.billingModel.dashboard_selectedMonth.value,
-                                                                    items: [
-                                                                      'None',
-                                                                      'January',
-                                                                      'February',
-                                                                      'March',
-                                                                      'April',
-                                                                      'May',
-                                                                      'June',
-                                                                      'July',
-                                                                      'August',
-                                                                      'September',
-                                                                      'October',
-                                                                      'November',
-                                                                      'December'
-                                                                    ].map((String value) {
-                                                                      return DropdownMenuItem<String>(value: value, child: Text(value));
-                                                                    }).toList(),
-                                                                    onChanged: (value) {
-                                                                      mainBilling_Controller.billingModel.dashboard_selectedMonth.value = value!;
-                                                                      if (value != 'None') {
-                                                                        final monthIndex = [
-                                                                              'January',
-                                                                              'February',
-                                                                              'March',
-                                                                              'April',
-                                                                              'May',
-                                                                              'June',
-                                                                              'July',
-                                                                              'August',
-                                                                              'September',
-                                                                              'October',
-                                                                              'November',
-                                                                              'December'
-                                                                            ].indexOf(value) +
-                                                                            1;
-
-                                                                        final now = DateTime.now();
-                                                                        final year = now.year;
-                                                                        final firstDay = DateTime(year, monthIndex, 1);
-                                                                        final lastDay = monthIndex < 12 ? DateTime(year, monthIndex + 1, 0) : DateTime(year + 1, 1, 0);
-
-                                                                        String formatDate(DateTime date) {
-                                                                          return "${date.year.toString().padLeft(4, '0')}-"
-                                                                              "${date.month.toString().padLeft(2, '0')}-"
-                                                                              "${date.day.toString().padLeft(2, '0')}";
-                                                                        }
-
-                                                                        mainBilling_Controller.billingModel.dashboard_startDateController.value.text = formatDate(firstDay);
-                                                                        mainBilling_Controller.billingModel.dashboard_endDateController.value.text = formatDate(lastDay);
-                                                                        // widget.get_VoucherList();
-                                                                      } else {
-                                                                        mainBilling_Controller.billingModel.dashboard_startDateController.value.clear();
-                                                                        mainBilling_Controller.billingModel.dashboard_endDateController.value.clear();
-                                                                        // widget.get_VoucherList();
-                                                                      }
-                                                                      widget.GetDashboardData();
-                                                                    },
-                                                                    decoration: const InputDecoration(
-                                                                      isDense: true,
-                                                                      contentPadding: EdgeInsets.symmetric(vertical: 8),
-                                                                      border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                                                                      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                                                                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
-                                                                    ),
-                                                                    style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 154, 152, 152)),
-                                                                    dropdownColor: Primary_colors.Dark,
-                                                                  ),
-                                                                );
-                                                              }),
-                                                            ],
-                                                          ),
-                                                          const SizedBox(height: 15),
-                                                          Row(
-                                                            children: [
-                                                              Expanded(
-                                                                child: SizedBox(
-                                                                  height: 35,
-                                                                  child: TextFormField(
-                                                                    style: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
-                                                                    controller: mainBilling_Controller.billingModel.dashboard_startDateController.value,
-                                                                    readOnly: true,
-                                                                    onTap: () async {
-                                                                      await widget.select_previousDates(context, mainBilling_Controller.billingModel.dashboard_startDateController.value);
-                                                                      widget.GetDashboardData();
-                                                                      // await widget.get_VoucherList();
-                                                                    },
-                                                                    decoration: InputDecoration(
-                                                                      labelText: 'From',
-                                                                      labelStyle: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
-                                                                      suffixIcon: const Icon(Icons.calendar_today, size: 20, color: Color.fromARGB(255, 85, 84, 84)),
-                                                                      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                                                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                                                                      enabledBorder: OutlineInputBorder(
-                                                                        borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                                                        borderRadius: BorderRadius.circular(8),
-                                                                      ),
-                                                                      focusedBorder: OutlineInputBorder(
-                                                                        borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                                                        borderRadius: BorderRadius.circular(8),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              const SizedBox(width: 10),
-                                                              Expanded(
-                                                                child: SizedBox(
-                                                                  height: 35,
-                                                                  child: TextFormField(
-                                                                    style: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
-                                                                    controller: mainBilling_Controller.billingModel.dashboard_endDateController.value,
-                                                                    readOnly: true,
-                                                                    onTap: () async {
-                                                                      await widget.select_previousDates(context, mainBilling_Controller.billingModel.dashboard_endDateController.value);
-                                                                      widget.GetDashboardData();
-                                                                      // await widget.get_VoucherList();
-                                                                    },
-                                                                    decoration: InputDecoration(
-                                                                      labelText: 'To',
-                                                                      labelStyle: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
-                                                                      suffixIcon: const Icon(Icons.calendar_today, size: 20, color: Color.fromARGB(255, 85, 84, 84)),
-                                                                      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                                                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                                                                      enabledBorder: OutlineInputBorder(
-                                                                        borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                                                        borderRadius: BorderRadius.circular(8),
-                                                                      ),
-                                                                      focusedBorder: OutlineInputBorder(
-                                                                        borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                                                                        borderRadius: BorderRadius.circular(8),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Expanded(flex: 1, child: Container()),
-                                                  Padding(
-                                                    padding: const EdgeInsets.only(right: 16),
-                                                    child: SizedBox(
-                                                      width: 200,
-                                                      height: 35,
-                                                      child: Obx(
-                                                        () => DropdownButtonFormField<String>(
-                                                          value: mainBilling_Controller.billingModel.type.value, // Use the state variable for the selected value
-                                                          items: [
-                                                            "Sales",
-                                                            "Subscription",
-                                                            "Purchase",
-                                                            "Receivables",
-                                                            "Payables",
-                                                            "All",
-                                                          ]
-                                                              .map((String value) => DropdownMenuItem<String>(
-                                                                    value: value,
-                                                                    child: Text(value, style: const TextStyle(fontSize: 13, color: Colors.white)),
-                                                                  ))
-                                                              .toList(),
-                                                          onChanged: (String? newValue) {
-                                                            if (newValue != null) {
-                                                              mainBilling_Controller.update_dashBoardtype(newValue);
-                                                              widget.GetDashboardData();
-                                                              // mainBilling_Controller.updatesalesperiod(newValue == "Monthly view" ? 'monthly' : 'yearly');
-
-                                                              // if (newValue == "Monthly view") {
-                                                              //   widget.GetSalesData('monthly');
-                                                              // } else if (newValue == "Yearly view") {
-                                                              //   widget.GetSalesData('yearly');
-                                                              // }
-                                                            }
-                                                          },
-                                                          decoration: InputDecoration(
-                                                            alignLabelWithHint: false,
-                                                            contentPadding: const EdgeInsets.all(10),
-                                                            filled: true,
-                                                            fillColor: Primary_colors.Dark,
-                                                            focusedBorder: OutlineInputBorder(
-                                                              borderRadius: BorderRadius.circular(30),
-                                                              borderSide: const BorderSide(color: Color.fromARGB(226, 50, 50, 50)),
-                                                            ),
-                                                            enabledBorder: OutlineInputBorder(
-                                                              borderRadius: BorderRadius.circular(30),
-                                                              borderSide: const BorderSide(color: Color.fromARGB(255, 51, 50, 50)),
-                                                            ),
-                                                            hintText: 'Data View',
-                                                            hintStyle: const TextStyle(
-                                                              fontSize: Primary_font_size.Text7,
-                                                              color: Primary_colors.Color1,
-                                                              letterSpacing: 1,
-                                                            ),
-                                                          ),
-                                                          dropdownColor: Primary_colors.Dark,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              );
-                                            }),
-                                            Expanded(
-                                              child: Obx(
-                                                () {
-                                                  return Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(16),
-                                                      // gradient: const LinearGradient(
-                                                      //   colors: [Primary_colors.Light, Color.fromARGB(255, 40, 39, 59), Primary_colors.Light],
-                                                      //   begin: Alignment.topLeft,
-                                                      //   end: Alignment.bottomRight,
-                                                      // ),
-                                                      // boxShadow: const [
-                                                      //   BoxShadow(
-                                                      //     color: Colors.black12,
-                                                      //     offset: Offset(0, 10),
-                                                      //     blurRadius: 20,
-                                                      //   ),
-                                                      // ],
-                                                    ),
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        children: [
-                                                          Column(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              const Text(
-                                                                'TOTAL',
-                                                                style: TextStyle(
-                                                                  color: Color.fromARGB(255, 186, 185, 185),
-                                                                  fontSize: 12,
-                                                                  fontWeight: FontWeight.w500,
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount != null
-                                                                    ? widget.formatNumber((mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount is double
-                                                                            ? mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount
-                                                                            : double.parse(mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount.toString()))!
-                                                                        .toInt())
-                                                                    : '0',
-                                                                // formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount ?? 0.0),
-                                                                style: TextStyle(
-                                                                  color: Primary_colors.Color1,
-                                                                  fontSize: 28,
-                                                                  fontWeight: FontWeight.bold,
-                                                                ),
-                                                              ),
-                                                              Container(
-                                                                decoration: BoxDecoration(
-                                                                  borderRadius: BorderRadius.circular(10),
-                                                                  color: const Color.fromARGB(255, 202, 227, 253),
-                                                                ),
-                                                                child: Padding(
-                                                                  padding: EdgeInsets.all(4),
-                                                                  child: Text(
-                                                                    '${mainBilling_Controller.billingModel.dashBoard_data.value.totalInvoices} invoices',
-                                                                    style: TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 15, 139, 234)),
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                          Column(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              const Text(
-                                                                'PAID',
-                                                                style: TextStyle(
-                                                                  color: Color.fromARGB(255, 186, 185, 185),
-                                                                  fontSize: 12,
-                                                                  fontWeight: FontWeight.w500,
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount != null
-                                                                    ? widget.formatNumber((mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount is double
-                                                                            ? mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount
-                                                                            : double.parse(mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount.toString()))!
-                                                                        .toInt())
-                                                                    : '0',
-
-                                                                // widget.formatNumber(int.tryParse(mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount.toString()) ?? 0),
-                                                                // formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount ?? 0.0),
-                                                                style: TextStyle(
-                                                                  color: Primary_colors.Color1,
-                                                                  fontSize: 28,
-                                                                  fontWeight: FontWeight.bold,
-                                                                ),
-                                                              ),
-                                                              Container(
-                                                                decoration: BoxDecoration(
-                                                                  borderRadius: BorderRadius.circular(10),
-                                                                  color: const Color.fromARGB(255, 202, 253, 223),
-                                                                ),
-                                                                child: Padding(
-                                                                  padding: EdgeInsets.all(4),
-                                                                  child: Text(
-                                                                    '${mainBilling_Controller.billingModel.dashBoard_data.value.paidInvoices} invoices',
-                                                                    style: TextStyle(fontSize: Primary_font_size.Text5, color: Colors.green),
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                          Column(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              const Text(
-                                                                'UNPAID',
-                                                                style: TextStyle(
-                                                                  color: Color.fromARGB(255, 186, 185, 185),
-                                                                  fontSize: 12,
-                                                                  fontWeight: FontWeight.w500,
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount != null
-                                                                    ? widget.formatNumber((mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount is double
-                                                                            ? mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount
-                                                                            : double.parse(mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount.toString()))!
-                                                                        .toInt())
-                                                                    : '0',
-
-                                                                // widget.formatNumber(int.tryParse(mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount.toString()) ?? 0),
-                                                                // formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount ?? 0.0),
-                                                                style: TextStyle(
-                                                                  color: Primary_colors.Color1,
-                                                                  fontSize: 28,
-                                                                  fontWeight: FontWeight.bold,
-                                                                ),
-                                                              ),
-                                                              Container(
-                                                                decoration: BoxDecoration(
-                                                                  borderRadius: BorderRadius.circular(10),
-                                                                  color: const Color.fromARGB(255, 253, 206, 202),
-                                                                ),
-                                                                child: Padding(
-                                                                  padding: EdgeInsets.all(4),
-                                                                  child: Text(
-                                                                    '${mainBilling_Controller.billingModel.dashBoard_data.value.pendingInvoices} invoices',
-                                                                    style: TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 234, 29, 15)),
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  // Column(
-                                  //   mainAxisAlignment: MainAxisAlignment.center,
-                                  //   children: [
-                                  //     Container(
-                                  //       height: 180,
-                                  //       width: 2,
-                                  //       color: const Color.fromARGB(255, 111, 110, 110),
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  // const SizedBox(
-                                  //   width: 10,
-                                  // ),
-                                  Expanded(
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(16),
-                                          // gradient: const LinearGradient(
-                                          //   colors: [
-                                          //     Primary_colors.Light,
-                                          //     Color.fromARGB(255, 40, 39, 59),
-                                          //     Primary_colors.Light,
-                                          //   ],
-                                          //   begin: Alignment.topLeft,
-                                          //   end: Alignment.bottomRight,
-                                          // ),
-                                          // boxShadow: const [
-                                          //   BoxShadow(
-                                          //     color: Colors.black26,
-                                          //     offset: Offset(0, 6),
-                                          //     blurRadius: 12,
-                                          //   ),
-                                          // ],
-                                          color: Primary_colors.Light),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            // First row of icons and labels
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                              children: [
-                                                MouseRegion(
-                                                  cursor: SystemMouseCursors.click,
-                                                  child: _buildIconWithLabel(
-                                                    image: 'assets/images/ledger.png',
-                                                    label: 'View Ledger',
-                                                    color: Primary_colors.Color4,
-                                                    onPressed: () {
-                                                      Navigator.of(context).push(
-                                                        _createCustomPageRoute(
-                                                          () => ViewLedger(),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                                MouseRegion(
-                                                  onEnter: (_) => setState(() => isHovered = true),
-                                                  onExit: (_) => setState(() => isHovered = false),
-                                                  cursor: SystemMouseCursors.forbidden,
-                                                  child: Tooltip(
-                                                    message: 'Work in progress',
-                                                    child: Opacity(
-                                                      opacity: 0.2,
-                                                      child: AbsorbPointer(
-                                                        absorbing: isHovered, // Prevent clicks when hovered
-                                                        child: _buildIconWithLabel(
-                                                          image: 'assets/images/transaction.png',
-                                                          label: 'View Transaction',
-                                                          color: Primary_colors.Color5,
-                                                          onPressed: () {
-                                                            // Optional: disable logic here too if needed
-                                                          },
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                            const SizedBox(height: 20),
-                                            // Second row of icons and labels
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                              children: [
-                                                MouseRegion(
-                                                  cursor: SystemMouseCursors.click,
-                                                  child: _buildIconWithLabel(
-                                                    image: 'assets/images/voucher.png',
-                                                    label: 'Voucher',
-                                                    color: Primary_colors.Color6,
-                                                    onPressed: () {
-                                                      Navigator.of(context).push(
-                                                        _createCustomPageRoute(() => Voucher()),
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                                MouseRegion(
-                                                  onEnter: (_) => setState(() => isHovered = true),
-                                                  onExit: (_) => setState(() => isHovered = false),
-                                                  cursor: SystemMouseCursors.forbidden,
-                                                  child: Tooltip(
-                                                    message: 'Work in progress',
-                                                    child: Opacity(
-                                                      opacity: 0.2,
-                                                      child: AbsorbPointer(
-                                                        absorbing: isHovered, // Prevent clicks when hovered
-                                                        child: _buildIconWithLabel(
-                                                          image: 'assets/images/balancesheet.png',
-                                                          label: 'Balance Sheet',
-                                                          color: Primary_colors.Color8,
-                                                          onPressed: () {
-                                                            // Optional: disable logic here too if needed
-                                                          },
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    // Reusable function to build icon with label for consistency
-                                  )
-                                ],
+                            ShaderMask(
+                              shaderCallback: (bounds) => const LinearGradient(
+                                colors: [Primary_colors.Color3, Primary_colors.Color4], // Example gradient
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ).createShader(bounds),
+                              child: const Icon(
+                                Icons.currency_rupee_sharp,
+                                size: 25.0,
                               ),
                             ),
-                            const SizedBox(width: 15),
-                            Expanded(
-                              flex: 1,
-                              child: Padding(
-                                padding: const EdgeInsets.all(0),
-                                child: Column(
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            const Text(
+                              'Bills & Payments',
+                              style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text13),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                          height: 240,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: Row(
                                   children: [
-                                    // const Text(
-                                    //   'Invoice status',
-                                    //   style: TextStyle(color: Primary_colors.Color1, fontSize: 20),
-                                    // ),
-                                    // const SizedBox(
-                                    //   height: 10,
-                                    // ),
                                     Expanded(
+                                      flex: 2,
                                       child: Container(
-                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Primary_colors.Light
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(16),
                                             // gradient: const LinearGradient(
                                             //   colors: [Primary_colors.Light, Color.fromARGB(255, 40, 39, 59), Primary_colors.Light],
                                             //   begin: Alignment.topLeft,
@@ -748,313 +191,902 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                             //     blurRadius: 20,
                                             //   ),
                                             // ],
-                                            ),
+                                            color: Primary_colors.Light),
                                         child: Padding(
-                                          padding: EdgeInsets.all(16),
-                                          child: Obx(
-                                            () {
-                                              return Pie_chart(
-                                                totalInvoices: mainBilling_Controller.billingModel.dashBoard_data.value.totalInvoices,
-                                                paidInvoices: mainBilling_Controller.billingModel.dashBoard_data.value.paidInvoices,
-                                                pendingInvoices: mainBilling_Controller.billingModel.dashBoard_data.value.pendingInvoices,
-                                              );
-                                            },
+                                          padding: const EdgeInsets.all(0),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Obx(() {
+                                                return Row(
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 5,
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(16),
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Row(
+                                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                              children: [
+                                                                const Text(
+                                                                  'Select date',
+                                                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                                                                ),
+                                                                // const SizedBox(width: 8),
+                                                                Obx(
+                                                                  () => SizedBox(
+                                                                    child: mainBilling_Controller.billingModel.dashboard_startDateController.value.text.isNotEmpty ||
+                                                                            mainBilling_Controller.billingModel.dashboard_endDateController.value.text.isNotEmpty
+                                                                        ? TextButton(
+                                                                            onPressed: () {
+                                                                              mainBilling_Controller.billingModel.dashboard_selectedMonth.value = 'None';
+                                                                              mainBilling_Controller.billingModel.dashboard_startDateController.value.clear();
+                                                                              mainBilling_Controller.billingModel.dashboard_endDateController.value.clear();
+                                                                              // widget.get_VoucherList();
+                                                                            },
+                                                                            child: const Text('Clear', style: TextStyle(fontSize: Primary_font_size.Text7)),
+                                                                          )
+                                                                        : const SizedBox(),
+                                                                  ),
+                                                                ),
+                                                                const Spacer(),
+                                                                Obx(() {
+                                                                  return Container(
+                                                                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                                                                    width: 100, // Adjust width as needed
+                                                                    height: 30, // Adjust height as needed
+                                                                    child: DropdownButtonFormField<String>(
+                                                                      menuMaxHeight: 300,
+                                                                      value: mainBilling_Controller.billingModel.dashboard_selectedMonth.value,
+                                                                      items: [
+                                                                        'None',
+                                                                        'January',
+                                                                        'February',
+                                                                        'March',
+                                                                        'April',
+                                                                        'May',
+                                                                        'June',
+                                                                        'July',
+                                                                        'August',
+                                                                        'September',
+                                                                        'October',
+                                                                        'November',
+                                                                        'December'
+                                                                      ].map((String value) {
+                                                                        return DropdownMenuItem<String>(value: value, child: Text(value));
+                                                                      }).toList(),
+                                                                      onChanged: (value) {
+                                                                        mainBilling_Controller.billingModel.dashboard_selectedMonth.value = value!;
+                                                                        if (value != 'None') {
+                                                                          final monthIndex = [
+                                                                                'January',
+                                                                                'February',
+                                                                                'March',
+                                                                                'April',
+                                                                                'May',
+                                                                                'June',
+                                                                                'July',
+                                                                                'August',
+                                                                                'September',
+                                                                                'October',
+                                                                                'November',
+                                                                                'December'
+                                                                              ].indexOf(value) +
+                                                                              1;
+
+                                                                          final now = DateTime.now();
+                                                                          final year = now.year;
+                                                                          final firstDay = DateTime(year, monthIndex, 1);
+                                                                          final lastDay = monthIndex < 12 ? DateTime(year, monthIndex + 1, 0) : DateTime(year + 1, 1, 0);
+
+                                                                          String formatDate(DateTime date) {
+                                                                            return "${date.year.toString().padLeft(4, '0')}-"
+                                                                                "${date.month.toString().padLeft(2, '0')}-"
+                                                                                "${date.day.toString().padLeft(2, '0')}";
+                                                                          }
+
+                                                                          mainBilling_Controller.billingModel.dashboard_startDateController.value.text = formatDate(firstDay);
+                                                                          mainBilling_Controller.billingModel.dashboard_endDateController.value.text = formatDate(lastDay);
+                                                                          // widget.get_VoucherList();
+                                                                        } else {
+                                                                          mainBilling_Controller.billingModel.dashboard_startDateController.value.clear();
+                                                                          mainBilling_Controller.billingModel.dashboard_endDateController.value.clear();
+                                                                          // widget.get_VoucherList();
+                                                                        }
+                                                                        widget.GetDashboardData();
+                                                                      },
+                                                                      decoration: const InputDecoration(
+                                                                        isDense: true,
+                                                                        contentPadding: EdgeInsets.symmetric(vertical: 8),
+                                                                        border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                                                                        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                                                                        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                                                                      ),
+                                                                      style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 154, 152, 152)),
+                                                                      dropdownColor: Primary_colors.Dark,
+                                                                    ),
+                                                                  );
+                                                                }),
+                                                              ],
+                                                            ),
+                                                            const SizedBox(height: 15),
+                                                            Row(
+                                                              children: [
+                                                                Expanded(
+                                                                  child: SizedBox(
+                                                                    height: 35,
+                                                                    child: TextFormField(
+                                                                      style: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                                                                      controller: mainBilling_Controller.billingModel.dashboard_startDateController.value,
+                                                                      readOnly: true,
+                                                                      onTap: () async {
+                                                                        await widget.select_previousDates(context, mainBilling_Controller.billingModel.dashboard_startDateController.value);
+                                                                        widget.GetDashboardData();
+                                                                        // await widget.get_VoucherList();
+                                                                      },
+                                                                      decoration: InputDecoration(
+                                                                        labelText: 'From',
+                                                                        labelStyle: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                                                                        suffixIcon: const Icon(Icons.calendar_today, size: 20, color: Color.fromARGB(255, 85, 84, 84)),
+                                                                        contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                                                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                                                                        enabledBorder: OutlineInputBorder(
+                                                                          borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                                                          borderRadius: BorderRadius.circular(8),
+                                                                        ),
+                                                                        focusedBorder: OutlineInputBorder(
+                                                                          borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                                                          borderRadius: BorderRadius.circular(8),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(width: 10),
+                                                                Expanded(
+                                                                  child: SizedBox(
+                                                                    height: 35,
+                                                                    child: TextFormField(
+                                                                      style: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                                                                      controller: mainBilling_Controller.billingModel.dashboard_endDateController.value,
+                                                                      readOnly: true,
+                                                                      onTap: () async {
+                                                                        await widget.select_previousDates(context, mainBilling_Controller.billingModel.dashboard_endDateController.value);
+                                                                        widget.GetDashboardData();
+                                                                        // await widget.get_VoucherList();
+                                                                      },
+                                                                      decoration: InputDecoration(
+                                                                        labelText: 'To',
+                                                                        labelStyle: const TextStyle(color: Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+                                                                        suffixIcon: const Icon(Icons.calendar_today, size: 20, color: Color.fromARGB(255, 85, 84, 84)),
+                                                                        contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                                                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                                                                        enabledBorder: OutlineInputBorder(
+                                                                          borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                                                          borderRadius: BorderRadius.circular(8),
+                                                                        ),
+                                                                        focusedBorder: OutlineInputBorder(
+                                                                          borderSide: const BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                                                                          borderRadius: BorderRadius.circular(8),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(flex: 1, child: Container()),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(right: 16),
+                                                      child: SizedBox(
+                                                        width: 200,
+                                                        height: 35,
+                                                        child: Obx(
+                                                          () => DropdownButtonFormField<String>(
+                                                            value: mainBilling_Controller.billingModel.type.value, // Use the state variable for the selected value
+                                                            items: [
+                                                              "Sales",
+                                                              "Subscription",
+                                                              "Purchase",
+                                                              "Receivables",
+                                                              "Payables",
+                                                              "All",
+                                                            ]
+                                                                .map((String value) => DropdownMenuItem<String>(
+                                                                      value: value,
+                                                                      child: Text(value, style: const TextStyle(fontSize: 13, color: Colors.white)),
+                                                                    ))
+                                                                .toList(),
+                                                            onChanged: (String? newValue) {
+                                                              if (newValue != null) {
+                                                                mainBilling_Controller.update_dashBoardtype(newValue);
+                                                                widget.GetDashboardData();
+                                                                // mainBilling_Controller.updatesalesperiod(newValue == "Monthly view" ? 'monthly' : 'yearly');
+
+                                                                // if (newValue == "Monthly view") {
+                                                                //   widget.GetSalesData('monthly');
+                                                                // } else if (newValue == "Yearly view") {
+                                                                //   widget.GetSalesData('yearly');
+                                                                // }
+                                                              }
+                                                            },
+                                                            decoration: InputDecoration(
+                                                              alignLabelWithHint: false,
+                                                              contentPadding: const EdgeInsets.all(10),
+                                                              filled: true,
+                                                              fillColor: Primary_colors.Dark,
+                                                              focusedBorder: OutlineInputBorder(
+                                                                borderRadius: BorderRadius.circular(30),
+                                                                borderSide: const BorderSide(color: Color.fromARGB(226, 50, 50, 50)),
+                                                              ),
+                                                              enabledBorder: OutlineInputBorder(
+                                                                borderRadius: BorderRadius.circular(30),
+                                                                borderSide: const BorderSide(color: Color.fromARGB(255, 51, 50, 50)),
+                                                              ),
+                                                              hintText: 'Data View',
+                                                              hintStyle: const TextStyle(
+                                                                fontSize: Primary_font_size.Text7,
+                                                                color: Primary_colors.Color1,
+                                                                letterSpacing: 1,
+                                                              ),
+                                                            ),
+                                                            dropdownColor: Primary_colors.Dark,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              }),
+                                              Expanded(
+                                                child: Obx(
+                                                  () {
+                                                    return Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(16),
+                                                        // gradient: const LinearGradient(
+                                                        //   colors: [Primary_colors.Light, Color.fromARGB(255, 40, 39, 59), Primary_colors.Light],
+                                                        //   begin: Alignment.topLeft,
+                                                        //   end: Alignment.bottomRight,
+                                                        // ),
+                                                        // boxShadow: const [
+                                                        //   BoxShadow(
+                                                        //     color: Colors.black12,
+                                                        //     offset: Offset(0, 10),
+                                                        //     blurRadius: 20,
+                                                        //   ),
+                                                        // ],
+                                                      ),
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: [
+                                                            Column(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                const Text(
+                                                                  'TOTAL',
+                                                                  style: TextStyle(
+                                                                    color: Color.fromARGB(255, 186, 185, 185),
+                                                                    fontSize: 12,
+                                                                    fontWeight: FontWeight.w500,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount != null
+                                                                      ? widget.formatNumber((mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount is double
+                                                                              ? mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount
+                                                                              : double.parse(mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount.toString()))!
+                                                                          .toInt())
+                                                                      : '0',
+                                                                  // formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount ?? 0.0),
+                                                                  style: TextStyle(
+                                                                    color: Primary_colors.Color1,
+                                                                    fontSize: 28,
+                                                                    fontWeight: FontWeight.bold,
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  decoration: BoxDecoration(
+                                                                    borderRadius: BorderRadius.circular(10),
+                                                                    color: const Color.fromARGB(255, 202, 227, 253),
+                                                                  ),
+                                                                  child: Padding(
+                                                                    padding: EdgeInsets.all(4),
+                                                                    child: Text(
+                                                                      '${mainBilling_Controller.billingModel.dashBoard_data.value.totalInvoices} invoices',
+                                                                      style: TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 15, 139, 234)),
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                            Column(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                const Text(
+                                                                  'PAID',
+                                                                  style: TextStyle(
+                                                                    color: Color.fromARGB(255, 186, 185, 185),
+                                                                    fontSize: 12,
+                                                                    fontWeight: FontWeight.w500,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount != null
+                                                                      ? widget.formatNumber((mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount is double
+                                                                              ? mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount
+                                                                              : double.parse(mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount.toString()))!
+                                                                          .toInt())
+                                                                      : '0',
+
+                                                                  // widget.formatNumber(int.tryParse(mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount.toString()) ?? 0),
+                                                                  // formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount ?? 0.0),
+                                                                  style: TextStyle(
+                                                                    color: Primary_colors.Color1,
+                                                                    fontSize: 28,
+                                                                    fontWeight: FontWeight.bold,
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  decoration: BoxDecoration(
+                                                                    borderRadius: BorderRadius.circular(10),
+                                                                    color: const Color.fromARGB(255, 202, 253, 223),
+                                                                  ),
+                                                                  child: Padding(
+                                                                    padding: EdgeInsets.all(4),
+                                                                    child: Text(
+                                                                      '${mainBilling_Controller.billingModel.dashBoard_data.value.paidInvoices} invoices',
+                                                                      style: TextStyle(fontSize: Primary_font_size.Text5, color: Colors.green),
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                            Column(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                const Text(
+                                                                  'UNPAID',
+                                                                  style: TextStyle(
+                                                                    color: Color.fromARGB(255, 186, 185, 185),
+                                                                    fontSize: 12,
+                                                                    fontWeight: FontWeight.w500,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount != null
+                                                                      ? widget.formatNumber((mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount is double
+                                                                              ? mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount
+                                                                              : double.parse(mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount.toString()))!
+                                                                          .toInt())
+                                                                      : '0',
+
+                                                                  // widget.formatNumber(int.tryParse(mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount.toString()) ?? 0),
+                                                                  // formatCurrency(mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount ?? 0.0),
+                                                                  style: TextStyle(
+                                                                    color: Primary_colors.Color1,
+                                                                    fontSize: 28,
+                                                                    fontWeight: FontWeight.bold,
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  decoration: BoxDecoration(
+                                                                    borderRadius: BorderRadius.circular(10),
+                                                                    color: const Color.fromARGB(255, 253, 206, 202),
+                                                                  ),
+                                                                  child: Padding(
+                                                                    padding: EdgeInsets.all(4),
+                                                                    child: Text(
+                                                                      '${mainBilling_Controller.billingModel.dashBoard_data.value.pendingInvoices} invoices',
+                                                                      style: TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 234, 29, 15)),
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              )
+                                            ],
                                           ),
                                         ),
                                       ),
+                                    ),
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
+                                    // Column(
+                                    //   mainAxisAlignment: MainAxisAlignment.center,
+                                    //   children: [
+                                    //     Container(
+                                    //       height: 180,
+                                    //       width: 2,
+                                    //       color: const Color.fromARGB(255, 111, 110, 110),
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    // const SizedBox(
+                                    //   width: 10,
+                                    // ),
+                                    Expanded(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(16),
+                                            // gradient: const LinearGradient(
+                                            //   colors: [
+                                            //     Primary_colors.Light,
+                                            //     Color.fromARGB(255, 40, 39, 59),
+                                            //     Primary_colors.Light,
+                                            //   ],
+                                            //   begin: Alignment.topLeft,
+                                            //   end: Alignment.bottomRight,
+                                            // ),
+                                            // boxShadow: const [
+                                            //   BoxShadow(
+                                            //     color: Colors.black26,
+                                            //     offset: Offset(0, 6),
+                                            //     blurRadius: 12,
+                                            //   ),
+                                            // ],
+                                            color: Primary_colors.Light),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              // First row of icons and labels
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                children: [
+                                                  MouseRegion(
+                                                    cursor: SystemMouseCursors.click,
+                                                    child: _buildIconWithLabel(
+                                                      image: 'assets/images/ledger.png',
+                                                      label: 'View Ledger',
+                                                      color: Primary_colors.Color4,
+                                                      onPressed: () {
+                                                        Navigator.of(context).push(
+                                                          _createCustomPageRoute(
+                                                            () => ViewLedger(),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                  MouseRegion(
+                                                    onEnter: (_) => setState(() => isHovered = true),
+                                                    onExit: (_) => setState(() => isHovered = false),
+                                                    cursor: SystemMouseCursors.forbidden,
+                                                    child: Tooltip(
+                                                      message: 'Work in progress',
+                                                      child: Opacity(
+                                                        opacity: 0.2,
+                                                        child: AbsorbPointer(
+                                                          absorbing: isHovered, // Prevent clicks when hovered
+                                                          child: _buildIconWithLabel(
+                                                            image: 'assets/images/transaction.png',
+                                                            label: 'View Transaction',
+                                                            color: Primary_colors.Color5,
+                                                            onPressed: () {
+                                                              // Optional: disable logic here too if needed
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                              const SizedBox(height: 20),
+                                              // Second row of icons and labels
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                children: [
+                                                  MouseRegion(
+                                                    cursor: SystemMouseCursors.click,
+                                                    child: _buildIconWithLabel(
+                                                      image: 'assets/images/voucher.png',
+                                                      label: 'Voucher',
+                                                      color: Primary_colors.Color6,
+                                                      onPressed: () {
+                                                        Navigator.of(context).push(
+                                                          _createCustomPageRoute(() => Voucher()),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                  MouseRegion(
+                                                    onEnter: (_) => setState(() => isHovered = true),
+                                                    onExit: (_) => setState(() => isHovered = false),
+                                                    cursor: SystemMouseCursors.forbidden,
+                                                    child: Tooltip(
+                                                      message: 'Work in progress',
+                                                      child: Opacity(
+                                                        opacity: 0.2,
+                                                        child: AbsorbPointer(
+                                                          absorbing: isHovered, // Prevent clicks when hovered
+                                                          child: _buildIconWithLabel(
+                                                            image: 'assets/images/balancesheet.png',
+                                                            label: 'Balance Sheet',
+                                                            color: Primary_colors.Color8,
+                                                            onPressed: () {
+                                                              // Optional: disable logic here too if needed
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+
+                                      // Reusable function to build icon with label for consistency
                                     )
                                   ],
                                 ),
                               ),
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 25),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 380,
-                            height: 40,
-                            child: TabBar(
-                              indicatorColor: Primary_colors.Color5,
-                              onTap: (index) {
-                                if (index == 0) {
-                                  mainBilling_Controller.setActiveTab('Subscription');
-
-                                  mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = 'Subscription';
-                                  mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Subscription';
-                                }
-                                if (index == 1) {
-                                  mainBilling_Controller.setActiveTab('Sales');
-
-                                  mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = 'Sales';
-                                  mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Sales';
-                                }
-                                if (index == 2) {
-                                  mainBilling_Controller.setActiveTab('Vendor');
-
-                                  mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = 'Vendor';
-                                  mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Vendor';
-                                }
-                                widget.resetmainbilling_Filters();
-                                widget.get_SalesInvoiceList();
-                                widget.get_SubscriptionInvoiceList();
-                              },
-                              tabs: const [
-                                Text('Subscription'),
-                                Text('Sales'),
-                                Text('Vendor'),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Expanded(
-                                  child: Obx(
-                                    () => SizedBox(
-                                      height: 20,
-                                      child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: mainBilling_selectedfilter()),
-                                    ),
-                                  ),
-                                ),
-                                Obx(() {
-                                  return Stack(
-                                    children: [
-                                      Align(
-                                        alignment: Alignment.bottomLeft,
-                                        child: MouseRegion(
-                                          onEnter: (_) => notificationController.notificationModel.isHovered.value = true,
-                                          onExit: (_) => notificationController.notificationModel.isHovered.value = false,
-                                          cursor: SystemMouseCursors.click,
-                                          child: GestureDetector(
-                                              onTap: () => widget.showNotification(context),
-                                              child: ShaderMask(
-                                                shaderCallback: (Rect bounds) {
-                                                  return const LinearGradient(
-                                                    colors:
-                                                        // notificationController.notificationModel.notifications.isNotEmpty ?
-
-                                                        [Colors.black, Color.fromARGB(164, 255, 191, 0), Colors.amber],
-                                                    // :  [Colors.amber],
-                                                    begin: Alignment.topLeft,
-                                                    end: Alignment.bottomRight,
-                                                  ).createShader(bounds);
-                                                },
-                                                blendMode: BlendMode.srcIn,
-                                                child: const Icon(
-                                                  Icons.notifications,
-                                                  size: 30,
-                                                ),
-                                              )),
-                                        ),
-                                      ),
-                                      if (notificationController.notificationModel.notifications.isNotEmpty)
-                                        Align(
-                                          alignment: Alignment.topRight,
-                                          child: Container(
-                                            height: 15,
-                                            width: 15,
-                                            decoration: BoxDecoration(
-                                              color: notificationController.notificationModel.notifications.isNotEmpty ? Colors.red : Colors.blue,
-                                              borderRadius: BorderRadius.circular(50),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                notificationController.notificationModel.notifications.length > 9 ? '9+' : '${notificationController.notificationModel.notifications.length}',
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                    ],
-                                  );
-                                }),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                MouseRegion(
-                                  cursor: SystemMouseCursors.click,
-                                  child: GestureDetector(
-                                    onTap: _startAnimation,
-                                    child: AnimatedBuilder(
-                                      animation: mainBilling_Controller.billingModel.animationController,
-                                      builder: (context, child) {
-                                        return Transform.rotate(
-                                          angle: -mainBilling_Controller.billingModel.animationController.value * 2 * pi, // Counterclockwise rotation
-                                          child: Transform.scale(
-                                            scale: TweenSequence([
-                                              TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 1.2), weight: 50),
-                                              TweenSequenceItem(tween: Tween<double>(begin: 1.2, end: 1.0), weight: 50),
-                                            ]).animate(CurvedAnimation(parent: mainBilling_Controller.billingModel.animationController, curve: Curves.easeInOut)).value, // Zoom in and return to normal
-                                            child: Opacity(
-                                              opacity: TweenSequence([
-                                                TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.5), weight: 50),
-                                                TweenSequenceItem(tween: Tween<double>(begin: 0.5, end: 1.0), weight: 50),
-                                              ]).animate(CurvedAnimation(parent: mainBilling_Controller.billingModel.animationController, curve: Curves.easeInOut)).value, // Fade and return to normal
-                                              child: ClipOval(
-                                                child: Image.asset(
-                                                  'assets/images/reload.png',
-                                                  fit: BoxFit.cover,
-                                                  width: 30,
-                                                  height: 30,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                Obx(
-                                  () => SizedBox(
-                                    width: max(screenWidth - 1480, 200),
-                                    height: 40,
-                                    child: TextFormField(
-                                      controller: TextEditingController(text: mainBilling_Controller.billingModel.searchQuery.value)
-                                        ..selection = TextSelection.fromPosition(
-                                          TextPosition(offset: mainBilling_Controller.billingModel.searchQuery.value.length),
-                                        ),
-                                      onChanged: mainBilling_Controller.search,
-                                      style: const TextStyle(fontSize: 13, color: Colors.white),
-                                      decoration: InputDecoration(
-                                        contentPadding: const EdgeInsets.all(1),
-                                        filled: true,
-                                        fillColor: Primary_colors.Light,
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: const BorderSide(color: Colors.transparent),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: const BorderSide(color: Colors.transparent),
-                                        ),
-                                        hintStyle: const TextStyle(
-                                          fontSize: Primary_font_size.Text7,
-                                          color: Color.fromARGB(255, 167, 165, 165),
-                                        ),
-                                        hintText: 'Search customer',
-                                        prefixIcon: const Icon(
-                                          Icons.search,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                // SizedBox(
-                                //   width: 300,
-                                //   height: 40,
-                                //   child: DropdownButtonFormField<String>(
-                                //     style: const TextStyle(fontSize: 13, color: Colors.white),
-                                //     decoration: InputDecoration(
-                                //         contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10), // Adjust padding to center the hint
-                                //         filled: true,
-                                //         fillColor: Primary_colors.Light,
-                                //         focusedBorder: OutlineInputBorder(
-                                //           borderRadius: BorderRadius.circular(30),
-                                //           borderSide: const BorderSide(color: Colors.transparent),
-                                //         ),
-                                //         enabledBorder: OutlineInputBorder(
-                                //           borderRadius: BorderRadius.circular(30),
-                                //           borderSide: const BorderSide(color: Colors.transparent),
-                                //         ),
-                                //         // hintStyle: const TextStyle(
-                                //         //   fontSize: Primary_font_size.Text7,
-                                //         //   color: Color.fromARGB(255, 167, 165, 165),
-                                //         // ),
-                                //         // hintText: 'Select customer',
-                                //         // alignLabelWithHint: true, // Helps to align hint text
-                                //         label: const Text(
-                                //           'Select type',
-                                //           style: TextStyle(color: Color.fromARGB(255, 162, 162, 162), fontSize: Primary_font_size.Text7),
-                                //         )),
-                                //     dropdownColor: Primary_colors.Dark,
-                                //     value: Selected_billingtype, // Bind your selected value here
-                                //     onChanged: (String? newValue) {
-                                //       setState(() {
-                                //         Selected_billingtype = newValue; // Update the selected value
-                                //       });
-                                //     },
-                                //     items: billing_type.map<DropdownMenuItem<String>>((String customer) {
-                                //       return DropdownMenuItem<String>(
-                                //         value: customer,
-                                //         child: Text(customer),
-                                //       );
-                                //     }).toList(),
-                                //   ),
-                                // ),
-                                // const SizedBox(
-                                //   width: 10,
-                                // ),
-                                IconButton(
-                                  onPressed: () {
-                                    Scaffold.of(context).openEndDrawer();
-                                    widget.reassignmainbilling_Filters();
-                                  },
-                                  icon: const Icon(
-                                    Icons.filter_alt_outlined,
-                                    color: Primary_colors.Color1,
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Primary_colors.Light),
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [Primary_colors.Color3, Primary_colors.Color3], // Example gradient colors
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10), // Ensure border radius for smooth corners
-                                ),
-                                child: Obx(() {
-                                  return Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: mainBilling_Controller.billingModel.activeTab.value == "Subscription"
-                                          ? SubscriptionHeaders()
-                                          : mainBilling_Controller.billingModel.activeTab.value == 'Sales'
-                                              ? SalesHeaders()
-                                              : SubscriptionHeaders());
-                                }),
-                              ),
-                              const SizedBox(height: 5),
+                              const SizedBox(width: 15),
                               Expanded(
-                                child: TabBarView(
-                                  children: [Subscription(), Sales(), Vendor()],
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(0),
+                                  child: Column(
+                                    children: [
+                                      // const Text(
+                                      //   'Invoice status',
+                                      //   style: TextStyle(color: Primary_colors.Color1, fontSize: 20),
+                                      // ),
+                                      // const SizedBox(
+                                      //   height: 10,
+                                      // ),
+                                      Expanded(
+                                        child: Container(
+                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Primary_colors.Light
+                                              // gradient: const LinearGradient(
+                                              //   colors: [Primary_colors.Light, Color.fromARGB(255, 40, 39, 59), Primary_colors.Light],
+                                              //   begin: Alignment.topLeft,
+                                              //   end: Alignment.bottomRight,
+                                              // ),
+                                              // boxShadow: const [
+                                              //   BoxShadow(
+                                              //     color: Colors.black12,
+                                              //     offset: Offset(0, 10),
+                                              //     blurRadius: 20,
+                                              //   ),
+                                              // ],
+                                              ),
+                                          child: Padding(
+                                            padding: EdgeInsets.all(16),
+                                            child: Obx(
+                                              () {
+                                                return Pie_chart(
+                                                  totalInvoices: mainBilling_Controller.billingModel.dashBoard_data.value.totalInvoices,
+                                                  paidInvoices: mainBilling_Controller.billingModel.dashBoard_data.value.paidInvoices,
+                                                  pendingInvoices: mainBilling_Controller.billingModel.dashBoard_data.value.pendingInvoices,
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
+                              )
                             ],
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                );
-              },
+                        const SizedBox(height: 25),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 380,
+                              height: 40,
+                              child: TabBar(
+                                indicatorColor: Primary_colors.Color5,
+                                onTap: (index) {
+                                  if (index == 0) {
+                                    mainBilling_Controller.setActiveTab('Subscription');
+
+                                    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = 'Subscription';
+                                    mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Subscription';
+                                  }
+                                  if (index == 1) {
+                                    mainBilling_Controller.setActiveTab('Sales');
+
+                                    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = 'Sales';
+                                    mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Sales';
+                                  }
+                                  if (index == 2) {
+                                    mainBilling_Controller.setActiveTab('Vendor');
+
+                                    mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = 'Vendor';
+                                    mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Vendor';
+                                  }
+                                  widget.resetmainbilling_Filters();
+                                  widget.get_SalesInvoiceList();
+                                  widget.get_SubscriptionInvoiceList();
+                                },
+                                tabs: const [
+                                  Text('Subscription'),
+                                  Text('Sales'),
+                                  Text('Vendor'),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Expanded(
+                                    child: Obx(
+                                      () => SizedBox(
+                                        height: 20,
+                                        child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: mainBilling_selectedfilter()),
+                                      ),
+                                    ),
+                                  ),
+                                  Obx(() {
+                                    return Stack(
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: MouseRegion(
+                                            onEnter: (_) => notificationController.notificationModel.isHovered.value = true,
+                                            onExit: (_) => notificationController.notificationModel.isHovered.value = false,
+                                            cursor: SystemMouseCursors.click,
+                                            child: GestureDetector(
+                                                onTap: () => widget.showNotification(context),
+                                                child: ShaderMask(
+                                                  shaderCallback: (Rect bounds) {
+                                                    return const LinearGradient(
+                                                      colors:
+                                                          // notificationController.notificationModel.notifications.isNotEmpty ?
+
+                                                          [Colors.black, Color.fromARGB(164, 255, 191, 0), Colors.amber],
+                                                      // :  [Colors.amber],
+                                                      begin: Alignment.topLeft,
+                                                      end: Alignment.bottomRight,
+                                                    ).createShader(bounds);
+                                                  },
+                                                  blendMode: BlendMode.srcIn,
+                                                  child: const Icon(
+                                                    Icons.notifications,
+                                                    size: 30,
+                                                  ),
+                                                )),
+                                          ),
+                                        ),
+                                        if (notificationController.notificationModel.notifications.isNotEmpty)
+                                          Align(
+                                            alignment: Alignment.topRight,
+                                            child: Container(
+                                              height: 15,
+                                              width: 15,
+                                              decoration: BoxDecoration(
+                                                color: notificationController.notificationModel.notifications.isNotEmpty ? Colors.red : Colors.blue,
+                                                borderRadius: BorderRadius.circular(50),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  notificationController.notificationModel.notifications.length > 9 ? '9+' : '${notificationController.notificationModel.notifications.length}',
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    );
+                                  }),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  MouseRegion(
+                                    cursor: SystemMouseCursors.click,
+                                    child: GestureDetector(
+                                      onTap: _startAnimation,
+                                      child: AnimatedBuilder(
+                                        animation: mainBilling_Controller.billingModel.animationController,
+                                        builder: (context, child) {
+                                          return Transform.rotate(
+                                            angle: -mainBilling_Controller.billingModel.animationController.value * 2 * pi, // Counterclockwise rotation
+                                            child: Transform.scale(
+                                              scale: TweenSequence([
+                                                TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 1.2), weight: 50),
+                                                TweenSequenceItem(tween: Tween<double>(begin: 1.2, end: 1.0), weight: 50),
+                                              ])
+                                                  .animate(CurvedAnimation(parent: mainBilling_Controller.billingModel.animationController, curve: Curves.easeInOut))
+                                                  .value, // Zoom in and return to normal
+                                              child: Opacity(
+                                                opacity: TweenSequence([
+                                                  TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.5), weight: 50),
+                                                  TweenSequenceItem(tween: Tween<double>(begin: 0.5, end: 1.0), weight: 50),
+                                                ])
+                                                    .animate(CurvedAnimation(parent: mainBilling_Controller.billingModel.animationController, curve: Curves.easeInOut))
+                                                    .value, // Fade and return to normal
+                                                child: ClipOval(
+                                                  child: Image.asset(
+                                                    'assets/images/reload.png',
+                                                    fit: BoxFit.cover,
+                                                    width: 30,
+                                                    height: 30,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Obx(
+                                    () => SizedBox(
+                                      width: max(screenWidth - 1480, 200),
+                                      height: 40,
+                                      child: TextFormField(
+                                        controller: TextEditingController(text: mainBilling_Controller.billingModel.searchQuery.value)
+                                          ..selection = TextSelection.fromPosition(
+                                            TextPosition(offset: mainBilling_Controller.billingModel.searchQuery.value.length),
+                                          ),
+                                        onChanged: mainBilling_Controller.search,
+                                        style: const TextStyle(fontSize: 13, color: Colors.white),
+                                        decoration: InputDecoration(
+                                          contentPadding: const EdgeInsets.all(1),
+                                          filled: true,
+                                          fillColor: Primary_colors.Light,
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(30),
+                                            borderSide: const BorderSide(color: Colors.transparent),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(30),
+                                            borderSide: const BorderSide(color: Colors.transparent),
+                                          ),
+                                          hintStyle: const TextStyle(
+                                            fontSize: Primary_font_size.Text7,
+                                            color: Color.fromARGB(255, 167, 165, 165),
+                                          ),
+                                          hintText: 'Search customer',
+                                          prefixIcon: const Icon(
+                                            Icons.search,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  // SizedBox(
+                                  //   width: 300,
+                                  //   height: 40,
+                                  //   child: DropdownButtonFormField<String>(
+                                  //     style: const TextStyle(fontSize: 13, color: Colors.white),
+                                  //     decoration: InputDecoration(
+                                  //         contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10), // Adjust padding to center the hint
+                                  //         filled: true,
+                                  //         fillColor: Primary_colors.Light,
+                                  //         focusedBorder: OutlineInputBorder(
+                                  //           borderRadius: BorderRadius.circular(30),
+                                  //           borderSide: const BorderSide(color: Colors.transparent),
+                                  //         ),
+                                  //         enabledBorder: OutlineInputBorder(
+                                  //           borderRadius: BorderRadius.circular(30),
+                                  //           borderSide: const BorderSide(color: Colors.transparent),
+                                  //         ),
+                                  //         // hintStyle: const TextStyle(
+                                  //         //   fontSize: Primary_font_size.Text7,
+                                  //         //   color: Color.fromARGB(255, 167, 165, 165),
+                                  //         // ),
+                                  //         // hintText: 'Select customer',
+                                  //         // alignLabelWithHint: true, // Helps to align hint text
+                                  //         label: const Text(
+                                  //           'Select type',
+                                  //           style: TextStyle(color: Color.fromARGB(255, 162, 162, 162), fontSize: Primary_font_size.Text7),
+                                  //         )),
+                                  //     dropdownColor: Primary_colors.Dark,
+                                  //     value: Selected_billingtype, // Bind your selected value here
+                                  //     onChanged: (String? newValue) {
+                                  //       setState(() {
+                                  //         Selected_billingtype = newValue; // Update the selected value
+                                  //       });
+                                  //     },
+                                  //     items: billing_type.map<DropdownMenuItem<String>>((String customer) {
+                                  //       return DropdownMenuItem<String>(
+                                  //         value: customer,
+                                  //         child: Text(customer),
+                                  //       );
+                                  //     }).toList(),
+                                  //   ),
+                                  // ),
+                                  // const SizedBox(
+                                  //   width: 10,
+                                  // ),
+                                  IconButton(
+                                    onPressed: () {
+                                      Scaffold.of(context).openEndDrawer();
+                                      widget.reassignmainbilling_Filters();
+                                    },
+                                    icon: const Icon(
+                                      Icons.filter_alt_outlined,
+                                      color: Primary_colors.Color1,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Primary_colors.Light),
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                      colors: [Primary_colors.Color3, Primary_colors.Color3], // Example gradient colors
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10), // Ensure border radius for smooth corners
+                                  ),
+                                  child: Obx(() {
+                                    return Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: mainBilling_Controller.billingModel.activeTab.value == "Subscription"
+                                            ? SubscriptionHeaders()
+                                            : mainBilling_Controller.billingModel.activeTab.value == 'Sales'
+                                                ? SalesHeaders()
+                                                : SubscriptionHeaders());
+                                  }),
+                                ),
+                                const SizedBox(height: 5),
+                                Expanded(
+                                  child: TabBarView(
+                                    children: [Subscription(), Sales(), Vendor()],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -1077,6 +1109,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         Expanded(
           flex: 1,
           child: Text(
+            textAlign: TextAlign.center,
             'Invoice No',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -1085,6 +1118,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         Expanded(
           flex: 1,
           child: Text(
+            textAlign: TextAlign.center,
             'Voucher No',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -1102,6 +1136,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         Expanded(
           flex: 1,
           child: Text(
+            textAlign: TextAlign.center,
             'Type',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -1110,6 +1145,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         Expanded(
           flex: 1,
           child: Text(
+            textAlign: TextAlign.center,
             'Package',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -1158,6 +1194,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         Expanded(
           flex: 1,
           child: Text(
+            textAlign: TextAlign.center,
             'Date',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -1166,6 +1203,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         Expanded(
           flex: 1,
           child: Text(
+            textAlign: TextAlign.center,
             'Invoice No',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -1174,6 +1212,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         Expanded(
           flex: 1,
           child: Text(
+            textAlign: TextAlign.center,
             'Voucher No',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -1348,6 +1387,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                         }
                                       },
                                       child: Text(
+                                        textAlign: TextAlign.center,
                                         mainBilling_Controller.billingModel.subscriptionInvoiceList[index].invoiceNo,
                                         style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
                                       ),
@@ -1360,7 +1400,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                   child: Padding(
                                     padding: const EdgeInsets.all(0),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         MouseRegion(
                                           cursor: SystemMouseCursors.click,
@@ -1369,6 +1409,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                               widget.get_VoucherDetails(context, mainBilling_Controller.billingModel.subscriptionInvoiceList[index].voucher_id);
                                             },
                                             child: Text(
+                                              textAlign: TextAlign.center,
                                               mainBilling_Controller.billingModel.subscriptionInvoiceList[index].voucher_number,
                                               style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
                                             ),
@@ -1427,6 +1468,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 Expanded(
                                   flex: 1,
                                   child: Text(
+                                    textAlign: TextAlign.center,
                                     mainBilling_Controller.billingModel.subscriptionInvoiceList[index].planType,
                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                   ),
@@ -1435,6 +1477,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 Expanded(
                                   flex: 1,
                                   child: Text(
+                                    textAlign: TextAlign.center,
                                     mainBilling_Controller.billingModel.subscriptionInvoiceList[index].planName,
                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                   ),
@@ -1718,6 +1761,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                             Expanded(
                               flex: 1,
                               child: Text(
+                                textAlign: TextAlign.center,
                                 formatDate(mainBilling_Controller.billingModel.salesInvoiceList[index].date),
                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                               ),
@@ -1735,6 +1779,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                     }
                                   },
                                   child: Text(
+                                    textAlign: TextAlign.center,
                                     mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceNumber,
                                     style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
                                   ),
@@ -1754,7 +1799,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                               child: Padding(
                                 padding: const EdgeInsets.all(0),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     MouseRegion(
                                       cursor: SystemMouseCursors.click,
@@ -1763,6 +1808,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                           widget.get_VoucherDetails(context, mainBilling_Controller.billingModel.salesInvoiceList[index].voucherId);
                                         },
                                         child: Text(
+                                          textAlign: TextAlign.center,
                                           mainBilling_Controller.billingModel.salesInvoiceList[index].voucherNumber,
                                           style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
                                         ),

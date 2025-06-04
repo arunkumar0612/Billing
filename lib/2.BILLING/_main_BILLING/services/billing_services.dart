@@ -1014,6 +1014,7 @@ mixin main_BillingService {
     // salesController.resetData();
     get_SubscriptionInvoiceList();
     get_SalesInvoiceList();
+    GetDashboardData();
   }
 
   Future<void> selectfilterDate(BuildContext context, TextEditingController controller) async {

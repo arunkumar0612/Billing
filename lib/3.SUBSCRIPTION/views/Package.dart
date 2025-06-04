@@ -88,7 +88,10 @@ class _PackagepageState extends State<Packagepage> {
                                 decoration: InputDecoration(
                                   hintText: 'Search packages...',
                                   hintStyle: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: Primary_font_size.Text8, letterSpacing: 1),
-                                  prefixIcon: Icon(Icons.search, color: Colors.white.withOpacity(0.7)),
+                                  prefixIcon: Icon(
+                                    Icons.search,
+                                    color: Colors.white.withOpacity(0.7),
+                                  ),
                                   border: InputBorder.none,
                                   contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                                 ),
@@ -249,77 +252,77 @@ class _PackagepageState extends State<Packagepage> {
                               // Subscription list
                               Expanded(
                                 child: Padding(
-                                    padding: EdgeInsets.only(left: 24.0, right: 24.0, bottom: MediaQuery.of(context).viewInsets.bottom),
-                                    child: subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.isEmpty
-                                        ? Center(
-                                            child: Stack(
-                                              alignment: Alignment.topCenter,
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets.only(top: 0),
-                                                  child: Lottie.asset(
-                                                    'assets/animations/JSON/emptysubscriptionlist.json',
-                                                    // width: 264,
-                                                    height: 250,
+                                  padding: EdgeInsets.only(left: 24.0, right: 24.0, bottom: MediaQuery.of(context).viewInsets.bottom),
+                                  child: subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.isEmpty
+                                      ? Center(
+                                          child: Stack(
+                                            alignment: Alignment.topCenter,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 0),
+                                                child: Lottie.asset(
+                                                  'assets/animations/JSON/emptysubscriptionlist.json',
+                                                  // width: 264,
+                                                  height: 250,
+                                                ),
+                                              ),
+                                              const Padding(
+                                                padding: EdgeInsets.only(top: 194),
+                                                child: Text(
+                                                  'No packages available',
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color.fromARGB(255, 101, 110, 114),
                                                   ),
                                                 ),
-                                                const Padding(
-                                                  padding: EdgeInsets.only(top: 194),
-                                                  child: Text(
-                                                    'No packages available',
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w600,
-                                                      color: Color.fromARGB(255, 101, 110, 114),
-                                                    ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 234),
+                                                child: Text(
+                                                  'When you add a packages, it will appear here',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.blueGrey[400],
+                                                    height: 1.4,
                                                   ),
                                                 ),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(top: 234),
-                                                  child: Text(
-                                                    'When you add a packages, it will appear here',
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.blueGrey[400],
-                                                      height: 1.4,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        : ListView.builder(
-                                            itemCount: subscriptionController.subscriptionModel.isSearchingPackages.value
-                                                ? subscriptionController.subscriptionModel.filteredPackages.length
-                                                : subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.length,
-                                            itemBuilder: (context, index) {
-                                              final package = subscriptionController.subscriptionModel.isSearchingPackages.value
-                                                  ? subscriptionController.subscriptionModel.filteredPackages[index]
-                                                  : subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList[index];
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : ListView.builder(
+                                          itemCount: subscriptionController.subscriptionModel.isSearchingPackages.value
+                                              ? subscriptionController.subscriptionModel.filteredPackages.length
+                                              : subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.length,
+                                          itemBuilder: (context, index) {
+                                            final package = subscriptionController.subscriptionModel.isSearchingPackages.value
+                                                ? subscriptionController.subscriptionModel.filteredPackages[index]
+                                                : subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList[index];
 
-                                              final isChecked = subscriptionController.subscriptionModel.selectedPackagessubscriptionID.contains(package.subscriptionId);
-                                              return Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                                child: _SubscriptionCard(
-                                                  package: package,
-                                                  isSelected: subscriptionController.subscriptionModel.packageselectedID.value == package.subscriptionId,
-                                                  isChecked: isChecked,
-                                                  onChecked: (value) {
-                                                    _handlePackageSelection(package.subscriptionId, value);
-                                                  },
-                                                  onTap: () {
-                                                    subscriptionController.subscriptionModel.packageselectedID.value = package.subscriptionId;
-                                                  },
-                                                ),
-                                              );
-                                            },
-                                          )),
+                                            final isChecked = subscriptionController.subscriptionModel.selectedPackagessubscriptionID.contains(package.subscriptionId);
+                                            return Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                              child: _SubscriptionCard(
+                                                package: package,
+                                                isSelected: subscriptionController.subscriptionModel.packageselectedID.value == package.subscriptionId,
+                                                isChecked: isChecked,
+                                                onChecked: (value) {
+                                                  _handlePackageSelection(package.subscriptionId, value);
+                                                },
+                                                onTap: () {
+                                                  subscriptionController.subscriptionModel.packageselectedID.value = package.subscriptionId;
+                                                },
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                ),
                               )
                             ],
                           ),
                         ),
-
                         // Vertical divider
                         Container(
                           width: 1,
@@ -339,49 +342,50 @@ class _PackagepageState extends State<Packagepage> {
                         // Details panel (right panel)
                         Expanded(
                           child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                              child: subscriptionController.subscriptionModel.packageselectedID.value != null &&
-                                      subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList
-                                          .any((p) => p.subscriptionId == subscriptionController.subscriptionModel.packageselectedID.value)
-                                  ? _buildDetailsPanel(subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList
-                                      .firstWhere((p) => p.subscriptionId == subscriptionController.subscriptionModel.packageselectedID.value))
-                                  : Center(
-                                      child: Stack(
-                                        alignment: Alignment.topCenter,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 50),
-                                            child: Lottie.asset(
-                                              'assets/animations/JSON/packageview.json',
-                                              height: 250,
+                            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                            child: subscriptionController.subscriptionModel.packageselectedID.value != null &&
+                                    subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList
+                                        .any((p) => p.subscriptionId == subscriptionController.subscriptionModel.packageselectedID.value)
+                                ? _buildDetailsPanel(subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList
+                                    .firstWhere((p) => p.subscriptionId == subscriptionController.subscriptionModel.packageselectedID.value))
+                                : Center(
+                                    child: Stack(
+                                      alignment: Alignment.topCenter,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 50),
+                                          child: Lottie.asset(
+                                            'assets/animations/JSON/packageview.json',
+                                            height: 250,
+                                          ),
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.only(top: 244),
+                                          child: Text(
+                                            'Select a package to view',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color: Color.fromARGB(255, 101, 110, 114),
                                             ),
                                           ),
-                                          const Padding(
-                                            padding: EdgeInsets.only(top: 244),
-                                            child: Text(
-                                              'Select a package to view',
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color.fromARGB(255, 101, 110, 114),
-                                              ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 274),
+                                          child: Text(
+                                            'Once selected, package details will appear here.',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.blueGrey[400],
+                                              height: 1.4,
                                             ),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 274),
-                                            child: Text(
-                                              'Once selected, package details will appear here.',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.blueGrey[400],
-                                                height: 1.4,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                          ),
                         ),
                       ],
                     ),

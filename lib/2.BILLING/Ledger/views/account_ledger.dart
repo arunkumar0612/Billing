@@ -19,11 +19,18 @@ import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_excel_template/accou
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
+<<<<<<< HEAD
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/downloadPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/printPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/sharePDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/showPDF.dart';
+=======
+import 'package:ssipl_billing/COMPONENTS-/downloadPDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/printPDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/sharePDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/showPDF.dart';
+>>>>>>> c4a42389a02c86779fb0791025cf714816b3e649
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 import '../../../THEMES/style.dart';
@@ -678,118 +685,95 @@ class _accountLedgerState extends State<AccountLedger> {
                                     // Download Button
                                     MouseRegion(
                                       cursor: SystemMouseCursors.click,
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          var parsedData = await widget.parsePDF_AccountLedger(
-                                            widget.isSubscription_Client(),
-                                            widget.isSales_Client(),
-                                          );
-
-                                          final pdfBytes = await generateAccountLedger(PdfPageFormat.a4, parsedData);
-
-                                          Directory tempDir = await getTemporaryDirectory();
-                                          String fileName =
-                                              ('LEDGER(${account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
-                                          String filePath = '${tempDir.path}/$fileName.pdf';
-                                          File file = File(filePath);
-                                          await file.writeAsBytes(pdfBytes);
-                                          downloadPdf(context, fileName, file);
-                                        },
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Image.asset(height: 25, 'assets/images/download.png'),
-                                            const SizedBox(height: 10),
-                                            const Text(
-                                              "Download",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color.fromARGB(255, 143, 143, 143),
-                                              ),
+                                      child: Theme(
+                                        data: Theme.of(context).copyWith(
+                                          popupMenuTheme: PopupMenuThemeData(
+                                            color: Primary_colors.Light, // Dropdown background color
+                                            textStyle: const TextStyle(
+                                              color: Colors.white, // Default text color
+                                              fontSize: 14,
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 40), // Space between buttons
-                                    MouseRegion(
-                                      cursor: SystemMouseCursors.click,
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          var parsedData = await widget.parsePDF_AccountLedger(
-                                            widget.isSubscription_Client(),
-                                            widget.isSales_Client(),
-                                          );
-
-                                          // Generate the PDF bytes directly from your function
-                                          Uint8List pdfBytes = await generateAccountLedger(PdfPageFormat.a4, parsedData);
-                                          Directory tempDir = await getTemporaryDirectory();
-                                          String fileName =
-                                              ('LEDGER(${account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
-                                          String filePath = '${tempDir.path}/$fileName.pdf';
-                                          File file = File(filePath);
-                                          await file.writeAsBytes(pdfBytes);
-
-                                          PDFviewonly(context, file);
-                                        },
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Image.asset(height: 30, 'assets/images/pdfdownload.png'),
-                                            const SizedBox(height: 5),
-                                            const Text(
-                                              "View",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color.fromARGB(255, 143, 143, 143),
+                                        child: PopupMenuButton<String>(
+                                          tooltip: '',
+                                          onSelected: (value) async {
+                                            var parsedData = await widget.parsePDF_AccountLedger(
+                                              widget.isSubscription_Client(),
+                                              widget.isSales_Client(),
+                                            );
+                                            if (value == 'pdf') {
+                                              final pdfBytes = await generateAccountLedger(PdfPageFormat.a4, parsedData);
+                                              Directory tempDir = await getTemporaryDirectory();
+                                              String fileName =
+                                                  ('LEDGER(${account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
+                                              String filePath = '${tempDir.path}/$fileName.pdf';
+                                              File file = File(filePath);
+                                              await file.writeAsBytes(pdfBytes);
+                                              downloadPdf(context, fileName, file);
+                                            } else if (value == 'excel') {
+                                              bool useClientTemplate = widget.isSubscription_Client() || widget.isSales_Client();
+                                              final excelBytes = await accountLedger_generateExcel(useClientTemplate, parsedData);
+                                              Directory tempDir = await getTemporaryDirectory();
+                                              String fileName =
+                                                  ('LEDGER(${account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
+                                              String filePath = '${tempDir.path}/$fileName.xlsx';
+                                              File file = File(filePath);
+                                              await file.writeAsBytes(excelBytes);
+                                              downloadExcel(context, fileName, file);
+                                            }
+                                          },
+                                          itemBuilder: (context) => [
+                                            PopupMenuItem(
+                                              value: 'pdf',
+                                              child: Row(
+                                                children: [
+                                                  Image.asset('assets/images/pdfdownload.png', width: 20, height: 20),
+                                                  const SizedBox(width: 10),
+                                                  const Text('Download PDF'),
+                                                ],
+                                              ),
+                                            ),
+                                            PopupMenuItem(
+                                              value: 'excel',
+                                              child: Row(
+                                                children: [
+                                                  Image.asset('assets/images/excel.png', width: 20, height: 20),
+                                                  const SizedBox(width: 10),
+                                                  const Text('Download Excel'),
+                                                ],
                                               ),
                                             ),
                                           ],
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 40),
-                                    MouseRegion(
-                                      cursor: SystemMouseCursors.click,
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          var parsedData = await widget.parsePDF_AccountLedger(
-                                            widget.isSubscription_Client(),
-                                            widget.isSales_Client(),
-                                          );
-
-                                          bool useClientTemplate = widget.isSubscription_Client() || widget.isSales_Client();
-
-                                          // Generate PDF bytes
-                                          final excelBytes = await generateExcel(useClientTemplate, parsedData);
-
-                                          // Generate unique filename with timestamp
-                                          Directory tempDir = await getTemporaryDirectory();
-                                          String fileName =
-                                              ('LEDGER(${account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
-                                          String filePath = '${tempDir.path}/$fileName.xlxs';
-                                          File file = File(filePath);
-                                          await file.writeAsBytes(excelBytes);
-                                          downloadExcel(context, fileName, file);
-                                        },
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Image.asset(height: 25, 'assets/images/excel.png'),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            const Text(
-                                              "Excel",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color.fromARGB(255, 143, 143, 143),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Image.asset(
+                                                    'assets/images/download.png',
+                                                    height: 25,
+                                                  ),
+                                                  const SizedBox(width: 4),
+                                                  const Icon(
+                                                    Icons.arrow_drop_down,
+                                                    size: 20,
+                                                    color: Color.fromARGB(255, 143, 143, 143),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                          ],
+                                              const SizedBox(height: 10),
+                                              const Text(
+                                                "Download",
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Color.fromARGB(255, 143, 143, 143),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -1381,21 +1365,20 @@ class _Account_ledger_filterState extends State<Account_ledger_filter> {
                 // const SizedBox(width: 8),
                 Obx(
                   () => SizedBox(
-                    child:
-                        account_LedgerController.account_LedgerModel.startDateController.value.text.isNotEmpty || account_LedgerController.account_LedgerModel.endDateController.value.text.isNotEmpty
-                            ? TextButton(
-                                onPressed: () {
-                                  account_LedgerController.account_LedgerModel.selectedMonth.value = 'None';
-                                  account_LedgerController.account_LedgerModel.startDateController.value.clear();
-                                  account_LedgerController.account_LedgerModel.endDateController.value.clear();
-                                  account_LedgerController.account_LedgerModel.selectedMonth.refresh();
-                                  account_LedgerController.account_LedgerModel.startDateController.refresh();
-                                  account_LedgerController.account_LedgerModel.endDateController.refresh();
-                                  // widget.get_Account_LedgerList();
-                                },
-                                child: const Text('Clear', style: TextStyle(fontSize: Primary_font_size.Text7)),
-                              )
-                            : const SizedBox(),
+                    child: account_LedgerController.account_LedgerModel.startDateController.value.text.isNotEmpty || account_LedgerController.account_LedgerModel.endDateController.value.text.isNotEmpty
+                        ? TextButton(
+                            onPressed: () {
+                              account_LedgerController.account_LedgerModel.selectedMonth.value = 'None';
+                              account_LedgerController.account_LedgerModel.startDateController.value.clear();
+                              account_LedgerController.account_LedgerModel.endDateController.value.clear();
+                              account_LedgerController.account_LedgerModel.selectedMonth.refresh();
+                              account_LedgerController.account_LedgerModel.startDateController.refresh();
+                              account_LedgerController.account_LedgerModel.endDateController.refresh();
+                              // widget.get_Account_LedgerList();
+                            },
+                            child: const Text('Clear', style: TextStyle(fontSize: Primary_font_size.Text7)),
+                          )
+                        : const SizedBox(),
                   ),
                 ),
                 const Spacer(),

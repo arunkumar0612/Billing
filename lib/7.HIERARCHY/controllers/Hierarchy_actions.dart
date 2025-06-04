@@ -8,14 +8,59 @@ class HierarchyController extends GetxController {
 
   void add_Org(CMDmResponse value) {
     hierarchyModel.OrganizationList.value = OrganizationResponse.fromCMDmResponse(value);
+    hierarchyModel.backup_OrganizationList.value = OrganizationResponse.fromCMDmResponse(value);
   }
 
   void add_Comp(CMDmResponse value) {
     hierarchyModel.CompanyList.value = CompanyResponse.fromCMDmResponse(value);
+    hierarchyModel.backup_CompanyList.value = CompanyResponse.fromCMDmResponse(value);
   }
 
   void add_Branch(CMDmResponse value) {
     hierarchyModel.BranchList.value = BranchResponse.fromCMDmResponse(value);
+    hierarchyModel.backup_BranchList.value = BranchResponse.fromCMDmResponse(value);
+  }
+
+  void search(String query) {
+    hierarchyModel.searchQuery.value = query;
+    // hierarchyModel.searchQuery.value = query;
+//////////////////////////////////////////////////////////ORGANIZATION/////////////////////////////////////////////////////////
+    if (query.isEmpty) {
+      hierarchyModel.OrganizationList.value.Demo.assignAll(hierarchyModel.backup_OrganizationList.value.Demo);
+      hierarchyModel.OrganizationList.value.Live.assignAll(hierarchyModel.backup_OrganizationList.value.Live);
+    } else {
+      var filtered_OrgLive = hierarchyModel.backup_OrganizationList.value.Live.where((liv) => liv.organizationName!.toLowerCase().contains(query.toLowerCase()));
+      var filtered_OrgDemo = hierarchyModel.backup_OrganizationList.value.Demo.where((dem) => dem.organizationName!.toLowerCase().contains(query.toLowerCase()));
+
+      hierarchyModel.OrganizationList.value.Demo.assignAll(filtered_OrgDemo);
+      hierarchyModel.OrganizationList.value.Live.assignAll(filtered_OrgLive);
+    }
+    hierarchyModel.OrganizationList.refresh();
+/////////////////////////////////////////////////////////////COMPANY/////////////////////////////////////////////////////////
+    if (query.isEmpty) {
+      hierarchyModel.CompanyList.value.Demo.assignAll(hierarchyModel.backup_CompanyList.value.Demo);
+      hierarchyModel.CompanyList.value.Live.assignAll(hierarchyModel.backup_CompanyList.value.Live);
+    } else {
+      var filtered_CompLive = hierarchyModel.backup_CompanyList.value.Live.where((liv) => liv.customerName!.toLowerCase().contains(query.toLowerCase()));
+      var filtered_CompDemo = hierarchyModel.backup_CompanyList.value.Demo.where((dem) => dem.customerName!.toLowerCase().contains(query.toLowerCase()));
+
+      hierarchyModel.CompanyList.value.Demo.assignAll(filtered_CompDemo);
+      hierarchyModel.CompanyList.value.Live.assignAll(filtered_CompLive);
+    }
+    hierarchyModel.CompanyList.refresh();
+/////////////////////////////////////////////////////////////BRANCH/////////////////////////////////////////////////////////
+
+    if (query.isEmpty) {
+      hierarchyModel.BranchList.value.Demo.assignAll(hierarchyModel.backup_BranchList.value.Demo);
+      hierarchyModel.BranchList.value.Live.assignAll(hierarchyModel.backup_BranchList.value.Live);
+    } else {
+      var filtered_BranchLive = hierarchyModel.backup_BranchList.value.Live.where((liv) => liv.branchName!.toLowerCase().contains(query.toLowerCase()));
+      var filtered_BranchDemo = hierarchyModel.backup_BranchList.value.Demo.where((dem) => dem.branchName!.toLowerCase().contains(query.toLowerCase()));
+
+      hierarchyModel.BranchList.value.Demo.assignAll(filtered_BranchDemo);
+      hierarchyModel.BranchList.value.Live.assignAll(filtered_BranchLive);
+    }
+    hierarchyModel.BranchList.refresh();
   }
 
   dynamic onCompSelected(CompanyResponse data, int selectedIndex, String type) {

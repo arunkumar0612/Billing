@@ -53,7 +53,7 @@ mixin main_BillingService {
     }
   }
 
-  Future<void> Get_Mainbilling_SALEScustomerList(BuildContext context) async {
+  Future<void> Get_Mainbilling_SALEScustomerList() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_ledgerSalesCustomers);
       if (response?['statusCode'] == 200) {
@@ -66,7 +66,7 @@ mixin main_BillingService {
           if (kDebugMode) {
             print("error : ${value.message}");
           }
-          await Error_dialog(context: context, title: 'Sales List', content: value.message ?? 'Error');
+          // await Error_dialog(context: context, title: 'Sales List', content: value.message ?? 'Error');
           // await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
@@ -84,7 +84,7 @@ mixin main_BillingService {
     }
   }
 
-  void get_SubscriptionInvoiceList(BuildContext context) async {
+  void get_SubscriptionInvoiceList() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({
         "plantype": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.plantype.value.toLowerCase() == 'show all'
@@ -113,13 +113,16 @@ mixin main_BillingService {
           // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
           // clientreqController.update_OrganizationList(value);
         } else {
-          await Error_dialog(context: context, title: 'Subscription invoice List Error', content: value.message ?? "", onOk: () {});
+          print('Subscription invoice List Error');
+          // await Error_dialog(context: context, title: 'Subscription invoice List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        print("SERVER DOWN -- Please contact administration!");
+        // Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Error_dialog(context: context, title: "ERROR", content: "$e");
+      print('ERROR -- $e');
+      // Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
@@ -303,7 +306,7 @@ mixin main_BillingService {
     }
   }
 
-  void get_SalesInvoiceList(BuildContext context) async {
+  void get_SalesInvoiceList() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({
         "paymentstatus": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value.toLowerCase() == 'show all'
@@ -330,17 +333,23 @@ mixin main_BillingService {
           // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
           // clientreqController.update_OrganizationList(value);
         } else {
-          await Error_dialog(context: context, title: 'Fetching Organization List Error', content: value.message ?? "", onOk: () {});
+          print('Fetching Organization List Error');
+
+          // await Error_dialog(context: context, title: 'Fetching Organization List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        print("SERVER DOWN -- Please contact administration!");
+
+        // Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      Error_dialog(context: context, title: "ERROR", content: "$e");
+      print('ERROR -- $e');
+
+      // Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 
-  Future<bool> GetSalesPDFfile({
+  Future<bool> Get_SalesPDFfile({
     required BuildContext context,
     required String invoiceNo,
   }) async {
@@ -1001,10 +1010,10 @@ mixin main_BillingService {
     );
   }
 
-  Future<void> billing_refresh(BuildContext context) async {
+  Future<void> billing_refresh() async {
     // salesController.resetData();
-    get_SubscriptionInvoiceList(context);
-    get_SalesInvoiceList(context);
+    get_SubscriptionInvoiceList();
+    get_SalesInvoiceList();
   }
 
   Future<void> selectfilterDate(BuildContext context, TextEditingController controller) async {

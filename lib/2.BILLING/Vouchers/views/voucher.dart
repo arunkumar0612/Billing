@@ -2289,7 +2289,7 @@ class _VoucherState extends State<Voucher> {
                                                             showPDF(context, voucher.invoiceNumber, mainBilling_Controller.billingModel.pdfFile.value);
                                                           }
                                                         } else if (voucher.invoiceType == 'sales') {
-                                                          bool success = await widget.GetSalesPDFfile(context: context, invoiceNo: voucher.invoiceNumber);
+                                                          bool success = await widget.Get_SalesPDFfile(context: context, invoiceNo: voucher.invoiceNumber);
                                                           if (success) {
                                                             showPDF(context, voucher.invoiceNumber, mainBilling_Controller.billingModel.pdfFile.value);
                                                           }

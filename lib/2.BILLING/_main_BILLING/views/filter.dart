@@ -257,8 +257,8 @@ class _FilterScreenState extends State<FilterScreen> {
                                                     mainBilling_Controller.billingModel.selectedsubcustomer.value = 'None';
                                                     mainBilling_Controller.billingModel.selectedcustomerID.value = 'None';
 
-                                                    widget.get_SubscriptionInvoiceList(context);
-                                                    widget.get_SalesInvoiceList(context);
+                                                    widget.get_SubscriptionInvoiceList();
+                                                    widget.get_SalesInvoiceList();
                                                   },
                                                   icon: const Icon(Icons.close, color: Colors.red, size: 18),
                                                 )
@@ -475,8 +475,8 @@ class _FilterScreenState extends State<FilterScreen> {
                   OutlinedButton(
                     onPressed: () {
                       widget.resetmainbilling_Filters();
-                      widget.get_SubscriptionInvoiceList(context);
-                      widget.get_SalesInvoiceList(context);
+                      widget.get_SubscriptionInvoiceList();
+                      widget.get_SalesInvoiceList();
                       Navigator.pop(context);
                     },
                     style: OutlinedButton.styleFrom(
@@ -490,8 +490,8 @@ class _FilterScreenState extends State<FilterScreen> {
                   ElevatedButton(
                     onPressed: () async {
                       widget.assignmainbilling_Filters();
-                      widget.get_SubscriptionInvoiceList(context);
-                      widget.get_SalesInvoiceList(context);
+                      widget.get_SubscriptionInvoiceList();
+                      widget.get_SalesInvoiceList();
                       Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(

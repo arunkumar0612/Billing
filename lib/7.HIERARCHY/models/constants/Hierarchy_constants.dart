@@ -11,7 +11,9 @@ class HierarchyModel extends GetxController with GetSingleTickerProviderStateMix
   var Org_DataPageView = false.obs;
   var Org_cardCount = 5.obs;
   var OrganizationList = OrganizationResponse(Live: [], Demo: []).obs;
+  var backup_OrganizationList = OrganizationResponse(Live: [], Demo: []).obs;
   var selectedOrgDetails = OrganizationsData().obs;
+  var searchQuery = "".obs;
 
   var org_IdController = TextEditingController().obs;
   var org_emailIdController = TextEditingController().obs;
@@ -22,12 +24,13 @@ class HierarchyModel extends GetxController with GetSingleTickerProviderStateMix
   var org_contactnoController = TextEditingController().obs;
   var org_contactpersonController = TextEditingController().obs;
 
-///////////////////////////////-----------------------------ORGANOZATION--------------------------------///////////////////////////////
+///////////////////////////////-----------------------------ORGANIZATION--------------------------------///////////////////////////////
   late AnimationController Comp_controller;
   var Comp_DataPageView = false.obs;
   var Comp_cardCount = 5.obs;
   var selectedCompDetails = CompanysData().obs;
   var CompanyList = CompanyResponse(Live: [], Demo: []).obs;
+  var backup_CompanyList = CompanyResponse(Live: [], Demo: []).obs;
 
   var comp_IdController = TextEditingController().obs;
   var comp_NameController = TextEditingController().obs;
@@ -48,6 +51,7 @@ class HierarchyModel extends GetxController with GetSingleTickerProviderStateMix
   var Branch_cardCount = 5.obs;
   var selectedBranchDetails = BranchsData().obs;
   var BranchList = BranchResponse(Live: [], Demo: []).obs;
+  var backup_BranchList = BranchResponse(Live: [], Demo: []).obs;
 
   var branch_IdController = TextEditingController().obs;
   var branch_NameController = TextEditingController().obs;

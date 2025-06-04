@@ -56,7 +56,8 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     widget.Get_Mainbilling_SUBcustomerList();
-    widget.Get_Mainbilling_SALEScustomerList(context);
+    widget.Get_Mainbilling_SALEScustomerList();
+    mainBilling_Controller.setActiveTab('Subscription');
     mainBilling_Controller.billingModel.animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -67,14 +68,14 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
   void didChangeDependencies() {
     super.didChangeDependencies();
     widget.GetDashboardData();
-    widget.get_SubscriptionInvoiceList(context);
-    widget.get_SalesInvoiceList(context);
+    widget.get_SubscriptionInvoiceList();
+    widget.get_SalesInvoiceList();
   }
 
   void _startAnimation() {
     if (!mainBilling_Controller.billingModel.animationController.isAnimating) {
       mainBilling_Controller.billingModel.animationController.forward(from: 0).then((_) {
-        widget.billing_refresh(context);
+        widget.billing_refresh();
       });
     }
   }
@@ -797,8 +798,8 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                   mainBilling_Controller.billingModel.selectedInvoiceType.value = 'Vendor';
                                 }
                                 widget.resetmainbilling_Filters();
-                                widget.get_SalesInvoiceList(context);
-                                widget.get_SubscriptionInvoiceList(context);
+                                widget.get_SalesInvoiceList();
+                                widget.get_SubscriptionInvoiceList();
                               },
                               tabs: const [
                                 Text('Subscription'),
@@ -1728,7 +1729,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 cursor: SystemMouseCursors.click,
                                 child: GestureDetector(
                                   onTap: () async {
-                                    bool success = await widget.GetSalesPDFfile(context: context, invoiceNo: mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceNumber);
+                                    bool success = await widget.Get_SalesPDFfile(context: context, invoiceNo: mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceNumber);
                                     if (success) {
                                       showPDF(context, mainBilling_Controller.billingModel.salesInvoiceList[index].invoiceNumber, mainBilling_Controller.billingModel.pdfFile.value);
                                     }
@@ -2143,8 +2144,8 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
             mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.plantype.value,
             onRemove: () async {
               mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.plantype.value = 'Show All';
-              widget.get_SalesInvoiceList(context);
-              widget.get_SubscriptionInvoiceList(context);
+              widget.get_SalesInvoiceList();
+              widget.get_SubscriptionInvoiceList();
             },
           ),
         if (mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value != 'Show All')
@@ -2160,8 +2161,8 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                       onRemove: () async {
                         mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedsalescustomername.value = 'None';
                         mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value = '';
-                        widget.get_SalesInvoiceList(context);
-                        widget.get_SubscriptionInvoiceList(context);
+                        widget.get_SalesInvoiceList();
+                        widget.get_SubscriptionInvoiceList();
                       },
                     ),
                   ],
@@ -2176,8 +2177,8 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                       onRemove: () async {
                         mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedsubscriptioncustomername.value = 'None';
                         mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value = '';
-                        widget.get_SalesInvoiceList(context);
-                        widget.get_SubscriptionInvoiceList(context);
+                        widget.get_SalesInvoiceList();
+                        widget.get_SubscriptionInvoiceList();
                       },
                     ),
                   ],
@@ -2189,8 +2190,8 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
             mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value,
             onRemove: () async {
               mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value = 'Show All';
-              widget.get_SalesInvoiceList(context);
-              widget.get_SubscriptionInvoiceList(context);
+              widget.get_SalesInvoiceList();
+              widget.get_SubscriptionInvoiceList();
             },
           ),
         const SizedBox(width: 5),

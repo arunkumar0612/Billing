@@ -19,21 +19,12 @@ import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_excel_template/TDS_l
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
-<<<<<<< HEAD
-import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/downloadPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/printPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/sharePDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/showPDF.dart';
-=======
-import 'package:ssipl_billing/COMPONENTS-/downloadPDF.dart';
-import 'package:ssipl_billing/COMPONENTS-/printPDF.dart';
-import 'package:ssipl_billing/COMPONENTS-/sharePDF.dart';
-import 'package:ssipl_billing/COMPONENTS-/showPDF.dart';
->>>>>>> c4a42389a02c86779fb0791025cf714816b3e649
+import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
-
-import '../../../THEMES/style.dart';
 
 class TDSLedger extends StatefulWidget with TDS_LedgerService, View_LedgerService, main_BillingService {
   TDSLedger({super.key});
@@ -316,10 +307,11 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                       child: GestureDetector(
                                                         onTap: () async {
                                                           if (tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoiceType == 'subscription') {
-                                                            bool success =
-                                                                await widget.GetSubscriptionPDFfile(context: context, invoiceNo: tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number);
+                                                            bool success = await widget.GetSubscriptionPDFfile(
+                                                                context: context, invoiceNo: tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number);
                                                             if (success) {
-                                                              showPDF(context, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number, mainBilling_Controller.billingModel.pdfFile.value);
+                                                              showPDF(context, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number,
+                                                                  mainBilling_Controller.billingModel.pdfFile.value);
                                                             }
                                                           }
                                                         },

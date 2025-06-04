@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
@@ -274,7 +275,7 @@ class Package {
   RxBool editingMode = false.obs;
 
   // Temp values for editing
-  RxString tempName = ''.obs;
+  late TextEditingController tempName;
   RxString tempDescription = ''.obs;
   RxString tempcameracount = ''.obs;
   RxString tempAmount = ''.obs;
@@ -297,7 +298,7 @@ class Package {
     showSiteList = false.obs;
     editingMode = false.obs;
 
-    tempName = name.obs;
+    tempName = TextEditingController(text: name);
     tempDescription = description.obs;
     tempcameracount = cameracount.obs;
     tempAmount = amount.obs;
@@ -333,7 +334,7 @@ class Package {
 
   // Save changes from temp fields
   void saveChanges() {
-    name = tempName.value;
+    name = tempName.text;
     description = tempDescription.value;
     cameracount = tempcameracount.value;
     amount = tempAmount.value;
@@ -344,7 +345,7 @@ class Package {
 
   // Cancel edit
   void cancelEditing() {
-    tempName.value = name;
+    tempName.text = name;
     tempDescription.value = description;
     tempcameracount.value = cameracount;
     tempAmount.value = amount;

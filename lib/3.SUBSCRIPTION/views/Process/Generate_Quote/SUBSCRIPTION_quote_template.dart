@@ -126,7 +126,7 @@ class SUBSCRIPTION_Quotation {
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: regular(instQuote.quoteNo, 10),
+                            child: bold(instQuote.quoteNo, 10),
                           ),
                         ),
                       ],
@@ -314,7 +314,7 @@ class SUBSCRIPTION_Quotation {
         0: pw.Alignment.centerLeft,
         1: pw.Alignment.centerLeft,
         2: pw.Alignment.centerLeft,
-        3: pw.Alignment.center,
+        3: pw.Alignment.centerLeft,
         4: pw.Alignment.centerLeft,
         5: pw.Alignment.center,
         6: pw.Alignment.center,
@@ -325,7 +325,7 @@ class SUBSCRIPTION_Quotation {
         0: pw.Alignment.centerLeft,
         1: pw.Alignment.centerLeft,
         2: pw.Alignment.centerLeft,
-        3: pw.Alignment.center,
+        3: pw.Alignment.centerLeft,
         4: pw.Alignment.centerLeft,
         5: pw.Alignment.center,
         6: pw.Alignment.center,

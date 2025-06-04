@@ -229,91 +229,93 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
   }
 
   Widget _buildPendingSitesSection() {
-    return Obx(() {
-      // Get all sites that aren't assigned to any package
-      final pendingSites = quoteController.quoteModel.QuoteSiteDetails.where((site) {
-        return !quoteController.quoteModel.selectedPackagesList.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.sitename == site.sitename));
-      }).toList();
+    return Obx(
+      () {
+        // Get all sites that aren't assigned to any package
+        final pendingSites = quoteController.quoteModel.QuoteSiteDetails.where((site) {
+          return !quoteController.quoteModel.selectedPackagesList.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.sitename == site.sitename));
+        }).toList();
 
-      // Check if all sites are assigned
-      // final allSitesAssigned = pendingSites.isEmpty;
+        // Check if all sites are assigned
+        // final allSitesAssigned = pendingSites.isEmpty;
 
-      return Container(
-        decoration: BoxDecoration(
-          color: Primary_colors.Dark,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * 0.3,
+        return Container(
+          decoration: BoxDecoration(
+            color: Primary_colors.Dark,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    Text(
-                      'Pending Sites',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                            color: Primary_colors.Color1,
-                            fontWeight: FontWeight.bold,
-                            fontSize: Primary_font_size.Text10,
-                          ),
-                    ),
-                    const SizedBox(height: 15),
-                    Expanded(
-                      child: pendingSites.isEmpty
-                          ? Center(
-                              child: Text(
-                                'No pending sites',
-                                style: TextStyle(
-                                  color: Colors.grey[400],
-                                  fontSize: 16,
+            ],
+          ),
+          child: Column(
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.3,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Pending Sites',
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                              color: Primary_colors.Color1,
+                              fontWeight: FontWeight.bold,
+                              fontSize: Primary_font_size.Text10,
+                            ),
+                      ),
+                      const SizedBox(height: 15),
+                      Expanded(
+                        child: pendingSites.isEmpty
+                            ? Center(
+                                child: Text(
+                                  'No pending sites',
+                                  style: TextStyle(
+                                    color: Colors.grey[400],
+                                    fontSize: 16,
+                                  ),
                                 ),
-                              ),
-                            )
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: pendingSites.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 5),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Primary_colors.Light,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        '${index + 1} . ${pendingSites[index].sitename}',
-                                        style: const TextStyle(
-                                          color: Color.fromARGB(255, 181, 181, 181),
-                                          fontSize: Primary_font_size.Text8,
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: pendingSites.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 5),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Primary_colors.Light,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          '${index + 1} . ${pendingSites[index].sitename}',
+                                          style: const TextStyle(
+                                            color: Color.fromARGB(255, 181, 181, 181),
+                                            fontSize: Primary_font_size.Text8,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
-                    ),
-                  ],
+                                  );
+                                },
+                              ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      );
-    });
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildBottomSection() {
@@ -345,30 +347,32 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
               },
             ),
             const SizedBox(width: 30),
-            Obx(() {
-              final pendingSites = quoteController.quoteModel.QuoteSiteDetails.where((site) {
-                return !quoteController.quoteModel.selectedPackagesList.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.sitename == site.sitename));
-              }).toList();
-              final hasPackages = quoteController.quoteModel.selectedPackagesList.isNotEmpty && pendingSites.isEmpty;
-              return BasicButton(
-                  colors: hasPackages ? Colors.green : Colors.grey,
-                  text: 'Submit',
-                  onPressed: () {
-                    if (hasPackages) {
-                      quoteController.nextTab();
-                    } else {
-                      Get.snackbar("WARNING", "Please ensure the all sites have mapped to packages!");
-                    }
+            Obx(
+              () {
+                final pendingSites = quoteController.quoteModel.QuoteSiteDetails.where((site) {
+                  return !quoteController.quoteModel.selectedPackagesList.any((pkg) => pkg.sites.any((pkgSite) => pkgSite.sitename == site.sitename));
+                }).toList();
+                final hasPackages = quoteController.quoteModel.selectedPackagesList.isNotEmpty && pendingSites.isEmpty;
+                return BasicButton(
+                    colors: hasPackages ? Colors.green : Colors.grey,
+                    text: 'Submit',
+                    onPressed: () {
+                      if (hasPackages) {
+                        quoteController.nextTab();
+                      } else {
+                        Get.snackbar("WARNING", "Please ensure the all sites have mapped to packages!");
+                      }
 
-                    // print(quoteController.quoteModel.selectedPackagesList[0].sites[0].mailType);
-                  }
-                  //  hasPackages
-                  //     ? () {
-                  //         quoteController.submitPackages();
-                  //       }
-                  //     : null,
-                  );
-            }),
+                      // print(quoteController.quoteModel.selectedPackagesList[0].sites[0].mailType);
+                    }
+                    //  hasPackages
+                    //     ? () {
+                    //         quoteController.submitPackages();
+                    //       }
+                    //     : null,
+                    );
+              },
+            ),
           ],
         ),
       ],
@@ -685,7 +689,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
     // Initialize edit mode controller if not exists
     if (!package.editingMode.value) {
       package.editingMode.value = false;
-      package.tempName.value = details.name;
+      package.tempName.text = details.name;
       package.tempcameracount.value = details.cameracount;
       package.tempAmount.value = details.amount;
       // package.tempAdditionalCameras.value = details['additional_cameras'];
@@ -703,7 +707,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                     onPressed: () {
                       if (package.editingMode.value) {
                         // Cancel editing - reset temp values
-                        package.tempName.value = details.name;
+                        package.tempName.text = details.name;
                         package.tempcameracount.value = details.cameracount;
                         package.tempAmount.value = details.amount;
                         // package.tempAdditionalCameras.value = details['additional_cameras'];
@@ -747,8 +751,8 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                             isCustomPackage && package.editingMode.value
                                 ? Expanded(
                                     child: TextField(
-                                      controller: TextEditingController(text: package.tempName.value),
-                                      onChanged: (value) => package.tempName.value = value,
+                                      controller: package.tempName,
+                                      onChanged: (value) => package.tempName.text = value,
                                       decoration: const InputDecoration(
                                         isDense: true,
                                         contentPadding: EdgeInsets.zero,
@@ -836,7 +840,7 @@ class _SUBSCRIPTION_QuotePackageState extends State<SUBSCRIPTION_QuotePackage> w
                     child: ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          package.name = package.tempName.value;
+                          package.name = package.tempName.text;
                           package.cameracount = package.tempcameracount.value;
                           package.amount = package.tempAmount.value;
                           // package.additionalCameras = package.tempAdditionalCameras.value;

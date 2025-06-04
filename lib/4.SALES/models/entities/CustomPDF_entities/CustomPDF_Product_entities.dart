@@ -70,8 +70,7 @@ class CustomPDF_InvoiceProduct {
         products.map<Map<String, dynamic>>((product) => product.toJson()).toList(),
       );
 
-  static List<CustomPDF_InvoiceProduct> decode(String productsJson) =>
-      (json.decode(productsJson) as List<dynamic>).map<CustomPDF_InvoiceProduct>((item) => CustomPDF_InvoiceProduct.fromJson(item)).toList();
+  static List<CustomPDF_InvoiceProduct> decode(String productsJson) => (json.decode(productsJson) as List<dynamic>).map<CustomPDF_InvoiceProduct>((item) => CustomPDF_InvoiceProduct.fromJson(item)).toList();
 }
 
 class Post_CustomInvoice {

@@ -118,10 +118,12 @@ class customerDetailsState extends State<customerDetails> {
                               widget.on_Orgselected(context, newValue);
                             },
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please Select customer type';
+                              if (clientreqController.clientReqModel.Company_Controller.value == "" || clientreqController.clientReqModel.Company_Controller.value == null) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please Select customer type';
+                                }
+                                return null;
                               }
-                              return null;
                             },
                           ),
                         ),

@@ -106,12 +106,14 @@ class enquryDetailsState extends State<enquryDetails> {
                                     clientreqController.updateOrgName(newValue!);
                                     widget.on_Orgselected(context, newValue);
                                   },
-                                  // validator: (value) {
-                                  //   if (value == null || value.isEmpty) {
-                                  //     return 'Please Select customer type';
-                                  //   }
-                                  //   return null;
-                                  // },
+                                  validator: (value) {
+                                    if (clientreqController.clientReqModel.Companyname_Controller.value == "" || clientreqController.clientReqModel.Companyname_Controller.value == null) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please Select customer type';
+                                      }
+                                      return null;
+                                    }
+                                  },
                                 ),
                               ),
                             if (clientreqController.clientReqModel.customerType.value == 'Existing') const SizedBox(height: 25),

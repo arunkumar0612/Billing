@@ -2429,7 +2429,7 @@ class _VoucherState extends State<Voucher> {
                                                 Expanded(
                                                   flex: 2,
                                                   child: Text(
-                                                    voucher.gstNumber,
+                                                    voucher.gstNumber == "" ? '-' : voucher.gstNumber,
                                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                   ),
                                                 ),
@@ -2938,7 +2938,7 @@ class _VoucherState extends State<Voucher> {
                                                   Expanded(
                                                     flex: 2,
                                                     child: Text(
-                                                      voucher.gstNumber,
+                                                      voucher.gstNumber == "" ? '-' : voucher.gstNumber,
                                                       textAlign: TextAlign.center,
                                                       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                     ),

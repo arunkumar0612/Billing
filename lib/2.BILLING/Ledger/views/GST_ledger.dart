@@ -11,7 +11,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/GST_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
-// import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/GST_ledger_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/services/GST_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_PDF_template/GST_ledger_pdf_template.dart';
@@ -358,10 +357,11 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                       child: GestureDetector(
                                                         onTap: () async {
                                                           if (gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoiceType == 'subscription') {
-                                                            bool success =
-                                                                await widget.GetSubscriptionPDFfile(context: context, invoiceNo: gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number);
+                                                            bool success = await widget.GetSubscriptionPDFfile(
+                                                                context: context, invoiceNo: gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number);
                                                             if (success) {
-                                                              showPDF(context, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number, mainBilling_Controller.billingModel.pdfFile.value);
+                                                              showPDF(context, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number,
+                                                                  mainBilling_Controller.billingModel.pdfFile.value);
                                                             }
                                                           }
                                                         },
@@ -565,7 +565,8 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputGst), textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputGst),
+                                                    textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                             ],
                                           ),
@@ -593,7 +594,8 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputGst), textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputGst),
+                                                    textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                             ],
                                           ),
@@ -1084,7 +1086,7 @@ class _GSTLedgerState extends State<GSTLedger> {
   }
 }
 
-class GST_ledger_filter extends StatefulWidget with GST_LedgerService {
+class GST_ledger_filter extends StatefulWidget with GST_LedgerService, main_BillingService {
   GST_ledger_filter({super.key});
 
   @override
@@ -1500,7 +1502,7 @@ class _GST_ledger_filterState extends State<GST_ledger_filter> {
                         controller: GST_ledgerController.gst_LedgerModel.startDateController.value,
                         readOnly: true,
                         onTap: () async {
-                          await widget.selectfilterDate(context, GST_ledgerController.gst_LedgerModel.startDateController.value);
+                          await widget.select_previousDates(context, GST_ledgerController.gst_LedgerModel.startDateController.value);
                           // await widget.get_GST_ledgerList();
                           GST_ledgerController.gst_LedgerModel.startDateController.refresh();
                         },
@@ -1531,7 +1533,7 @@ class _GST_ledger_filterState extends State<GST_ledger_filter> {
                         controller: GST_ledgerController.gst_LedgerModel.endDateController.value,
                         readOnly: true,
                         onTap: () async {
-                          await widget.selectfilterDate(context, GST_ledgerController.gst_LedgerModel.endDateController.value);
+                          await widget.select_previousDates(context, GST_ledgerController.gst_LedgerModel.endDateController.value);
                           GST_ledgerController.gst_LedgerModel.endDateController.refresh();
                           // await widget.get_GST_ledgerList();
                         },

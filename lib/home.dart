@@ -170,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(Icons.select_all_rounded), // Inventory Icon
                 ),
                 SideMenuItem(
-                  title: 'LOGOUT',
+                  title: 'LOG OUT',
                   onTap: (index, _) {
                     showDialog(
                       context: context,

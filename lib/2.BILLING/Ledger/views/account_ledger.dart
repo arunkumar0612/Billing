@@ -24,6 +24,7 @@ import 'package:ssipl_billing/COMPONENTS-/PDF_methods/printPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/sharePDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/showPDF.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
+
 import '../../../THEMES/style.dart';
 
 class AccountLedger extends StatefulWidget with Account_LedgerService, main_BillingService, View_LedgerService {
@@ -1392,20 +1393,21 @@ class _Account_ledger_filterState extends State<Account_ledger_filter> {
                 // const SizedBox(width: 8),
                 Obx(
                   () => SizedBox(
-                    child: account_LedgerController.account_LedgerModel.startDateController.value.text.isNotEmpty || account_LedgerController.account_LedgerModel.endDateController.value.text.isNotEmpty
-                        ? TextButton(
-                            onPressed: () {
-                              account_LedgerController.account_LedgerModel.selectedMonth.value = 'None';
-                              account_LedgerController.account_LedgerModel.startDateController.value.clear();
-                              account_LedgerController.account_LedgerModel.endDateController.value.clear();
-                              account_LedgerController.account_LedgerModel.selectedMonth.refresh();
-                              account_LedgerController.account_LedgerModel.startDateController.refresh();
-                              account_LedgerController.account_LedgerModel.endDateController.refresh();
-                              // widget.get_Account_LedgerList();
-                            },
-                            child: const Text('Clear', style: TextStyle(fontSize: Primary_font_size.Text7)),
-                          )
-                        : const SizedBox(),
+                    child:
+                        account_LedgerController.account_LedgerModel.startDateController.value.text.isNotEmpty || account_LedgerController.account_LedgerModel.endDateController.value.text.isNotEmpty
+                            ? TextButton(
+                                onPressed: () {
+                                  account_LedgerController.account_LedgerModel.selectedMonth.value = 'None';
+                                  account_LedgerController.account_LedgerModel.startDateController.value.clear();
+                                  account_LedgerController.account_LedgerModel.endDateController.value.clear();
+                                  account_LedgerController.account_LedgerModel.selectedMonth.refresh();
+                                  account_LedgerController.account_LedgerModel.startDateController.refresh();
+                                  account_LedgerController.account_LedgerModel.endDateController.refresh();
+                                  // widget.get_Account_LedgerList();
+                                },
+                                child: const Text('Clear', style: TextStyle(fontSize: Primary_font_size.Text7)),
+                              )
+                            : const SizedBox(),
                   ),
                 ),
                 const Spacer(),

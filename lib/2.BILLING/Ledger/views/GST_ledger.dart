@@ -19,7 +19,6 @@ import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_excel_template/GST_l
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
-import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/downloadPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/printPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/sharePDF.dart';
@@ -909,6 +908,37 @@ class _GSTLedgerState extends State<GSTLedger> {
                                       ),
                                     ),
 
+                                    const SizedBox(width: 40),
+                                    MouseRegion(
+                                      cursor: SystemMouseCursors.click,
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
+                                          String fileName =
+                                              ('GST_LEDGER(${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
+                                          final directory = await getTemporaryDirectory();
+                                          final filePath = '${directory.path}/$fileName.pdf';
+                                          final pdfFile = await File(filePath).writeAsBytes(pdfBytes);
+                                          showPDF(context, fileName, pdfFile);
+                                        },
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Image.asset(height: 30, 'assets/images/pdfdownload.png'),
+                                            const SizedBox(height: 5),
+                                            const Text(
+                                              "View",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color.fromARGB(255, 143, 143, 143),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ), // Space between buttons
+                                    // Download Button
                                     const SizedBox(width: 40), // Space between buttons
 
                                     MouseRegion(

@@ -351,6 +351,7 @@ mixin SubscriptionServices {
           _subscriptionController.subscriptionModel.processcustomerList.clear();
           // print(value.data);
           _subscriptionController.addToProcesscustomerList(value);
+          subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
 
           // _subscriptionController.updatecustomerId(_subscriptionController.subscriptionModel.processcustomerList[_subscriptionController.subscriptionModel.showcustomerprocess.value!].customerId);
         } else {
@@ -383,6 +384,7 @@ mixin SubscriptionServices {
           _subscriptionController.subscriptionModel.recurredcustomerList.clear();
           // print(value.data);
           _subscriptionController.addToRecurredcustomerList(value);
+          subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
 
           // _subscriptionController.updatecustomerId(_subscriptionController.subscriptionModel.processcustomerList[_subscriptionController.subscriptionModel.showcustomerprocess.value!].customerId);
         } else {
@@ -422,6 +424,7 @@ mixin SubscriptionServices {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           _subscriptionController.addTo_RecuuringInvoiceList(value);
+          subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
         } else {
           if (kDebugMode) {
             print("error : ${value.message}");
@@ -455,6 +458,7 @@ mixin SubscriptionServices {
           _subscriptionController.subscriptionModel.processList.clear();
           // print(value.data);
           _subscriptionController.addToProcessList(value);
+          subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
         } else {
           if (kDebugMode) {
             print("error : ${value.message}");
@@ -577,6 +581,7 @@ mixin SubscriptionServices {
         if (value.code) {
           // print(value.data);
           _subscriptionController.updateSubscriptionData(value);
+          subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
         } else {
           if (kDebugMode) {
             print("error : ${value.message}");
@@ -652,6 +657,7 @@ mixin SubscriptionServices {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           _subscriptionController.addToCustompdfList(value);
+          subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
         } else {
           if (kDebugMode) {
             print("error : ${value.message}");

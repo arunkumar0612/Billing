@@ -45,6 +45,7 @@ mixin SalesServices {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           salesController.addToCustompdfList(value);
+          salesController.search(salesController.salesModel.searchQuery.value);
         } else {
           if (kDebugMode) {
             print("error : ${value.message}");
@@ -134,7 +135,7 @@ mixin SalesServices {
           // await Basic_dialog(context: context,showCancel: false, title: 'Processcustomer List', content: "Processcustomer List fetched successfully", onOk: () {});
           salesController.salesModel.processcustomerList.clear();
           salesController.addToProcesscustomerList(value);
-
+          salesController.search(salesController.salesModel.searchQuery.value);
           // salesController.updatecustomerId(salesController.salesModel.processcustomerList[salesController.salesModel.showcustomerprocess.value!].customerId);
         } else {
           if (kDebugMode) {
@@ -165,6 +166,7 @@ mixin SalesServices {
           // await Basic_dialog(context: context,showCancel: false, title: 'Process List', content: "Process List fetched successfully", onOk: () {});
           salesController.salesModel.processList.clear();
           salesController.addToProcessList(value);
+          salesController.search(salesController.salesModel.searchQuery.value);
         } else {
           if (kDebugMode) {
             print("error : ${value.message}");
@@ -276,6 +278,7 @@ mixin SalesServices {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
           salesController.updateSalesData(value);
+          salesController.search(salesController.salesModel.searchQuery.value);
         } else {
           if (kDebugMode) {
             print("error : ${value.message}");

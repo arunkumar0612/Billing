@@ -1,5 +1,6 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/1.DASHBOARD/views/dashboard.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/views/Billing.dart' show Billing;
@@ -9,6 +10,7 @@ import 'package:ssipl_billing/5.VENDOR/views/vendors.dart';
 import 'package:ssipl_billing/6.INVENTORY/views/inventory.dart';
 import 'package:ssipl_billing/7.HIERARCHY/views/Hierarchy.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/main.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -158,6 +160,25 @@ class _MyHomePageState extends State<MyHomePage> {
                     sideMenu.changePage(index);
                   },
                   icon: const Icon(Icons.groups_3), // Inventory Icon
+                ),
+                SideMenuItem(
+                  title: debugPaintSizeEnabled == false ? 'Overlay' : 'underlay',
+                  onTap: (index, _) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      debugPaintSizeEnabled = !debugPaintSizeEnabled;
+                      RestartWidget.restartApp(context); // Simulate hot restart
+                    });
+                  },
+
+                  icon: debugPaintSizeEnabled == false
+                      ? Icon(
+                          Icons.select_all_rounded,
+                          color: Colors.white,
+                        )
+                      : Icon(
+                          Icons.settings_overscan_sharp,
+                          color: Colors.amber,
+                        ), // Inventory Icon
                 ),
                 SideMenuItem(
                   title: 'LOGOUT',

@@ -1991,7 +1991,7 @@ class _VoucherState extends State<Voucher> {
                           height: 40,
                           child: TextFormField(
                             controller: voucherController.voucherModel.searchController.value,
-                            onChanged: (value) => widget.applySearchFilter(value),
+                            onChanged: (value) => widget.search(value),
                             style: const TextStyle(fontSize: 13, color: Colors.white),
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(1),

@@ -673,8 +673,44 @@ class _accountLedgerState extends State<AccountLedger> {
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(width: 40), // Space between buttons
+                                    const SizedBox(width: 40),
+                                    MouseRegion(
+                                      cursor: SystemMouseCursors.click,
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          var parsedData = await widget.parsePDF_AccountLedger(
+                                            widget.isSubscription_Client(),
+                                            widget.isSales_Client(),
+                                          );
+
+                                          final pdfBytes = await generateAccountLedger(PdfPageFormat.a4, parsedData);
+
+                                          String fileName =
+                                              ('LEDGER(${account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(account_ledgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
+                                          final directory = await getTemporaryDirectory();
+                                          final filePath = '${directory.path}/$fileName.pdf';
+                                          final pdfFile = await File(filePath).writeAsBytes(pdfBytes);
+                                          showPDF(context, fileName, pdfFile);
+                                        },
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Image.asset(height: 30, 'assets/images/pdfdownload.png'),
+                                            const SizedBox(height: 5),
+                                            const Text(
+                                              "View",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color.fromARGB(255, 143, 143, 143),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ), // Space between buttons
                                     // Download Button
+                                    const SizedBox(width: 40),
                                     MouseRegion(
                                       cursor: SystemMouseCursors.click,
                                       child: Theme(

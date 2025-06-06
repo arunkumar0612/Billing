@@ -1,5 +1,6 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/1.DASHBOARD/views/dashboard.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/views/Billing.dart' show Billing;
@@ -160,6 +161,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(Icons.groups_3), // Inventory Icon
                 ),
                 SideMenuItem(
+                  title: 'Overlay',
+                  onTap: (index, _) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      debugPaintSizeEnabled = !debugPaintSizeEnabled;
+                    });
+                  },
+                  icon: const Icon(Icons.select_all_rounded), // Inventory Icon
+                ),
+                SideMenuItem(
                   title: 'LOGOUT',
                   onTap: (index, _) {
                     showDialog(
@@ -199,9 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
             MouseRegion(
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
-                child: showfull
-                    ? const Text('>', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 22))
-                    : const Text('||', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 15)),
+                child: showfull ? const Text('>', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 22)) : const Text('||', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 15)),
                 onTap: () {
                   setState(() {
                     showfull = showfull ? false : true;

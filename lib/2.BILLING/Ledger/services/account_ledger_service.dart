@@ -41,6 +41,7 @@ mixin Account_LedgerService {
       CMDmResponse value = CMDmResponse.fromJson(response ?? {});
       if (value.code) {
         account_LedgerController.add_Account_Ledger(value);
+
         // print(account_LedgerController.account_LedgerModel.account_Ledger_list[0].billDetails);
         account_LedgerController.update();
       } else {

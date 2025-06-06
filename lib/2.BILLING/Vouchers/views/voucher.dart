@@ -1991,7 +1991,7 @@ class _VoucherState extends State<Voucher> {
                           height: 40,
                           child: TextFormField(
                             controller: voucherController.voucherModel.searchController.value,
-                            onChanged: (value) => widget.applySearchFilter(value),
+                            onChanged: (value) => widget.search(value),
                             style: const TextStyle(fontSize: 13, color: Colors.white),
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(1),
@@ -2163,11 +2163,14 @@ class _VoucherState extends State<Voucher> {
                           ),
                           const SizedBox(width: 3),
                           const Expanded(
-                            flex: 1,
-                            child: Text(
-                              'Amount',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+                            flex: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 15),
+                              child: Text(
+                                'Amount',
+                                textAlign: TextAlign.end,
+                                style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+                              ),
                             ),
                           ),
                           const SizedBox(width: 3),
@@ -2192,14 +2195,14 @@ class _VoucherState extends State<Voucher> {
                           const Expanded(
                             flex: 1,
                             child: Text(
-                              textAlign: TextAlign.right,
+                              textAlign: TextAlign.center,
                               'Status',
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
                           ),
                           const SizedBox(width: 3),
                           SizedBox(width: 125),
-                          SizedBox(width: 35),
+                          // SizedBox(width: 35),
                         ],
                       ),
                     ),
@@ -2428,17 +2431,24 @@ class _VoucherState extends State<Voucher> {
                                                 const SizedBox(width: 3),
                                                 Expanded(
                                                   flex: 2,
-                                                  child: Text(
-                                                    voucher.gstNumber == "" ? '-' : voucher.gstNumber,
-                                                    style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.only(right: 15),
+                                                    child: Text(
+                                                      voucher.gstNumber == "" ? '-' : voucher.gstNumber,
+                                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                    ),
                                                   ),
                                                 ),
                                                 const SizedBox(width: 3),
                                                 Expanded(
-                                                  flex: 1,
-                                                  child: Text(
-                                                    'Rs. ${formatCurrency(voucher.totalAmount)}',
-                                                    style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                  flex: 2,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.only(right: 15),
+                                                    child: Text(
+                                                      textAlign: TextAlign.end,
+                                                      'Rs. ${formatCurrency(voucher.totalAmount)}',
+                                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                    ),
                                                   ),
                                                 ),
                                                 const SizedBox(width: 3),
@@ -2549,7 +2559,7 @@ class _VoucherState extends State<Voucher> {
                                           ),
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.all(15.0),
+                                              padding: const EdgeInsets.all(10.0),
                                               child: Row(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
@@ -2945,10 +2955,14 @@ class _VoucherState extends State<Voucher> {
                                                   ),
                                                   const SizedBox(width: 3),
                                                   Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      'Rs. ${formatCurrency(voucher.totalAmount)}',
-                                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                    flex: 2,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(right: 15),
+                                                      child: Text(
+                                                        textAlign: TextAlign.end,
+                                                        'Rs. ${formatCurrency(voucher.totalAmount)}',
+                                                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                      ),
                                                     ),
                                                   ),
                                                   const SizedBox(width: 3),
@@ -2999,7 +3013,7 @@ class _VoucherState extends State<Voucher> {
                                                       ),
                                                     ),
                                                   ),
-                                                  const SizedBox(width: 13),
+                                                  const SizedBox(width: 3),
                                                   Align(
                                                     alignment: Alignment.centerRight,
                                                     child: SizedBox(

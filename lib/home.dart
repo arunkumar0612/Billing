@@ -10,6 +10,7 @@ import 'package:ssipl_billing/5.VENDOR/views/vendors.dart';
 import 'package:ssipl_billing/6.INVENTORY/views/inventory.dart';
 import 'package:ssipl_billing/7.HIERARCHY/views/Hierarchy.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
+import 'package:ssipl_billing/main.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -161,13 +162,23 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(Icons.groups_3), // Inventory Icon
                 ),
                 SideMenuItem(
-                  title: 'Overlay',
+                  title: debugPaintSizeEnabled == false ? 'Overlay' : 'underlay',
                   onTap: (index, _) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       debugPaintSizeEnabled = !debugPaintSizeEnabled;
+                      RestartWidget.restartApp(context); // Simulate hot restart
                     });
                   },
-                  icon: const Icon(Icons.select_all_rounded), // Inventory Icon
+
+                  icon: debugPaintSizeEnabled == false
+                      ? Icon(
+                          Icons.select_all_rounded,
+                          color: Colors.white,
+                        )
+                      : Icon(
+                          Icons.settings_overscan_sharp,
+                          color: Colors.amber,
+                        ), // Inventory Icon
                 ),
                 SideMenuItem(
                   title: 'LOG OUT',
@@ -209,7 +220,9 @@ class _MyHomePageState extends State<MyHomePage> {
             MouseRegion(
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
-                child: showfull ? const Text('>', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 22)) : const Text('||', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 15)),
+                child: showfull
+                    ? const Text('>', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 22))
+                    : const Text('||', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 15)),
                 onTap: () {
                   setState(() {
                     showfull = showfull ? false : true;

@@ -31,6 +31,7 @@ mixin main_BillingService {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           mainBilling_Controller.billingModel.subCustomerList.value = value.data.map((e) => MainbillingCustomerInfo.fromJson(e)).toList();
+          mainBilling_Controller.search(mainBilling_Controller.billingModel.searchQuery.value);
           // print('ijhietjwe${view_LedgerController.view_LedgerModel.subCustomerList}');
           // salesController.addToCustompdfList(value);
         } else {
@@ -60,6 +61,7 @@ mixin main_BillingService {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           mainBilling_Controller.billingModel.salesCustomerList.value = value.data.map((e) => MainbillingCustomerInfo.fromJson(e)).toList();
+          mainBilling_Controller.search(mainBilling_Controller.billingModel.searchQuery.value);
           // print(view_LedgerController.view_LedgerModel.salesCustomerList);
           // salesController.addToCustompdfList(value);
         } else {
@@ -108,6 +110,7 @@ mixin main_BillingService {
           mainBilling_Controller.billingModel.allSubscriptionInvoices.clear();
           for (int i = 0; i < value.data.length; i++) {
             mainBilling_Controller.addto_SubscriptionInvoiceList(SubscriptionInvoice.fromJson(value.data[i]));
+            mainBilling_Controller.search(mainBilling_Controller.billingModel.searchQuery.value);
             // print(value.data[i]['Overdue_history']);
           }
           // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
@@ -329,7 +332,7 @@ mixin main_BillingService {
             SalesInvoice element = SalesInvoice.fromJson(value.data[i]);
             mainBilling_Controller.addto_SalesInvoiceList(element);
           }
-
+          mainBilling_Controller.search(mainBilling_Controller.billingModel.searchQuery.value);
           // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
           // clientreqController.update_OrganizationList(value);
         } else {
@@ -387,6 +390,7 @@ mixin main_BillingService {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
           mainBilling_Controller.set_dashBoardData(DashboardStats.fromJson(value.data['dashboard']));
+          mainBilling_Controller.search(mainBilling_Controller.billingModel.searchQuery.value);
           // await mainBilling_Controller.PDFfileApiData(value);
 
           // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});

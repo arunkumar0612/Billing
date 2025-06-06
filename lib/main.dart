@@ -6,7 +6,40 @@ import 'package:ssipl_billing/ROUTES/app_routes.dart';
 import 'package:ssipl_billing/ROUTES/route_names.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
-// 33AADCK2098J1ZF
+/// This RestartWidget class allows the entire Flutter application to be programmatically restarted by rebuilding its widget tree using a new UniqueKey.
+///  It wraps the app's root widget and exposes a static method restartApp that triggers a rebuild from the top, effectively resetting all UI state without restarting the actual process.
+
+class RestartWidget extends StatefulWidget {
+  final Widget child;
+
+  const RestartWidget({super.key, required this.child});
+
+  static void restartApp(BuildContext context) {
+    final _RestartWidgetState? state = context.findAncestorStateOfType<_RestartWidgetState>();
+    state?.restartApp();
+  }
+
+  @override
+  _RestartWidgetState createState() => _RestartWidgetState();
+}
+
+class _RestartWidgetState extends State<RestartWidget> {
+  Key _key = UniqueKey();
+
+  void restartApp() {
+    setState(() {
+      _key = UniqueKey(); // Rebuild the whole widget tree
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return KeyedSubtree(
+      key: _key,
+      child: widget.child,
+    );
+  }
+}
 
 /// The main entry point of the application
 Future<void> main() async {
@@ -19,13 +52,18 @@ Future<void> main() async {
   /// Custom initialization method for Identity and Access Management (IAM) module
   initialize_others();
 
-  /// Custom initialization method for other modules/services
-
-  runApp(const MyApp());
+  runApp(const RestartWidget(child: MyApp()));
   DesktopWindow.setMinWindowSize(const Size(1366.0, 768.0));
 }
 
-///This MyApp class is the root of the Flutter application, using GetMaterialApp from the GetX package to set up routing, theming, and global configurations.
+// Key _appKey = UniqueKey();
+// void reloadApp() {
+//   setState(() {
+//     _appKey = UniqueKey(); // Forces widget tree to rebuild
+//   });
+// }
+
+/// This MyApp class is the root of the Flutter application, using GetMaterialApp from the GetX package to set up routing, theming, and global configurations.
 /// It defines the app's title, initial route, available routes, custom theme (including scrollbar and text selection styles), and hides the debug banner.
 
 class MyApp extends StatelessWidget {

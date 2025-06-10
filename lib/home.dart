@@ -12,6 +12,7 @@ import 'package:ssipl_billing/7.HIERARCHY/views/Hierarchy.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/main.dart';
 
+/// The main home page of the application containing a sidebar menu and dynamic content area.
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
   @override
@@ -20,11 +21,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   PageController pageController = PageController();
+
+  ///  Controller to manage which page is displayed
   SideMenuController sideMenu = SideMenuController();
 
   bool showfull = true;
   @override
   void initState() {
+    /// Add a listener to the side menu that changes the page when a menu item is selected
     sideMenu.addListener(
       (index) {
         pageController.jumpToPage(index);
@@ -161,11 +165,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                   icon: const Icon(Icons.groups_3), // Inventory Icon
                 ),
+
+                /// Toggle debug layout overlay (Flutter paint size)
                 SideMenuItem(
                   title: debugPaintSizeEnabled == false ? 'Overlay' : 'underlay',
                   onTap: (index, _) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       debugPaintSizeEnabled = !debugPaintSizeEnabled;
+
+                      /// Restart app to apply debug flag change
                       RestartWidget.restartApp(context); // Simulate hot restart
                     });
                   },
@@ -214,15 +222,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
+
+            /// Divider between side menu and content
             const VerticalDivider(
               width: 5,
             ),
+
+            /// Button to toggle menu view (full/compact)
             MouseRegion(
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
-                child: showfull
-                    ? const Text('>', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 22))
-                    : const Text('||', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 15)),
+                child: showfull ? const Text('>', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 22)) : const Text('||', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 15)),
                 onTap: () {
                   setState(() {
                     showfull = showfull ? false : true;

@@ -129,7 +129,7 @@ Future<Uint8List> GSTledger_excelTemplate(GSTSummaryModel gstLedgerData) async {
   sheet2.getRangeByName('A3').cellStyle..bold = true;
   // ..hAlign = xlsio.HAlignType.left;
 
-  final headers = ['Date', 'Invoice No', 'Details', 'GST Type', 'Taxable Value', 'CGST (Rs.)', 'SGST (Rs.)', 'IGST (Rs.)', 'Total GST (Rs.)', 'Gross Amount (Rs.)'];
+  final headers = ['Date', 'Invoice No', 'Client Name', 'GST No', 'GST Type', 'Taxable Value', 'CGST (Rs.)', 'SGST (Rs.)', 'IGST (Rs.)', 'Total GST (Rs.)', 'Gross Amount (Rs.)'];
 
   for (int i = 0; i < headers.length; i++) {
     final cell = sheet2.getRangeByIndex(4, i + 1);
@@ -162,17 +162,18 @@ Future<Uint8List> GSTledger_excelTemplate(GSTSummaryModel gstLedgerData) async {
 
     sheet2.getRangeByIndex(row, 1).setText(_formatDate(item.date));
     sheet2.getRangeByIndex(row, 2).setText(item.invoice_number);
-    sheet2.getRangeByIndex(row, 3).setText(item.description ?? '');
-    sheet2.getRangeByIndex(row, 4).setText(item.gstType);
-    sheet2.getRangeByIndex(row, 5).setText(_formatCurrency(item.subTotal));
-    sheet2.getRangeByIndex(row, 6).setText(_formatCurrency(item.cgst));
-    sheet2.getRangeByIndex(row, 7).setText(_formatCurrency(item.sgst));
-    sheet2.getRangeByIndex(row, 8).setText(_formatCurrency(item.igst));
-    sheet2.getRangeByIndex(row, 9).setText(_formatCurrency(item.totalGst));
-    sheet2.getRangeByIndex(row, 10).setText(_formatCurrency(item.totalAmount));
+    sheet2.getRangeByIndex(row, 3).setText(item.clientName);
+    sheet2.getRangeByIndex(row, 4).setText(item.gstNumber);
+    sheet2.getRangeByIndex(row, 5).setText(item.gstType);
+    sheet2.getRangeByIndex(row, 6).setText(_formatCurrency(item.subTotal));
+    sheet2.getRangeByIndex(row, 7).setText(_formatCurrency(item.cgst));
+    sheet2.getRangeByIndex(row, 8).setText(_formatCurrency(item.sgst));
+    sheet2.getRangeByIndex(row, 9).setText(_formatCurrency(item.igst));
+    sheet2.getRangeByIndex(row, 10).setText(_formatCurrency(item.totalGst));
+    sheet2.getRangeByIndex(row, 11).setText(_formatCurrency(item.totalAmount));
 
     // Add borders and alignment to each row cell
-    for (int col = 1; col <= 10; col++) {
+    for (int col = 1; col <= 11; col++) {
       final cell = sheet2.getRangeByIndex(row, col);
       cell.cellStyle
         ..borders.all.lineStyle = xlsio.LineStyle.thin
@@ -181,8 +182,8 @@ Future<Uint8List> GSTledger_excelTemplate(GSTSummaryModel gstLedgerData) async {
         ..vAlign = xlsio.VAlignType.center
         ..wrapText = true;
 
-      if (col == 5 || col == 6 || col == 7 || col == 8 || col == 9 || col == 10) {
-        cell.cellStyle.hAlign = xlsio.HAlignType.right; // Right align debit, credit, balance
+      if (col == 6 || col == 7 || col == 8 || col == 9 || col == 10 || col == 11) {
+        cell.cellStyle.hAlign = xlsio.HAlignType.left; // Right align debit, credit, balance
       } else {
         cell.cellStyle.hAlign = xlsio.HAlignType.center; // Center align other columns
       }

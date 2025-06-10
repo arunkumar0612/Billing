@@ -375,11 +375,9 @@ class _VoucherState extends State<Voucher> {
                                     children: [
                                       Row(
                                         children: [
-                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount !=
-                                              voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
+                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount != voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
                                             _buildRadioTile(value: 'Partial', label: 'Partial', color: Colors.amber, index: index),
-                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount !=
-                                              voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
+                                          if (voucherController.voucherModel.voucher_list[index].pendingAmount != voucherController.voucherModel.voucher_list[index].tdsCalculationAmount.roundToDouble())
                                             const SizedBox(width: 12),
                                           _buildRadioTile(value: 'Full', label: 'Full', color: Colors.green, index: index),
                                         ],
@@ -412,8 +410,7 @@ class _VoucherState extends State<Voucher> {
                                           style: const TextStyle(color: Colors.amber, fontSize: 10),
                                           "    can clear upto  -  Rs.${((voucherController.voucherModel.voucher_list[index].pendingAmount - 1) - (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 ? voucherController.voucherModel.voucher_list[index].tdsCalculationAmount : 0.0)).roundToDouble()}",
                                         ),
-                                      if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full")
-                                        const SizedBox(height: 16),
+                                      if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full") const SizedBox(height: 16),
                                       if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1 && voucherController.voucherModel.selectedValue.value == "Full")
                                         _buildDropdownField(
                                           label: 'TDS Status',
@@ -677,8 +674,7 @@ class _VoucherState extends State<Voucher> {
                                                       ? Expanded(
                                                           child: const SizedBox(
                                                             width: 250,
-                                                            child: Text("The recieved amount is either empty or exceeds the recievable amount",
-                                                                style: TextStyle(color: Colors.amber, fontSize: Primary_font_size.Text5)),
+                                                            child: Text("The recieved amount is either empty or exceeds the recievable amount", style: TextStyle(color: Colors.amber, fontSize: Primary_font_size.Text5)),
                                                           ),
                                                         )
                                                       : MouseRegion(
@@ -733,8 +729,7 @@ class _VoucherState extends State<Voucher> {
                                                       ),
                                                       onPressed: () async {
                                                         loader.start(context);
-                                                        bool type = voucherController.voucherModel.voucher_list[index].pendingAmount ==
-                                                            double.parse(voucherController.voucherModel.amountCleared_controller.value.text);
+                                                        bool type = voucherController.voucherModel.voucher_list[index].pendingAmount == double.parse(voucherController.voucherModel.amountCleared_controller.value.text);
                                                         await Future.delayed(const Duration(milliseconds: 300));
 
                                                         // Generate PDF bytes using original code (unchanged)
@@ -1420,8 +1415,7 @@ class _VoucherState extends State<Voucher> {
                                           PdfPageFormat.a4,
                                           ClubVoucher_data(
                                             date: DateTime.parse(voucherController.voucherModel.closedDate.value),
-                                            totalPaidAmount:
-                                                voucherController.voucherModel.is_Deducted.value ? selectedVouchers.totalPendingAmount_withTDS : selectedVouchers.totalPendingAmount_withoutTDS,
+                                            totalPaidAmount: voucherController.voucherModel.is_Deducted.value ? selectedVouchers.totalPendingAmount_withTDS : selectedVouchers.totalPendingAmount_withoutTDS,
                                             tdsStatus: voucherController.voucherModel.is_Deducted.value,
                                             paymentStatus: 'complete',
                                             feedback: voucherController.voucherModel.feedback_controller.value.text,
@@ -1755,8 +1749,7 @@ class _VoucherState extends State<Voucher> {
                     transactionID: voucherController.voucherModel.voucher_list[voucherIndex].paymentDetails![transactionIndex].transactionId,
                   );
                   if (success) {
-                    showPDF(context, "TRANSACTION_${voucherController.voucherModel.voucher_list[voucherIndex].paymentDetails?[transactionIndex].transactionId}",
-                        mainBilling_Controller.billingModel.pdfFile.value);
+                    showPDF(context, "TRANSACTION_${voucherController.voucherModel.voucher_list[voucherIndex].paymentDetails?[transactionIndex].transactionId}", mainBilling_Controller.billingModel.pdfFile.value);
                   }
                 },
                 icon: Image.asset(height: 30, 'assets/images/pdfdownload.png'),
@@ -2147,7 +2140,7 @@ class _VoucherState extends State<Voucher> {
                             flex: 3,
                             child: Text(
                               'Client',
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.start,
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
                           ),
@@ -2168,34 +2161,34 @@ class _VoucherState extends State<Voucher> {
                               padding: const EdgeInsets.only(right: 15),
                               child: Text(
                                 'Amount',
-                                textAlign: TextAlign.end,
+                                textAlign: TextAlign.center,
                                 style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                               ),
                             ),
                           ),
-                          const SizedBox(width: 3),
+                          // const SizedBox(width: 3),
                           const Expanded(
                             flex: 1,
                             child: Text(
-                              textAlign: TextAlign.right,
+                              textAlign: TextAlign.start,
                               'Due Date',
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
                           ),
-                          const SizedBox(width: 3),
+                          // const SizedBox(width: 3),
                           const Expanded(
                             flex: 1,
                             child: Text(
-                              textAlign: TextAlign.right,
+                              textAlign: TextAlign.start,
                               'OverDue days',
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
                           ),
-                          const SizedBox(width: 3),
+                          // const SizedBox(width: 3),
                           const Expanded(
                             flex: 1,
                             child: Text(
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.start,
                               'Status',
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
@@ -2266,6 +2259,7 @@ class _VoucherState extends State<Voucher> {
                                                   flex: 1,
                                                   child: Text(
                                                     voucher.date != null ? formatDate(voucher.date!) : '-',
+                                                    textAlign: TextAlign.center,
                                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                   ),
                                                 ),
@@ -2300,6 +2294,7 @@ class _VoucherState extends State<Voucher> {
                                                       },
                                                       child: Text(
                                                         voucher.invoiceNumber,
+                                                        textAlign: TextAlign.left,
                                                         style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
                                                       ),
                                                     ),
@@ -2310,6 +2305,7 @@ class _VoucherState extends State<Voucher> {
                                                   flex: 2,
                                                   child: Text(
                                                     voucher.voucherType,
+                                                    textAlign: TextAlign.left,
                                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                   ),
                                                 ),
@@ -2420,6 +2416,7 @@ class _VoucherState extends State<Voucher> {
                                                             child: Text(
                                                               maxLines: 5,
                                                               voucher.clientName,
+                                                              textAlign: TextAlign.left,
                                                               style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                             ),
                                                           ),
@@ -2435,6 +2432,7 @@ class _VoucherState extends State<Voucher> {
                                                     padding: const EdgeInsets.only(right: 15),
                                                     child: Text(
                                                       voucher.gstNumber == "" ? '-' : voucher.gstNumber,
+                                                      textAlign: TextAlign.center,
                                                       style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                     ),
                                                   ),
@@ -2947,10 +2945,13 @@ class _VoucherState extends State<Voucher> {
                                                   const SizedBox(width: 3),
                                                   Expanded(
                                                     flex: 2,
-                                                    child: Text(
-                                                      voucher.gstNumber == "" ? '-' : voucher.gstNumber,
-                                                      textAlign: TextAlign.center,
-                                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(right: 15),
+                                                      child: Text(
+                                                        voucher.gstNumber == "" ? '-' : voucher.gstNumber,
+                                                        textAlign: TextAlign.center,
+                                                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                      ),
                                                     ),
                                                   ),
                                                   const SizedBox(width: 3),
@@ -3071,7 +3072,7 @@ class _VoucherState extends State<Voucher> {
                                                             ),
                                                     ),
                                                   ),
-                                                  // SizedBox(width: 35),
+                                                  SizedBox(width: 35),
                                                 ],
                                               ),
                                             ),

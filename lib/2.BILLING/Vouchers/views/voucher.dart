@@ -1,7 +1,5 @@
 // ignore_for_file: deprecated_member_use
-
 import 'dart:io';
-
 import 'package:dashed_rect/dashed_rect.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/foundation.dart';
@@ -3119,587 +3117,590 @@ class _VoucherState extends State<Voucher> {
           backgroundColor: Colors.transparent,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           insetPadding: EdgeInsets.all(20),
-          child: Obx(() {
-            return Container(
-              width: 1200,
-              // padding: EdgeInsets.all(16),
-              // constraints: BoxConstraints(minWidth: 300, maxWidth: 500),
-              decoration: BoxDecoration(
-                color: Primary_colors.Light,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 20, offset: const Offset(0, 10))],
-              ),
-              // child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [Primary_colors.Color3, Primary_colors.Color3.withOpacity(0.8)], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: const BoxDecoration(
-                            // color: Colors.white.withOpacity(0.2),
-                            shape: BoxShape.circle,
+          child: Obx(
+            () {
+              return Container(
+                width: 1200,
+                // padding: EdgeInsets.all(16),
+                // constraints: BoxConstraints(minWidth: 300, maxWidth: 500),
+                decoration: BoxDecoration(
+                  color: Primary_colors.Light,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 20, offset: const Offset(0, 10))],
+                ),
+                // child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(colors: [Primary_colors.Color3, Primary_colors.Color3.withOpacity(0.8)], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                        borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              // color: Colors.white.withOpacity(0.2),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(Icons.check_circle, color: Colors.green, size: 34),
                           ),
-                          child: const Icon(Icons.check_circle, color: Colors.green, size: 34),
-                        ),
-                        const SizedBox(width: 5),
-                        const Text(
-                          'Voucher Cleared',
-                          style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold, letterSpacing: 1.2),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    margin: const EdgeInsets.only(right: 16, left: 16),
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Primary_colors.Dark,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Primary_colors.Dark, width: 1),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          // ✅ use Flexible inside scroll views
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: BoxDecoration(color: Primary_colors.Color3.withOpacity(0.1), shape: BoxShape.circle),
-                                    child: const CircleAvatar(
-                                      radius: 20,
-                                      backgroundColor: Primary_colors.Color3,
-                                      child: Icon(Icons.person, color: Colors.white, size: 20),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          voucherController.voucherModel.voucher_list[index].clientName,
-                                          maxLines: 1,
-                                          style: const TextStyle(overflow: TextOverflow.ellipsis, color: Colors.white, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text9),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Text("Client ID: ${voucherController.voucherModel.voucher_list[index].customerId}", style: const TextStyle(color: Colors.grey, fontSize: 11)),
-                                        const SizedBox(height: 8),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-                              _infoRow(Icons.location_on_outlined, voucherController.voucherModel.voucher_list[index].clientAddress),
-                              const SizedBox(height: 8),
-                              _infoRow(Icons.phone_android, voucherController.voucherModel.voucher_list[index].phoneNumber),
-                              const SizedBox(height: 8),
-                              _infoRow(Icons.email_sharp, voucherController.voucherModel.voucher_list[index].emailId),
-                              const SizedBox(height: 12),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'Invoice Number',
-                                    // textAlign: TextAlign.left,
-                                    style: TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        voucherController.voucherModel.voucher_list[index].invoiceNumber,
-                                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      MouseRegion(
-                                        cursor: SystemMouseCursors.click,
-                                        child: GestureDetector(
-                                          key: _invoiceCopyKey, // Attach the key here
-                                          onTap: () async {
-                                            await Clipboard.setData(ClipboardData(text: voucherController.voucherModel.voucher_list[index].invoiceNumber));
-
-                                            final renderBox = _invoiceCopyKey.currentContext?.findRenderObject() as RenderBox?;
-                                            if (renderBox == null || !mounted) return; // Early exit if not rendered
-
-                                            final overlay = Overlay.of(context);
-                                            final overlayEntry = OverlayEntry(
-                                              builder: (context) => Positioned(
-                                                left: renderBox.localToGlobal(Offset.zero).dx + renderBox.size.width,
-                                                top: renderBox.localToGlobal(Offset.zero).dy,
-                                                child: Material(
-                                                  color: Colors.transparent,
-                                                  child: Container(
-                                                    padding: const EdgeInsets.all(6),
-                                                    decoration: BoxDecoration(color: const Color.fromARGB(119, 33, 149, 243).withOpacity(0.8), borderRadius: BorderRadius.circular(8)),
-                                                    child: const Text(
-                                                      "Copied!",
-                                                      style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text5),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-
-                                            overlay.insert(overlayEntry);
-                                            Future.delayed(const Duration(seconds: 1), overlayEntry.remove);
-                                          },
-                                          child: const Icon(Icons.copy, color: Colors.grey, size: 18),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'Voucher Number',
-                                    style: TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        voucherController.voucherModel.voucher_list[index].voucherNumber,
-                                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      MouseRegion(
-                                        cursor: SystemMouseCursors.click,
-                                        child: GestureDetector(
-                                          key: _voucherCopyKey, // Attach the key here
-                                          onTap: () async {
-                                            await Clipboard.setData(ClipboardData(text: voucherController.voucherModel.voucher_list[index].voucherNumber));
-
-                                            final renderBox = _voucherCopyKey.currentContext?.findRenderObject() as RenderBox?;
-                                            if (renderBox == null || !mounted) return; // Early exit if not rendered
-
-                                            final overlay = Overlay.of(context);
-                                            final overlayEntry = OverlayEntry(
-                                              builder: (context) => Positioned(
-                                                left: renderBox.localToGlobal(Offset.zero).dx + renderBox.size.width,
-                                                top: renderBox.localToGlobal(Offset.zero).dy,
-                                                child: Material(
-                                                  color: Colors.transparent,
-                                                  child: Container(
-                                                    padding: const EdgeInsets.all(6),
-                                                    decoration: BoxDecoration(color: const Color.fromARGB(119, 33, 149, 243).withOpacity(0.8), borderRadius: BorderRadius.circular(8)),
-                                                    child: const Text(
-                                                      "Copied!",
-                                                      style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text5),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-
-                                            overlay.insert(overlayEntry);
-                                            Future.delayed(const Duration(seconds: 1), overlayEntry.remove);
-                                          },
-                                          child: const Icon(Icons.copy, color: Colors.grey, size: 16),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'GST Number',
-                                    style: TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        voucherController.voucherModel.voucher_list[index].gstNumber,
-                                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      MouseRegion(
-                                        cursor: SystemMouseCursors.click,
-                                        child: GestureDetector(
-                                          key: _GSTcopyKey, // Attach the key here
-                                          onTap: () async {
-                                            await Clipboard.setData(ClipboardData(text: voucherController.voucherModel.voucher_list[index].gstNumber));
-
-                                            final renderBox = _GSTcopyKey.currentContext?.findRenderObject() as RenderBox?;
-                                            if (renderBox == null || !mounted) return; // Early exit if not rendered
-
-                                            final overlay = Overlay.of(context);
-                                            final overlayEntry = OverlayEntry(
-                                              builder: (context) => Positioned(
-                                                left: renderBox.localToGlobal(Offset.zero).dx + renderBox.size.width,
-                                                top: renderBox.localToGlobal(Offset.zero).dy,
-                                                child: Material(
-                                                  color: Colors.transparent,
-                                                  child: Container(
-                                                    padding: const EdgeInsets.all(6),
-                                                    decoration: BoxDecoration(color: const Color.fromARGB(119, 33, 149, 243).withOpacity(0.8), borderRadius: BorderRadius.circular(8)),
-                                                    child: const Text(
-                                                      "Copied!",
-                                                      style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text5),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-
-                                            overlay.insert(overlayEntry);
-                                            Future.delayed(const Duration(seconds: 1), overlayEntry.remove);
-                                          },
-                                          child: const Icon(Icons.copy, color: Colors.grey, size: 18),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
+                          const SizedBox(width: 5),
+                          const Text(
+                            'Voucher Cleared',
+                            style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold, letterSpacing: 1.2),
                           ),
-                        ),
-
-                        Container(height: 250, width: 0.5, color: Colors.grey[500], margin: const EdgeInsets.all(20)),
-                        // const SizedBox(height: 15,),
-                        Flexible(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "PAYMENT BREAKUP",
-                                style: TextStyle(color: Primary_colors.Color3, fontWeight: FontWeight.bold, fontSize: 14, letterSpacing: 0.5),
-                              ),
-                              const SizedBox(height: 16),
-                              _buildBreakupLine("Net Amount", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].subTotal)}"),
-                              _buildBreakupDivider(),
-                              _buildBreakupLine("CGST (9%)", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].cgst)}"),
-                              _buildBreakupDivider(),
-                              _buildBreakupLine("SGST (9%)", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].sgst)}"),
-                              _buildBreakupDivider(),
-                              _buildBreakupLine("IGST", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].igst)}"),
-                              _buildBreakupDivider(),
-                              if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1)
-                                _buildBreakupLine("TDS (2%)", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].tdsCalculationAmount)}"),
-                              const SizedBox(height: 16),
-                              Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(color: Primary_colors.Color3.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      margin: const EdgeInsets.only(right: 16, left: 16),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Primary_colors.Dark,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Primary_colors.Dark, width: 1),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            // ✅ use Flexible inside scroll views
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
                                   children: [
-                                    const Text(
-                                      "Total Amount",
-                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                    Container(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: BoxDecoration(color: Primary_colors.Color3.withOpacity(0.1), shape: BoxShape.circle),
+                                      child: const CircleAvatar(
+                                        radius: 20,
+                                        backgroundColor: Primary_colors.Color3,
+                                        child: Icon(Icons.person, color: Colors.white, size: 20),
+                                      ),
                                     ),
-                                    Text(
-                                      "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].totalAmount)}",
-                                      style: const TextStyle(color: Primary_colors.Color3, fontWeight: FontWeight.bold, fontSize: 16),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            voucherController.voucherModel.voucher_list[index].clientName,
+                                            maxLines: 1,
+                                            style: const TextStyle(overflow: TextOverflow.ellipsis, color: Colors.white, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text9),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text("Client ID: ${voucherController.voucherModel.voucher_list[index].customerId}", style: const TextStyle(color: Colors.grey, fontSize: 11)),
+                                          const SizedBox(height: 8),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  //  Expanded(
-                  Container(
-                    margin: const EdgeInsets.only(top: 8, right: 16, left: 16, bottom: 8),
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Primary_colors.Dark,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Primary_colors.Dark, width: 1),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Payment Details',
-                          style: TextStyle(color: Primary_colors.Color3, fontWeight: FontWeight.bold, fontSize: 14, letterSpacing: 0.5),
-                        ),
-                        const SizedBox(height: 10),
-
-                        // Header Row (non-scrollable)
-                        ClipRRect(
-                          borderRadius: const BorderRadius.only(topLeft: Radius.circular(6), topRight: Radius.circular(6)),
-                          child: Container(
-                            color: const Color(0xFFE0E0E0),
-                            child: Table(
-                              columnWidths: const {
-                                0: FlexColumnWidth(1.5),
-                                1: FlexColumnWidth(2),
-                                2: FlexColumnWidth(2),
-                                3: FlexColumnWidth(4),
-                                4: FlexColumnWidth(1.2),
-                                5: FlexColumnWidth(1.2),
-                                6: FlexColumnWidth(1.2),
-                              },
-                              border: TableBorder(bottom: BorderSide(color: Colors.grey.shade400)),
-                              children: const [
-                                TableRow(
+                                const SizedBox(height: 12),
+                                _infoRow(Icons.location_on_outlined, voucherController.voucherModel.voucher_list[index].clientAddress),
+                                const SizedBox(height: 8),
+                                _infoRow(Icons.phone_android, voucherController.voucherModel.voucher_list[index].phoneNumber),
+                                const SizedBox(height: 8),
+                                _infoRow(Icons.email_sharp, voucherController.voucherModel.voucher_list[index].emailId),
+                                const SizedBox(height: 12),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'Date',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontWeight: FontWeight.bold),
-                                      ),
+                                    const Text(
+                                      'Invoice Number',
+                                      // textAlign: TextAlign.left,
+                                      style: TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'Amount Paid',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontWeight: FontWeight.bold),
-                                      ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          voucherController.voucherModel.voucher_list[index].invoiceNumber,
+                                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        MouseRegion(
+                                          cursor: SystemMouseCursors.click,
+                                          child: GestureDetector(
+                                            key: _invoiceCopyKey, // Attach the key here
+                                            onTap: () async {
+                                              await Clipboard.setData(ClipboardData(text: voucherController.voucherModel.voucher_list[index].invoiceNumber));
+
+                                              final renderBox = _invoiceCopyKey.currentContext?.findRenderObject() as RenderBox?;
+                                              if (renderBox == null || !mounted) return; // Early exit if not rendered
+
+                                              final overlay = Overlay.of(context);
+                                              final overlayEntry = OverlayEntry(
+                                                builder: (context) => Positioned(
+                                                  left: renderBox.localToGlobal(Offset.zero).dx + renderBox.size.width,
+                                                  top: renderBox.localToGlobal(Offset.zero).dy,
+                                                  child: Material(
+                                                    color: Colors.transparent,
+                                                    child: Container(
+                                                      padding: const EdgeInsets.all(6),
+                                                      decoration: BoxDecoration(color: const Color.fromARGB(119, 33, 149, 243).withOpacity(0.8), borderRadius: BorderRadius.circular(8)),
+                                                      child: const Text(
+                                                        "Copied!",
+                                                        style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text5),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+
+                                              overlay.insert(overlayEntry);
+                                              Future.delayed(const Duration(seconds: 1), overlayEntry.remove);
+                                            },
+                                            child: const Icon(Icons.copy, color: Colors.grey, size: 18),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'Payment Mode',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontWeight: FontWeight.bold),
-                                      ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      'Voucher Number',
+                                      style: TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'Transaction Details',
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(fontWeight: FontWeight.bold),
-                                      ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          voucherController.voucherModel.voucher_list[index].voucherNumber,
+                                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        MouseRegion(
+                                          cursor: SystemMouseCursors.click,
+                                          child: GestureDetector(
+                                            key: _voucherCopyKey, // Attach the key here
+                                            onTap: () async {
+                                              await Clipboard.setData(ClipboardData(text: voucherController.voucherModel.voucher_list[index].voucherNumber));
+
+                                              final renderBox = _voucherCopyKey.currentContext?.findRenderObject() as RenderBox?;
+                                              if (renderBox == null || !mounted) return; // Early exit if not rendered
+
+                                              final overlay = Overlay.of(context);
+                                              final overlayEntry = OverlayEntry(
+                                                builder: (context) => Positioned(
+                                                  left: renderBox.localToGlobal(Offset.zero).dx + renderBox.size.width,
+                                                  top: renderBox.localToGlobal(Offset.zero).dy,
+                                                  child: Material(
+                                                    color: Colors.transparent,
+                                                    child: Container(
+                                                      padding: const EdgeInsets.all(6),
+                                                      decoration: BoxDecoration(color: const Color.fromARGB(119, 33, 149, 243).withOpacity(0.8), borderRadius: BorderRadius.circular(8)),
+                                                      child: const Text(
+                                                        "Copied!",
+                                                        style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text5),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+
+                                              overlay.insert(overlayEntry);
+                                              Future.delayed(const Duration(seconds: 1), overlayEntry.remove);
+                                            },
+                                            child: const Icon(Icons.copy, color: Colors.grey, size: 16),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'View ref',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontWeight: FontWeight.bold),
-                                      ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      'GST Number',
+                                      style: TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'Receipt',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text(
-                                        '',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontWeight: FontWeight.bold),
-                                      ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          voucherController.voucherModel.voucher_list[index].gstNumber,
+                                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        MouseRegion(
+                                          cursor: SystemMouseCursors.click,
+                                          child: GestureDetector(
+                                            key: _GSTcopyKey, // Attach the key here
+                                            onTap: () async {
+                                              await Clipboard.setData(ClipboardData(text: voucherController.voucherModel.voucher_list[index].gstNumber));
+
+                                              final renderBox = _GSTcopyKey.currentContext?.findRenderObject() as RenderBox?;
+                                              if (renderBox == null || !mounted) return; // Early exit if not rendered
+
+                                              final overlay = Overlay.of(context);
+                                              final overlayEntry = OverlayEntry(
+                                                builder: (context) => Positioned(
+                                                  left: renderBox.localToGlobal(Offset.zero).dx + renderBox.size.width,
+                                                  top: renderBox.localToGlobal(Offset.zero).dy,
+                                                  child: Material(
+                                                    color: Colors.transparent,
+                                                    child: Container(
+                                                      padding: const EdgeInsets.all(6),
+                                                      decoration: BoxDecoration(color: const Color.fromARGB(119, 33, 149, 243).withOpacity(0.8), borderRadius: BorderRadius.circular(8)),
+                                                      child: const Text(
+                                                        "Copied!",
+                                                        style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text5),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+
+                                              overlay.insert(overlayEntry);
+                                              Future.delayed(const Duration(seconds: 1), overlayEntry.remove);
+                                            },
+                                            child: const Icon(Icons.copy, color: Colors.grey, size: 18),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
                               ],
                             ),
                           ),
-                        ),
 
-                        // Scrollable Rows (only this part scrolls)
-                        // Expanded(
-                        ClipRRect(
-                          borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(6), bottomRight: Radius.circular(6)),
-                          child: Container(
-                            decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade400)),
-                            child: ConstrainedBox(
-                              constraints: const BoxConstraints(maxHeight: 200),
-                              child: SingleChildScrollView(
-                                child: Obx(() => Table(
-                                      columnWidths: const {
-                                        0: FlexColumnWidth(1.5),
-                                        1: FlexColumnWidth(2),
-                                        2: FlexColumnWidth(2),
-                                        3: FlexColumnWidth(4),
-                                        4: FlexColumnWidth(1.2),
-                                        5: FlexColumnWidth(1.2),
-                                        6: FlexColumnWidth(1.2),
-                                      },
-                                      border: TableBorder(horizontalInside: BorderSide(color: Colors.grey.shade400)),
-                                      children: List<TableRow>.generate(
-                                        editableRows.length,
-                                        (i) {
-                                          final payment = voucherController.voucherModel.voucher_list[index].paymentDetails![i];
-                                          final rowState = editableRows[i];
-                                          final date = formatDate(payment.date);
-                                          final amount = '₹ ${formatCurrency(payment.amount)}';
-                                          final transID = payment.transactionId;
-                                          final paymentMode = payment.paymentmode;
-
-                                          return TableRow(
-                                            children: [
-                                              // Date
-                                              Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  date,
-                                                  textAlign: TextAlign.center,
-                                                  style: const TextStyle(color: Colors.grey),
-                                                ),
-                                              ),
-
-                                              // Amount Paid
-                                              Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  amount,
-                                                  textAlign: TextAlign.center,
-                                                  style: const TextStyle(color: Colors.grey),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  paymentMode,
-                                                  textAlign: TextAlign.center,
-                                                  style: const TextStyle(color: Colors.grey),
-                                                ),
-                                              ),
-                                              // Transaction Details Editable
-                                              Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  children: [
-                                                    Obx(() => rowState.isEditing.value
-                                                        ? Expanded(
-                                                            child: TextFormField(
-                                                              autofocus: true,
-                                                              controller: rowState.controller,
-                                                              style: const TextStyle(color: Colors.white, fontSize: 12),
-                                                              maxLines: 2,
-                                                              decoration: const InputDecoration(
-                                                                hintText: "Enter feedback details",
-                                                                hintStyle: TextStyle(color: Colors.grey),
-                                                                border: OutlineInputBorder(borderSide: BorderSide.none),
-                                                                isDense: true,
-                                                                contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                                                              ),
-                                                            ),
-                                                          )
-                                                        : Expanded(
-                                                            child: Text(
-                                                              rowState.controller.text,
-                                                              textAlign: TextAlign.start,
-                                                              style: const TextStyle(color: Colors.grey),
-                                                            ),
-                                                          )),
-                                                  ],
-                                                ),
-                                              ),
-                                              // Actions
-                                              Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    // PDF View
-                                                    MouseRegion(
-                                                      cursor: SystemMouseCursors.click,
-                                                      child: GestureDetector(
-                                                        onTap: () async {
-                                                          bool success = await widget.Get_transactionPDFfile(context: context, transactionID: transID);
-                                                          if (success) {
-                                                            showPDF(context, "TRANSACTION_$transID", mainBilling_Controller.billingModel.pdfFile.value);
-                                                          }
-                                                        },
-                                                        child: Image.asset('assets/images/pdfdownload.png', width: 24, height: 24),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 8),
-
-                                                    // Edit / Save Button
-                                                  ],
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    // PDF View
-                                                    MouseRegion(
-                                                      cursor: SystemMouseCursors.click,
-                                                      child: GestureDetector(
-                                                        onTap: () async {
-                                                          bool success = await widget.Get_receiptPDFfile(context: context, transactionID: transID);
-                                                          if (success) {
-                                                            showPDF(context, "RECEIPT_$transID", mainBilling_Controller.billingModel.pdfFile.value);
-                                                          }
-                                                        },
-                                                        child: Image.asset('assets/images/order.png', width: 24, height: 24),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 8),
-
-                                                    // Edit / Save Button
-                                                  ],
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  children: [
-                                                    Obx(() => IconButton(
-                                                          icon: Icon(rowState.isEditing.value ? Icons.save : Icons.edit, size: 20),
-                                                          tooltip: rowState.isEditing.value ? "Save" : "Edit",
-                                                          onPressed: () {
-                                                            if (rowState.isEditing.value) {
-                                                              widget.update_paymentDetails(context, index, i);
-                                                            }
-                                                            rowState.isEditing.value = !rowState.isEditing.value;
-
-                                                            if (!rowState.isEditing.value) {
-                                                              payment.transanctionDetails = rowState.controller.text;
-                                                              // Add save logic here if needed
-                                                            }
-                                                          },
-                                                        )),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
+                          Container(height: 250, width: 0.5, color: Colors.grey[500], margin: const EdgeInsets.all(20)),
+                          // const SizedBox(height: 15,),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "PAYMENT BREAKUP",
+                                  style: TextStyle(color: Primary_colors.Color3, fontWeight: FontWeight.bold, fontSize: 14, letterSpacing: 0.5),
+                                ),
+                                const SizedBox(height: 16),
+                                _buildBreakupLine("Net Amount", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].subTotal)}"),
+                                _buildBreakupDivider(),
+                                _buildBreakupLine("CGST (9%)", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].cgst)}"),
+                                _buildBreakupDivider(),
+                                _buildBreakupLine("SGST (9%)", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].sgst)}"),
+                                _buildBreakupDivider(),
+                                _buildBreakupLine("IGST", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].igst)}"),
+                                _buildBreakupDivider(),
+                                if (voucherController.voucherModel.voucher_list[index].tdsCalculation == 1)
+                                  _buildBreakupLine(
+                                      "TDS (2%)", "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].tdsCalculationAmount)}"),
+                                const SizedBox(height: 16),
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(color: Primary_colors.Color3.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        "Total Amount",
+                                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
                                       ),
-                                    )),
+                                      Text(
+                                        "₹${NumberFormat.currency(locale: 'en_IN', symbol: '').format(voucherController.voucherModel.voucher_list[index].totalAmount)}",
+                                        style: const TextStyle(color: Primary_colors.Color3, fontWeight: FontWeight.bold, fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    //  Expanded(
+                    Container(
+                      margin: const EdgeInsets.only(top: 8, right: 16, left: 16, bottom: 8),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Primary_colors.Dark,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Primary_colors.Dark, width: 1),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Payment Details',
+                            style: TextStyle(color: Primary_colors.Color3, fontWeight: FontWeight.bold, fontSize: 14, letterSpacing: 0.5),
+                          ),
+                          const SizedBox(height: 10),
+
+                          // Header Row (non-scrollable)
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(topLeft: Radius.circular(6), topRight: Radius.circular(6)),
+                            child: Container(
+                              color: const Color(0xFFE0E0E0),
+                              child: Table(
+                                columnWidths: const {
+                                  0: FlexColumnWidth(1.5),
+                                  1: FlexColumnWidth(2),
+                                  2: FlexColumnWidth(2),
+                                  3: FlexColumnWidth(4),
+                                  4: FlexColumnWidth(1.2),
+                                  5: FlexColumnWidth(1.2),
+                                  6: FlexColumnWidth(1.2),
+                                },
+                                border: TableBorder(bottom: BorderSide(color: Colors.grey.shade400)),
+                                children: const [
+                                  TableRow(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Date',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Amount Paid',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Payment Mode',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Transaction Details',
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'View ref',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Receipt',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text(
+                                          '',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                        ),
 
-                        // ),
-                      ],
+                          // Scrollable Rows (only this part scrolls)
+                          // Expanded(
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(6), bottomRight: Radius.circular(6)),
+                            child: Container(
+                              decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade400)),
+                              child: ConstrainedBox(
+                                constraints: const BoxConstraints(maxHeight: 200),
+                                child: SingleChildScrollView(
+                                  child: Obx(() => Table(
+                                        columnWidths: const {
+                                          0: FlexColumnWidth(1.5),
+                                          1: FlexColumnWidth(2),
+                                          2: FlexColumnWidth(2),
+                                          3: FlexColumnWidth(4),
+                                          4: FlexColumnWidth(1.2),
+                                          5: FlexColumnWidth(1.2),
+                                          6: FlexColumnWidth(1.2),
+                                        },
+                                        border: TableBorder(horizontalInside: BorderSide(color: Colors.grey.shade400)),
+                                        children: List<TableRow>.generate(
+                                          editableRows.length,
+                                          (i) {
+                                            final payment = voucherController.voucherModel.voucher_list[index].paymentDetails![i];
+                                            final rowState = editableRows[i];
+                                            final date = formatDate(payment.date);
+                                            final amount = '₹ ${formatCurrency(payment.amount)}';
+                                            final transID = payment.transactionId;
+                                            final paymentMode = payment.paymentmode;
+
+                                            return TableRow(
+                                              children: [
+                                                // Date
+                                                Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    date,
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(color: Colors.grey),
+                                                  ),
+                                                ),
+
+                                                // Amount Paid
+                                                Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    amount,
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(color: Colors.grey),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    paymentMode,
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(color: Colors.grey),
+                                                  ),
+                                                ),
+                                                // Transaction Details Editable
+                                                Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Obx(() => rowState.isEditing.value
+                                                          ? Expanded(
+                                                              child: TextFormField(
+                                                                autofocus: true,
+                                                                controller: rowState.controller,
+                                                                style: const TextStyle(color: Colors.white, fontSize: 12),
+                                                                maxLines: 2,
+                                                                decoration: const InputDecoration(
+                                                                  hintText: "Enter feedback details",
+                                                                  hintStyle: TextStyle(color: Colors.grey),
+                                                                  border: OutlineInputBorder(borderSide: BorderSide.none),
+                                                                  isDense: true,
+                                                                  contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : Expanded(
+                                                              child: Text(
+                                                                rowState.controller.text,
+                                                                textAlign: TextAlign.start,
+                                                                style: const TextStyle(color: Colors.grey),
+                                                              ),
+                                                            )),
+                                                    ],
+                                                  ),
+                                                ),
+                                                // Actions
+                                                Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      // PDF View
+                                                      MouseRegion(
+                                                        cursor: SystemMouseCursors.click,
+                                                        child: GestureDetector(
+                                                          onTap: () async {
+                                                            bool success = await widget.Get_transactionPDFfile(context: context, transactionID: transID);
+                                                            if (success) {
+                                                              showPDF(context, "TRANSACTION_$transID", mainBilling_Controller.billingModel.pdfFile.value);
+                                                            }
+                                                          },
+                                                          child: Image.asset('assets/images/pdfdownload.png', width: 24, height: 24),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 8),
+
+                                                      // Edit / Save Button
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      // PDF View
+                                                      MouseRegion(
+                                                        cursor: SystemMouseCursors.click,
+                                                        child: GestureDetector(
+                                                          onTap: () async {
+                                                            bool success = await widget.Get_receiptPDFfile(context: context, transactionID: transID);
+                                                            if (success) {
+                                                              showPDF(context, "RECEIPT_$transID", mainBilling_Controller.billingModel.pdfFile.value);
+                                                            }
+                                                          },
+                                                          child: Image.asset('assets/images/order.png', width: 24, height: 24),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 8),
+
+                                                      // Edit / Save Button
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Obx(() => IconButton(
+                                                            icon: Icon(rowState.isEditing.value ? Icons.save : Icons.edit, size: 20),
+                                                            tooltip: rowState.isEditing.value ? "Save" : "Edit",
+                                                            onPressed: () {
+                                                              if (rowState.isEditing.value) {
+                                                                widget.update_paymentDetails(context, index, i);
+                                                              }
+                                                              rowState.isEditing.value = !rowState.isEditing.value;
+
+                                                              if (!rowState.isEditing.value) {
+                                                                payment.transanctionDetails = rowState.controller.text;
+                                                                // Add save logic here if needed
+                                                              }
+                                                            },
+                                                          )),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                      )),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          // ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          }),
+                  ],
+                ),
+              );
+            },
+          ),
         );
       },
     );
@@ -3744,7 +3745,10 @@ class _VoucherState extends State<Voucher> {
                   style: TextStyle(fontSize: 12, color: Colors.grey[600], fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 2),
-                Text(value, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+                Text(
+                  value,
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                ),
               ],
             ),
           ),
@@ -3756,7 +3760,11 @@ class _VoucherState extends State<Voucher> {
   Widget _buildFilterDrawer() {
     return Drawer(
       backgroundColor: Primary_colors.Light,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.horizontal(right: Radius.circular(16))),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.horizontal(
+          right: Radius.circular(16),
+        ),
+      ),
       width: 350,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -3767,7 +3775,11 @@ class _VoucherState extends State<Voucher> {
               'Filter Vouchers',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Primary_colors.Color3),
             ),
-            const Divider(height: 30, thickness: 1, color: Color.fromARGB(255, 97, 97, 97)),
+            const Divider(
+              height: 30,
+              thickness: 1,
+              color: Color.fromARGB(255, 97, 97, 97),
+            ),
             const SizedBox(height: 35),
             // Quick Date Filters
             const Text(

@@ -95,6 +95,7 @@ mixin VoucherService {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           voucherController.voucherModel.subCustomerList.value = value.data.map((e) => CustomerInfo.fromJson(e)).toList();
+
           // print('ijhietjwe${view_LedgerController.view_LedgerModel.subCustomerList}');
           // salesController.addToCustompdfList(value);
         } else {
@@ -149,14 +150,18 @@ mixin VoucherService {
   Future<void> get_VoucherList() async {
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
-        "vouchertype":
-            voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value.toLowerCase() == 'show all' ? '' : voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value.toLowerCase(),
-        "paymentstatus":
-            voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value.toLowerCase() == 'show all' ? '' : voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value.toLowerCase(),
-        "invoicetype":
-            voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value.toLowerCase() == 'show all' ? '' : voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value.toLowerCase(),
+        "vouchertype": voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value.toLowerCase() == 'show all'
+            ? ''
+            : voucherController.voucherModel.voucherSelectedFilter.value.vouchertype.value.toLowerCase(),
+        "paymentstatus": voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value.toLowerCase() == 'show all'
+            ? ''
+            : voucherController.voucherModel.voucherSelectedFilter.value.paymentstatus.value.toLowerCase(),
+        "invoicetype": voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value.toLowerCase() == 'show all'
+            ? ''
+            : voucherController.voucherModel.voucherSelectedFilter.value.invoicetype.value.toLowerCase(),
         // "customerid": "SB_1",
-        "customerid": voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value == 'None' ? '' : voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value,
+        "customerid":
+            voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value == 'None' ? '' : voucherController.voucherModel.voucherSelectedFilter.value.selectedcustomerid.value,
         "startdate": voucherController.voucherModel.voucherSelectedFilter.value.fromdate.value.toString(),
         "enddate": voucherController.voucherModel.voucherSelectedFilter.value.todate.value.toString(),
       },
@@ -170,6 +175,8 @@ mixin VoucherService {
       if (value.code) {
         // print(value.data);
         voucherController.add_Voucher(value);
+        search(voucherController.voucherModel.searchController.value.text);
+
         voucherController.update();
       } else {
         // await Error_dialog(context: context, title: 'ERROR', content: value.message ?? "", onOk: () {});
@@ -414,7 +421,7 @@ mixin VoucherService {
     // }
   }
 
-  Future<void> applySearchFilter(String query) async {
+  Future<void> search(String query) async {
     try {
       if (query.isEmpty) {
         voucherController.voucherModel.voucher_list.assignAll(voucherController.voucherModel.ParentVoucher_list);

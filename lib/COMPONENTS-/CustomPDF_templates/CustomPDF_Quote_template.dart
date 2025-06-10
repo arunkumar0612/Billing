@@ -9,7 +9,8 @@ import '../../4.SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entit
 import '../../4.SALES/models/entities/Quote_entities.dart';
 import '../../UTILS/helpers/support_functions.dart';
 
-Future<Uint8List> generate_CustomPDFQuote(PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, quote_gstTotals, isGST_local) async {
+Future<Uint8List> generate_CustomPDFQuote(
+    PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst, quote_gstTotals, isGST_local) async {
   final quotation = Quotation(
     date: date,
     products: products,
@@ -388,7 +389,7 @@ class Quotation {
       ),
       columnWidths: {
         0: const pw.FlexColumnWidth(1), // S.No (narrow column)
-        1: const pw.FlexColumnWidth(3), // Item Description (wider column)
+        1: const pw.FlexColumnWidth(6), // Item Description (wider column)
         2: const pw.FlexColumnWidth(2), // HSN (medium width)
         3: const pw.FlexColumnWidth(1.5), // GST (narrow column)
         4: const pw.FlexColumnWidth(2), // Price (medium width)

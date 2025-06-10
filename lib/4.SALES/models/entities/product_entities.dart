@@ -101,7 +101,7 @@ class QuoteProduct {
       case 2:
         return hsn.toString();
       case 3:
-        return gst.toString();
+        return gst.toInt().toString();
       case 4:
         return formatCurrency(price);
       case 5:

@@ -7,10 +7,11 @@ import 'package:intl/intl.dart';
 import 'package:ssipl_billing/7.HIERARCHY/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/7.HIERARCHY/models/entities/Hierarchy_entities.dart';
 import 'package:ssipl_billing/7.HIERARCHY/services/Branch_service.dart';
+import 'package:ssipl_billing/7.HIERARCHY/services/hierarchy_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
-class BranchEditor extends StatefulWidget with BranchService {
+class BranchEditor extends StatefulWidget with BranchService, HierarchyService {
   final double screenWidth;
   final Rx<BranchsData> data;
   final HierarchyController controller;
@@ -311,8 +312,8 @@ class _BranchEditorState extends State<BranchEditor> {
                         BasicButton(
                           text: "Update",
                           colors: Colors.blue,
-                          onPressed: () {
-                            widget.UpdateKYC(
+                          onPressed: () async {
+                            await widget.UpdateKYC(
                               context,
                               widget.controller.hierarchyModel.branch_IdController.value.text,
                               widget.controller.hierarchyModel.branch_NameController.value.text,
@@ -334,6 +335,9 @@ class _BranchEditorState extends State<BranchEditor> {
                               widget.controller.hierarchyModel.branch_billingPeriodController.value.text,
                               widget.controller.hierarchyModel.branch_subscriptionIdController.value.text,
                             );
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              widget.get_BranchList(context);
+                            });
                           },
                         ),
                       ],

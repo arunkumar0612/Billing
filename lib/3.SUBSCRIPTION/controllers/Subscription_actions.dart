@@ -115,6 +115,7 @@ class SubscriptionController extends GetxController {
           customer.customer_gstno.toLowerCase().contains(query.toLowerCase()));
 
       var filteredRecurred_invoices = subscriptionfilteredModel.reccuringInvoice_list.where((recurred) =>
+          recurred.date.toLowerCase().contains(query.toLowerCase()) ||
           recurred.clientAddressName.toLowerCase().contains(query.toLowerCase()) ||
           recurred.date.toLowerCase().contains(query.toLowerCase()) ||
           recurred.invoiceNo.toLowerCase().contains(query.toLowerCase()));

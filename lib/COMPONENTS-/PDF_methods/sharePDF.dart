@@ -30,7 +30,7 @@ void shareAnyPDF(BuildContext context, String filePath, File pdfToShare) {
                 children: [
                   Container(
                     width: 500,
-                    padding: const EdgeInsets.all(15),
+                    padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -47,8 +47,8 @@ void shareAnyPDF(BuildContext context, String filePath, File pdfToShare) {
                     ),
                     child: Row(
                       children: [
-                        // const Icon(Icons.share, color: Colors.white, size: 24),
-                        // const SizedBox(width: 16),
+                        const Icon(Icons.share, color: Colors.white, size: 24),
+                        const SizedBox(width: 16),
                         const Text(
                           'Share',
                           style: TextStyle(
@@ -61,15 +61,9 @@ void shareAnyPDF(BuildContext context, String filePath, File pdfToShare) {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  // const SizedBox(height: 5),
                   Container(
-                    // margin: const EdgeInsets.only(right: 16, left: 16),
                     padding: const EdgeInsets.all(20),
-                    // decoration: BoxDecoration(
-                    //   color: Primary_colors.Dark,
-                    //   borderRadius: BorderRadius.circular(12),
-                    //   border: Border.all(color: Primary_colors.Dark, width: 1),
-                    // ),
                     width: 500,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -240,7 +234,7 @@ void shareAnyPDF(BuildContext context, String filePath, File pdfToShare) {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             SizedBox(
-                              width: 380,
+                              width: 460,
                               child: TextFormField(
                                 maxLines: 5,
                                 controller: ctrl.feedbackController,

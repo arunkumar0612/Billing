@@ -336,7 +336,7 @@ class Quotation {
       'S.No',
       'Item Description',
       'HSN',
-      'GST',
+      'GST(%)',
       'Price',
       'Quantity',
       'Total',
@@ -355,7 +355,7 @@ class Quotation {
       // ✅ Column width added
       columnWidths: {
         0: const pw.FlexColumnWidth(2), // S.No (small)
-        1: const pw.FlexColumnWidth(6), // Item Description (large)
+        1: const pw.FlexColumnWidth(9), // Item Description (large)
         2: const pw.FlexColumnWidth(3), // HSN Code
         3: const pw.FlexColumnWidth(3), // GST
         4: const pw.FlexColumnWidth(4), // Price
@@ -522,7 +522,7 @@ class Quotation {
                                   ),
                                   width: 50, // Define width instead of Expanded
                                   child: pw.Center(
-                                    child: regular((quote_gstTotals[index].gst).toString(), 10),
+                                    child: regular((quote_gstTotals[index].gst.toInt()).toString(), 10),
                                   ),
                                 ),
                                 pw.Container(
@@ -713,7 +713,7 @@ class Quotation {
                                   ),
                                   width: 40, // Define width instead of Expanded
                                   child: pw.Center(
-                                    child: regular((quote_gstTotals[index].gst / 2).toString(), 10),
+                                    child: regular((quote_gstTotals[index].gst / 2).toInt().toString(), 10),
                                   ),
                                 ),
                                 pw.Container(
@@ -747,7 +747,7 @@ class Quotation {
                                     ),
                                   ),
                                   width: 40, // Define width instead of Expanded
-                                  child: pw.Center(child: regular((quote_gstTotals[index].gst / 2).toString(), 10)),
+                                  child: pw.Center(child: regular((quote_gstTotals[index].gst / 2).toInt().toString(), 10)),
                                 ),
                                 pw.Container(
                                   width: 70, // Define width instead of Expanded

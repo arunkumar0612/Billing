@@ -7,7 +7,7 @@ import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 mixin BranchService {
   final Invoker apiController = Get.find<Invoker>();
 
-  void UpdateKYC(
+  Future<void> UpdateKYC(
     context,
     String branchid,
     String branchname,
@@ -31,7 +31,7 @@ mixin BranchService {
   ) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({
-        "branchid": branchid,
+        "branchid": int.parse(branchid),
         "branchname": branchname,
         "emailid": emailid,
         "contactno": contactno,

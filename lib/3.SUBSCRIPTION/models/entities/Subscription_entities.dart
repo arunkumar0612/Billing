@@ -59,7 +59,29 @@ class Recurredcustomer {
       customer_gstno: json.data[i]['customer_gstno'] ?? "",
     );
   }
+}
 
+class ApprovalQueue_customer {
+  final int customerId;
+  final String customerName;
+  final String customer_phoneno;
+  final String customer_gstno;
+
+  ApprovalQueue_customer({
+    required this.customerId,
+    required this.customerName,
+    required this.customer_phoneno,
+    required this.customer_gstno,
+  });
+
+  factory ApprovalQueue_customer.fromJson(CMDlResponse json, int i) {
+    return ApprovalQueue_customer(
+      customerId: json.data[i]['customer_id'] as int,
+      customerName: json.data[i]['customer_name'] as String,
+      customer_phoneno: json.data[i]['customer_phoneno'] as String,
+      customer_gstno: json.data[i]['customer_gstno'] ?? "",
+    );
+  }
   Map<String, dynamic> toJson() {
     return {
       'Customer_id': customerId,
@@ -473,6 +495,174 @@ class RecurringInvoice_List {
       'phone_no': phoneNo,
       'ccemail': ccEmail,
       "date": date,
+    };
+  }
+}
+
+class ApprovalQueueInvoice_List {
+  final int recurredBillId;
+  final int subscriptionBillId;
+  final List<int> siteIds;
+  final String clientAddressName;
+  final String clientAddress;
+  final String billingAddressName;
+  final String billingAddress;
+  final String pdfData;
+  final String invoiceNumber;
+  final List<SiteInfo> siteList;
+  final double totalAmount;
+  final String? emailId;
+  final String phoneNo;
+  final String? ccEmail;
+  final String billDate;
+  final String dueDate;
+  final String billPeriod;
+  final BillDetails billDetails;
+  final int customerId;
+  final Map<String, dynamic> PostData;
+
+  ApprovalQueueInvoice_List({
+    required this.recurredBillId,
+    required this.subscriptionBillId,
+    required this.siteIds,
+    required this.clientAddressName,
+    required this.clientAddress,
+    required this.billingAddressName,
+    required this.billingAddress,
+    required this.pdfData,
+    required this.invoiceNumber,
+    required this.siteList,
+    required this.totalAmount,
+    required this.emailId,
+    required this.phoneNo,
+    required this.ccEmail,
+    required this.billDate,
+    required this.dueDate,
+    required this.billPeriod,
+    required this.billDetails,
+    required this.customerId,
+    required this.PostData,
+  });
+
+  factory ApprovalQueueInvoice_List.fromJson(Map<String, dynamic> json) {
+    return ApprovalQueueInvoice_List(
+      recurredBillId: json['recurredbillid'],
+      subscriptionBillId: json['subscription_billid'],
+      siteIds: List<int>.from(json['site_Ids']),
+      clientAddressName: json['client_addressname'],
+      clientAddress: json['client_address'],
+      billingAddressName: json['billing_addressname'],
+      billingAddress: json['billing_address'],
+      pdfData: json['pdf_data'],
+      invoiceNumber: json['invoicenumber'],
+      siteList: (json['Site_list'] as List).map((e) => SiteInfo.fromJson(e)).toList(),
+      totalAmount: (json['TotalAmount'] as num).toDouble(),
+      emailId: json['email_id'] == "null" ? null : json['email_id'],
+      phoneNo: json['phone_no'],
+      ccEmail: json['ccemail'] == "null" ? null : json['ccemail'],
+      billDate: json['bill_date'],
+      dueDate: json['due_date'],
+      billPeriod: json['bill_period'],
+      billDetails: BillDetails.fromJson(json['bill_details']),
+      customerId: json['customer_id'],
+      PostData: json['postdata'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'recurredbillid': recurredBillId,
+      'subscription_billid': subscriptionBillId,
+      'site_Ids': siteIds,
+      'client_addressname': clientAddressName,
+      'client_address': clientAddress,
+      'billing_addressname': billingAddressName,
+      'billing_address': billingAddress,
+      'pdf_data': pdfData,
+      'invoicenumber': invoiceNumber,
+      'Site_list': siteList.map((e) => e.toJson()).toList(),
+      'TotalAmount': totalAmount,
+      'email_id': emailId ?? "null",
+      'phone_no': phoneNo,
+      'ccemail': ccEmail ?? "null",
+      'bill_date': billDate,
+      'due_date': dueDate,
+      'bill_period': billPeriod,
+      'bill_details': billDetails.toJson(),
+      'customer_id': customerId,
+      'postdata': PostData,
+    };
+  }
+}
+
+class BillDetails {
+  final double subtotal;
+  final double total;
+  final double tdsAmount;
+  final Map<String, dynamic> gst;
+
+  BillDetails({
+    required this.subtotal,
+    required this.total,
+    required this.tdsAmount,
+    required this.gst,
+  });
+
+  factory BillDetails.fromJson(Map<String, dynamic> json) {
+    return BillDetails(
+      subtotal: (json['subtotal'] as num).toDouble(),
+      total: (json['total'] as num).toDouble(),
+      tdsAmount: (json['tdsamount'] as num).toDouble(),
+      gst: Map<String, dynamic>.from(json['gst']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'subtotal': subtotal,
+      'total': total,
+      'tdsamount': tdsAmount,
+      'gst': gst,
+    };
+  }
+}
+
+class SiteInfo {
+  final String address;
+  final int siteId;
+  final String siteName;
+  final String branchCode;
+  final int customerId;
+  final double monthlyCharges;
+
+  SiteInfo({
+    required this.address,
+    required this.siteId,
+    required this.siteName,
+    required this.branchCode,
+    required this.customerId,
+    required this.monthlyCharges,
+  });
+
+  factory SiteInfo.fromJson(Map<String, dynamic> json) {
+    return SiteInfo(
+      address: json['address'],
+      siteId: json['site_id'],
+      siteName: json['site_name'],
+      branchCode: json['branchcode'],
+      customerId: json['customer_id'],
+      monthlyCharges: (json['monthly_charges'] as num).toDouble(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'address': address,
+      'site_id': siteId,
+      'site_name': siteName,
+      'branchcode': branchCode,
+      'customer_id': customerId,
+      'monthly_charges': monthlyCharges,
     };
   }
 }

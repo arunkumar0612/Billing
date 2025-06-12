@@ -8,6 +8,7 @@ import '../entities/Subscription_entities.dart';
 class SubscriptionModel extends GetxController with GetSingleTickerProviderStateMixin {
   var processcustomerList = <Processcustomer>[].obs;
   var recurredcustomerList = <Recurredcustomer>[].obs;
+  var ApprovalQueue_customerList = <ApprovalQueue_customer>[].obs;
   var companyList = CompanyResponse(companyList: []).obs;
   var GlobalPackage = Global_package(globalPackageList: []).obs;
   var processList = <Process>[].obs;
@@ -15,7 +16,7 @@ class SubscriptionModel extends GetxController with GetSingleTickerProviderState
   final customerId = Rxn<int>();
   final pdfFile = Rxn<File>();
   final custom_pdfFile = Rxn<File>();
-  final recurred_pdfFile = Rxn<File>();
+  // final pdfFile = Rxn<File>();
   final selectedIndices = <int>[].obs;
   final RxBool isAllSelected = false.obs;
   final type = 0.obs;
@@ -28,6 +29,7 @@ class SubscriptionModel extends GetxController with GetSingleTickerProviderState
   late AnimationController animationController;
   var customPdfList = <CustomerPDF_List>[].obs;
   var reccuringInvoice_list = <RecurringInvoice_List>[].obs;
+  var ApprovalQueue_list = <ApprovalQueueInvoice_List>[].obs;
 
   var whatsapp_selectionStatus = true.obs;
   var gmail_selectionStatus = true.obs;

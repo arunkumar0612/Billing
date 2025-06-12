@@ -24,33 +24,44 @@ mixin main_BillingService {
   final MainBilling_Controller mainBilling_Controller = Get.find<MainBilling_Controller>();
   final loader = LoadingOverlay();
 
+  /// Fetches the list of subscription customers for main billing.
+  ///
+  /// - Makes a GET request to the `get_ledgerSubscriptionCustomers` endpoint.
+  /// - If successful (`statusCode == 200` and `code == true`), updates the
+  ///   `subCustomerList` in `mainBilling_Controller.billingModel`.
+  /// - Triggers a re-filter/search using the current `searchQuery`.
+  /// - If any errors occur, logs the error in debug mode.
   Future<void> Get_Mainbilling_SUBcustomerList() async {
     try {
+      // Call API and wait for response
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_ledgerSubscriptionCustomers);
+
+      // Check for valid response
       if (response?['statusCode'] == 200) {
+        // Parse JSON response into CMDlResponse model
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+
         if (value.code) {
+          // Map each item in data to a MainbillingCustomerInfo object
           mainBilling_Controller.billingModel.subCustomerList.value = value.data.map((e) => MainbillingCustomerInfo.fromJson(e)).toList();
+
+          // Perform search using current query
           mainBilling_Controller.search(mainBilling_Controller.billingModel.searchQuery.value);
-          // print('ijhietjwe${view_LedgerController.view_LedgerModel.subCustomerList}');
-          // salesController.addToCustompdfList(value);
         } else {
           if (kDebugMode) {
-            print("error : ${value.message}");
+            print("API logical error: ${value.message}");
           }
-          // await Basic_dialog(context: context, showCancel: false, title: 'Processcustomer List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
         if (kDebugMode) {
-          print("error : ${"please contact administration"}");
+          print("HTTP error: Server responded with status code ${response?['statusCode']}");
         }
-        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
+      // Catch and log any exceptions that occur
       if (kDebugMode) {
-        print("error : $e");
+        print("Exception occurred during fetch: $e");
       }
-      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
     }
   }
 
@@ -129,6 +140,20 @@ mixin main_BillingService {
     }
   }
 
+  /// Fetches a transaction's PDF file using the given [transactionID].
+  ///
+  /// Sends a GET request to the backend with the specified transaction ID to retrieve
+  /// a binary PDF file. On successful retrieval and valid response (`value.code == true`),
+  /// the PDF data is handled by [mainBilling_Controller.PDFfileApiData].
+  ///
+  /// Error handling:
+  /// - Shows an error dialog if the response code is invalid or indicates failure.
+  /// - Handles and displays exceptions if any occur during the request.
+  /// - Shows a server down message if the response status code is not 200.
+  ///
+  /// Returns:
+  /// - `true` if the PDF file was successfully retrieved and processed.
+  /// - `false` in case of any error or failure during the process.
   Future<bool> Get_transactionPDFfile({required BuildContext context, required int transactionID}) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"transactionid": transactionID}, API.get_transactionBinaryfile);
@@ -151,6 +176,19 @@ mixin main_BillingService {
     }
   }
 
+  /// Fetches a receipt PDF file using the provided [transactionID].
+  ///
+  /// Sends a GET request with the transaction ID to retrieve the receipt's binary file from the backend.
+  /// On success (`statusCode == 200` and `value.code == true`), the response is processed by [mainBilling_Controller.PDFfileApiData].
+  ///
+  /// Error handling:
+  /// - If the response code is not valid or fails, an error dialog with the backend message is shown.
+  /// - If the status code is not 200, a "server down" dialog is displayed.
+  /// - Exceptions during the request are caught and shown in an error dialog.
+  ///
+  /// Returns:
+  /// - `true` if the receipt PDF was retrieved and processed successfully.
+  /// - `false` if there is any failure during the operation.
   Future<bool> Get_receiptPDFfile({required BuildContext context, required int transactionID}) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"transactionid": transactionID}, API.get_receiptBinaryfile);
@@ -172,60 +210,6 @@ mixin main_BillingService {
       return false;
     }
   }
-
-  String formatNumber(int number) {
-    if (number >= 10000000) {
-      return "₹ ${(number / 10000000).toStringAsFixed(1)}Cr";
-    } else if (number >= 100000) {
-      return "₹ ${(number / 100000).toStringAsFixed(1)}L";
-    } else if (number >= 1000) {
-      return "₹ ${(number / 1000).toStringAsFixed(1)}K";
-    } else {
-      return "₹ $number";
-    }
-  }
-
-  // Future<void> selectDate(BuildContext context, TextEditingController controller) async {
-  //   final DateTime now = DateTime.now();
-  //   final DateTime nextYear = now.add(const Duration(days: 365)); // Limit to next year
-
-  //   final DateTime? pickedDate = await showDatePicker(
-  //     context: context,
-  //     initialDate: now,
-  //     firstDate: now, // Start from today
-  //     lastDate: nextYear, // Allow dates up to 1 year from today
-  //     builder: (context, child) {
-  //       return Theme(
-  //         data: Theme.of(context).copyWith(
-  //           colorScheme: const ColorScheme.light(
-  //             primary: Primary_colors.Color3,
-  //             onPrimary: Colors.white,
-  //             onSurface: Colors.black87,
-  //           ),
-  //           textButtonTheme: TextButtonThemeData(
-  //             style: TextButton.styleFrom(
-  //               foregroundColor: Primary_colors.Color3,
-  //             ),
-  //           ),
-  //           dialogTheme: const DialogThemeData(
-  //             shape: RoundedRectangleBorder(
-  //               borderRadius: BorderRadius.all(Radius.circular(16)),
-  //             ),
-  //           ),
-  //         ),
-  //         child: child!,
-  //       );
-  //     },
-  //   );
-
-  //   if (pickedDate != null) {
-  //     final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
-  //         "${pickedDate.month.toString().padLeft(2, '0')}-"
-  //         "${pickedDate.day.toString().padLeft(2, '0')}";
-
-  //     controller.text = formatted;
-  //   }
-  // }
 
   Future<void> select_previousDates(BuildContext context, TextEditingController controller) async {
     final DateTime now = DateTime.now();

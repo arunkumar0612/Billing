@@ -483,7 +483,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                                 ),
                                                                 Text(
                                                                   mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount != null
-                                                                      ? widget.formatNumber((mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount is double
+                                                                      ? formatNumber((mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount is double
                                                                               ? mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount
                                                                               : double.parse(mainBilling_Controller.billingModel.dashBoard_data.value.totalAmount.toString()))!
                                                                           .toInt())
@@ -524,7 +524,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                                 ),
                                                                 Text(
                                                                   mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount != null
-                                                                      ? widget.formatNumber((mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount is double
+                                                                      ? formatNumber((mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount is double
                                                                               ? mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount
                                                                               : double.parse(mainBilling_Controller.billingModel.dashBoard_data.value.paidAmount.toString()))!
                                                                           .toInt())
@@ -567,7 +567,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                                 ),
                                                                 Text(
                                                                   mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount != null
-                                                                      ? widget.formatNumber((mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount is double
+                                                                      ? formatNumber((mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount is double
                                                                               ? mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount
                                                                               : double.parse(mainBilling_Controller.billingModel.dashBoard_data.value.pendingAmount.toString()))!
                                                                           .toInt())

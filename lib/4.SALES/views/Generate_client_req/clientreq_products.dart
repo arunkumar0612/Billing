@@ -5,9 +5,9 @@ import 'package:ssipl_billing/4.SALES/services/ClientReq_services/ClientreqProdu
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
-
 import '../../controllers/ClientReq_actions.dart';
 
+/// product tab common for both customer and enquiry process
 class clientreqProducts extends StatefulWidget with ClientreqProductService {
   clientreqProducts({super.key});
 
@@ -18,6 +18,7 @@ class clientreqProducts extends StatefulWidget with ClientreqProductService {
 class _clientreqProductsState extends State<clientreqProducts> {
   final ClientreqController clientreqController = Get.find<ClientreqController>();
 
+  /// Builds a list of added product details with edit/remove actions.
   Widget clientreq_productDetails() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -97,6 +98,8 @@ class _clientreqProductsState extends State<clientreqProducts> {
                       child: Column(
                         children: [
                           const SizedBox(height: 25),
+
+                          ///  -------------------- Form Section --------------------
                           Obx(
                             () {
                               return DropdownMenu<ProductSuggestion>(
@@ -147,6 +150,8 @@ class _clientreqProductsState extends State<clientreqProducts> {
                               );
                             },
                           ),
+
+                          /// Quantity TextField
                           const SizedBox(height: 25),
                           BasicTextfield(
                             digitsOnly: true,
@@ -163,6 +168,8 @@ class _clientreqProductsState extends State<clientreqProducts> {
                             },
                           ),
                           const SizedBox(height: 30),
+
+                          /// Action Buttons (Add/Update & Cancel/Back)
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -171,9 +178,7 @@ class _clientreqProductsState extends State<clientreqProducts> {
                                 colors: Colors.red,
                                 text: clientreqController.clientReqModel.product_editIndex.value == null ? 'Back' : 'Cancle',
                                 onPressed: () {
-                                  clientreqController.clientReqModel.product_editIndex.value == null
-                                      ? clientreqController.backTab()
-                                      : widget.resetEditingState(); // Reset editing state when going back
+                                  clientreqController.clientReqModel.product_editIndex.value == null ? clientreqController.backTab() : widget.resetEditingState(); // Reset editing state when going back
                                 },
                               ),
                               const SizedBox(width: 30),
@@ -199,6 +204,7 @@ class _clientreqProductsState extends State<clientreqProducts> {
                       ),
                     ),
                     // if (length != 0) const SizedBox(width: 60),
+                    /// -------------------- Product List Section --------------------
                     if (clientreqController.clientReqModel.clientReqProductDetails.isNotEmpty)
                       Column(
                         children: [

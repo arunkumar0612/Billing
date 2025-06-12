@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/controllers/Sales_actions.dart';
 
+/// Widget to display a pie chart representing completed and pending invoices.
 class SalesChart extends StatefulWidget {
   const SalesChart({super.key});
 
@@ -11,6 +12,7 @@ class SalesChart extends StatefulWidget {
 }
 
 class SalesChartState extends State<SalesChart> {
+  /// Track which pie section is currently touched
   int touchedIndex = -1;
 
   @override
@@ -19,6 +21,7 @@ class SalesChartState extends State<SalesChart> {
     final SalesController salesController = Get.find<SalesController>();
 
     return Obx(() {
+      /// Get completed and pending invoice data from controlle
       final int completed = salesController.salesModel.salesdata.value?.paidinvoices ?? 0;
       final int pending = salesController.salesModel.salesdata.value?.unpaidinvoices ?? 0;
 
@@ -27,6 +30,7 @@ class SalesChartState extends State<SalesChart> {
 
       return Row(
         children: <Widget>[
+          /// -------------------- Pie Chart --------------------
           Expanded(
             child: AspectRatio(
               aspectRatio: 1,
@@ -60,6 +64,8 @@ class SalesChartState extends State<SalesChart> {
             ),
           ),
           const SizedBox(width: 10),
+
+          /// -------------------- Legend / Indicators --------------------
           const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,6 +90,7 @@ class SalesChartState extends State<SalesChart> {
   }
 
   List<PieChartSectionData> showingSections(int completed, int pending) {
+    /// Handle the case when both values are zero
     if (completed == 0 && pending == 0) {
       return [
         PieChartSectionData(
@@ -101,6 +108,7 @@ class SalesChartState extends State<SalesChart> {
       ];
     }
 
+    /// Values for pie sections
     final List<int> valueList = [completed, pending];
     return List.generate(
       2,
@@ -126,6 +134,7 @@ class SalesChartState extends State<SalesChart> {
     );
   }
 
+  /// Returns color for each section: index 0 -> completed, 1 -> pending
   Color getColor(int index) {
     switch (index) {
       case 0:
@@ -137,17 +146,20 @@ class SalesChartState extends State<SalesChart> {
     }
   }
 
+  /// Returns the max percentage value for pie chart center text
   double getMaxPercentage(int completed, int pending) {
     int maxValue = completed > pending ? completed : pending;
     int total = completed + pending;
     return total == 0 ? 0 : (maxValue / total) * 100;
   }
 
+  /// Returns the label ("Completed" or "Pending") with highest value
   String getMaxPercentageLabel(int completed, int pending) {
     return completed >= pending ? 'Completed' : 'Pending';
   }
 }
 
+/// Widget to show legend indicators for pie chart
 class Indicator extends StatelessWidget {
   final Color color;
   final String text;

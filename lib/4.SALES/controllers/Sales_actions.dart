@@ -6,20 +6,26 @@ import 'package:ssipl_billing/4.SALES/models/constants/Sales_constants.dart';
 import 'package:ssipl_billing/4.SALES/models/entities/Sales_entities.dart';
 import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/API/invoker.dart';
-
 import '../../COMPONENTS-/Response_entities.dart';
 
+/// A GetX controller for managing sales-related data and actions.
+/// This controller handles various lists like customers, processes, and PDF data.
+/// It communicates with the API through the [Invoker] and updates the state of the sales model accordingly.
 class SalesController extends GetxController {
   var salesModel = SalesModel();
   final Invoker apiController = Get.find<Invoker>();
   // final SalesController salesController = Get.find<SalesController>();
   var salesfilteredModel = SalesModel();
+
+  /// Adds a list of customers from [CMDlResponse] to the [customerList].
+  /// Iterates over the response and converts each entry to a [Customer].
   void addToCustomerList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
       salesModel.customerList.add(Customer.fromJson(value, i));
     }
   }
 
+  /// Adds a list of processing customers from [CMDlResponse] to [processcustomerList]
   void addToProcesscustomerList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
       salesModel.processcustomerList.add(Processcustomer.fromJson(value, i));
@@ -28,6 +34,8 @@ class SalesController extends GetxController {
     // print('object');
   }
 
+  /// Adds a list of customer PDF records from [CMDlResponse] to both [customPdfList] and the filtered version.
+  /// Clears previous entries before adding new ones.
   void addToCustompdfList(CMDlResponse value) {
     salesModel.customPdfList.clear();
     salesfilteredModel.customPdfList.clear();
@@ -37,6 +45,7 @@ class SalesController extends GetxController {
     }
   }
 
+  /// Adds a list of process records from [CMDlResponse] to [processList] and assigns it to the filtered model.
   void addToProcessList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
       salesModel.processList.add(Process.fromJson(value, i));
@@ -44,54 +53,66 @@ class SalesController extends GetxController {
     salesfilteredModel.processList.assignAll(salesModel.processList);
   }
 
+  /// Updates the selected customer ID in the sales model.
   void updatecustomerId(int value) {
     salesModel.customerId.value = value;
   }
 
+  ///Updates the visibility state for the customer process UI.
   void updateshowcustomerprocess(int? value) {
     salesModel.showcustomerprocess.value = value;
   }
 
+  /// Processes PDF data response [CMDmResponse] and stores the resulting file.
   Future<void> PDFfileApiData(CMDmResponse value) async {
     var pdfFileData = await PDFfileData.fromJson(value); // Await async function
     var binaryData = pdfFileData.data; // Extract File object
     await updatePDFfile(binaryData);
   }
 
+  /// Updates the pdfFile in the sales model with a new File.
   Future<void> updatePDFfile(File value) async {
     salesModel.pdfFile.value = value;
   }
 
+  /// Fetches and updates the custom PDF file from the given CMDmResponse.
   Future<void> custom_PDFfileApiData(CMDmResponse value) async {
     var pdfFileData = await PDFfileData.fromJson(value); // Await async function
     var binaryData = pdfFileData.data; // Extract File object
     await update_customPDFfile(binaryData);
   }
 
+  /// Updates the custom PDF file in the sales model.
   Future<void> update_customPDFfile(File value) async {
     salesModel.custom_pdfFile.value = value;
   }
 
+  /// Updates the isAllSelected flag in the sales model.
   void updateisAllSelected(bool value) {
     salesModel.isAllSelected.value = value;
   }
 
+  /// Updates the list of selected item indices.
   void updateselectedIndices(List<int> value) {
     salesModel.selectedIndices.value = value;
   }
 
+  /// Toggles the visibility of the CC email input field.
   void toggleCCemailvisibility(bool value) {
     salesModel.CCemailToggle.value = value;
   }
 
+  /// Updates the selected type value in the sales model.
   void updatetype(int value) {
     salesModel.type.value = value;
   }
 
+  /// Updates the isprofilepage flag to show or hide profile page.
   void updateprofilepage(bool value) {
     salesModel.isprofilepage.value = value;
   }
 
+  /// Clears all share-related fields and resets service selection status.
   void clear_sharedata() {
     salesModel.emailController.value.clear();
     salesModel.phoneController.value.clear();
@@ -101,6 +122,7 @@ class SalesController extends GetxController {
     salesModel.gmail_selectionStatus.value = false;
   }
 
+  /// Filters process and customer lists based on the search query.
   void search(String query) {
     salesModel.searchQuery.value = query;
     // salesModel.searchQuery.value = query;
@@ -109,10 +131,8 @@ class SalesController extends GetxController {
       salesModel.processList.assignAll(salesfilteredModel.processList);
       salesModel.processcustomerList.assignAll(salesfilteredModel.processcustomerList);
     } else {
-      var filteredProcesses = salesfilteredModel.processList.where((process) =>
-          process.title.toLowerCase().contains(query.toLowerCase()) ||
-          process.customer_name.toLowerCase().contains(query.toLowerCase()) ||
-          process.Process_date.toLowerCase().contains(query.toLowerCase()));
+      var filteredProcesses = salesfilteredModel.processList.where(
+          (process) => process.title.toLowerCase().contains(query.toLowerCase()) || process.customer_name.toLowerCase().contains(query.toLowerCase()) || process.Process_date.toLowerCase().contains(query.toLowerCase()));
 
       var filteredCustomers = salesfilteredModel.processcustomerList.where((customer) =>
           customer.customerName.toLowerCase().contains(query.toLowerCase()) ||
@@ -124,6 +144,7 @@ class SalesController extends GetxController {
     }
   }
 
+  /// Filters the custom PDF list based on the search query.
   void search_CustomPDF(String query) {
     // salesModel.searchQuery.value = query;
 
@@ -141,18 +162,22 @@ class SalesController extends GetxController {
     }
   }
 
+  /// Updates the sales data from a CMDmResponse.
   void updateSalesData(CMDmResponse value) {
     salesModel.salesdata.value = Salesdata.fromJson(value);
   }
 
+  /// Updates the client profile data from a CMDmResponse.
   void updateclientprofileData(CMDmResponse value) {
     salesModel.Clientprofile.value = Clientprofiledata.fromJson(value);
   }
 
+  /// Updates the selected sales period string value.
   void updatesalesperiod(String value) {
     salesModel.salesperiod.value = value;
   }
 
+  /// Clears all sharing input fields like email, phone, feedback, and CC email.
   void reset_shareData() {
     salesModel.emailController.value.clear();
     salesModel.phoneController.value.clear();
@@ -160,6 +185,7 @@ class SalesController extends GetxController {
     salesModel.CCemailController.value.clear();
   }
 
+  /// Fetches the custom PDF list data from the API and updates the model.
   Future<void> Get_salesCustomPDFLsit() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_salesCustompdf);

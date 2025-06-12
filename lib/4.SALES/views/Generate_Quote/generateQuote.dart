@@ -8,12 +8,12 @@ import 'package:ssipl_billing/4.SALES/views/Generate_Quote/post_Quote.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-
 import '../../controllers/Quote_actions.dart';
 import 'quote_details.dart';
 import 'quote_note.dart';
 import 'quote_products.dart';
 
+/// overall structural design for quotation/revised quotation dialog box
 class GenerateQuote extends StatefulWidget with QuotedetailsService {
   GenerateQuote({super.key, required this.quoteType, required this.eventID});
   int eventID;
@@ -52,6 +52,7 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
                 Padding(
                   padding: const EdgeInsets.all(15),
                   child: Text(
+                    /// the title for the pdf viewer in the left of the tab will change according to the process hierarchy
                     widget.quoteType == "quotation" ? "CLIENT REQUEST" : "QUOTATION",
                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                   ),
@@ -121,6 +122,8 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
                           ),
                           controller: quoteController.quoteModel.tabController.value,
                           indicator: const BoxDecoration(),
+
+                          /// ---------------- Tab Bar ----------------
                           tabs: const [
                             Tab(text: "DETAILS"),
                             Tab(text: "PRODUCT"),
@@ -133,6 +136,7 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
                   ),
                   Expanded(
                     child: TabBarView(
+                      /// ---------------- Tab Content ----------------
                       controller: quoteController.quoteModel.tabController.value,
                       children: [
                         QuoteDetails(

@@ -9,6 +9,7 @@ import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
+/// Generating RFQ ---- Details tab
 class RfqDetails extends StatefulWidget with RfqdetailsService {
   RfqDetails({super.key, required this.eventID});
   int eventID;

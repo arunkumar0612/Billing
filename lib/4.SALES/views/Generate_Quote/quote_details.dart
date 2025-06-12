@@ -6,10 +6,10 @@ import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
-
 import '../../controllers/Quote_actions.dart';
 import '../../services/Quotation_services/QuoteDetails_service.dart';
 
+/// Generating Quotation ---- Details tab
 class QuoteDetails extends StatefulWidget with QuotedetailsService {
   QuoteDetails({super.key, required this.eventtype, required this.eventID});
   int eventID;
@@ -41,6 +41,7 @@ class _QuoteDetailsState extends State<QuoteDetails> {
                 child: Padding(
                   padding: const EdgeInsets.all(3.0),
                   child: Row(
+                    /// Quotation Number
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text('${widget.eventtype == 'revisedquotation' ? 'Revised quotation no' : 'Quotation No'} :   ',

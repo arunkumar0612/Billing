@@ -10,6 +10,8 @@ import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
+/// Design for Customer Details tab when process is created for existing client.
+/// The design for both customer and enquiry process remains the same, except the details tab
 class customerDetails extends StatefulWidget with ClientreqDetailsService, SalesServices {
   customerDetails({super.key});
 
@@ -420,6 +422,8 @@ class customerDetailsState extends State<customerDetails> {
                             );
                           },
                         ),
+
+                        /// Every Textfield is mandatory as validation is provided for all fields
                         ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 400, maxHeight: 75),
                           child: Row(

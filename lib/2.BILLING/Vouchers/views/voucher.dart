@@ -664,7 +664,7 @@ class _VoucherState extends State<Voucher> {
                                                         //     backgroundColor: Colors.green,
                                                         //   ),
                                                         // );
-
+                                                        loader.stop();
                                                         await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete', receipt);
                                                         loader.stop();
                                                         // Generate unique filename with timestamp
@@ -794,6 +794,7 @@ class _VoucherState extends State<Voucher> {
                                                         //     backgroundColor: Colors.green,
                                                         //   ),
                                                         // );
+                                                        loader.stop();
                                                         await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, type ? 'complete' : 'partial', receipt);
                                                         // Navigator.of(context).pop();
                                                         // ScaffoldMessenger.of(context).showSnackBar(
@@ -806,7 +807,7 @@ class _VoucherState extends State<Voucher> {
                                                         //     backgroundColor: Colors.blue,
                                                         //   ),
                                                         // );
-                                                        loader.stop();
+                                                        // loader.stop();
                                                       },
                                                       child: const Text(
                                                         'PARTIALLY CLEAR',
@@ -2152,7 +2153,7 @@ class _VoucherState extends State<Voucher> {
                             flex: 3,
                             child: Text(
                               'Client',
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.start,
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
                           ),
@@ -2173,34 +2174,34 @@ class _VoucherState extends State<Voucher> {
                               padding: const EdgeInsets.only(right: 15),
                               child: Text(
                                 'Amount',
-                                textAlign: TextAlign.end,
+                                textAlign: TextAlign.center,
                                 style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                               ),
                             ),
                           ),
-                          const SizedBox(width: 3),
+                          // const SizedBox(width: 3),
                           const Expanded(
                             flex: 1,
                             child: Text(
-                              textAlign: TextAlign.right,
+                              textAlign: TextAlign.start,
                               'Due Date',
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
                           ),
-                          const SizedBox(width: 3),
+                          // const SizedBox(width: 3),
                           const Expanded(
                             flex: 1,
                             child: Text(
-                              textAlign: TextAlign.right,
+                              textAlign: TextAlign.start,
                               'OverDue days',
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
                           ),
-                          const SizedBox(width: 3),
+                          // const SizedBox(width: 3),
                           const Expanded(
                             flex: 1,
                             child: Text(
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.start,
                               'Status',
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
@@ -2274,6 +2275,7 @@ class _VoucherState extends State<Voucher> {
                                                   flex: 1,
                                                   child: Text(
                                                     voucher.date != null ? formatDate(voucher.date!) : '-',
+                                                    textAlign: TextAlign.center,
                                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                   ),
                                                 ),
@@ -2308,6 +2310,7 @@ class _VoucherState extends State<Voucher> {
                                                       },
                                                       child: Text(
                                                         voucher.invoiceNumber,
+                                                        textAlign: TextAlign.left,
                                                         style: const TextStyle(color: Colors.blue, fontSize: Primary_font_size.Text7),
                                                       ),
                                                     ),
@@ -2318,6 +2321,7 @@ class _VoucherState extends State<Voucher> {
                                                   flex: 2,
                                                   child: Text(
                                                     voucher.voucherType,
+                                                    textAlign: TextAlign.left,
                                                     style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                   ),
                                                 ),
@@ -2428,6 +2432,7 @@ class _VoucherState extends State<Voucher> {
                                                             child: Text(
                                                               maxLines: 5,
                                                               voucher.clientName,
+                                                              textAlign: TextAlign.left,
                                                               style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                             ),
                                                           ),
@@ -3187,7 +3192,7 @@ class _VoucherState extends State<Voucher> {
                                                             ),
                                                     ),
                                                   ),
-                                                  // SizedBox(width: 35),
+                                                  SizedBox(width: 35),
                                                 ],
                                               ),
                                             ),

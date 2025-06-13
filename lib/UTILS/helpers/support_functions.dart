@@ -155,13 +155,10 @@ String generateRandomString(int length) {
 }
 
 String extractPanFromGst(String gstNumber) {
-  if (gstNumber.isEmpty) {
+  if (gstNumber.isEmpty || gstNumber == '-' || gstNumber.length < 12) {
     return '-';
-  }
-  if (gstNumber.length >= 12) {
-    return gstNumber.substring(2, 12); // characters 3 to 12 (0-based index)
   } else {
-    throw FormatException("Invalid GST number: must be at least 12 characters long");
+    return gstNumber.substring(2, 12); // characters 3 to 12 (0-based index)
   }
 }
 

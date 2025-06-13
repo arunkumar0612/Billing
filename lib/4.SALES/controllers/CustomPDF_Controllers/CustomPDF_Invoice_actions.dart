@@ -11,6 +11,8 @@ import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 class CustomPDF_InvoiceController extends GetxController {
   var pdfModel = CustomPDF_InvoiceModel().obs;
+
+  /// Initializes all controllers, checkboxes, and adds the first note, then performs final calculation.
   void intAll() {
     initializeTextControllers();
     initializeCheckboxes();
@@ -18,32 +20,39 @@ class CustomPDF_InvoiceController extends GetxController {
     finalCalc();
   }
 
+  /// Updates the total invoice amount shown in the UI.
   void update_totalAmount(double amount) {
     pdfModel.value.Total_amount.value = amount;
   }
 
+  /// Initializes the selection checkboxes for invoice products with default false values.
   void initializeCheckboxes() {
     pdfModel.value.checkboxValues.assignAll(List.generate(pdfModel.value.manualInvoiceproducts.length, (index) => false));
   }
 
+  /// Validates the current form using its GlobalKey.
   void validate() {
     pdfModel.value.allData_key.value.currentState?.validate();
   }
 
+  /// Adds a blank note with its controller to the note list.
   void add_Note() {
     pdfModel.value.notecontent.add(""); // Add empty note
     pdfModel.value.noteControllers.add(TextEditingController()); // Add controller
     pdfModel.refresh();
   }
 
+// Toggles visibility of CC email input field based on user action.
   void toggleCCemailvisibility(bool value) {
     pdfModel.value.CCemailToggle.value = value;
   }
 
+  /// Toggles the loading state during PDF generation or processing.
   void setpdfLoading(bool value) {
     pdfModel.value.ispdfLoading.value = value;
   }
 
+  /// Opens a file picker to select a JPG/PNG image and validates its size (≤ 2MB).
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -78,15 +87,17 @@ class CustomPDF_InvoiceController extends GetxController {
     }
   }
 
-  // Toggle loading state
+  /// Sets the loading state of the screen or operation.
   void setLoading(bool value) {
     pdfModel.value.isLoading.value = value;
   }
 
+  /// Updates the GST type flag (local/interstate) for the invoice.
   void setGSTtype(bool value) {
     pdfModel.value.isGST_local.value = value;
   }
 
+  /// Simulates progress animation (0–100%) and updates the UI accordingly.
   Future<void> startProgress() async {
     setLoading(true);
     pdfModel.value.progress.value = 0.0;
@@ -99,6 +110,7 @@ class CustomPDF_InvoiceController extends GetxController {
     setLoading(false);
   }
 
+  /// Initializes controllers for all fields in each product row.
   void initializeTextControllers() {
     pdfModel.value.textControllers.assignAll(
       pdfModel.value.manualInvoiceproducts.map((product) {
@@ -115,6 +127,7 @@ class CustomPDF_InvoiceController extends GetxController {
     );
   }
 
+  /// Returns a numeric value representing selected communication types (1=Gmail, 2=WhatsApp, 3=Both).
   int fetch_messageType() {
     if (pdfModel.value.whatsapp_selectionStatus.value && pdfModel.value.gmail_selectionStatus.value) return 3;
     if (pdfModel.value.whatsapp_selectionStatus.value) return 2;
@@ -123,16 +136,19 @@ class CustomPDF_InvoiceController extends GetxController {
     return 0;
   }
 
+  /// Updates the note content at the given index.
   void update_noteCotent(value, index) {
     pdfModel.value.notecontent[index] = value;
   }
 
+  /// Deletes a note and its controller at the specified index.
   void deleteNote(int index) {
     pdfModel.value.noteControllers.removeAt(index);
     pdfModel.value.notecontent.removeAt(index);
     pdfModel.refresh();
   }
 
+  /// Updates a specific cell value in a product row while enforcing numeric constraints.
   void updateCell(int rowIndex, int colIndex, String value) {
     final product = pdfModel.value.manualInvoiceproducts[rowIndex];
 

@@ -10,6 +10,7 @@ class API {
   static String sales_fetchBranch_list = "http://192.168.0.200:8082/admin/branchlist";
   static String sales_add_client_requirement_API = "http://192.168.0.200:8082/admin/sendmailwhatsapp";
   static String send_anyPDF = "http://192.168.0.200:8082/admin/sendpdf";
+
   ////////////////////////-----------SALES-------------//////////////////////////////////
 
   static String Upload_MOR_API = "http://192.168.0.200:8082/sales/uploadmor";
@@ -92,6 +93,7 @@ class API {
   static String billing_salesInvoice = "http://192.168.0.200:8082/billing/getsalesinvoice";
   static String get_ledgerSubscriptionCustomers = "http://192.168.0.200:8082/billing/getsubscriptioncustomer";
   static String get_ledgerSalesCustomers = "http://192.168.0.200:8082/billing/getsalescustomer";
+
   /////////////////////-----------VOUCHER-------------//////////////////////////////////
   static String getvoucherlist = "http://192.168.0.200:8082/billing/getvoucher";
   static String add_overdue = "http://192.168.0.200:8082/billing/addoverduedetails";

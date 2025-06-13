@@ -57,7 +57,6 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
     super.initState();
     widget.Get_Mainbilling_SUBcustomerList();
     widget.Get_Mainbilling_SALEScustomerList();
-    mainBilling_Controller.setActiveTab('Subscription');
     mainBilling_Controller.billingModel.animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -1161,9 +1160,9 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         ),
         SizedBox(width: 8),
         Expanded(
-          flex: 2,
+          flex: 1,
           child: Text(
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.start,
             'Duedate',
             style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
           ),
@@ -1496,7 +1495,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                 ),
                                 SizedBox(width: 8),
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: Builder(
                                     builder: (context) {
                                       OverlayEntry? overlayEntry;
@@ -1595,9 +1594,9 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                         overlayEntry = null;
                                       }
 
-                                      return Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                      return Wrap(
+                                        // mainAxisAlignment: MainAxisAlignment.center,
+                                        // crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           MouseRegion(
                                             cursor: SystemMouseCursors.click,

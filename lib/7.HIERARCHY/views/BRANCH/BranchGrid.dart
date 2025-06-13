@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:ssipl_billing/7.HIERARCHY/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/7.HIERARCHY/services/hierarchy_service.dart';
 import 'package:ssipl_billing/7.HIERARCHY/views/BRANCH/BranchEditor.dart';
@@ -78,38 +79,77 @@ class _BranchGridState extends State<BranchGrid> with SingleTickerProviderStateM
                         title: const Text("LIVE", style: TextStyle(fontSize: 15, color: Primary_colors.Color1)),
                         initiallyExpanded: true,
                         children: [
-                          SizedBox(
-                            height: screenheight - 270,
-                            child: SingleChildScrollView(
-                              child: SlideTransition(
-                                position: hierarchyController.hierarchyModel.slideAnimation,
-                                child: GridView.builder(
-                                  shrinkWrap: true,
-                                  padding: const EdgeInsets.all(8.0),
-                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: hierarchyController.hierarchyModel.Branch_cardCount.value,
-                                    crossAxisSpacing: 30,
-                                    mainAxisSpacing: 30,
+                          hierarchyController.hierarchyModel.BranchList.value.Live.isNotEmpty
+                              ? SizedBox(
+                                  height: screenheight - 270,
+                                  child: SingleChildScrollView(
+                                    child: SlideTransition(
+                                      position: hierarchyController.hierarchyModel.slideAnimation,
+                                      child: GridView.builder(
+                                        shrinkWrap: true,
+                                        padding: const EdgeInsets.all(8.0),
+                                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: hierarchyController.hierarchyModel.Branch_cardCount.value,
+                                          crossAxisSpacing: 30,
+                                          mainAxisSpacing: 30,
+                                        ),
+                                        itemCount: hierarchyController.hierarchyModel.BranchList.value.Live.length,
+                                        itemBuilder: (context, index) {
+                                          var Branch = hierarchyController.hierarchyModel.BranchList.value.Live[index];
+                                          return BranchCard(
+                                            name: Branch.branchName ?? '',
+                                            id: Branch.branchId ?? 0,
+                                            email: Branch.emailId ?? '',
+                                            imageBytes: Branch.branchLogo!,
+                                            index: index,
+                                            data: hierarchyController.hierarchyModel.BranchList.value,
+                                            controller: hierarchyController,
+                                            isSelected: hierarchyController.hierarchyModel.BranchList.value.Live[index].isSelected,
+                                            type: "LIVE",
+                                          );
+                                        },
+                                      ),
+                                    ),
                                   ),
-                                  itemCount: hierarchyController.hierarchyModel.BranchList.value.Live.length,
-                                  itemBuilder: (context, index) {
-                                    var Branch = hierarchyController.hierarchyModel.BranchList.value.Live[index];
-                                    return BranchCard(
-                                      name: Branch.branchName ?? '',
-                                      id: Branch.branchId ?? 0,
-                                      email: Branch.emailId ?? '',
-                                      imageBytes: Branch.branchLogo!,
-                                      index: index,
-                                      data: hierarchyController.hierarchyModel.BranchList.value,
-                                      controller: hierarchyController,
-                                      isSelected: hierarchyController.hierarchyModel.BranchList.value.Live[index].isSelected,
-                                      type: "LIVE",
-                                    );
-                                  },
+                                )
+                              : Center(
+                                  child: Stack(
+                                    alignment: Alignment.topCenter,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 40),
+                                        child: Lottie.asset(
+                                          'assets/animations/JSON/emptycustomerlist.json',
+                                          // width: 264,
+                                          height: 150,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 204),
+                                        child: Text(
+                                          'No Live Branch Found',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.blueGrey[800],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 244, bottom: 40),
+                                        child: Text(
+                                          'When you add live branch, they will appear here',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.blueGrey[400],
+                                            height: 1.4,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     );
@@ -140,35 +180,74 @@ class _BranchGridState extends State<BranchGrid> with SingleTickerProviderStateM
                       title: const Text("DEMO", style: TextStyle(fontSize: 15, color: Primary_colors.Color1)),
                       initiallyExpanded: false,
                       children: [
-                        SingleChildScrollView(
-                          child: SlideTransition(
-                            position: hierarchyController.hierarchyModel.slideAnimation,
-                            child: GridView.builder(
-                              shrinkWrap: true,
-                              padding: const EdgeInsets.all(8.0),
-                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: hierarchyController.hierarchyModel.Branch_cardCount.value,
-                                crossAxisSpacing: 30,
-                                mainAxisSpacing: 30,
+                        hierarchyController.hierarchyModel.BranchList.value.Demo.isNotEmpty
+                            ? SingleChildScrollView(
+                                child: SlideTransition(
+                                  position: hierarchyController.hierarchyModel.slideAnimation,
+                                  child: GridView.builder(
+                                    shrinkWrap: true,
+                                    padding: const EdgeInsets.all(8.0),
+                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: hierarchyController.hierarchyModel.Branch_cardCount.value,
+                                      crossAxisSpacing: 30,
+                                      mainAxisSpacing: 30,
+                                    ),
+                                    itemCount: hierarchyController.hierarchyModel.BranchList.value.Demo.length,
+                                    itemBuilder: (context, index) {
+                                      var Branch = hierarchyController.hierarchyModel.BranchList.value.Demo[index];
+                                      return BranchCard(
+                                        name: Branch.branchName ?? '',
+                                        id: Branch.branchId ?? 0,
+                                        email: Branch.emailId ?? '',
+                                        imageBytes: Branch.branchLogo!,
+                                        index: index,
+                                        data: hierarchyController.hierarchyModel.BranchList.value,
+                                        controller: hierarchyController,
+                                        isSelected: hierarchyController.hierarchyModel.BranchList.value.Demo[index].isSelected,
+                                        type: "DEMO",
+                                      );
+                                    },
+                                  ),
+                                ),
+                              )
+                            : Center(
+                                child: Stack(
+                                  alignment: Alignment.topCenter,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 40),
+                                      child: Lottie.asset(
+                                        'assets/animations/JSON/emptycustomerlist.json',
+                                        // width: 264,
+                                        height: 150,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 204),
+                                      child: Text(
+                                        'No Demo Branch Found',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.blueGrey[800],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 244, bottom: 40),
+                                      child: Text(
+                                        'When you add demo branch, they will appear here',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.blueGrey[400],
+                                          height: 1.4,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              itemCount: hierarchyController.hierarchyModel.BranchList.value.Demo.length,
-                              itemBuilder: (context, index) {
-                                var Branch = hierarchyController.hierarchyModel.BranchList.value.Demo[index];
-                                return BranchCard(
-                                  name: Branch.branchName ?? '',
-                                  id: Branch.branchId ?? 0,
-                                  email: Branch.emailId ?? '',
-                                  imageBytes: Branch.branchLogo!,
-                                  index: index,
-                                  data: hierarchyController.hierarchyModel.BranchList.value,
-                                  controller: hierarchyController,
-                                  isSelected: hierarchyController.hierarchyModel.BranchList.value.Demo[index].isSelected,
-                                  type: "DEMO",
-                                );
-                              },
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // ignore: unused_import
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 import 'package:ssipl_billing/7.HIERARCHY/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/7.HIERARCHY/services/hierarchy_service.dart';
 import 'package:ssipl_billing/7.HIERARCHY/views/ORG/OrgEditor.dart';
@@ -81,39 +82,77 @@ class _OrganizationGridState extends State<OrganizationGrid> with SingleTickerPr
                       initiallyExpanded: true,
                       expansionAnimationStyle: AnimationStyle(duration: const Duration(milliseconds: 500)),
                       children: [
-                        SizedBox(
-                          height: screenheight - 270,
-                          child: SingleChildScrollView(
-                            child: SlideTransition(
-                              position: hierarchyController.hierarchyModel.slideAnimation,
-                              child: GridView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                padding: const EdgeInsets.all(8.0),
-                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: hierarchyController.hierarchyModel.Org_cardCount.value,
-                                  crossAxisSpacing: 30,
-                                  mainAxisSpacing: 30,
+                        hierarchyController.hierarchyModel.OrganizationList.value.Live.isNotEmpty
+                            ? SizedBox(
+                                height: screenheight - 270,
+                                child: SingleChildScrollView(
+                                  child: SlideTransition(
+                                    position: hierarchyController.hierarchyModel.slideAnimation,
+                                    child: GridView.builder(
+                                      shrinkWrap: true,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      padding: const EdgeInsets.all(8.0),
+                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: hierarchyController.hierarchyModel.Org_cardCount.value,
+                                        crossAxisSpacing: 30,
+                                        mainAxisSpacing: 30,
+                                      ),
+                                      itemCount: hierarchyController.hierarchyModel.OrganizationList.value.Live.length,
+                                      itemBuilder: (context, index) {
+                                        var org = hierarchyController.hierarchyModel.OrganizationList.value.Live[index];
+                                        return OrganizationCard(
+                                          name: org.organizationName ?? "",
+                                          id: org.organizationId ?? 0,
+                                          email: org.email ?? "",
+                                          imageBytes: org.organizationLogo!,
+                                          index: index,
+                                          data: hierarchyController.hierarchyModel.OrganizationList.value,
+                                          controller: hierarchyController,
+                                          isSelected: org.isSelected,
+                                          type: "LIVE",
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ))
+                            : Center(
+                                child: Stack(
+                                  alignment: Alignment.topCenter,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 40),
+                                      child: Lottie.asset(
+                                        'assets/animations/JSON/emptycustomerlist.json',
+                                        // width: 264,
+                                        height: 150,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 204),
+                                      child: Text(
+                                        'No Live Organization Found',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.blueGrey[800],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 244, bottom: 40),
+                                      child: Text(
+                                        'When you add live organization, they will appear here',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.blueGrey[400],
+                                          height: 1.4,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                itemCount: hierarchyController.hierarchyModel.OrganizationList.value.Live.length,
-                                itemBuilder: (context, index) {
-                                  var org = hierarchyController.hierarchyModel.OrganizationList.value.Live[index];
-                                  return OrganizationCard(
-                                    name: org.organizationName ?? "",
-                                    id: org.organizationId ?? 0,
-                                    email: org.email ?? "",
-                                    imageBytes: org.organizationLogo!,
-                                    index: index,
-                                    data: hierarchyController.hierarchyModel.OrganizationList.value,
-                                    controller: hierarchyController,
-                                    isSelected: org.isSelected,
-                                    type: "LIVE",
-                                  );
-                                },
                               ),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   );
@@ -142,34 +181,73 @@ class _OrganizationGridState extends State<OrganizationGrid> with SingleTickerPr
                       initiallyExpanded: false,
                       children: [
                         SingleChildScrollView(
-                          child: SlideTransition(
-                            position: hierarchyController.hierarchyModel.slideAnimation,
-                            child: GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: const EdgeInsets.all(8.0),
-                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: hierarchyController.hierarchyModel.Org_cardCount.value,
-                                crossAxisSpacing: 30,
-                                mainAxisSpacing: 30,
-                              ),
-                              itemCount: hierarchyController.hierarchyModel.OrganizationList.value.Demo.length,
-                              itemBuilder: (context, index) {
-                                var org = hierarchyController.hierarchyModel.OrganizationList.value.Demo[index];
-                                return OrganizationCard(
-                                  name: org.organizationName ?? "",
-                                  id: org.organizationId ?? 0,
-                                  email: org.email ?? "",
-                                  imageBytes: org.organizationLogo!,
-                                  index: index,
-                                  data: hierarchyController.hierarchyModel.OrganizationList.value,
-                                  controller: hierarchyController,
-                                  isSelected: org.isSelected,
-                                  type: "DEMO",
-                                );
-                              },
-                            ),
-                          ),
+                          child: hierarchyController.hierarchyModel.OrganizationList.value.Demo.isNotEmpty
+                              ? SlideTransition(
+                                  position: hierarchyController.hierarchyModel.slideAnimation,
+                                  child: GridView.builder(
+                                    shrinkWrap: true,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    padding: const EdgeInsets.all(8.0),
+                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: hierarchyController.hierarchyModel.Org_cardCount.value,
+                                      crossAxisSpacing: 30,
+                                      mainAxisSpacing: 30,
+                                    ),
+                                    itemCount: hierarchyController.hierarchyModel.OrganizationList.value.Demo.length,
+                                    itemBuilder: (context, index) {
+                                      var org = hierarchyController.hierarchyModel.OrganizationList.value.Demo[index];
+                                      return OrganizationCard(
+                                        name: org.organizationName ?? "",
+                                        id: org.organizationId ?? 0,
+                                        email: org.email ?? "",
+                                        imageBytes: org.organizationLogo!,
+                                        index: index,
+                                        data: hierarchyController.hierarchyModel.OrganizationList.value,
+                                        controller: hierarchyController,
+                                        isSelected: org.isSelected,
+                                        type: "DEMO",
+                                      );
+                                    },
+                                  ),
+                                )
+                              : Center(
+                                  child: Stack(
+                                    alignment: Alignment.topCenter,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 40),
+                                        child: Lottie.asset(
+                                          'assets/animations/JSON/emptycustomerlist.json',
+                                          // width: 264,
+                                          height: 150,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 204),
+                                        child: Text(
+                                          'No Demo Organization Found',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.blueGrey[800],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 244, bottom: 40),
+                                        child: Text(
+                                          'When you add demo organization, they will appear here',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.blueGrey[400],
+                                            height: 1.4,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                         ),
                       ],
                     ),

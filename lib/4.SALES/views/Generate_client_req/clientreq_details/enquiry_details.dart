@@ -6,9 +6,10 @@ import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
-
 import '../../../controllers/ClientReq_actions.dart';
 
+/// Design for Enquiry Details tab when process is created for new client.
+/// The design for both customer and enquiry process dialog box remains the same, except the details tab
 class enquryDetails extends StatefulWidget with ClientreqDetailsService {
   enquryDetails({super.key});
 

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/4.SALES/services/ClientReq_services/ClientreqDetails_service.dart';
-// import 'package:ssipl_billing/views/screens/SALES/Generate_client_req/clientreq_details.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_client_req/clientreq_details/customer_details.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_client_req/clientreq_details/enquiry_details.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_client_req/clientreq_note.dart';
 import 'package:ssipl_billing/4.SALES/views/Generate_client_req/clientreq_products.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
-
-// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-
 import '../../controllers/ClientReq_actions.dart';
 
+/// A stateful widget used to generate the client requirement form with tabs
+/// Based on the process selected either customer details or enquiry details design is displayed
 class Generate_clientreq extends StatefulWidget with ClientreqDetailsService {
   final String? value;
 
@@ -25,6 +23,7 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
   // final File _selectedPdf = File('E://Client_requirement.pdf');
   final ClientreqController clientreqController = Get.find<ClientreqController>();
 
+  /// Fetch necessary data lists using service methods mixed into the widget
   @override
   void initState() {
     super.initState();
@@ -57,6 +56,7 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
                 child: Column(
                   children: [
                     Container(
+                      /// ---------------- Tab Bar ----------------
                       color: Primary_colors.Dark,
                       child: PreferredSize(
                         preferredSize: const Size.fromHeight(50),
@@ -83,6 +83,7 @@ class _GenerateclientreqState extends State<Generate_clientreq> with SingleTicke
                       ),
                     ),
                     Expanded(
+                      /// ---------------- Tab Content ----------------
                       child: TabBarView(
                         controller: clientreqController.clientReqModel.tabController.value,
                         children: [

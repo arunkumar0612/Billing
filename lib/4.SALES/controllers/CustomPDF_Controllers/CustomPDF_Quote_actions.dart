@@ -11,6 +11,8 @@ import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 class CustomPDF_QuoteController extends GetxController {
   var pdfModel = CustomPDF_QuoteModel().obs;
+
+  /// Initializes controllers, checkboxes, note fields, and performs final calculations.
   void intAll() {
     initializeTextControllers();
     initializeCheckboxes();
@@ -18,32 +20,39 @@ class CustomPDF_QuoteController extends GetxController {
     finalCalc();
   }
 
+  /// Updates the total amount in the PDF model.
   void update_totalAmount(double amount) {
     pdfModel.value.Total_amount.value = amount;
   }
 
+  /// Initializes checkboxes for quote product selection.
   void initializeCheckboxes() {
     pdfModel.value.checkboxValues.assignAll(List.generate(pdfModel.value.manualQuoteproducts.length, (index) => false));
   }
 
+  /// Triggers form field validation using the form key.
   void validate() {
     pdfModel.value.allData_key.value.currentState?.validate();
   }
 
+  /// Adds an empty note and a corresponding text controller.
   void add_Note() {
     pdfModel.value.notecontent.add(""); // Add empty note
     pdfModel.value.noteControllers.add(TextEditingController()); // Add controller
     pdfModel.refresh();
   }
 
+  /// Toggles the visibility of the CC email input field.
   void toggleCCemailvisibility(bool value) {
     pdfModel.value.CCemailToggle.value = value;
   }
 
+  /// Sets the PDF generation loading state.
   void setpdfLoading(bool value) {
     pdfModel.value.ispdfLoading.value = value;
   }
 
+  /// Picks an image file and validates size before assigning it to the PDF model.
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -78,15 +87,17 @@ class CustomPDF_QuoteController extends GetxController {
     }
   }
 
-  // Toggle loading state
+  /// Toggles the loading indicator.
   void setLoading(bool value) {
     pdfModel.value.isLoading.value = value;
   }
 
+  /// Sets the GST type as local or interstate.
   void setGSTtype(bool value) {
     pdfModel.value.isGST_local.value = value;
   }
 
+  /// Simulates progress loading by updating progress value gradually.
   Future<void> startProgress() async {
     setLoading(true);
     pdfModel.value.progress.value = 0.0;
@@ -99,6 +110,7 @@ class CustomPDF_QuoteController extends GetxController {
     setLoading(false);
   }
 
+  /// Initializes text editing controllers for each field in quote products.
   void initializeTextControllers() {
     pdfModel.value.textControllers.assignAll(
       pdfModel.value.manualQuoteproducts.map((product) {
@@ -115,6 +127,7 @@ class CustomPDF_QuoteController extends GetxController {
     );
   }
 
+  /// Returns message type based on WhatsApp and Gmail selection status.
   int fetch_messageType() {
     if (pdfModel.value.whatsapp_selectionStatus.value && pdfModel.value.gmail_selectionStatus.value) return 3;
     if (pdfModel.value.whatsapp_selectionStatus.value) return 2;
@@ -123,16 +136,19 @@ class CustomPDF_QuoteController extends GetxController {
     return 0;
   }
 
+  /// Updates note content at a specified index.
   void update_noteCotent(value, index) {
     pdfModel.value.notecontent[index] = value;
   }
 
+  /// Removes a note and its controller at the specified index.
   void deleteNote(int index) {
     pdfModel.value.noteControllers.removeAt(index);
     pdfModel.value.notecontent.removeAt(index);
     pdfModel.refresh();
   }
 
+  /// Updates product field value by column and row index, validating input for numeric fields.
   void updateCell(int rowIndex, int colIndex, String value) {
     final product = pdfModel.value.manualQuoteproducts[rowIndex];
 
@@ -169,6 +185,7 @@ class CustomPDF_QuoteController extends GetxController {
     pdfModel.refresh();
   }
 
+  /// Calculates total for a specific row and updates the corresponding controller.
   void calculateTotal(int rowIndex) {
     final product = pdfModel.value.manualQuoteproducts[rowIndex];
 
@@ -182,6 +199,7 @@ class CustomPDF_QuoteController extends GetxController {
     pdfModel.refresh();
   }
 
+  /// Calculates final invoice totals including GST, subtotal, and roundoff.
   void finalCalc() {
     double addedSubTotal = 0.0;
     double addedIGST = 0.0;
@@ -219,6 +237,7 @@ class CustomPDF_QuoteController extends GetxController {
     pdfModel.refresh();
   }
 
+  /// Deletes selected rows based on checkbox values.
   void deleteRow() {
     for (int i = pdfModel.value.checkboxValues.length - 1; i >= 0; i--) {
       if (pdfModel.value.checkboxValues[i]) {
@@ -231,6 +250,7 @@ class CustomPDF_QuoteController extends GetxController {
     pdfModel.refresh(); // Ensure UI updates
   }
 
+  /// Adds a new empty product row with text controllers and checkbox.
   void addRow() {
     pdfModel.value.textControllers.add(
       List.generate(7, (index) => TextEditingController()),
@@ -251,6 +271,7 @@ class CustomPDF_QuoteController extends GetxController {
     pdfModel.refresh();
   }
 
+  /// Validates that all required post data fields are properly filled.
   bool postDatavalidation() {
     return (pdfModel.value.clientName.value.text.isEmpty ||
         pdfModel.value.clientAddress.value.text.isEmpty ||
@@ -264,6 +285,7 @@ class CustomPDF_QuoteController extends GetxController {
         pdfModel.value.manualquoteNo.value.text.isEmpty);
   }
 
+  /// Clears fields related to post submission like email, feedback, and file path.
   void clear_postFields() {
     pdfModel.value.phoneNumber.value.clear();
     pdfModel.value.Email.value.clear();

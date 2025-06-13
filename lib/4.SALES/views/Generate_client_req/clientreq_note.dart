@@ -7,6 +7,7 @@ import 'package:ssipl_billing/THEMES/style.dart';
 import '../../controllers/ClientReq_actions.dart';
 import '../../services/ClientReq_services/ClientreqNote_service.dart';
 
+/// Note tab common for both customer and enquiry process
 class ClientreqNote extends StatefulWidget with ClientreqNoteService {
   final String? customer_type;
   ClientreqNote({super.key, required this.customer_type});
@@ -18,6 +19,7 @@ class ClientreqNote extends StatefulWidget with ClientreqNoteService {
 class _ClientreqNoteState extends State<ClientreqNote> {
   final ClientreqController clientreqController = Get.find<ClientreqController>();
 
+  /// Note field
   Widget Clientreq_noteLists() {
     return ListView.builder(
         itemCount: clientreqController.clientReqModel.clientReqNoteList.length,
@@ -78,6 +80,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
         });
   }
 
+  /// Recommendation Fields
   RecommendationTable() {
     return ListView.builder(
         itemCount: clientreqController.clientReqModel.clientReqRecommendationList.length,
@@ -136,6 +139,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
         });
   }
 
+  /// Note tab structural design
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -190,8 +194,7 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                                       color: Colors.black,
                                     ),
                                   ),
-                                  enabledBorder:
-                                      OutlineInputBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)), borderSide: BorderSide(color: Colors.black)),
+                                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)), borderSide: BorderSide(color: Colors.black)),
                                   border: OutlineInputBorder(),
                                   hintStyle: TextStyle(
                                     fontSize: 13,
@@ -453,6 +456,8 @@ class _ClientreqNoteState extends State<ClientreqNote> {
                         return Row(
                           children: [
                             if (clientreqController.clientReqModel.clientReqNoteList.isNotEmpty) const SizedBox(width: 10),
+
+                            /// the submit button will appear only if note is given. It is mandatory, whereas recommendation is not.
                             if (clientreqController.clientReqModel.clientReqNoteList.isNotEmpty || clientreqController.clientReqModel.clientReqRecommendationList.isNotEmpty)
                               BasicButton(
                                 colors: Colors.green,

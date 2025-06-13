@@ -16,6 +16,8 @@ import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 // ignore: must_be_immutable
+
+//Post tab to share data
 class PostQuote extends StatefulWidget with PostServices {
   String type;
   PostQuote({super.key, required this.type, required this.eventtype});
@@ -149,6 +151,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
               ),
               quoteController.quoteModel.ispdfLoading.value
                   ? Expanded(
+                      /// The generated Quotation is viewable here
                       child: GestureDetector(
                         child: Stack(
                           children: [
@@ -266,6 +269,7 @@ class PostQuoteState extends State<PostQuote> with SingleTickerProviderStateMixi
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
+                          /// The title will change according to the process
                           widget.eventtype == "quotation" ? 'QUOTATION' : 'REVISED QUOTATION',
                           style: const TextStyle(fontSize: 20, color: Primary_colors.Color1, fontWeight: FontWeight.bold),
                         ),

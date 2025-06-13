@@ -1,7 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, deprecated_member_use
 
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
@@ -16,6 +15,8 @@ import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 // ignore: must_be_immutable
+
+//Post tab to share data
 class PostRfq extends StatefulWidget with PostServices {
   String type;
   PostRfq({super.key, required this.type});

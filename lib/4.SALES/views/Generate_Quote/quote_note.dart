@@ -77,6 +77,7 @@ class _QuoteNoteState extends State<QuoteNote> {
         });
   }
 
+  /// Recommendation Fields
   RecommendationTable() {
     return ListView.builder(
         itemCount: quoteController.quoteModel.Quote_recommendationList.length,
@@ -137,6 +138,7 @@ class _QuoteNoteState extends State<QuoteNote> {
         });
   }
 
+  /// Note tab structural design
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -187,8 +189,7 @@ class _QuoteNoteState extends State<QuoteNote> {
                                       color: Colors.black,
                                     ),
                                   ),
-                                  enabledBorder:
-                                      OutlineInputBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)), borderSide: BorderSide(color: Colors.black)),
+                                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)), borderSide: BorderSide(color: Colors.black)),
                                   border: OutlineInputBorder(),
                                   hintStyle: TextStyle(
                                     fontSize: 13,

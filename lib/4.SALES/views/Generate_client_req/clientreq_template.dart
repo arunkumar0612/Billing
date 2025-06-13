@@ -8,9 +8,9 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:ssipl_billing/4.SALES/models/entities/product_entities.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
-
 import '../../controllers/ClientReq_actions.dart';
 
+/// Generation PDF template for client requirement
 Future<Uint8List> generateClientReq({
   required PdfPageFormat pageFormat,
   required List<ClientreqProduct> products,

@@ -15,42 +15,51 @@ import '../models/constants/Invoice_constants.dart';
 class InvoiceController extends GetxController {
   var invoiceModel = InvoiceModel();
 
+  /// Initializes the TabController for tab navigation in the invoice model.
   void initializeTabController(TabController tabController) {
     invoiceModel.tabController.value = tabController;
   }
 
+  /// Navigates to the next tab if not on the last tab.
   void nextTab() {
     if (invoiceModel.tabController.value!.index < invoiceModel.tabController.value!.length - 1) {
       invoiceModel.tabController.value!.animateTo(invoiceModel.tabController.value!.index + 1);
     }
   }
 
+  /// Navigates to the previous tab if not on the first tab.
   void backTab() {
     if (invoiceModel.tabController.value!.index > 0) {
       invoiceModel.tabController.value!.animateTo(invoiceModel.tabController.value!.index - 1);
     }
   }
 
+  /// Updates the product name in the product name controller.
   void updateProductName(String productName) {
     invoiceModel.productNameController.value.text = productName;
   }
 
+  /// Updates the HSN code in the HSN controller.
   void updateHSN(int hsn) {
     invoiceModel.hsnController.value.text = hsn.toString();
   }
 
+  /// Updates the product price in the price controller.
   void updatePrice(double price) {
     invoiceModel.priceController.value.text = price.toString();
   }
 
+  /// Updates the product quantity in the quantity controller.
   void updateQuantity(int quantity) {
     invoiceModel.quantityController.value.text = quantity.toString();
   }
 
+  /// Updates the GST value in the GST controller.
   void updateGST(double gst) {
     invoiceModel.gstController.value.text = gst.toString();
   }
 
+  /// Updates the currently edited note index.
   void updateNoteEditindex(int? index) {
     invoiceModel.note_editIndex.value = index;
   }
@@ -59,148 +68,177 @@ class InvoiceController extends GetxController {
   //   invoiceModel.Invoice_table_heading.value = tableHeading;
   // }
 
+  /// Updates a note in the note list at the specified index.
   void updateNoteList(String value, int index) {
     invoiceModel.Invoice_noteList[invoiceModel.note_editIndex.value!] = invoiceModel.notecontentController.value.text;
   }
 
+  /// Updates the TabController used for navigating tabs.F
   void updateTabController(TabController tabController) {
     invoiceModel.tabController.value = tabController;
   }
 
+  /// Updates the title field in the invoice.
   void updateTitle(String text) {
     invoiceModel.TitleController.value.text = text;
   }
 
+  /// Updates the invoice number value.
   void updateInvoicenumber(String text) {
     invoiceModel.Invoice_no.value = text;
   }
 
+  /// Updates the GST number field.
   void updateGSTnumber(String text) {
     invoiceModel.gstNumController.value.text = text;
   }
 
+  /// Updates the client's name in the address section.
   void updateClientAddressName(String text) {
     invoiceModel.clientAddressNameController.value.text = text;
   }
 
+  /// Updates the client's address.
   void updateClientAddress(String text) {
     invoiceModel.clientAddressController.value.text = text;
   }
 
+  /// Updates the billing address name field.
   void updateBillingAddressName(String text) {
     invoiceModel.billingAddressNameController.value.text = text;
   }
 
+  /// Updates the billing address.
   void updateBillingAddress(String text) {
     invoiceModel.billingAddressController.value.text = text;
   }
 
+  /// Updates the phone number field.
   void updatePhone(String phone) {
     invoiceModel.phoneController.value.text = phone;
   }
 
+  /// Updates the email address field.
   void updateEmail(String email) {
     invoiceModel.emailController.value.text = email;
   }
 
+  /// Updates the CC (carbon copy) email field.
   void updatCC(String CC) {
     invoiceModel.CCemailController.value.text = CC;
   }
 
+  /// Toggles the visibility of the CC email field.
   void toggleCCemailvisibility(bool value) {
     invoiceModel.CCemailToggle.value = value;
   }
 
+  /// Updates the currently edited recommendation index.
   void updateRecommendationEditindex(int? index) {
     invoiceModel.recommendation_editIndex.value = index;
   }
 
+  /// Updates the text in the note content controller.
   void updateNoteContentControllerText(String text) {
     invoiceModel.notecontentController.value.text = text;
   }
 
+  /// Updates the text in the recommendation heading controller.
   void updateRec_HeadingControllerText(String text) {
     invoiceModel.recommendationHeadingController.value.text = text;
   }
 
+  /// Updates the text in the recommendation key controller.
   void updateRec_KeyControllerText(String text) {
     invoiceModel.recommendationKeyController.value.text = text;
   }
 
+  /// Updates the text in the recommendation value controller.
   void updateRec_ValueControllerText(String text) {
     invoiceModel.recommendationValueController.value.text = text;
   }
 
+  /// Adds a new note to the note suggestion list.
   void addNoteToList(String note) {
     invoiceModel.noteSuggestion.add(note);
   }
 
+  /// Updates the currently edited product index.
   void addProductEditindex(int? index) {
     invoiceModel.product_editIndex.value = index;
   }
 
+  /// Sets the process ID for tracking the current process.
   void setProcessID(int processid) {
     invoiceModel.processID.value = processid;
   }
 
+  /// Updates the selected PDF file in the model.
   void updateSelectedPdf(File file) {
     invoiceModel.selectedPdf.value = file;
   }
 
-  // Toggle loading state
+  /// Sets the loading state of the UI.
   void setLoading(bool value) {
     invoiceModel.isLoading.value = value;
   }
 
+  /// Sets the loading state specifically for PDF operations.
   void setpdfLoading(bool value) {
     invoiceModel.ispdfLoading.value = value;
   }
 
-  // Toggle WhatsApp state
+  /// Toggles the WhatsApp selection status.
   void toggleWhatsApp(bool value) {
     invoiceModel.whatsapp_selectionStatus.value = value;
   }
 
-  // Toggle Gmail state
+  /// Toggles the Gmail selection status.
   void toggleGmail(bool value) {
     invoiceModel.gmail_selectionStatus.value = value;
   }
 
-  // Update phone number text
+  /// Updates the phone number in the phone controller.
   void updatePhoneNumber(String phoneNumber) {
     invoiceModel.phoneController.value.text = phoneNumber;
   }
 
-  // Update feedback text
+  /// Updates the feedback text in the feedback controller.
   void updateFeedback(String feedback) {
     invoiceModel.feedbackController.value.text = feedback;
   }
 
-  // Update file path text
+  /// Updates the file path in the file path controller.
   void updateFilePath(String filePath) {
     invoiceModel.filePathController.value.text = filePath;
   }
 
+  /// Updates the total invoice amount.
   void update_invoiceAmount(double amount) {
     invoiceModel.invoice_amount.value = amount;
   }
 
+  /// Updates the invoice subtotal amount.
   void update_invoiceSubTotal(double amount) {
     invoiceModel.invoice_subTotal.value = amount;
   }
 
+  /// Updates the CGST amount for the invoice.
   void update_invoiceCGSTAmount(double amount) {
     invoiceModel.invoice_CGSTamount.value = amount;
   }
 
+  /// Updates the SGST amount for the invoice.
   void update_invoiceSGSTAmount(double amount) {
     invoiceModel.invoice_SGSTamount.value = amount;
   }
 
+  /// Updates the IGST amount for the invoice.
   void update_invoiceIGSTAmount(double amount) {
     invoiceModel.invoice_IGSTamount.value = amount;
   }
 
+  /// Opens a file picker dialog to select an image file.
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -235,6 +273,7 @@ class InvoiceController extends GetxController {
     }
   }
 
+  /// Returns the message type based on WhatsApp and Gmail selection status.
   int fetch_messageType() {
     if (invoiceModel.whatsapp_selectionStatus.value && invoiceModel.gmail_selectionStatus.value) return 3;
     if (invoiceModel.whatsapp_selectionStatus.value) return 2;
@@ -243,6 +282,7 @@ class InvoiceController extends GetxController {
     return 0;
   }
 
+  /// Starts a simulated progress animation from 0 to 100%.
   Future<void> startProgress() async {
     setLoading(true);
     invoiceModel.progress.value = 0.0;
@@ -255,6 +295,7 @@ class InvoiceController extends GetxController {
     setLoading(false);
   }
 
+  /// Adds a recommendation to the list if key and value are not empty.
   void addRecommendation({required String key, required String value}) {
     if (key.isNotEmpty && value.isNotEmpty) {
       invoiceModel.Invoice_recommendationList.add(Recommendation(key: key, value: value));
@@ -265,6 +306,7 @@ class InvoiceController extends GetxController {
     }
   }
 
+  /// Updates a recommendation at a given index if valid and non-empty.
   void updateRecommendation({
     required int index,
     required String key,
@@ -285,6 +327,7 @@ class InvoiceController extends GetxController {
     }
   }
 
+  /// Adds a note to the note list if the content is not empty.
   void addNote(String noteContent) {
     if (noteContent.isNotEmpty) {
       invoiceModel.Invoice_noteList.add(noteContent);
@@ -295,6 +338,7 @@ class InvoiceController extends GetxController {
     }
   }
 
+  /// Adds a product to the invoice if all fields are valid.
   void addProduct({
     required BuildContext context,
     required String productName,
@@ -316,6 +360,7 @@ class InvoiceController extends GetxController {
     }
   }
 
+  /// Updates a product at the specified index if all fields are valid.
   void updateProduct({
     required BuildContext context,
     required int editIndex,
@@ -367,6 +412,7 @@ class InvoiceController extends GetxController {
     }
   }
 
+  /// Adds product suggestions from a dynamic list to the model.
   void add_productSuggestion(List<dynamic> suggestionList) {
     for (var item in suggestionList) {
       invoiceModel.Invoice_productSuggestion.add(ProductSuggestion.fromJson(item));
@@ -376,6 +422,7 @@ class InvoiceController extends GetxController {
     }
   }
 
+  /// Adds note suggestions from a map to the model.
   void add_noteSuggestion(Map<String, dynamic> suggestionList) {
     for (var item in suggestionList['notes']) {
       invoiceModel.noteSuggestion.add(item);
@@ -385,27 +432,31 @@ class InvoiceController extends GetxController {
     }
   }
 
-  // Update products list
+  /// Replaces the existing invoice product list with a new list.
   void updateProducts(List<InvoiceProduct> products) {
     invoiceModel.Invoice_products.value = products;
   }
 
+  /// Removes a note from the note list and resets the edit index.
   void removeFromNoteList(int index) {
     invoiceModel.Invoice_noteList.removeAt(index);
     invoiceModel.note_editIndex.value = null;
   }
 
+  /// Removes a recommendation and resets its edit index.
   void removeFromRecommendationList(int index) {
     invoiceModel.Invoice_recommendationList.removeAt(index);
     // invoiceModel.Invoice_recommendationList.isEmpty ? invoiceModel.recommendationHeadingController.value.clear() : null;
     invoiceModel.recommendation_editIndex.value = null;
   }
 
+  /// Removes a product from the list and resets the edit index.
   void removeFromProductList(index) {
     invoiceModel.Invoice_products.removeAt(index);
     invoiceModel.product_editIndex.value = null;
   }
 
+  /// Updates invoice fields using data from the CMDmResponse object.
   void update_requiredData(CMDmResponse value) {
     RequiredData instance = RequiredData.fromJson(value);
     invoiceModel.Invoice_no.value = instance.eventnumber;
@@ -425,6 +476,7 @@ class InvoiceController extends GetxController {
     // }
   }
 
+  /// Validates if all required fields are filled before generating data.
   bool generate_Datavalidation() {
     return (invoiceModel.TitleController.value.text.isEmpty ||
         invoiceModel.processID.value == null ||
@@ -438,6 +490,7 @@ class InvoiceController extends GetxController {
         invoiceModel.Invoice_no.value == null);
   }
 
+  /// Validates data before posting, including email/phone if selected.
   bool postDatavalidation() {
     return (invoiceModel.TitleController.value.text.isEmpty ||
         invoiceModel.processID.value == null ||

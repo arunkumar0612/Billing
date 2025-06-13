@@ -10,6 +10,8 @@ import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 
 class CustomPDF_DcController extends GetxController {
   var pdfModel = CustomPDF_DcModel().obs;
+
+  /// Initializes text controllers, checkboxes, and adds an initial note.
   void intAll() {
     initializeTextControllers();
     initializeCheckboxes();
@@ -17,6 +19,7 @@ class CustomPDF_DcController extends GetxController {
     // finalCalc();
   }
 
+  /// Returns an integer representing the selected message type.
   int fetch_messageType() {
     if (pdfModel.value.whatsapp_selectionStatus.value && pdfModel.value.gmail_selectionStatus.value) return 3;
     if (pdfModel.value.whatsapp_selectionStatus.value) return 2;
@@ -25,28 +28,34 @@ class CustomPDF_DcController extends GetxController {
     return 0;
   }
 
+  /// Initializes the checkbox states for the product list.
   void initializeCheckboxes() {
     pdfModel.value.checkboxValues.assignAll(List.generate(pdfModel.value.manualDcproducts.length, (index) => false));
   }
 
+  /// Triggers validation for the form using its key.
   void validate() {
     pdfModel.value.allData_key.value.currentState?.validate();
   }
 
+  /// Adds an empty note and a new text controller to the list.
   void add_Note() {
     pdfModel.value.notecontent.add(""); // Add empty note
     pdfModel.value.noteControllers.add(TextEditingController()); // Add controller
     pdfModel.refresh();
   }
 
+  /// Toggles the visibility of the CC email input.
   void toggleCCemailvisibility(bool value) {
     pdfModel.value.CCemailToggle.value = value;
   }
 
+  /// Sets the loading state for PDF generation.
   void setpdfLoading(bool value) {
     pdfModel.value.ispdfLoading.value = value;
   }
 
+  /// Picks an image file, validates size, and assigns it to the model.f
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -81,11 +90,12 @@ class CustomPDF_DcController extends GetxController {
     }
   }
 
-  // Toggle loading state
+  /// Sets the loading state for operations.
   void setLoading(bool value) {
     pdfModel.value.isLoading.value = value;
   }
 
+  /// Simulates a progress bar animation by updating progress value over time.
   Future<void> startProgress() async {
     setLoading(true);
     pdfModel.value.progress.value = 0.0;
@@ -98,6 +108,7 @@ class CustomPDF_DcController extends GetxController {
     setLoading(false);
   }
 
+  /// Initializes a 2D list of text controllers for each product field.
   void initializeTextControllers() {
     pdfModel.value.textControllers.assignAll(
       pdfModel.value.manualDcproducts.map((product) {
@@ -114,20 +125,23 @@ class CustomPDF_DcController extends GetxController {
     );
   }
 
+  /// Updates note content at the specified index.
   void update_noteCotent(value, index) {
     pdfModel.value.notecontent[index] = value;
   }
 
+  /// Deletes a note and its corresponding controller at the given index.
   void deleteNote(int index) {
     pdfModel.value.noteControllers.removeAt(index);
     pdfModel.value.notecontent.removeAt(index);
     pdfModel.refresh();
   }
 
+  /// Updates a specific cell in the product list, validating numeric fields.
   void updateCell(int rowIndex, int colIndex, String value) {
     final product = pdfModel.value.manualDcproducts[rowIndex];
 
-    // Allow only numeric values for specific columns
+    /// Allow only numeric values for specific columns
     if ([0, 2, 3, 4, 5].contains(colIndex) && !RegExp(r'^[0-9]*$').hasMatch(value)) {
       return;
     }
@@ -203,6 +217,7 @@ class CustomPDF_DcController extends GetxController {
   //   pdfModel.refresh();
   // }
 
+  /// Deletes all rows from the product list where the checkbox is selected.
   void deleteRow() {
     for (int i = pdfModel.value.checkboxValues.length - 1; i >= 0; i--) {
       if (pdfModel.value.checkboxValues[i]) {
@@ -215,6 +230,7 @@ class CustomPDF_DcController extends GetxController {
     pdfModel.refresh(); // Ensure UI updates
   }
 
+  /// Adds a new empty product row with corresponding controllers and checkbox.
   void addRow() {
     pdfModel.value.textControllers.add(
       List.generate(7, (index) => TextEditingController()),
@@ -235,6 +251,7 @@ class CustomPDF_DcController extends GetxController {
     pdfModel.refresh();
   }
 
+  /// Validates all required fields before submitting the data.
   bool postDatavalidation() {
     return (pdfModel.value.clientName.value.text.isEmpty ||
         pdfModel.value.clientAddress.value.text.isEmpty ||

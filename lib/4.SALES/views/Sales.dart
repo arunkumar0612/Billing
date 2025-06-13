@@ -58,11 +58,11 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
   var inst_invoiceDesign = CustomPDF_InvoicePDF();
   var inst_quoteDesign = CustomPDF_QuotePDF();
   var inst_dcDesign = CustomPDF_DcPDF();
-
   var invoice_CustomPDF_Services = Custom_Invoice_Services();
   var quote_CustomPDF_Services = Custom_Quote_Services();
   var dc_CustomPDF_Services = Custom_Dc_Services();
 
+  /// Disposes resources held by controllers
   @override
   void dispose() {
     clientreqController.clientReqModel.cntMulti.value.dispose();
@@ -71,6 +71,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
     super.dispose();
   }
 
+  /// resets the state of all sales controllers
   void resetAll() {
     salesController.resetData();
     clientreqController.resetData();
@@ -83,7 +84,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
     custom_Quote_controller.resetData();
   }
 
-  // AnimationStyle? _animationStyle;
+  /// Intializes state and sets up controllers and inital data
   @override
   void initState() {
     super.initState();
@@ -102,6 +103,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
     );
   }
 
+  /// Starts the sales animation if it's not already running.
   void _startAnimation() {
     if (!salesController.salesModel.animationController.isAnimating) {
       salesController.salesModel.animationController.forward(from: 0).then((_) {
@@ -151,6 +153,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                       Obx(() {
                         return Stack(
                           children: [
+                            /// Notification Icon
                             Align(
                               alignment: Alignment.bottomLeft,
                               child: MouseRegion(
@@ -159,6 +162,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                 cursor: SystemMouseCursors.click,
                                 child: GestureDetector(
                                     onTap: () => widget.showNotification(context),
+
+                                    /// Calling Notification Dropdown design
                                     child: ShaderMask(
                                       shaderCallback: (Rect bounds) {
                                         return const LinearGradient(
@@ -205,6 +210,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                         );
                       }),
                       const SizedBox(width: 10),
+
+                      /// Refresh Option
                       MouseRegion(
                         cursor: SystemMouseCursors.click,
                         child: GestureDetector(
@@ -240,6 +247,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                         ),
                       ),
                       const SizedBox(width: 10),
+
+                      /// Search bar with TypeWriter Animated Text
                       Obx(
                         () => SizedBox(
                           width: 400,
@@ -314,6 +323,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                 ],
               ),
               const SizedBox(height: 10),
+
+              /// Card Data
               SizedBox(
                 height: 235,
                 child: Row(
@@ -323,6 +334,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                       flex: 2,
                       child: Row(
                         children: [
+                          /// A styled `Card widget that displays a summarized view of sales data.
                           Expanded(
                             flex: 2,
                             child: Card(
@@ -464,8 +476,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                             // '210 invoices',
 
                                                             "${salesController.salesModel.salesdata.value?.totalinvoices.toString() ?? "0"} ${((salesController.salesModel.salesdata.value?.totalinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
-                                                            style: const TextStyle(
-                                                                fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 1, 53, 92), letterSpacing: 1, fontWeight: FontWeight.bold),
+                                                            style: const TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 1, 53, 92), letterSpacing: 1, fontWeight: FontWeight.bold),
                                                           ),
                                                         ),
                                                       ),
@@ -508,8 +519,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                         () => Text(
                                                           // '210 invoices',
                                                           "${salesController.salesModel.salesdata.value?.paidinvoices.toString() ?? "0"} ${((salesController.salesModel.salesdata.value?.paidinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
-                                                          style:
-                                                              const TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 2, 87, 4), letterSpacing: 1, fontWeight: FontWeight.bold),
+                                                          style: const TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 2, 87, 4), letterSpacing: 1, fontWeight: FontWeight.bold),
                                                         ),
                                                       ),
                                                     ),
@@ -553,8 +563,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                           () => Text(
                                                             // '110 invoices',
                                                             "${salesController.salesModel.salesdata.value?.unpaidinvoices.toString() ?? "0"} ${((salesController.salesModel.salesdata.value?.unpaidinvoices ?? 0) < 2) ? 'invoice' : 'invoices'}",
-                                                            style: const TextStyle(
-                                                                fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 118, 9, 1), fontWeight: FontWeight.bold, letterSpacing: 1),
+                                                            style: const TextStyle(fontSize: Primary_font_size.Text5, color: Color.fromARGB(255, 118, 9, 1), fontWeight: FontWeight.bold, letterSpacing: 1),
                                                           ),
                                                         ),
                                                       ),
@@ -588,8 +597,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    // First row of icons and labels
-
+                                    /// ----------------------  FIRST ROW --------------------------
                                     Row(
                                       children: [
                                         Expanded(
@@ -620,7 +628,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                       ],
                                     ),
                                     const SizedBox(height: 20),
-                                    // Second row of icons and labels
+
+                                    /// ----------------------  SECOND ROW --------------------------
                                     Row(
                                       children: [
                                         Expanded(
@@ -673,6 +682,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                         Expanded(
                                           child: Column(
                                             children: [
+                                              /// List of items in option menu
                                               MouseRegion(
                                                   cursor: SystemMouseCursors.click,
                                                   child: PopupMenuButton<String>(
@@ -761,7 +771,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                       }
                                                     },
                                                     itemBuilder: (BuildContext context) {
-                                                      // Determine the label for the archive/unarchive action
+                                                      /// Determine the label for the archive/unarchive action
 
                                                       return [
                                                         const PopupMenuItem<String>(
@@ -847,7 +857,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                 ),
                                 elevation: 10,
                                 color: Primary_colors.Light,
-                                child: const Padding(padding: EdgeInsets.all(16), child: SalesChart()),
+                                child: const Padding(padding: EdgeInsets.all(16), child: SalesChart() // Calling SalesChart View in this card
+                                    ),
                               ),
                             ),
                           ],
@@ -903,9 +914,12 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                               splashRadius: 20,
                                               padding: const EdgeInsets.all(0),
                                               icon: const Icon(Icons.menu),
+
+                                              ///menu icon only if the process is selected
                                               shape: const RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                                                // side: const BorderSide(color: Primary_colors.Color3, width: 2),
+
+                                                /// side: const BorderSide(color: Primary_colors.Color3, width: 2),
                                               ),
                                               color: Colors.white,
                                               elevation: 6,
@@ -919,12 +933,15 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                       context: context,
                                                       title: 'Confirmation',
                                                       content: 'Are you sure you want to Archive this process?',
-                                                      // showCancel: true,
+
+                                                      /// showCancel: true,
                                                       onOk: () {
                                                         widget.ArchiveProcesscontrol(
                                                           context,
                                                           salesController.salesModel.selectedIndices.map((index) => salesController.salesModel.processList[index].processid).toList(),
-                                                          1, // 1 for Archive, 0 for Unarchive
+                                                          1,
+
+                                                          /// 1 for Archive, 0 for Unarchive
                                                         );
                                                       },
                                                     );
@@ -934,12 +951,15 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                       context: context,
                                                       title: 'Confirmation',
                                                       content: 'Are you sure you want to Unarchive this process?',
-                                                      // showCancel: true,
+
+                                                      /// showCancel: true,
                                                       onOk: () {
                                                         widget.ArchiveProcesscontrol(
                                                           context,
                                                           salesController.salesModel.selectedIndices.map((index) => salesController.salesModel.processList[index].processid).toList(),
-                                                          0, // 1 for Archive, 0 for Unarchive
+                                                          0,
+
+                                                          /// 1 for Archive, 0 for Unarchive
                                                         );
                                                       },
                                                     );
@@ -949,7 +969,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                       context: context,
                                                       title: 'Error',
                                                       content: 'Unable to modify the process',
-                                                      // showCancel: true,
+
+                                                      /// showCancel: true,
                                                     );
                                                     break;
                                                   case 'Delete':
@@ -957,7 +978,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                       context: context,
                                                       title: 'Confirmation',
                                                       content: 'Are you sure you want to delete this process?',
-                                                      // showCancel: true,
+
+                                                      /// showCancel: true,
                                                       onOk: () {
                                                         widget.DeleteProcess(
                                                           context,
@@ -969,7 +991,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                 }
                                               },
                                               itemBuilder: (BuildContext context) {
-                                                // Determine the label for the archive/unarchive action
+                                                /// Determine the label for the archive/unarchive action
 
                                                 return [
                                                   PopupMenuItem<String>(
@@ -1012,11 +1034,15 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                               height: 40,
                               decoration: BoxDecoration(
                                 gradient: const LinearGradient(
-                                  colors: [Primary_colors.Color3, Primary_colors.Color3], // Example gradient colors
+                                  colors: [Primary_colors.Color3, Primary_colors.Color3],
+
+                                  /// Example gradient colors
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 ),
-                                borderRadius: BorderRadius.circular(15), // Ensure border radius for smooth corners
+                                borderRadius: BorderRadius.circular(15),
+
+                                /// Ensure border radius for smooth corners
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 15, right: 47),
@@ -1033,15 +1059,25 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                             salesController.salesModel.selectedIndices.clear();
                                           }
                                         },
-                                        activeColor: Colors.white, // More vibrant color
-                                        checkColor: Primary_colors.Color3, // White checkmark for contrast
-                                        side: const BorderSide(color: Primary_colors.Color1, width: 2), // Styled border
+                                        activeColor: Colors.white,
+
+                                        /// More vibrant color
+                                        checkColor: Primary_colors.Color3,
+
+                                        /// White checkmark for contrast
+                                        side: const BorderSide(color: Primary_colors.Color1, width: 2),
+
+                                        /// Styled border
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(4), // Soft rounded corners
+                                          borderRadius: BorderRadius.circular(4),
+
+                                          /// Soft rounded corners
                                         ),
                                       ),
                                     ),
                                     const SizedBox(width: 20),
+
+                                    /// titles for process list
                                     const Expanded(
                                       flex: 4,
                                       child: Text(
@@ -1077,7 +1113,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                             const SizedBox(height: 10),
                             Obx(
                               () => Expanded(
-                                // child: Container(),
+                                /// child: Container(),
                                 child: salesController.salesModel.processList.isNotEmpty
                                     ? ListView.builder(
                                         itemCount: salesController.salesModel.processList.length,
@@ -1109,18 +1145,28 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                               salesController.updateisAllSelected(salesController.salesModel.selectedIndices.length == salesController.salesModel.processList.length);
                                                             }
                                                           },
-                                                          activeColor: Primary_colors.Color3, // More vibrant color
-                                                          checkColor: Colors.white, // White checkmark for contrast
-                                                          side: const BorderSide(color: Primary_colors.Color3, width: 2), // Styled border
+                                                          activeColor: Primary_colors.Color3,
+
+                                                          /// More vibrant color
+                                                          checkColor: Colors.white,
+
+                                                          /// White checkmark for contrast
+                                                          side: const BorderSide(color: Primary_colors.Color3, width: 2),
+
+                                                          /// Styled border
                                                           shape: RoundedRectangleBorder(
-                                                            borderRadius: BorderRadius.circular(4), // Soft rounded corners
+                                                            borderRadius: BorderRadius.circular(4),
+
+                                                            /// Soft rounded corners
                                                           ),
                                                         ),
                                                         const SizedBox(width: 20),
                                                         Expanded(
                                                           flex: 4,
                                                           child: Tooltip(
-                                                            message: salesController.salesModel.processList[index].customer_name, // Show client name
+                                                            message: salesController.salesModel.processList[index].customer_name,
+
+                                                            /// Show client name
                                                             textStyle: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text6),
                                                             decoration: BoxDecoration(
                                                               color: Colors.black87,
@@ -1136,7 +1182,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                           flex: 15,
                                                           child: Text(
                                                             salesController.salesModel.processList[index].title,
-                                                            // items[showcustomerprocess]['name'],
+
+                                                            /// items[showcustomerprocess]['name'],
                                                             style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                           ),
                                                         ),
@@ -1152,7 +1199,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                             padding: const EdgeInsets.only(left: 5),
                                                             child: Text(
                                                               salesController.salesModel.processList[index].age_in_days.toString(),
-                                                              // items[showcustomerprocess]['process'][index]['daycounts'],
+
+                                                              /// items[showcustomerprocess]['process'][index]['daycounts'],
                                                               style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                             ),
                                                           ),
@@ -1205,14 +1253,12 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                                   const Color.fromARGB(78, 0, 0, 0),
                                                                                                   const Color.fromARGB(24, 118, 253, 129),
                                                                                                 ]
-                                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
-                                                                                                      "Revised Quotation"
+                                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
                                                                                                   ? [
                                                                                                       const Color.fromARGB(78, 0, 0, 0),
                                                                                                       const Color.fromARGB(43, 0, 76, 240),
                                                                                                     ]
-                                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
-                                                                                                          "Request for Quotation"
+                                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Request for Quotation"
                                                                                                       ? [
                                                                                                           const Color.fromARGB(78, 0, 0, 0),
                                                                                                           const Color.fromARGB(43, 253, 205, 116),
@@ -1228,11 +1274,9 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                           ? Colors.green
                                                                                           : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Delivery Challan"
                                                                                               ? Colors.red
-                                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
-                                                                                                      "Revised Quotation"
+                                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
                                                                                                   ? Colors.blue
-                                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
-                                                                                                          "Request for Quotation"
+                                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Request for Quotation"
                                                                                                       ? const Color.fromARGB(255, 255, 191, 119)
                                                                                                       : Colors.white,
                                                                               width: 2,
@@ -1254,6 +1298,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                           //   Icons.event,
                                                                           //   color: Colors.white,
                                                                           // ),
+
+                                                                          /// process hierarchy
                                                                           child: Center(
                                                                             child: Image.asset(
                                                                               salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Client requirement"
@@ -1264,11 +1310,9 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                           ? 'assets/images/dc.png'
                                                                                           : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation"
                                                                                               ? 'assets/images/Estimate.png'
-                                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
-                                                                                                      "Revised Quotation"
+                                                                                              : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
                                                                                                   ? 'assets/images/revision.png'
-                                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
-                                                                                                          "Request for Quotation"
+                                                                                                  : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Request for Quotation"
                                                                                                       ? 'assets/images/rfq.png'
                                                                                                       : 'assets/images/Estimate.png',
                                                                               fit: BoxFit.fill,
@@ -1284,8 +1328,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                           ),
                                                                         ),
                                                                         onTap: () async {
-                                                                          bool success = await widget.GetSalesPDFfile(
-                                                                              context: context, eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                          bool success =
+                                                                              await widget.GetSalesPDFfile(context: context, eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                           if (success) {
                                                                             showPDF(
                                                                                 context,
@@ -1309,8 +1353,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                         ? Colors.red
                                                                                         : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"
                                                                                             ? Colors.blue
-                                                                                            : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname ==
-                                                                                                    "Request for Quotation"
+                                                                                            : salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Request for Quotation"
                                                                                                 ? const Color.fromARGB(255, 255, 191, 119)
                                                                                                 : Colors.white,
                                                                       ),
@@ -1349,9 +1392,14 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                           salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Revised Quotation"))
                                                                                     Image.asset(
                                                                                       'assets/images/verified.png',
-                                                                                      // fit: BoxFit.cover, // Ensures the image covers the container
-                                                                                      width: 20, // Makes the image fill the container's width
-                                                                                      height: 20, // Makes the image fill the container's height
+
+                                                                                      /// fit: BoxFit.cover, // Ensures the image covers the container
+                                                                                      width: 20,
+
+                                                                                      /// Makes the image fill the container's width
+                                                                                      height: 20,
+
+                                                                                      /// Makes the image fill the container's height
                                                                                     ),
                                                                                   if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 2 &&
                                                                                       (salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventname == "Quotation" ||
@@ -1361,9 +1409,14 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                       child: Image.asset(
                                                                                         color: Colors.amberAccent,
                                                                                         'assets/images/exclamation.png',
-                                                                                        // fit: BoxFit.cover, // Ensures the image covers the container
-                                                                                        width: 15, // Makes the image fill the container's width
-                                                                                        height: 15, // Makes the image fill the container's height
+
+                                                                                        /// fit: BoxFit.cover, /// Ensures the image covers the container
+                                                                                        width: 15,
+
+                                                                                        /// Makes the image fill the container's width
+                                                                                        height: 15,
+
+                                                                                        /// Makes the image fill the container's height
                                                                                       ),
                                                                                     ),
                                                                                   if (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus == 3 &&
@@ -1372,7 +1425,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                     Padding(
                                                                                       padding: const EdgeInsets.only(left: 2),
                                                                                       child: Image.asset(
-                                                                                        // color: Colors.amberAccent,
+                                                                                        /// color: Colors.amberAccent,
                                                                                         'assets/images/reject.png',
                                                                                         // fit: BoxFit.cover, // Ensures the image covers the container
                                                                                         width: 18, // Makes the image fill the container's width
@@ -1437,8 +1490,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                       style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                                     ),
                                                                                   ),
-                                                                                if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation ==
-                                                                                        true) &&
+                                                                                if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.revised_quatation == true) &&
                                                                                     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1) &&
                                                                                     (salesController.salesModel.processList[index].TimelineEvents[childIndex].apporvedstatus != 1))
                                                                                   TextButton(
@@ -1449,8 +1501,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                           eventtype: "revisedquotation");
 
                                                                                       if (success) {
-                                                                                        widget.GenerateQuote_dialougebox(context, "revisedquotation",
-                                                                                            salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                        widget.GenerateQuote_dialougebox(
+                                                                                            context, "revisedquotation", salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                         quoteController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                       }
                                                                                     },
@@ -1467,8 +1519,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                       bool success = await widget.GetSalesPDFfile(
                                                                                           context: context, eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                       if (success) {
-                                                                                        widget.GenerateRfq_dialougebox(
-                                                                                            context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                        widget.GenerateRfq_dialougebox(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                         rfqController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                         if (kDebugMode) {
                                                                                           print(rfqController.rfqModel.processID);
@@ -1488,8 +1539,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                       bool success = await widget.GetSalesPDFfile(
                                                                                           context: context, eventid: salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                       if (success) {
-                                                                                        widget.GenerateInvoice_dialougebox(
-                                                                                            context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
+                                                                                        widget.GenerateInvoice_dialougebox(context, salesController.salesModel.processList[index].TimelineEvents[childIndex].Eventid);
                                                                                         invoiceController.setProcessID(salesController.salesModel.processList[index].processid);
                                                                                         if (kDebugMode) {
                                                                                           print(invoiceController.invoiceModel.processID);
@@ -1501,8 +1551,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                                                       style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                                     ),
                                                                                   ),
-                                                                                if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan ==
-                                                                                        true) &&
+                                                                                if ((salesController.salesModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan == true) &&
                                                                                     (salesController.salesModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                                   TextButton(
                                                                                     onPressed: () async {
@@ -1611,6 +1660,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                           );
                                         },
                                       )
+
+                                    /// Called when there is no active process list to be displayed
                                     : salesController.salesModel.type.value == 0
                                         ? Center(
                                             child: Stack(
@@ -1650,6 +1701,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                               ],
                                             ),
                                           )
+
+                                        /// Called when there is no archieve process list to be displayed
                                         : Center(
                                             child: Stack(
                                               alignment: Alignment.topCenter,
@@ -1685,6 +1738,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                     ),
                                                   ),
                                                 ),
+
+                                                /// Redirecting to active process list button
                                                 Padding(
                                                   padding: const EdgeInsets.only(top: 250),
                                                   child: OutlinedButton(
@@ -1720,6 +1775,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                       ),
                     ),
                     const SizedBox(width: 20),
+
+                    /// Side bar ---- Displaying active/current process list
                     Expanded(
                       flex: 1,
                       child: Obx(
@@ -1772,8 +1829,12 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                                       final customername = salesController.salesModel.processcustomerList[index].customerName;
                                                       final customerid = salesController.salesModel.processcustomerList[index].customerId;
                                                       return _buildSales_ClientCard(customername, customerid, index);
+
+                                                      /// Calling Client card Design
                                                     },
                                                   )
+
+                                                /// called when there is no list of active customers
                                                 : Center(
                                                     child: Stack(
                                                       alignment: Alignment.topCenter,
@@ -1818,6 +1879,8 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                                     ),
                                   ),
                                 )
+
+                              /// Redirecting to client profile Profile Page
                               : Container(
                                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Primary_colors.Light),
                                   child: Padding(
@@ -1874,6 +1937,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
     );
   }
 
+  /// Widget designed to show Profile page of active customers
   Widget _profile_page() {
     return Container(
       // color: Colors.amber,
@@ -1913,8 +1977,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
                               ? ''
                               : (salesController.salesModel.Clientprofile.value?.customername ?? "0").contains(' ') // If there's a space, take first letter of both words
                                   ? ((salesController.salesModel.Clientprofile.value?.customername ?? "0")[0].toUpperCase() +
-                                      (salesController.salesModel.Clientprofile.value?.customername ?? "0")[(salesController.salesModel.Clientprofile.value?.customername ?? "0").indexOf(' ') + 1]
-                                          .toUpperCase())
+                                      (salesController.salesModel.Clientprofile.value?.customername ?? "0")[(salesController.salesModel.Clientprofile.value?.customername ?? "0").indexOf(' ') + 1].toUpperCase())
                                   : (salesController.salesModel.Clientprofile.value?.customername ?? "0")[0].toUpperCase(), // If no space, take only the first letter
                           style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Heading, fontWeight: FontWeight.w500),
                         ),
@@ -2428,6 +2491,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
     );
   }
 
+  /// cards to display the card of customer list
   Widget _buildSales_ClientCard(String customername, int customerid, int index) {
     return Obx(
       () {
@@ -2521,6 +2585,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
     );
   }
 
+  /// Design for sales options in card-2
   Widget _buildIconWithLabel({
     required String image,
     required String label,
@@ -2577,6 +2642,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
     );
   }
 
+  /// Design for customPDF list
   Widget customPDF_list() {
     salesController.clear_sharedata();
     return Obx(() {

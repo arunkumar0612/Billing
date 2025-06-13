@@ -211,87 +211,20 @@ mixin main_BillingService {
     }
   }
 
-  Future<void> select_previousDates(BuildContext context, TextEditingController controller) async {
-    final DateTime now = DateTime.now();
-    final DateTime pastLimit = DateTime(2000); // You can set your own earliest allowed date
-
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: now,
-      firstDate: pastLimit, // Allow dates from the past
-      lastDate: now, // Prevent selecting future dates
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Primary_colors.Color3,
-              onPrimary: Colors.white,
-              onSurface: Colors.black87,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Primary_colors.Color3,
-              ),
-            ),
-            dialogTheme: const DialogThemeData(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (pickedDate != null) {
-      final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
-          "${pickedDate.month.toString().padLeft(2, '0')}-"
-          "${pickedDate.day.toString().padLeft(2, '0')}";
-      controller.text = formatted;
-    }
-  }
-
-  Future<void> select_nextDates(BuildContext context, TextEditingController controller) async {
-    final DateTime now = DateTime.now();
-    final DateTime futureLimit = DateTime(2100); // You can customize how far into the future is allowed
-
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: now,
-      firstDate: now, // ⬅️ Start from today
-      lastDate: futureLimit, // ⬅️ Allow selecting into the future
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Primary_colors.Color3,
-              onPrimary: Colors.white,
-              onSurface: Colors.black87,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Primary_colors.Color3,
-              ),
-            ),
-            dialogTheme: const DialogThemeData(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (pickedDate != null) {
-      final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
-          "${pickedDate.month.toString().padLeft(2, '0')}-"
-          "${pickedDate.day.toString().padLeft(2, '0')}";
-      controller.text = formatted;
-    }
-  }
+  /// Fetches a filtered list of sales invoices based on the selected payment status,
+  /// customer ID, and date range from the main billing controller.
+  ///
+  /// The query parameters are dynamically built:
+  /// - If payment status is "show all", it is excluded from the filter.
+  /// - If customer ID is "None", it is also excluded.
+  /// - Date range is included using `fromdate` and `todate`.
+  ///
+  /// On a successful response:
+  /// - Clears and updates the invoice lists in the controller.
+  /// - Parses and adds each invoice to the list.
+  /// - Applies the search filter using the current search query.
+  ///
+  /// Handles errors by logging issues or printing server-related messages.
 
   void get_SalesInvoiceList() async {
     try {
@@ -336,6 +269,17 @@ mixin main_BillingService {
     }
   }
 
+  /// Retrieves the PDF file for a specific sales invoice using its invoice number.
+  ///
+  /// Sends a GET request to fetch the binary file corresponding to the given [invoiceNo].
+  ///
+  /// - On success and a valid response (`value.code == true`), the PDF data is
+  ///   processed and stored in the billing model via `PDFfileApiData`.
+  /// - If the response fails or the server returns an error code, an error dialog is shown.
+  /// - In all failure scenarios (status code != 200 or exception), returns `false`.
+  ///
+  /// Returns `true` if the PDF file is successfully retrieved and stored, otherwise `false`.
+
   Future<bool> Get_SalesPDFfile({
     required BuildContext context,
     required String invoiceNo,
@@ -361,6 +305,18 @@ mixin main_BillingService {
       return false;
     }
   }
+
+  /// Fetches dashboard statistics based on the selected type and date range from the billing controller.
+  ///
+  /// Constructs a query using:
+  /// - `type`: The selected dashboard type (e.g., sales, subscriptions)
+  /// - `fromDate` and `toDate`: The selected date range
+  ///
+  /// On a successful response with a valid code:
+  /// - Parses the dashboard data and updates it in the controller
+  /// - Triggers a search using the current search query
+  ///
+  /// Errors and server failures are silently caught; optional dialogs can be added if needed.
 
   void GetDashboardData() async {
     try {
@@ -389,6 +345,17 @@ mixin main_BillingService {
     }
   }
 
+  /// Retrieves the PDF file for a subscription invoice using the provided [invoiceNo].
+  ///
+  /// Sends a GET request to the subscription PDF API to fetch the binary file.
+  ///
+  /// - If the response is successful and contains a valid payload (`value.code == true`),
+  ///   the PDF data is handled using `PDFfileApiData` and `true` is returned.
+  /// - If the server returns an error or failure message, an error dialog is shown.
+  /// - In case of server issues or exceptions, displays an appropriate error dialog.
+  ///
+  /// Returns `true` if the PDF is successfully retrieved and processed; otherwise returns `false`.
+
   Future<bool> GetSubscriptionPDFfile({
     required BuildContext context,
     required String invoiceNo,
@@ -415,6 +382,17 @@ mixin main_BillingService {
     }
   }
 
+  /// Fetches and displays the details of a specific voucher based on the provided [voucherID].
+  ///
+  /// Sends a GET request with the voucher ID to retrieve full voucher data.
+  ///
+  /// - On a successful response with a valid code:
+  ///   - Parses the first item in the response as an `InvoicePaymentVoucher`
+  ///   - Passes the data to `showVoucherDetails` to display in a dialog or UI
+  ///
+  /// Handles server errors or failure codes silently. Error dialogs can be enabled as needed.
+  ///
+  /// [context] is required for displaying dialogs or UI components with the fetched data.
   Future<void> get_VoucherDetails(context, int voucherID) async {
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {'voucherid': voucherID},
@@ -442,6 +420,45 @@ mixin main_BillingService {
     // loader.stop();
   }
 
+  /// Displays a dialog with detailed information about a specific [voucher].
+  ///
+  /// This dialog includes:
+  /// - Client name, ID, address, phone number, and email.
+  /// - Invoice number with a copy-to-clipboard feature.
+  /// - Visual styling with icons, structured layout, and color-coded sections.
+  ///
+  /// The dialog is built with `showDialog` and uses multiple `GlobalKey`s for referencing UI
+  /// components like invoice number and voucher number for clipboard actions.
+  ///
+  /// [context] is required to display the dialog.
+  /// [voucher] provides the data to be shown inside the dialog.
+  /// Displays the voucher number and GST number rows with copy-to-clipboard functionality.
+  ///
+  /// - Both rows include labels and values styled with color and font weight.
+  /// - A copy icon is provided next to each value.
+  /// - On tapping the icon, the respective text (voucher number or GST number) is copied to clipboard.
+  /// - A temporary overlay with the text “Copied!” is shown for user feedback.
+  /// Displays the payment breakup and payment details section for the given [voucher].
+  ///
+  /// ### Payment Breakup:
+  /// - Shows a column of breakdown items: Net Amount, CGST, SGST, IGST, optional TDS.
+  /// - Each item is displayed using `_buildBreakupLine()` with a label and formatted value.
+  /// - Ends with a highlighted "Total Amount" row.
+  ///
+  /// ### Payment Details:
+  /// - Conditionally rendered only if `voucher.paymentDetails` is not null.
+  /// - Contains a header table row (Date, Amount Paid, Transaction Details, View, Receipt).
+  /// - Follows with scrollable rows populated from `voucher.paymentDetails`.
+  /// - Each row displays:
+  ///   - Formatted payment date
+  ///   - Paid amount
+  ///   - Transaction details
+  ///   - PDF icons to view the transaction and receipt PDFs, which call respective async functions:
+  ///     - `Get_transactionPDFfile(...)`
+  ///     - `Get_receiptPDFfile(...)`
+  ///
+  /// ### If no payments:
+  /// - Shows a warning-styled message card with the text “No Transaction made yet!”
   void showVoucherDetails(BuildContext context, InvoicePaymentVoucher voucher) {
     final GlobalKey _invoiceCopyKey = GlobalKey();
     final GlobalKey _voucherCopyKey = GlobalKey();
@@ -959,12 +976,19 @@ mixin main_BillingService {
     );
   }
 
+  /// Returns a thin, grey horizontal divider with vertical padding.
+  ///
+  /// This is used between payment breakup lines for better visual separation.
   Widget _buildBreakupDivider() {
     return const Padding(
       padding: EdgeInsets.symmetric(vertical: 4),
       child: Divider(height: 1, color: Colors.grey, thickness: 0.2),
     );
   }
+
+  /// Returns a small horizontal divider with light grey color and vertical padding.
+  ///
+  /// Used between payment summary rows to visually separate each breakup item.
 
   Widget _buildBreakupLine(String label, String value) {
     return Padding(
@@ -985,6 +1009,9 @@ mixin main_BillingService {
     );
   }
 
+  /// Builds a horizontal row with a leading icon and a descriptive text.
+  ///
+  /// Commonly used for displaying contact or meta information in a compact format.
   Widget _infoRow(IconData icon, String text) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -998,6 +1025,10 @@ mixin main_BillingService {
     );
   }
 
+  /// Refreshes the billing-related data by re-fetching the subscription invoice list,
+  /// sales invoice list, and dashboard statistics.
+  ///
+  /// Useful for ensuring the latest data is displayed after updates or page load.
   Future<void> billing_refresh() async {
     // salesController.resetData();
     get_SubscriptionInvoiceList();
@@ -1005,6 +1036,12 @@ mixin main_BillingService {
     GetDashboardData();
   }
 
+  /// Displays a date picker that allows users to select a date from today up to one year ahead.
+  ///
+  /// Once a date is selected, it formats the selected date as `yyyy-MM-dd`
+  /// and assigns it to the provided [TextEditingController].
+  ///
+  /// Applies a custom theme to the date picker for consistent UI styling.
   Future<void> selectfilterDate(BuildContext context, TextEditingController controller) async {
     final DateTime now = DateTime.now();
     final DateTime nextYear = now.add(const Duration(days: 365)); // Limit to next year
@@ -1047,6 +1084,14 @@ mixin main_BillingService {
     }
   }
 
+  /// Resets the filters applied in the main billing view to their default values.
+  ///
+  /// Specifically, it sets:
+  /// - `plantype` and `paymentstatus` to 'Show All'
+  /// - `selectedsalescustomername` and `selectedsubscriptioncustomername` to 'None'
+  /// - `selectedcustomerid`, `fromdate`, and `todate` to empty strings
+  ///
+  /// This function ensures that no filters are active, allowing all billing records to be shown.
   void resetmainbilling_Filters() {
     mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.plantype.value = 'Show All';
     // mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = 'Show All';
@@ -1059,6 +1104,17 @@ mixin main_BillingService {
     // mainBilling_Controller.billingModel.filteredmainbilling_s.value = mainBilling_Controller.billingModel.mainbilling__list;
   }
 
+  /// Copies the current filter selections into the `mainbilling_SelectedFilter` object.
+  ///
+  /// This includes:
+  /// - Plan type
+  /// - Sales and subscription customer names
+  /// - Customer ID
+  /// - Payment status
+  /// - From and To date ranges
+  ///
+  /// This function is typically used to preserve the current filter state before applying it elsewhere,
+  /// such as during a search or when storing the applied filter criteria.
   void assignmainbilling_Filters() {
     mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.plantype.value = mainBilling_Controller.billingModel.selectedplantype.value;
     // mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value = mainBilling_Controller.billingModel.selectedInvoiceType.value;
@@ -1070,6 +1126,17 @@ mixin main_BillingService {
     mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.todate.value = mainBilling_Controller.billingModel.endDateController.value.text;
   }
 
+  /// Reapplies previously saved filter values from `mainbilling_SelectedFilter` to the active filter fields.
+  ///
+  /// This function restores:
+  /// - Plan type
+  /// - Sales and subscription customer names
+  /// - Customer ID
+  /// - Payment status
+  /// - From and To date range
+  /// - Selected month
+  ///
+  /// It is typically used when navigating back to the billing screen or when the user wants to reapply the last used filter criteria.
   void reassignmainbilling_Filters() {
     mainBilling_Controller.billingModel.selectedplantype.value = mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.plantype.value;
     // mainBilling_Controller.billingModel.selectedInvoiceType.value = mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.invoicetype.value;

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 // import 'package:intl/intl.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
+import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 import '../../../THEMES/style.dart'; // Assuming style.dart defines Primary_colors and Primary_font_size
 
@@ -409,7 +410,7 @@ class _FilterScreenState extends State<FilterScreen> {
                               controller: mainBilling_Controller.billingModel.startDateController.value,
                               readOnly: true,
                               onTap: () async {
-                                await widget.select_previousDates(context, mainBilling_Controller.billingModel.startDateController.value);
+                                await select_previousDates(context, mainBilling_Controller.billingModel.startDateController.value);
                                 // await widget.get_mainBilling_List();
                                 mainBilling_Controller.billingModel.startDateController.refresh();
                               },
@@ -440,7 +441,7 @@ class _FilterScreenState extends State<FilterScreen> {
                               controller: mainBilling_Controller.billingModel.endDateController.value,
                               readOnly: true,
                               onTap: () async {
-                                await widget.select_previousDates(context, mainBilling_Controller.billingModel.endDateController.value);
+                                await select_previousDates(context, mainBilling_Controller.billingModel.endDateController.value);
                                 mainBilling_Controller.billingModel.endDateController.refresh();
                                 // await widget.get_mainBilling_List();
                               },

@@ -26,6 +26,18 @@ class addservice_pageState extends State<addservice_page> {
     super.initState();
   }
 
+  /// Adds a new service to the `servicelist` if the form is valid and the name is unique.
+  ///
+  /// Functionality:
+  /// - Validates the form using `_formKey`.
+  /// - Checks if a service with the same name (`servicename`) already exists.
+  ///   - If it exists, shows an error snackbar and aborts addition.
+  /// - If not, adds a new map with `servicename` and `servicecost` to `servicelist`.
+  /// - Updates the list length and clears the input fields.
+  ///
+  /// Use Case:
+  /// Used in a form where users dynamically add service entries to a list with validation
+  /// and duplicate checking.
   void _addservice() {
     if (_formKey.currentState?.validate() ?? false) {
       // Check if RTSP URL already exists
@@ -48,6 +60,19 @@ class addservice_pageState extends State<addservice_page> {
     }
   }
 
+  /// Updates an existing service entry in the `servicelist` at the specified `editIndex`.
+  ///
+  /// Functionality:
+  /// - Validates the form using `_formKey`.
+  /// - If valid, updates the map at `servicelist[editIndex]` with new values from
+  ///   `nameController` and `costController`.
+  /// - Clears the input fields using `_clearFields()`.
+  /// - Resets `editIndex` to null.
+  /// - Updates the `length` to reflect the current size of `servicelist`.
+  ///
+  /// Use Case:
+  /// Called when editing a previously added service in the list, allowing users
+  /// to modify name and cost values.
   void _updateCamera() {
     if (_formKey.currentState?.validate() ?? false) {
       setState(() {
@@ -89,6 +114,26 @@ class addservice_pageState extends State<addservice_page> {
     });
   }
 
+  /// Builds the main UI layout for the "Add Service" screen using a `Scaffold`.
+  ///
+  /// Structure:
+  /// - The layout uses a `Row` to divide the screen into two sections:
+  ///   1. **Left Panel** (Service Entry Form):
+  ///      - Title and form fields to input a new service name and cost.
+  ///      - Includes validation for both fields.
+  ///      - Two buttons:
+  ///        - "Back": Resets editing state.
+  ///        - "Add Service" or "Update": Based on `editIndex`, adds or updates a service.
+  ///   2. **Right Panel** (Service List):
+  ///      - Displays a scrollable container with the list of added services.
+  ///      - Visible only when at least one service exists (`length != 0`).
+  ///      - Includes a "Submit" button for final action (e.g., saving to backend).
+  ///
+  /// Notes:
+  /// - The form uses `GlobalKey<FormState>` (`_formKey`) for validation.
+  /// - Responsive UI using padding, spacing, and scrollable containers.
+  /// - Controls like `BasicTextfield` and `BasicButton` are reused custom widgets.
+  /// - Uses `editIndex` to toggle between adding and editing mode.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -218,6 +263,26 @@ class addservice_pageState extends State<addservice_page> {
     );
   }
 
+  /// Builds a vertical list of service items with edit and delete options.
+  ///
+  /// Functionality:
+  /// - Iterates through the `servicelist` using a `for` loop based on `length`.
+  /// - For each service:
+  ///   - Displays a styled container showing the service name with an index.
+  ///   - Includes an `IconButton` (close icon) to remove the service from the list.
+  ///   - Entire row is wrapped in a `GestureDetector` to allow editing when tapped (`_editCamera(i)`).
+  ///
+  /// Layout:
+  /// - Each service item is displayed inside a `Container` with padding and styling.
+  /// - Uses a `Column` to stack service entries vertically.
+  /// - Adds spacing (`SizedBox`) between each service item for readability.
+  ///
+  /// Behavior:
+  /// - When a service is tapped, it triggers edit mode.
+  /// - When the close icon is pressed, that service entry is removed and the list is updated.
+  ///
+  /// Use Case:
+  /// Used for managing a dynamic list of services in a form or settings screen.
   Widget servicelists() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,

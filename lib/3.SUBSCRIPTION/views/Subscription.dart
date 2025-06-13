@@ -14,6 +14,7 @@ import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_ClientReq_
 import 'package:ssipl_billing/3.SUBSCRIPTION/controllers/SUBSCRIPTION_Quote_actions.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/CustomPDF_services/SUBSCRIPTION_CustomPDF_Invoice_services.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/services/subscription_service.dart';
+import 'package:ssipl_billing/3.SUBSCRIPTION/views/Approval_Queue/approvalQueue.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/CustomPDF/Subscription_CustomPDF_invoicePDF.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Package.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/views/Recurring_Invoice/recurringInvoice.dart';
@@ -23,6 +24,7 @@ import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/downloadPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/sharePDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/showPDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/importXL.dart';
 import 'package:ssipl_billing/NOTIFICATION-/NotificationServices.dart';
 import 'package:ssipl_billing/NOTIFICATION-/Notification_actions.dart';
@@ -74,6 +76,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.Get_RecurringInvoiceList(null);
+      widget.Get_ApprovalQueueList(null);
       widget.Get_subscriptionCustomPDFLsit();
       widget.get_CompanyList();
       widget.get_GlobalPackageList(context);
@@ -81,6 +84,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
       subscriptionController.updatecustomerId(0);
       widget.GetProcesscustomerList();
       widget.GetReccuredcustomerList();
+      widget.GetApprovalQueue_customerList();
       widget.GetProcessList(0);
       widget.GetSubscriptionData(subscriptionController.subscriptionModel.subscriptionperiod.value);
     });
@@ -110,7 +114,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
     // print("$screenHeight,             $screenWidth");
 
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         backgroundColor: Primary_colors.Dark,
         body: Center(
@@ -861,23 +865,45 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: SizedBox(
-                    width: 250,
-                    child: TabBar(
-                      indicatorColor: Primary_colors.Color5,
-                      tabs: [
-                        Text('Invoice'),
-                        Text('Process'),
-                      ],
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: SizedBox(
+                              width: 550,
+                              child: TabBar(
+                                indicatorColor: Primary_colors.Color5,
+                                tabs: [
+                                  Text('Approval Queue'),
+                                  Text('Invoice'),
+                                  Text('Process'),
+                                ],
+                              ),
+                            ),
+                          ),
+                          BasicButton(
+                              text: 'Send',
+                              colors: Colors.blue,
+                              onPressed: () {
+                                widget.mailByGroup();
+                              }),
+                        ],
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 20),
+                    Expanded(flex: 1, child: Container())
+                  ],
                 ),
                 const SizedBox(height: 5),
                 Expanded(
                   child: TabBarView(
                     children: [
+                      ApprovalQueue(),
                       Recurringinvoice(),
                       SubscriptionProcess(),
                     ],

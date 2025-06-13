@@ -322,7 +322,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                                       controller: mainBilling_Controller.billingModel.dashboard_startDateController.value,
                                                                       readOnly: true,
                                                                       onTap: () async {
-                                                                        await widget.select_previousDates(context, mainBilling_Controller.billingModel.dashboard_startDateController.value);
+                                                                        await select_previousDates(context, mainBilling_Controller.billingModel.dashboard_startDateController.value);
                                                                         widget.GetDashboardData();
                                                                         // await widget.get_VoucherList();
                                                                       },
@@ -353,7 +353,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
                                                                       controller: mainBilling_Controller.billingModel.dashboard_endDateController.value,
                                                                       readOnly: true,
                                                                       onTap: () async {
-                                                                        await widget.select_previousDates(context, mainBilling_Controller.billingModel.dashboard_endDateController.value);
+                                                                        await select_previousDates(context, mainBilling_Controller.billingModel.dashboard_endDateController.value);
                                                                         widget.GetDashboardData();
                                                                         // await widget.get_VoucherList();
                                                                       },

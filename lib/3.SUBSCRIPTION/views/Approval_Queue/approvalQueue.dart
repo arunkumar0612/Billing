@@ -16,14 +16,14 @@ import 'package:ssipl_billing/COMPONENTS-/PDF_methods/showPDF.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
-class Recurringinvoice extends StatefulWidget with SubscriptionServices {
-  Recurringinvoice({super.key});
+class ApprovalQueue extends StatefulWidget with SubscriptionServices {
+  ApprovalQueue({super.key});
 
   @override
-  State<Recurringinvoice> createState() => _RecurringinvoiceState();
+  State<ApprovalQueue> createState() => _ApprovalQueueState();
 }
 
-class _RecurringinvoiceState extends State<Recurringinvoice> {
+class _ApprovalQueueState extends State<ApprovalQueue> {
   final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
 
   @override
@@ -49,10 +49,29 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                         ),
                         borderRadius: BorderRadius.circular(10), // Ensure border radius for smooth corners
                       ),
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Row(
                           children: [
+                            Obx(
+                              () => Checkbox(
+                                value: subscriptionController.subscriptionModel.isAllSelected.value,
+                                onChanged: (bool? value) {
+                                  subscriptionController.subscriptionModel.isAllSelected.value = value ?? false;
+                                  if (subscriptionController.subscriptionModel.isAllSelected.value) {
+                                    subscriptionController.updateselectedIndices(List.generate(subscriptionController.subscriptionModel.ApprovalQueue_list.length, (index) => index));
+                                  } else {
+                                    subscriptionController.subscriptionModel.selectedIndices.clear();
+                                  }
+                                },
+                                activeColor: Colors.white, // More vibrant color
+                                checkColor: Primary_colors.Color3, // White checkmark for contrast
+                                side: const BorderSide(color: Primary_colors.Color1, width: 2), // Styled border
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4), // Soft rounded corners
+                                ),
+                              ),
+                            ),
                             Expanded(
                               flex: 2,
                               child: Text(
@@ -65,6 +84,22 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                               flex: 6,
                               child: Text(
                                 'Client',
+                                style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                'Phone',
+                                style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Expanded(
+                              flex: 7,
+                              child: Text(
+                                'Email',
                                 style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                               ),
                             ),
@@ -121,13 +156,13 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                     ),
                     const SizedBox(height: 5),
                     Expanded(
-                      child: subscriptionController.subscriptionModel.reccuringInvoice_list.isNotEmpty
+                      child: subscriptionController.subscriptionModel.ApprovalQueue_list.isNotEmpty
                           ? ListView.separated(
                               separatorBuilder: (context, index) => Container(
                                 height: 1,
                                 color: const Color.fromARGB(94, 125, 125, 125),
                               ),
-                              itemCount: subscriptionController.subscriptionModel.reccuringInvoice_list.length,
+                              itemCount: subscriptionController.subscriptionModel.ApprovalQueue_list.length,
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 10),
@@ -142,10 +177,31 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                         padding: const EdgeInsets.all(10),
                                         child: Row(
                                           children: [
+                                            Obx(
+                                              () => Checkbox(
+                                                value: subscriptionController.subscriptionModel.selectedIndices.contains(index),
+                                                onChanged: (bool? value) {
+                                                  if (value == true) {
+                                                    subscriptionController.subscriptionModel.selectedIndices.add(index);
+                                                  } else {
+                                                    subscriptionController.subscriptionModel.selectedIndices.remove(index);
+                                                    subscriptionController.updateisAllSelected(
+                                                        subscriptionController.subscriptionModel.selectedIndices.length == subscriptionController.subscriptionModel.ApprovalQueue_list.length);
+                                                  }
+                                                },
+                                                activeColor: Primary_colors.Color3, // More vibrant color
+                                                checkColor: Colors.white, // White checkmark for contrast
+                                                side: const BorderSide(color: Primary_colors.Color3, width: 2), // Styled border
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(4), // Soft rounded corners
+                                                ),
+                                              ),
+                                            ),
+
                                             Expanded(
                                               flex: 2,
                                               child: Text(
-                                                subscriptionController.subscriptionModel.reccuringInvoice_list[index].invoiceNo,
+                                                subscriptionController.subscriptionModel.ApprovalQueue_list[index].invoiceNumber,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -153,7 +209,7 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                             Expanded(
                                               flex: 6,
                                               child: Text(
-                                                subscriptionController.subscriptionModel.reccuringInvoice_list[index].clientAddressName,
+                                                subscriptionController.subscriptionModel.ApprovalQueue_list[index].clientAddressName,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -161,7 +217,24 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                             Expanded(
                                               flex: 2,
                                               child: Text(
-                                                subscriptionController.subscriptionModel.reccuringInvoice_list[index].date,
+                                                subscriptionController.subscriptionModel.ApprovalQueue_list[index].phoneNo,
+                                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 5),
+                                            Expanded(
+                                              flex: 7,
+                                              child: Text(
+                                                subscriptionController.subscriptionModel.ApprovalQueue_list[index].emailId ?? '-',
+                                                style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 5),
+
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                formatDate(DateTime.parse(subscriptionController.subscriptionModel.ApprovalQueue_list[index].billDate)),
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
@@ -169,7 +242,7 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                             Expanded(
                                               flex: 1,
                                               child: Text(
-                                                formatCurrency(double.parse(subscriptionController.subscriptionModel.reccuringInvoice_list[index].totalAmount.toString())),
+                                                formatCurrency(double.parse(subscriptionController.subscriptionModel.ApprovalQueue_list[index].totalAmount.toString())),
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                                 textAlign: TextAlign.right,
                                               ),
@@ -182,13 +255,13 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                                 cursor: SystemMouseCursors.click,
                                                 child: GestureDetector(
                                                     onTap: () async {
-                                                      bool success = await widget.Get_RecurredPDFfile(
+                                                      bool success = await widget.Get_approvalPDFfile(
                                                         context,
-                                                        subscriptionController.subscriptionModel.reccuringInvoice_list[index].recurredbillid,
+                                                        subscriptionController.subscriptionModel.ApprovalQueue_list[index].recurredBillId,
                                                       );
                                                       if (success) {
                                                         File? file = subscriptionController.subscriptionModel.pdfFile.value;
-                                                        showPDF(context, subscriptionController.subscriptionModel.reccuringInvoice_list[index].invoiceNo, file);
+                                                        showPDF(context, subscriptionController.subscriptionModel.ApprovalQueue_list[index].invoiceNumber, file);
                                                       }
                                                     },
                                                     child: Image.asset(height: 30, 'assets/images/pdfdownload.png')),
@@ -203,9 +276,9 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                                   cursor: SystemMouseCursors.click,
                                                   child: GestureDetector(
                                                     onTap: () async {
-                                                      bool success = await widget.Get_RecurredPDFfile(
+                                                      bool success = await widget.Get_approvalPDFfile(
                                                         context,
-                                                        subscriptionController.subscriptionModel.reccuringInvoice_list[index].recurredbillid,
+                                                        subscriptionController.subscriptionModel.ApprovalQueue_list[index].recurredBillId,
                                                       );
 
                                                       if (success) {
@@ -213,7 +286,7 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                                         shareAnyPDF(
                                                             context,
                                                             path
-                                                                .basename(subscriptionController.subscriptionModel.reccuringInvoice_list[index].invoiceNo)
+                                                                .basename(subscriptionController.subscriptionModel.ApprovalQueue_list[index].invoiceNumber)
                                                                 .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
                                                                 .replaceAll(" ", ""),
                                                             file!);
@@ -232,12 +305,12 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                                                   cursor: SystemMouseCursors.click,
                                                   child: GestureDetector(
                                                     onTap: () async {
-                                                      bool success = await widget.Get_RecurredPDFfile(context, subscriptionController.subscriptionModel.reccuringInvoice_list[index].recurredbillid);
+                                                      bool success = await widget.Get_approvalPDFfile(context, subscriptionController.subscriptionModel.ApprovalQueue_list[index].recurredBillId);
 
                                                       if (success) {
                                                         downloadPdf(
                                                             context,
-                                                            subscriptionController.subscriptionModel.reccuringInvoice_list[index].pdfPathString
+                                                            subscriptionController.subscriptionModel.ApprovalQueue_list[index].invoiceNumber
                                                                 .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
                                                                 .replaceAll(" ", ""),
                                                             subscriptionController.subscriptionModel.pdfFile.value);
@@ -333,12 +406,12 @@ class _RecurringinvoiceState extends State<Recurringinvoice> {
                           child: Container(
                             color: Colors.transparent,
                             key: const ValueKey(1),
-                            child: subscriptionController.subscriptionModel.recurredcustomerList.isNotEmpty
+                            child: subscriptionController.subscriptionModel.ApprovalQueue_customerList.isNotEmpty
                                 ? ListView.builder(
-                                    itemCount: subscriptionController.subscriptionModel.recurredcustomerList.length,
+                                    itemCount: subscriptionController.subscriptionModel.ApprovalQueue_customerList.length,
                                     itemBuilder: (context, index) {
-                                      final customername = subscriptionController.subscriptionModel.recurredcustomerList[index].customerName;
-                                      final customerid = subscriptionController.subscriptionModel.recurredcustomerList[index].customerId;
+                                      final customername = subscriptionController.subscriptionModel.ApprovalQueue_customerList[index].customerName;
+                                      final customerid = subscriptionController.subscriptionModel.ApprovalQueue_customerList[index].customerId;
                                       return _buildSubscription_ClientCard(customername, customerid, index);
                                     },
                                   )

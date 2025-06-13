@@ -27,6 +27,13 @@ mixin View_LedgerService {
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
 
+  /// Fetches the list of subscription customers for the ledger.
+  ///
+  /// This method sends a GET request using a token to retrieve subscription customer data from the API.
+  /// If successful and the response code is valid, the data is parsed into a list of `CustomerInfo`
+  /// and assigned to the `subCustomerList` in `view_LedgerModel`.
+  ///
+  /// Any errors during the fetch or parsing are printed in debug mode.
   Future<void> Get_SUBcustomerList() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_ledgerSubscriptionCustomers);
@@ -56,6 +63,14 @@ mixin View_LedgerService {
     }
   }
 
+  /// Fetches the list of sales customers for the ledger view.
+  ///
+  /// This asynchronous method makes an API call to retrieve sales customer data using a secure token.
+  /// On a successful response (status code 200 and valid `code`), the data is parsed into `CustomerInfo`
+  /// objects and assigned to the `salesCustomerList` in the `view_LedgerModel`.
+  ///
+  /// If the response contains an error message or the server is unreachable, it logs the error
+  /// (in debug mode) and optionally displays a dialog alerting the user.
   Future<void> Get_SALEScustomerList(BuildContext context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_ledgerSalesCustomers);
@@ -87,91 +102,19 @@ mixin View_LedgerService {
     }
   }
 
-  // void applySearchFilter(String query) {
-  //   try {
-  //     if (query.isEmpty) {
-  //       account_LedgerController.account_LedgerModel.filteredaccount_Ledger_list.value = (account_LedgerController.account_LedgerModel.account_Ledger_list.value);
-  //     } else {
-  //       final filteredList = account_LedgerController.account_LedgerModel.account_Ledger_list.value.ledgerList.where((view_Ledger) {
-  //         return view_Ledger.clientName.toLowerCase().contains(query.toLowerCase()) || view_Ledger.voucherNumber.toLowerCase().contains(query.toLowerCase());
-  //       }).toList();
-
-  //       final summary = AccountLedgerSummary(
-  //         ledgerList: filteredList,
-  //         creditAmount: account_LedgerController.account_LedgerModel.account_Ledger_list.value.creditAmount, // or recalculate totals if needed
-  //         debitAmount: account_LedgerController.account_LedgerModel.account_Ledger_list.value.debitAmount,
-  //         balanceAmount: account_LedgerController.account_LedgerModel.account_Ledger_list.value.balanceAmount,
-  //       );
-
-  //       account_LedgerController.account_LedgerModel.filteredaccount_Ledger_list.value = summary;
-  //     }
-
-  //     // Update selectedItems to match the new filtered list length
-  //   } catch (e) {
-  //     debugPrint('Error in applySearchFilter: $e');
-  //   }
-  // }
-
-  Future<void> selectDate(BuildContext context, TextEditingController controller) async {
-    final DateTime now = DateTime.now();
-    final DateTime tomorrow = DateTime(now.year, now.month, now.day + 1);
-
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: now,
-      firstDate: DateTime(2000),
-      lastDate: tomorrow,
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Primary_colors.Color3,
-              onPrimary: Colors.white,
-              onSurface: Colors.black87,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Primary_colors.Color3,
-              ),
-            ),
-            dialogTheme: const DialogThemeData(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (pickedDate != null) {
-      if (pickedDate.isAfter(tomorrow)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Date cannot exceed tomorrow.')),
-        );
-        return;
-      }
-
-      final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
-          "${pickedDate.month.toString().padLeft(2, '0')}-"
-          "${pickedDate.day.toString().padLeft(2, '0')}";
-
-      controller.text = formatted;
-    }
-  }
-
-  // bool isGSTsubscriptionData() {
-  //   return view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Subscription' ? true : false;
-  // }
-
-  // bool isGSTsalesData() {
-  //   return view_LedgerController.view_LedgerModel.selectedinvoiceType.value == 'Sales' ? true : false;
-  // }
-
-  // void showCustomDateRangePicker() {
-  //   view_LedgerController.view_LedgerModel.showCustomDateRange.value = true;
-  // }
+  /// Applies a search filter to the currently selected ledger type based on a user-entered query.
+  ///
+  /// - If the query is empty, it resets the displayed ledger list (Account, GST, or TDS)
+  ///   to its corresponding backup/original data set.
+  /// - If the query is not empty, it filters the backup list based on matches with the
+  ///   `gstNumber`, `clientName`, `voucherNumber`, or `invoiceNumber` fields (case-insensitive).
+  ///
+  /// This function handles all three types of ledgers:
+  /// - **Account Ledger**
+  /// - **GST Ledger**
+  /// - **TDS Ledger**
+  ///
+  /// Catches and prints any exceptions during filtering to avoid UI crashes.
   void applySearchFilter(String query) {
     try {
       if (view_LedgerController.view_LedgerModel.selectedLedgerType.value == 'Account Ledger') {
@@ -233,6 +176,15 @@ mixin View_LedgerService {
     }
   }
 
+  /// Fetches voucher details by `voucherID` and displays them in a dialog.
+  ///
+  /// - Makes a GET API call using the provided `voucherID`.
+  /// - If the API responds with status code 200 and a successful response code:
+  ///   - Parses the response into an `InvoicePaymentVoucher` model.
+  ///   - Displays the voucher data using the `showVoucherDetails()` function.
+  /// - If the response is invalid or the server is unreachable, the error dialogs are currently commented out.
+  ///
+  /// Note: Loader and error handling are present but commented, indicating optional future enhancement.
   Future<void> get_VoucherDetails(context, int voucherID) async {
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {'voucherid': voucherID},
@@ -260,6 +212,45 @@ mixin View_LedgerService {
     // loader.stop();
   }
 
+  /// Displays a dialog with detailed information about a specific [voucher].
+  ///
+  /// This dialog includes:
+  /// - Client name, ID, address, phone number, and email.
+  /// - Invoice number with a copy-to-clipboard feature.
+  /// - Visual styling with icons, structured layout, and color-coded sections.
+  ///
+  /// The dialog is built with `showDialog` and uses multiple `GlobalKey`s for referencing UI
+  /// components like invoice number and voucher number for clipboard actions.
+  ///
+  /// [context] is required to display the dialog.
+  /// [voucher] provides the data to be shown inside the dialog.
+  /// Displays the voucher number and GST number rows with copy-to-clipboard functionality.
+  ///
+  /// - Both rows include labels and values styled with color and font weight.
+  /// - A copy icon is provided next to each value.
+  /// - On tapping the icon, the respective text (voucher number or GST number) is copied to clipboard.
+  /// - A temporary overlay with the text “Copied!” is shown for user feedback.
+  /// Displays the payment breakup and payment details section for the given [voucher].
+  ///
+  /// ### Payment Breakup:
+  /// - Shows a column of breakdown items: Net Amount, CGST, SGST, IGST, optional TDS.
+  /// - Each item is displayed using `_buildBreakupLine()` with a label and formatted value.
+  /// - Ends with a highlighted "Total Amount" row.
+  ///
+  /// ### Payment Details:
+  /// - Conditionally rendered only if `voucher.paymentDetails` is not null.
+  /// - Contains a header table row (Date, Amount Paid, Transaction Details, View, Receipt).
+  /// - Follows with scrollable rows populated from `voucher.paymentDetails`.
+  /// - Each row displays:
+  ///   - Formatted payment date
+  ///   - Paid amount
+  ///   - Transaction details
+  ///   - PDF icons to view the transaction and receipt PDFs, which call respective async functions:
+  ///     - `Get_transactionPDFfile(...)`
+  ///     - `Get_receiptPDFfile(...)`
+  ///
+  /// ### If no payments:
+  /// - Shows a warning-styled message card with the text “No Transaction made yet!”
   void showVoucherDetails(BuildContext context, InvoicePaymentVoucher voucher) {
     final GlobalKey _invoiceCopyKey = GlobalKey();
     final GlobalKey _voucherCopyKey = GlobalKey();
@@ -745,6 +736,11 @@ mixin View_LedgerService {
     );
   }
 
+  /// Builds a thin, padded divider widget for visual separation in UI sections.
+  ///
+  /// - Adds vertical padding of 4 units.
+  /// - Divider has a height of 1 and grey color with 0.2 thickness for subtle appearance.
+  /// - Commonly used between payment breakup rows for cleaner layout.
   Widget _buildBreakupDivider() {
     return const Padding(
       padding: EdgeInsets.symmetric(vertical: 4),
@@ -752,6 +748,12 @@ mixin View_LedgerService {
     );
   }
 
+  /// Builds a labeled row for displaying a financial value in the payment breakup section.
+  ///
+  /// - Accepts a [label] (e.g., "Net Amount") and a [value] (e.g., "₹1,000").
+  /// - Layout is spaced evenly using [MainAxisAlignment.spaceBetween].
+  /// - Label uses grey color with medium weight; value uses white color with bold weight.
+  /// - Padding is applied vertically for visual clarity between rows.
   Widget _buildBreakupLine(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
@@ -771,6 +773,13 @@ mixin View_LedgerService {
     );
   }
 
+  /// Builds a small information row with an icon and a text label.
+  ///
+  /// - [icon]: The leading icon displayed in grey with size 16.
+  /// - [text]: Descriptive information shown beside the icon.
+  /// - Layout: Uses a horizontal [Row] with spacing and vertical alignment at the top.
+  /// - The text wraps within available space using [Expanded].
+  /// - Commonly used for displaying metadata or hints in a compact format.
   Widget _infoRow(IconData icon, String text) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -783,20 +792,4 @@ mixin View_LedgerService {
       ],
     );
   }
-
-  // void resetFilters() {
-  //   view_LedgerController.view_LedgerModel.startDateController.value.clear();
-  //   view_LedgerController.view_LedgerModel.endDateController.value.clear();
-  //   view_LedgerController.view_LedgerModel.selectedMonth.value = 'None';
-  //   view_LedgerController.view_LedgerModel.selectedinvoiceType.value = 'Show All';
-  //   view_LedgerController.view_LedgerModel.selectedGSTLedgerType.value = 'Consolidate';
-  //   view_LedgerController.view_LedgerModel.selectedPaymenttype.value = 'Show All';
-  //   view_LedgerController.view_LedgerModel.selectedsalescustomerID.value = 'None';
-  //   view_LedgerController.view_LedgerModel.selectedsalescustomer.value = 'None';
-  //   view_LedgerController.view_LedgerModel.selectedsubcustomerID.value = 'None';
-  //   view_LedgerController.view_LedgerModel.selectedsubcustomer.value = 'None';
-  //   account_LedgerController.account_LedgerModel.account_Ledger_list.value = account_LedgerController.account_LedgerModel.Secondaryaccount_Ledger_list.value;
-  //   gst_LedgerController.gst_LedgerModel.gst_Ledger_list.value = gst_LedgerController.gst_LedgerModel.ParentGST_Ledgers.value;
-  //   tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value = tds_ledgerController.tds_LedgerModel.ParentTDS_Ledgers.value;
-  // }
 }

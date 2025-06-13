@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/account_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
@@ -8,13 +7,27 @@ import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/THEMES/style.dart';
 
 mixin Account_LedgerService {
   final Account_LedgerController account_LedgerController = Get.find<Account_LedgerController>();
   final View_LedgerController view_LedgerController = Get.find<View_LedgerController>();
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
+
+  /// Fetches the account ledger list based on the current selected filter values.
+  ///
+  /// Query parameters include:
+  /// - `ledgertype`: Filters by transaction type unless set to "show all"
+  /// - `paymenttype`: Filters by payment type unless set to "show all"
+  /// - `invoicetype`: Filters by invoice type unless set to "show all"
+  /// - `customerid`: Filters by specific customer unless "None" is selected
+  /// - `startdate` and `enddate`: Define the date range for filtering
+  ///
+  /// If the API response is successful (`statusCode == 200` and `value.code == true`):
+  /// - Updates the `account_LedgerModel` with the retrieved ledger data
+  /// - Triggers a UI update via `account_LedgerController.update()`
+  ///
+  /// In case of an error, appropriate error handling is present but commented out.
 
   Future<void> get_Account_LedgerList() async {
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
@@ -53,6 +66,19 @@ mixin Account_LedgerService {
     // loader.stop();
   }
 
+  /// Constructs and returns a `PDF_AccountLedgerSummary` object for generating a PDF ledger.
+  ///
+  /// This function does the following:
+  /// - Determines the client type (subscription or sales) based on the input booleans:
+  ///   - If `Sub_clientOrNot` is true, it fetches client details from the `subCustomerList`.
+  ///   - If `Sales_clientOrNot` is true, it fetches from the `salesCustomerList`.
+  /// - Extracts client information such as name, address, GSTIN, and PAN.
+  ///   - If GSTIN or PAN are missing (empty string), they are replaced with a dash (`-`).
+  /// - Always pulls the ledger data and the date range (`fromDate`, `toDate`) from `account_LedgerController`.
+  /// - Finally, it returns a `PDF_AccountLedgerSummary` created using the gathered data.
+  ///
+  /// Returns:
+  /// - A fully initialized `PDF_AccountLedgerSummary` instance ready for PDF export.
   Future<PDF_AccountLedgerSummary> parsePDF_AccountLedger(bool Sub_clientOrNot, bool Sales_clientOrNot) async {
     final ClientDetails? clientDetails;
 
@@ -97,61 +123,46 @@ mixin Account_LedgerService {
     return account_LedgerController.account_LedgerModel.selectedsubcustomer.value != 'None' && account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Subscription' ? true : false;
   }
 
+  /// Checks whether the selected client qualifies as a sales client.
+  ///
+  /// A client is considered a sales client if:
+  /// - The selected sales customer is not 'None'
+  /// - The selected invoice type is 'Sales'
+  ///
+  /// Returns:
+  /// - `true` if both conditions are met, indicating a valid sales client
+  /// - `false` otherwise
   bool isSales_Client() {
     return account_LedgerController.account_LedgerModel.selectedsalescustomer.value != 'None' && account_LedgerController.account_LedgerModel.selectedInvoiceType.value == 'Sales' ? true : false;
   }
 
+  /// Refreshes the account ledger data.
+  ///
+  /// This function performs the following:
+  /// - Calls `get_Account_LedgerList()` to fetch the latest account ledger entries.
+  /// - Triggers an update on `account_LedgerController` to refresh any UI or listeners
+  ///   depending on the controller.
   Future<void> account_Ledger_refresh() async {
     await get_Account_LedgerList();
     account_LedgerController.update();
   }
 
+  /// Resets the applied filters on the account ledger list.
+  ///
+  /// This function sets the primary `account_Ledger_list` to the value of the
+  /// `Secondaryaccount_Ledger_list`, effectively restoring the original unfiltered data.
   void resetFilters() {
     account_LedgerController.account_LedgerModel.account_Ledger_list.value = account_LedgerController.account_LedgerModel.Secondaryaccount_Ledger_list.value;
   }
 
-  Future<void> selectfilterDate(BuildContext context, TextEditingController controller) async {
-    final DateTime now = DateTime.now();
-    final DateTime nextYear = now.add(const Duration(days: 365)); // Limit to next year
-
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: now,
-      firstDate: now, // Start from today
-      lastDate: nextYear, // Allow dates up to 1 year from today
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Primary_colors.Color3,
-              onPrimary: Colors.white,
-              onSurface: Colors.black87,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Primary_colors.Color3,
-              ),
-            ),
-            dialogTheme: const DialogThemeData(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (pickedDate != null) {
-      final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
-          "${pickedDate.month.toString().padLeft(2, '0')}-"
-          "${pickedDate.day.toString().padLeft(2, '0')}";
-
-      controller.text = formatted;
-    }
-  }
-
+  /// Resets all applied filters in the account ledger filter model to their default values.
+  ///
+  /// This includes:
+  /// - Setting transaction type, invoice type, and payment type to 'Show All'
+  /// - Resetting selected customer and subscription names to 'None'
+  /// - Clearing customer ID, from-date, and to-date fields
+  ///
+  /// Use this to clear any filters applied on the ledger list and restore default filter state.
   void resetaccount_LedgerFilters() {
     account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.transactiontype.value = 'Show All';
     account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.invoicetype.value = 'Show All';
@@ -165,6 +176,19 @@ mixin Account_LedgerService {
     // account_LedgerController.account_LedgerModel.filteredaccount_Ledgers.value = account_LedgerController.account_LedgerModel.account_Ledger_list;
   }
 
+  /// Assigns the currently selected filter values to the active filter state in the account ledger.
+  ///
+  /// This function copies the following fields from the main selection model into the `account_LedgerSelectedFilter`:
+  /// - Transaction type
+  /// - Invoice type
+  /// - Sales customer name
+  /// - Subscription customer name
+  /// - Customer ID
+  /// - Payment type
+  /// - From date
+  /// - To date
+  ///
+  /// This helps persist and apply the chosen filter values when processing or displaying filtered results.
   void assignaccount_LedgerFilters() {
     account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.transactiontype.value = account_LedgerController.account_LedgerModel.selectedtransactiontype.value;
     account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.invoicetype.value = account_LedgerController.account_LedgerModel.selectedInvoiceType.value;
@@ -176,6 +200,15 @@ mixin Account_LedgerService {
     account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.todate.value = account_LedgerController.account_LedgerModel.endDateController.value.text;
   }
 
+  /// Reapplies previously saved filter selections back to the main filter fields in the account ledger.
+  ///
+  /// This function transfers values from the `account_LedgerSelectedFilter` object back into the primary filter fields:
+  /// - Transaction type, invoice type, sales customer, and subscription customer
+  /// - Customer ID and payment type
+  /// - From date and to date (into their respective controllers)
+  /// - Selected month value
+  ///
+  /// Use this to restore a user's saved filter settings after navigation or screen refresh.
   void reassignaccount_LedgerFilters() {
     account_LedgerController.account_LedgerModel.selectedtransactiontype.value = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.transactiontype.value;
     account_LedgerController.account_LedgerModel.selectedInvoiceType.value = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.invoicetype.value;
@@ -188,23 +221,3 @@ mixin Account_LedgerService {
     account_LedgerController.account_LedgerModel.selectedMonth.value = account_LedgerController.account_LedgerModel.account_LedgerSelectedFilter.value.selectedmonth.value.toString();
   }
 }
-
-// void applySearchFilter(String query) {
-//     try {
-//       if (query.isEmpty) {
-//         account_LedgerController.account_LedgerModel.filteredaccount_Ledgers.assignAll(account_LedgerController.account_LedgerModel.account_Ledger_list);
-//       } else {
-//         final filtered = account_LedgerController.account_LedgerModel.account_Ledger_list.where((account_Ledger) {
-//           return account_Ledger.clientName.toLowerCase().contains(query.toLowerCase()) || account_Ledger.account_LedgerNumber.toLowerCase().contains(query.toLowerCase());
-//         }).toList();
-//         account_LedgerController.account_LedgerModel.filteredaccount_Ledgers.assignAll(filtered);
-//       }
-
-//       // Update selectedItems to match the new filtered list length
-//       account_LedgerController.account_LedgerModel.selectedItems.value = List<bool>.filled(account_LedgerController.account_LedgerModel.filteredaccount_Ledgers.length, false);
-//       account_LedgerController.account_LedgerModel.selectAll.value = false;
-//       account_LedgerController.account_LedgerModel.showDeleteButton.value = false;
-//     } catch (e) {
-//       debugPrint('Error in applySearchFilter: $e');
-//     }
-//   }

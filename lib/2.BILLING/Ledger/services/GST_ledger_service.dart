@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/GST_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
@@ -6,13 +5,29 @@ import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
-import 'package:ssipl_billing/THEMES/style.dart';
 
 mixin GST_LedgerService {
   final GST_LedgerController gst_LedgerController = Get.find<GST_LedgerController>();
   final View_LedgerController view_LedgerController = Get.find<View_LedgerController>();
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
+
+  /// Fetches GST Ledger data based on current filter values.
+  ///
+  /// This async function prepares query parameters from the `gst_LedgerSelectedFilter`,
+  /// then sends a GET request to the API to retrieve the GST ledger list.
+  ///
+  /// Key filter parameters:
+  /// - `gsttype`: Sent as an empty string if "Consolidate" is selected.
+  /// - `invoicetype`: Empty if "Show All" is selected.
+  /// - `customerid`: Empty if no specific customer is selected.
+  /// - `startdate` and `enddate`: Passed as selected date range.
+  ///
+  /// Upon successful response (`statusCode == 200` and `code == true`):
+  /// - The ledger list is updated in the controller using `add_GST_Ledger()`
+  /// - UI is refreshed via `update()`
+  ///
+  /// Error conditions are currently commented out but are intended for future user alerts.
   Future<void> get_GST_LedgerList() async {
     // loader.start(context);
     // await Future.delayed(const Duration(milliseconds: 1000));
@@ -49,57 +64,35 @@ mixin GST_LedgerService {
     // loader.stop();
   }
 
+  /// Refreshes the GST Ledger data.
+  ///
+  /// This function performs two tasks sequentially:
+  /// 1. Calls `get_GST_LedgerList()` to fetch the latest GST ledger entries from the API.
+  /// 2. Triggers a UI update via `gst_LedgerController.update()` to reflect the newly fetched data.
+  ///
+  /// Typically used in pull-to-refresh gestures or on screen re-entry.
   Future<void> gst_Ledger_refresh() async {
     await get_GST_LedgerList();
     gst_LedgerController.update();
   }
 
+  /// Resets the GST Ledger filters by restoring the full original data.
+  ///
+  /// This function assigns the `ParentGST_Ledgers` (which holds the unfiltered original list)
+  /// back to the currently displayed `gst_Ledger_list`, effectively removing any active filters.
   void resetFilters() {
     gst_LedgerController.gst_LedgerModel.gst_Ledger_list.value = gst_LedgerController.gst_LedgerModel.ParentGST_Ledgers.value;
   }
 
-  Future<void> selectfilterDate(BuildContext context, TextEditingController controller) async {
-    final DateTime now = DateTime.now();
-    final DateTime nextYear = now.add(const Duration(days: 365)); // Limit to next year
-
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: now,
-      firstDate: now, // Start from today
-      lastDate: nextYear, // Allow dates up to 1 year from today
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Primary_colors.Color3,
-              onPrimary: Colors.white,
-              onSurface: Colors.black87,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Primary_colors.Color3,
-              ),
-            ),
-            dialogTheme: const DialogThemeData(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (pickedDate != null) {
-      final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
-          "${pickedDate.month.toString().padLeft(2, '0')}-"
-          "${pickedDate.day.toString().padLeft(2, '0')}";
-
-      controller.text = formatted;
-    }
-  }
-
+  /// Resets all GST Ledger filter fields to their default values.
+  ///
+  /// This includes:
+  /// - Setting `GSTtype` to `'Consolidate'`
+  /// - Setting `invoicetype` to `'Show All'`
+  /// - Resetting customer-related selections (`sales`, `subscription`, `ID`)
+  /// - Clearing the date range (`fromdate`, `todate`)
+  ///
+  /// Use this method to fully clear any active filters and restore filter UI to its initial state.
   void resetgst_LedgerFilters() {
     gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value = 'Consolidate';
     gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.invoicetype.value = 'Show All';
@@ -113,6 +106,13 @@ mixin GST_LedgerService {
     // gst_LedgerController.gst_LedgerModel.filteredgst_Ledgers.value = gst_LedgerController.gst_LedgerModel.gst_Ledger_list;
   }
 
+  /// Assigns the currently selected GST Ledger filter values to the filter state model.
+  ///
+  /// This method takes the values from the active selection controls (`selectedGSTtype`, `selectedInvoiceType`,
+  /// `selectedsalescustomer`, etc.) and saves them into `gst_LedgerSelectedFilter`.
+  ///
+  /// This is typically used before performing operations that require remembering user-selected filters,
+  /// like saving preferences or reapplying filters after navigation.
   void assigngst_LedgerFilters() {
     gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value = gst_LedgerController.gst_LedgerModel.selectedGSTtype.value;
     gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.invoicetype.value = gst_LedgerController.gst_LedgerModel.selectedInvoiceType.value;
@@ -123,6 +123,13 @@ mixin GST_LedgerService {
     gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value = gst_LedgerController.gst_LedgerModel.endDateController.value.text;
   }
 
+  /// Reassigns the saved GST Ledger filter values back to the UI filter fields.
+  ///
+  /// This method restores previously selected filter values from `gst_LedgerSelectedFilter`
+  /// into the current model's reactive fields. It ensures that user-selected
+  /// filters (like GST type, invoice type, customers, and date range)
+  /// are re-populated into the filter form for consistent experience,
+  /// such as after navigation or reopening the filter view.
   void reassigngst_LedgerFilters() {
     gst_LedgerController.gst_LedgerModel.selectedGSTtype.value = gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value;
     gst_LedgerController.gst_LedgerModel.selectedInvoiceType.value = gst_LedgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.invoicetype.value;

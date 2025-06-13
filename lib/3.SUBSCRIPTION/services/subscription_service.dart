@@ -25,7 +25,7 @@ import '../../COMPONENTS-/Response_entities.dart';
 mixin SubscriptionServices {
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController _sessiontokenController = Get.find<SessiontokenController>();
-  final SubscriptionController _subscriptionController = Get.find<SubscriptionController>();
+  // final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
   final SUBSCRIPTION_ClientreqController _clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
   final SUBSCRIPTION_QuoteController sub_quoteController = Get.find<SUBSCRIPTION_QuoteController>();
   final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
@@ -192,7 +192,7 @@ mixin SubscriptionServices {
         );
 
         if (value.code) {
-          _subscriptionController.add_Comp(value);
+          subscriptionController.add_Comp(value);
         } else {
           if (kDebugMode) {
             print("error : ${value.message}");
@@ -222,7 +222,7 @@ mixin SubscriptionServices {
     if (response?['statusCode'] == 200) {
       CMDlResponse value = CMDlResponse.fromJson(response ?? {});
       if (value.code) {
-        _subscriptionController.add_GlobalPackage(value);
+        subscriptionController.add_GlobalPackage(value);
       } else {
         await Error_dialog(
           context: context,
@@ -327,7 +327,7 @@ mixin SubscriptionServices {
           // subscriptionController.subscriptionModel.selectedPackagessubscriptionID.clear();
 
           get_GlobalPackageList(context);
-          // _subscriptionController.subscriptionModel.packageselectedIndex.value = _subscriptionController.subscriptionModel.packageselectedIndex.value! - subId.length;
+          // subscriptionController.subscriptionModel.packageselectedIndex.value = subscriptionController.subscriptionModel.packageselectedIndex.value! - subId.length;
           Success_SnackBar(context, "Package deleted successfully");
           // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
@@ -348,12 +348,12 @@ mixin SubscriptionServices {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           // await Basic_dialog(context: context,showCancel: false, title: 'Processcustomer List', content: "Processcu    stomer List fetched successfully", onOk: () {});
-          _subscriptionController.subscriptionModel.processcustomerList.clear();
+          subscriptionController.subscriptionModel.processcustomerList.clear();
           // print(value.data);
-          _subscriptionController.addToProcesscustomerList(value);
+          subscriptionController.addToProcesscustomerList(value);
           subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
 
-          // _subscriptionController.updatecustomerId(_subscriptionController.subscriptionModel.processcustomerList[_subscriptionController.subscriptionModel.showcustomerprocess.value!].customerId);
+          // subscriptionController.updatecustomerId(subscriptionController.subscriptionModel.processcustomerList[subscriptionController.subscriptionModel.showcustomerprocess.value!].customerId);
         } else {
           if (kDebugMode) {
             print("error : ${value.message}");
@@ -381,12 +381,45 @@ mixin SubscriptionServices {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           // await Basic_dialog(context: context,showCancel: false, title: 'Processcustomer List', content: "Processcu    stomer List fetched successfully", onOk: () {});
-          _subscriptionController.subscriptionModel.recurredcustomerList.clear();
+          subscriptionController.subscriptionModel.recurredcustomerList.clear();
           // print(value.data);
-          _subscriptionController.addToRecurredcustomerList(value);
+          subscriptionController.addToRecurredcustomerList(value);
           subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
 
-          // _subscriptionController.updatecustomerId(_subscriptionController.subscriptionModel.processcustomerList[_subscriptionController.subscriptionModel.showcustomerprocess.value!].customerId);
+          // subscriptionController.updatecustomerId(subscriptionController.subscriptionModel.processcustomerList[subscriptionController.subscriptionModel.showcustomerprocess.value!].customerId);
+        } else {
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
+          // await Basic_dialog(context: context, showCancel: false, title: 'Recurredcustomer List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
+        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("error : $e");
+      }
+      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
+
+  Future<void> GetApprovalQueue_customerList() async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.subscription_getApprovalQueue_customer_API);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          // await Basic_dialog(context: context,showCancel: false, title: 'Processcustomer List', content: "Processcu    stomer List fetched successfully", onOk: () {});
+          subscriptionController.subscriptionModel.ApprovalQueue_customerList.clear();
+          // // print(value.data);
+          subscriptionController.addTo_ApprovalQueue_customerList(value);
+          subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
+
+          // subscriptionController.updatecustomerId(subscriptionController.subscriptionModel.processcustomerList[subscriptionController.subscriptionModel.showcustomerprocess.value!].customerId);
         } else {
           if (kDebugMode) {
             print("error : ${value.message}");
@@ -423,7 +456,47 @@ mixin SubscriptionServices {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          _subscriptionController.addTo_RecuuringInvoiceList(value);
+          subscriptionController.addTo_RecuuringInvoiceList(value);
+          subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
+        } else {
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
+          // await Basic_dialog(context: context, showCancel: false, title: 'Recurring Invoice List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
+        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+      // loader.stop();
+    } catch (e) {
+      if (kDebugMode) {
+        print("error : $e");
+      }
+      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+      // loader.stop();
+    }
+  }
+
+  Future<void> Get_ApprovalQueueList(int? id) async {
+    try {
+      // loader.start(context);
+
+      Map<String, dynamic>? response;
+
+      if (id == null) {
+        response = await apiController.GetbyToken(API.get_subscription_ApprovalQueueList);
+      } else {
+        Map<String, dynamic> body = {"customerid": id};
+        response = await apiController.GetbyQueryString(body, API.get_subscription_ApprovalQueueList);
+      }
+
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          subscriptionController.addTo_ApprovalQueue_InvoiceList(value);
           subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
         } else {
           if (kDebugMode) {
@@ -450,14 +523,14 @@ mixin SubscriptionServices {
   Future<void> GetProcessList(int customerid) async {
     try {
       Map<String, dynamic>? response =
-          await apiController.GetbyQueryString({"customerid": customerid, "listtype": _subscriptionController.subscriptionModel.type.value}, API.subscription_getprocesslist_API);
+          await apiController.GetbyQueryString({"customerid": customerid, "listtype": subscriptionController.subscriptionModel.type.value}, API.subscription_getprocesslist_API);
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           // await Basic_dialog(context: context, showCancel: false, title: 'Process List', content: "Process List fetched successfully", onOk: () {});
-          _subscriptionController.subscriptionModel.processList.clear();
+          subscriptionController.subscriptionModel.processList.clear();
           // print(value.data);
-          _subscriptionController.addToProcessList(value);
+          subscriptionController.addToProcessList(value);
           subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
         } else {
           if (kDebugMode) {
@@ -507,7 +580,7 @@ mixin SubscriptionServices {
           response ?? {},
         );
         if (value.code) {
-          await _subscriptionController.PDFfileApiData(value);
+          await subscriptionController.PDFfileApiData(value);
           return true;
           // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
@@ -538,8 +611,8 @@ mixin SubscriptionServices {
     if (response?['statusCode'] == 200) {
       CMResponse value = CMResponse.fromJson(response ?? {});
       if (value.code) {
-        _subscriptionController.subscriptionModel.selectedIndices.clear();
-        GetProcessList(_subscriptionController.subscriptionModel.customerId.value!);
+        subscriptionController.subscriptionModel.selectedIndices.clear();
+        GetProcessList(subscriptionController.subscriptionModel.customerId.value!);
         Success_SnackBar(context, "Process Deleted successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
@@ -558,8 +631,8 @@ mixin SubscriptionServices {
     if (response?['statusCode'] == 200) {
       CMResponse value = CMResponse.fromJson(response ?? {});
       if (value.code) {
-        _subscriptionController.subscriptionModel.selectedIndices.clear();
-        GetProcessList(_subscriptionController.subscriptionModel.customerId.value!);
+        subscriptionController.subscriptionModel.selectedIndices.clear();
+        GetProcessList(subscriptionController.subscriptionModel.customerId.value!);
         Success_SnackBar(context, type == 0 ? "Process Unarchived successfully" : "Process Archived successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
       } else {
@@ -580,7 +653,7 @@ mixin SubscriptionServices {
         // print(value.data);
         if (value.code) {
           // print(value.data);
-          _subscriptionController.updateSubscriptionData(value);
+          subscriptionController.updateSubscriptionData(value);
           subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
         } else {
           if (kDebugMode) {
@@ -610,8 +683,8 @@ mixin SubscriptionServices {
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
-          _subscriptionController.updateclientprofileData(value);
-          _subscriptionController.updateprofilepage(true);
+          subscriptionController.updateclientprofileData(value);
+          subscriptionController.updateprofilepage(true);
         } else {
           await Error_dialog(
             context: context,
@@ -630,25 +703,25 @@ mixin SubscriptionServices {
     }
   }
 
-  void GetApproval(context, int customerid, int eventid) async {
-    try {
-      Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid}, 'API.subscription_approvedquotation_API');
-      if (response?['statusCode'] == 200) {
-        CMResponse value = CMResponse.fromJson(response ?? {});
-        if (value.code) {
-          GetProcessList(customerid);
-          Success_SnackBar(context, "Approval Sent successfully");
-          // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
-        } else {
-          await Error_dialog(context: context, title: 'Approval Send add Error', content: value.message ?? "", onOk: () {});
-        }
-      } else {
-        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
-      }
-    } catch (e) {
-      Error_dialog(context: context, title: "ERROR", content: "$e");
-    }
-  }
+  // void GetApproval(context, int customerid, int eventid) async {
+  //   try {
+  //     Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid}, 'API.subscription_approvedquotation_API');
+  //     if (response?['statusCode'] == 200) {
+  //       CMResponse value = CMResponse.fromJson(response ?? {});
+  //       if (value.code) {
+  //         GetProcessList(customerid);
+  //         Success_SnackBar(context, "Approval Sent successfully");
+  //         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+  //       } else {
+  //         await Error_dialog(context: context, title: 'Approval Send add Error', content: value.message ?? "", onOk: () {});
+  //       }
+  //     } else {
+  //       Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+  //     }
+  //   } catch (e) {
+  //     Error_dialog(context: context, title: "ERROR", content: "$e");
+  //   }
+  // }
 
   Future<void> Get_subscriptionCustomPDFLsit() async {
     try {
@@ -656,7 +729,7 @@ mixin SubscriptionServices {
       if (response?['statusCode'] == 200) {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
-          _subscriptionController.addToCustompdfList(value);
+          subscriptionController.addToCustompdfList(value);
           subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
         } else {
           if (kDebugMode) {
@@ -706,7 +779,29 @@ mixin SubscriptionServices {
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
-          await subscriptionController.recurred_PDFfileApiData(value);
+          await subscriptionController.pdfFileApiData(value);
+          return true;
+          // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+        } else {
+          await Error_dialog(context: context, title: 'PDF file Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+      return false;
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+      return false;
+    }
+  }
+
+  Future<bool> Get_approvalPDFfile(context, int approvalPDFid) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"recurredbillid": approvalPDFid}, API.subscription_getApprovalBinaryfile_API);
+      if (response?['statusCode'] == 200) {
+        CMDmResponse value = CMDmResponse.fromJson(response ?? {});
+        if (value.code) {
+          await subscriptionController.pdfFileApiData(value);
           return true;
           // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
@@ -921,23 +1016,25 @@ mixin SubscriptionServices {
   }
 
   Future<void> subscription_refresh() async {
-    // _subscriptionController.resetData();
-    _subscriptionController.updateshowcustomerprocess(null);
-    _subscriptionController.updatecustomerId(0);
+    // subscriptionController.resetData();
+    subscriptionController.updateshowcustomerprocess(null);
+    subscriptionController.updatecustomerId(0);
     await Get_RecurringInvoiceList(null);
+    Get_ApprovalQueueList(null);
     await GetProcessList(0);
     await GetProcesscustomerList();
     await GetReccuredcustomerList();
+    await GetApprovalQueue_customerList();
     await get_CompanyList();
 
-    await GetSubscriptionData(_subscriptionController.subscriptionModel.subscriptionperiod.value);
+    await GetSubscriptionData(subscriptionController.subscriptionModel.subscriptionperiod.value);
     await Get_subscriptionCustomPDFLsit();
   }
 
   int fetch_messageType() {
-    if (_subscriptionController.subscriptionModel.whatsapp_selectionStatus.value && _subscriptionController.subscriptionModel.gmail_selectionStatus.value) return 3;
-    if (_subscriptionController.subscriptionModel.whatsapp_selectionStatus.value) return 2;
-    if (_subscriptionController.subscriptionModel.gmail_selectionStatus.value) return 1;
+    if (subscriptionController.subscriptionModel.whatsapp_selectionStatus.value && subscriptionController.subscriptionModel.gmail_selectionStatus.value) return 3;
+    if (subscriptionController.subscriptionModel.whatsapp_selectionStatus.value) return 2;
+    if (subscriptionController.subscriptionModel.gmail_selectionStatus.value) return 1;
 
     return 0;
   }
@@ -945,11 +1042,11 @@ mixin SubscriptionServices {
   dynamic postData_sendPDF(context, int messageType, File pdf) async {
     try {
       Map<String, dynamic> queryString = {
-        "emailid": _subscriptionController.subscriptionModel.emailController.value.text,
-        "phoneno": _subscriptionController.subscriptionModel.phoneController.value.text,
-        "feedback": _subscriptionController.subscriptionModel.feedbackController.value.text,
+        "emailid": subscriptionController.subscriptionModel.emailController.value.text,
+        "phoneno": subscriptionController.subscriptionModel.phoneController.value.text,
+        "feedback": subscriptionController.subscriptionModel.feedbackController.value.text,
         "messagetype": messageType,
-        "ccemail": _subscriptionController.subscriptionModel.CCemailController.value.text,
+        "ccemail": subscriptionController.subscriptionModel.CCemailController.value.text,
       };
       await sendPDFdata(context, jsonEncode(queryString), pdf);
     } catch (e) {
@@ -976,6 +1073,94 @@ mixin SubscriptionServices {
       }
     } catch (e) {
       Error_dialog(context: context, title: "ERROR", content: "$e");
+    }
+  }
+
+  void mailByGroup() async {
+    Map<String, Map<String, List<Map<String, dynamic>>>> groupedByEmail = {};
+    int count = 0;
+    List<String> concatinatedMails = [];
+    List<String> customerIds = [];
+    for (int i = 0; i < subscriptionController.subscriptionModel.selectedIndices.length; i++) {
+      final invoiceData = subscriptionController.subscriptionModel.ApprovalQueue_list[subscriptionController.subscriptionModel.selectedIndices[i]];
+      // final contactDetails = site['contactdetails'] as Map<String, dynamic>?;
+      // // print(site);
+      // final customerDetails = site['customeraccountdetails'] as Map<String, dynamic>?;
+      final customerId = invoiceData.customerId;
+      final email = invoiceData.emailId ?? '';
+      final CCemail = invoiceData.ccEmail ?? '';
+      final String concatinatedMail = "$email&$CCemail";
+      // Initialize email group if needed
+      if (!groupedByEmail.containsKey(concatinatedMail)) {
+        groupedByEmail[concatinatedMail] = {};
+        concatinatedMails.add(concatinatedMail);
+      }
+
+      // Initialize customer group inside that email
+      // print(customerId);
+      if (!groupedByEmail[concatinatedMail]!.containsKey(customerId.toString())) {
+        groupedByEmail[concatinatedMail]![customerId.toString()] = [];
+        customerIds.add(customerId.toString());
+      }
+      invoiceData.PostData['pdfpath'] = invoiceData.pdfData;
+      // Add site to the proper list
+      groupedByEmail[concatinatedMail]![customerId.toString()]!.add(invoiceData.PostData);
+    }
+
+    for (var mailEntry in groupedByEmail.entries) {
+      final String emailAndCC = mailEntry.key;
+      final Map<String, List<Map<String, dynamic>>> customers = mailEntry.value;
+
+      // print('Email: $emailAndCC');
+      // print('Customer Count: ${customers.length}');
+
+      for (var customerEntry in customers.entries) {
+        final String customerId = customerEntry.key;
+        final List<Map<String, dynamic>> invoice = customerEntry.value;
+        // print(invoice);
+        print('  Customer ID: $customerId');
+        print('    Invoice: ${invoice.length}');
+        await sendMail(invoice);
+        // for (var site in sites) {
+        //   InvoicesList.add(site);
+        //   // Generators.InvoiceGenerator(site);
+        //   // await Future.delayed(const Duration(milliseconds: 2000));
+        // }
+
+        count++;
+        // await InvoiceServices.apicall(InvoicesList, mailSenderList, count);
+        // await Future.delayed(const Duration(milliseconds: 8000));
+        // mailSenderList.clear();
+        // InvoicesList.clear();
+        // print('************************ SITES ENDED ***********************');
+      }
+      // print('************************ MAIL CLUB ENDED ****************************************************************************************************\n\n\n\n\n\n\n\n');
+    }
+  }
+
+  dynamic sendMail(List<Map<String, dynamic>> groupedInvoices) async {
+    try {
+      // Map<String, dynamic> query = {
+      //   "voucherid": voucherID,
+      //   "date": voucherController.voucherModel.extendDueDateControllers[index].value.text,
+      //   "feedback": voucherController.voucherModel.extendDueFeedbackControllers[index].value.text,
+      // };
+      String encodedData = json.encode(groupedInvoices);
+      Map<String, dynamic>? response = await apiController.SendByQuerystring(encodedData, API.subscription_sendAutoGenerated_invoices_API);
+      if (response['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response);
+        if (value.code) {
+          print(value.message);
+          // await Success_dialog(context: context, title: "Success", content: value.message!, onOk: () {});
+        } else {
+          print(value.message);
+          // await Error_dialog(context: context, title: 'Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        // Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      // Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
 }

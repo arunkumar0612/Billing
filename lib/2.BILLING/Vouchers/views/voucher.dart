@@ -391,7 +391,7 @@ class _VoucherState extends State<Voucher> {
                                         label: 'Payment received Date',
                                         hint: 'Select Payment received date',
                                         icon: Icons.calendar_today,
-                                        onTap: () => widget.select_nextDates(context, voucherController.voucherModel.closedDateController),
+                                        onTap: () => select_nextDates(context, voucherController.voucherModel.closedDateController),
                                       ),
                                       const SizedBox(height: 16),
                                       _buildEditableField(
@@ -1175,7 +1175,7 @@ class _VoucherState extends State<Voucher> {
                                         label: 'Payment received Date',
                                         hint: 'Select Payment received date',
                                         icon: Icons.calendar_today,
-                                        onTap: () => widget.select_nextDates(context, voucherController.voucherModel.closedDateController),
+                                        onTap: () => select_nextDates(context, voucherController.voucherModel.closedDateController),
                                       ),
                                       const SizedBox(height: 16),
                                       _buildEditableField(
@@ -2736,7 +2736,7 @@ class _VoucherState extends State<Voucher> {
                                                                   controller: voucherController.voucherModel.extendDueDateControllers[index],
                                                                   readOnly: true,
                                                                   onTap: () async {
-                                                                    await widget.select_previousDates(context, voucherController.voucherModel.extendDueDateControllers[index]);
+                                                                    await select_previousDates(context, voucherController.voucherModel.extendDueDateControllers[index]);
                                                                     widget.isExtendButton_visibile(index);
                                                                   },
                                                                   decoration: InputDecoration(
@@ -4322,7 +4322,7 @@ class _VoucherState extends State<Voucher> {
                             controller: voucherController.voucherModel.startDateController.value,
                             readOnly: true,
                             onTap: () async {
-                              await widget.select_previousDates(context, voucherController.voucherModel.startDateController.value);
+                              await select_previousDates(context, voucherController.voucherModel.startDateController.value);
                               // await widget.get_VoucherList();
                               voucherController.voucherModel.startDateController.refresh();
                             },
@@ -4353,7 +4353,7 @@ class _VoucherState extends State<Voucher> {
                             controller: voucherController.voucherModel.endDateController.value,
                             readOnly: true,
                             onTap: () async {
-                              await widget.select_previousDates(context, voucherController.voucherModel.endDateController.value);
+                              await select_previousDates(context, voucherController.voucherModel.endDateController.value);
                               voucherController.voucherModel.endDateController.refresh();
                               // await widget.get_VoucherList();
                             },
@@ -4582,7 +4582,7 @@ class CreateVoucherBottomSheet extends StatelessWidget with VoucherService {
                                   child: TextFormField(
                                     controller: voucherController.voucherModel.dateController.value,
                                     readOnly: true,
-                                    onTap: () => selectfilterDate(context, voucherController.voucherModel.dateController.value),
+                                    onTap: () => select_previousDates(context, voucherController.voucherModel.dateController.value),
                                     style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
                                     decoration: InputDecoration(
                                       contentPadding: const EdgeInsets.all(1),

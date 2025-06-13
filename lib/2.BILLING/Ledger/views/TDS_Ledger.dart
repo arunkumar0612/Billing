@@ -307,10 +307,11 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                       child: GestureDetector(
                                                         onTap: () async {
                                                           if (tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoiceType == 'subscription') {
-                                                            bool success =
-                                                                await widget.GetSubscriptionPDFfile(context: context, invoiceNo: tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number);
+                                                            bool success = await widget.GetSubscriptionPDFfile(
+                                                                context: context, invoiceNo: tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number);
                                                             if (success) {
-                                                              showPDF(context, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number, mainBilling_Controller.billingModel.pdfFile.value);
+                                                              showPDF(context, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number,
+                                                                  mainBilling_Controller.billingModel.pdfFile.value);
                                                             }
                                                           }
                                                         },
@@ -1428,7 +1429,7 @@ class _TDS_ledger_filterState extends State<TDS_ledger_filter> {
                         controller: TDS_ledgerController.tds_LedgerModel.startDateController.value,
                         readOnly: true,
                         onTap: () async {
-                          await widget.selectfilterDate(context, TDS_ledgerController.tds_LedgerModel.startDateController.value);
+                          await select_previousDates(context, TDS_ledgerController.tds_LedgerModel.startDateController.value);
                           // await widget.get_TDS_ledgerList();
                           TDS_ledgerController.tds_LedgerModel.startDateController.refresh();
                         },
@@ -1459,7 +1460,7 @@ class _TDS_ledger_filterState extends State<TDS_ledger_filter> {
                         controller: TDS_ledgerController.tds_LedgerModel.endDateController.value,
                         readOnly: true,
                         onTap: () async {
-                          await widget.selectfilterDate(context, TDS_ledgerController.tds_LedgerModel.endDateController.value);
+                          await select_previousDates(context, TDS_ledgerController.tds_LedgerModel.endDateController.value);
                           TDS_ledgerController.tds_LedgerModel.endDateController.refresh();
                           // await widget.get_TDS_ledgerList();
                         },

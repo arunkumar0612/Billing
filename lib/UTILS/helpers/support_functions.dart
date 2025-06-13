@@ -4,11 +4,13 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:ssipl_billing/THEMES/style.dart';
 
 dynamic Helvetica;
 dynamic Helvetica_bold;
@@ -183,4 +185,98 @@ Future<File> savePdfToTemp(Uint8List pdfData) async {
   final tempFile = File('${tempDir.path}/temp_pdf.pdf');
   await tempFile.writeAsBytes(pdfData, flush: true);
   return tempFile;
+}
+
+String formatNumber(int number) {
+  if (number >= 10000000) {
+    return "₹ ${(number / 10000000).toStringAsFixed(1)}Cr";
+  } else if (number >= 100000) {
+    return "₹ ${(number / 100000).toStringAsFixed(1)}L";
+  } else if (number >= 1000) {
+    return "₹ ${(number / 1000).toStringAsFixed(1)}K";
+  } else {
+    return "₹ $number";
+  }
+}
+
+Future<void> select_previousDates(BuildContext context, TextEditingController controller) async {
+  final DateTime now = DateTime.now();
+  final DateTime pastLimit = DateTime(2000); // You can set your own earliest allowed date
+
+  final DateTime? pickedDate = await showDatePicker(
+    context: context,
+    initialDate: now,
+    firstDate: pastLimit, // Allow dates from the past
+    lastDate: now, // Prevent selecting future dates
+    builder: (context, child) {
+      return Theme(
+        data: Theme.of(context).copyWith(
+          colorScheme: const ColorScheme.light(
+            primary: Primary_colors.Color3,
+            onPrimary: Colors.white,
+            onSurface: Colors.black87,
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor: Primary_colors.Color3,
+            ),
+          ),
+          dialogTheme: const DialogThemeData(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+            ),
+          ),
+        ),
+        child: child!,
+      );
+    },
+  );
+
+  if (pickedDate != null) {
+    final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
+        "${pickedDate.month.toString().padLeft(2, '0')}-"
+        "${pickedDate.day.toString().padLeft(2, '0')}";
+    controller.text = formatted;
+  }
+}
+
+Future<void> select_nextDates(BuildContext context, TextEditingController controller) async {
+  final DateTime now = DateTime.now();
+  final DateTime futureLimit = DateTime(2100); // You can customize how far into the future is allowed
+
+  final DateTime? pickedDate = await showDatePicker(
+    context: context,
+    initialDate: now,
+    firstDate: now, // ⬅️ Start from today
+    lastDate: futureLimit, // ⬅️ Allow selecting into the future
+    builder: (context, child) {
+      return Theme(
+        data: Theme.of(context).copyWith(
+          colorScheme: const ColorScheme.light(
+            primary: Primary_colors.Color3,
+            onPrimary: Colors.white,
+            onSurface: Colors.black87,
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor: Primary_colors.Color3,
+            ),
+          ),
+          dialogTheme: const DialogThemeData(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+            ),
+          ),
+        ),
+        child: child!,
+      );
+    },
+  );
+
+  if (pickedDate != null) {
+    final formatted = "${pickedDate.year.toString().padLeft(4, '0')}-"
+        "${pickedDate.month.toString().padLeft(2, '0')}-"
+        "${pickedDate.day.toString().padLeft(2, '0')}";
+    controller.text = formatted;
+  }
 }

@@ -1502,7 +1502,7 @@ class _GST_ledger_filterState extends State<GST_ledger_filter> {
                         controller: GST_ledgerController.gst_LedgerModel.startDateController.value,
                         readOnly: true,
                         onTap: () async {
-                          await widget.select_previousDates(context, GST_ledgerController.gst_LedgerModel.startDateController.value);
+                          await select_previousDates(context, GST_ledgerController.gst_LedgerModel.startDateController.value);
                           // await widget.get_GST_ledgerList();
                           GST_ledgerController.gst_LedgerModel.startDateController.refresh();
                         },
@@ -1533,7 +1533,7 @@ class _GST_ledger_filterState extends State<GST_ledger_filter> {
                         controller: GST_ledgerController.gst_LedgerModel.endDateController.value,
                         readOnly: true,
                         onTap: () async {
-                          await widget.select_previousDates(context, GST_ledgerController.gst_LedgerModel.endDateController.value);
+                          await select_previousDates(context, GST_ledgerController.gst_LedgerModel.endDateController.value);
                           GST_ledgerController.gst_LedgerModel.endDateController.refresh();
                           // await widget.get_GST_ledgerList();
                         },

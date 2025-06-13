@@ -1479,7 +1479,7 @@ class _Account_ledger_filterState extends State<Account_ledger_filter> {
                         controller: account_LedgerController.account_LedgerModel.startDateController.value,
                         readOnly: true,
                         onTap: () async {
-                          widget.select_previousDates(context, account_LedgerController.account_LedgerModel.startDateController.value);
+                          select_previousDates(context, account_LedgerController.account_LedgerModel.startDateController.value);
                           // await widget.get_Account_LedgerList();
                           account_LedgerController.account_LedgerModel.startDateController.refresh();
                         },
@@ -1510,7 +1510,7 @@ class _Account_ledger_filterState extends State<Account_ledger_filter> {
                         controller: account_LedgerController.account_LedgerModel.endDateController.value,
                         readOnly: true,
                         onTap: () async {
-                          await widget.select_previousDates(context, account_LedgerController.account_LedgerModel.endDateController.value);
+                          await select_previousDates(context, account_LedgerController.account_LedgerModel.endDateController.value);
                           account_LedgerController.account_LedgerModel.endDateController.refresh();
                           // await widget.get_Account_LedgerList();
                         },

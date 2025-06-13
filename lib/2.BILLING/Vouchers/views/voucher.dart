@@ -661,7 +661,7 @@ class _VoucherState extends State<Voucher> {
                                                         //     backgroundColor: Colors.green,
                                                         //   ),
                                                         // );
-
+                                                        loader.stop();
                                                         await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, 'complete', receipt);
                                                         loader.stop();
                                                         // Generate unique filename with timestamp
@@ -789,6 +789,7 @@ class _VoucherState extends State<Voucher> {
                                                         //     backgroundColor: Colors.green,
                                                         //   ),
                                                         // );
+                                                        loader.stop();
                                                         await widget.clearVoucher(context, index, voucherController.voucherModel.selectedFile.value, type ? 'complete' : 'partial', receipt);
                                                         // Navigator.of(context).pop();
                                                         // ScaffoldMessenger.of(context).showSnackBar(
@@ -801,7 +802,7 @@ class _VoucherState extends State<Voucher> {
                                                         //     backgroundColor: Colors.blue,
                                                         //   ),
                                                         // );
-                                                        loader.stop();
+                                                        // loader.stop();
                                                       },
                                                       child: const Text(
                                                         'PARTIALLY CLEAR',

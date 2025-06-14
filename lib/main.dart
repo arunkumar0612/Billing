@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: false,
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Primary_colors.Color3,
-          selectionColor: Color.fromARGB(96, 122, 122, 122),
+          selectionColor: Color.fromARGB(97, 87, 87, 87),
         ),
         scrollbarTheme: ScrollbarThemeData(
           trackColor: WidgetStateProperty.all(

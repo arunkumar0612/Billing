@@ -21,10 +21,10 @@ class DcProduct {
 
   double get total => price * quantity;
 
-  String getIndex(int index) {
+  String getIndex(int index, int row) {
     switch (index) {
       case 0:
-        return sno.toString();
+        return (row + 1).toString();
       case 1:
         return productName;
       case 2:
@@ -317,7 +317,7 @@ class InvoiceProduct {
       case 2:
         return hsn.toString();
       case 3:
-        return gst.toString();
+        return gst.toInt().toString();
       case 4:
         return formatCurrency(price);
       case 5:

@@ -18,6 +18,13 @@ mixin DcnotesService {
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
 
+  /// Adds a new recommendation to the table if it doesn’t already exist.
+  ///
+  /// This checks if the entered key already exists in the recommendation list.
+  /// If it does, it shows an error message and stops. If not, it adds the new
+  /// key-value pair to the list and clears the input fields afterwards.
+  ///
+  /// [context] – Used to show the error snackbar if a duplicate is found.
   void addtable_row(context) {
     // dcController.updateRec_ValueControllerText(dcController.dcModel.recommendationHeadingController.value.text);
     bool exists = dcController.dcModel.Dc_recommendationList.any((note) => note.key == dcController.dcModel.recommendationKeyController.value.text);
@@ -30,6 +37,11 @@ mixin DcnotesService {
     cleartable_Fields();
   }
 
+  /// Updates an existing note if the form input is valid.
+  ///
+  /// This checks the note form for validation. If it passes, it updates the note
+  /// at the current edit index with the new text, clears the input field, and
+  /// resets the edit index so editing mode ends.
   void updatenote() {
     if (dcController.dcModel.noteformKey.value.currentState?.validate() ?? false) {
       dcController.updateNoteList(dcController.dcModel.notecontentController.value.text, dcController.dcModel.note_editIndex.value!);
@@ -38,6 +50,11 @@ mixin DcnotesService {
     }
   }
 
+  /// Updates a recommendation entry in the list with new key and value.
+  ///
+  /// This takes the current edit index and updates that item with the latest
+  /// key and value from the input fields. After updating, it clears the fields
+  /// and resets the edit index to exit editing mode.
   void updatetable() {
     dcController.updateRecommendation(
         index: dcController.dcModel.recommendation_editIndex.value!,
@@ -47,6 +64,10 @@ mixin DcnotesService {
     dcController.updateRecommendationEditindex(null);
   }
 
+  /// Loads an existing note into the input field for editing.
+  ///
+  /// This grabs the note at the given [index], fills it into the input box,
+  /// and stores the index so we know which note is being edited.
   void editnote(int index) {
     dcController.updateNoteContentControllerText(dcController.dcModel.Dc_noteList[index]);
     dcController.updateNoteEditindex(index);
@@ -59,13 +80,15 @@ mixin DcnotesService {
     dcController.updateRecommendationEditindex(index);
   }
 
+  /// Resets the editing state for both notes and recommendations.
+  ///
+  /// This clears out the note and recommendation input fields,
+  /// and sets both edit indexes to null — basically exits any ongoing edits.
   void resetEditingStateNote() {
-    () {
-      clearnoteFields();
-      cleartable_Fields();
-      dcController.updateNoteEditindex(null);
-      dcController.updateRecommendationEditindex(null);
-    };
+    clearnoteFields();
+    cleartable_Fields();
+    dcController.updateNoteEditindex(null);
+    dcController.updateRecommendationEditindex(null);
   }
 
   void clearnoteFields() {
@@ -77,6 +100,14 @@ mixin DcnotesService {
     dcController.dcModel.recommendationValueController.value.clear();
   }
 
+  /// Adds a new note if the form input is valid and it’s not a duplicate.
+  ///
+  /// First, this checks if the note form is filled out properly. Then it looks
+  /// through the existing notes to make sure the same content hasn’t already
+  /// been added. If it’s a duplicate, it shows a snackbar and exits early.
+  /// Otherwise, it adds the new note and clears the input field.
+  ///
+  /// [context] – Used for form validation and showing the snackbar.
   void addNotes(context) {
     if (dcController.dcModel.noteformKey.value.currentState?.validate() ?? false) {
       bool exists = dcController.dcModel.Dc_noteList.any((note) => note == dcController.dcModel.notecontentController.value.text);
@@ -88,55 +119,6 @@ mixin DcnotesService {
       clearnoteFields();
     }
   }
-
-  // void Generate_Dc(BuildContext context) async {
-  //   // viewsendController.setLoading(false);
-  //   dcController.nextTab();
-  //   await Future.delayed(const Duration(milliseconds: 200));
-  //   sub();
-  //   // Start generating PDF data as a Future
-  // }
-
-  // void sub() async {
-  //   final pdfData = await generate_Dc(
-  //     PdfPageFormat.a4,
-  //     dcController.dcModel.Dc_products,
-  //     dcController.dcModel.clientAddressNameController.value.text,
-  //     dcController.dcModel.clientAddressController.value.text,
-  //     dcController.dcModel.billingAddressNameController.value.text,
-  //     dcController.dcModel.billingAddressController.value.text,
-  //     dcController.dcModel.Dc_no.value,
-  //     dcController.dcModel.TitleController.value.text,
-  //     9,
-  //     dcController.dcModel.Dc_gstTotals,
-  //   );
-
-  //   // Show the dialog immediately (not awaited)
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         backgroundColor: Primary_colors.Light,
-  //         content: Generate_popup(
-  //           type: 'E://Dc.pdf', // Pass the expected file path
-  //         ),
-  //       );
-  //     },
-  //   );
-
-  //   // Wait for PDF data generation to complete
-
-  //   const filePath = 'E://Dc.pdf';
-  //   final file = File(filePath);
-
-  //   // Perform file writing and any other future tasks in parallel
-
-  //   file.writeAsBytes(pdfData); // Write PDF to file asynchronously
-  //   // Future.delayed(const Duration(seconds: )), // Simulate any other async task if needed
-
-  //   // Continue execution while the dialog is still open
-  //   viewsendController.setLoading(true);
-  // }
 
   Future<void> savePdfToCache() async {
     Uint8List pdfData = await generate_Dc(

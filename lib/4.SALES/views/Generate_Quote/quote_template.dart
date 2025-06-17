@@ -355,7 +355,7 @@ class Quotation {
       // ✅ Column width added
       columnWidths: {
         0: const pw.FlexColumnWidth(2), // S.No (small)
-        1: const pw.FlexColumnWidth(10), // Item Description (large)
+        1: const pw.FlexColumnWidth(12), // Item Description (large)
         2: const pw.FlexColumnWidth(3), // HSN Code
         3: const pw.FlexColumnWidth(3), // GST
         4: const pw.FlexColumnWidth(4), // Price

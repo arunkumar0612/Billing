@@ -18,6 +18,20 @@ mixin ClientreqDetailsService {
     clientreqController.nextTab();
   }
 
+  /// Handles organization selection from a dropdown or input.
+  ///
+  /// This method:
+  /// - Searches the `organizationList` for a matching `organizationName`.
+  /// - Retrieves the corresponding `organizationId`.
+  /// - Calls `get_CompanyList` with the retrieved ID.
+  ///
+  /// Note:
+  /// - Previous clearing of company and organization data is commented out.
+  /// - Assumes the selected organization name exists in the list.
+  ///
+  /// Parameters:
+  /// - [context]: The current BuildContext.
+  /// - [Orgname]: The selected organization name as a String.
   void on_Orgselected(context, Orgname) {
     // clientreqController.clear_CompanyName();
     // clientreqController.clientReqModel.organizationList.clear();
@@ -29,6 +43,15 @@ mixin ClientreqDetailsService {
     get_CompanyList(context, id!);
   }
 
+  /// Handles company selection from a dropdown or input.
+  ///
+  /// This method:
+  /// - Finds the corresponding `companyId` by matching the given company name.
+  /// - Fetches the branch list associated with the selected company using `get_BranchList`.
+  ///
+  /// Parameters:
+  /// - [context]: The current BuildContext.
+  /// - [Compname]: The selected company name as a String.
   void on_Compselected(context, Compname) {
     int? id = clientreqController.clientReqModel.CompanyList
         .firstWhere(
@@ -39,6 +62,17 @@ mixin ClientreqDetailsService {
     // get_CompanyList(context, id!);
   }
 
+  /// Handles the MOR (Mode of Request) file picking and upload process.
+  ///
+  /// This asynchronous method:
+  /// - Invokes a file picker through `clientreqController.pickFile`.
+  /// - If a file is successfully picked (`pickedStatus == true`), it uploads the file using `uploadMor`.
+  ///
+  /// Parameters:
+  /// - [context]: The current BuildContext used for UI-related operations.
+  ///
+  /// Returns:
+  /// - A [Future] that completes when the operation is done.
   Future<void> MORaction(context) async {
     bool pickedStatus = await clientreqController.pickFile(context);
     if (pickedStatus) {
@@ -71,6 +105,20 @@ mixin ClientreqDetailsService {
     }
   }
 
+  /// Uploads the selected MOR (Mode of Request) file to the server.
+  ///
+  /// This asynchronous method:
+  /// - Reads the file as bytes.
+  /// - Sends the file to the backend via a multipart API request.
+  /// - Parses the server response and updates the uploaded MOR path on success.
+  /// - Displays appropriate error dialogs if the upload fails or if an exception occurs.
+  ///
+  /// Parameters:
+  /// - [context]: The current BuildContext for showing dialogs.
+  /// - [file]: The file to be uploaded.
+  ///
+  /// Returns:
+  /// - A [Future] that completes when the upload operation finishes.
   void get_OrganizationList(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_fetchOrg_list);
@@ -93,6 +141,18 @@ mixin ClientreqDetailsService {
     }
   }
 
+  /// Fetches the list of companies associated with a given organization ID.
+  ///
+  /// This asynchronous method:
+  /// - Sends a query with the `organizationid` to the backend using `GetbyQueryString`.
+  /// - If the response is successful and contains valid data:
+  ///   - Parses the data into a `CMDlResponse` model.
+  ///   - Updates the company list in `clientreqController` using `update_CompanyList`.
+  /// - Displays an error dialog if the request fails or the response is invalid.
+  ///
+  /// Parameters:
+  /// - [context]: The current BuildContext used for displaying dialogs.
+  /// - [org_id]: The ID of the selected organization for which the company list is to be fetched.
   void get_CompanyList(context, int org_id) async {
     try {
       Map<String, dynamic> body = {"organizationid": org_id};
@@ -113,6 +173,19 @@ mixin ClientreqDetailsService {
     }
   }
 
+  /// Fetches the list of branches associated with a given company ID.
+  ///
+  /// This asynchronous method:
+  /// - Constructs a query using the provided `companyid`.
+  /// - Sends the request to the backend using `GetbyQueryString`.
+  /// - On a successful response with a valid structure:
+  ///   - Parses the data into a `CMDlResponse` model.
+  ///   - Updates the branch list in `clientreqController` using `update_BranchList`.
+  /// - Shows an error dialog if the fetch fails, the response is invalid, or an exception occurs.
+  ///
+  /// Parameters:
+  /// - [context]: The current BuildContext used to show dialogs.
+  /// - [comp_id]: The ID of the selected company for which the branch list is requested.
   void get_BranchList(context, int comp_id) async {
     try {
       Map<String, dynamic> body = {"companyid": comp_id};
@@ -133,6 +206,20 @@ mixin ClientreqDetailsService {
     }
   }
 
+  /// Retrieves a list of product suggestions from the backend.
+  ///
+  /// This asynchronous method:
+  /// - Calls an API endpoint to fetch suggested products using a token-based GET request.
+  /// - If the response status code is 200:
+  ///   - Parses the response into a `CMDlResponse` model.
+  ///   - If the response is successful (`code == true`), updates the product suggestion list
+  ///     in `clientreqController` using `add_productSuggestion`.
+  ///   - Otherwise, shows an error dialog with the provided message and pops the current context.
+  /// - If the response status code is not 200, shows a "SERVER DOWN" error dialog and pops the context.
+  /// - If any exception occurs during the process, shows a generic "ERROR" dialog with the exception message and pops the context.
+  ///
+  /// Parameters:
+  /// - [context]: The current BuildContext used to display error dialogs and navigate.
   void get_productSuggestionList(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getProduct_SUGG_List);

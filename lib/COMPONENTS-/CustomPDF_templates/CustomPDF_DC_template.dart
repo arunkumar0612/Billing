@@ -127,7 +127,7 @@ class Quotation {
                       children: [
                         regular('Date', 10),
                         pw.SizedBox(height: 5),
-                        regular('PO ref', 10),
+                        regular('Invoice ref', 10),
                         pw.SizedBox(height: 5),
                         regular('DC no', 10),
                       ],
@@ -208,7 +208,7 @@ class Quotation {
                         left: 15,
                       ),
                       child: pw.Text(
-                        'CLIENT ADDRESS',
+                        'DELIVERY ADDRESS',
                         style: pw.TextStyle(
                           font: Helvetica_bold,
                           fontSize: 10,
@@ -354,18 +354,21 @@ class Quotation {
       ),
       headerHeight: 22,
       cellHeight: 30,
+      // ✅ FlexColumnWidth added
       columnWidths: {
-        0: const pw.FlexColumnWidth(1), // S.No
-        1: const pw.FlexColumnWidth(5), // Item Description
-        2: const pw.FlexColumnWidth(3), // HSN
-        3: const pw.FlexColumnWidth(2), // Quantity
+        0: const pw.FlexColumnWidth(1), // S.No (small)
+        1: const pw.FlexColumnWidth(5), // Item Description (big)
+        2: const pw.FlexColumnWidth(2), // HSN (medium)
+        3: const pw.FlexColumnWidth(2), // Quantity (medium)
       },
+
       cellAlignments: {
-        0: pw.Alignment.centerLeft,
-        1: pw.Alignment.centerLeft,
-        2: pw.Alignment.centerLeft,
-        3: pw.Alignment.center,
+        0: pw.Alignment.center, // S.No center
+        1: pw.Alignment.centerLeft, // Item Description left
+        2: pw.Alignment.center, // HSN center
+        3: pw.Alignment.center, // Quantity center
       },
+
       headerStyle: pw.TextStyle(
         font: Helvetica_bold,
         color: PdfColors.white,

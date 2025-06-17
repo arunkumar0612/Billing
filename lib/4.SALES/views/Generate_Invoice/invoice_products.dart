@@ -182,15 +182,13 @@ class _InvoiceProductsState extends State<InvoiceProducts> {
           children: [
             Expanded(
               flex: 2,
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(),
-                  child: Text(
-                    productName,
-                    style: TextStyle(
-                      color: backgroundColor,
-                      fontSize: 13,
-                    ),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Text(
+                  productName,
+                  style: TextStyle(
+                    color: backgroundColor,
+                    fontSize: 13,
                   ),
                 ),
               ),

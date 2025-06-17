@@ -208,7 +208,7 @@ class Delivery_challan {
                         left: 15,
                       ),
                       child: pw.Text(
-                        'CLIENT ADDRESS',
+                        'DELIVERY ADDRESS',
                         style: pw.TextStyle(
                           font: Helvetica_bold,
                           fontSize: 10,
@@ -409,7 +409,7 @@ class Delivery_challan {
         products.length,
         (row) => List<String>.generate(
           tableHeaders.length,
-          (col) => products[row].getIndex(col),
+          (col) => products[row].getIndex(col, row),
         ),
       ),
     );
@@ -553,59 +553,59 @@ class Delivery_challan {
                 ],
               ),
             ),
-            pw.Container(width: 230, child: pw.Divider(thickness: 0.1, color: PdfColors.grey)),
-            pw.Container(
-              width: 280,
-              child: pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  pw.Padding(
-                    padding: const pw.EdgeInsets.only(left: 0, top: 5),
-                    child: pw.Row(
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        // regular("${Delivery_challan_noteList.length + 2}.", 10),
-                        // pw.SizedBox(width: 5),
-                        pw.Expanded(
-                          child: pw.Column(
-                            crossAxisAlignment: pw.CrossAxisAlignment.start,
-                            children: [
-                              pw.Padding(
-                                child: bold(dcController.dcModel.recommendationHeadingController.value.text, 10),
-                                padding: const pw.EdgeInsets.only(left: 0, bottom: 5),
-                              ),
-                              ...dcController.dcModel.Dc_recommendationList.asMap().entries.map((entry) {
-                                final index = entry.key;
-                                final recommendation = entry.value;
-                                return pw.Padding(
-                                  padding: const pw.EdgeInsets.only(top: 5),
-                                  child: pw.Row(
-                                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                                    children: [
-                                      regular("${index + 1}.", 10),
-                                      pw.SizedBox(width: 5),
-                                      pw.Padding(
-                                        child: bold(recommendation.key.toString(), 10),
-                                        padding: const pw.EdgeInsets.only(left: 0, right: 5),
-                                      ),
-                                      pw.Text(":", style: const pw.TextStyle(fontSize: 10)),
-                                      pw.SizedBox(width: 5),
-                                      pw.Expanded(
-                                        child: regular(recommendation.value.toString(), 10),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // pw.Container(width: 230, child: pw.Divider(thickness: 0.1, color: PdfColors.grey)),
+            // pw.Container(
+            //   width: 280,
+            //   child: pw.Column(
+            //     crossAxisAlignment: pw.CrossAxisAlignment.start,
+            //     children: [
+            //       pw.Padding(
+            //         padding: const pw.EdgeInsets.only(left: 0, top: 5),
+            //         child: pw.Row(
+            //           crossAxisAlignment: pw.CrossAxisAlignment.start,
+            //           children: [
+            //             // regular("${Delivery_challan_noteList.length + 2}.", 10),
+            //             // pw.SizedBox(width: 5),
+            //             pw.Expanded(
+            //               child: pw.Column(
+            //                 crossAxisAlignment: pw.CrossAxisAlignment.start,
+            //                 children: [
+            //                   pw.Padding(
+            //                     child: bold(dcController.dcModel.recommendationHeadingController.value.text, 10),
+            //                     padding: const pw.EdgeInsets.only(left: 0, bottom: 5),
+            //                   ),
+            //                   ...dcController.dcModel.Dc_recommendationList.asMap().entries.map((entry) {
+            //                     final index = entry.key;
+            //                     final recommendation = entry.value;
+            //                     return pw.Padding(
+            //                       padding: const pw.EdgeInsets.only(top: 5),
+            //                       child: pw.Row(
+            //                         crossAxisAlignment: pw.CrossAxisAlignment.start,
+            //                         children: [
+            //                           regular("${index + 1}.", 10),
+            //                           pw.SizedBox(width: 5),
+            //                           pw.Padding(
+            //                             child: bold(recommendation.key.toString(), 10),
+            //                             padding: const pw.EdgeInsets.only(left: 0, right: 5),
+            //                           ),
+            //                           pw.Text(":", style: const pw.TextStyle(fontSize: 10)),
+            //                           pw.SizedBox(width: 5),
+            //                           pw.Expanded(
+            //                             child: regular(recommendation.value.toString(), 10),
+            //                           ),
+            //                         ],
+            //                       ),
+            //                     );
+            //                   }),
+            //                 ],
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
         pw.SizedBox(

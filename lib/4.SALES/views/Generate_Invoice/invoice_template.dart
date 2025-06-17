@@ -347,7 +347,7 @@ class Invoice {
       'S.No',
       'Item Description',
       'HSN',
-      'GST',
+      'GST(%)',
       'Price',
       'Quantity',
       'Total',
@@ -362,28 +362,33 @@ class Invoice {
       ),
       headerHeight: 22,
       cellHeight: 30,
-
-      // ✅ Added flex here
       columnWidths: {
         0: const pw.FlexColumnWidth(2), // S.No (small)
-        1: const pw.FlexColumnWidth(6), // Item Description (big)
-        2: const pw.FlexColumnWidth(3), // HSN (medium)
-        3: const pw.FlexColumnWidth(3), // GST (small-medium)
-        4: const pw.FlexColumnWidth(4), // Price (medium, number)
-        5: const pw.FlexColumnWidth(3), // Quantity (small-medium)
-        6: const pw.FlexColumnWidth(4), // Total (medium, number)
+        1: const pw.FlexColumnWidth(12), // Item Description (large)
+        2: const pw.FlexColumnWidth(3), // HSN Code
+        3: const pw.FlexColumnWidth(3), // GST
+        4: const pw.FlexColumnWidth(4), // Price
+        5: const pw.FlexColumnWidth(3), // Quantity
+        6: const pw.FlexColumnWidth(4), // Total
       },
-
       cellAlignments: {
-        0: pw.Alignment.center, // S.No center
-        1: pw.Alignment.centerLeft, // Item Desc left
-        2: pw.Alignment.center, // HSN center
-        3: pw.Alignment.center, // GST center
-        4: pw.Alignment.centerRight, // Price right
-        5: pw.Alignment.center, // Quantity center
-        6: pw.Alignment.centerRight, // Total right
+        0: pw.Alignment.centerLeft,
+        1: pw.Alignment.centerLeft,
+        2: pw.Alignment.centerLeft,
+        3: pw.Alignment.center,
+        4: pw.Alignment.centerRight,
+        5: pw.Alignment.center,
+        6: pw.Alignment.centerRight,
       },
-
+      headerAlignments: {
+        0: pw.Alignment.centerLeft,
+        1: pw.Alignment.centerLeft,
+        2: pw.Alignment.centerLeft,
+        3: pw.Alignment.center,
+        4: pw.Alignment.centerRight,
+        5: pw.Alignment.center,
+        6: pw.Alignment.centerRight,
+      },
       headerStyle: pw.TextStyle(
         font: Helvetica_bold,
         color: PdfColors.white,
@@ -395,18 +400,15 @@ class Invoice {
         color: _darkColor,
         fontSize: 10,
       ),
-
       cellDecoration: (int rowIndex, dynamic cellData, int colIndex) {
         return pw.BoxDecoration(
           color: colIndex % 2 == 0 ? PdfColors.green50 : PdfColors.white,
         );
       },
-
       headers: List<String>.generate(
         tableHeaders.length,
         (col) => tableHeaders[col],
       ),
-
       data: List<List<String>>.generate(
         products.length,
         (row) => List<String>.generate(
@@ -714,7 +716,7 @@ class Invoice {
                                   ),
                                   width: 40, // Define width instead of Expanded
                                   child: pw.Center(
-                                    child: regular((invoice_gstTotals[index].gst / 2).toString(), 10),
+                                    child: regular((invoice_gstTotals[index].gst / 2).toInt().toString(), 10),
                                   ),
                                 ),
                                 pw.Container(
@@ -748,7 +750,7 @@ class Invoice {
                                     ),
                                   ),
                                   width: 40, // Define width instead of Expanded
-                                  child: pw.Center(child: regular((invoice_gstTotals[index].gst / 2).toString(), 10)),
+                                  child: pw.Center(child: regular((invoice_gstTotals[index].gst / 2).toInt().toString(), 10)),
                                 ),
                                 pw.Container(
                                   width: 70, // Define width instead of Expanded

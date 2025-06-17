@@ -37,6 +37,27 @@ class Custom_Dc_Services {
   //   );
   // }
 
+  /// Generates a custom PDF for the Delivery Challan using provided data.
+  ///
+  /// Retrieves user input from the PDF model, such as date, client/billing
+  /// details, and the list of manual products, and passes it to a custom
+  /// PDF generation function.
+  ///
+  /// The resulting PDF is stored as a file in the device's temporary
+  /// cache directory with a sanitized filename based on the DC number.
+  ///
+  /// If in debug mode, logs the path of the stored PDF file to the console.
+  ///
+  /// Updates the model's `genearatedPDF` field with the saved PDF file
+  /// so it can be used elsewhere (like sharing or previewing).
+  ///
+  /// Finally, shows a preview dialog with the generated PDF content.
+  ///
+  /// Parameters:
+  /// - [context]: The build context used to present the PDF preview.
+  ///
+  /// Returns:
+  /// - A [Future] that completes when the PDF is saved and previewed.
   Future<void> savePdfToCache(context) async {
     Uint8List pdfData = await generate_CustomPDFDc(
         PdfPageFormat.a4,
@@ -65,6 +86,23 @@ class Custom_Dc_Services {
     // return file;
   }
 
+  /// Displays the generated Delivery Challan PDF in a modal dialog.
+  ///
+  /// Presents an [AlertDialog] with a custom `PostDc` widget as its content,
+  /// sized to accommodate PDF preview dimensions.
+  ///
+  /// Prevents the user from closing the dialog by tapping outside the dialog area
+  /// (`barrierDismissible: false`), ensuring intentional user action is required.
+  ///
+  /// Includes a close (X) icon positioned at the top-right, which when clicked:
+  /// - Clears relevant post fields from the `pdfpopup_controller`.
+  /// - Dismisses the dialog using `Navigator.pop`.
+  ///
+  /// Parameters:
+  /// - [context]: The build context used to render the modal dialog.
+  ///
+  /// Returns:
+  /// - A [Future] that completes when the dialog is dismissed.
   dynamic show_generatedPDF(context) async {
     await showDialog(
       context: context,
@@ -97,65 +135,6 @@ class Custom_Dc_Services {
                     child: const Icon(Icons.close, color: Colors.red),
                   ),
                   onPressed: () async {
-                    // // Check if the data has any value
-                    // // || ( dcController.dcModel.Dc_gstTotals.isNotEmpty)
-                    // if ((dcController.dcModel.Dc_products.isNotEmpty) ||
-                    //     (dcController.dcModel.Dc_noteList.isNotEmpty) ||
-                    //     (dcController.dcModel.Dc_recommendationList.isNotEmpty) ||
-                    //     (dcController.dcModel.clientAddressNameController.value.text != "") ||
-                    //     (dcController.dcModel.clientAddressController.value.text != "") ||
-                    //     (dcController.dcModel.billingAddressNameController.value.text != "") ||
-                    //     (dcController.dcModel.billingAddressController.value.text != "") ||
-                    //     (dcController.dcModel.Dc_no.value != "") ||
-                    //     (dcController.dcModel.TitleController.value.text != "") ||
-                    //     (dcController.dcModel.Dc_table_heading.value != "")) {
-                    //   // Show confirmation dialog
-                    //   bool? proceed = await showDialog<bool>(
-                    //     context: context,
-                    //     builder: (context) {
-                    //       return AlertDialog(
-                    //         shape: RoundedRectangleBorder(
-                    //           borderRadius: BorderRadius.circular(15),
-                    //         ),
-                    //         title: const Text("Warning"),
-                    //         content: const Text(
-                    //           "The data may be lost. Do you want to proceed?",
-                    //         ),
-                    //         actions: [
-                    //           TextButton(
-                    //             onPressed: () {
-                    //               Navigator.of(context).pop(false); // No action
-                    //             },
-                    //             child: const Text("No"),
-                    //           ),
-                    //           TextButton(
-                    //             onPressed: () {
-                    //               dcController.resetData();
-                    //               Navigator.of(context).pop(true); // Yes action
-                    //             },
-                    //             child: const Text("Yes"),
-                    //           ),
-                    //         ],
-                    //       );
-                    //     },
-                    //   );
-
-                    //   if (proceed == true) {
-                    //     Navigator.of(context).pop();
-                    //     dcController.dcModel.Dc_products.clear();
-                    //     dcController.dcModel.Dc_noteList.clear();
-                    //     dcController.dcModel.Dc_recommendationList.clear();
-                    //     dcController.dcModel.clientAddressNameController.value.clear();
-                    //     dcController.dcModel.clientAddressController.value.clear();
-                    //     dcController.dcModel.billingAddressNameController.value.clear();
-                    //     dcController.dcModel.billingAddressController.value.clear();
-                    //     dcController.dcModel.Dc_no.value = "";
-                    //     dcController.dcModel.TitleController.value.clear();
-                    //     dcController.dcModel.Dc_table_heading.value = "";
-                    //   }
-                    // } else {
-                    //   Navigator.of(context).pop();
-                    // }
                     pdfpopup_controller.clear_postFields();
                     Navigator.of(context).pop();
                   },

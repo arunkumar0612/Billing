@@ -79,12 +79,12 @@ class _DcDetailsState extends State<DcDetails> {
                                   digitsOnly: false,
                                   width: 400,
                                   readonly: false,
-                                  text: 'Client Address name',
+                                  text: 'Delivery Address name',
                                   controller: dcController.dcModel.clientAddressNameController.value,
                                   icon: Icons.account_circle,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter Client Address name';
+                                      return 'Please enter Delivery Address name';
                                     }
                                     return null;
                                   },
@@ -94,12 +94,12 @@ class _DcDetailsState extends State<DcDetails> {
                                   digitsOnly: false,
                                   width: 400,
                                   readonly: false,
-                                  text: 'Client Address ',
+                                  text: 'Delivery Address ',
                                   controller: dcController.dcModel.clientAddressController.value,
                                   icon: Icons.location_on_outlined,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter Client Address';
+                                      return 'Please enter Delivery Address';
                                     }
                                     return null;
                                   },

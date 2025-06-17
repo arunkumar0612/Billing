@@ -24,6 +24,20 @@ mixin PostServices {
   final Invoker apiController = Get.find<Invoker>();
   final SalesController salesController = Get.find<SalesController>();
 
+  /// Controls the PDF loading animation by toggling the loading state
+  /// in the `pdfpopup_controller` with a simulated delay.
+  ///
+  /// Steps:
+  /// 1. Immediately sets the loading state to `false`, indicating the
+  ///    start of the animation or loading transition.
+  /// 2. Waits for a duration (currently 4 seconds) using `Future.delayed`,
+  ///    simulating a processing or loading period.
+  /// 3. After the delay, sets the loading state back to `true`, which can
+  ///    be used to trigger UI updates like showing the generated PDF or
+  ///    stopping the animation.
+  ///
+  /// Returns:
+  /// - A [Future] that completes after the delay and state update.
   void animation_control() async {
     // await Future.delayed(const Duration(milliseconds: 200));
     pdfpopup_controller.setpdfLoading(false);
@@ -36,6 +50,20 @@ mixin PostServices {
     pdfpopup_controller.setpdfLoading(true);
   }
 
+  /// Sends the generated PDF file to the printer using the `printing` package.
+  ///
+  /// This function performs the following steps:
+  /// 1. Logs the selected PDF file path in debug mode for verification.
+  /// 2. Attempts to read the bytes from the previously generated PDF file
+  ///    stored in the `pdfModel`.
+  /// 3. Uses `Printing.layoutPdf` to open the native print dialog and send
+  ///    the PDF data for printing.
+  ///
+  /// Any exceptions during printing are caught and logged in debug mode
+  /// to assist with troubleshooting issues such as missing files or printer errors.
+  ///
+  /// Returns:
+  /// - A [Future] that completes after the printing operation is initiated or fails.
   Future<void> printPdf() async {
     if (kDebugMode) {
       print('Selected PDF Path: ${pdfpopup_controller.pdfModel.value.genearatedPDF.value}');
@@ -55,6 +83,28 @@ mixin PostServices {
     }
   }
 
+  /// Validates form input, constructs a delivery challan data model,
+  /// and sends the PDF and data to the backend for posting.
+  ///
+  /// Workflow:
+  /// 1. Checks if all required form fields are filled using the controller's validation method.
+  ///    - If validation fails, an error dialog is shown and the function returns early.
+  /// 2. Starts a loading indicator using `loader.start`.
+  /// 3. Retrieves the previously generated PDF file from the controller.
+  /// 4. Constructs a `Post_CustomDc` model from the current user input,
+  ///    including client details, billing address, contact info, date, DC number,
+  ///    feedback, CC email, and message type.
+  /// 5. Serializes the model to JSON and sends it along with the PDF
+  ///    using the `send_data` method.
+  /// 6. Catches and displays any exceptions that occur during the process
+  ///    using an error dialog.
+  ///
+  /// Parameters:
+  /// - [context]: The current build context for showing dialogs and loaders.
+  /// - [messageType]: An integer indicating the type of message or dispatch behavior.
+  ///
+  /// Returns:
+  /// - A [Future] that completes once the data is posted or an error occurs.
   dynamic postData(context, int messageType) async {
     try {
       if (pdfpopup_controller.postDatavalidation()) {
@@ -97,6 +147,22 @@ mixin PostServices {
     }
   }
 
+  /// Fetches the list of custom sales PDFs from the backend API using an authenticated request.
+  ///
+  /// Steps:
+  /// 1. Sends a GET request to the `get_salesCustompdf` endpoint using `GetbyToken`.
+  /// 2. If the response has a 200 status code:
+  ///    - Parses the response into a `CMDlResponse` model.
+  ///    - If the response `code` is true, it adds the result to the sales controller's custom PDF list.
+  ///    - Otherwise, logs the error message in debug mode.
+  /// 3. If the response status code is not 200, logs a generic administration error in debug mode.
+  /// 4. If an exception occurs during the request, catches and logs it in debug mode.
+  ///
+  /// This function is designed to silently handle failures during fetch,
+  /// but debug logs are used for development visibility.
+  ///
+  /// Returns:
+  /// - A [Future] that completes once the API call and processing are done.
   Future<void> Get_salesCustomPDFLsit() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_salesCustompdf);
@@ -124,6 +190,34 @@ mixin PostServices {
     }
   }
 
+  /// Sends the delivery challan data and associated PDF file to the backend server using a multipart request.
+  ///
+  /// Workflow:
+  /// 1. Uses the `apiController.Multer` method to send the session token, JSON data,
+  ///    and PDF file to the `add_salesCustomDc` API endpoint.
+  /// 2. If the response has a status code of 200:
+  ///    - Parses the response into a `CMDmResponse` object.
+  ///    - If the `code` field is true:
+  ///       - Stops the loader.
+  ///       - Shows a success dialog with the response message.
+  ///       - Refreshes the sales custom PDF list by calling `Get_salesCustomPDFLsit()`.
+  ///    - If the `code` is false:
+  ///       - Stops the loader.
+  ///       - Displays an error dialog with the response message.
+  /// 3. If the response status code is not 200:
+  ///    - Stops the loader.
+  ///    - Displays a "SERVER DOWN" error dialog.
+  /// 4. If an exception occurs:
+  ///    - Stops the loader.
+  ///    - Shows a generic error dialog with the exception message.
+  ///
+  /// Parameters:
+  /// - [context]: The current build context for showing dialogs and controlling UI state.
+  /// - [jsonData]: The JSON string representing the delivery challan data.
+  /// - [file]: The PDF file to be uploaded with the request.
+  ///
+  /// Returns:
+  /// - A [Future] that completes once the request is handled and dialogs are shown.
   dynamic send_data(context, String jsonData, File file) async {
     try {
       Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, [file], API.add_salesCustomDc);

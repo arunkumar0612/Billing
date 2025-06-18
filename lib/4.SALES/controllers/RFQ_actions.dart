@@ -13,50 +13,56 @@ import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 class RfqController extends GetxController {
   var rfqModel = RfqModel();
 
+  /// Initializes the TabController in the RFQ model.
   void initializeTabController(TabController tabController) {
     rfqModel.tabController.value = tabController;
   }
 
+  /// Navigates to the next tab if not on the last tab.
   void nextTab() {
     if (rfqModel.tabController.value!.index < rfqModel.tabController.value!.length - 1) {
       rfqModel.tabController.value!.animateTo(rfqModel.tabController.value!.index + 1);
     }
   }
 
+  /// Navigates to the previous tab if not on the first tab.
   void backTab() {
     if (rfqModel.tabController.value!.index > 0) {
       rfqModel.tabController.value!.animateTo(rfqModel.tabController.value!.index - 1);
     }
   }
 
+  /// Updates the product name in the product name controller.
   void updateProductName(String productName) {
     rfqModel.productNameController.value.text = productName;
   }
 
+  /// Updates the quantity value in the quantity controller.
   void updateQuantity(int quantity) {
     rfqModel.quantityController.value.text = quantity.toString();
   }
 
+  /// Updates the index of the note being edited.
   void updateNoteEditindex(int? index) {
     rfqModel.note_editIndex.value = index;
   }
 
-  // void updateChallanTableHeading(String tableHeading) {
-  //   rfqModel.Rfq_table_heading.value = tableHeading;
-  // }
-
+  /// Updates the index of the note being edited.
   void updateNoteList(String value, int index) {
     rfqModel.Rfq_noteList[rfqModel.note_editIndex.value!] = rfqModel.notecontentController.value.text;
   }
 
+  /// Updates the TabController in the RFQ model
   void updateTabController(TabController tabController) {
     rfqModel.tabController.value = tabController;
   }
 
+  /// Updates the title text in the TitleController.
   void updateTitle(String text) {
     rfqModel.TitleController.value.text = text;
   }
 
+  /// Updates the RFQ number value.
   void updateRfqnumber(String text) {
     rfqModel.Rfq_no.value = text;
   }
@@ -69,6 +75,7 @@ class RfqController extends GetxController {
   //   rfqModel.clientAddressNameController.value.text = text;
   // }
 
+  /// Updates the address value.
   void updateAddress(String text) {
     rfqModel.AddressController.value.text = text;
   }
@@ -81,63 +88,77 @@ class RfqController extends GetxController {
   //   rfqModel.billingAddressController.value.text = text;
   // }
 
+  /// Updates the phone number value.
   void updatePhone(String phone) {
     rfqModel.phoneController.value.text = phone;
   }
 
+  /// Updates the email value.
   void updateEmail(String email) {
     rfqModel.emailController.value.text = email;
   }
 
+  /// Updates the cc value.
   void updatCC(String CC) {
     rfqModel.CCemailController.value.text = CC;
   }
 
+  /// toggle the cc visibility.
   void toggleCCemailvisibility(bool value) {
     rfqModel.CCemailToggle.value = value;
   }
 
+  /// Updates the recommendation
   void updateRecommendationEditindex(int? index) {
     rfqModel.recommendation_editIndex.value = index;
   }
 
+  /// Updates the Note content
   void updateNoteContentControllerText(String text) {
     rfqModel.notecontentController.value.text = text;
   }
 
+  /// Updates the recommendation heading
   void updateRec_HeadingControllerText(String text) {
     rfqModel.recommendationHeadingController.value.text = text;
   }
 
+  /// Updates the recommendation key
   void updateRec_KeyControllerText(String text) {
     rfqModel.recommendationKeyController.value.text = text;
   }
 
+  /// Updates the address value.
   void updateRec_ValueControllerText(String text) {
     rfqModel.recommendationValueController.value.text = text;
   }
 
+  /// Updates the recommendation value
   void addNoteToList(String note) {
     rfqModel.noteSuggestion.add(note);
   }
 
+  /// Updates the add product
   void addProductEditindex(int? index) {
     rfqModel.product_editIndex.value = index;
   }
 
+  /// sets the selected process ID
   void setProcessID(int processid) {
     rfqModel.processID.value = processid;
   }
 
+  /// updates the selected pdf file
   void updateSelectedPdf(File file) {
     rfqModel.selectedPdf.value = file;
   }
 
-  // Toggle loading state
+  // sets the Toggle loading state
   void setLoading(bool value) {
     rfqModel.isLoading.value = value;
   }
 
+  /// Sets the PDF loading state.
   void setpdfLoading(bool value) {
     rfqModel.ispdfLoading.value = value;
   }
@@ -167,6 +188,7 @@ class RfqController extends GetxController {
     rfqModel.filePathController.value.text = filePath;
   }
 
+  /// Opens file picker and handles file selection and validation.
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -201,6 +223,7 @@ class RfqController extends GetxController {
     }
   }
 
+  /// Returns an integer representing the selected message type for sharing PDF
   int fetch_messageType() {
     if (rfqModel.whatsapp_selectionStatus.value && rfqModel.gmail_selectionStatus.value) return 3;
     if (rfqModel.whatsapp_selectionStatus.value) return 2;
@@ -209,6 +232,7 @@ class RfqController extends GetxController {
     return 0;
   }
 
+  /// Starts a simulated progress animation from
   Future<void> startProgress() async {
     setLoading(true);
     rfqModel.progress.value = 0.0;
@@ -221,6 +245,7 @@ class RfqController extends GetxController {
     setLoading(false);
   }
 
+  /// Adds a recommendation entry to the list if both key and value are non-empty
   void addRecommendation({required String key, required String value}) {
     if (key.isNotEmpty && value.isNotEmpty) {
       rfqModel.Rfq_recommendationList.add(Recommendation(key: key, value: value));
@@ -231,6 +256,7 @@ class RfqController extends GetxController {
     }
   }
 
+  /// Updates and existing recommendation at the given index
   void updateRecommendation({
     required int index,
     required String key,
@@ -251,6 +277,7 @@ class RfqController extends GetxController {
     }
   }
 
+  /// Adds a note to the note list if not empty.
   void addNote(String noteContent) {
     if (noteContent.isNotEmpty) {
       rfqModel.Rfq_noteList.add(noteContent);
@@ -261,6 +288,7 @@ class RfqController extends GetxController {
     }
   }
 
+  /// Adds a product to the RFQ product list with validation and feedback.
   void addProduct({
     required BuildContext context,
     required String productName,
@@ -288,6 +316,7 @@ class RfqController extends GetxController {
     }
   }
 
+  /// Updates a product in the RFQ list based on index and input validation.
   void updateProduct({
     required BuildContext context,
     required int editIndex,
@@ -352,12 +381,14 @@ class RfqController extends GetxController {
     }
   }
 
+  /// Adds a list of product suggestions from JSON
   void add_productSuggestion(List<dynamic> suggestionList) {
     for (var item in suggestionList) {
       rfqModel.Rfq_productSuggestion.add(ProductSuggestion.fromJson(item));
     }
   }
 
+  /// Adds note suggestions from JSON Map
   void add_noteSuggestion(Map<String, dynamic> suggestionList) {
     for (var item in suggestionList['notes']) {
       rfqModel.noteSuggestion.add(item);
@@ -367,16 +398,18 @@ class RfqController extends GetxController {
     }
   }
 
-  // Update products list
+  // Update the entire product list with new list
   void updateProducts(List<RFQProduct> products) {
     rfqModel.Rfq_products.value = products;
   }
 
+  /// Removes a note from the list at a given index and resets edit index.
   void removeFromNoteList(int index) {
     rfqModel.Rfq_noteList.removeAt(index);
     rfqModel.note_editIndex.value = null;
   }
 
+  /// Removes a recommendation from the list and resets the edit index.
   void removeFromRecommendationList(int index) {
     rfqModel.Rfq_recommendationList.removeAt(index);
     // rfqModel.Rfq_recommendationList.isEmpty ? rfqModel.recommendationHeadingController.value.clear() : null;
@@ -409,6 +442,8 @@ class RfqController extends GetxController {
   }
 
   void on_vendorSelected() {}
+
+  /// Updates the vendor list in the model using response data from CMDlResponse.
   void update_vendorList(CMDlResponse value) {
     rfqModel.vendorList.clear();
     for (int i = 0; i < value.data.length; i++) {
@@ -422,6 +457,7 @@ class RfqController extends GetxController {
     }
   }
 
+  /// Sets vendor-related form fields based on the selected vendor.
   void update_vendorCredentials_onSelect(VendorList selectedVendor) {
     rfqModel.vendorName.value = selectedVendor.vendorName;
     rfqModel.vendorID.value = selectedVendor.vendorID;
@@ -430,6 +466,7 @@ class RfqController extends GetxController {
     rfqModel.phoneController.value.text = selectedVendor.vendorPhoneNo;
   }
 
+  /// Validates required fields before enabling data generation (basic form check).
   bool generate_Datavalidation() {
     return (rfqModel.TitleController.value.text.isEmpty ||
         rfqModel.processID.value == null ||
@@ -440,6 +477,7 @@ class RfqController extends GetxController {
         rfqModel.Rfq_noteList.isEmpty);
   }
 
+  /// Validates required fields before posting data, including conditional checks for email/phone.
   bool postDatavalidation() {
     return (rfqModel.TitleController.value.text.isEmpty ||
         rfqModel.processID.value == null ||

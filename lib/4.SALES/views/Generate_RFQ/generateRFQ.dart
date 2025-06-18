@@ -12,6 +12,7 @@ import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
+/// overall structural design for Request for quotation dialog box
 class GenerateRfq extends StatefulWidget with RfqdetailsService {
   GenerateRfq({super.key, required this.eventID});
   int eventID;
@@ -124,6 +125,8 @@ class _GenerateRfqState extends State<GenerateRfq> with SingleTickerProviderStat
                           ),
                           controller: rfqController.rfqModel.tabController.value,
                           indicator: const BoxDecoration(),
+
+                          /// ---------------- Tab Bar ----------------
                           tabs: const [
                             Tab(text: "DETAILS"),
                             Tab(text: "PRODUCT"),
@@ -136,6 +139,7 @@ class _GenerateRfqState extends State<GenerateRfq> with SingleTickerProviderStat
                   ),
                   Expanded(
                     child: TabBarView(
+                      /// ---------------- Tab Content ----------------
                       controller: rfqController.rfqModel.tabController.value,
                       children: [
                         RfqDetails(

@@ -12,110 +12,137 @@ import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
 class DcController extends GetxController {
   var dcModel = DcModel();
+
+  /// Initializes the TabController for delivery challan tabs.
   void initializeTabController(TabController tabController) {
     dcModel.tabController.value = tabController;
   }
 
+  /// Navigates to the next tab if available.
   void nextTab() {
     if (dcModel.tabController.value!.index < dcModel.tabController.value!.length - 1) {
       dcModel.tabController.value!.animateTo(dcModel.tabController.value!.index + 1);
     }
   }
 
+  /// Navigates to the previous tab if not at the first tab.
   void backTab() {
     if (dcModel.tabController.value!.index > 0) {
       dcModel.tabController.value!.animateTo(dcModel.tabController.value!.index - 1);
     }
   }
 
+  /// Removes a product from the delivery challan product list.
   void removeFromProductList(index) {
     dcModel.Dc_products.removeAt(index);
   }
 
+  /// Updates the edit index for notes in delivery challan.
   void updateNoteEditindex(int? index) {
     dcModel.note_editIndex.value = index;
   }
 
+  /// Updates the heading of the challan table.
   void updateChallanTableHeading(String tableHeading) {
     dcModel.Dc_table_heading.value = tableHeading;
   }
 
+  /// Updates a note in the note list at the edit index.
   void updateNoteList(String value, int index) {
     dcModel.Dc_noteList[dcModel.note_editIndex.value!] = dcModel.notecontentController.value.text;
   }
 
+  /// Updates the TabController for delivery challan (duplicate of initialize).
   void updateTabController(TabController tabController) {
     dcModel.tabController.value = tabController;
   }
 
+  /// Updates the title text field for the delivery challan.
   void updateTitle(String text) {
     dcModel.TitleController.value.text = text;
   }
 
+  /// Updates the delivery challan number.
   void updateDcnumber(String text) {
     dcModel.Dc_no.value = text;
   }
 
+  /// Updates the invoice reference number.
   void update_invoiceRef_number(String text) {
     dcModel.invRef_no.value = text;
   }
 
+  /// Updates the GST number field.
   void updateGSTnumber(String text) {
     dcModel.gstNumController.value.text = text;
   }
 
+  /// Updates the client's address name field.
   void updateClientAddressName(String text) {
     dcModel.clientAddressNameController.value.text = text;
   }
 
+  /// Updates the client's full address field.
   void updateClientAddress(String text) {
     dcModel.clientAddressController.value.text = text;
   }
 
+  /// Updates the billing address name field.
   void updateBillingAddressName(String text) {
     dcModel.billingAddressNameController.value.text = text;
   }
 
+  /// Updates the billing address field.
   void updateBillingAddress(String text) {
     dcModel.billingAddressController.value.text = text;
   }
 
+  /// Updates the client's phone number.
   void updatePhone(String phone) {
     dcModel.phoneController.value.text = phone;
   }
 
+  /// Updates the client's email address.
   void updateEmail(String email) {
     dcModel.emailController.value.text = email;
   }
 
+  /// Updates the CC (carbon copy) email field.
   void updatCC(String CC) {
     dcModel.CCemailController.value.text = CC;
   }
 
+  /// Toggles the visibility of the CC email input field.
   void toggleCCemailvisibility(bool value) {
     dcModel.CCemailToggle.value = value;
   }
 
+  /// Updates the edit index for a recommendation entry.
   void updateRecommendationEditindex(int? index) {
     dcModel.recommendation_editIndex.value = index;
   }
 
+  /// Updates the text in the note content controller.
   void updateNoteContentControllerText(String text) {
     dcModel.notecontentController.value.text = text;
   }
 
+  /// Updates the recommendation heading controller text.
   void updateRec_HeadingControllerText(String text) {
     dcModel.recommendationHeadingController.value.text = text;
   }
 
+  /// Updates the recommendation key controller text.
   void updateRec_KeyControllerText(String text) {
     dcModel.recommendationKeyController.value.text = text;
   }
 
+  /// Updates the recommendation value controller text.
   void updateRec_ValueControllerText(String text) {
     dcModel.recommendationValueController.value.text = text;
   }
 
+  /// Adds a note to the note suggestion list.
   void addNoteToList(String note) {
     dcModel.noteSuggestion.add(note);
   }
@@ -124,41 +151,47 @@ class DcController extends GetxController {
   //   dcModel.product_editIndex.value = index;
   // }
 
+  /// Sets the process ID for the delivery challan.
   void setProcessID(int processid) {
     dcModel.processID.value = processid;
   }
 
+  /// Updates the selected PDF file.
   void updateSelectedPdf(File file) {
     dcModel.selectedPdf.value = file;
   }
 
-  // Toggle loading state
+  /// Toggles the loading state.
   void setLoading(bool value) {
     dcModel.isLoading.value = value;
   }
 
+  /// Toggles the PDF-specific loading state.
   void setpdfLoading(bool value) {
     dcModel.ispdfLoading.value = value;
   }
 
-  // Toggle WhatsApp state
+  /// Toggles WhatsApp selection status.
   void toggleWhatsApp(bool value) {
     dcModel.whatsapp_selectionStatus.value = value;
   }
 
-  // Toggle Gmail state
+  /// Toggles Gmail selection status.
   void toggleGmail(bool value) {
     dcModel.gmail_selectionStatus.value = value;
   }
 
+  /// Toggles the "Select All" status for products.
   void togglProduct_selectAll(bool value) {
     dcModel.selectall_status.value = value;
   }
 
+  /// Toggles the selection of a specific product by index.
   void toggleProduct_selection(bool value, int index) {
     dcModel.checkboxValues[index] = value;
   }
 
+  /// Applies the "Select All" state to all product checkboxes.
   void refactorSelection() {
     for (int i = 0; i < dcModel.checkboxValues.length; i++) {
       if (dcModel.selectall_status.value) {
@@ -169,25 +202,27 @@ class DcController extends GetxController {
     }
   }
 
-  // Update phone number text
+  /// Updates the phone number text field.
   void updatePhoneNumber(String phoneNumber) {
     dcModel.phoneController.value.text = phoneNumber;
   }
 
-  // Update feedback text
+  /// Updates the feedback text field.
   void updateFeedback(String feedback) {
     dcModel.feedbackController.value.text = feedback;
   }
 
-  // Update file path text
+  /// Updates the file path text field.
   void updateFilePath(String filePath) {
     dcModel.filePathController.value.text = filePath;
   }
 
+  /// Updates the total DC (Delivery Challan) amount.
   void update_dcAmount(double amount) {
     dcModel.dc_amount.value = amount;
   }
 
+  /// Opens file picker and handles file selection and size validation.
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf'], lockParentWindow: true);
 
@@ -215,6 +250,7 @@ class DcController extends GetxController {
     }
   }
 
+  /// Returns message type code based on selected communication methods.
   int fetch_messageType() {
     if (dcModel.whatsapp_selectionStatus.value && dcModel.gmail_selectionStatus.value) return 3;
     if (dcModel.whatsapp_selectionStatus.value) return 2;
@@ -223,6 +259,7 @@ class DcController extends GetxController {
     return 0;
   }
 
+  /// Simulates and updates a progress bar from 0 to 100%.
   Future<void> startProgress() async {
     setLoading(true);
     dcModel.progress.value = 0.0;
@@ -235,6 +272,7 @@ class DcController extends GetxController {
     setLoading(false);
   }
 
+  /// Adds a recommendation entry with key-value pair if both are non-empty.
   void addRecommendation({required String key, required String value}) {
     if (key.isNotEmpty && value.isNotEmpty) {
       dcModel.Dc_recommendationList.add(Recommendation(key: key, value: value));
@@ -245,6 +283,7 @@ class DcController extends GetxController {
     }
   }
 
+  /// Updates an existing recommendation at a given index.
   void updateRecommendation({
     required int index,
     required String key,
@@ -265,6 +304,7 @@ class DcController extends GetxController {
     }
   }
 
+  /// Adds a note to the list if not empty.
   void addNote(String noteContent) {
     if (noteContent.isNotEmpty) {
       dcModel.Dc_noteList.add(noteContent);
@@ -339,6 +379,7 @@ class DcController extends GetxController {
   //   }
   // }
 
+  /// Adds a list of note suggestions from the given map.
   void add_noteSuggestion(Map<String, dynamic> suggestionList) {
     for (var item in suggestionList['notes']) {
       dcModel.noteSuggestion.add(item);
@@ -348,17 +389,20 @@ class DcController extends GetxController {
     }
   }
 
+  /// Removes a note at the specified index and resets the edit index.
   void removeFromNoteList(int index) {
     dcModel.Dc_noteList.removeAt(index);
     dcModel.note_editIndex.value = null;
   }
 
+  /// Removes a recommendation at the given index and resets the edit index.
   void removeFromRecommendationList(int index) {
     dcModel.Dc_recommendationList.removeAt(index);
     // dcModel.Dc_recommendationList.isEmpty ? dcModel.recommendationHeadingController.value.clear() : null;
     dcModel.recommendation_editIndex.value = null;
   }
 
+  /// Initializes text controllers with quantity values from product list.
   void initializeTextControllers() {
     dcModel.textControllers.clear();
     for (int i = 0; i < dcModel.Dc_products.length; i++) {
@@ -367,10 +411,12 @@ class DcController extends GetxController {
     }
   }
 
+  /// Initializes observable quantity values from the product list.
   void initializeQuantities(List<DcProduct> productList) {
     dcModel.quantities.assignAll(productList.map((product) => product.quantity.obs).toList());
   }
 
+  /// Initializes focus nodes and sets up listeners for focus changes.
   void initializeFocusNodes(int count) {
     dcModel.focusNodes.assignAll(List.generate(count, (_) => FocusNode().obs));
     dcModel.isFocused.assignAll(List.generate(count, (_) => false));
@@ -382,6 +428,7 @@ class DcController extends GetxController {
     }
   }
 
+  /// Increments the quantity of a product at the given index within the max limit.
   void incrementQTY(int index, int maxValue) {
     if (dcModel.quantities[index].value < maxValue) {
       dcModel.quantities[index].value++;
@@ -389,6 +436,7 @@ class DcController extends GetxController {
     }
   }
 
+  /// Decrements the quantity of a product at the given index with a minimum of 1.
   void decrementQTY(int index) {
     if (dcModel.quantities[index].value > 1) {
       dcModel.quantities[index].value--;
@@ -396,6 +444,7 @@ class DcController extends GetxController {
     }
   }
 
+  /// Updates the product list and resets checkbox selection states.
   void updateProducts(List<DcProduct> products) {
     dcModel.Dc_products.value = products;
     dcModel.checkboxValues.clear();
@@ -404,6 +453,7 @@ class DcController extends GetxController {
     }
   }
 
+  /// Validates and sets the quantity value for a product at the given index.
   void setQtyvalue(String value, String maxQty, int index) {
     // if (value.isEmpty) value=0; // Prevent processing empty values
 
@@ -431,6 +481,7 @@ class DcController extends GetxController {
     dcModel.quantities[index].value = convertedValue;
   }
 
+  /// Populates delivery challan model from API response data.
   void update_requiredData(CMDmResponse value) {
     RequiredData instance = RequiredData.fromJson(value);
     dcModel.Dc_no.value = instance.eventnumber;
@@ -454,6 +505,7 @@ class DcController extends GetxController {
     // }
   }
 
+  /// Validates required fields before generating delivery challan draft.
   bool generate_Datavalidation() {
     return (dcModel.TitleController.value.text.isEmpty ||
         dcModel.processID.value == null ||
@@ -467,6 +519,7 @@ class DcController extends GetxController {
         dcModel.Dc_no.value == null);
   }
 
+  /// Validates data before submitting delivery challan with communication preferences.
   bool postDatavalidation() {
     return (dcModel.TitleController.value.text.isEmpty ||
         dcModel.processID.value == null ||

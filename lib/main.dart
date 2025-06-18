@@ -6,6 +6,9 @@ import 'package:ssipl_billing/ROUTES/app_routes.dart';
 import 'package:ssipl_billing/ROUTES/route_names.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
+/// This RestartWidget class allows the entire Flutter application to be programmatically restarted by rebuilding its widget tree using a new UniqueKey.
+///  It wraps the app's root widget and exposes a static method restartApp that triggers a rebuild from the top, effectively resetting all UI state without restarting the actual process.
+
 class RestartWidget extends StatefulWidget {
   final Widget child;
 
@@ -38,11 +41,15 @@ class _RestartWidgetState extends State<RestartWidget> {
   }
 }
 
-// 33AADCK2098J1ZF
+/// The main entry point of the application
 Future<void> main() async {
   // Initialize Flutter bindings
   WidgetsFlutterBinding.ensureInitialized();
+
+  ///  Ensures that all the Flutter widgets and plugins are initialized before runApp is called
   initialize_IAM();
+
+  /// Custom initialization method for Identity and Access Management (IAM) module
   initialize_others();
 
   runApp(const RestartWidget(child: MyApp()));
@@ -55,6 +62,9 @@ Future<void> main() async {
 //     _appKey = UniqueKey(); // Forces widget tree to rebuild
 //   });
 // }
+
+/// This MyApp class is the root of the Flutter application, using GetMaterialApp from the GetX package to set up routing, theming, and global configurations.
+/// It defines the app's title, initial route, available routes, custom theme (including scrollbar and text selection styles), and hides the debug banner.
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

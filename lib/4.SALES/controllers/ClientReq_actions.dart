@@ -15,93 +15,110 @@ import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 class ClientreqController extends GetxController {
   var clientReqModel = ClientReqModel();
 
+  /// Initializes the TabController for client request.
   void initializeTabController(TabController tabController) {
     clientReqModel.tabController.value = tabController;
   }
 
+  /// Navigates to the next tab if available.
   void nextTab() {
     if (clientReqModel.tabController.value!.index < clientReqModel.tabController.value!.length - 1) {
       clientReqModel.tabController.value!.animateTo(clientReqModel.tabController.value!.index + 1);
     }
   }
 
+  /// Navigates to the previous tab if available.
   void backTab() {
     if (clientReqModel.tabController.value!.index > 0) {
       clientReqModel.tabController.value!.animateTo(clientReqModel.tabController.value!.index - 1);
     }
   }
 
+  /// Adds product suggestions to the model from a list of JSON objects
   void add_productSuggestion(List<dynamic> suggestionList) {
     for (var item in suggestionList) {
       clientReqModel.clientReq_productSuggestion.add(ProductSuggestion.fromJson(item));
     }
   }
 
+  /// Creates and assigns a new TabController with the given length and vsync.
   void updateTabController(TickerProvider vsync, int length) {
     clientReqModel.tabController.value = TabController(length: length, vsync: vsync);
   }
 
-  // Update PDF File
+  /// Updates the selected PDF file from file path.
   void updateSelectedPdf(String filePath) {
     clientReqModel.selectedPdf.value = File(filePath);
   }
 
-  // Update Form Key
+  /// Updates the form key for client request form.
   void updateFormKey(GlobalKey<FormState> newKey) {
     clientReqModel.detailsformKey.value = newKey;
   }
 
-  // Update Text Controllers
+  /// Sets the client name in the corresponding text controller.
   void updateClientName(String name) {
     clientReqModel.clientNameController.value.text = name;
   }
 
+  /// Updates the organization name value.
   void updateOrgName(String org) {
     clientReqModel.Org_Controller.value = org;
   }
 
+  /// Updates the company name value.
   void updateCompanyName(String comp) {
     clientReqModel.Company_Controller.value = comp;
   }
 
+  /// Clears selected company and its list.
   void clear_CompanyData() async {
     clientReqModel.Company_Controller.value = null;
     clientReqModel.CompanyList.clear();
   }
 
+  /// Clears selected branch and its list.
   void clear_BranchData() async {
     clientReqModel.Branch_Controller.value = null;
     clientReqModel.BranchList_valueModel.clear();
   }
 
+  /// Updates the project title field.
   void updateTitle(String title) {
     clientReqModel.titleController.value.text = title;
   }
 
+  /// Updates the client's address.
   void updateClientAddress(String address) {
     clientReqModel.clientAddressController.value.text = address;
   }
 
+  /// Updates the billing address name.
   void updateBillingAddressName(String name) {
     clientReqModel.billingAddressNameController.value.text = name;
   }
 
+  /// Updates the billing address details.
   void updateBillingAddress(String address) {
     clientReqModel.billingAddressController.value.text = address;
   }
 
+  /// Updates the MOR (Mode of Requirement) value.
   void updateMOR(String morValue) {
     clientReqModel.morController.value.text = morValue;
   }
 
+  /// Updates the client's phone number.
   void updatePhone(String phone) {
     clientReqModel.phoneController.value.text = phone;
   }
 
+  /// Updates the client's email ID.
   void updateEmail(String email) {
     clientReqModel.emailController.value.text = email;
   }
 
+  /// Updates the GST number value.
   void updateGST(String gst) {
     clientReqModel.gstController.value.text = gst;
   }
@@ -111,53 +128,65 @@ class ClientreqController extends GetxController {
   //   clientReqModel.clientReqTableHeading.value = heading;
   // }
 
+  /// Sets the index of the product being edited.
   void addProductEditindex(int? index) {
     clientReqModel.product_editIndex.value = index;
   }
 
+  /// Updates the product name in the text controller.
   void updateProductName(String productName) {
     clientReqModel.productNameController.value.text = productName;
   }
 
+  /// Updates the product quantity in the text controller.
   void updateQuantity(int quantity) {
     clientReqModel.quantityController.value.text = quantity.toString();
   }
 
+  /// Updates the recommendation value text controller.
   void updateRec_ValueControllerText(String text) {
     clientReqModel.Rec_ValueController.value.text = text;
   }
 
+  /// Updates the note at the specified index with the current note content.
   void updateNoteList(String value, int index) {
     clientReqModel.clientReqNoteList[clientReqModel.noteEditIndex.value!] = clientReqModel.noteContentController.value.text;
   }
 
+  /// Sets the index of the note being edited.
   void updateNoteEditindex(int? index) {
     clientReqModel.noteEditIndex.value = index;
   }
 
+  /// Sets the index of the recommendation being edited.
   void updateRecommendationEditindex(int? index) {
     clientReqModel.Rec_EditIndex.value = index;
   }
 
+  /// Updates the note content text controller.
   void updateNoteContentControllerText(String text) {
     clientReqModel.noteContentController.value.text = text;
   }
 
+  /// Updates the recommendation key text controller.
   void updateRec_KeyControllerText(String text) {
     clientReqModel.Rec_KeyController.value.text = text;
   }
 
+  /// Removes a product from the product list and resets the edit index.
   void removeFromProductList(index) {
     clientReqModel.clientReqProductDetails.removeAt(index);
     clientReqModel.product_editIndex.value = null;
   }
 
+  /// Removes a note from the note list and resets the edit index.
   void removeFromNoteList(int index) {
     clientReqModel.clientReqNoteList.removeAt(index);
     // clientReqModel.clientReqNoteList.isEmpty ? clientReqModel.noteContentController.value.clear() : null;
     clientReqModel.noteEditIndex.value = null;
   }
 
+  /// Removes a recommendation from the list and resets the edit index.
   void removeFromRecommendationList(int index) {
     clientReqModel.clientReqRecommendationList.removeAt(index);
     // clientReqModel.clientReqRecommendationList.isEmpty ? clientReqModel.Rec_HeadingController.value.clear() : null;
@@ -166,21 +195,25 @@ class ClientreqController extends GetxController {
     clientReqModel.Rec_EditIndex.value = null;
   }
 
+  /// Updates the uploaded path for MOR from the CMDm response.
   void updateMOR_uploadedPath(CMDmResponse value) {
     clientReqModel.MOR_uploadedPath.value = MORpath.fromJson(value).path;
   }
 
+  /// Adds a new recommendation to the list if both key and value are not empty.
   void addRecommendation({required String key, required String value}) {
     if (key.isNotEmpty && value.isNotEmpty) {
       clientReqModel.clientReqRecommendationList.add(ClientReq_recommendation(key: key, value: value));
     }
   }
 
+  /// Clears the selected files from the model.
   void clearPickedFiles() {
     clientReqModel.pickedFile.value = null;
     clientReqModel.morFile.value = null;
   }
 
+  /// Opens a file picker for image files and updates the model if valid; shows error if file > 2MB.
   Future<bool> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg'], lockParentWindow: true);
 
@@ -204,6 +237,7 @@ class ClientreqController extends GetxController {
     return false;
   }
 
+  /// Updates an existing recommendation by index if valid.
   void updateRecommendation({
     required int index,
     required String key,
@@ -222,12 +256,14 @@ class ClientreqController extends GetxController {
     }
   }
 
+  /// Adds a new note to the note list if content is not empty.
   void addNote(String noteContent) {
     if (noteContent.isNotEmpty) {
       clientReqModel.clientReqNoteList.add(noteContent);
     }
   }
 
+  /// Adds a product to the list if valid, else shows a snackbar error.
   void addProduct({required BuildContext context, required String productName, required int quantity}) {
     try {
       if (productName.trim().isEmpty || quantity <= 0) {
@@ -241,6 +277,7 @@ class ClientreqController extends GetxController {
     }
   }
 
+  /// Updates a product's name and quantity by index if valid; shows snackbar on error.
   void updateProduct({required BuildContext context, required int editIndex, required String productName, required int quantity}) {
     try {
       // Validate input fields
@@ -284,6 +321,7 @@ class ClientreqController extends GetxController {
     }
   }
 
+  /// Updates the organization list using the parsed response data.
   void update_OrganizationList(CMDlResponse value) {
     clientReqModel.organizationList.clear();
     for (int i = 0; i < value.data.length; i++) {
@@ -291,6 +329,7 @@ class ClientreqController extends GetxController {
     }
   }
 
+  /// Clears all KYC-related fields.
   void clear_KYC() {
     updateClientAddress("");
     updateBillingAddressName("");
@@ -300,6 +339,7 @@ class ClientreqController extends GetxController {
     updateGST("");
   }
 
+  /// Updates KYC-related fields with the given values or empty strings.
   void update_KYC(Claddress, Blname, Bladdress, email, phone, gst) {
     updateClientAddress(Claddress ?? "");
     updateBillingAddressName(Blname ?? "");
@@ -309,12 +349,14 @@ class ClientreqController extends GetxController {
     updateGST(gst ?? "");
   }
 
+  /// Retrieves the branch name by its ID from the value model list.
   String branchname_via_branchID(int id) {
     return clientReqModel.BranchList_valueModel.firstWhere(
       (x) => x.value == id.toString(),
     ).name;
   }
 
+  /// Updates customer ID and KYC based on selected company or branch.
   void update_customerID(String? compName, String? branchName) {
     if (compName == null) {
       clientReqModel.customer_id.value = 0;
@@ -332,6 +374,7 @@ class ClientreqController extends GetxController {
     }
   }
 
+  /// Updates the company list and resets related data.
   void update_CompanyList(CMDlResponse value) {
     clear_CompanyData();
     clear_BranchData();
@@ -341,6 +384,7 @@ class ClientreqController extends GetxController {
     }
   }
 
+  /// Updates the branch list and its dropdown value model after a delay.
   void update_BranchList(CMDlResponse value) async {
     clear_BranchData();
     await Future.delayed(const Duration(milliseconds: 1000));
@@ -353,6 +397,7 @@ class ClientreqController extends GetxController {
     }
   }
 
+  /// Updates selected branch list and processes related customer data.
   void update_selectedBranches(List<dynamic> selectedList) {
     if (selectedList.isEmpty) {
       clientReqModel.selected_branchList.clear();
@@ -366,6 +411,7 @@ class ClientreqController extends GetxController {
     handle_customerID();
   }
 
+  /// Sets customer info based on selected branches or company.
   void handle_customerID() {
     if (clientReqModel.selected_branchList.length == 1) {
       updateClientName(branchname_via_branchID(clientReqModel.selected_branchList[0]));
@@ -376,6 +422,7 @@ class ClientreqController extends GetxController {
     }
   }
 
+  /// Checks if any client data fields or selections have been populated.
   bool anyHavedata() {
     return (clientReqModel.MOR_uploadedPath.value != null ||
         clientReqModel.customer_id.value != 0 ||
@@ -408,6 +455,7 @@ class ClientreqController extends GetxController {
         clientReqModel.clientReqRecommendationList.isNotEmpty);
   }
 
+  /// Validates whether any required data is missing for submission.
   bool postDatavalidation() {
     return (clientReqModel.titleController.value.text.isEmpty ||
         clientReqModel.clientNameController.value.text.isEmpty ||
@@ -421,6 +469,7 @@ class ClientreqController extends GetxController {
         clientReqModel.MOR_uploadedPath.value == null);
   }
 
+  /// Returns true if no data has been filled by the user.
   bool anyDontHavedata() {
     return !anyHavedata();
   }

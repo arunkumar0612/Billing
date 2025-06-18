@@ -108,11 +108,7 @@ mixin main_BillingService {
           mainBilling_Controller.billingModel.subscriptionInvoiceList.clear();
           mainBilling_Controller.billingModel.allSubscriptionInvoices.clear();
           for (int i = 0; i < value.data.length; i++) {
-            mainBilling_Controller.addto_SubscriptionInvoiceList(
-              SubscriptionInvoice.fromJson(
-                value.data[i],
-              ),
-            );
+            mainBilling_Controller.addto_SubscriptionInvoiceList(SubscriptionInvoice.fromJson(value.data[i]));
             mainBilling_Controller.search(mainBilling_Controller.billingModel.searchQuery.value);
             // print(value.data[i]['Overdue_history']);
           }

@@ -5,10 +5,10 @@ import 'package:ssipl_billing/4.SALES/models/entities/Sales_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
-
 import '../../controllers/Quote_actions.dart';
 import '../../services/Quotation_services/QuoteProduct_services.dart';
 
+/// Quotation product tab
 class QuoteProducts extends StatefulWidget with QuoteproductService {
   QuoteProducts({super.key});
 
@@ -96,6 +96,8 @@ class _QuoteProductsState extends State<QuoteProducts> {
                   child: Column(
                     children: [
                       const SizedBox(height: 25),
+
+                      ///  -------------------- Form Section --------------------
                       Obx(
                         () {
                           return DropdownMenu<ProductSuggestion>(
@@ -339,6 +341,7 @@ class _QuoteProductsState extends State<QuoteProducts> {
                   ),
                 ),
                 // if (length != 0) const SizedBox(width: 60),
+                /// -------------------- Product List Section --------------------
 
                 Obx(
                   () {

@@ -15,48 +15,58 @@ import '../models/constants/Quote_constants.dart';
 class QuoteController extends GetxController {
   var quoteModel = QuoteModel();
 
+  /// Initializes the TabController and stores it in the model.
   void initializeTabController(TabController tabController) {
     quoteModel.tabController.value = tabController;
   }
 
+  /// Navigates to the next tab if not already on the last one.
   void nextTab() {
     if (quoteModel.tabController.value!.index < quoteModel.tabController.value!.length - 1) {
       quoteModel.tabController.value!.animateTo(quoteModel.tabController.value!.index + 1);
     }
   }
 
+  /// Navigates to the previous tab if not already on the first one.
   void backTab() {
     if (quoteModel.tabController.value!.index > 0) {
       quoteModel.tabController.value!.animateTo(quoteModel.tabController.value!.index - 1);
     }
   }
 
+  /// Adds a list of product suggestions to the model.
   void add_productSuggestion(List<dynamic> suggestionList) {
     for (var item in suggestionList) {
       quoteModel.Quote_productSuggestion.add(ProductSuggestion.fromJson(item));
     }
   }
 
+  /// Updates the product name in the text controller.
   void updateProductName(String productName) {
     quoteModel.productNameController.value.text = productName;
   }
 
+  /// Updates the HSN code in the text controller.
   void updateHSN(int hsn) {
     quoteModel.hsnController.value.text = hsn.toString();
   }
 
+  /// Updates the price in the text controller.
   void updatePrice(double price) {
     quoteModel.priceController.value.text = price.toString();
   }
 
+  /// Updates the quantity in the text controller.
   void updateQuantity(int quantity) {
     quoteModel.quantityController.value.text = quantity.toString();
   }
 
+  /// Updates the GST value in the text controller.
   void updateGST(double gst) {
     quoteModel.gstController.value.text = gst.toString();
   }
 
+  /// Updates the current editing index for notes.
   void updateNoteEditindex(int? index) {
     quoteModel.note_editIndex.value = index;
   }
@@ -65,99 +75,122 @@ class QuoteController extends GetxController {
   //   quoteModel.Quote_table_heading.value = tableHeading;
   // }
 
+  /// Updates a note in the list at the current edit index with the controller's text.
   void updateNoteList(String value, int index) {
     quoteModel.Quote_noteList[quoteModel.note_editIndex.value!] = quoteModel.notecontentController.value.text;
   }
 
+  /// Updates the stored TabController in the model.
   void updateTabController(TabController tabController) {
     quoteModel.tabController.value = tabController;
   }
 
+  /// Updates the quote title in the controller.
   void updateTitle(String text) {
     quoteModel.TitleController.value.text = text;
   }
 
+  /// Updates the quote number value.
   void updateQuotenumber(String text) {
     quoteModel.Quote_no.value = text;
   }
 
+  /// Updates the GST number in the controller.
   void updateGSTnumber(String text) {
     quoteModel.gstNumController.value.text = text;
   }
 
+  /// Updates the client’s name in the address section.
   void updateClientAddressName(String text) {
     quoteModel.clientAddressNameController.value.text = text;
   }
 
+  /// Updates the client’s address details.
   void updateClientAddress(String text) {
     quoteModel.clientAddressController.value.text = text;
   }
 
+  /// Updates the billing address name in the controller.
   void updateBillingAddressName(String text) {
     quoteModel.billingAddressNameController.value.text = text;
   }
 
+  /// Updates the billing address details.
   void updateBillingAddress(String text) {
     quoteModel.billingAddressController.value.text = text;
   }
 
+  /// Updates the client’s phone number.
   void updatePhone(String phone) {
     quoteModel.phoneController.value.text = phone;
   }
 
+  /// Updates the client’s email address.
   void updateEmail(String email) {
     quoteModel.emailController.value.text = email;
   }
 
+  /// Updates the CC email address field.
   void updatCC(String CC) {
     quoteModel.CCemailController.value.text = CC;
   }
 
+  /// Toggles visibility of the CC email field.
   void toggleCCemailvisibility(bool value) {
     quoteModel.CCemailToggle.value = value;
   }
 
+  /// Updates the current editing index for the recommendation section.
   void updateRecommendationEditindex(int? index) {
     quoteModel.recommendation_editIndex.value = index;
   }
 
+  /// Updates the note content controller text.
   void updateNoteContentControllerText(String text) {
     quoteModel.notecontentController.value.text = text;
   }
 
+  /// Updates the recommendation heading controller text.
   void updateRec_HeadingControllerText(String text) {
     quoteModel.recommendationHeadingController.value.text = text;
   }
 
+  /// Updates the recommendation key controller text.
   void updateRec_KeyControllerText(String text) {
     quoteModel.recommendationKeyController.value.text = text;
   }
 
+  /// Updates the recommendation value controller text.
   void updateRec_ValueControllerText(String text) {
     quoteModel.recommendationValueController.value.text = text;
   }
 
+  /// Adds a note string to the note content list.
   void addNoteToList(String note) {
     quoteModel.notecontent.add(note);
   }
 
+  /// Sets the current editing index for the product section.
   void addProductEditindex(int? index) {
     quoteModel.product_editIndex.value = index;
   }
 
+  /// Sets the selected process ID.
   void setProcessID(int processid) {
     quoteModel.processID.value = processid;
   }
 
+  /// Updates the selected PDF file in the model.
   void updateSelectedPdf(File file) {
     quoteModel.selectedPdf.value = file;
   }
 
-  // Toggle loading state
+  /// Toggles the general loading state.
   void setLoading(bool value) {
     quoteModel.isLoading.value = value;
   }
 
+  /// Toggles the PDF-specific loading state.
   void setpdfLoading(bool value) {
     quoteModel.ispdfLoading.value = value;
   }
@@ -167,26 +200,27 @@ class QuoteController extends GetxController {
     quoteModel.whatsapp_selectionStatus.value = value;
   }
 
-  // Toggle Gmail state
+  /// Toggle Gmail state
   void toggleGmail(bool value) {
     quoteModel.gmail_selectionStatus.value = value;
   }
 
-  // Update phone number text
+  /// Update phone number text
   void updatePhoneNumber(String phoneNumber) {
     quoteModel.phoneController.value.text = phoneNumber;
   }
 
-  // Update feedback text
+  /// Update feedback text
   void updateFeedback(String feedback) {
     quoteModel.feedbackController.value.text = feedback;
   }
 
-  // Update file path text
+  /// Update file path text
   void updateFilePath(String filePath) {
     quoteModel.filePathController.value.text = filePath;
   }
 
+  /// Opens a file picker to select an image file and validates its size (max 2MB).
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -221,6 +255,7 @@ class QuoteController extends GetxController {
     }
   }
 
+  /// Returns an integer indicating the selected message type (0: none, 1: email, 2: WhatsApp, 3: both).
   int fetch_messageType() {
     if (quoteModel.whatsapp_selectionStatus.value && quoteModel.gmail_selectionStatus.value) return 3;
     if (quoteModel.whatsapp_selectionStatus.value) return 2;
@@ -229,6 +264,7 @@ class QuoteController extends GetxController {
     return 0;
   }
 
+  /// Simulates a progress bar animation from 0% to 100%.
   Future<void> startProgress() async {
     setLoading(true);
     quoteModel.progress.value = 0.0;
@@ -241,6 +277,7 @@ class QuoteController extends GetxController {
     setLoading(false);
   }
 
+  /// Adds a recommendation entry to the list if both key and value are not empty.
   void addRecommendation({required String key, required String value}) {
     if (key.isNotEmpty && value.isNotEmpty) {
       quoteModel.Quote_recommendationList.add(Recommendation(key: key, value: value));
@@ -251,6 +288,7 @@ class QuoteController extends GetxController {
     }
   }
 
+  /// Updates a recommendation entry at a given index if inputs are valid.
   void updateRecommendation({
     required int index,
     required String key,
@@ -271,6 +309,7 @@ class QuoteController extends GetxController {
     }
   }
 
+  /// Adds a note to the note list if the content is not empty.
   void addNote(String noteContent) {
     if (noteContent.isNotEmpty) {
       quoteModel.Quote_noteList.add(noteContent);
@@ -281,6 +320,7 @@ class QuoteController extends GetxController {
     }
   }
 
+  /// Adds a product to the product list after validating input fields.
   void addProduct({
     required BuildContext context,
     required String productName,
@@ -309,6 +349,7 @@ class QuoteController extends GetxController {
     }
   }
 
+  /// Updates a product in the list at the given index after validating inputs.
   void updateProduct({
     required BuildContext context,
     required int editIndex,
@@ -367,27 +408,31 @@ class QuoteController extends GetxController {
     }
   }
 
-  // Update products list
+  /// Updates the full list of products in the model.
   void updateProducts(List<QuoteProduct> products) {
     quoteModel.Quote_products.value = products;
   }
 
+  /// Removes a note from the note list by index and resets the edit index.
   void removeFromNoteList(int index) {
     quoteModel.Quote_noteList.removeAt(index);
     quoteModel.note_editIndex.value = null;
   }
 
+  /// Removes a recommendation from the list by index and resets the edit index.
   void removeFromRecommendationList(int index) {
     quoteModel.Quote_recommendationList.removeAt(index);
     // quoteModel.Quote_recommendationList.isEmpty ? quoteModel.recommendationHeadingController.value.clear() : null;
     quoteModel.recommendation_editIndex.value = null;
   }
 
+  /// Removes a product from the product list by index and resets the edit index.
   void removeFromProductList(index) {
     quoteModel.Quote_products.removeAt(index);
     quoteModel.product_editIndex.value = null;
   }
 
+  /// Updates all required quote fields from the given response and event type.
   void update_requiredData(
     CMDmResponse value,
     String eventtype,
@@ -406,6 +451,7 @@ class QuoteController extends GetxController {
     if (eventtype == 'revisedquotation') updateProducts(instance.product!);
   }
 
+  /// Validates required fields before generating the quotation.
   bool generate_Datavalidation() {
     return (quoteModel.TitleController.value.text.isEmpty ||
         quoteModel.processID.value == null ||
@@ -419,6 +465,7 @@ class QuoteController extends GetxController {
         quoteModel.Quote_no.value == null);
   }
 
+  /// Validates all fields including communication options before posting data.
   bool postDatavalidation() {
     return (quoteModel.TitleController.value.text.isEmpty ||
         quoteModel.processID.value == null ||

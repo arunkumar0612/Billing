@@ -14,7 +14,6 @@ class SubscriptionChartState extends State<SubscriptionChart> {
   int touchedIndex = -1;
 
   @override
-  @override
   Widget build(BuildContext context) {
     final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
 
@@ -82,6 +81,7 @@ class SubscriptionChartState extends State<SubscriptionChart> {
     });
   }
 
+// Returns the sections for the pie chart based on completed and pending subscriptions
   List<PieChartSectionData> showingSections(int completed, int pending) {
     if (completed == 0 && pending == 0) {
       return [
@@ -125,6 +125,7 @@ class SubscriptionChartState extends State<SubscriptionChart> {
     );
   }
 
+// Returns the color based on the index
   Color getColor(int index) {
     switch (index) {
       case 0:
@@ -136,12 +137,14 @@ class SubscriptionChartState extends State<SubscriptionChart> {
     }
   }
 
+// Returns the maximum percentage of completed or pending subscriptions
   double getMaxPercentage(int completed, int pending) {
     int maxValue = completed > pending ? completed : pending;
     int total = completed + pending;
     return total == 0 ? 0 : (maxValue / total) * 100;
   }
 
+// Returns the label for the maximum percentage
   String getMaxPercentageLabel(int completed, int pending) {
     return completed >= pending ? 'Completed' : 'Pending';
   }

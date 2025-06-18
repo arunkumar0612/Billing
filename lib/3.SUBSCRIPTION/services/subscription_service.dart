@@ -85,6 +85,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to show a popup with the Excel data
   void showExcelDataPopup(context, List<Map<String, dynamic>> excelData) {
     showDialog(
       context: context,
@@ -180,6 +181,7 @@ mixin SubscriptionServices {
     );
   }
 
+// Function to handle the Excel file upload
   Future<void> get_CompanyList() async {
     try {
       // loader.start(context);
@@ -214,6 +216,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to fetch the global package list
   Future<void> get_GlobalPackageList(context) async {
     // loader.start(context);
     await Future.delayed(const Duration(milliseconds: 1000));
@@ -241,6 +244,7 @@ mixin SubscriptionServices {
     // loader.stop();
   }
 
+// Function to create a global package
   void CreateGlobalPackage(
       context, String subscriptionName, int noOfDevice, int noOfCameras, int AdditionalCameraCharges, int amount, String productDescription, int? clientId, int? customerType) async {
     try {
@@ -276,6 +280,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to update a global package
   void UpdateGlobalPackage(context, String subscriptionName, int noOfDevice, int noOfCameras, int AdditionalCameraCharges, double amount, String productDescription, int subId) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({
@@ -305,6 +310,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to delete a global package
   Future<void> DeleteGlobalPackage(context, List<int> subId) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({
@@ -341,6 +347,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to fetch the process customer list
   Future<void> GetProcesscustomerList() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.subscription_getprocesscustomer_API);
@@ -351,6 +358,7 @@ mixin SubscriptionServices {
           _subscriptionController.subscriptionModel.processcustomerList.clear();
           // print(value.data);
           _subscriptionController.addToProcesscustomerList(value);
+          subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
 
           // _subscriptionController.updatecustomerId(_subscriptionController.subscriptionModel.processcustomerList[_subscriptionController.subscriptionModel.showcustomerprocess.value!].customerId);
         } else {
@@ -373,6 +381,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to fetch the recurred customer list
   Future<void> GetReccuredcustomerList() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.subscription_getrecurredcustomer_API);
@@ -383,6 +392,7 @@ mixin SubscriptionServices {
           _subscriptionController.subscriptionModel.recurredcustomerList.clear();
           // print(value.data);
           _subscriptionController.addToRecurredcustomerList(value);
+          subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
 
           // _subscriptionController.updatecustomerId(_subscriptionController.subscriptionModel.processcustomerList[_subscriptionController.subscriptionModel.showcustomerprocess.value!].customerId);
         } else {
@@ -405,6 +415,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to fetch the recurring invoice list
   Future<void> Get_RecurringInvoiceList(int? id) async {
     try {
       // loader.start(context);
@@ -422,6 +433,7 @@ mixin SubscriptionServices {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           _subscriptionController.addTo_RecuuringInvoiceList(value);
+          subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
         } else {
           if (kDebugMode) {
             print("error : ${value.message}");
@@ -444,6 +456,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to fetch the process list based on customer ID and subscription type
   Future<void> GetProcessList(int customerid) async {
     try {
       Map<String, dynamic>? response =
@@ -455,6 +468,7 @@ mixin SubscriptionServices {
           _subscriptionController.subscriptionModel.processList.clear();
           // print(value.data);
           _subscriptionController.addToProcessList(value);
+          subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
         } else {
           if (kDebugMode) {
             print("error : ${value.message}");
@@ -475,6 +489,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to update feedback for a specific event
   void UpdateFeedback(context, int customerid, int eventid, feedback) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid, "feedback": feedback}, API.subscription_addfeedback_API);
@@ -495,6 +510,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to fetch the PDF file for a specific event
   Future<bool> GetPDFfile(context, int eventid) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid}, API.subscription_getbinaryfile_API);
@@ -524,6 +540,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to delete a process by its ID
   void DeleteProcess(context, List processid) async {
     if (kDebugMode) {
       print(processid.toString());
@@ -546,6 +563,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to archive or unarchive a process based on the type (0 for unarchive, 1 for archive)
   void ArchiveProcesscontrol(context, List processid, int type) async {
     if (kDebugMode) {
       print(processid.toString());
@@ -566,6 +584,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to fetch subscription data based on the subscription period
   Future<bool> GetSubscriptionData(String subscriptionperiod) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"subscriptionperiod": subscriptionperiod}, API.subscription_getsubscriptiondata_API);
@@ -577,6 +596,7 @@ mixin SubscriptionServices {
         if (value.code) {
           // print(value.data);
           _subscriptionController.updateSubscriptionData(value);
+          subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
         } else {
           if (kDebugMode) {
             print("error : ${value.message}");
@@ -599,6 +619,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to fetch the client profile based on the customer ID
   Future<bool> Getclientprofile(context, int customerid) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"customerid": customerid}, API.subscription_clientprofile_API);
@@ -625,6 +646,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to send approval for a quotation based on the customer ID and event ID
   void GetApproval(context, int customerid, int eventid) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid}, 'API.subscription_approvedquotation_API');
@@ -645,6 +667,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to fetch the custom PDF list for subscriptions
   Future<void> Get_subscriptionCustomPDFLsit() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_subscriptionCustompdf);
@@ -652,6 +675,7 @@ mixin SubscriptionServices {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           _subscriptionController.addToCustompdfList(value);
+          subscriptionController.search(subscriptionController.subscriptionModel.searchQuery.value);
         } else {
           if (kDebugMode) {
             print("error : ${value.message}");
@@ -672,6 +696,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to fetch the custom PDF file based on the custom PDF ID
   Future<bool> Get_customPDFfile(context, int customPDFid) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"custompdfid": customPDFid}, API.subscription_getcustombinaryfile_API);
@@ -694,6 +719,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to fetch the recurred PDF file based on the recurred PDF ID
   Future<bool> Get_RecurredPDFfile(context, int recurredPDFid) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"recurredbillid": recurredPDFid}, API.subscription_getRecurredBinaryfile_API);
@@ -716,6 +742,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to generate a client requirement dialogue box
   dynamic Generate_client_reqirement_dialougebox(String value, context) async {
     await showDialog(
       context: context,
@@ -794,7 +821,7 @@ mixin SubscriptionServices {
 //   await file.writeAsBytes(fileData);
 //   return file;
 // }
-
+// Function to save a PDF file to a temporary directory
   Future<File> savePdfToTemp(Uint8List pdfData) async {
     final tempDir = await getTemporaryDirectory();
     final tempFile = File('${tempDir.path}/temp_pdf.pdf');
@@ -802,6 +829,7 @@ mixin SubscriptionServices {
     return tempFile;
   }
 
+// Function to generate a client requirement
   dynamic generate_client_requirement(context) async {
     // showDialog(
     //   context: context,
@@ -815,7 +843,7 @@ mixin SubscriptionServices {
     // );
     // }
   }
-
+// Function to generate a quote dialogue box
   dynamic GenerateQuote_dialougebox(context, String quoteType, int eventID) async {
     await showDialog(
       context: context,
@@ -880,6 +908,7 @@ mixin SubscriptionServices {
     );
   }
 
+// Function to generate a quote and show a popup
   dynamic generate_quote(context) async {
     // bool confirmed = await GenerateQuote_dialougebox();
 
@@ -901,7 +930,7 @@ mixin SubscriptionServices {
     //   );
     // }
   }
-
+// Function to format a number into a readable string with currency symbols
   String formatNumber(int number) {
     if (number >= 10000000) {
       return "₹ ${(number / 10000000).toStringAsFixed(1)}Cr";
@@ -914,6 +943,7 @@ mixin SubscriptionServices {
     }
   }
 
+// Function to refresh the subscription data and related lists
   Future<void> subscription_refresh() async {
     // _subscriptionController.resetData();
     _subscriptionController.updateshowcustomerprocess(null);
@@ -928,6 +958,7 @@ mixin SubscriptionServices {
     await Get_subscriptionCustomPDFLsit();
   }
 
+// Function to fetch the message type based on WhatsApp and Gmail selection status
   int fetch_messageType() {
     if (_subscriptionController.subscriptionModel.whatsapp_selectionStatus.value && _subscriptionController.subscriptionModel.gmail_selectionStatus.value) return 3;
     if (_subscriptionController.subscriptionModel.whatsapp_selectionStatus.value) return 2;
@@ -936,6 +967,7 @@ mixin SubscriptionServices {
     return 0;
   }
 
+// Function to send a PDF file with the provided context, message type, and PDF file
   dynamic postData_sendPDF(context, int messageType, File pdf) async {
     try {
       Map<String, dynamic> queryString = {

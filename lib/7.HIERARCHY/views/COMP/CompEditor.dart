@@ -6,10 +6,11 @@ import 'package:glassmorphism/glassmorphism.dart';
 import 'package:ssipl_billing/7.HIERARCHY/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/7.HIERARCHY/models/entities/Hierarchy_entities.dart';
 import 'package:ssipl_billing/7.HIERARCHY/services/Company_service.dart';
+import 'package:ssipl_billing/7.HIERARCHY/services/hierarchy_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
-class CompanyEditor extends StatefulWidget with CompanyService {
+class CompanyEditor extends StatefulWidget with CompanyService, HierarchyService {
   final double screenWidth;
   final Rx<CompanysData> data;
   final HierarchyController controller;
@@ -150,8 +151,8 @@ class _CompanyEditorState extends State<CompanyEditor> {
                                 buildTextField("Address", widget.controller.hierarchyModel.comp_addressController.value, false),
                                 buildTextField("Billing address", widget.controller.hierarchyModel.comp_billingaddressController.value, false),
                                 buildTextField("PAN number", widget.controller.hierarchyModel.comp_pannumberController.value, false),
-                                buildTextField("CIN number", widget.controller.hierarchyModel.comp_cinnoController.value, true),
-                                buildTextField("Customer code", widget.controller.hierarchyModel.comp_ccodeController.value, true),
+                                buildTextField("CIN number", widget.controller.hierarchyModel.comp_cinnoController.value, false),
+                                buildTextField("Customer code", widget.controller.hierarchyModel.comp_ccodeController.value, false),
                               ],
                             ),
                           ),
@@ -165,8 +166,8 @@ class _CompanyEditorState extends State<CompanyEditor> {
                             BasicButton(
                               text: "Update",
                               colors: Colors.blue,
-                              onPressed: () {
-                                widget.UpdateKYC(
+                              onPressed: () async {
+                                await widget.UpdateKYC(
                                   context,
                                   widget.controller.hierarchyModel.comp_IdController.value.text,
                                   widget.controller.hierarchyModel.comp_NameController.value.text,
@@ -181,6 +182,10 @@ class _CompanyEditorState extends State<CompanyEditor> {
                                   widget.controller.hierarchyModel.comp_cinnoController.value.text,
                                   widget.controller.hierarchyModel.comp_ccodeController.value.text,
                                 );
+
+                                WidgetsBinding.instance.addPostFrameCallback((_) {
+                                  widget.get_CompanyList(context);
+                                });
                               },
                             ),
                           ],

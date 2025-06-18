@@ -7,7 +7,7 @@ import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 mixin CompanyService {
   final Invoker apiController = Get.find<Invoker>();
 
-  void UpdateKYC(context, String companyid, String companyname, String sitetype, String organizationid, String contactperson, String contactpersonno, String contactemail, String address,
+  Future<void> UpdateKYC(context, String companyid, String companyname, String sitetype, String organizationid, String contactperson, String contactpersonno, String contactemail, String address,
       String billingaddress, String pannumber, String cinno, String customercode) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({

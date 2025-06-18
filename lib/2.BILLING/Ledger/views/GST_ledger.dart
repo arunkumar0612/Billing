@@ -11,7 +11,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/GST_ledger_action.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/controller/view_ledger_action.dart';
-// import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/GST_ledger_entities.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/services/GST_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/services/view_ledger_service.dart';
 import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_PDF_template/GST_ledger_pdf_template.dart';
@@ -19,7 +18,6 @@ import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_excel_template/GST_l
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
-import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/downloadPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/printPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/sharePDF.dart';
@@ -397,7 +395,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                             child: Padding(
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
-                                                gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].description ?? "-",
+                                                gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].clientName ?? "-",
                                                 textAlign: TextAlign.start,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
@@ -912,55 +910,18 @@ class _GSTLedgerState extends State<GSTLedger> {
                                       ),
                                     ),
 
-                                    const SizedBox(width: 40), // Space between buttons
-                                    // Download Button
+                                    const SizedBox(width: 40),
                                     MouseRegion(
                                       cursor: SystemMouseCursors.click,
                                       child: GestureDetector(
                                         onTap: () async {
                                           final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
-                                          Directory tempDir = await getTemporaryDirectory();
                                           String fileName =
                                               ('GST_LEDGER(${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
-                                          String filePath = '${tempDir.path}/$fileName.pdf';
-                                          File file = File(filePath);
-                                          await file.writeAsBytes(pdfBytes);
-                                          downloadPdf(context, fileName, file);
-                                        },
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Image.asset(height: 25, 'assets/images/download.png'),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            const Text(
-                                              "Download",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color.fromARGB(255, 143, 143, 143),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 40), // Space between buttons
-
-                                    MouseRegion(
-                                      cursor: SystemMouseCursors.click,
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
-                                          Directory tempDir = await getTemporaryDirectory();
-                                          String fileName =
-                                              ('GST_LEDGER(${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
-                                          String filePath = '${tempDir.path}/$fileName.pdf';
-                                          File file = File(filePath);
-                                          await file.writeAsBytes(pdfBytes);
-
-                                          PDFviewonly(context, file);
+                                          final directory = await getTemporaryDirectory();
+                                          final filePath = '${directory.path}/$fileName.pdf';
+                                          final pdfFile = await File(filePath).writeAsBytes(pdfBytes);
+                                          showPDF(context, fileName, pdfFile);
                                         },
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
@@ -978,250 +939,105 @@ class _GSTLedgerState extends State<GSTLedger> {
                                           ],
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 40), // Space between buttons
+                                    ), // Space between buttons
                                     // Download Button
+                                    const SizedBox(width: 40), // Space between buttons
+
                                     MouseRegion(
                                       cursor: SystemMouseCursors.click,
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          final excelBytes = await GSTledger_excelTemplate(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
-                                          Directory tempDir = await getTemporaryDirectory();
-                                          String fileName =
-                                              ('GST_LEDGER(${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
-                                          String filePath = '${tempDir.path}/$fileName.pdf';
-                                          File file = File(filePath);
-                                          await file.writeAsBytes(excelBytes);
-                                          downloadExcel(context, fileName, file);
-                                        },
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Image.asset(height: 25, 'assets/images/excel.png'),
-                                            const SizedBox(
-                                              height: 10,
+                                      child: Theme(
+                                        data: Theme.of(context).copyWith(
+                                          popupMenuTheme: PopupMenuThemeData(
+                                            color: Primary_colors.Light, // Dropdown background color
+                                            textStyle: const TextStyle(
+                                              color: Colors.white, // Default text color
+                                              fontSize: 14,
                                             ),
-                                            const Text(
-                                              "Excel",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color.fromARGB(255, 143, 143, 143),
+                                          ),
+                                        ),
+                                        child: PopupMenuButton<String>(
+                                          tooltip: '',
+                                          onSelected: (value) async {
+                                            if (value == 'pdf') {
+                                              final pdfBytes = await generateGSTledger(PdfPageFormat.a4, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
+                                              Directory tempDir = await getTemporaryDirectory();
+                                              String fileName =
+                                                  ('GST_LEDGER(${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
+                                              String filePath = '${tempDir.path}/$fileName.pdf';
+                                              File file = File(filePath);
+                                              await file.writeAsBytes(pdfBytes);
+                                              downloadPdf(context, fileName, file);
+                                            } else if (value == 'excel') {
+                                              final excelBytes = await GSTledger_excelTemplate(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value);
+                                              Directory tempDir = await getTemporaryDirectory();
+                                              String fileName =
+                                                  ('GST_LEDGER(${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
+                                              String filePath = '${tempDir.path}/$fileName.xlsx';
+                                              File file = File(filePath);
+                                              await file.writeAsBytes(excelBytes);
+                                              downloadExcel(context, fileName, file);
+                                            }
+                                          },
+                                          itemBuilder: (context) => [
+                                            PopupMenuItem(
+                                              value: 'pdf',
+                                              child: Row(
+                                                children: [
+                                                  Image.asset('assets/images/pdfdownload.png', width: 20, height: 20),
+                                                  const SizedBox(width: 10),
+                                                  const Text('Download PDF'),
+                                                ],
+                                              ),
+                                            ),
+                                            PopupMenuItem(
+                                              value: 'excel',
+                                              child: Row(
+                                                children: [
+                                                  Image.asset('assets/images/excel.png', width: 20, height: 20),
+                                                  const SizedBox(width: 10),
+                                                  const Text('Download Excel'),
+                                                ],
                                               ),
                                             ),
                                           ],
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Image.asset(
+                                                    'assets/images/download.png',
+                                                    height: 25,
+                                                  ),
+                                                  const SizedBox(width: 4),
+                                                  const Icon(
+                                                    Icons.arrow_drop_down,
+                                                    size: 20,
+                                                    color: Color.fromARGB(255, 143, 143, 143),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 10),
+                                              const Text(
+                                                "Download",
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Color.fromARGB(255, 143, 143, 143),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              // if (gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value != 'Consolidate')
-                              //   Expanded(
-                              //     flex: 3,
-                              //     child: SizedBox(
-                              //       child: Row(
-                              //         children: [
-                              //           const SizedBox(width: 10),
-                              //           Expanded(
-                              //             flex: 2,
-                              //             child: Stack(
-                              //               children: [
-                              //                 // Bottom shadow for the recessed effect
-                              //                 Text(
-                              //                   'Rs. 2389',
-                              //                   style: TextStyle(
-                              //                     fontSize: 17,
-                              //                     fontWeight: FontWeight.bold,
-                              //                     letterSpacing: 2,
-                              //                     color: Colors.white.withOpacity(0.2),
-                              //                     shadows: const [
-                              //                       Shadow(
-                              //                         offset: Offset(2, 2),
-                              //                         blurRadius: 2,
-                              //                         color: Colors.black,
-                              //                       ),
-                              //                     ],
-                              //                   ),
-                              //                 ),
-                              //                 // Top layer to give the 3D embossed effect
-                              //                 Text(
-                              //                   'Rs. 2389',
-                              //                   style: TextStyle(
-                              //                     fontSize: 17,
-                              //                     fontWeight: FontWeight.bold,
-                              //                     letterSpacing: 2,
-                              //                     foreground: Paint()
-                              //                       ..shader = LinearGradient(
-                              //                         colors: [
-                              //                           Colors.black.withOpacity(0.8),
-                              //                           const Color.fromARGB(255, 255, 223, 0),
-                              //                         ],
-                              //                         begin: Alignment.topLeft,
-                              //                         end: Alignment.bottomRight,
-                              //                       ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
-                              //                   ),
-                              //                 ),
-                              //               ],
-                              //             ),
-                              //           ),
-                              //           Expanded(
-                              //             flex: 2,
-                              //             child: Stack(
-                              //               children: [
-                              //                 // Bottom shadow for the recessed effect
-                              //                 Text(
-                              //                   'Rs. 2389',
-                              //                   style: TextStyle(
-                              //                     fontSize: 17,
-                              //                     fontWeight: FontWeight.bold,
-                              //                     letterSpacing: 2,
-                              //                     color: Colors.white.withOpacity(0.2),
-                              //                     shadows: const [
-                              //                       Shadow(
-                              //                         offset: Offset(2, 2),
-                              //                         blurRadius: 2,
-                              //                         color: Colors.black,
-                              //                       ),
-                              //                     ],
-                              //                   ),
-                              //                 ),
-                              //                 // Top layer to give the 3D embossed effect
-                              //                 Text(
-                              //                   'Rs. 2389',
-                              //                   style: TextStyle(
-                              //                     fontSize: 17,
-                              //                     fontWeight: FontWeight.bold,
-                              //                     letterSpacing: 2,
-                              //                     foreground: Paint()
-                              //                       ..shader = LinearGradient(
-                              //                         colors: [
-                              //                           Colors.black.withOpacity(0.8),
-                              //                           const Color.fromARGB(255, 255, 223, 0),
-                              //                         ],
-                              //                         begin: Alignment.topLeft,
-                              //                         end: Alignment.bottomRight,
-                              //                       ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
-                              //                   ),
-                              //                 ),
-                              //               ],
-                              //             ),
-                              //           ),
-                              //           Expanded(
-                              //             flex: 2,
-                              //             child: Stack(
-                              //               children: [
-                              //                 // Bottom shadow for the recessed effect
-                              //                 Text(
-                              //                   'Rs. 2389',
-                              //                   style: TextStyle(
-                              //                     fontSize: 17,
-                              //                     fontWeight: FontWeight.bold,
-                              //                     letterSpacing: 2,
-                              //                     color: Colors.white.withOpacity(0.2),
-                              //                     shadows: const [
-                              //                       Shadow(
-                              //                         offset: Offset(2, 2),
-                              //                         blurRadius: 2,
-                              //                         color: Colors.black,
-                              //                       ),
-                              //                     ],
-                              //                   ),
-                              //                 ),
-                              //                 // Top layer to give the 3D embossed effect
-                              //                 Text(
-                              //                   'Rs. 2389',
-                              //                   style: TextStyle(
-                              //                     fontSize: 17,
-                              //                     fontWeight: FontWeight.bold,
-                              //                     letterSpacing: 2,
-                              //                     foreground: Paint()
-                              //                       ..shader = LinearGradient(
-                              //                         colors: [
-                              //                           Colors.black.withOpacity(0.8),
-                              //                           const Color.fromARGB(255, 255, 223, 0),
-                              //                         ],
-                              //                         begin: Alignment.topLeft,
-                              //                         end: Alignment.bottomRight,
-                              //                       ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
-                              //                   ),
-                              //                 ),
-                              //               ],
-                              //             ),
-                              //           ),
-                              //           Expanded(
-                              //             flex: 2,
-                              //             child: Stack(
-                              //               children: [
-                              //                 // Bottom shadow for the recessed effect
-                              //                 Text(
-                              //                   '- Rs.2389',
-                              //                   style: TextStyle(
-                              //                     fontSize: 17,
-                              //                     fontWeight: FontWeight.bold,
-                              //                     letterSpacing: 2,
-                              //                     color: Colors.white.withOpacity(0.2),
-                              //                     shadows: const [
-                              //                       Shadow(
-                              //                         offset: Offset(2, 2),
-                              //                         blurRadius: 2,
-                              //                         color: Colors.black,
-                              //                       ),
-                              //                     ],
-                              //                   ),
-                              //                 ),
-                              //                 // Top layer to give the 3D embossed effect
-                              //                 Text(
-                              //                   '- Rs.2389',
-                              //                   style: TextStyle(
-                              //                     fontSize: 17,
-                              //                     fontWeight: FontWeight.bold,
-                              //                     letterSpacing: 2,
-                              //                     foreground: Paint()
-                              //                       ..shader = LinearGradient(
-                              //                         colors: [
-                              //                           Colors.black.withOpacity(0.8),
-                              //                           const Color.fromARGB(255, 255, 223, 0),
-                              //                         ],
-                              //                         begin: Alignment.topLeft,
-                              //                         end: Alignment.bottomRight,
-                              //                       ).createShader(const Rect.fromLTWH(0, 0, 200, 100)),
-                              //                   ),
-                              //                 ),
-                              //               ],
-                              //             ),
-                              //           ),
-                              //         ],
-                              //       ),
-                              //     ),
-                              //   ),
                             ],
                           ),
                         ),
-                        // if (gst_ledgerController.gst_LedgerModel.gst_LedgerSelectedFilter.value.GSTtype.value != 'Consolidate')
-                        //   Column(
-                        //     children: [
-                        //       const SizedBox(height: 10),
-                        //       Row(
-                        //         children: [
-                        //           const SizedBox(width: 20),
-                        //           Expanded(
-                        //             flex: 11,
-                        //             child: Container(),
-                        //           ),
-                        //           Expanded(
-                        //             flex: 3,
-                        //             child: SizedBox(
-                        //               height: 5,
-                        //               child: CustomPaint(
-                        //                 painter: DottedLinePainter(),
-                        //               ),
-                        //             ),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //     ],
-                        //   ),
                       ],
                     )
                   : Center(
@@ -1270,7 +1086,7 @@ class _GSTLedgerState extends State<GSTLedger> {
   }
 }
 
-class GST_ledger_filter extends StatefulWidget with GST_LedgerService {
+class GST_ledger_filter extends StatefulWidget with GST_LedgerService, main_BillingService {
   GST_ledger_filter({super.key});
 
   @override
@@ -1686,7 +1502,7 @@ class _GST_ledger_filterState extends State<GST_ledger_filter> {
                         controller: GST_ledgerController.gst_LedgerModel.startDateController.value,
                         readOnly: true,
                         onTap: () async {
-                          await widget.selectfilterDate(context, GST_ledgerController.gst_LedgerModel.startDateController.value);
+                          await widget.select_previousDates(context, GST_ledgerController.gst_LedgerModel.startDateController.value);
                           // await widget.get_GST_ledgerList();
                           GST_ledgerController.gst_LedgerModel.startDateController.refresh();
                         },
@@ -1717,7 +1533,7 @@ class _GST_ledger_filterState extends State<GST_ledger_filter> {
                         controller: GST_ledgerController.gst_LedgerModel.endDateController.value,
                         readOnly: true,
                         onTap: () async {
-                          await widget.selectfilterDate(context, GST_ledgerController.gst_LedgerModel.endDateController.value);
+                          await widget.select_previousDates(context, GST_ledgerController.gst_LedgerModel.endDateController.value);
                           GST_ledgerController.gst_LedgerModel.endDateController.refresh();
                           // await widget.get_GST_ledgerList();
                         },

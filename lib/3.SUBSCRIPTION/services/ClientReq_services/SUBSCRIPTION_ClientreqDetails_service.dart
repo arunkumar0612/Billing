@@ -12,10 +12,12 @@ mixin SUBSCRIPTION_ClientreqDetailsService {
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final SUBSCRIPTION_ClientreqController clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
+  // Function to handle the next tab action
   void nextTab(context) async {
     clientreqController.nextTab();
   }
 
+// Function to get the  organization List
   void get_OrganizationList(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_fetchOrg_list);
@@ -35,6 +37,8 @@ mixin SUBSCRIPTION_ClientreqDetailsService {
       Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
+
+// Function to get the company list based on the selected organization
 
   void get_CompanyList(context, int org_id) async {
     try {
@@ -56,6 +60,8 @@ mixin SUBSCRIPTION_ClientreqDetailsService {
     }
   }
 
+// Function to get the branch list based on the selected company
+  // void get_BranchList(context, int comp_id) async {
   void on_Orgselected(context, Orgname) {
     // clientreqController.clear_CompanyName();
     // clientreqController.clientReqModel.organizationList.clear();
@@ -67,6 +73,7 @@ mixin SUBSCRIPTION_ClientreqDetailsService {
     get_CompanyList(context, id!);
   }
 
+// Function to get the branch list based on the selected company
   void on_Compselected(context, Compname) {
     // int? id = clientreqController.clientReqModel.CompanyList
     //     .firstWhere(
@@ -105,7 +112,7 @@ mixin SUBSCRIPTION_ClientreqDetailsService {
   //   get_BranchList(context, id!);
   //   // get_CompanyList(context, id!);
   // }
-
+// Function to get the branch list based on the selected company
   Future<void> MORaction(context) async {
     bool pickedStatus = await clientreqController.pickFile(context);
     if (pickedStatus) {
@@ -116,6 +123,7 @@ mixin SUBSCRIPTION_ClientreqDetailsService {
   }
 
 // 9500753815
+// Function to upload the MOR file
   void uploadMor(context, File file) async {
     try {
       Map<String, dynamic>? response = await apiController.multiPart(file, API.subscription_Upload_MOR_API);

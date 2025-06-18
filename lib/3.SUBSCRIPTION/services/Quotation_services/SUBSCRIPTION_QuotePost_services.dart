@@ -22,6 +22,8 @@ mixin SUBSCRIPTION_QuotePostServices {
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
   final Invoker apiController = Get.find<Invoker>();
   final loader = LoadingOverlay();
+// Function to control the animation of the PDF loading
+  /// This function controls the animation of the PDF loading.
   void animation_control() async {
     // await Future.delayed(const Duration(milliseconds: 200));
     quoteController.setpdfLoading(false);
@@ -34,6 +36,8 @@ mixin SUBSCRIPTION_QuotePostServices {
     quoteController.setpdfLoading(true);
   }
 
+// Function to print the selected PDF
+  /// This function prints the selected PDF file.
   Future<void> printPdf() async {
     if (kDebugMode) {
       print('Selected PDF Path: ${quoteController.quoteModel.selectedPdf.value}');
@@ -53,6 +57,8 @@ mixin SUBSCRIPTION_QuotePostServices {
     }
   }
 
+// Function to post the quote data
+  /// This function posts the quote data to the server.
   dynamic postData(context, int messageType, String eventtype) async {
     try {
       if (quoteController.postDatavalidation()) {
@@ -95,6 +101,8 @@ mixin SUBSCRIPTION_QuotePostServices {
     }
   }
 
+// Function to send the data to the server
+  /// This function sends the data to the server using the API controller.
   dynamic send_data(context, String jsonData, File file, String eventtype) async {
     try {
       Map<String, dynamic>? response = await apiController.Multer(

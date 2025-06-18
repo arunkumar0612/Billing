@@ -19,7 +19,7 @@ mixin SUBSCRIPTION_QuotenotesService {
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
-
+// Function to handle the next tab action
   void addtable_row(context) {
     // quoteController.updateRec_ValueControllerText(quoteController.quoteModel.recommendationHeadingController.value.text);
     bool exists = quoteController.quoteModel.Quote_recommendationList.any((note) => note.key == quoteController.quoteModel.recommendationKeyController.value.text);
@@ -32,6 +32,7 @@ mixin SUBSCRIPTION_QuotenotesService {
     cleartable_Fields();
   }
 
+// Function to handle the next tab action
   void updatenote() {
     if (quoteController.quoteModel.noteformKey.value.currentState?.validate() ?? false) {
       quoteController.updateNoteList(quoteController.quoteModel.notecontentController.value.text, quoteController.quoteModel.note_editIndex.value!);
@@ -40,6 +41,8 @@ mixin SUBSCRIPTION_QuotenotesService {
     }
   }
 
+// Function to update a table row
+  /// This function updates a table row in the quote model.
   void updatetable() {
     quoteController.updateRecommendation(
         index: quoteController.quoteModel.recommendation_editIndex.value!,
@@ -49,11 +52,15 @@ mixin SUBSCRIPTION_QuotenotesService {
     quoteController.updateRecommendationEditindex(null);
   }
 
+// Function to edit a note
+  /// This function updates the note content and sets the edit index for the note.
   void editnote(int index) {
     quoteController.updateNoteContentControllerText(quoteController.quoteModel.Quote_noteList[index]);
     quoteController.updateNoteEditindex(index);
   }
 
+// Function to edit a table row
+  /// This function updates the key and value controllers with the data from the selected recommendation.
   void editnotetable(int index) {
     final note = quoteController.quoteModel.Quote_recommendationList[index];
     quoteController.updateRec_KeyControllerText(note.key.toString());
@@ -61,6 +68,8 @@ mixin SUBSCRIPTION_QuotenotesService {
     quoteController.updateRecommendationEditindex(index);
   }
 
+// Function to delete a note
+  /// This function removes a note from the quote model's note list.
   void resetEditingStateNote() {
     () {
       clearnoteFields();
@@ -70,15 +79,23 @@ mixin SUBSCRIPTION_QuotenotesService {
     };
   }
 
+// Function to clear the note fields
+  /// This function clears the note content controller's text.
+  /// It is used to reset the note input field after adding or updating a note.
   void clearnoteFields() {
     quoteController.quoteModel.notecontentController.value.clear();
   }
 
+// Function to clear the table fields
+  /// This function clears the recommendation key and value controllers' text.
   void cleartable_Fields() {
     quoteController.quoteModel.recommendationKeyController.value.clear();
     quoteController.quoteModel.recommendationValueController.value.clear();
   }
 
+// Function to add a note
+  /// This function validates the note form, checks for duplicate notes,
+  /// and adds a new note to the quote model's note list if it passes validation.
   void addNotes(context) {
     if (quoteController.quoteModel.noteformKey.value.currentState?.validate() ?? false) {
       bool exists = quoteController.quoteModel.Quote_noteList.any((note) => note == quoteController.quoteModel.notecontentController.value.text);
@@ -91,6 +108,10 @@ mixin SUBSCRIPTION_QuotenotesService {
     }
   }
 
+// Function to save the PDF to cache
+  /// This function generates a PDF from the quote data and saves it to the cache directory.
+  /// It constructs the quote data as a map, including details like date, quote number, GSTIN, address details, package mapped sites, and notes.
+  /// It then generates the PDF using the `SUBSCRIPTION_generate_Quote` function and saves it to a temporary directory.
   Future<void> savePdfToCache(context) async {
     // Constructing the data as a map
     List<Package> package_details = [];
@@ -100,7 +121,9 @@ mixin SUBSCRIPTION_QuotenotesService {
       for (int j = 0; j < quoteController.quoteModel.selectedPackagesList[i].sites.length; j++) {
         Site data = quoteController.quoteModel.selectedPackagesList[i].sites[j];
         Package sub = quoteController.quoteModel.selectedPackagesList[i];
-        amounts.add(int.parse(sub.amount));
+        amounts.add(
+          int.parse(sub.amount),
+        );
         siteData.add(data);
         package_details.add(sub);
       }

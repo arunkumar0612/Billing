@@ -13,7 +13,7 @@ class ExcelAccountLedger {
   });
 }
 
-Future<Uint8List> generateExcel(bool useLedgerTemplate, PDF_AccountLedgerSummary data) {
+Future<Uint8List> accountLedger_generateExcel(bool useLedgerTemplate, PDF_AccountLedgerSummary data) {
   return useLedgerTemplate ? Client_AccountLedger_excelTemplate(data) : Consolidated_AccountLedger_excelTemplate(data); // Define another template function
 }
 

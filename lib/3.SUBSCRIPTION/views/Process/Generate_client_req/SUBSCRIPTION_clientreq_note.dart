@@ -10,14 +10,13 @@ import 'package:ssipl_billing/THEMES/style.dart';
 class SUBSCRIPTION_ClientreqNote extends StatefulWidget with SUBSCRIPTION_ClientreqNoteService {
   final String? customer_type;
   SUBSCRIPTION_ClientreqNote({super.key, required this.customer_type});
-
   @override
   State<SUBSCRIPTION_ClientreqNote> createState() => _SUBSCRIPTION_ClientreqNoteState();
 }
 
 class _SUBSCRIPTION_ClientreqNoteState extends State<SUBSCRIPTION_ClientreqNote> {
   final SUBSCRIPTION_ClientreqController clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
-
+// Function to clear the note fields
   Widget Clientreq_noteLists() {
     return ListView.builder(
       itemCount: clientreqController.clientReqModel.clientReqNoteList.length,
@@ -39,11 +38,12 @@ class _SUBSCRIPTION_ClientreqNoteState extends State<SUBSCRIPTION_ClientreqNote>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Padding(
-                        padding: EdgeInsets.only(left: 10, top: 5),
-                        child: Icon(
-                          Icons.circle,
-                          size: 5,
-                        )),
+                      padding: EdgeInsets.only(left: 10, top: 5),
+                      child: Icon(
+                        Icons.circle,
+                        size: 5,
+                      ),
+                    ),
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10),
@@ -77,6 +77,7 @@ class _SUBSCRIPTION_ClientreqNoteState extends State<SUBSCRIPTION_ClientreqNote>
     );
   }
 
+// Function to display the recommendation table
   RecommendationTable() {
     return ListView.builder(
         itemCount: clientreqController.clientReqModel.clientReqRecommendationList.length,

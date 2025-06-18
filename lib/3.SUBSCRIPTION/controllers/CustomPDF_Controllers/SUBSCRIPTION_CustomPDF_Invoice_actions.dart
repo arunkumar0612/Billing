@@ -21,28 +21,40 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     totalcaculationTable();
   }
 
+  // Initialize checkboxes for each site
+  /// This function initializes the checkbox values for each site in the manual Invoice sites list
   void initializeCheckboxes() {
     pdfModel.value.checkboxValues.assignAll(List.generate(pdfModel.value.manualInvoicesites.length, (index) => false));
   }
 
+// Function to validate the form
+  /// This function validates the form using the GlobalKey<FormState> stored in pdfModel
   void validate() {
     pdfModel.value.allData_key.value.currentState?.validate();
   }
 
+// Function to add a new note
+  /// This function adds a new note to the pdfModel and initializes a TextEditingController for it
   void add_Note() {
     pdfModel.value.notecontent.add(""); // Add empty note
     pdfModel.value.noteControllers.add(TextEditingController()); // Add controller
     pdfModel.refresh();
   }
 
+// Function to toggle the visibility of the CC email field
+  /// This function toggles the visibility of the CC email field based on the provided value
   void toggleCCemailvisibility(bool value) {
     pdfModel.value.CCemailToggle.value = value;
   }
 
+// Function to set the loading state for PDF generation
+  /// This function sets the loading state for PDF generation
   void setpdfLoading(bool value) {
     pdfModel.value.ispdfLoading.value = value;
   }
 
+// Function to pick a file using the FilePicker package
+  /// This function allows the user to pick a file using the FilePicker package.
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -77,14 +89,20 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
   }
 
   // Toggle loading state
+  /// This function sets the loading state for PDF generation.
+  /// It updates the isLoading property of the pdfModel to the provided value.
   void setLoading(bool value) {
     pdfModel.value.isLoading.value = value;
   }
 
+// Function to check if the GSTIN is valid for local GST
+  /// This function checks if the provided GSTIN is valid for local GST.
   void setGSTtype(bool value) {
     pdfModel.value.isGST_local.value = value;
   }
 
+// Function to start the progress indicator
+  /// This function simulates a progress indicator by updating the progress value from 0 to 1 over a period of time.
   Future<void> startProgress() async {
     setLoading(true);
     pdfModel.value.progress.value = 0.0;
@@ -97,6 +115,8 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     setLoading(false);
   }
 
+// Function to initialize text controllers for each site
+  /// This function initializes text controllers for each site in the manualInvoicesites list.
   void initializeTextControllers() {
     pdfModel.value.textControllers.assignAll(
       pdfModel.value.manualInvoicesites.asMap().entries.map((entry) {
@@ -114,16 +134,22 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     );
   }
 
+// Function to update the note content at a specific index
+  /// This function updates the note content at the specified index in the notecontent list.
   void update_noteCotent(value, index) {
     pdfModel.value.notecontent[index] = value;
   }
 
+// Function to update the note controller text at a specific index
+  /// This function updates the text of the note controller at the specified index.
   void deleteNote(int index) {
     pdfModel.value.noteControllers.removeAt(index);
     pdfModel.value.notecontent.removeAt(index);
     pdfModel.refresh();
   }
 
+// Function to update a cell in the manualInvoicesites list
+  /// This function updates a specific cell in the manualInvoicesites list based on the row and column index.
   void updateCell(int rowIndex, int colIndex, String value) {
     final site = pdfModel.value.manualInvoicesites[rowIndex];
 
@@ -156,11 +182,11 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     pdfModel.refresh();
   }
 
+// Function to calculate the total for a specific row
+  /// This function calculates the total for a specific row based on the monthly charges.
   void calculateTotal(int rowIndex) {
     final site = pdfModel.value.manualInvoicesites[rowIndex];
-
     final newTotal = site.monthlyCharges;
-
     site.monthlyCharges = newTotal;
     pdfModel.value.textControllers[rowIndex][4].text = newTotal.toString();
     finalCalc();
@@ -168,14 +194,17 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     pdfModel.refresh();
   }
 
+// Function to fetch the message type based on selection status
+  /// This function determines the message type based on the selection status of WhatsApp and Gmail.
   int fetch_messageType() {
     if (pdfModel.value.whatsapp_selectionStatus.value && pdfModel.value.gmail_selectionStatus.value) return 3;
     if (pdfModel.value.whatsapp_selectionStatus.value) return 2;
     if (pdfModel.value.gmail_selectionStatus.value) return 1;
-
     return 0;
   }
 
+// Function to format currency with rounded paisa
+  /// This function formats the given amount to a currency string with rounded paisa.
   void finalCalc() {
     double addedSubTotal = 0.0;
     double addedIGST = 0.0;
@@ -213,6 +242,8 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     pdfModel.refresh();
   }
 
+// Function to calculate the difference between the rounded off value and the total
+  /// This function calculates the difference between the rounded off value and the total amount.
   void totalcaculationTable() {
     // Parse values with proper error handling
     final previousdues = double.tryParse(pdfModel.value.previousdues.value.text.replaceAll(',', '')) ?? 0;
@@ -301,7 +332,8 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
 
   //   pdfModel.value.allData_key.value = GlobalKey<FormState>();
   // }
-
+// Function to validate the data before submission
+  /// This function checks if any of the required fields are empty or null.
   bool postDatavalidation() {
     return (pdfModel.value.billingName.value.text.isEmpty ||
         pdfModel.value.billingAddress.value.text.isEmpty ||
@@ -315,6 +347,8 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
         pdfModel.value.date.value.text.isEmpty);
   } // If any one is empty or null, then it returns true
 
+// Function to reset all data in the pdfModel
+  /// This function resets all data in the pdfModel to their initial values.
   void resetData() {
     pdfModel.value.date.value.clear();
     pdfModel.value.manualinvoiceNo.value.clear();

@@ -6,10 +6,11 @@ import 'package:glassmorphism/glassmorphism.dart';
 import 'package:ssipl_billing/7.HIERARCHY/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/7.HIERARCHY/models/entities/Hierarchy_entities.dart';
 import 'package:ssipl_billing/7.HIERARCHY/services/Organization_service.dart';
+import 'package:ssipl_billing/7.HIERARCHY/services/hierarchy_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
-class OrganizationEditor extends StatefulWidget with OrganizationService {
+class OrganizationEditor extends StatefulWidget with OrganizationService, HierarchyService {
   final double screenWidth;
   final Rx<OrganizationsData> data;
   final HierarchyController controller;
@@ -139,8 +140,8 @@ class _OrganizationEditorState extends State<OrganizationEditor> {
                               children: [
                                 buildTextField("Organization ID", widget.controller.hierarchyModel.org_IdController.value, true),
                                 buildTextField("Email ID", widget.controller.hierarchyModel.org_emailIdController.value, false),
-                                buildTextField("Organization Name", widget.controller.hierarchyModel.org_NameController.value, true),
-                                buildTextField("Org Code", widget.controller.hierarchyModel.org_CodeController.value, true),
+                                buildTextField("Organization Name", widget.controller.hierarchyModel.org_NameController.value, false),
+                                buildTextField("Org Code", widget.controller.hierarchyModel.org_CodeController.value, false),
                                 buildTextField("Address", widget.controller.hierarchyModel.org_addressController.value, false),
                                 buildTextField("Site Type", widget.controller.hierarchyModel.org_siteTypeController.value, true),
                                 buildTextField("Contact No", widget.controller.hierarchyModel.org_contactnoController.value, false),
@@ -158,8 +159,8 @@ class _OrganizationEditorState extends State<OrganizationEditor> {
                             BasicButton(
                                 text: "Update",
                                 colors: Colors.blue,
-                                onPressed: () {
-                                  widget.UpdateKYC(
+                                onPressed: () async {
+                                  await widget.UpdateKYC(
                                     context,
                                     widget.controller.hierarchyModel.org_IdController.value.text,
                                     widget.controller.hierarchyModel.org_NameController.value.text,
@@ -170,6 +171,10 @@ class _OrganizationEditorState extends State<OrganizationEditor> {
                                     widget.controller.hierarchyModel.org_CodeController.value.text == '' ? null : widget.controller.hierarchyModel.org_CodeController.value.text,
                                     widget.controller.hierarchyModel.org_siteTypeController.value.text,
                                   );
+
+                                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                                    widget.get_OrganizationList(context);
+                                  });
                                 }),
                           ],
                         ),

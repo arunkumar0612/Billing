@@ -9,7 +9,6 @@ import 'package:ssipl_billing/API/invoker.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
-import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 mixin Account_LedgerService {
   final Account_LedgerController account_LedgerController = Get.find<Account_LedgerController>();
@@ -42,6 +41,7 @@ mixin Account_LedgerService {
       CMDmResponse value = CMDmResponse.fromJson(response ?? {});
       if (value.code) {
         account_LedgerController.add_Account_Ledger(value);
+
         // print(account_LedgerController.account_LedgerModel.account_Ledger_list[0].billDetails);
         account_LedgerController.update();
       } else {
@@ -62,9 +62,9 @@ mixin Account_LedgerService {
       CustomerInfo clientData = view_LedgerController.view_LedgerModel.subCustomerList.firstWhere((element) => element.customerId == clientID);
       clientDetails = ClientDetails(
         clientName: clientData.customerName,
-        clientAddress: clientData.customerName,
+        clientAddress: clientData.customerAddress,
         GSTIN: clientData.customerGstNo == '' ? '-' : clientData.customerGstNo,
-        PAN: extractPanFromGst(clientData.customerGstNo),
+        PAN: clientData.customerPAN == '' ? '-' : clientData.customerPAN,
         // fromDate: DateTime.parse(account_LedgerController
         //     .account_LedgerModel.account_Ledger_list.value.startdate!),
         // toDate: DateTime.parse(account_LedgerController
@@ -76,9 +76,9 @@ mixin Account_LedgerService {
       CustomerInfo clientData = view_LedgerController.view_LedgerModel.salesCustomerList.firstWhere((element) => element.customerId == clientID);
       clientDetails = ClientDetails(
         clientName: clientData.customerName,
-        clientAddress: clientData.customerName,
+        clientAddress: clientData.customerAddress,
         GSTIN: clientData.customerGstNo == '' ? '-' : clientData.customerGstNo,
-        PAN: extractPanFromGst(clientData.customerGstNo),
+        PAN: clientData.customerPAN == '' ? '-' : clientData.customerPAN,
       );
     } else {
       clientDetails = null;

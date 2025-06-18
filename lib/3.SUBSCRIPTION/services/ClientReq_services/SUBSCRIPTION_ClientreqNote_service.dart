@@ -36,6 +36,8 @@ mixin SUBSCRIPTION_ClientreqNoteService {
     }
   }
 
+// Function to update the note list
+  // This function updates the note in the list if the form is valid
   void updatenote() {
     if (clientreqController.clientReqModel.noteFormKey.value.currentState?.validate() ?? false) {
       clientreqController.updateNoteList(clientreqController.clientReqModel.noteContentController.value.text, clientreqController.clientReqModel.noteEditIndex.value!);
@@ -43,6 +45,7 @@ mixin SUBSCRIPTION_ClientreqNoteService {
       clientreqController.updateNoteEditindex(null);
     }
   }
+// Function to update the recommendation table
 
   void updatetable() {
     clientreqController.updateRecommendation(
@@ -53,11 +56,13 @@ mixin SUBSCRIPTION_ClientreqNoteService {
     clientreqController.updateRecommendationEditindex(null);
   }
 
+// Function to delete a note from the list
   void editnote(int index) {
     clientreqController.updateNoteContentControllerText(clientreqController.clientReqModel.clientReqNoteList[index]);
     clientreqController.updateNoteEditindex(index);
   }
 
+// Function to delete a note from the list
   void editnotetable(int index) {
     final note = clientreqController.clientReqModel.clientReqRecommendationList[index];
     clientreqController.updateRec_KeyControllerText(note.key.toString());
@@ -65,6 +70,7 @@ mixin SUBSCRIPTION_ClientreqNoteService {
     clientreqController.updateRecommendationEditindex(index);
   }
 
+// Function to delete a note from the list
   void resetEditingStateNote() {
     () {
       clearnoteFields();
@@ -74,10 +80,12 @@ mixin SUBSCRIPTION_ClientreqNoteService {
     };
   }
 
+// Function to delete a note from the list
   void clearnoteFields() {
     clientreqController.clientReqModel.noteContentController.value.clear();
   }
 
+// Function to clear the fields in the recommendation table
   void cleartable_Fields() {
     clientreqController.clientReqModel.Rec_KeyController.value.clear();
     clientreqController.clientReqModel.Rec_ValueController.value.clear();

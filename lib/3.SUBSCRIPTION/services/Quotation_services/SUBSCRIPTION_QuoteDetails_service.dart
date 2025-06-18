@@ -11,12 +11,16 @@ mixin SUBSCRIPTION_QuotedetailsService {
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
+
   void nextTab() {
     if (quoteController.quoteModel.detailsKey.value.currentState?.validate() ?? false) {
       quoteController.nextTab();
     }
   }
 
+// Fetch required data for the quote
+  /// This function fetches the required data for the quote based on the event type and event ID.
+  /// It sends a request to the API with the event type and event ID, and updates the quote controller with the response.
   void get_requiredData(context, String eventtype, int eventID) async {
     try {
       Map<String, dynamic> body = {"eventid": eventID, "eventtype": eventtype};
@@ -40,6 +44,9 @@ mixin SUBSCRIPTION_QuotedetailsService {
     }
   }
 
+// Fetch company based packages
+  /// This function fetches company-based packages for the given company ID.
+  /// It sends a request to the API with the company ID and updates the quote controller with the response.
   void get_CompanyBasedPackages(context, int companyid) async {
     try {
       Map<String, dynamic> body = {"companyid": companyid};

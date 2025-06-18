@@ -5,13 +5,27 @@ import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 
 mixin SUBSCRIPTION_QuotesiteService {
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
-
+// Function to clear the fields in the site form
+  /// This function clears the text fields in the site form.
+  /// It clears the site name, camera quantity, and address fields.
+  /// It is used to reset the form fields after adding or updating a site.
+  /// It is called after a site is successfully added or updated.
+  /// It is also used to reset the form when the user is done editing a site.
+  /// It is important to clear the fields to avoid confusion and ensure that the user can enter new data.
+  /// It is a good practice to clear the fields after performing an action to ensure that the form is ready for new input.
+  /// It is called in the addsite and updatesite functions after the site is successfully added or updated.
+  /// It is also called in the resetEditingState function to clear the fields when the user is done editing a site.
+  /// It is a simple function that does not take any parameters and does not return any value.
+  /// It is a part of the SUBSCRIPTION_QuoteSite_services mixin, which contains functions related to site management in the subscription quote process.
+  // It is used to manage the site details in the subscription quote process.
   void clearFields() {
     quoteController.quoteModel.siteNameController.value.clear();
     quoteController.quoteModel.cameraquantityController.value.clear();
     quoteController.quoteModel.addressController.value.clear();
   }
 
+//// Function to add a site
+  /// This function validates the site form, checks for duplicate site names,
   void addsite(context) {
     if (quoteController.quoteModel.siteFormkey.value.currentState?.validate() ?? false) {
       bool exists = quoteController.quoteModel.QuoteSiteDetails.any((site) => site.sitename == quoteController.quoteModel.siteNameController.value.text);
@@ -34,6 +48,12 @@ mixin SUBSCRIPTION_QuotesiteService {
     }
   }
 
+// Function to update a site
+  /// This function validates the site form and updates the site details.
+  /// It checks if the form is valid and if the site name already exists.
+  /// If the site name exists, it shows an error message.
+  /// If the form is valid, it updates the site details and clears the fields.
+  /// It also resets the editing state by setting the edit index to null.
   void updatesite(context) {
     if (quoteController.quoteModel.siteFormkey.value.currentState?.validate() ?? false) {
       quoteController.updateSite(
@@ -51,6 +71,10 @@ mixin SUBSCRIPTION_QuotesiteService {
     }
   }
 
+// Function to delete a site
+  /// This function deletes a site from the quote model.
+  /// It checks if the site index is not null, then removes the site from the list.
+  /// It also resets the editing state by setting the edit index to null.
   void editsite(int index) {
     Site site = quoteController.quoteModel.QuoteSiteDetails[index];
     quoteController.updateSiteName(site.sitename);
@@ -61,6 +85,9 @@ mixin SUBSCRIPTION_QuotesiteService {
     quoteController.updateMailtype(site.mailType);
   }
 
+// Function to reset the editing state
+  /// This function clears the fields and resets the editing state by setting the edit index to null.
+  /// It is used to reset the form when the user is done editing a site.
   void resetEditingState() {
     clearFields();
     quoteController.addSiteEditindex(null);

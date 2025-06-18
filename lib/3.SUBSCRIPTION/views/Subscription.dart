@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:animations/animations.dart';
-// import 'package:dropdown_textfield/dropdown_textfield.dart';d
+// import 'package:dropdown_textfield/dropdown_textfield.dart';
 // import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,23 +28,25 @@ import 'package:ssipl_billing/NOTIFICATION-/NotificationServices.dart';
 import 'package:ssipl_billing/NOTIFICATION-/Notification_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
-
 import '../controllers/Subscription_actions.dart';
 
+/// Main Subscription Client widget that serves as the entry point for the subscription module
+/// Combines multiple controllers and services for subscription management
 class Subscription_Client extends StatefulWidget with SubscriptionServices, BellIconFunction {
   Subscription_Client({super.key});
-
   @override
   _Subscription_ClientState createState() => _Subscription_ClientState();
 }
 
 class _Subscription_ClientState extends State<Subscription_Client> with TickerProviderStateMixin {
+  // Controllers
   final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
   var inst_CustomPDF_Services = SUBSCRIPTION_CustomPDF_Services();
   final SUBSCRIPTION_ClientreqController subscription_clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
   final SUBSCRIPTION_CustomPDF_InvoiceController pdfpopup_controller = Get.find<SUBSCRIPTION_CustomPDF_InvoiceController>();
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
   final NotificationController notificationController = Get.find<NotificationController>();
+  // Services
   var inst = Subscription_CustomPDF_InvoicePDF();
 
   @override
@@ -54,6 +56,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
     super.dispose();
   }
 
+  /// Resets all controller data when widget is disposed
   void resetAll() {
     subscriptionController.resetData();
     subscription_clientreqController.resetData();
@@ -71,35 +74,42 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
     // widget.GetProcesscustomerList(context);
     // widget.GetProcessList(context, 0);
     // widget.GetSubscriptionData(context, subscriptionController.subscriptionModel.subscriptionperiod.value);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.Get_RecurringInvoiceList(null);
-      widget.Get_subscriptionCustomPDFLsit();
-      widget.get_CompanyList();
-      widget.get_GlobalPackageList(context);
-      subscriptionController.updateshowcustomerprocess(null);
-      subscriptionController.updatecustomerId(0);
-      widget.GetProcesscustomerList();
-      widget.GetReccuredcustomerList();
-      widget.GetProcessList(0);
-      widget.GetSubscriptionData(subscriptionController.subscriptionModel.subscriptionperiod.value);
-    });
+// Initialize data after first frame is rendered
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        widget.Get_RecurringInvoiceList(null);
+        widget.Get_subscriptionCustomPDFLsit();
+        widget.get_CompanyList();
+        widget.get_GlobalPackageList(context);
+        subscriptionController.updateshowcustomerprocess(null);
+        subscriptionController.updatecustomerId(0);
+        widget.GetProcesscustomerList();
+        widget.GetReccuredcustomerList();
+        widget.GetProcessList(0);
+        widget.GetSubscriptionData(subscriptionController.subscriptionModel.subscriptionperiod.value);
+      },
+    );
+    // Initialize animation controller
     subscriptionController.subscriptionModel.animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     );
   }
 
+  /// Called when the widget's dependencies change
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
   }
 
+  /// Starts the refresh animation and triggers data refresh
   void _startAnimation() {
     if (!subscriptionController.subscriptionModel.animationController.isAnimating) {
-      subscriptionController.subscriptionModel.animationController.forward(from: 0).then((_) {
-        widget.subscription_refresh();
-      });
+      subscriptionController.subscriptionModel.animationController.forward(from: 0).then(
+        (_) {
+          widget.subscription_refresh();
+        },
+      );
     }
   }
 
@@ -118,7 +128,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
             // width: 1500,
             child: Column(
               children: [
-                // const SizedBox(height: 185, child: cardview()),
+                // Header section with logo and title
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -144,25 +154,28 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                         ),
                       ],
                     ),
+
+                    // Notification and search bar
                     Row(
                       children: [
-                        Obx(() {
-                          return Stack(
-                            children: [
-                              Align(
-                                alignment: Alignment.bottomLeft,
-                                child: MouseRegion(
-                                  onEnter: (_) => notificationController.notificationModel.isHovered.value = true,
-                                  onExit: (_) => notificationController.notificationModel.isHovered.value = false,
-                                  cursor: SystemMouseCursors.click,
-                                  child: GestureDetector(
+                        Obx(
+                          () {
+                            return Stack(
+                              children: [
+                                // Notification icon
+                                Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: MouseRegion(
+                                    onEnter: (_) => notificationController.notificationModel.isHovered.value = true,
+                                    onExit: (_) => notificationController.notificationModel.isHovered.value = false,
+                                    cursor: SystemMouseCursors.click,
+                                    child: GestureDetector(
                                       onTap: () => widget.showNotification(context),
                                       child: ShaderMask(
                                         shaderCallback: (Rect bounds) {
                                           return const LinearGradient(
                                             colors:
                                                 // notificationController.notificationModel.notifications.isNotEmpty ?
-
                                                 [Colors.black, Color.fromARGB(164, 255, 191, 0), Colors.amber],
                                             // :  [Colors.amber],
                                             begin: Alignment.topLeft,
@@ -174,35 +187,39 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                           Icons.notifications,
                                           size: 30,
                                         ),
-                                      )),
-                                ),
-                              ),
-                              if (notificationController.notificationModel.notifications.isNotEmpty)
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: Container(
-                                    height: 15,
-                                    width: 15,
-                                    decoration: BoxDecoration(
-                                      color: notificationController.notificationModel.notifications.isNotEmpty ? Colors.red : Colors.blue,
-                                      borderRadius: BorderRadius.circular(50),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        notificationController.notificationModel.notifications.length > 9 ? '9+' : '${notificationController.notificationModel.notifications.length}',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold,
-                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                            ],
-                          );
-                        }),
+                                // Notification badge
+                                if (notificationController.notificationModel.notifications.isNotEmpty)
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: Container(
+                                      height: 15,
+                                      width: 15,
+                                      decoration: BoxDecoration(
+                                        color: notificationController.notificationModel.notifications.isNotEmpty ? Colors.red : Colors.blue,
+                                        borderRadius: BorderRadius.circular(50),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          notificationController.notificationModel.notifications.length > 9 ? '9+' : '${notificationController.notificationModel.notifications.length}',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            );
+                          },
+                        ),
                         const SizedBox(width: 10),
+                        // Refresh button with animation
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
@@ -238,6 +255,8 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                           ),
                         ),
                         const SizedBox(width: 10),
+                        // Search bar
+                        // Using Obx to reactively update the search query
                         Obx(
                           () => SizedBox(
                             width: 400,
@@ -270,6 +289,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                   ),
                                 ),
                                 if (subscriptionController.subscriptionModel.searchQuery.value.isEmpty)
+                                  // Animated text hint when search query is empty
                                   Positioned(
                                     left: 40,
                                     child: IgnorePointer(
@@ -312,15 +332,18 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                   ],
                 ),
                 const SizedBox(height: 10),
+                // Tab bar for switching between charts and process list
                 SizedBox(
                   height: 235,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      // Subscription chart section
                       Expanded(
                         flex: 2,
                         child: Row(
                           children: [
+                            // Subscription chart section
                             Expanded(
                               flex: 2,
                               child: Card(
@@ -338,6 +361,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                       const SizedBox(
                                         height: 20,
                                       ),
+                                      // Subscription chart title
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
@@ -348,6 +372,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                               style: TextStyle(letterSpacing: 1, wordSpacing: 3, color: Primary_colors.Color3, fontSize: Primary_font_size.Text10, fontWeight: FontWeight.bold),
                                             ),
                                           ),
+                                          // Dropdown for selecting data view
                                           Padding(
                                             padding: const EdgeInsets.only(right: 10),
                                             child: SizedBox(
@@ -405,6 +430,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                           )
                                         ],
                                       ),
+                                      // Subscription chart widget
                                       Expanded(
                                         child: Container(
                                           decoration: BoxDecoration(
@@ -428,6 +454,8 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
+                                                // Subscription chart widget
+                                                // Received and Total amounts
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 10),
                                                   child: Column(
@@ -473,6 +501,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                     ],
                                                   ),
                                                 ),
+                                                // Received amounts
                                                 Column(
                                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -516,6 +545,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                     ),
                                                   ],
                                                 ),
+                                                // Pending amounts
                                                 Padding(
                                                   padding: const EdgeInsets.only(right: 10),
                                                   child: Column(
@@ -575,6 +605,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                             const SizedBox(
                               width: 15,
                             ),
+                            // Process list section
                             Expanded(
                               child: Card(
                                 shape: RoundedRectangleBorder(
@@ -589,9 +620,10 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       // First row of icons and labels
-
+// Using a reusable function to build icon with label for consistency
                                       Row(
                                         children: [
+                                          // Add Process button
                                           Expanded(
                                             child: MouseRegion(
                                               cursor: SystemMouseCursors.click,
@@ -604,6 +636,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                   }),
                                             ),
                                           ),
+                                          // Package button
                                           Expanded(
                                             child: MouseRegion(
                                               cursor: SystemMouseCursors.click,
@@ -641,6 +674,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                       // Second row of icons and labels
                                       Row(
                                         children: [
+                                          // Toggle between Archive and Main List
                                           Expanded(
                                             child: Obx(
                                               () => AnimatedSwitcher(
@@ -676,127 +710,119 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                               ),
                                             ),
                                           ),
-                                          // Expanded(
-                                          //   child: _buildIconWithLabel(
-                                          //     image: 'assets/images/article.png',
-                                          //     label: 'Options',
-                                          //     color: Primary_colors.Dark,
-                                          //     onPressed: () {
-                                          //       widget.pdfpopup_controller.initializeTextControllers();
-                                          //       widget.pdfpopup_controller.initializeCheckboxes();
-                                          //       widget.showA4StyledPopup(context);
-                                          //     },
-                                          //   ),
-                                          // ),
+
+                                          // Options button with PopupMenu
                                           Expanded(
                                             child: Column(
                                               children: [
+                                                // Options button with PopupMenu
                                                 MouseRegion(
-                                                    cursor: SystemMouseCursors.click,
-                                                    child: PopupMenuButton<String>(
-                                                      splashRadius: 20,
-                                                      padding: const EdgeInsets.all(0),
-                                                      icon: Image.asset(
-                                                        'assets/images/options.png',
-                                                      ),
-                                                      iconSize: 50,
-                                                      shape: const RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                                                        // side: const BorderSide(color: Primary_colors.Color3, width: 2),
-                                                      ),
-                                                      color: Colors.white,
-                                                      elevation: 6,
-                                                      offset: const Offset(170, 60),
-                                                      onSelected: (String item) async {
-                                                        // Handle menu item selection
+                                                  cursor: SystemMouseCursors.click,
+                                                  child: PopupMenuButton<String>(
+                                                    splashRadius: 20,
+                                                    padding: const EdgeInsets.all(0),
+                                                    icon: Image.asset(
+                                                      'assets/images/options.png',
+                                                    ),
+                                                    iconSize: 50,
+                                                    shape: const RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                                      // side: const BorderSide(color: Primary_colors.Color3, width: 2),
+                                                    ),
+                                                    color: Colors.white,
+                                                    elevation: 6,
+                                                    offset: const Offset(170, 60),
+                                                    onSelected: (String item) async {
+                                                      // Handle menu item selection
 
-                                                        switch (item) {
-                                                          case 'Invoice':
-                                                            pdfpopup_controller.intAll();
-                                                            // inst_CustomPDF_Services.assign_GSTtotals();
-                                                            inst.showA4StyledPopup(context);
-                                                            break;
-                                                          case 'Custom PDF List':
-                                                            () async {
-                                                              showModalBottomSheet(
-                                                                barrierColor: const Color.fromARGB(244, 11, 15, 26),
-                                                                enableDrag: true,
-                                                                backgroundColor: Colors.transparent,
-                                                                context: context,
-                                                                shape: const RoundedRectangleBorder(
-                                                                  borderRadius: BorderRadius.vertical(
-                                                                    top: Radius.circular(20),
+                                                      switch (item) {
+                                                        case 'Invoice':
+                                                          pdfpopup_controller.intAll();
+                                                          // inst_CustomPDF_Services.assign_GSTtotals();
+                                                          inst.showA4StyledPopup(context);
+                                                          break;
+                                                        case 'Custom PDF List':
+                                                          () async {
+                                                            showModalBottomSheet(
+                                                              barrierColor: const Color.fromARGB(244, 11, 15, 26),
+                                                              enableDrag: true,
+                                                              backgroundColor: Colors.transparent,
+                                                              context: context,
+                                                              shape: const RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.vertical(
+                                                                  top: Radius.circular(20),
+                                                                ),
+                                                              ),
+                                                              builder: (BuildContext context) {
+                                                                return SizedBox(
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.only(left: 70, right: 70),
+                                                                    child: customPDF_list(),
                                                                   ),
-                                                                ),
-                                                                builder: (BuildContext context) {
-                                                                  return SizedBox(
-                                                                    child: Padding(
-                                                                      padding: const EdgeInsets.only(left: 70, right: 70),
-                                                                      child: customPDF_list(),
-                                                                    ),
-                                                                  );
-                                                                },
-                                                              );
-                                                            }();
-                                                            break;
-                                                          case 'Import':
-                                                            import_excel obj = import_excel(); // Remove const
-                                                            import_excel.excelData.clear();
-                                                            bool success = await obj.pickExcelFile(context);
-                                                            // print(import_excel.excelData);
-                                                            if (success) {
-                                                              widget.showExcelDataPopup(context, import_excel.excelData);
-                                                            } else {
-                                                              Error_SnackBar(context, "ERROR while picking file, please contact administration!");
-                                                            }
+                                                                );
+                                                              },
+                                                            );
+                                                          }();
+                                                          break;
+                                                        case 'Import':
+                                                          import_excel obj = import_excel(); // Remove const
+                                                          import_excel.excelData.clear();
+                                                          bool success = await obj.pickExcelFile(context);
+                                                          // print(import_excel.excelData);
+                                                          if (success) {
+                                                            widget.showExcelDataPopup(context, import_excel.excelData);
+                                                          } else {
+                                                            Error_SnackBar(context, "ERROR while picking file, please contact administration!");
+                                                          }
 
-                                                            break;
-                                                        }
-                                                      },
-                                                      itemBuilder: (BuildContext context) {
-                                                        // Determine the label for the archive/unarchive action
+                                                          break;
+                                                      }
+                                                    },
+                                                    itemBuilder: (BuildContext context) {
+                                                      // Determine the label for the archive/unarchive action
 
-                                                        return [
-                                                          PopupMenuItem<String>(
-                                                            value: "Invoice",
-                                                            child: ListTile(
-                                                              leading: Obx(
-                                                                () => Icon(
-                                                                  subscriptionController.subscriptionModel.type.value != 0
-                                                                      ? Icons.receipt_long // Used for invoices or bills
-                                                                      : Icons.archive_outlined, // Fallback to archive icon
-                                                                  color: Colors.blueAccent,
-                                                                ),
-                                                              ),
-                                                              title: const Text(
-                                                                'Invoice',
-                                                                style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                      return [
+                                                        PopupMenuItem<String>(
+                                                          value: "Invoice",
+                                                          child: ListTile(
+                                                            leading: Obx(
+                                                              () => Icon(
+                                                                subscriptionController.subscriptionModel.type.value != 0
+                                                                    ? Icons.receipt_long // Used for invoices or bills
+                                                                    : Icons.archive_outlined, // Fallback to archive icon
+                                                                color: Colors.blueAccent,
                                                               ),
                                                             ),
-                                                          ),
-                                                          const PopupMenuItem<String>(
-                                                            value: 'Custom PDF List',
-                                                            child: ListTile(
-                                                              leading: Icon(Icons.picture_as_pdf, color: Colors.redAccent), // Better represents a custom list
-                                                              title: Text(
-                                                                'Custom PDF List',
-                                                                style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
-                                                              ),
+                                                            title: const Text(
+                                                              'Invoice',
+                                                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
                                                             ),
                                                           ),
-                                                          const PopupMenuItem<String>(
-                                                            value: 'Import',
-                                                            child: ListTile(
-                                                              leading: Icon(Icons.file_download_outlined, color: Colors.green), // Represents import action
-                                                              title: Text(
-                                                                'Import',
-                                                                style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
-                                                              ),
+                                                        ),
+                                                        const PopupMenuItem<String>(
+                                                          value: 'Custom PDF List',
+                                                          child: ListTile(
+                                                            leading: Icon(Icons.picture_as_pdf, color: Colors.redAccent), // Better represents a custom list
+                                                            title: Text(
+                                                              'Custom PDF List',
+                                                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
                                                             ),
                                                           ),
-                                                        ];
-                                                      },
-                                                    )),
+                                                        ),
+                                                        const PopupMenuItem<String>(
+                                                          value: 'Import',
+                                                          child: ListTile(
+                                                            leading: Icon(Icons.file_download_outlined, color: Colors.green), // Represents import action
+                                                            title: Text(
+                                                              'Import',
+                                                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ];
+                                                    },
+                                                  ),
+                                                ),
                                                 const SizedBox(height: 8),
                                                 const Text(
                                                   "Options",
@@ -811,19 +837,6 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                               ],
                                             ),
                                           )
-                                          // Expanded(
-                                          //   child: MouseRegion(
-                                          //     cursor: SystemMouseCursors.click,
-                                          //     child: _buildIconWithLabel(
-                                          //       image: 'assets/images/quotation.png',
-                                          //       label: 'Create Quotation',
-                                          //       color: Primary_colors.Color4,
-                                          //       onPressed: () {
-                                          //         // widget.Generate_client_reqirement_dialougebox('Customer', context);
-                                          //       },
-                                          //     ),
-                                          //   ),
-                                          // ),
                                         ],
                                       ),
                                     ],
@@ -837,6 +850,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                         ),
                       ),
                       const SizedBox(width: 15),
+                      // Subscription chart section
                       Expanded(
                         flex: 1,
                         child: Padding(
@@ -861,6 +875,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                   ),
                 ),
                 const SizedBox(height: 10),
+                // TabBar for Invoice and Process
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: SizedBox(
@@ -875,6 +890,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                   ),
                 ),
                 const SizedBox(height: 5),
+                // TabBarView for Invoice and Process
                 Expanded(
                   child: TabBarView(
                     children: [
@@ -891,6 +907,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
     );
   }
 
+// Function to build icon with label for consistency
   Widget SubscriptionProcess() {
     final theme = Theme.of(context);
     return Row(
@@ -898,7 +915,10 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
         Expanded(
           flex: 2,
           child: Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Primary_colors.Light),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: Primary_colors.Light,
+            ),
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
@@ -908,6 +928,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      // Title for the process list
                       Padding(
                         padding: const EdgeInsets.only(left: 15),
                         child: Obx(
@@ -922,126 +943,130 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                           ),
                         ),
                       ),
-                      Obx(() => Row(
-                            children: [
-                              Text(
-                                subscriptionController.subscriptionModel.searchQuery.value.isNotEmpty
-                                    ? 'Found: ${subscriptionController.subscriptionModel.processList.length} Process | Selected: ${subscriptionController.subscriptionModel.selectedIndices.length}'
-                                    : 'Total: ${subscriptionController.subscriptionModel.processList.length} Process | Selected: ${subscriptionController.subscriptionModel.selectedIndices.length}',
-                                style: theme.textTheme.bodyLarge
-                                    ?.copyWith(color: Colors.white, fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text8, letterSpacing: 1.0, overflow: TextOverflow.ellipsis),
-                              ),
-                              const SizedBox(width: 10),
-                              if (subscriptionController.subscriptionModel.selectedIndices.isNotEmpty)
-                                PopupMenuButton<String>(
-                                  splashRadius: 20,
-                                  padding: const EdgeInsets.all(0),
-                                  icon: const Icon(Icons.menu),
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                                    // side: const BorderSide(color: Primary_colors.Color3, width: 2),
-                                  ),
-                                  color: Colors.white,
-                                  elevation: 6,
-                                  offset: const Offset(-10, 30),
-                                  onSelected: (String item) {
-                                    // Handle menu item selection
-
-                                    switch (item) {
-                                      case 'Archive':
-                                        Warning_dialog(
-                                          context: context,
-                                          title: 'Confirmation',
-                                          content: 'Are you sure you want to Archive this process?',
-                                          // showCancel: true,
-                                          onOk: () {
-                                            widget.ArchiveProcesscontrol(
-                                              context,
-                                              subscriptionController.subscriptionModel.selectedIndices.map((index) => subscriptionController.subscriptionModel.processList[index].processid).toList(),
-                                              1, // 1 for Archive, 0 for Unarchive
-                                            );
-                                          },
-                                        );
-                                        break;
-                                      case 'Unarchive':
-                                        Warning_dialog(
-                                          context: context,
-                                          title: 'Confirmation',
-                                          content: 'Are you sure you want to Unarchive this process?',
-                                          // showCancel: true,
-                                          onOk: () {
-                                            widget.ArchiveProcesscontrol(
-                                              context,
-                                              subscriptionController.subscriptionModel.selectedIndices.map((index) => subscriptionController.subscriptionModel.processList[index].processid).toList(),
-                                              0, // 1 for Archive, 0 for Unarchive
-                                            );
-                                          },
-                                        );
-                                        break;
-                                      case 'Modify':
-                                        Warning_dialog(
-                                          context: context,
-                                          title: 'Error',
-                                          content: 'Unable to modify the process',
-                                          // showCancel: true,
-                                        );
-                                        break;
-                                      case 'Delete':
-                                        Warning_dialog(
-                                          context: context,
-                                          title: 'Confirmation',
-                                          content: 'Are you sure you want to delete this process?',
-                                          // showCancel: true,
-                                          onOk: () {
-                                            widget.DeleteProcess(
-                                              context,
-                                              subscriptionController.subscriptionModel.selectedIndices.map((index) => subscriptionController.subscriptionModel.processList[index].processid).toList(),
-                                            );
-                                          },
-                                        );
-                                        break;
-                                    }
-                                  },
-                                  itemBuilder: (BuildContext context) {
-                                    // Determine the label for the archive/unarchive action
-
-                                    return [
-                                      PopupMenuItem<String>(
-                                        value: subscriptionController.subscriptionModel.type.value != 0 ? 'Unarchive' : 'Archive',
-                                        child: ListTile(
-                                          leading: Icon(
-                                            subscriptionController.subscriptionModel.type.value != 0 ? Icons.unarchive_outlined : Icons.archive_outlined,
-                                            color: Colors.blueAccent,
-                                          ),
-                                          title: Text(
-                                            subscriptionController.subscriptionModel.type.value != 0 ? 'Unarchive' : 'Archive',
-                                            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
-                                          ),
-                                        ),
-                                      ),
-                                      const PopupMenuItem<String>(
-                                        value: 'Modify',
-                                        child: ListTile(
-                                          leading: Icon(Icons.edit_outlined, color: Colors.green),
-                                          title: Text('Modify', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
-                                        ),
-                                      ),
-                                      const PopupMenuItem<String>(
-                                        value: 'Delete',
-                                        child: ListTile(
-                                          leading: Icon(Icons.delete_outline, color: Colors.redAccent),
-                                          title: Text('Delete', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
-                                        ),
-                                      ),
-                                    ];
-                                  },
+                      // Search bar for filtering processes
+                      Obx(
+                        () => Row(
+                          children: [
+                            Text(
+                              subscriptionController.subscriptionModel.searchQuery.value.isNotEmpty
+                                  ? 'Found: ${subscriptionController.subscriptionModel.processList.length} Process | Selected: ${subscriptionController.subscriptionModel.selectedIndices.length}'
+                                  : 'Total: ${subscriptionController.subscriptionModel.processList.length} Process | Selected: ${subscriptionController.subscriptionModel.selectedIndices.length}',
+                              style: theme.textTheme.bodyLarge
+                                  ?.copyWith(color: Colors.white, fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text8, letterSpacing: 1.0, overflow: TextOverflow.ellipsis),
+                            ),
+                            const SizedBox(width: 10),
+                            if (subscriptionController.subscriptionModel.selectedIndices.isNotEmpty)
+                              PopupMenuButton<String>(
+                                splashRadius: 20,
+                                padding: const EdgeInsets.all(0),
+                                icon: const Icon(Icons.menu),
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                  // side: const BorderSide(color: Primary_colors.Color3, width: 2),
                                 ),
-                            ],
-                          )),
+                                color: Colors.white,
+                                elevation: 6,
+                                offset: const Offset(-10, 30),
+                                onSelected: (String item) {
+                                  // Handle menu item selection
+
+                                  switch (item) {
+                                    case 'Archive':
+                                      Warning_dialog(
+                                        context: context,
+                                        title: 'Confirmation',
+                                        content: 'Are you sure you want to Archive this process?',
+                                        // showCancel: true,
+                                        onOk: () {
+                                          widget.ArchiveProcesscontrol(
+                                            context,
+                                            subscriptionController.subscriptionModel.selectedIndices.map((index) => subscriptionController.subscriptionModel.processList[index].processid).toList(),
+                                            1, // 1 for Archive, 0 for Unarchive
+                                          );
+                                        },
+                                      );
+                                      break;
+                                    case 'Unarchive':
+                                      Warning_dialog(
+                                        context: context,
+                                        title: 'Confirmation',
+                                        content: 'Are you sure you want to Unarchive this process?',
+                                        // showCancel: true,
+                                        onOk: () {
+                                          widget.ArchiveProcesscontrol(
+                                            context,
+                                            subscriptionController.subscriptionModel.selectedIndices.map((index) => subscriptionController.subscriptionModel.processList[index].processid).toList(),
+                                            0, // 1 for Archive, 0 for Unarchive
+                                          );
+                                        },
+                                      );
+                                      break;
+                                    case 'Modify':
+                                      Warning_dialog(
+                                        context: context,
+                                        title: 'Error',
+                                        content: 'Unable to modify the process',
+                                        // showCancel: true,
+                                      );
+                                      break;
+                                    case 'Delete':
+                                      Warning_dialog(
+                                        context: context,
+                                        title: 'Confirmation',
+                                        content: 'Are you sure you want to delete this process?',
+                                        // showCancel: true,
+                                        onOk: () {
+                                          widget.DeleteProcess(
+                                            context,
+                                            subscriptionController.subscriptionModel.selectedIndices.map((index) => subscriptionController.subscriptionModel.processList[index].processid).toList(),
+                                          );
+                                        },
+                                      );
+                                      break;
+                                  }
+                                },
+                                itemBuilder: (BuildContext context) {
+                                  // Determine the label for the archive/unarchive action
+
+                                  return [
+                                    PopupMenuItem<String>(
+                                      value: subscriptionController.subscriptionModel.type.value != 0 ? 'Unarchive' : 'Archive',
+                                      child: ListTile(
+                                        leading: Icon(
+                                          subscriptionController.subscriptionModel.type.value != 0 ? Icons.unarchive_outlined : Icons.archive_outlined,
+                                          color: Colors.blueAccent,
+                                        ),
+                                        title: Text(
+                                          subscriptionController.subscriptionModel.type.value != 0 ? 'Unarchive' : 'Archive',
+                                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                        ),
+                                      ),
+                                    ),
+                                    const PopupMenuItem<String>(
+                                      value: 'Modify',
+                                      child: ListTile(
+                                        leading: Icon(Icons.edit_outlined, color: Colors.green),
+                                        title: Text('Modify', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                      ),
+                                    ),
+                                    const PopupMenuItem<String>(
+                                      value: 'Delete',
+                                      child: ListTile(
+                                        leading: Icon(Icons.delete_outline, color: Colors.redAccent),
+                                        title: Text('Delete', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                      ),
+                                    ),
+                                  ];
+                                },
+                              ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 10),
+                // Header row for process list
                 Container(
                   height: 40,
                   decoration: BoxDecoration(
@@ -1109,6 +1134,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                   ),
                 ),
                 const SizedBox(height: 10),
+                // List of processes with expansion tiles
                 Obx(
                   () => Expanded(
                     // child: Container(),
@@ -1133,6 +1159,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                       title: Obx(
                                         () => Row(
                                           children: [
+                                            // Checkbox for selecting processes
                                             Checkbox(
                                               value: subscriptionController.subscriptionModel.selectedIndices.contains(index),
                                               onChanged: (bool? value) {
@@ -1152,6 +1179,9 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                               ),
                                             ),
                                             const SizedBox(width: 20),
+                                            // Process ID, Title, Date, and Days
+                                            // with tooltips for better visibility
+                                            // Process ID with tooltip
                                             Expanded(
                                               flex: 4,
                                               child: Tooltip(
@@ -1167,6 +1197,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                 ),
                                               ),
                                             ),
+                                            // Process Title
                                             Expanded(
                                               flex: 15,
                                               child: Text(
@@ -1175,6 +1206,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
+                                            // Process Date
                                             Expanded(
                                               flex: 4,
                                               child: Text(
@@ -1182,6 +1214,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
                                             ),
+                                            // Process Days
                                             Expanded(
                                               flex: 4,
                                               child: Padding(
@@ -1197,6 +1230,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                         ),
                                       ),
                                       children: [
+                                        // Timeline events for each process
                                         SizedBox(
                                           height: ((subscriptionController.subscriptionModel.processList[index].TimelineEvents.length * 80) + 20).toDouble(),
                                           child: Padding(
@@ -1208,8 +1242,10 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                 return Row(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
+                                                    // Circle with event icon and line
                                                     Column(
                                                       children: [
+                                                        // Circle for event icon
                                                         MouseRegion(
                                                           cursor: SystemMouseCursors.click,
                                                           child: GestureDetector(
@@ -1298,6 +1334,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                             },
                                                           ),
                                                         ),
+                                                        // Vertical line connecting events
                                                         if (childIndex != subscriptionController.subscriptionModel.processList[index].TimelineEvents.length - 1)
                                                           Container(
                                                             width: 2,
@@ -1312,15 +1349,18 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                           ),
                                                       ],
                                                     ),
+                                                    // Expanded section for event details and feedback
                                                     Expanded(
                                                       child: Row(
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
+                                                          // Event details
                                                           Expanded(
                                                             child: Column(
                                                               mainAxisAlignment: MainAxisAlignment.start,
                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
+                                                                // Event name with approval status
                                                                 Padding(
                                                                   padding: const EdgeInsets.only(top: 0, left: 10),
                                                                   child: Row(
@@ -1373,6 +1413,8 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                                   ),
                                                                 ),
                                                                 if (subscriptionController.subscriptionModel.processList[index].TimelineEvents[childIndex].Allowed_process.get_approval == true)
+
+                                                                  // Internal approval status
                                                                   Row(
                                                                     children: [
                                                                       const SizedBox(
@@ -1404,6 +1446,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                                       ),
                                                                     ],
                                                                   ),
+                                                                // Event date
                                                                 Row(
                                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                                   children: [
@@ -1449,6 +1492,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                               ],
                                                             ),
                                                           ),
+                                                          // Feedback input field
                                                           Row(
                                                             children: [
                                                               Container(
@@ -1510,6 +1554,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                 child: Stack(
                                   alignment: Alignment.topCenter,
                                   children: [
+                                    // Animation for empty process list
                                     Padding(
                                       padding: const EdgeInsets.only(top: 0),
                                       child: Lottie.asset(
@@ -1518,6 +1563,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                         height: 150,
                                       ),
                                     ),
+
                                     Padding(
                                       padding: const EdgeInsets.only(top: 164),
                                       child: Text(
@@ -1579,6 +1625,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                         ),
                                       ),
                                     ),
+                                    // Button to toggle between active and archived processes
                                     Padding(
                                       padding: const EdgeInsets.only(top: 250),
                                       child: OutlinedButton(
@@ -1614,6 +1661,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
           ),
         ),
         const SizedBox(width: 20),
+        // Expanded section for the client profile or active customer list
         Expanded(
           flex: 1,
           child: Obx(
@@ -1655,6 +1703,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                               ),
                             ),
                             const SizedBox(height: 10),
+                            // Search bar for filtering customers
                             Expanded(
                               child: Container(
                                 color: Colors.transparent,
@@ -1668,6 +1717,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                           return _buildSubscription_ClientCard(customername, customerid, index);
                                         },
                                       )
+                                    // If no customers are available, show an empty state
                                     : Center(
                                         child: Stack(
                                           alignment: Alignment.topCenter,
@@ -1712,6 +1762,9 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                         ),
                       ),
                     )
+                  // If the profile page is active, show the client profile
+                  // Otherwise, show the active customer list
+                  // If the profile page is active, show the client profile
                   : Container(
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Primary_colors.Light),
                       child: Padding(
@@ -1719,6 +1772,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            // Header for the client profile
                             Padding(
                               padding: const EdgeInsets.only(left: 10, top: 5),
                               child: Row(
@@ -1745,6 +1799,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                 ],
                               ),
                             ),
+                            // Expanded section for the client profile content
                             Expanded(
                               child: Container(
                                 color: Colors.transparent,
@@ -1763,6 +1818,8 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
     );
   }
 
+// Profile page widget
+  // This widget displays the client's profile information, including KYC details and client details.
   Widget _profile_page() {
     return Container(
       // color: Colors.amber,
@@ -1772,6 +1829,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Client profile card
             Container(
               // height: 100,
               decoration: BoxDecoration(color: Primary_colors.Light, borderRadius: BorderRadius.circular(10)),
@@ -1779,6 +1837,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
+                    // Client profile header
                     Container(
                       width: 100,
                       height: 100,
@@ -1811,10 +1870,12 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                       ),
                     ),
                     const SizedBox(height: 10),
+                    // Client profile details
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        // Client name
                         Text(
                           // 'Khivraj Groups',
                           subscriptionController.subscriptionModel.Clientprofile.value?.customername ?? "0",
@@ -1827,6 +1888,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                           ),
                         ),
                         const SizedBox(height: 10),
+                        // Client email address
                         Text(
                           // 'khivrajgroups@gmail.com',
                           subscriptionController.subscriptionModel.Clientprofile.value?.mailid ?? "0",
@@ -1839,6 +1901,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                           ),
                         ),
                         const SizedBox(height: 10),
+                        // Client phone number
                         Text(
                           // '8987656545',
                           subscriptionController.subscriptionModel.Clientprofile.value?.Phonenumber ?? "0",
@@ -1857,11 +1920,13 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
               ),
             ),
             const SizedBox(height: 5),
+            // Divider to separate sections
             const Divider(
               height: 0.2,
               color: Primary_colors.Color7,
             ),
             const SizedBox(height: 5),
+            // KYC details card
             Container(
               // height: 100,
               decoration: BoxDecoration(color: Primary_colors.Light, borderRadius: BorderRadius.circular(10)),
@@ -1881,10 +1946,12 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                       ),
                     ),
                     const SizedBox(height: 20),
+                    // KYC details rows
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        // Client GST number
                         const Expanded(
                           flex: 1,
                           child: Text(
@@ -1898,6 +1965,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                             ),
                           ),
                         ),
+
                         Expanded(
                           flex: 2,
                           child: Text(
@@ -1915,6 +1983,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                       ],
                     ),
                     const SizedBox(height: 15),
+                    // Client Client Address
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1949,6 +2018,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                       ],
                     ),
                     const SizedBox(height: 15),
+                    // Client Address name
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1983,6 +2053,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                       ],
                     ),
                     const SizedBox(height: 15),
+                    // Client Billing Address
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2017,6 +2088,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                       ],
                     ),
                     const SizedBox(height: 15),
+                    // Client Billing Address name
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2055,6 +2127,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
               ),
             ),
             const SizedBox(height: 20),
+            // Client details and process details section
             Row(
               children: [
                 Expanded(
@@ -2077,6 +2150,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                             ),
                           ),
                           const SizedBox(height: 20),
+                          // Client details rows
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -2111,6 +2185,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                             ],
                           ),
                           const SizedBox(height: 15),
+                          // Client details rows
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -2145,6 +2220,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                             ],
                           ),
                           const SizedBox(height: 15),
+                          // Client details rows
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -2184,6 +2260,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                   ),
                 ),
                 const SizedBox(width: 10),
+                // Process details card
                 Expanded(
                   child: Container(
                     // height: 100,
@@ -2318,6 +2395,10 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
     );
   }
 
+// Builds a card for each client in the subscription list
+  // This widget displays the client's name, ID, and a button to view their profile.
+  // It also handles the selection of a client and updates the process list accordingly.
+  // The card changes color when selected to indicate the active client.
   Widget _buildSubscription_ClientCard(String customername, int customerid, int index) {
     return Obx(
       () {
@@ -2413,6 +2494,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
     );
   }
 
+// Builds a row of icons with labels for various actions like "Add Process", "Add Client", etc.
   Widget _buildIconWithLabel({
     required String image,
     required String label,
@@ -2469,10 +2551,12 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
     );
   }
 
+// Displays a list of custom PDFs with options to search, download, share, and view.
   Widget customPDF_list() {
     subscriptionController.clear_sharedata();
-    return Obx(() {
-      return Container(
+    return Obx(
+      () {
+        return Container(
           decoration: const BoxDecoration(
             // color: Primary_colors.Color3,
             borderRadius: BorderRadius.only(
@@ -2609,187 +2693,190 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                 //   color: Primary_colors.Color1,
                 // ),
                 Expanded(
-                    child: subscriptionController.subscriptionModel.customPdfList.isNotEmpty
-                        ? ListView.builder(
-                            itemCount: subscriptionController.subscriptionModel.customPdfList.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                decoration: const BoxDecoration(border: Border(bottom: BorderSide(width: 0.5, color: Color.fromARGB(255, 195, 193, 193)))),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 5),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
+                  child: subscriptionController.subscriptionModel.customPdfList.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: subscriptionController.subscriptionModel.customPdfList.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              decoration: const BoxDecoration(border: Border(bottom: BorderSide(width: 0.5, color: Color.fromARGB(255, 195, 193, 193)))),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 5),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        formatDate(subscriptionController.subscriptionModel.customPdfList[index].date),
+                                        // documentlist[index]['date'],
+                                        style: const TextStyle(
+                                          color: Primary_colors.Color1,
+                                          fontSize: Primary_font_size.Text8,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Center(
                                         child: Text(
-                                          formatDate(subscriptionController.subscriptionModel.customPdfList[index].date),
-                                          // documentlist[index]['date'],
+                                          subscriptionController.subscriptionModel.customPdfList[index].customerAddressName,
+                                          // documentlist[index]['clientname'],
                                           style: const TextStyle(
                                             color: Primary_colors.Color1,
                                             fontSize: Primary_font_size.Text8,
                                           ),
                                         ),
                                       ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Center(
-                                          child: Text(
-                                            subscriptionController.subscriptionModel.customPdfList[index].customerAddressName,
-                                            // documentlist[index]['clientname'],
-                                            style: const TextStyle(
-                                              color: Primary_colors.Color1,
-                                              fontSize: Primary_font_size.Text8,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: Center(
-                                          child: Text(
-                                            subscriptionController.subscriptionModel.customPdfList[index].genId,
-                                            // documentlist[index]['title'],
-                                            style: const TextStyle(
-                                              color: Primary_colors.Color1,
-                                              fontSize: Primary_font_size.Text8,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 5,
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Center(
                                         child: Text(
-                                          subscriptionController.subscriptionModel.customPdfList[index].filePath,
-                                          // documentlist[index]['type'],
+                                          subscriptionController.subscriptionModel.customPdfList[index].genId,
+                                          // documentlist[index]['title'],
                                           style: const TextStyle(
                                             color: Primary_colors.Color1,
                                             fontSize: Primary_font_size.Text8,
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 20,
+                                    ),
+                                    Expanded(
+                                      flex: 5,
+                                      child: Text(
+                                        subscriptionController.subscriptionModel.customPdfList[index].filePath,
+                                        // documentlist[index]['type'],
+                                        style: const TextStyle(
+                                          color: Primary_colors.Color1,
+                                          fontSize: Primary_font_size.Text8,
+                                        ),
                                       ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: IconButton(
-                                            onPressed: () async {
-                                              // File? temp =File(path)
-                                              // File? pdfFile = await widget.savePdfToTemp(subscriptionController.subscriptionModel.custom_pdfFile.value);
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: IconButton(
+                                          onPressed: () async {
+                                            // File? temp =File(path)
+                                            // File? pdfFile = await widget.savePdfToTemp(subscriptionController.subscriptionModel.custom_pdfFile.value);
 
-                                              bool success = await widget.Get_customPDFfile(context, subscriptionController.subscriptionModel.customPdfList[index].customPDFid);
-                                              if (success) {
-                                                downloadPdf(
-                                                    context,
-                                                    subscriptionController.subscriptionModel.customPdfList[index].filePath
-                                                        .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
-                                                        .replaceAll(" ", ""),
-                                                    subscriptionController.subscriptionModel.custom_pdfFile.value);
-                                              } else {
-                                                Error_SnackBar(context, "ERROR occured, Please contact administration!");
-                                              }
-                                            },
-                                            icon: const Icon(
-                                              Icons.download,
-                                              color: Colors.green,
-                                            ),
+                                            bool success = await widget.Get_customPDFfile(context, subscriptionController.subscriptionModel.customPdfList[index].customPDFid);
+                                            if (success) {
+                                              downloadPdf(
+                                                  context,
+                                                  subscriptionController.subscriptionModel.customPdfList[index].filePath
+                                                      .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
+                                                      .replaceAll(" ", ""),
+                                                  subscriptionController.subscriptionModel.custom_pdfFile.value);
+                                            } else {
+                                              Error_SnackBar(context, "ERROR occured, Please contact administration!");
+                                            }
+                                          },
+                                          icon: const Icon(
+                                            Icons.download,
+                                            color: Colors.green,
                                           ),
                                         ),
                                       ),
-                                      Expanded(
-                                        flex: 1,
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: IconButton(
+                                          onPressed: () async {
+                                            await widget.Get_customPDFfile(
+                                              context,
+                                              subscriptionController.subscriptionModel.customPdfList[index].customPDFid,
+                                            );
+
+                                            File? file = subscriptionController.subscriptionModel.custom_pdfFile.value;
+                                            shareAnyPDF(context, file!.absolute.path, file);
+                                          },
+                                          icon: const Icon(
+                                            Icons.share,
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: MouseRegion(
+                                        cursor: SystemMouseCursors.click,
                                         child: Align(
                                           alignment: Alignment.centerLeft,
-                                          child: IconButton(
-                                            onPressed: () async {
-                                              await widget.Get_customPDFfile(
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              bool success = await widget.Get_customPDFfile(
                                                 context,
                                                 subscriptionController.subscriptionModel.customPdfList[index].customPDFid,
                                               );
-
-                                              File? file = subscriptionController.subscriptionModel.custom_pdfFile.value;
-                                              shareAnyPDF(context, file!.absolute.path, file);
+                                              if (success) {
+                                                File? file = subscriptionController.subscriptionModel.custom_pdfFile.value;
+                                                PDFviewonly(context, file);
+                                              } else {
+                                                Error_SnackBar(context, "ERROR, Please contact administration!");
+                                              }
                                             },
-                                            icon: const Icon(
-                                              Icons.share,
-                                              color: Colors.blue,
-                                            ),
+                                            child: Image.asset(height: 40, 'assets/images/pdfdownload.png'),
                                           ),
                                         ),
                                       ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: MouseRegion(
-                                          cursor: SystemMouseCursors.click,
-                                          child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: GestureDetector(
-                                              onTap: () async {
-                                                bool success = await widget.Get_customPDFfile(
-                                                  context,
-                                                  subscriptionController.subscriptionModel.customPdfList[index].customPDFid,
-                                                );
-                                                if (success) {
-                                                  File? file = subscriptionController.subscriptionModel.custom_pdfFile.value;
-                                                  PDFviewonly(context, file);
-                                                } else {
-                                                  Error_SnackBar(context, "ERROR, Please contact administration!");
-                                                }
-                                              },
-                                              child: Image.asset(height: 40, 'assets/images/pdfdownload.png'),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : Center(
+                          child: Stack(
+                            alignment: Alignment.topCenter,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 0),
+                                child: Lottie.asset(
+                                  'assets/animations/JSON/emptyprocesslist.json',
+                                  // width: 264,
+                                  height: 150,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 164),
+                                child: Text(
+                                  'No Custom PDFs Found',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.blueGrey[800],
                                   ),
                                 ),
-                              );
-                            },
-                          )
-                        : Center(
-                            child: Stack(
-                              alignment: Alignment.topCenter,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 0),
-                                  child: Lottie.asset(
-                                    'assets/animations/JSON/emptyprocesslist.json',
-                                    // width: 264,
-                                    height: 150,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 204),
+                                child: Text(
+                                  'Upload or generate a PDF to see it listed here.',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.blueGrey[400],
+                                    height: 1.4,
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 164),
-                                  child: Text(
-                                    'No Custom PDFs Found',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.blueGrey[800],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 204),
-                                  child: Text(
-                                    'Upload or generate a PDF to see it listed here.',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.blueGrey[400],
-                                      height: 1.4,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ))
+                              ),
+                            ],
+                          ),
+                        ),
+                )
               ],
             ),
-          ));
-    });
+          ),
+        );
+      },
+    );
   }
 }

@@ -95,6 +95,7 @@ mixin VoucherService {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           voucherController.voucherModel.subCustomerList.value = value.data.map((e) => CustomerInfo.fromJson(e)).toList();
+
           // print('ijhietjwe${view_LedgerController.view_LedgerModel.subCustomerList}');
           // salesController.addToCustompdfList(value);
         } else {
@@ -174,6 +175,8 @@ mixin VoucherService {
       if (value.code) {
         // print(value.data);
         voucherController.add_Voucher(value);
+        search(voucherController.voucherModel.searchController.value.text);
+
         voucherController.update();
       } else {
         // await Error_dialog(context: context, title: 'ERROR', content: value.message ?? "", onOk: () {});
@@ -213,6 +216,15 @@ mixin VoucherService {
   Future<void> voucher_refresh() async {
     await get_VoucherList();
     voucherController.update();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      resetvoucherFilters();
+      get_VoucherList();
+      Get_SUBcustomerList();
+      Get_SALEScustomerList();
+
+      // Initialize checkboxValues after data is loaded
+      // voucherController.voucherModel.checkboxValues = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false).obs;
+    });
   }
   // dynamic clearVoucher(context, int index) async {
   //   try {
@@ -409,7 +421,7 @@ mixin VoucherService {
     // }
   }
 
-  Future<void> applySearchFilter(String query) async {
+  Future<void> search(String query) async {
     try {
       if (query.isEmpty) {
         voucherController.voucherModel.voucher_list.assignAll(voucherController.voucherModel.ParentVoucher_list);
@@ -450,7 +462,6 @@ mixin VoucherService {
   Future<void> selectfilterDate(BuildContext context, TextEditingController controller) async {
     final DateTime now = DateTime.now();
     final DateTime nextYear = now.add(const Duration(days: 365)); // Limit to next year
-
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: now,
@@ -535,7 +546,8 @@ mixin VoucherService {
   //     ),
   //   );
   // }
-
+// Function to show the custom date range picker
+  // Function to show the custom date range picker
   void showCustomDateRangePicker() {
     voucherController.voucherModel.selectedvouchertype.value = 'Custom range';
   }

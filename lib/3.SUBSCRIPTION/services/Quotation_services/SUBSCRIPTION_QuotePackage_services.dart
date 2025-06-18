@@ -6,7 +6,7 @@ import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 
 mixin SUBSCRIPTION_QuotepackageService {
   final SUBSCRIPTION_QuoteController quoteController = Get.find<SUBSCRIPTION_QuoteController>();
-
+// Function to clear the custom package fields
   void removePackage(Package packageToRemove, BuildContext context) {
     // setState(() {
     quoteController.quoteModel.selectedPackagesList.remove(packageToRemove);
@@ -22,6 +22,7 @@ mixin SUBSCRIPTION_QuotepackageService {
     // });
   }
 
+// Save custom package details
   Future<void> saveCustomPackage(BuildContext context) async {
     if (validateCustomPackage(context)) {
       final customPackage = Package(
@@ -89,6 +90,7 @@ mixin SUBSCRIPTION_QuotepackageService {
     }
   }
 
+// Reset custom package fields
   void resetCustomPackageFields() {
     quoteController.quoteModel.customNameControllers.value.clear();
     quoteController.quoteModel.customDescControllers.value.clear();
@@ -98,6 +100,7 @@ mixin SUBSCRIPTION_QuotepackageService {
     quoteController.quoteModel.subscriptiontype.value = 'company';
   }
 
+// Validate custom package fields
   bool validateCustomPackage(BuildContext context) {
     if (quoteController.quoteModel.customNameControllers.value.text.isEmpty ||
         quoteController.quoteModel.customDescControllers.value.text.isEmpty ||

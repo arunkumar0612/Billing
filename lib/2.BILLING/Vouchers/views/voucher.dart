@@ -26,7 +26,6 @@ import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 class EditableTransactionRow {
   RxBool isEditing;
   TextEditingController controller;
-
   EditableTransactionRow(String initialText)
       : isEditing = false.obs,
         controller = TextEditingController(text: initialText);
@@ -34,7 +33,6 @@ class EditableTransactionRow {
 
 class Voucher extends StatefulWidget with VoucherService, main_BillingService {
   Voucher({super.key});
-
   @override
   State<Voucher> createState() => _VoucherState();
 }
@@ -42,10 +40,8 @@ class Voucher extends StatefulWidget with VoucherService, main_BillingService {
 class _VoucherState extends State<Voucher> {
   final VoucherController voucherController = Get.find<VoucherController>();
   final MainBilling_Controller mainBilling_Controller = Get.find<MainBilling_Controller>();
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final RxList<EditableTransactionRow> editableRows = <EditableTransactionRow>[].obs;
-
   final loader = LoadingOverlay();
   @override
   void initState() {
@@ -59,7 +55,7 @@ class _VoucherState extends State<Voucher> {
   }
 
   bool _initialized = false;
-
+// This flag ensures that the initialization logic runs only once
   void _startInitialization() async {
     if (_initialized) return;
     _initialized = true;
@@ -70,7 +66,6 @@ class _VoucherState extends State<Voucher> {
       await widget.get_VoucherList();
       await widget.Get_SUBcustomerList();
       await widget.Get_SALEScustomerList();
-
       // Initialize checkboxValues after data is loaded
       // voucherController.voucherModel.checkboxValues = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false).obs;
     });
@@ -81,6 +76,7 @@ class _VoucherState extends State<Voucher> {
   final GlobalKey _invoiceCopyKey = GlobalKey();
   final GlobalKey _voucherCopyKey = GlobalKey();
   final GlobalKey _GSTcopyKey = GlobalKey();
+// This key is used to identify the widget for copying invoice number
   void _showCloseVoucherPopup(int index) {
     // final TextEditingController _closedDateController = TextEditingController(
     //   text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
@@ -88,7 +84,6 @@ class _VoucherState extends State<Voucher> {
     // final TextEditingController _referenceIdController = TextEditingController();
     // final TextEditingController _amountController = TextEditingController();
     // final TextEditingController _feedbackController = TextEditingController();
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -140,7 +135,6 @@ class _VoucherState extends State<Voucher> {
                         ],
                       ),
                     ),
-
                     // Form Content
                     Padding(
                       padding: const EdgeInsets.all(20),
@@ -192,7 +186,6 @@ class _VoucherState extends State<Voucher> {
                                   ),
                                 ),
                           const SizedBox(height: 20),
-
                           // Client and Invoice Info
                           Container(
                             padding: const EdgeInsets.all(16),
@@ -1871,6 +1864,7 @@ class _VoucherState extends State<Voucher> {
 
   @override
   Widget build(BuildContext context) {
+    print(voucherController.voucherModel.voucher_list.length);
     // loader.stop();
     return Scaffold(
       key: _scaffoldKey,
@@ -1992,7 +1986,7 @@ class _VoucherState extends State<Voucher> {
                           height: 40,
                           child: TextFormField(
                             controller: voucherController.voucherModel.searchController.value,
-                            onChanged: (value) => widget.applySearchFilter(value),
+                            onChanged: (value) => widget.search(value),
                             style: const TextStyle(fontSize: 13, color: Colors.white),
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(1),
@@ -2164,11 +2158,14 @@ class _VoucherState extends State<Voucher> {
                           ),
                           const SizedBox(width: 3),
                           const Expanded(
-                            flex: 1,
-                            child: Text(
-                              'Amount',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+                            flex: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 15),
+                              child: Text(
+                                'Amount',
+                                textAlign: TextAlign.end,
+                                style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+                              ),
                             ),
                           ),
                           const SizedBox(width: 3),
@@ -2193,14 +2190,14 @@ class _VoucherState extends State<Voucher> {
                           const Expanded(
                             flex: 1,
                             child: Text(
-                              textAlign: TextAlign.right,
+                              textAlign: TextAlign.center,
                               'Status',
                               style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             ),
                           ),
                           const SizedBox(width: 3),
                           SizedBox(width: 125),
-                          SizedBox(width: 35),
+                          // SizedBox(width: 35),
                         ],
                       ),
                     ),
@@ -2213,6 +2210,9 @@ class _VoucherState extends State<Voucher> {
                               separatorBuilder: (context, index) => Container(height: 1, color: const Color.fromARGB(94, 125, 125, 125)),
                               itemCount: voucherController.voucherModel.voucher_list.length,
                               itemBuilder: (context, index) {
+                                List<GlobalKey> gstKeys = List.generate(voucherController.voucherModel.voucher_list.length, (_) => GlobalKey());
+
+                                print(voucherController.voucherModel.voucher_list.length);
                                 final voucher = voucherController.voucherModel.voucher_list[index];
                                 // if (voucherController.voucherModel.checkboxValues.length != voucherController.voucherModel.voucher_list.length) {
                                 //   voucherController.voucherModel.checkboxValues.value = List<bool>.filled(voucherController.voucherModel.voucher_list.length, false);
@@ -2429,17 +2429,77 @@ class _VoucherState extends State<Voucher> {
                                                 const SizedBox(width: 3),
                                                 Expanded(
                                                   flex: 2,
-                                                  child: Text(
-                                                    voucher.gstNumber,
-                                                    style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.only(right: 15),
+                                                    child: GestureDetector(
+                                                      key: gstKeys[index],
+                                                      onTap: () async {
+                                                        if (voucher.gstNumber.isNotEmpty) {
+                                                          await Clipboard.setData(ClipboardData(text: voucher.gstNumber));
+
+                                                          final renderBox = gstKeys[index].currentContext?.findRenderObject() as RenderBox?;
+                                                          if (renderBox == null || !gstKeys[index].currentContext!.mounted) return;
+
+                                                          final overlay = Overlay.of(gstKeys[index].currentContext!);
+                                                          final overlayEntry = OverlayEntry(
+                                                            builder: (context) => Positioned(
+                                                              left: renderBox.localToGlobal(Offset.zero).dx,
+                                                              top: renderBox.localToGlobal(Offset.zero).dy,
+                                                              child: Material(
+                                                                color: Colors.transparent,
+                                                                child: Container(
+                                                                  padding: const EdgeInsets.all(6),
+                                                                  decoration: BoxDecoration(
+                                                                    color: const Color.fromARGB(200, 33, 149, 243),
+                                                                    borderRadius: BorderRadius.circular(8),
+                                                                  ),
+                                                                  child: const Text(
+                                                                    "Copied!",
+                                                                    style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text5),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          );
+
+                                                          overlay.insert(overlayEntry);
+                                                          Future.delayed(const Duration(seconds: 1), overlayEntry.remove);
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.end,
+                                                              children: [
+                                                                Text(
+                                                                  voucher.gstNumber.isEmpty ? '-' : voucher.gstNumber,
+                                                                  style: const TextStyle(
+                                                                    color: Primary_colors.Color1,
+                                                                    fontSize: Primary_font_size.Text7,
+                                                                  ),
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                ),
+                                                                const SizedBox(width: 4),
+                                                                const Icon(Icons.copy, size: 16, color: Colors.grey),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
                                                 const SizedBox(width: 3),
                                                 Expanded(
-                                                  flex: 1,
-                                                  child: Text(
-                                                    'Rs. ${formatCurrency(voucher.totalAmount)}',
-                                                    style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                  flex: 2,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.only(right: 15),
+                                                    child: Text(
+                                                      textAlign: TextAlign.end,
+                                                      'Rs. ${formatCurrency(voucher.totalAmount)}',
+                                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                    ),
                                                   ),
                                                 ),
                                                 const SizedBox(width: 3),
@@ -2550,7 +2610,7 @@ class _VoucherState extends State<Voucher> {
                                           ),
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.all(15.0),
+                                              padding: const EdgeInsets.all(10.0),
                                               child: Row(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
@@ -2938,18 +2998,77 @@ class _VoucherState extends State<Voucher> {
                                                   const SizedBox(width: 3),
                                                   Expanded(
                                                     flex: 2,
-                                                    child: Text(
-                                                      voucher.gstNumber,
-                                                      textAlign: TextAlign.center,
-                                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(right: 15),
+                                                      child: GestureDetector(
+                                                        key: gstKeys[index],
+                                                        onTap: () async {
+                                                          if (voucher.gstNumber.isNotEmpty) {
+                                                            await Clipboard.setData(ClipboardData(text: voucher.gstNumber));
+
+                                                            final renderBox = gstKeys[index].currentContext?.findRenderObject() as RenderBox?;
+                                                            if (renderBox == null || !gstKeys[index].currentContext!.mounted) return;
+
+                                                            final overlay = Overlay.of(gstKeys[index].currentContext!);
+                                                            final overlayEntry = OverlayEntry(
+                                                              builder: (context) => Positioned(
+                                                                left: renderBox.localToGlobal(Offset.zero).dx,
+                                                                top: renderBox.localToGlobal(Offset.zero).dy,
+                                                                child: Material(
+                                                                  color: Colors.transparent,
+                                                                  child: Container(
+                                                                    padding: const EdgeInsets.all(6),
+                                                                    decoration: BoxDecoration(
+                                                                      color: const Color.fromARGB(200, 33, 149, 243),
+                                                                      borderRadius: BorderRadius.circular(8),
+                                                                    ),
+                                                                    child: const Text(
+                                                                      "Copied!",
+                                                                      style: TextStyle(color: Colors.white, fontSize: Primary_font_size.Text5),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+
+                                                            overlay.insert(overlayEntry);
+                                                            Future.delayed(const Duration(seconds: 1), overlayEntry.remove);
+                                                          }
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            Expanded(
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                                children: [
+                                                                  Text(
+                                                                    voucher.gstNumber.isEmpty ? '-' : voucher.gstNumber,
+                                                                    style: const TextStyle(
+                                                                      color: Primary_colors.Color1,
+                                                                      fontSize: Primary_font_size.Text7,
+                                                                    ),
+                                                                    overflow: TextOverflow.ellipsis,
+                                                                  ),
+                                                                  const SizedBox(width: 4),
+                                                                  const Icon(Icons.copy, size: 16, color: Colors.grey),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
                                                   const SizedBox(width: 3),
                                                   Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      'Rs. ${formatCurrency(voucher.totalAmount)}',
-                                                      style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                    flex: 2,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(right: 15),
+                                                      child: Text(
+                                                        textAlign: TextAlign.end,
+                                                        'Rs. ${formatCurrency(voucher.totalAmount)}',
+                                                        style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                                                      ),
                                                     ),
                                                   ),
                                                   const SizedBox(width: 3),
@@ -3000,7 +3119,7 @@ class _VoucherState extends State<Voucher> {
                                                       ),
                                                     ),
                                                   ),
-                                                  const SizedBox(width: 13),
+                                                  const SizedBox(width: 3),
                                                   Align(
                                                     alignment: Alignment.centerRight,
                                                     child: SizedBox(
@@ -4210,7 +4329,7 @@ class _VoucherState extends State<Voucher> {
                             controller: voucherController.voucherModel.startDateController.value,
                             readOnly: true,
                             onTap: () async {
-                              await widget.selectfilterDate(context, voucherController.voucherModel.startDateController.value);
+                              await widget.select_previousDates(context, voucherController.voucherModel.startDateController.value);
                               // await widget.get_VoucherList();
                               voucherController.voucherModel.startDateController.refresh();
                             },
@@ -4241,7 +4360,7 @@ class _VoucherState extends State<Voucher> {
                             controller: voucherController.voucherModel.endDateController.value,
                             readOnly: true,
                             onTap: () async {
-                              await widget.selectfilterDate(context, voucherController.voucherModel.endDateController.value);
+                              await widget.select_previousDates(context, voucherController.voucherModel.endDateController.value);
                               voucherController.voucherModel.endDateController.refresh();
                               // await widget.get_VoucherList();
                             },

@@ -108,33 +108,34 @@ class _ViewLedgerState extends State<ViewLedger> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   SizedBox(
-                                      width: 400,
-                                      height: 40,
-                                      child: TextFormField(
-                                        controller: account_LedgerController.account_LedgerModel.searchController.value,
-                                        onChanged: (value) => widget.applySearchFilter(value),
-                                        style: const TextStyle(fontSize: 13, color: Colors.white),
-                                        decoration: InputDecoration(
-                                          contentPadding: const EdgeInsets.all(1),
-                                          filled: true,
-                                          fillColor: Primary_colors.Light,
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(30),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(30),
-                                          ),
-                                          hintStyle: const TextStyle(
-                                            fontSize: Primary_font_size.Text7,
-                                            color: Color.fromARGB(255, 167, 165, 165),
-                                          ),
-                                          hintText: 'Search customer',
-                                          prefixIcon: const Icon(
-                                            Icons.search,
-                                            color: Colors.white,
-                                          ),
+                                    width: 400,
+                                    height: 40,
+                                    child: TextFormField(
+                                      controller: account_LedgerController.account_LedgerModel.searchController.value,
+                                      onChanged: (value) => widget.applySearchFilter(value),
+                                      style: const TextStyle(fontSize: 13, color: Colors.white),
+                                      decoration: InputDecoration(
+                                        contentPadding: const EdgeInsets.all(1),
+                                        filled: true,
+                                        fillColor: Primary_colors.Light,
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(30),
                                         ),
-                                      )),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(30),
+                                        ),
+                                        hintStyle: const TextStyle(
+                                          fontSize: Primary_font_size.Text7,
+                                          color: Color.fromARGB(255, 167, 165, 165),
+                                        ),
+                                        hintText: 'Search customer',
+                                        prefixIcon: const Icon(
+                                          Icons.search,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                   const SizedBox(width: 20),
                                   Obx(
                                     () => SizedBox(
@@ -222,6 +223,8 @@ class _ViewLedgerState extends State<ViewLedger> {
     );
   }
 
+// Account Ledger Selected Filter Widget
+  // This widget displays the selected filters for the Account Ledger.
   Widget account_ledger_selectedfilter() {
     return Row(
       children: [
@@ -302,6 +305,7 @@ class _ViewLedgerState extends State<ViewLedger> {
     );
   }
 
+// GST Ledger Selected Filter Widget
   Widget gst_ledger_selectedfilter() {
     return Row(
       children: [
@@ -369,6 +373,7 @@ class _ViewLedgerState extends State<ViewLedger> {
     );
   }
 
+// TDS Ledger Selected Filter Widget
   Widget tds_ledger_selectedfilter() {
     return Row(
       children: [
@@ -436,6 +441,7 @@ class _ViewLedgerState extends State<ViewLedger> {
     );
   }
 
+// Widget to build selected filters chip
   Widget _buildselectedFiltersChip(String label, {required VoidCallback onRemove}) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -466,6 +472,7 @@ class _ViewLedgerState extends State<ViewLedger> {
   }
 }
 
+// Custom Painter for Dotted Line
 class DottedLinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

@@ -7,10 +7,11 @@ import 'package:intl/intl.dart';
 import 'package:ssipl_billing/7.HIERARCHY/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/7.HIERARCHY/models/entities/Hierarchy_entities.dart';
 import 'package:ssipl_billing/7.HIERARCHY/services/Branch_service.dart';
+import 'package:ssipl_billing/7.HIERARCHY/services/hierarchy_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
-class BranchEditor extends StatefulWidget with BranchService {
+class BranchEditor extends StatefulWidget with BranchService, HierarchyService {
   final double screenWidth;
   final Rx<BranchsData> data;
   final HierarchyController controller;
@@ -149,11 +150,11 @@ class _BranchEditorState extends State<BranchEditor> {
                             child: Column(
                               children: [
                                 buildTextField("Branch ID", widget.controller.hierarchyModel.branch_IdController.value, true),
-                                buildTextField("Branch Name", widget.controller.hierarchyModel.branch_NameController.value, false),
-                                buildTextField("Branch Code", widget.controller.hierarchyModel.branch_CodeController.value, true),
+                                buildTextField("Branch Name", widget.controller.hierarchyModel.branch_NameController.value, true),
+                                buildTextField("Branch Code", widget.controller.hierarchyModel.branch_CodeController.value, false),
                                 buildTextField("Client Address Name", widget.controller.hierarchyModel.branch_clientAddressNameController.value, false),
                                 buildTextField("Client Address", widget.controller.hierarchyModel.branch_clientAddressController.value, false),
-                                buildTextField("GST Number", widget.controller.hierarchyModel.branch_gstNumberController.value, true),
+                                buildTextField("GST Number", widget.controller.hierarchyModel.branch_gstNumberController.value, false),
                                 buildTextField("Email ID", widget.controller.hierarchyModel.branch_emailIdController.value, false),
                                 buildTextField("Contact Person", widget.controller.hierarchyModel.branch_contact_personController.value, false),
                                 buildTextField("Contact Number", widget.controller.hierarchyModel.branch_contactNumberController.value, false),
@@ -203,7 +204,7 @@ class _BranchEditorState extends State<BranchEditor> {
                                             );
 
                                             if (pickedDate != null) {
-                                              String formattedDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(pickedDate.toUtc());
+                                              String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
                                               widget.controller.hierarchyModel.branch_fromDateController.value.text = formattedDate;
                                             }
                                           },
@@ -263,10 +264,9 @@ class _BranchEditorState extends State<BranchEditor> {
                                               firstDate: DateTime(2000),
                                               lastDate: DateTime(2100),
                                             );
-
                                             if (pickedDate != null) {
-                                              String formattedDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(pickedDate.toUtc());
-                                              widget.controller.hierarchyModel.branch_toDateController.value.text = formattedDate;
+                                              String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                              widget.controller.hierarchyModel.branch_fromDateController.value.text = formattedDate;
                                             }
                                           },
                                           style: const TextStyle(
@@ -312,8 +312,8 @@ class _BranchEditorState extends State<BranchEditor> {
                         BasicButton(
                           text: "Update",
                           colors: Colors.blue,
-                          onPressed: () {
-                            widget.UpdateKYC(
+                          onPressed: () async {
+                            await widget.UpdateKYC(
                               context,
                               widget.controller.hierarchyModel.branch_IdController.value.text,
                               widget.controller.hierarchyModel.branch_NameController.value.text,
@@ -335,6 +335,9 @@ class _BranchEditorState extends State<BranchEditor> {
                               widget.controller.hierarchyModel.branch_billingPeriodController.value.text,
                               widget.controller.hierarchyModel.branch_subscriptionIdController.value.text,
                             );
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              widget.get_BranchList(context);
+                            });
                           },
                         ),
                       ],

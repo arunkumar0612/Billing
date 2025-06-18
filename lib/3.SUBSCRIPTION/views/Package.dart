@@ -17,388 +17,397 @@ class Packagepage extends StatefulWidget with SubscriptionServices {
   State<Packagepage> createState() => _PackagepageState();
 }
 
+// SubscriptionCard widget
 class _PackagepageState extends State<Packagepage> {
   final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Obx(() {
-      final selectedCount = subscriptionController.subscriptionModel.selectedPackagessubscriptionID.length;
-      final totalCount = subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.length;
-      final allSelected = selectedCount == totalCount && totalCount > 0;
-      return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light.copyWith(
-          statusBarColor: Colors.transparent,
-        ),
-        child: Stack(
-          children: [
-            // Background gradient
-            Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color.fromARGB(255, 15, 22, 46),
-                    Color.fromARGB(255, 31, 45, 95),
-                    Color.fromARGB(255, 56, 66, 103),
-                  ],
+    return Obx(
+      () {
+        final selectedCount = subscriptionController.subscriptionModel.selectedPackagessubscriptionID.length;
+        final totalCount = subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.length;
+        final allSelected = selectedCount == totalCount && totalCount > 0;
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.light.copyWith(
+            statusBarColor: Colors.transparent,
+          ),
+          child: Stack(
+            children: [
+              // Background gradient
+              // This container creates a gradient background for the entire page
+              Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color.fromARGB(255, 15, 22, 46),
+                      Color.fromARGB(255, 31, 45, 95),
+                      Color.fromARGB(255, 56, 66, 103),
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            // Content
-            SafeArea(
-              child: Column(
-                children: [
-                  // Header
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Global Packages',
-                          style: theme.textTheme.headlineSmall?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: Primary_font_size.Heading,
-                            letterSpacing: 1.2,
-                          ),
-                        ), // In your Packagepage build method, add this below the header Row:// Add this after the header Row
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Container(
-                              height: 40,
-                              width: 600,
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(0, 255, 255, 255).withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(22),
-                              ),
-                              child: TextField(
-                                controller: subscriptionController.subscriptionModel.packageSearchController.value,
-                                onChanged: (value) => subscriptionController.filterPackages(value),
-                                style: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text8),
-                                decoration: InputDecoration(
-                                  hintText: 'Search packages...',
-                                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: Primary_font_size.Text8, letterSpacing: 1),
-                                  prefixIcon: Icon(
-                                    Icons.search,
-                                    color: Colors.white.withOpacity(0.7),
+              // Content
+              SafeArea(
+                child: Column(
+                  children: [
+                    // Header
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Global Packages',
+                            style: theme.textTheme.headlineSmall?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: Primary_font_size.Heading,
+                              letterSpacing: 1.2,
+                            ),
+                          ), // In your Packagepage build method, add this below the header Row:// Add this after the header Row
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                height: 40,
+                                width: 600,
+                                decoration: BoxDecoration(
+                                  color: const Color.fromARGB(0, 255, 255, 255).withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(22),
+                                ),
+                                child: TextField(
+                                  controller: subscriptionController.subscriptionModel.packageSearchController.value,
+                                  onChanged: (value) => subscriptionController.filterPackages(value),
+                                  style: const TextStyle(color: Colors.white, fontSize: Primary_font_size.Text8),
+                                  decoration: InputDecoration(
+                                    hintText: 'Search packages...',
+                                    hintStyle: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: Primary_font_size.Text8, letterSpacing: 1),
+                                    prefixIcon: Icon(
+                                      Icons.search,
+                                      color: Colors.white.withOpacity(0.7),
+                                    ),
+                                    border: InputBorder.none,
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                                   ),
-                                  border: InputBorder.none,
-                                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Row(
-                          children: [
-                            if (selectedCount > 0)
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          // Action buttons
+                          Row(
+                            children: [
+                              if (selectedCount > 0)
+                                SizedBox(
+                                  height: 33,
+                                  child: FloatingActionButton.extended(
+                                    onPressed: () {
+                                      Warning_dialog(
+                                        context: context,
+                                        title: 'Confirmation',
+                                        content: 'Are you sure you want to delete this package?',
+                                        onOk: () {
+                                          widget.DeleteGlobalPackage(context, subscriptionController.subscriptionModel.selectedPackagessubscriptionID).then((_) {
+                                            // Clear selection after deletion
+                                            subscriptionController.subscriptionModel.selectedPackagessubscriptionID.clear();
+                                            // Reset search if needed
+                                            if (subscriptionController.subscriptionModel.isSearchingPackages.value) {
+                                              subscriptionController.subscriptionModel.packageSearchController.value.clear();
+                                              subscriptionController.filterPackages('');
+                                            }
+                                          });
+                                        },
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      size: 15,
+                                    ),
+                                    label: const Text(
+                                      'Delete',
+                                      style: TextStyle(fontSize: Primary_font_size.Text6),
+                                    ),
+                                    backgroundColor: const Color.fromARGB(255, 251, 90, 78),
+                                    elevation: 4,
+                                  ),
+                                ),
+                              if (selectedCount > 0) const SizedBox(width: 30),
+                              // Add new package button
                               SizedBox(
                                 height: 33,
                                 child: FloatingActionButton.extended(
                                   onPressed: () {
-                                    Warning_dialog(
-                                      context: context,
-                                      title: 'Confirmation',
-                                      content: 'Are you sure you want to delete this package?',
-                                      onOk: () {
-                                        widget.DeleteGlobalPackage(context, subscriptionController.subscriptionModel.selectedPackagessubscriptionID).then((_) {
-                                          // Clear selection after deletion
-                                          subscriptionController.subscriptionModel.selectedPackagessubscriptionID.clear();
-                                          // Reset search if needed
-                                          if (subscriptionController.subscriptionModel.isSearchingPackages.value) {
-                                            subscriptionController.subscriptionModel.packageSearchController.value.clear();
-                                            subscriptionController.filterPackages('');
-                                          }
-                                        });
-                                      },
-                                    );
+                                    _showAddSubscriptionDialog();
                                   },
                                   icon: const Icon(
-                                    Icons.delete,
+                                    Icons.add,
                                     size: 15,
                                   ),
                                   label: const Text(
-                                    'Delete',
+                                    'New Package',
                                     style: TextStyle(fontSize: Primary_font_size.Text6),
                                   ),
-                                  backgroundColor: const Color.fromARGB(255, 251, 90, 78),
+                                  backgroundColor: Colors.blueAccent,
                                   elevation: 4,
                                 ),
                               ),
-                            if (selectedCount > 0) const SizedBox(width: 30),
-                            SizedBox(
-                              height: 33,
-                              child: FloatingActionButton.extended(
-                                onPressed: () {
-                                  _showAddSubscriptionDialog();
-                                },
-                                icon: const Icon(
-                                  Icons.add,
-                                  size: 15,
-                                ),
-                                label: const Text(
-                                  'New Package',
-                                  style: TextStyle(fontSize: Primary_font_size.Text6),
-                                ),
-                                backgroundColor: Colors.blueAccent,
-                                elevation: 4,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Main content
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Subscription list (left panel)
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.35,
-                          child: Column(
-                            children: [
-                              // Select all checkbox
-                              Padding(
-                                padding: const EdgeInsets.only(top: 16.0, left: 24.0, right: 24.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    // color: Colors.white.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Transform.scale(
-                                            scale: 1.2,
-                                            child: Checkbox(
-                                              value: allSelected,
-                                              onChanged: (value) {
-                                                final select = value ?? false;
-                                                if (subscriptionController.subscriptionModel.isSearchingPackages.value) {
-                                                  // Handle select all for search results
-                                                  if (select) {
-                                                    subscriptionController.subscriptionModel.selectedPackagessubscriptionID.addAll(
-                                                      subscriptionController.subscriptionModel.filteredPackages.map((p) => p.subscriptionId).whereType<int>(),
-                                                    );
-                                                  } else {
-                                                    // Only remove items that are in the current search results
-                                                    subscriptionController.subscriptionModel.selectedPackagessubscriptionID.removeWhere(
-                                                      (id) => subscriptionController.subscriptionModel.filteredPackages.any((p) => p.subscriptionId == id),
-                                                    );
-                                                  }
-                                                } else {
-                                                  _toggleSelectAll(select);
-                                                }
-                                              },
-                                              activeColor: Colors.blueAccent,
-                                              fillColor: MaterialStateProperty.resolveWith<Color>((states) {
-                                                if (states.contains(MaterialState.selected)) {
-                                                  return Colors.blueAccent; // Color when checked
-                                                }
-                                                return Colors.white; // Transparent when unchecked
-                                              }),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(4),
-                                              ),
-                                              // ... rest of your checkbox properties
-                                            ),
-                                          ),
-                                          const SizedBox(width: 5),
-                                          Text(
-                                            'Select All Packages',
-                                            style: theme.textTheme.bodyLarge?.copyWith(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Expanded(
-                                        child: Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Text(
-                                            subscriptionController.subscriptionModel.isSearchingPackages.value
-                                                ? 'Found: ${subscriptionController.subscriptionModel.filteredPackages.length} Packages | Selected: $selectedCount'
-                                                : 'Total: $totalCount Packages | Selected: $selectedCount',
-                                            style: theme.textTheme.bodyLarge
-                                                ?.copyWith(color: Colors.white, fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text8, letterSpacing: 1.0, overflow: TextOverflow.ellipsis),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-
-                              // Subscription list
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 24.0, right: 24.0, bottom: MediaQuery.of(context).viewInsets.bottom),
-                                  child: subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.isEmpty
-                                      ? Center(
-                                          child: Stack(
-                                            alignment: Alignment.topCenter,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(top: 0),
-                                                child: Lottie.asset(
-                                                  'assets/animations/JSON/emptysubscriptionlist.json',
-                                                  // width: 264,
-                                                  height: 250,
-                                                ),
-                                              ),
-                                              const Padding(
-                                                padding: EdgeInsets.only(top: 194),
-                                                child: Text(
-                                                  'No packages available',
-                                                  style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color.fromARGB(255, 101, 110, 114),
-                                                  ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(top: 234),
-                                                child: Text(
-                                                  'When you add a packages, it will appear here',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.blueGrey[400],
-                                                    height: 1.4,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      : ListView.builder(
-                                          itemCount: subscriptionController.subscriptionModel.isSearchingPackages.value
-                                              ? subscriptionController.subscriptionModel.filteredPackages.length
-                                              : subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.length,
-                                          itemBuilder: (context, index) {
-                                            final package = subscriptionController.subscriptionModel.isSearchingPackages.value
-                                                ? subscriptionController.subscriptionModel.filteredPackages[index]
-                                                : subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList[index];
-
-                                            final isChecked = subscriptionController.subscriptionModel.selectedPackagessubscriptionID.contains(package.subscriptionId);
-                                            return Padding(
-                                              padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                              child: _SubscriptionCard(
-                                                package: package,
-                                                isSelected: subscriptionController.subscriptionModel.packageselectedID.value == package.subscriptionId,
-                                                isChecked: isChecked,
-                                                onChecked: (value) {
-                                                  _handlePackageSelection(package.subscriptionId, value);
-                                                },
-                                                onTap: () {
-                                                  subscriptionController.subscriptionModel.packageselectedID.value = package.subscriptionId;
-                                                },
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                ),
-                              )
                             ],
                           ),
-                        ),
-                        // Vertical divider
-                        Container(
-                          width: 1,
-                          margin: const EdgeInsets.symmetric(vertical: 24),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Colors.transparent,
-                                Colors.white.withOpacity(0.2),
-                                Colors.transparent,
-                              ],
-                            ),
-                          ),
-                        ),
-                        // Details panel (right panel)
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                            child: subscriptionController.subscriptionModel.packageselectedID.value != null &&
-                                    subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList
-                                        .any((p) => p.subscriptionId == subscriptionController.subscriptionModel.packageselectedID.value)
-                                ? _buildDetailsPanel(subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList
-                                    .firstWhere((p) => p.subscriptionId == subscriptionController.subscriptionModel.packageselectedID.value))
-                                : Center(
-                                    child: Stack(
-                                      alignment: Alignment.topCenter,
+                        ],
+                      ),
+                    ),
+
+                    // Main content
+                    Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Subscription list (left panel)
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            child: Column(
+                              children: [
+                                // Select all checkbox
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 16.0, left: 24.0, right: 24.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      // color: Colors.white.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 50),
-                                          child: Lottie.asset(
-                                            'assets/animations/JSON/packageview.json',
-                                            height: 250,
-                                          ),
-                                        ),
-                                        const Padding(
-                                          padding: EdgeInsets.only(top: 244),
-                                          child: Text(
-                                            'Select a package to view',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color: Color.fromARGB(255, 101, 110, 114),
+                                        // Select all checkbox and count display
+                                        Row(
+                                          children: [
+                                            Transform.scale(
+                                              scale: 1.2,
+                                              child: Checkbox(
+                                                value: allSelected,
+                                                onChanged: (value) {
+                                                  final select = value ?? false;
+                                                  if (subscriptionController.subscriptionModel.isSearchingPackages.value) {
+                                                    // Handle select all for search results
+                                                    if (select) {
+                                                      subscriptionController.subscriptionModel.selectedPackagessubscriptionID.addAll(
+                                                        subscriptionController.subscriptionModel.filteredPackages.map((p) => p.subscriptionId).whereType<int>(),
+                                                      );
+                                                    } else {
+                                                      // Only remove items that are in the current search results
+                                                      subscriptionController.subscriptionModel.selectedPackagessubscriptionID.removeWhere(
+                                                        (id) => subscriptionController.subscriptionModel.filteredPackages.any((p) => p.subscriptionId == id),
+                                                      );
+                                                    }
+                                                  } else {
+                                                    _toggleSelectAll(select);
+                                                  }
+                                                },
+                                                activeColor: Colors.blueAccent,
+                                                fillColor: MaterialStateProperty.resolveWith<Color>((states) {
+                                                  if (states.contains(MaterialState.selected)) {
+                                                    return Colors.blueAccent; // Color when checked
+                                                  }
+                                                  return Colors.white; // Transparent when unchecked
+                                                }),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(4),
+                                                ),
+                                                // ... rest of your checkbox properties
+                                              ),
                                             ),
-                                          ),
+                                            const SizedBox(width: 5),
+                                            Text(
+                                              'Select All Packages',
+                                              style: theme.textTheme.bodyLarge?.copyWith(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 274),
-                                          child: Text(
-                                            'Once selected, package details will appear here.',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.blueGrey[400],
-                                              height: 1.4,
+                                        // Count display
+                                        Expanded(
+                                          child: Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Text(
+                                              subscriptionController.subscriptionModel.isSearchingPackages.value
+                                                  ? 'Found: ${subscriptionController.subscriptionModel.filteredPackages.length} Packages | Selected: $selectedCount'
+                                                  : 'Total: $totalCount Packages | Selected: $selectedCount',
+                                              style: theme.textTheme.bodyLarge
+                                                  ?.copyWith(color: Colors.white, fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text8, letterSpacing: 1.0, overflow: TextOverflow.ellipsis),
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
+                                ),
+
+                                // Subscription list
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 24.0, right: 24.0, bottom: MediaQuery.of(context).viewInsets.bottom),
+                                    child: subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.isEmpty
+                                        ? Center(
+                                            child: Stack(
+                                              alignment: Alignment.topCenter,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 0),
+                                                  child: Lottie.asset(
+                                                    'assets/animations/JSON/emptysubscriptionlist.json',
+                                                    // width: 264,
+                                                    height: 250,
+                                                  ),
+                                                ),
+                                                const Padding(
+                                                  padding: EdgeInsets.only(top: 194),
+                                                  child: Text(
+                                                    'No packages available',
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.w600,
+                                                      color: Color.fromARGB(255, 101, 110, 114),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 234),
+                                                  child: Text(
+                                                    'When you add a packages, it will appear here',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.blueGrey[400],
+                                                      height: 1.4,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        : ListView.builder(
+                                            itemCount: subscriptionController.subscriptionModel.isSearchingPackages.value
+                                                ? subscriptionController.subscriptionModel.filteredPackages.length
+                                                : subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList.length,
+                                            itemBuilder: (context, index) {
+                                              final package = subscriptionController.subscriptionModel.isSearchingPackages.value
+                                                  ? subscriptionController.subscriptionModel.filteredPackages[index]
+                                                  : subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList[index];
+
+                                              final isChecked = subscriptionController.subscriptionModel.selectedPackagessubscriptionID.contains(package.subscriptionId);
+                                              return Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                                child: _SubscriptionCard(
+                                                  package: package,
+                                                  isSelected: subscriptionController.subscriptionModel.packageselectedID.value == package.subscriptionId,
+                                                  isChecked: isChecked,
+                                                  onChecked: (value) {
+                                                    _handlePackageSelection(package.subscriptionId, value);
+                                                  },
+                                                  onTap: () {
+                                                    subscriptionController.subscriptionModel.packageselectedID.value = package.subscriptionId;
+                                                  },
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                          // Vertical divider
+                          Container(
+                            width: 1,
+                            margin: const EdgeInsets.symmetric(vertical: 24),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.white.withOpacity(0.2),
+                                  Colors.transparent,
+                                ],
+                              ),
+                            ),
+                          ),
+                          // Details panel (right panel)
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: subscriptionController.subscriptionModel.packageselectedID.value != null &&
+                                      subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList
+                                          .any((p) => p.subscriptionId == subscriptionController.subscriptionModel.packageselectedID.value)
+                                  ? _buildDetailsPanel(subscriptionController.subscriptionModel.GlobalPackage.value.globalPackageList
+                                      .firstWhere((p) => p.subscriptionId == subscriptionController.subscriptionModel.packageselectedID.value))
+                                  : Center(
+                                      child: Stack(
+                                        alignment: Alignment.topCenter,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 50),
+                                            child: Lottie.asset(
+                                              'assets/animations/JSON/packageview.json',
+                                              height: 250,
+                                            ),
+                                          ),
+                                          const Padding(
+                                            padding: EdgeInsets.only(top: 244),
+                                            child: Text(
+                                              'Select a package to view',
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color.fromARGB(255, 101, 110, 114),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 274),
+                                            child: Text(
+                                              'Once selected, package details will appear here.',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.blueGrey[400],
+                                                height: 1.4,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      );
-    });
+            ],
+          ),
+        );
+      },
+    );
   }
 
+// SubscriptionCard widget
   void _toggleSelectAll(bool select) {
     final controller = subscriptionController.subscriptionModel;
     if (select) {
@@ -410,6 +419,7 @@ class _PackagepageState extends State<Packagepage> {
     }
   }
 
+// SubscriptionCard widget
   void _handlePackageSelection(int? packageID, bool isSelected) {
     if (packageID == null) return;
 
@@ -648,6 +658,7 @@ class _PackagepageState extends State<Packagepage> {
     );
   }
 
+// Helper method to build input fields
   Widget buildInputField(
     String label,
     int line,
@@ -705,6 +716,7 @@ class _PackagepageState extends State<Packagepage> {
     );
   }
 
+// Build the details panel for the selected package
   Widget _buildDetailsPanel(dynamic package) {
     final theme = Theme.of(context);
 
@@ -924,6 +936,8 @@ class _PackagepageState extends State<Packagepage> {
         ));
   }
 
+// Build the edit panel for the selected package
+  // Build the edit panel for the selected package
   Widget _buildEditPanel(dynamic package) {
     final theme = Theme.of(context);
     final _formKey = GlobalKey<FormState>();
@@ -1063,6 +1077,7 @@ class _PackagepageState extends State<Packagepage> {
         );
   }
 
+// Build the edit field widget
   Widget _buildEditField(
     String label,
     TextEditingController controller, {
@@ -1157,7 +1172,7 @@ class _PackagepageState extends State<Packagepage> {
   //     );
   //   }
   // }
-
+// Build the feature item widget
   Widget _buildFeatureItem(String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
@@ -1182,6 +1197,7 @@ class _PackagepageState extends State<Packagepage> {
   }
 }
 
+// SubscriptionCard widget to display each subscription package
 class _SubscriptionCard extends StatelessWidget {
   final dynamic package;
   final bool isSelected;
@@ -1245,6 +1261,7 @@ class _SubscriptionCard extends StatelessWidget {
           ),
           child: Stack(
             children: [
+              // Background gradient
               Padding(
                 padding: const EdgeInsets.all(40),
                 child: Column(
@@ -1282,6 +1299,7 @@ class _SubscriptionCard extends StatelessWidget {
                   ],
                 ),
               ),
+              // Checkbox for selection
               Positioned(
                 top: 12,
                 left: 12,
@@ -1313,6 +1331,7 @@ class _SubscriptionCard extends StatelessWidget {
     );
   }
 
+// Build a feature row with an icon and text
   Widget _buildFeatureRow(String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),

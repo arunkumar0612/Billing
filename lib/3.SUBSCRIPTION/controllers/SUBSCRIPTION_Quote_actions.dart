@@ -11,177 +11,309 @@ import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
 class SUBSCRIPTION_QuoteController extends GetxController {
   var quoteModel = SUBSCRIPTION_QuoteModel();
-
+// Initialize the tab controller with external reference.
+  /// This method is used to set the TabController for the client request model.
+  /// It allows the controller to manage tab navigation within the client request process.
   void initializeTabController(TabController tabController) {
     quoteModel.tabController.value = tabController;
   }
 
+// Function to handle the next tab action
+  /// This function navigates to the next tab in the tab controller if it exists and is not the last tab.
+  /// If the current tab is the last one, it does nothing.
   void nextTab() {
     if (quoteModel.tabController.value!.index < quoteModel.tabController.value!.length - 1) {
       quoteModel.tabController.value!.animateTo(quoteModel.tabController.value!.index + 1);
     }
   }
 
+// Function to handle the back tab action
+  /// This function navigates to the previous tab in the tab controller if it exists and is not the first tab.
+  /// If the current tab is the first one, it does nothing.
   void backTab() {
     if (quoteModel.tabController.value!.index > 0) {
       quoteModel.tabController.value!.animateTo(quoteModel.tabController.value!.index - 1);
     }
   }
 
+// Function to update the site name in the quote model
+  /// This function updates the site name in the quote model's siteNameController.
+  /// It sets the text of the siteNameController to the provided siteName.
+  /// This method is used to update the site name in the quote model.
   void updatesiteName(String siteName) {
     quoteModel.siteNameController.value.text = siteName;
   }
 
+// Function to update the site edit index in the quote model
+  /// This function updates the site edit index in the quote model.
+  /// It sets the site_editIndex to the provided index.
+  /// This method is used to set the index of the site being edited in the quote model.
   void addSiteEditindex(int? index) {
     quoteModel.site_editIndex.value = index;
   }
 
+// Function to update the site name in the quote model
+  /// This function updates the site name in the quote model's siteNameController.
+  /// It sets the text of the siteNameController to the provided siteName.
+  /// This method is used to update the site name in the quote model.
   void updateSiteName(String siteName) {
     quoteModel.siteNameController.value.text = siteName;
   }
 
+  // Function to update the camera quantity in the quote model
+  /// This function updates the camera quantity in the quote model's cameraquantityController.
+  /// It sets the text of the cameraquantityController to the provided quantity.
   void updateQuantity(int quantity) {
     quoteModel.cameraquantityController.value.text = quantity.toString();
   }
 
+  // Function to update the address in the quote model
+  /// This function updates the address in the quote model's addressController.
+  /// It sets the text of the addressController to the provided address.
   void updateAddressName(String address) {
     quoteModel.addressController.value.text = address;
   }
 
+// removeFromProductList
+  /// This function removes a product from the product list at the specified index.
+  /// It uses the index to identify which product to remove from the QuoteSiteDetails list in the quote model.
   void removeFromProductList(index) {
     quoteModel.QuoteSiteDetails.removeAt(index);
   }
 
+//updateNoteEditindex
+  /// This function updates the note edit index in the quote model.
+  /// It sets the note_editIndex to the provided index.
   void updateNoteEditindex(int? index) {
     quoteModel.note_editIndex.value = index;
   }
 
+//updateChallanTableHeading
+  /// This function updates the table heading in the quote model.
+  /// It sets the Quote_table_heading to the provided tableHeading.
   void updateChallanTableHeading(String tableHeading) {
     quoteModel.Quote_table_heading.value = tableHeading;
   }
 
+// updateNoteList
+  /// This function updates the note list in the quote model.
+  /// It sets the content of the note at the specified index in the Quote_noteList to the text from the notecontentController.
+  /// This method is used to update the content of a specific note in the note list.
   void updateNoteList(String value, int index) {
     quoteModel.Quote_noteList[quoteModel.note_editIndex.value!] = quoteModel.notecontentController.value.text;
   }
 
+  // Function to update the tab controller in the quote model
+  /// This function updates the tab controller in the quote model.
+  /// It sets the tabController to the provided TabController instance.
+  /// This method is used to update the tab controller for managing tab navigation in the quote model.
   void updateTabController(TabController tabController) {
     quoteModel.tabController.value = tabController;
   }
 
+  // Function to update the title in the quote model
+  /// This function updates the title in the quote model's TitleController.
+  /// It sets the text of the TitleController to the provided text.
   void updateTitle(String text) {
     quoteModel.TitleController.value.text = text;
   }
 
+  // Function to update the quote number in the quote model
+  /// This function updates the quote number in the quote model's Quote_no.
+  /// It sets the Quote_no to the provided text.
+  /// This method is used to update the quote number in the quote model.
   void updateQuotenumber(String text) {
     quoteModel.Quote_no.value = text;
   }
 
+  // Function to update the GST number in the quote model
+  /// This function updates the GST number in the quote model's gstNumController.
+  /// It sets the text of the gstNumController to the provided text.
+  /// This method is used to update the GST number in the quote model.
   void updateGSTnumber(String text) {
     quoteModel.gstNumController.value.text = text;
   }
 
+  // Function to update the client address name in the quote model
+  /// This function updates the client address name in the quote model's clientAddressNameController.
+  /// It sets the text of the clientAddressNameController to the provided text.
+  /// This method is used to update the client address name in the quote model.
   void updateClientAddressName(String text) {
     quoteModel.clientAddressNameController.value.text = text;
   }
 
+  // Function to update the client address in the quote model
+  /// This function updates the client address in the quote model's clientAddressController.
+  /// It sets the text of the clientAddressController to the provided text.
+  /// This method is used to update the client address in the quote model.
   void updateClientAddress(String text) {
     quoteModel.clientAddressController.value.text = text;
   }
 
+  // Function to update the billing address name in the quote model
+  /// This function updates the billing address name in the quote model's billingAddressNameController.
+  /// It sets the text of the billingAddressNameController to the provided text.
+  /// This method is used to update the billing address name in the quote model.
   void updateBillingAddressName(String text) {
     quoteModel.billingAddressNameController.value.text = text;
   }
 
+  // Function to update the billing address in the quote model
+  /// This function updates the billing address in the quote model's billingAddressController.
+  /// It sets the text of the billingAddressController to the provided text.
+  /// This method is used to update the billing address in the quote model.
   void updateBillingAddress(String text) {
     quoteModel.billingAddressController.value.text = text;
   }
 
+  // Function to update the phone number in the quote model
+  /// This function updates the phone number in the quote model's phoneController.
+  /// It sets the text of the phoneController to the provided phone number.
+  /// This method is used to update the phone number in the quote model.
   void updatePhone(String phone) {
     quoteModel.phoneController.value.text = phone;
   }
 
+  // Function to update the email in the quote model
+  /// This function updates the email in the quote model's emailController.
+  /// It sets the text of the emailController to the provided email.
+  /// This method is used to update the email in the quote model.
   void updateEmail(String email) {
     quoteModel.emailController.value.text = email;
   }
 
+  // Function to update the CC email in the quote model
+  /// This function updates the CC email in the quote model's CCemailController.
+  /// It sets the text of the CCemailController to the provided CC email.
   void updatCC(String CC) {
     quoteModel.CCemailController.value.text = CC;
   }
 
+  // Function to toggle the visibility of CC email in the quote model
+  /// This function toggles the visibility of the CC email in the quote model's CCemailToggle.
+  /// It sets the value of CCemailToggle to the provided boolean value.
   void toggleCCemailvisibility(bool value) {
     quoteModel.CCemailToggle.value = value;
   }
 
+  // Function to update the recommendation edit index in the quote model
+  /// This function updates the recommendation edit index in the quote model.
+  /// It sets the recommendation_editIndex to the provided index.
+  /// This method is used to set the index of the recommendation being edited in the quote model.
   void updateRecommendationEditindex(int? index) {
     quoteModel.recommendation_editIndex.value = index;
   }
 
+  // Function to update the note content in the quote model
+  /// This function updates the note content in the quote model's notecontentController.
+  /// It sets the text of the notecontentController to the provided text.
+  /// This method is used to update the content of a note in the quote model.
   void updateNoteContentControllerText(String text) {
     quoteModel.notecontentController.value.text = text;
   }
 
+  // Function to update the recommendation heading text in the quote model
+  /// This function updates the recommendation heading text in the quote model's recommendationHeadingController.
+  /// It sets the text of the recommendationHeadingController to the provided text.
+  /// This method is used to update the heading of a recommendation in the quote model.
   void updateRec_HeadingControllerText(String text) {
     quoteModel.recommendationHeadingController.value.text = text;
   }
 
+// updateRec_KeyControllerText
+  /// This function updates the recommendation key text in the quote model's recommendationKeyController.
+  /// It sets the text of the recommendationKeyController to the provided text.
+  /// This method is used to update the key of a recommendation in the quote model.
   void updateRec_KeyControllerText(String text) {
     quoteModel.recommendationKeyController.value.text = text;
   }
 
+//updateRec_ValueControllerText
+  /// This function updates the recommendation value text in the quote model's recommendationValueController.
+  /// It sets the text of the recommendationValueController to the provided text.
+  /// This method is used to update the value of a recommendation in the quote model.
   void updateRec_ValueControllerText(String text) {
     quoteModel.recommendationValueController.value.text = text;
   }
 
+  // Function to add a note to the list in the quote model
+  /// This function adds a note to the note list in the quote model.
+  /// It appends the provided note to the notecontent list in the quote model.
+  /// This method is used to add a note to the list of notes in the quote model.
   void addNoteToList(String note) {
     quoteModel.notecontent.add(note);
   }
 
-  // void addsiteEditindex(int? index) {
-  //   quoteModel.site_editIndex.value = index;
-  // }
-
+  // Function to update the process ID in the quote model
+  /// This function updates the process ID in the quote model.
+  /// It sets the processID to the provided integer value.
   void setProcessID(int processid) {
     quoteModel.processID.value = processid;
   }
 
+  // Function to update the selected package in the quote model
+  /// This function updates the selected package in the quote model.
+  /// It sets the selectedPackage to the provided package name.
   void updateSelectedPdf(File file) {
     quoteModel.selectedPdf.value = file;
   }
 
-  // Toggle loading state
+// setLoading
+  /// This function sets the loading state in the quote model.
+  /// It updates the isLoading property to the provided boolean value.
   void setLoading(bool value) {
     quoteModel.isLoading.value = value;
   }
 
+  // Function to set the PDF loading state in the quote model
+  /// This function sets the PDF loading state in the quote model.
+  /// It updates the ispdfLoading property to the provided boolean value.
   void setpdfLoading(bool value) {
     quoteModel.ispdfLoading.value = value;
   }
 
+  // Function to update the company ID in the quote model
+  /// This function updates the company ID in the quote model.
+  /// It sets the companyid to the provided integer value.
+  /// This method is used to update the company ID in the quote model.
   void update_companyID(int value) {
     quoteModel.companyid.value = value;
   }
 
-  // Toggle WhatsApp state
+//toggleWhatsApp
+  /// This function toggles the WhatsApp selection status in the quote model.
+  /// It sets the whatsapp_selectionStatus to the provided boolean value.
+  /// This method is used to toggle the WhatsApp selection status in the quote model.
   void toggleWhatsApp(bool value) {
     quoteModel.whatsapp_selectionStatus.value = value;
   }
 
-  // Toggle Gmail state
+  //toggleGmail
+  /// This function toggles the Gmail selection status in the quote model.
+  /// It sets the gmail_selectionStatus to the provided boolean value.
+  /// This method is used to toggle the Gmail selection status in the quote model.
   void toggleGmail(bool value) {
     quoteModel.gmail_selectionStatus.value = value;
   }
 
-  // Update phone number text
+//updatePhoneNumber
+  /// This function updates the phone number in the quote model's phoneController.
+  /// It sets the text of the phoneController to the provided phone number.
+  /// This method is used to update the phone number in the quote model.
   void updatePhoneNumber(String phoneNumber) {
     quoteModel.phoneController.value.text = phoneNumber;
   }
 
   // Update feedback text
+  /// This function updates the feedback text in the quote model's feedbackController.
+  /// It sets the text of the feedbackController to the provided feedback.
   void updateFeedback(String feedback) {
     quoteModel.feedbackController.value.text = feedback;
   }
 
   // Update file path text
+  /// This function updates the file path in the quote model's filePathController.
+  /// It sets the text of the filePathController to the provided file path.
   void updateFilePath(String filePath) {
     quoteModel.filePathController.value.text = filePath;
   }

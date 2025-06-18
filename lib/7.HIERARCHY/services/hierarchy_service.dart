@@ -30,6 +30,7 @@ mixin HierarchyService {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
           hierarchyController.add_Org(value);
+          hierarchyController.search(hierarchyController.hierarchyModel.searchQuery.value);
           // print(hierarchyController.hierarchyModel.OrganizationList.value.Live [0].)
         } else {
           await Error_dialog(context: context, title: 'Fetch Organization List', content: value.message ?? "", onOk: () {});
@@ -62,6 +63,7 @@ mixin HierarchyService {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
           hierarchyController.add_Comp(value);
+          hierarchyController.search(hierarchyController.hierarchyModel.searchQuery.value);
         } else {
           await Error_dialog(
             context: context,
@@ -92,6 +94,7 @@ mixin HierarchyService {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
           hierarchyController.add_Branch(value);
+          hierarchyController.search(hierarchyController.hierarchyModel.searchQuery.value);
         } else {
           await Error_dialog(context: context, title: 'Fetch Branch List', content: value.message ?? "", onOk: () {});
         }

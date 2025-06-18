@@ -19,14 +19,12 @@ import 'package:ssipl_billing/2.BILLING/Ledger/views/ledger_excel_template/TDS_l
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/controllers/Billing_actions.dart';
 import 'package:ssipl_billing/2.BILLING/_main_BILLING/services/billing_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
-import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/downloadPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/printPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/sharePDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/showPDF.dart';
+import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
-
-import '../../../THEMES/style.dart';
 
 class TDSLedger extends StatefulWidget with TDS_LedgerService, View_LedgerService, main_BillingService {
   TDSLedger({super.key});
@@ -309,11 +307,10 @@ class _TDSLedgerState extends State<TDSLedger> {
                                                       child: GestureDetector(
                                                         onTap: () async {
                                                           if (tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoiceType == 'subscription') {
-                                                            bool success = await widget.GetSubscriptionPDFfile(
-                                                                context: context, invoiceNo: tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number);
+                                                            bool success =
+                                                                await widget.GetSubscriptionPDFfile(context: context, invoiceNo: tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number);
                                                             if (success) {
-                                                              showPDF(context, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number,
-                                                                  mainBilling_Controller.billingModel.pdfFile.value);
+                                                              showPDF(context, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value.tdsList[index].invoice_number, mainBilling_Controller.billingModel.pdfFile.value);
                                                             }
                                                           }
                                                         },
@@ -700,55 +697,18 @@ class _TDSLedgerState extends State<TDSLedger> {
                                       ),
                                     ),
 
-                                    const SizedBox(width: 40), // Space between buttons
-                                    // Download Button
+                                    const SizedBox(width: 40),
                                     MouseRegion(
                                       cursor: SystemMouseCursors.click,
                                       child: GestureDetector(
                                         onTap: () async {
                                           final pdfBytes = await generateTDSledger(PdfPageFormat.a4, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value);
-                                          Directory tempDir = await getTemporaryDirectory();
                                           String fileName =
                                               ('TDS_LEDGER(${tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
-                                          String filePath = '${tempDir.path}/$fileName.pdf';
-                                          File file = File(filePath);
-                                          await file.writeAsBytes(pdfBytes);
-                                          downloadPdf(context, fileName, file);
-                                        },
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Image.asset(height: 25, 'assets/images/download.png'),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            const Text(
-                                              "Download",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color.fromARGB(255, 143, 143, 143),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 40), // Space between buttons
-
-                                    MouseRegion(
-                                      cursor: SystemMouseCursors.click,
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          Uint8List pdfBytes = await generateTDSledger(PdfPageFormat.a4, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value);
-                                          Directory tempDir = await getTemporaryDirectory();
-                                          String fileName =
-                                              ('TDS_LEDGER(${tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
-                                          String filePath = '${tempDir.path}/$fileName.pdf';
-                                          File file = File(filePath);
-                                          await file.writeAsBytes(pdfBytes);
-
-                                          PDFviewonly(context, file);
+                                          final directory = await getTemporaryDirectory();
+                                          final filePath = '${directory.path}/$fileName.pdf';
+                                          final pdfFile = await File(filePath).writeAsBytes(pdfBytes);
+                                          showPDF(context, fileName, pdfFile);
                                         },
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
@@ -766,38 +726,96 @@ class _TDSLedgerState extends State<TDSLedger> {
                                           ],
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 40), // Space between buttons
+                                    ), // Space between buttons
                                     // Download Button
+                                    const SizedBox(width: 40), // Space between buttons
+
                                     MouseRegion(
                                       cursor: SystemMouseCursors.click,
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          final excelBytes = await TDSledger_excelTemplate(tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value);
-                                          Directory tempDir = await getTemporaryDirectory();
-                                          String fileName =
-                                              ('TDS_LEDGER(${tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
-                                          String filePath = '${tempDir.path}/$fileName.pdf';
-                                          File file = File(filePath);
-                                          await file.writeAsBytes(excelBytes);
-                                          downloadExcel(context, fileName, file);
-                                        },
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Image.asset(height: 25, 'assets/images/excel.png'),
-                                            const SizedBox(
-                                              height: 10,
+                                      child: Theme(
+                                        data: Theme.of(context).copyWith(
+                                          popupMenuTheme: PopupMenuThemeData(
+                                            color: Primary_colors.Light, // Dropdown background color
+                                            textStyle: const TextStyle(
+                                              color: Colors.white, // Default text color
+                                              fontSize: 14,
                                             ),
-                                            const Text(
-                                              "Excel",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color.fromARGB(255, 143, 143, 143),
+                                          ),
+                                        ),
+                                        child: PopupMenuButton<String>(
+                                          tooltip: '',
+                                          onSelected: (value) async {
+                                            if (value == 'pdf') {
+                                              final pdfBytes = await generateTDSledger(PdfPageFormat.a4, tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value);
+                                              Directory tempDir = await getTemporaryDirectory();
+                                              String fileName =
+                                                  ('TDS_LEDGER(${tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
+                                              String filePath = '${tempDir.path}/$fileName.pdf';
+                                              File file = File(filePath);
+                                              await file.writeAsBytes(pdfBytes);
+                                              downloadPdf(context, fileName, file);
+                                            } else if (value == 'excel') {
+                                              final excelBytes = await TDSledger_excelTemplate(tds_ledgerController.tds_LedgerModel.tds_Ledger_list.value);
+                                              Directory tempDir = await getTemporaryDirectory();
+                                              String fileName =
+                                                  ('TDS_LEDGER(${tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.fromdate.value != "" ? formatDate(DateTime.parse(tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.fromdate.value)) : formatDate(DateTime.now())} - ${tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.todate.value != "" ? formatDate(DateTime.parse(tds_ledgerController.tds_LedgerModel.tds_LedgerSelectedFilter.value.todate.value)) : formatDate(DateTime.now())})');
+                                              String filePath = '${tempDir.path}/$fileName.xlsx';
+                                              File file = File(filePath);
+                                              await file.writeAsBytes(excelBytes);
+                                              downloadExcel(context, fileName, file);
+                                            }
+                                          },
+                                          itemBuilder: (context) => [
+                                            PopupMenuItem(
+                                              value: 'pdf',
+                                              child: Row(
+                                                children: [
+                                                  Image.asset('assets/images/pdfdownload.png', width: 20, height: 20),
+                                                  const SizedBox(width: 10),
+                                                  const Text('Download PDF'),
+                                                ],
+                                              ),
+                                            ),
+                                            PopupMenuItem(
+                                              value: 'excel',
+                                              child: Row(
+                                                children: [
+                                                  Image.asset('assets/images/excel.png', width: 20, height: 20),
+                                                  const SizedBox(width: 10),
+                                                  const Text('Download Excel'),
+                                                ],
                                               ),
                                             ),
                                           ],
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Image.asset(
+                                                    'assets/images/download.png',
+                                                    height: 25,
+                                                  ),
+                                                  const SizedBox(width: 4),
+                                                  const Icon(
+                                                    Icons.arrow_drop_down,
+                                                    size: 20,
+                                                    color: Color.fromARGB(255, 143, 143, 143),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 10),
+                                              const Text(
+                                                "Download",
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Color.fromARGB(255, 143, 143, 143),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),

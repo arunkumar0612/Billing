@@ -31,6 +31,7 @@ mixin main_BillingService {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           mainBilling_Controller.billingModel.subCustomerList.value = value.data.map((e) => MainbillingCustomerInfo.fromJson(e)).toList();
+          mainBilling_Controller.search(mainBilling_Controller.billingModel.searchQuery.value);
           // print('ijhietjwe${view_LedgerController.view_LedgerModel.subCustomerList}');
           // salesController.addToCustompdfList(value);
         } else {
@@ -60,6 +61,7 @@ mixin main_BillingService {
         CMDlResponse value = CMDlResponse.fromJson(response ?? {});
         if (value.code) {
           mainBilling_Controller.billingModel.salesCustomerList.value = value.data.map((e) => MainbillingCustomerInfo.fromJson(e)).toList();
+          mainBilling_Controller.search(mainBilling_Controller.billingModel.searchQuery.value);
           // print(view_LedgerController.view_LedgerModel.salesCustomerList);
           // salesController.addToCustompdfList(value);
         } else {
@@ -93,7 +95,6 @@ mixin main_BillingService {
         "paymentstatus": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value.toLowerCase() == 'show all'
             ? ''
             : mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.paymentstatus.value.toLowerCase(),
-
         // "customerid": "SB_1",
         "customerid": mainBilling_Controller.billingModel.mainbilling_SelectedFilter.value.selectedcustomerid.value == 'None'
             ? ''
@@ -107,21 +108,32 @@ mixin main_BillingService {
           mainBilling_Controller.billingModel.subscriptionInvoiceList.clear();
           mainBilling_Controller.billingModel.allSubscriptionInvoices.clear();
           for (int i = 0; i < value.data.length; i++) {
-            mainBilling_Controller.addto_SubscriptionInvoiceList(SubscriptionInvoice.fromJson(value.data[i]));
+            mainBilling_Controller.addto_SubscriptionInvoiceList(
+              SubscriptionInvoice.fromJson(
+                value.data[i],
+              ),
+            );
+            mainBilling_Controller.search(mainBilling_Controller.billingModel.searchQuery.value);
             // print(value.data[i]['Overdue_history']);
           }
           // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
           // clientreqController.update_OrganizationList(value);
         } else {
-          print('Subscription invoice List Error');
+          if (kDebugMode) {
+            print('Subscription invoice List Error');
+          }
           // await Error_dialog(context: context, title: 'Subscription invoice List Error', content: value.message ?? "", onOk: () {});
         }
       } else {
-        print("SERVER DOWN -- Please contact administration!");
+        if (kDebugMode) {
+          print("SERVER DOWN -- Please contact administration!");
+        }
         // Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
     } catch (e) {
-      print('ERROR -- $e');
+      if (kDebugMode) {
+        print('ERROR -- $e');
+      }
       // Error_dialog(context: context, title: "ERROR", content: "$e");
     }
   }
@@ -329,7 +341,7 @@ mixin main_BillingService {
             SalesInvoice element = SalesInvoice.fromJson(value.data[i]);
             mainBilling_Controller.addto_SalesInvoiceList(element);
           }
-
+          mainBilling_Controller.search(mainBilling_Controller.billingModel.searchQuery.value);
           // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
           // clientreqController.update_OrganizationList(value);
         } else {
@@ -387,6 +399,7 @@ mixin main_BillingService {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
         if (value.code) {
           mainBilling_Controller.set_dashBoardData(DashboardStats.fromJson(value.data['dashboard']));
+          mainBilling_Controller.search(mainBilling_Controller.billingModel.searchQuery.value);
           // await mainBilling_Controller.PDFfileApiData(value);
 
           // await Basic_dialog(context: context, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
@@ -454,6 +467,7 @@ mixin main_BillingService {
     // loader.stop();
   }
 
+// Function to display voucher details in a dialog
   void showVoucherDetails(BuildContext context, InvoicePaymentVoucher voucher) {
     final GlobalKey _invoiceCopyKey = GlobalKey();
     final GlobalKey _voucherCopyKey = GlobalKey();
@@ -971,6 +985,7 @@ mixin main_BillingService {
     );
   }
 
+// Function to build the payment breakup divider
   Widget _buildBreakupDivider() {
     return const Padding(
       padding: EdgeInsets.symmetric(vertical: 4),
@@ -978,6 +993,7 @@ mixin main_BillingService {
     );
   }
 
+// Function to build a single payment breakup line
   Widget _buildBreakupLine(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
@@ -1014,6 +1030,7 @@ mixin main_BillingService {
     // salesController.resetData();
     get_SubscriptionInvoiceList();
     get_SalesInvoiceList();
+    GetDashboardData();
   }
 
   Future<void> selectfilterDate(BuildContext context, TextEditingController controller) async {

@@ -33,7 +33,14 @@ Future<Uint8List> generateClientReq({
 
 class SUBSCRIPTION_Client_requirement {
   SUBSCRIPTION_Client_requirement(
-      {required this.sites, required this.baseColor, required this.accentColor, required this.client_addr_name, required this.client_addr, required this.bill_addr_name, required this.bill_addr, required this.imagePath});
+      {required this.sites,
+      required this.baseColor,
+      required this.accentColor,
+      required this.client_addr_name,
+      required this.client_addr,
+      required this.bill_addr_name,
+      required this.bill_addr,
+      required this.imagePath});
   final SUBSCRIPTION_ClientreqController clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
 
   String client_addr_name = "";
@@ -111,7 +118,6 @@ class SUBSCRIPTION_Client_requirement {
     return doc.save();
   }
 
-  //
   pw.Widget header(pw.Context context) {
     return pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
       pw.Padding(padding: const pw.EdgeInsets.all(20), child: bold("CLIENT REQUEST", 15)),

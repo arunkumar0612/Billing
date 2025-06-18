@@ -6,6 +6,38 @@ import 'package:ssipl_billing/ROUTES/app_routes.dart';
 import 'package:ssipl_billing/ROUTES/route_names.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
+class RestartWidget extends StatefulWidget {
+  final Widget child;
+
+  const RestartWidget({super.key, required this.child});
+
+  static void restartApp(BuildContext context) {
+    final _RestartWidgetState? state = context.findAncestorStateOfType<_RestartWidgetState>();
+    state?.restartApp();
+  }
+
+  @override
+  _RestartWidgetState createState() => _RestartWidgetState();
+}
+
+class _RestartWidgetState extends State<RestartWidget> {
+  Key _key = UniqueKey();
+
+  void restartApp() {
+    setState(() {
+      _key = UniqueKey(); // Rebuild the whole widget tree
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return KeyedSubtree(
+      key: _key,
+      child: widget.child,
+    );
+  }
+}
+
 // 33AADCK2098J1ZF
 Future<void> main() async {
   // Initialize Flutter bindings
@@ -13,9 +45,16 @@ Future<void> main() async {
   initialize_IAM();
   initialize_others();
 
-  runApp(const MyApp());
+  runApp(const RestartWidget(child: MyApp()));
   DesktopWindow.setMinWindowSize(const Size(1366.0, 768.0));
 }
+
+// Key _appKey = UniqueKey();
+// void reloadApp() {
+//   setState(() {
+//     _appKey = UniqueKey(); // Forces widget tree to rebuild
+//   });
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

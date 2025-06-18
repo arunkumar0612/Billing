@@ -15,7 +15,7 @@ class SUBSCRIPTION_clientreqSites extends StatefulWidget with SUBSCRIPTION_Clien
 
 class _SUBSCRIPTION_clientreqSitesState extends State<SUBSCRIPTION_clientreqSites> {
   final SUBSCRIPTION_ClientreqController clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
-
+// Function to add a site
   Widget clientreq_SiteDetailss() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,

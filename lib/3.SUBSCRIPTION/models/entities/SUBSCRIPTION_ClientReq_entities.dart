@@ -1,5 +1,6 @@
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
-
+/// This class represents a recommendation with a key and value.
+/// It includes methods to convert between JSON and Recommendation objects.
 class Recommendation {
   final String key;
   final String value;
@@ -24,6 +25,10 @@ class Recommendation {
   }
 }
 
+/// This class represents a path with a single string property.
+/// It includes methods to convert between JSON and MORpath objects.
+/// It is used to store the path of a file or directory.
+/// The `fromJson` factory constructor initializes the path from a CMDmResponse object.
 class MORpath {
   final String path;
 
@@ -41,7 +46,9 @@ class MORpath {
     };
   }
 }
-
+/// This class represents a client requirement for a subscription.
+/// It includes properties like title, name, email ID, phone number, address, GST number, billing address name, billing address, mode of request, MOR reference, site details, notes, date, and company ID.
+/// It provides methods to convert between JSON and SUBSCRIPTION_Post_ClientRequirement objects.
 class SUBSCRIPTION_Post_ClientRequirement {
   String? title;
   String? name;
@@ -145,7 +152,9 @@ class SUBSCRIPTION_Post_ClientRequirement {
     };
   }
 }
-
+/// This class represents a client request site with properties like serial number, site name, camera quantity, and site address.
+/// It includes methods to get the index of each property and to convert the object to JSON.
+/// It is used to store information about a specific site in a client request.
 class SUBSCRIPTION_ClientreqSites {
   const SUBSCRIPTION_ClientreqSites(
     this.sno,
@@ -184,7 +193,9 @@ class SUBSCRIPTION_ClientreqSites {
     };
   }
 }
-
+/// This class represents an organization with properties like organization ID, organization name, and organization code.
+/// It includes methods to create an instance from JSON and to convert the object to JSON.
+/// It is used to store information about a specific organization in a client request.
 class Organization {
   int? organizationId;
   String? organizationName;
@@ -212,7 +223,8 @@ class Organization {
     };
   }
 }
-
+/// This class represents a company with properties like company ID, company name, email ID, client address name, client address, billing address name, billing address, contact number, and GST number.
+/// It includes methods to create an instance from JSON and to convert the object to JSON.
 class Company {
   int? companyId;
   String? companyName;

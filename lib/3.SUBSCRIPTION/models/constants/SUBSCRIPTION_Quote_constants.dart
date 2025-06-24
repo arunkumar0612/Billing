@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/3.SUBSCRIPTION/models/entities/SUBSCRIPTION_Quote_entities.dart';
 
+/// This model class is used to manage the state of the quote-related data
+/// It extends GetxController to leverage the reactive state management features of the GetX package
 class SUBSCRIPTION_QuoteModel extends GetxController with GetSingleTickerProviderStateMixin {
   final Rxn<TabController> tabController = Rxn<TabController>();
   var processID = Rxn<int>();

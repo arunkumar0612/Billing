@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
-
+/// This class represents a customer in the process of subscription management.
+/// It includes properties like customer ID, name, phone number, and GST number.
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class Processcustomer {
   final int customerId;
   final String customerName;
@@ -37,7 +39,9 @@ class Processcustomer {
     };
   }
 }
-
+/// This class represents a recurred customer in the subscription management system.
+/// It includes properties like customer ID, name, phone number, and GST number.
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class Recurredcustomer {
   final int customerId;
   final String customerName;
@@ -69,7 +73,9 @@ class Recurredcustomer {
     };
   }
 }
-
+/// This class represents a process in the subscription management system.
+/// It includes properties like process ID, title, customer name, process date, age in days, and a list of timeline events.
+/// /// It provides methods to create an instance from JSON and to convert the object to JSON.
 class Process {
   final int processid;
   final String title;
@@ -109,7 +115,9 @@ class Process {
     };
   }
 }
-
+/// This class represents a process in the subscription management system.
+/// It includes properties like PDF path, feedback, Event name, Event id, apporved status, internal Status and Allowed process.
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class TimelineEvent {
   final String pdfpath;
   final TextEditingController feedback;
@@ -128,13 +136,6 @@ class TimelineEvent {
     required this.internalStatus,
     required this.Allowed_process,
   });
-  //  pdfpath: json['pdfpath'] as String? ?? '',
-  //       feedback: TextEditingController(text: json['feedback'] as String? ?? ''),
-  //       Eventname: json['Eventname'] as String? ?? '',
-  //       Eventid: json['Eventid'] as int,
-  //       apporvedstatus: json['apporvedstatus'] as int,
-  //       internalStatus: json['internalstatus'] as int,
-  //       Allowed_process: Allowedprocess.fromJson(json['Allowed_process'] != null ? json['Allowed_process'] as Map<String, dynamic> : {}));
   factory TimelineEvent.fromJson(Map<String, dynamic> json) {
     return TimelineEvent(
         pdfpath: json['pdfpath'] as String? ?? '',
@@ -158,10 +159,11 @@ class TimelineEvent {
     };
   }
 }
-
+/// This class represents a process in the subscription management system.
+/// It includes properties like Quotation, Revised quotation and Get approval and Allowed process.
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class Allowedprocess {
   final bool quotation;
-
   final bool revised_quatation;
   final bool get_approval;
   Allowedprocess({
@@ -187,6 +189,9 @@ class Allowedprocess {
   }
 }
 
+/// This class represents a process in the subscription management system.
+/// It includes properties like data.
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class PDFfileData {
   final File data;
 
@@ -216,7 +221,9 @@ class PDFfileData {
     };
   }
 }
-
+/// This class represents a process in the subscription management system.
+/// It includes properties like Total amount,Paid amount,Unpaid amount,Total invoices,Paid invoices and Unpaid invoices.
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class Subscriptiondata {
   final String? totalamount;
   final String? paidamount;
@@ -256,6 +263,9 @@ class Subscriptiondata {
     };
   }
 }
+/// This class represents a process in the subscription management system.
+/// It includes properties like customer name,mail id,Phone number,gst number,client address,client address name,billing address, billing address name,total process,inactive process,active process,client type,company count and site count.
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 
 class Clientprofiledata {
   final String? customername;
@@ -327,6 +337,9 @@ class Clientprofiledata {
     };
   }
 }
+/// This class represents a process in the subscription management system.
+/// It includes properties like customer Address Name,customer Address,billing Address,customer Email,customer Phone,customer Gst,date,custom Type,genId,custom PDF id and file Path .
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 
 class CustomerPDF_List {
   final String customerAddressName;
@@ -398,10 +411,11 @@ class CustomerPDF_List {
     };
   }
 }
-
+/// This class represents a process in the subscription management system.
+/// It includes properties like customer Address Name,customer Address,billing Address,customer Email,customer Phone,customer Gst,date,custom Type,genId,custom PDF id and file Path .
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class RecurringInvoice_List {
   int recurredbillid;
-
   int subscriptionBillId;
   List<int> siteIds;
   String clientAddressName;
@@ -476,7 +490,9 @@ class RecurringInvoice_List {
     };
   }
 }
-
+/// This class represents a process in the subscription management system.
+/// It includes properties like companyList .
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class CompanyResponse {
   final List<CompanysData> companyList;
 
@@ -513,7 +529,9 @@ class CompanyResponse {
     };
   }
 }
-
+/// This class represents a process in the subscription management system.
+/// It includes properties like customer Id,organization Id,customer Name,ccode,email,customer Logo,address,billing Address,site Type,contact Person,contact Person No ,customer CIN,customer PAN,customer Code ,customerType and isSelected.
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class CompanysData {
   final int? customerId;
   final int? organizationId;
@@ -591,7 +609,9 @@ class CompanysData {
     };
   }
 }
-
+/// This class represents a process in the subscription management system.
+/// It includes properties like global Package List .
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class Global_package {
   final List<Global_packageList> globalPackageList;
 
@@ -607,7 +627,9 @@ class Global_package {
     return Global_package(globalPackageList: temp);
   }
 }
-
+/// This class represents a process in the subscription management system.
+/// It includes properties like subscription Id,subscription Name,no Of Devices , add Cameras ,amount,product Description and siteDetails .
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class Global_packageList {
   int? subscriptionId;
   String? subscriptionName;
@@ -664,6 +686,9 @@ class Global_packageList {
   }
 }
 
+/// This class represents a process in the subscription management system.
+/// It includes properties like site Name .
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class SiteDetail {
   String? siteName;
   // String? siteLocation;

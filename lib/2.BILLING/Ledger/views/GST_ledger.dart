@@ -395,7 +395,7 @@ class _GSTLedgerState extends State<GSTLedger> {
                                             child: Padding(
                                               padding: const EdgeInsets.all(10),
                                               child: Text(
-                                                gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].clientName ?? "-",
+                                                gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].clientName ,
                                                 textAlign: TextAlign.start,
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
                                               ),
@@ -511,8 +511,8 @@ class _GSTLedgerState extends State<GSTLedger> {
                                       ),
                                       const SizedBox(height: 10),
                                       Table(
-                                        border: TableBorder.all(color: const Color.fromARGB(255, 112, 112, 112)),
-                                        children: [
+                                         border: TableBorder.all(color: const Color.fromARGB(255, 112, 112, 112)),
+                                       children: [
                                           const TableRow(
                                             decoration: BoxDecoration(color: Color.fromARGB(122, 100, 110, 255)),
                                             children: [

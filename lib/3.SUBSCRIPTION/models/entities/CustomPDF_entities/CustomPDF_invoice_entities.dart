@@ -2,6 +2,9 @@
 
 import '../../../../UTILS/helpers/support_functions.dart';
 
+/// This class represents a site with its details and provides methods to convert between JSON and Site objects.
+/// It includes properties like serial number, site name, address, site ID, and monthly charges.
+/// The serial number is auto-incremented for each new Site instance.
 class Site {
   static int _counter = 1; // Static counter to auto-increment serial numbers
   String serialNo;
@@ -53,6 +56,9 @@ class Site {
   }
 }
 
+/// This class represents an address with billing and installation service details.
+/// It includes properties like billing name, billing address, installation service name, and installation service address.
+/// It provides methods to convert between JSON and Address objects.
 class Address {
   final String billingName;
   final String billingAddress;
@@ -76,7 +82,9 @@ class Address {
     return {'billingName': billingName, 'billingAddress': billingAddress, 'installation_serviceName': installation_serviceName, 'installation_serviceAddress': installation_serviceAddress};
   }
 }
-
+/// This class represents the details of a billing plan.
+/// It includes properties like plan name, customer type, plan charges, internet charges, bill period, and due date.
+/// It provides methods to convert between JSON and BillPlanDetails objects.
 class BillPlanDetails {
   final String planName;
   final String customerType;
@@ -122,7 +130,9 @@ class BillPlanDetails {
     };
   }
 }
-
+/// This class represents the details of a customer account.
+/// It includes properties like relationship ID, customer GSTIN, HSN/SAC code, customer PO, contact person, and contact number.
+/// It provides methods to convert between JSON and CustomerAccountDetails objects.
 class CustomerAccountDetails {
   final String relationshipId;
   // final String billNumber;
@@ -168,7 +178,9 @@ class CustomerAccountDetails {
     };
   }
 }
-
+/// This class represents the total calculation table for an invoice.
+/// It includes properties like previous dues, payment, adjustments/deduction, current charges, and total amount due.
+/// It provides methods to convert between JSON and TotalcaculationTable objects.
 class TotalcaculationTable {
   final String previousdues;
   final String payment;
@@ -193,7 +205,9 @@ class TotalcaculationTable {
     return {'previousdues': previousdues, 'payment': payment, 'adjustments_deduction': adjustments_deduction, 'currentcharges': currentcharges, 'totalamountdue': totalamountdue};
   }
 }
-
+/// This class represents a custom invoice for a subscription.
+/// It includes properties like date, invoice number, pending amount, GST percentage, address details, billing plan details, customer account details, site data, final calculations, notes, pending invoices, total calculation table, and a flag indicating if there is a pending amount.
+/// /// It provides methods to convert between JSON and SUBSCRIPTION_Custom_Invoice objects.
 class SUBSCRIPTION_Custom_Invoice {
   final String date;
   final String invoiceNo;
@@ -261,7 +275,9 @@ class SUBSCRIPTION_Custom_Invoice {
     };
   }
 }
-
+/// This class represents a pending invoice with its details.
+/// It includes properties like serial number, invoice ID, due date, overdue days, and charges.
+/// It provides methods to convert between JSON and PendingInvoices objects.
 class PendingInvoices {
   final String serialNo;
   final String invoiceid;
@@ -303,7 +319,9 @@ class PendingInvoices {
     }
   }
 }
-
+/// This class represents the final calculation of an invoice.
+/// It includes properties like subtotal, IGST, CGST, SGST, round off, difference, total, pending amount, and grand total.
+/// It provides methods to calculate the final amounts based on the site data and GST percentage.
 class FinalCalculation {
   final double subtotal;
   final double igst;
@@ -352,7 +370,8 @@ class FinalCalculation {
     return {'subtotal': subtotal, 'IGST': igst, 'CGST': cgst, 'SGST': sgst, 'roundOff': roundOff, 'difference': differene, 'total': total, 'pendingAmount': pendingAmount, 'grandTotal': grandTotal};
   }
 }
-
+/// This class represents the data structure for posting an invoice.
+/// It includes properties like site IDs, subscription bill ID, billing address details, installation service address details, GST number, plan name, email ID, CC email, phone number, total amount, invoice generation ID, date, message type, and feedback.
 class PostInvoice {
   List<int> siteIds;
   String subscriptionBillId;

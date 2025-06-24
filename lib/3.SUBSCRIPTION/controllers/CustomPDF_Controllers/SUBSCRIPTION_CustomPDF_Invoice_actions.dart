@@ -205,6 +205,9 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
 
 // Function to format currency with rounded paisa
   /// This function formats the given amount to a currency string with rounded paisa.
+  /// It takes a double value as input and returns a formatted string.
+  /// It uses the Indian numbering system for formatting.
+  /// It rounds the value to two decimal places and adds commas for thousands, lakhs, etc.
   void finalCalc() {
     double addedSubTotal = 0.0;
     double addedIGST = 0.0;
@@ -244,6 +247,9 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
 
 // Function to calculate the difference between the rounded off value and the total
   /// This function calculates the difference between the rounded off value and the total amount.
+  /// It takes the rounded off value as input and returns the difference formatted as a string.
+  /// It uses the Indian numbering system for formatting.
+  /// It rounds the value to two decimal places and adds commas for thousands, lakhs, etc.
   void totalcaculationTable() {
     // Parse values with proper error handling
     final previousdues = double.tryParse(pdfModel.value.previousdues.value.text.replaceAll(',', '')) ?? 0;
@@ -286,54 +292,11 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
     pdfModel.refresh();
   }
 
-  // void resetData() {
-  //   pdfModel.value.date.value.clear();
-  //   pdfModel.value.manualinvoiceNo.value.clear();
-  //   pdfModel.value.billingName.value.clear();
-  //   pdfModel.value.billingAddress.value.clear();
-  //   pdfModel.value.billingName.value.clear();
-  //   pdfModel.value.billingAddres.value.clear();
-  //   pdfModel.value.phoneNumber.value.clear();
-  //   pdfModel.value.Email.value.clear();
-  //   pdfModel.value.feedback.value.clear();
-  //   pdfModel.value.filePathController.value.clear();
-
-  //   pdfModel.value.subTotal.value.clear();
-
-  //   pdfModel.value.CGST.value.clear();
-  //   pdfModel.value.SGST.value.clear();
-  //   pdfModel.value.roundOff.value.clear();
-  //   pdfModel.value.Total.value.clear();
-  //   pdfModel.value.roundoffDiff.value = null;
-
-  //   // pdfModel.value.manualInvoice_gstTotals.clear();
-
-  //   pdfModel.value.manualInvoicesites.assignAll([
-  //     Site(siteName: 'siteName1', address: 'address1', siteID: 'siteID1', monthlyCharges: 100),
-  //     Site(siteName: 'siteName2', address: 'address2', siteID: 'siteID2', monthlyCharges: 200),
-  //   ]);
-
-  //   pdfModel.value.notecontent.clear();
-  //   pdfModel.value.checkboxValues.clear();
-  //   pdfModel.value.textControllers.clear();
-  //   pdfModel.value.genearatedPDF.value = null;
-
-  //   for (var controller in pdfModel.value.noteControllers) {
-  //     controller.clear();
-  //   }
-  //   pdfModel.value.noteControllers.clear();
-
-  //   pdfModel.value.whatsapp_selectionStatus.value = true;
-  //   pdfModel.value.gmail_selectionStatus.value = true;
-  //   pdfModel.value.CCemailController.value.clear();
-  //   pdfModel.value.progress.value = 0.0;
-  //   pdfModel.value.isLoading.value = false;
-  //   pdfModel.value.CCemailToggle.value = false;
-
-  //   pdfModel.value.allData_key.value = GlobalKey<FormState>();
-  // }
 // Function to validate the data before submission
   /// This function checks if any of the required fields are empty or null.
+  /// It returns true if any of the fields are empty or null, indicating that data validation has failed.
+ 
+ 
   bool postDatavalidation() {
     return (pdfModel.value.billingName.value.text.isEmpty ||
         pdfModel.value.billingAddress.value.text.isEmpty ||
@@ -349,6 +312,18 @@ class SUBSCRIPTION_CustomPDF_InvoiceController extends GetxController {
 
 // Function to reset all data in the pdfModel
   /// This function resets all data in the pdfModel to their initial values.
+  /// It clears all text fields, lists, and other properties in the pdfModel.
+  /// It also resets the progress value, checkbox values, and loading states.
+  /// It sets the manualInvoicesites list to its initial static values.
+  /// It clears the note content and text controllers.
+  /// It resets the CC email toggle and generated PDF.
+  /// It resets the GlobalKey<FormState> to its initial state.
+  /// This function is useful for clearing the form and starting fresh.
+  /// It ensures that all fields are cleared and ready for new input.
+  /// It is typically called when the user wants to reset the form or when a new invoice needs to be created.
+  /// It is important to call this function before starting a new invoice to ensure that no old data remains in the pdfModel.
+  /// It is also useful for clearing the form after successfully generating a PDF or submitting the invoice
+  /// to ensure that the user can start fresh without any old data lingering in the form.
   void resetData() {
     pdfModel.value.date.value.clear();
     pdfModel.value.manualinvoiceNo.value.clear();

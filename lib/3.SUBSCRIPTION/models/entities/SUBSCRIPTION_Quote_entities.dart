@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
-
+/// This class represents a process in the subscription management system.
+/// It includes properties like key and value.
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class SUBSCRIPTION_QuoteRecommendation {
   final String key;
   final String value;
@@ -26,7 +28,9 @@ class SUBSCRIPTION_QuoteRecommendation {
     };
   }
 }
-
+/// This class represents a process in the subscription management system.
+/// It includes properties like event Number,company id,title,name,email Id,phone No,address,gst,billing Address Name,billing Address and subscription.
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class SubscriptionQuoteRequiredData {
   final String eventNumber;
   final int companyid;
@@ -86,7 +90,9 @@ class SubscriptionQuoteRequiredData {
     };
   }
 }
-
+/// This class represents a process in the subscription management system.
+/// It includes properties like requirement Id,site Name,camera Quantity,addressnotes and notes.
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class SubscriptionItem {
   final int requirementId;
   final String siteName;
@@ -122,7 +128,9 @@ class SubscriptionItem {
     };
   }
 }
-
+/// This class represents a process in the subscription management system.
+/// It includes properties like Date ,Quotation no, GST percentange ,GST In and Address Details,PAckage mapped Sites,site Data,final Calculation and Notes.
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class SUBSCRIPTION_Quote {
   final String date;
   final String quoteNo;
@@ -233,7 +241,9 @@ class SUBSCRIPTION_Quote {
     }
   }
 }
-
+/// This class represents a process in the subscription management system.
+/// It includes properties like Client Name,Client Address,Billing Name and Billing Address.
+/// It provides methods to create an instance from JSON and to convert the object to JSON.
 class Address {
   final String clientName;
   final String clientAddress;
@@ -257,7 +267,11 @@ class Address {
     return {'clientName': clientName, 'clientAddress': clientAddress, 'billingName': billingName, 'billingAddress': billingAddress};
   }
 }
-
+/// Represents a subscription package in the management system.
+/// Includes name, subscription ID, description, camera count, amount, GST, and type.
+/// Maintains reactive states for editing and site selection using GetX.
+/// Supports JSON serialization/deserialization for data exchange.
+/// Provides helper methods to edit, validate, and manage associated sites.
 class Package {
   String name;
   int? subscriptionid;
@@ -415,6 +429,11 @@ class Package {
     return name.isNotEmpty && cameracount.isNotEmpty && amount.isNotEmpty;
   }
 }
+/// Represents a site associated with a subscription package.
+/// Includes sitename, address, camera quantity, billing type, and mail type.
+/// Automatically generates a serial number for each instance.
+/// Supports JSON serialization and deserialization.
+/// Provides a helper method [getIndex] for column-based data access.
 
 class Site {
   static int _counter = 1;
@@ -552,7 +571,11 @@ class FinalCalculation {
     return {'subtotal': subtotal, 'IGST': igst, 'CGST': cgst, 'SGST': sgst, 'roundOff': roundOff, 'difference': differene, 'total': total, 'pendingAmount': pendingAmount, 'grandTotal': grandTotal};
   }
 }
-
+/// Represents the final billing calculation including taxes and rounding.
+/// Calculates subtotal, IGST, CGST, SGST, total, round-off, and grand total.
+/// Accepts a list of prices, GST percent, and optional pending amount.
+/// Supports JSON serialization via [toJson] and creation from data via [fromJson].
+/// Also includes computed rounding difference for accurate financial reporting.
 class CompanyBasedPackages {
   final int? subscriptionId;
   final String? subscriptionName;
@@ -628,6 +651,11 @@ class CompanyBasedPackages {
     return jsonList.map((item) => CompanyBasedPackages.fromJson(item)).toList();
   }
 }
+/// Represents a full subscription quotation payload for submission.
+/// Includes company info, client and billing addresses, packages, and contact details.
+/// Handles notes, GST information, quotation ID, and message type.
+/// Supports JSON serialization and deserialization with nested package data.
+/// Designed for posting complete quotation data to a backend service.
 
 class PostSubQuote {
   final int companyid;

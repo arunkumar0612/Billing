@@ -318,18 +318,34 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     quoteModel.filePathController.value.text = filePath;
   }
 
+// Function to remove a site from the site list in the quote model
+  /// This function removes a site from the site list at the specified index.
+  /// It uses the index to identify which site to remove from the QuoteSiteDetails list in the quote model.
   void removeFromsiteList(index) {
     quoteModel.QuoteSiteDetails.removeAt(index);
   }
 
+  // Function to update the billing type in the quote model
+  /// This function updates the billing type in the quote model's Billingtype_Controller.
+  /// It sets the value of the Billingtype_Controller to the provided billing type.
   void updateBillingtype(String billingtype) {
     quoteModel.Billingtype_Controller.value = billingtype;
   }
 
+  // Function to update the mail type in the quote model
+  /// This function updates the mail type in the quote model's Mailtype_Controller.
+  /// It sets the value of the Mailtype_Controller to the provided mail type.
   void updateMailtype(String mailtype) {
     quoteModel.Mailtype_Controller.value = mailtype;
   }
 
+// Function to pick a file using the FilePicker
+  /// This function allows the user to pick a file using the FilePicker.
+  /// It opens a file picker dialog and allows the user to select a file with specific extensions (png, jpg, jpeg).
+  /// If a file is selected, it checks the file size and updates the quoteModel with the selected file.
+  /// If the file exceeds 2 MB, it shows an error dialog and resets the picked file and selected PDF in the quoteModel.
+  /// If the file is successfully picked, it updates the quoteModel with the selected file and prints the file name in debug mode.
+  /// If no file is selected, it does nothing.
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg'], lockParentWindow: true);
 
@@ -358,6 +374,8 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     }
   }
 
+  // Function to fetch the message type based on WhatsApp and Gmail selection status
+  /// This function determines the message type based on the WhatsApp and Gmail selection status.
   int fetch_messageType() {
     if (quoteModel.whatsapp_selectionStatus.value && quoteModel.gmail_selectionStatus.value) return 3;
     if (quoteModel.whatsapp_selectionStatus.value) return 2;
@@ -365,7 +383,9 @@ class SUBSCRIPTION_QuoteController extends GetxController {
 
     return 0;
   }
-
+// Function to start the progress indicator
+  /// This function simulates a progress indicator by incrementally updating the progress value from 0 to 1.0 (100%).
+  /// It sets the loading state to true at the start and false at the end.
   Future<void> startProgress() async {
     setLoading(true);
     quoteModel.progress.value = 0.0;
@@ -378,6 +398,10 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     setLoading(false);
   }
 
+  // Function to add a recommendation to the recommendation list in the quote model
+  /// This function adds a recommendation to the recommendation list in the quote model.
+  /// It checks if the key and value are not empty before adding the recommendation.
+  /// If either the key or value is empty, it prints an error message in debug mode.
   void addRecommendation({required String key, required String value}) {
     if (key.isNotEmpty && value.isNotEmpty) {
       quoteModel.Quote_recommendationList.add(SUBSCRIPTION_QuoteRecommendation(key: key, value: value));
@@ -387,7 +411,12 @@ class SUBSCRIPTION_QuoteController extends GetxController {
       }
     }
   }
-
+// Function to update a recommendation in the recommendation list in the quote model
+  /// This function updates a recommendation in the recommendation list at the specified index.
+  /// It checks if the index is valid and if the key and value are not empty before updating the recommendation.
+  /// If the index is invalid or if either the key or value is empty, it prints an error message in debug mode.
+  /// If the index is valid and both key and value are provided, it updates the recommendation at the specified index with the new key and value.
+  /// If the index is invalid, it prints an error message in debug mode.
   void updateRecommendation({
     required int index,
     required String key,
@@ -408,6 +437,9 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     }
   }
 
+  // Function to add a site to the site list in the quote model
+  /// This function adds a site to the site list in the quote model.
+  /// It checks if the site name, camera quantity, and address are valid before adding the site.
   void addSite({required BuildContext context, required String siteName, required int cameraquantity, required String address, required String billType, required String mailType}) {
     try {
       if (siteName.trim().isEmpty || cameraquantity <= 0 || address.trim().isEmpty) {
@@ -429,6 +461,12 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     }
   }
 
+  // Function to update a site in the site list in the quote model
+  /// This function updates a site in the site list at the specified index.
+  /// It checks if the site name, camera quantity, and address are valid before updating the site.
+  /// If the editIndex is invalid, it shows an error message.
+  /// If the input fields are valid, it updates the site details at the specified index.
+  /// If any unexpected error occurs, it shows an error message.
   void updateSite(
       {required BuildContext context, required int editIndex, required String siteName, required int cameraquantity, required String address, required String billType, required String mailType}) {
     try {
@@ -460,6 +498,10 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     }
   }
 
+  // Function to add a note to the note list in the quote model
+  /// This function adds a note to the note list in the quote model.
+  /// It checks if the note content is not empty before adding the note.
+  /// If the note content is empty, it prints an error message in debug mode.
   void addNote(String noteContent) {
     if (noteContent.isNotEmpty) {
       quoteModel.Quote_noteList.add(noteContent);
@@ -469,16 +511,28 @@ class SUBSCRIPTION_QuoteController extends GetxController {
       } // Handle empty input (optional)
     }
   }
-
+// Function to remove a note from the note list in the quote model
+  /// This function removes a note from the note list at the specified index.
+  /// It uses the index to identify which note to remove from the Quote_noteList in the quote model.
+  /// If the index is valid, it removes the note at that index.
   void removeFromNoteList(int index) {
     quoteModel.Quote_noteList.removeAt(index);
   }
-
+// Function to remove a recommendation from the recommendation list in the quote model
+  /// This function removes a recommendation from the recommendation list at the specified index.
+  /// It uses the index to identify which recommendation to remove from the Quote_recommendationList in the quote model.
+  /// If the index is valid, it removes the recommendation at that index.
   void removeFromRecommendationList(int index) {
     quoteModel.Quote_recommendationList.removeAt(index);
     quoteModel.Quote_recommendationList.isEmpty ? quoteModel.recommendationHeadingController.value.clear() : null;
   }
-
+// Function to update the required data in the quote model
+  /// This function updates the required data in the quote model based on the CMDmResponse value and event type.
+  /// It checks the event type and updates the quote model with the relevant data.
+  /// If the event type is 'revisedquotation', it stores the fetched packages.
+  /// It also updates various fields in the quote model such as Quote_no, companyid, title, emailId, gst, phoneNo, client address name, client address, billing address name, and billing address.
+  /// It prints the data in debug mode if kDebugMode is true.
+  /// @param value The CMDmResponse value containing the data to be updated.
   Future<void> update_requiredData(CMDmResponse value, String eventtype) async {
     if (kDebugMode) {
       print(value.data);
@@ -500,7 +554,12 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     updateBillingAddressName(instance.billingAddressName!);
     updateBillingAddress(instance.billingAddress!);
   }
-
+// Function to store fetched packages in the quote model
+  /// This function stores the fetched packages in the quote model.
+  /// It checks if the 'packagedetails' key exists in the data and if it does, it converts the package details into a list of Package objects.
+  /// It also sets the selected package to the first package in the list if available.
+  /// It iterates through the selected packages and their sites, creating Site objects and adding them to the QuoteSiteDetails list in the quote model.
+  /// It prints the package details and selected packages in debug mode if kDebugMode is true.
   void storeFetchedPackages(Map<String, dynamic> data) {
     if (data['packagedetails'] != null) {
       quoteModel.selectedPackagesList.value = List<Map<String, dynamic>>.from(data['packagedetails']).map((packageJson) => Package.fromJson(packageJson)).toList();
@@ -532,6 +591,10 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     }
   }
 
+  // Function to update company-based packages in the quote model
+  /// This function updates the company-based packages in the quote model.
+  /// It clears the existing package details and package list, then populates them with the company-based packages from the response data.
+  /// It also adds a 'Custom Package' option to the package list.
   void update_companyBasedPackages(CMDlResponse response) {
     quoteModel.packageDetails.clear();
     quoteModel.packageList.clear();
@@ -557,6 +620,9 @@ class SUBSCRIPTION_QuoteController extends GetxController {
     }
     quoteModel.packageList.add('Custom Package');
   }
+// Function to validate data before generating a quote
+  /// This function checks if any required fields are empty or null in the quote model.
+  /// It returns true if any of the fields are empty or null, indicating that data validation has failed.
 
   bool generate_Datavalidation() {
     return (quoteModel.TitleController.value.text.isEmpty ||
@@ -571,6 +637,9 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         quoteModel.Quote_no.value == null);
   } // If any one is empty or null, then it returns true
 
+  // Function to check if any data is present in the quote model
+  /// This function checks if any of the required fields in the quote model have data.
+  /// It returns true if any of the fields have data, indicating that there is some information present in the quote model.
   bool anyHavedata() {
     return (quoteModel.TitleController.value.text.isNotEmpty ||
         quoteModel.processID.value != null ||
@@ -585,7 +654,16 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         quoteModel.selectedPackagesList.isNotEmpty ||
         quoteModel.Quote_no.value != null);
   }
-
+// Function to validate data after the quote has been generated
+  /// This function checks if any required fields are empty or null in the quote model after the quote has been generated.
+  /// It returns true if any of the fields are empty or null, indicating that data validation has failed after the quote generation.
+  /// This function is used to ensure that all necessary information is provided before finalizing the quote
+  /// and sending it to the client.
+  /// It checks fields such as title, process ID, client address name, client address,
+  /// billing address name, billing address, GST number, notes, selected packages, and quote number.
+  /// If any of these fields are empty or null, it returns true, indicating that the data validation has failed.
+  /// If all fields are filled, it returns false, indicating that the data validation has passed
+  /// and the quote can be finalized and sent to the client.
   bool postDatavalidation() {
     return (quoteModel.TitleController.value.text.isEmpty ||
         quoteModel.processID.value == null ||
@@ -601,6 +679,21 @@ class SUBSCRIPTION_QuoteController extends GetxController {
         quoteModel.Quote_no.value == null);
   } // If any one is empty or null, then it returns true
 
+  // Function to reset all data in the quote model
+  /// This function resets all data in the quote model to its initial state.
+  /// It clears all text controllers, resets lists, and sets various properties to their default values.
+  /// This method is used to clear all data in the quote model, allowing for a fresh
+  /// start when creating a new quote.
+  /// It resets the tab controller, process ID, quote number, table heading, GST number,
+  /// title, client address name, client address, billing address name, billing address,
+  /// site details, selected packages, package list, custom package creation status,
+  /// note form key, progress, loading state, note edit index, note content, recommendation
+  /// edit index, recommendation heading, recommendation key, recommendation value,
+  /// quote note list, quote recommendation list, picked file, selected PDF, PDF loading state,
+  /// WhatsApp selection status, Gmail selection status, phone number, email, CC email,
+  /// feedback, file path, and CC email toggle.
+  /// It is typically called when starting a new quote or when clearing the current quote data.
+  /// This function ensures that all data is reset to its initial state, allowing for a fresh start when creating a new quote.
   void resetData() {
     // GENERAL
     quoteModel.tabController.value = null;

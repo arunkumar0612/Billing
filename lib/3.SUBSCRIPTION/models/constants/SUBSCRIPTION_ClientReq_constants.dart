@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 
 import '../entities/SUBSCRIPTION_ClientReq_entities.dart';
 
+/// This model class is used to manage the state of the client requirement-related data
+/// It extends GetxController to leverage the reactive state management features of the GetX package
 class SUBSCRIPTION_ClientReqModel {
   var MOR_uploadedPath = Rxn<String>();
   var customerType = 'New'.obs;

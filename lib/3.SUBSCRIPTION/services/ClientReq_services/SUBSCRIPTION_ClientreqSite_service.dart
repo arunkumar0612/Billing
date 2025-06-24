@@ -5,13 +5,13 @@ import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 
 mixin SUBSCRIPTION_ClientreqSiteService {
   final SUBSCRIPTION_ClientreqController clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
+
   void clearFields() {
     clientreqController.clientReqModel.siteNameController.value.clear();
     clientreqController.clientReqModel.cameraquantityController.value.clear();
     clientreqController.clientReqModel.addressController.value.clear();
     // clientreqController.clientReqModel.gstController.value.clear();
   }
-
   void addsite(context) {
     if (clientreqController.clientReqModel.siteFormkey.value.currentState?.validate() ?? false) {
       bool exists = clientreqController.clientReqModel.clientReqSiteDetails.any((site) => site.siteName == clientreqController.clientReqModel.siteNameController.value.text);
@@ -30,7 +30,6 @@ mixin SUBSCRIPTION_ClientreqSiteService {
       clearFields();
     }
   }
-
   void updateSite(context) {
     if (clientreqController.clientReqModel.siteFormkey.value.currentState?.validate() ?? false) {
       clientreqController.updateSite(
@@ -46,7 +45,7 @@ mixin SUBSCRIPTION_ClientreqSiteService {
       clientreqController.addSiteEditindex(null);
     }
   }
-
+  
   void editsite(int index) {
     SUBSCRIPTION_ClientreqSites site = clientreqController.clientReqModel.clientReqSiteDetails[index];
     clientreqController.updateSiteName(site.siteName);
@@ -54,7 +53,6 @@ mixin SUBSCRIPTION_ClientreqSiteService {
     clientreqController.updateAddressName(site.siteAddress);
     clientreqController.addSiteEditindex(index);
   }
-
   void resetEditingState() {
     clearFields();
     clientreqController.addSiteEditindex(null);

@@ -21,7 +21,12 @@ mixin SUBSCRIPTION_ClientreqNoteService {
   final SUBSCRIPTION_ClientreqController clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
-  final loader = LoadingOverlay();
+    final loader = LoadingOverlay();
+/// Adds a new recommendation row to the table if the form is valid.
+/// Checks for duplicate note keys to avoid redundancy.
+/// Shows a warning snackbar if the note key already exists.
+/// Adds the key-value pair to the recommendation list on success.
+/// Clears the input fields after adding the recommendation.
   void addtable_row(context) {
     if (clientreqController.clientReqModel.noteFormKey.value.currentState?.validate() ?? false) {
       // clientreqController.updateRe(clientreqController.clientReqModel.Rec_HeadingController.value.text);
@@ -36,8 +41,11 @@ mixin SUBSCRIPTION_ClientreqNoteService {
     }
   }
 
-// Function to update the note list
-  // This function updates the note in the list if the form is valid
+/// Updates an existing note in the list if the note form is valid.
+/// Uses the current content and index to update the specific note entry.
+/// Clears the note input fields after the update.
+/// Resets the note edit index to null after completion.
+/// Ensures clean state management for editing notes.
   void updatenote() {
     if (clientreqController.clientReqModel.noteFormKey.value.currentState?.validate() ?? false) {
       clientreqController.updateNoteList(clientreqController.clientReqModel.noteContentController.value.text, clientreqController.clientReqModel.noteEditIndex.value!);
@@ -45,8 +53,11 @@ mixin SUBSCRIPTION_ClientreqNoteService {
       clientreqController.updateNoteEditindex(null);
     }
   }
-// Function to update the recommendation table
-
+/// Updates an existing recommendation in the table using the current edit index.
+/// Applies updated key and value from the respective text controllers.
+/// Clears the recommendation input fields after updating.
+/// Resets the recommendation edit index to null.
+/// Ensures the edited table row reflects the new data correctly.
   void updatetable() {
     clientreqController.updateRecommendation(
         index: clientreqController.clientReqModel.Rec_EditIndex.value!,
@@ -56,13 +67,21 @@ mixin SUBSCRIPTION_ClientreqNoteService {
     clientreqController.updateRecommendationEditindex(null);
   }
 
-// Function to delete a note from the list
+/// Loads the selected note content into the note input field for editing.
+/// Retrieves the note at the given [index] from the note list.
+/// Updates the note content controller with the selected note's text.
+/// Sets the current edit index in the controller for tracking.
+/// Prepares the UI for updating an existing note entry.
   void editnote(int index) {
     clientreqController.updateNoteContentControllerText(clientreqController.clientReqModel.clientReqNoteList[index]);
     clientreqController.updateNoteEditindex(index);
   }
 
-// Function to delete a note from the list
+/// Loads the selected recommendation row into the input fields for editing.
+/// Retrieves the recommendation at the specified [index] from the list.
+/// Updates the key and value text controllers with the selected data.
+/// Sets the current recommendation edit index in the controller.
+/// Prepares the table UI for editing the selected recommendation entry.
   void editnotetable(int index) {
     final note = clientreqController.clientReqModel.clientReqRecommendationList[index];
     clientreqController.updateRec_KeyControllerText(note.key.toString());
@@ -70,7 +89,11 @@ mixin SUBSCRIPTION_ClientreqNoteService {
     clientreqController.updateRecommendationEditindex(index);
   }
 
-// Function to delete a note from the list
+/// Resets all editing states related to notes and recommendations.
+/// Clears both note and table input fields.
+/// Resets the note editing index to `null`.
+/// Resets the recommendation editing index to `null`.
+/// Ensures a clean slate for creating new entries after editing.
   void resetEditingStateNote() {
     () {
       clearnoteFields();
@@ -81,16 +104,26 @@ mixin SUBSCRIPTION_ClientreqNoteService {
   }
 
 // Function to delete a note from the list
+/// Clears the text in the note content input field.
+/// Resets the [noteContentController] to an empty state.
   void clearnoteFields() {
     clientreqController.clientReqModel.noteContentController.value.clear();
   }
 
 // Function to clear the fields in the recommendation table
+/// Clears the key and value input fields used for recommendations.
+/// Resets both [Rec_KeyController] and [Rec_ValueController] to empty.
   void cleartable_Fields() {
     clientreqController.clientReqModel.Rec_KeyController.value.clear();
     clientreqController.clientReqModel.Rec_ValueController.value.clear();
   }
 
+
+/// Adds a new note to the note list if the input is valid and not duplicated.
+/// Validates the note form using [noteFormKey].
+/// Checks for existing notes with the same content to prevent duplicates.
+/// Adds the note to the list and clears the input field upon success.
+/// Shows a warning snackbar if a duplicate note is found.
   void addNotes(context) {
     if (clientreqController.clientReqModel.noteFormKey.value.currentState?.validate() ?? false) {
       bool exists = clientreqController.clientReqModel.clientReqNoteList.any((note) => note == clientreqController.clientReqModel.noteContentController.value.text);
@@ -103,6 +136,12 @@ mixin SUBSCRIPTION_ClientreqNoteService {
     }
   }
 
+
+/// Generates a client request PDF and saves it to the device's temporary cache directory.
+/// Uses form data and site details to create the PDF via [generateClientReq].
+/// Writes the PDF as bytes to a file named `client_request.pdf`.
+/// Logs the file path in debug mode for reference.
+/// Returns the saved [File] object for further use (e.g., sharing or uploading).
   Future<File> savePdfToCache() async {
     Uint8List pdfData = await generateClientReq(
       pageFormat: PdfPageFormat.a4,
@@ -125,7 +164,11 @@ mixin SUBSCRIPTION_ClientreqNoteService {
     }
     return file;
   }
-
+/// Validates input fields and prepares client requirement data for submission.
+/// Generates a PDF using [savePdfToCache] and encodes form data into JSON.
+/// Constructs a [SUBSCRIPTION_Post_ClientRequirement] model from controller values.
+/// Sends the data and PDF to the backend using [send_data].
+/// Displays error dialogs on validation failure or exceptions during the process.
   dynamic postData(context, customer_type) async {
     try {
       if (clientreqController.postDatavalidation()) {
@@ -159,7 +202,11 @@ mixin SUBSCRIPTION_ClientreqNoteService {
       await Error_dialog(context: context, title: "POST", content: "$e", onOk: () {});
     }
   }
-
+/// Sends client requirement data and the generated PDF file to the backend API.
+/// Uses the [Multer] method with session token and multipart form submission.
+/// Handles response status and shows success or error dialogs accordingly.
+/// Stops the loader upon completion or failure of the request.
+/// Resets form data and navigates back on successful submission.
   dynamic send_data(context, String jsonData, File file) async {
     try {
       Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, [file], API.subscription_add_details_API);

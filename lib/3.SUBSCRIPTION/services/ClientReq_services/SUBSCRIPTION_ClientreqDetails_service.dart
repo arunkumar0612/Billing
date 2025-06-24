@@ -13,11 +13,19 @@ mixin SUBSCRIPTION_ClientreqDetailsService {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final SUBSCRIPTION_ClientreqController clientreqController = Get.find<SUBSCRIPTION_ClientreqController>();
   // Function to handle the next tab action
+  /// Moves to the next tab using the [clientreqController]'s tab navigation.
+
   void nextTab(context) async {
     clientreqController.nextTab();
   }
 
-// Function to get the  organization List
+/// Function to get the  organization List
+/// Fetches the list of organizations from the backend using an API call.
+/// Parses the response into [CMDlResponse] and updates the controller.
+/// Displays an error dialog if the fetch fails or response is invalid.
+/// Handles server errors and exceptions gracefully with dialog prompts.
+/// Utilizes [clientreqController] to store and update organization data.
+
   void get_OrganizationList(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_fetchOrg_list);
@@ -38,7 +46,13 @@ mixin SUBSCRIPTION_ClientreqDetailsService {
     }
   }
 
-// Function to get the company list based on the selected organization
+/// Function to get the company list based on the selected organization
+/// Fetches the list of companies for a given organization ID via an API call.
+/// Sends the [organizationid] as a query string parameter to the backend.
+/// Parses and updates the company list in [clientreqController] on success.
+/// Displays error dialogs if the API call fails or returns invalid data.
+/// Handles network/server errors and exceptions gracefully with proper alerts.
+
 
   void get_CompanyList(context, int org_id) async {
     try {
@@ -60,7 +74,13 @@ mixin SUBSCRIPTION_ClientreqDetailsService {
     }
   }
 
-// Function to get the branch list based on the selected company
+/// Function to get the branch list based on the selected company
+/// Handles logic when an organization is selected from the UI.
+/// Finds the corresponding organization ID based on the selected name.
+/// Triggers [get_CompanyList] to fetch companies under the selected organization.
+/// Optionally clears previous company selections (commented for now).
+/// Ensures dynamic data loading based on user selection.
+
   // void get_BranchList(context, int comp_id) async {
   void on_Orgselected(context, Orgname) {
     // clientreqController.clear_CompanyName();
@@ -74,6 +94,11 @@ mixin SUBSCRIPTION_ClientreqDetailsService {
   }
 
 // Function to get the branch list based on the selected company
+/// Handles logic when a company is selected from the UI by its name.
+/// Finds the matching company model from the company list in the controller.
+/// Updates company ID and name in the [clientreqController].
+/// Also updates KYC details like address, email, phone, and GST number.
+/// Prepares the system with selected company's complete info for further steps.
   void on_Compselected(context, Compname) {
     // int? id = clientreqController.clientReqModel.CompanyList
     //     .firstWhere(
@@ -123,7 +148,12 @@ mixin SUBSCRIPTION_ClientreqDetailsService {
   }
 
 // 9500753815
-// Function to upload the MOR file
+/// Initiates the MOR (Mandatory Offer Requirement) file upload process.
+/// Calls [pickFile] to allow the user to select a file from the system.
+/// If a file is selected, triggers [uploadMor] with the chosen file.
+/// Handles the flow asynchronously using `await`.
+/// Skips upload if no file is picked.
+
   void uploadMor(context, File file) async {
     try {
       Map<String, dynamic>? response = await apiController.multiPart(file, API.subscription_Upload_MOR_API);
@@ -133,7 +163,7 @@ mixin SUBSCRIPTION_ClientreqDetailsService {
           // await Basic_dialog(context: context, showCancel: false, title: 'Upload MOR', content: "MOR uploaded Successfully", onOk: () {});
           clientreqController.updateMOR_uploadedPath(value);
         } else {
-          await Error_dialog(context: context, title: 'Upload MOR', content: value.message ?? "", onOk: () {});
+          await Error_dialog(context: context, title: 'Upload MOR', content: value.message ?? "", onOk: () {},);
         }
       } else {
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");

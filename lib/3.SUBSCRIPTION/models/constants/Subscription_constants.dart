@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 
 import '../entities/Subscription_entities.dart';
 
+/// This model class is used to manage the state of the subscription-related data
+/// It extends GetxController to leverage the reactive state management features of the GetX package
 class SubscriptionModel extends GetxController with GetSingleTickerProviderStateMixin {
   var processcustomerList = <Processcustomer>[].obs;
   var recurredcustomerList = <Recurredcustomer>[].obs;

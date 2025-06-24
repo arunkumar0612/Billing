@@ -3,9 +3,9 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
+import 'package:ssipl_billing/4_SALES/controllers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
 
-import '../../4.SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entities.dart';
+import '../../4_SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entities.dart';
 import '../../UTILS/helpers/support_functions.dart';
 
 Future<Uint8List> generate_CustomPDFDc(PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst) async {

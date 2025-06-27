@@ -7,17 +7,86 @@ import 'package:ssipl_billing/4_SALES/models/entities/product_entities.dart';
 mixin DcproductService {
   final DcController dcController = Get.find<DcController>();
 
-  /// Populates selected and pending product lists based on user input,
-  /// and updates product feedback accordingly.
-  ///
-  /// This does the following:
-  /// - Clears any previously selected or pending product entries.
-  /// - Loops through all products, checking the selected quantity (if checkbox is ticked).
-  /// - Adds selected products with their updated quantity to `selected_dcProducts`.
-  /// - Calculates remaining quantity and, if any, adds them to `pending_dcProducts`.
-  /// - If there are pending items, it also clears old recommendations and adds a note
-  ///   for each pending product under the heading "PENDING PRODUCTS FOR DELIVERY".
-  /// - Updates product feedback with either a “still pending” or “completed” message.
+  // void clearFields() {
+  //   dcController.dcModel.productNameController.value.clear();
+  //   dcController.dcModel.hsnController.value.clear();
+  //   dcController.dcModel.priceController.value.clear();
+  //   dcController.dcModel.quantityController.value.clear();
+  //   dcController.dcModel.gstController.value.clear();
+  // }
+
+  // void addproduct(context) {
+  //   if (dcController.dcModel.productKey.value.currentState?.validate() ?? false) {
+  //     bool exists = dcController.dcModel.Dc_products.any((product) =>
+  //         product.productName == dcController.dcModel.productNameController.value.text &&
+  //         product.hsn == dcController.dcModel.hsnController.value.text &&
+  //         product.quantity == int.parse(dcController.dcModel.quantityController.value.text));
+
+  //     if (exists) {
+  //       Get.snackbar("Product", "This product already exists.");
+  //       return;
+  //     }
+  //     dcController.addProduct(
+  //         context: context,
+  //         productName: dcController.dcModel.productNameController.value.text,
+  //         hsn: dcController.dcModel.hsnController.value.text,
+  //         price: double.parse(dcController.dcModel.priceController.value.text),
+  //         quantity: int.parse(dcController.dcModel.quantityController.value.text),
+  //         gst: double.parse(dcController.dcModel.gstController.value.text));
+
+  //     clearFields();
+  //   }
+  // }
+
+  // void onSubmit() {
+  //   dcController.dcModel.Dc_gstTotals.assignAll(
+  //     dcController.dcModel.Dc_products
+  //         .fold<Map<double, double>>({}, (Map<double, double> accumulator, DcProduct product) {
+  //           accumulator[product.gst] = (accumulator[product.gst] ?? 0) + product.total;
+  //           return accumulator;
+  //         })
+  //         .entries
+  //         .map((entry) => DcGSTtotals(
+  //               gst: entry.key, // Convert key to String
+  //               total: entry.value, // Convert value to String
+  //             ))
+  //         .toList(),
+  //   );
+  // }
+
+  // void updateproduct(context) {
+  //   if (dcController.dcModel.productKey.value.currentState?.validate() ?? false) {
+  //     dcController.updateProduct(
+  //       context: context,
+  //       editIndex: dcController.dcModel.product_editIndex.value!, // The index of the product to be updated
+  //       productName: dcController.dcModel.productNameController.value.text,
+  //       hsn: dcController.dcModel.hsnController.value.text,
+  //       price: double.parse(dcController.dcModel.priceController.value.text),
+  //       quantity: int.parse(dcController.dcModel.quantityController.value.text),
+  //       gst: double.parse(dcController.dcModel.gstController.value.text),
+  //     );
+
+  //     clearFields();
+  //     dcController.addProductEditindex(null);
+  //   }
+  // }
+
+  // void editproduct(int index) {
+  //   DcProduct product = dcController.dcModel.Dc_products[index];
+
+  //   dcController.updateProductName(product.productName);
+  //   dcController.updateHSN(product.hsn);
+  //   dcController.updatePrice(product.price);
+  //   dcController.updateQuantity(product.quantity);
+  //   dcController.updateGST(product.gst);
+  //   dcController.addProductEditindex(index);
+  // }
+
+  // void resetEditingState() {
+  //   clearFields();
+  //   dcController.addProductEditindex(null);
+  // }
+
   void addto_Selectedproducts() {
     dcController.dcModel.selected_dcProducts.clear();
     dcController.dcModel.pending_dcProducts.clear();
@@ -29,6 +98,16 @@ mixin DcproductService {
       int totalQty = dcController.dcModel.Dc_products[i].quantity;
       int selectedQty = dcController.dcModel.checkboxValues[i] ? dcController.dcModel.quantities[i].value : 0;
       int pendingQty = totalQty - selectedQty;
+
+// return DcProduct(
+//       sno: sno, // auto-injected externally
+//       productName: json['productname'] as String,
+//       hsn: json['producthsn'] as int,
+//       gst: (json['productgst'] as num).toDouble(),
+//       price: (json['productprice'] as num).toDouble(),
+//       quantity: json['productquantity'] as int,
+//       productid: json['productid'] as int,
+//     );
 
       if (selectedQty > 0) {
         // Add selected product with updated quantity

@@ -126,8 +126,8 @@ class Quotation {
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
                         regular('Date', 10),
-                        pw.SizedBox(height: 5),
-                        regular('Invoice ref', 10),
+                        // pw.SizedBox(height: 5),
+                        // regular('PO ref', 10),
                         pw.SizedBox(height: 5),
                         regular('DC no', 10),
                       ],
@@ -137,8 +137,8 @@ class Quotation {
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
                         regular('  :  ', 10),
-                        pw.SizedBox(height: 5),
-                        regular('  :  ', 10),
+                        // pw.SizedBox(height: 5),
+                        // regular('  :  ', 10),
                         pw.SizedBox(height: 5),
                         regular('  :  ', 10),
                       ],
@@ -154,17 +154,17 @@ class Quotation {
                           ),
                         ),
                         pw.SizedBox(height: 5),
+                        // pw.Container(
+                        //   child: pw.Align(
+                        //     alignment: pw.Alignment.centerLeft,
+                        //     child: bold("TAA/TRY/AB80/2024", 10),
+                        //   ),
+                        // ),
+                        // pw.SizedBox(height: 5),
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: bold("TAA/TRY/AB80/2024", 10),
-                          ),
-                        ),
-                        pw.SizedBox(height: 5),
-                        pw.Container(
-                          child: pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: bold("SSIPL/250301", 10),
+                            child: bold(estimate, 10),
                           ),
                         ),
                       ],

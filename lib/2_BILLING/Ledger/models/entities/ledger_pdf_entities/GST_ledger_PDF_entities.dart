@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-// import 'package:ssipl_billing/2.BILLING/Ledger/models/entities/GST_ledger_entities.dart';
+// import 'package:ssipl_billing/2_BILLING/Ledger/models/entities/GST_ledger_entities.dart';
 
 class GSTsummaryDetails {
   final String category;

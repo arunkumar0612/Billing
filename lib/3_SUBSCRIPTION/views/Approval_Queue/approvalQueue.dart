@@ -548,12 +548,12 @@ class _ApprovalQueueState extends State<ApprovalQueue> {
                       subscriptionController.updateshowcustomerprocess(index);
                       subscriptionController.updatecustomerId(customerid);
 
-                      widget.Get_RecurringInvoiceList(customerid);
+                      widget.Get_ApprovalQueueList(customerid);
                     }
                   : () {
                       subscriptionController.updateshowcustomerprocess(null);
                       subscriptionController.updatecustomerId(0);
-                      widget.Get_RecurringInvoiceList(null);
+                      widget.Get_ApprovalQueueList(null);
                     },
             ),
           ),

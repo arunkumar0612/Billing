@@ -95,6 +95,7 @@ class NotificationController extends GetxController {
   //   );
   // }
 
+  ///This a Initializer function used to initialize the MQTT with and port
   void initializeMqttClient() {
     notificationModel.MQTT_client = MqttServerClient.withPort('192.168.0.200', loginController.loginModel.userController.value.text, 1883);
     notificationModel.MQTT_client.logging(on: false); // disable internal logs

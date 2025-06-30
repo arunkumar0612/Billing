@@ -3,9 +3,9 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/4.SALES/controllers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
+import 'package:ssipl_billing/4_SALES/controllers/CustomPDF_Controllers/CustomPDF_DC_actions.dart';
 
-import '../../4.SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entities.dart';
+import '../../4_SALES/models/entities/CustomPDF_entities/CustomPDF_Product_entities.dart';
 import '../../UTILS/helpers/support_functions.dart';
 
 Future<Uint8List> generate_CustomPDFDc(PdfPageFormat pageFormat, date, products, client_addr_name, client_addr, bill_addr_name, bill_addr, estimate_num, title, gst) async {
@@ -126,8 +126,8 @@ class Quotation {
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
                         regular('Date', 10),
-                        pw.SizedBox(height: 5),
-                        regular('PO ref', 10),
+                        // pw.SizedBox(height: 5),
+                        // regular('PO ref', 10),
                         pw.SizedBox(height: 5),
                         regular('DC no', 10),
                       ],
@@ -137,8 +137,8 @@ class Quotation {
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
                         regular('  :  ', 10),
-                        pw.SizedBox(height: 5),
-                        regular('  :  ', 10),
+                        // pw.SizedBox(height: 5),
+                        // regular('  :  ', 10),
                         pw.SizedBox(height: 5),
                         regular('  :  ', 10),
                       ],
@@ -154,17 +154,17 @@ class Quotation {
                           ),
                         ),
                         pw.SizedBox(height: 5),
+                        // pw.Container(
+                        //   child: pw.Align(
+                        //     alignment: pw.Alignment.centerLeft,
+                        //     child: bold("TAA/TRY/AB80/2024", 10),
+                        //   ),
+                        // ),
+                        // pw.SizedBox(height: 5),
                         pw.Container(
                           child: pw.Align(
                             alignment: pw.Alignment.centerLeft,
-                            child: bold("TAA/TRY/AB80/2024", 10),
-                          ),
-                        ),
-                        pw.SizedBox(height: 5),
-                        pw.Container(
-                          child: pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: bold("SSIPL/250301", 10),
+                            child: bold(estimate, 10),
                           ),
                         ),
                       ],
@@ -208,7 +208,7 @@ class Quotation {
                         left: 15,
                       ),
                       child: pw.Text(
-                        'CLIENT ADDRESS',
+                        'DELIVERY ADDRESS',
                         style: pw.TextStyle(
                           font: Helvetica_bold,
                           fontSize: 10,

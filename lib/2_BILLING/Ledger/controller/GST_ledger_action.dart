@@ -6,6 +6,8 @@ import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 class GST_LedgerController extends GetxController {
   var gst_LedgerModel = GST_LedgerModel();
 
+  /// Adds GST ledger data by parsing the response and assigning it to both primary and parent models.
+  /// Initializes the start and end date filters based on the GST ledger data.
   void add_GST_Ledger(CMDmResponse value) {
     gst_LedgerModel.gst_Ledger_list.value = GSTSummaryModel(
       gstList: [],
@@ -22,6 +24,7 @@ class GST_LedgerController extends GetxController {
     initialize_StartEnd_date(gst_LedgerModel.gst_Ledger_list.value.startdate!, gst_LedgerModel.gst_Ledger_list.value.enddate!);
   }
 
+  /// Sets the start and end date values in the selected GST ledger filter model.
   void initialize_StartEnd_date(String startDate, String endDate) {
     gst_LedgerModel.gst_LedgerSelectedFilter.value.fromdate.value = startDate;
     gst_LedgerModel.gst_LedgerSelectedFilter.value.todate.value = endDate;
@@ -42,6 +45,7 @@ class GST_LedgerController extends GetxController {
   //   gst_LedgerModel.closedDateController.text = gst_LedgerModel.closedDate.value;
   // }
 
+  /// Clears all GST share-related input fields and resets WhatsApp and Gmail sharing selections.
   void clear_sharedata() {
     gst_LedgerModel.emailController.value.clear();
     gst_LedgerModel.phoneController.value.clear();
@@ -51,6 +55,7 @@ class GST_LedgerController extends GetxController {
     gst_LedgerModel.gmail_selectionStatus.value = false;
   }
 
+  /// Updates the visibility status of the CC email field in the GST ledger model.
   void toggleCCemailvisibility(bool value) {
     gst_LedgerModel.CCemailToggle.value = value;
   }

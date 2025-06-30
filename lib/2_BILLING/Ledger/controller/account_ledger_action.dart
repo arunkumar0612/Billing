@@ -9,21 +9,16 @@ class Account_LedgerController extends GetxController {
   final View_LedgerController view_LedgerController = Get.find<View_LedgerController>();
   // final Account_LedgerController account_ledgerController = Get.find<Account_LedgerController>();
 
+  /// Adds account ledger data to both primary and secondary lists.
+  /// Also initializes the start and end date filters based on the ledger data.
   void add_Account_Ledger(CMDmResponse value) {
-    // account_LedgerModel.account_Ledger_list.value = AccountLedgerSummary(
-    //   balanceAmount: 0.0,
-    //   creditAmount: 0.0,
-    //   debitAmount: 0.0,
-    //   ledgerList: [],
-    //   startdate: null,
-    //   enddate: null,
-    // );
     account_LedgerModel.Secondaryaccount_Ledger_list.value = AccountLedgerSummary.fromJson(value.data);
     account_LedgerModel.account_Ledger_list.value = AccountLedgerSummary.fromJson(value.data);
 
     initialize_StartEnd_date(account_LedgerModel.account_Ledger_list.value.startdate!, account_LedgerModel.account_Ledger_list.value.enddate!);
   }
 
+  /// Sets the start and end date values in the selected filter model.
   void initialize_StartEnd_date(String startDate, String endDate) {
     account_LedgerModel.account_LedgerSelectedFilter.value.fromdate.value = startDate;
     account_LedgerModel.account_LedgerSelectedFilter.value.todate.value = endDate;
@@ -45,6 +40,7 @@ class Account_LedgerController extends GetxController {
   //   account_LedgerModel.closedDateController.text = account_LedgerModel.closedDate.value;
   // }
 
+  /// Clears all share-related input fields and resets sharing option selections.
   void clear_sharedata() {
     account_LedgerModel.emailController.value.clear();
     account_LedgerModel.phoneController.value.clear();
@@ -54,6 +50,7 @@ class Account_LedgerController extends GetxController {
     account_LedgerModel.gmail_selectionStatus.value = false;
   }
 
+  /// Toggles the visibility of the CC email input based on the given boolean value.
   void toggleCCemailvisibility(bool value) {
     account_LedgerModel.CCemailToggle.value = value;
   }

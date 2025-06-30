@@ -1078,6 +1078,7 @@ mixin SubscriptionServices {
 
   void mailByGroup() async {
     Map<String, Map<String, List<Map<String, dynamic>>>> groupedByEmail = {};
+    // ignore: unused_local_variable
     int count = 0;
     List<String> concatinatedMails = [];
     List<String> customerIds = [];
@@ -1108,7 +1109,6 @@ mixin SubscriptionServices {
     }
 
     for (var mailEntry in groupedByEmail.entries) {
-      final String emailAndCC = mailEntry.key;
       final Map<String, List<Map<String, dynamic>>> customers = mailEntry.value;
 
       // print('Email: $emailAndCC');

@@ -841,7 +841,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                         ),
                       ),
                       const SizedBox(width: 15),
-                      Expanded(
+                       Expanded(
                         flex: 1,
                         child: Padding(
                           padding: const EdgeInsets.all(0),

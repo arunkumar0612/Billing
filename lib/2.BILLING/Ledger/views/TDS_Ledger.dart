@@ -61,7 +61,6 @@ class _TDSLedgerState extends State<TDSLedger> {
     _initialized = true;
     await Future.delayed(const Duration(milliseconds: 100));
     loader.start(context); // Now safe to use
-
     await widget.Get_SUBcustomerList();
     await widget.Get_SALEScustomerList(context);
     WidgetsBinding.instance.addPostFrameCallback((_) async {

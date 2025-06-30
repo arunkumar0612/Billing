@@ -23,6 +23,15 @@ mixin PostServices {
   final QuoteController quoteController = Get.find<QuoteController>();
   final Invoker apiController = Get.find<Invoker>();
   final loader = LoadingOverlay();
+
+  /// Controls the loading animation for PDF generation.
+  ///
+  /// - Initially disables the loading state using `setpdfLoading(false)`.
+  /// - Waits asynchronously for 4 seconds (acts as a placeholder delay).
+  /// - Then re-enables the loading state using `setpdfLoading(true)`.
+  ///
+  /// This function is typically used to simulate or manage a loading indicator
+  /// during a PDF-related operation or UI transition.
   void animation_control() async {
     // await Future.delayed(const Duration(milliseconds: 200));
     quoteController.setpdfLoading(false);
@@ -35,6 +44,15 @@ mixin PostServices {
     quoteController.setpdfLoading(true);
   }
 
+  /// Sends the selected PDF file to the print layout for printing.
+  ///
+  /// - Logs the selected PDF file path in debug mode.
+  /// - Uses the `Printing.layoutPdf` method to handle the print layout.
+  /// - Reads the PDF file as bytes and returns it for printing.
+  /// - Catches and logs any errors during the printing process.
+  ///
+  /// This function assumes that `selectedPdf` holds a valid `File` object.
+  /// Useful for allowing users to print generated quote or invoice PDFs.
   Future<void> printPdf() async {
     if (kDebugMode) {
       print('Selected PDF Path: ${quoteController.quoteModel.selectedPdf.value}');
@@ -54,6 +72,18 @@ mixin PostServices {
     }
   }
 
+  /// Prepares and sends the quotation data along with the selected PDF file.
+  ///
+  /// - Validates the input fields using `postDatavalidation()`.
+  ///   If validation fails, shows an error dialog and stops execution.
+  /// - Starts a loading indicator using `loader.start(context)`.
+  /// - Retrieves the cached PDF file from the `selectedPdf` field.
+  /// - Constructs a `Post_Quotation` object using the values from `quoteController`.
+  /// - Converts the quotation object to JSON.
+  /// - Calls `send_data()` to post the JSON data and PDF to the backend.
+  /// - Catches and displays any exceptions in an error dialog.
+  ///
+  /// This function is used to submit a completed quotation to the server.
   dynamic postData(context, int messageType, String eventtype) async {
     try {
       if (quoteController.postDatavalidation()) {
@@ -86,6 +116,20 @@ mixin PostServices {
     }
   }
 
+  /// Sends the quotation or revised quotation data to the backend using a multipart request.
+  ///
+  /// - Uses the `Multer` function from `apiController` to upload both the JSON data and the attached PDF file.
+  /// - Determines the correct API endpoint based on the `eventtype` value (`"quotation"` or `"revised"`).
+  /// - On success (status code 200 and response `code == true`), it:
+  ///   - Stops the loader
+  ///   - Displays a success dialog
+  ///   - Pops the current screen and resets the form data
+  /// - If the backend returns an error code or status, it:
+  ///   - Stops the loader
+  ///   - Shows an error dialog with the backend message
+  /// - If the server is unreachable or the request fails, it:
+  ///   - Stops the loader
+  ///   - Displays a generic server down or error dialog
   dynamic send_data(context, String jsonData, File file, String eventtype) async {
     try {
       Map<String, dynamic>? response =

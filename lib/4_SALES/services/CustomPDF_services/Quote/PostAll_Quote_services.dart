@@ -24,6 +24,17 @@ mixin salesCustom_PostServices {
   final Invoker apiController = Get.find<Invoker>();
   final SalesController salesController = Get.find<SalesController>();
 
+  /// Controls the animation timing for showing the PDF loading state.
+  ///
+  /// This method:
+  /// - Immediately sets the `pdfLoading` state to `false` using `pdfpopup_controller.setpdfLoading(false)`,
+  ///   which typically stops or hides any loading indicator.
+  /// - Waits for 4 seconds asynchronously (simulating a delay or animation duration).
+  /// - Then sets the `pdfLoading` state to `true`, indicating that the loading or transition is complete.
+  ///
+  /// Note:
+  /// - Any previously planned `savePdfToCache()` call is commented out but may be reinstated later.
+  /// - Useful for triggering animations or transitions that depend on timing and PDF generation status.
   void animation_control() async {
     // await Future.delayed(const Duration(milliseconds: 200));
     pdfpopup_controller.setpdfLoading(false);
@@ -36,6 +47,17 @@ mixin salesCustom_PostServices {
     pdfpopup_controller.setpdfLoading(true);
   }
 
+  /// Sends the currently generated PDF to the printer using the `printing` package.
+  ///
+  /// This method:
+  /// - Logs the selected PDF file path in debug mode.
+  /// - Uses `Printing.layoutPdf` to initiate the print dialog and provide the PDF bytes.
+  /// - Reads the bytes from the file stored in `pdfpopup_controller.pdfModel.value.genearatedPDF`.
+  /// - Catches and logs any errors that occur during the printing process.
+  ///
+  /// Note:
+  /// - This function assumes that the generated PDF file is not null and is already stored on disk.
+  /// - The `PdfPageFormat` passed to `onLayout` is ignored since the layout is already finalized.
   Future<void> printPdf() async {
     if (kDebugMode) {
       print('Selected PDF Path: ${pdfpopup_controller.pdfModel.value.genearatedPDF.value}');
@@ -55,6 +77,25 @@ mixin salesCustom_PostServices {
     }
   }
 
+  /// Validates form fields and sends the custom quote PDF and associated metadata to the server.
+  ///
+  /// This method performs the following:
+  /// - Validates if all required fields are filled using `pdfpopup_controller.postDatavalidation()`.
+  ///   - If validation fails, it shows an error dialog and exits early.
+  /// - Retrieves the cached/generated PDF file from `pdfpopup_controller`.
+  /// - Constructs a `Post_CustomQuote` object with:
+  ///   - Client and billing addresses
+  ///   - Contact details (email, phone, GST)
+  ///   - Quote metadata (date, quote number, feedback, etc.)
+  /// - Serializes the quote object to JSON and sends it to the server using the `send_data()` function along with the PDF.
+  ///
+  /// Parameters:
+  /// - `context`: Build context used for dialog and loading overlay.
+  /// - `messageType`: Integer representing how the PDF should be sent (e.g., email, WhatsApp, or both).
+  ///
+  /// Catches and shows any errors via a dialog box.
+  ///
+  /// **Note:** The `product` and `notes` fields are commented out and can be included if needed.
   dynamic postData(context, int messageType) async {
     try {
       if (pdfpopup_controller.postDatavalidation()) {
@@ -92,6 +133,24 @@ mixin salesCustom_PostServices {
     }
   }
 
+  /// Uploads a custom sales quote and its associated PDF file to the server using a multipart/form-data request.
+  ///
+  /// This method:
+  /// - Sends the provided `jsonData` along with the `file` using the `apiController.Multer` function.
+  /// - Uses the current session token for authentication.
+  /// - On success:
+  ///   - Parses the response into a `CMDmResponse` object.
+  ///   - Shows a success dialog with the message from the server.
+  ///   - Triggers a refresh of the custom sales quote list using `salesController.Get_salesCustomPDFLsit()`.
+  /// - On failure:
+  ///   - Displays an error dialog with the server's error message or a generic error if the server is unreachable.
+  ///
+  /// Parameters:
+  /// - `context`: Build context for showing dialogs.
+  /// - `jsonData`: JSON string containing all the quote metadata.
+  /// - `file`: The PDF file to be uploaded with the request.
+  ///
+  /// **Note:** The loader is stopped in all branches to ensure the UI is updated correctly even in case of exceptions.
   dynamic send_data(context, String jsonData, File file) async {
     try {
       Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, [file], API.add_salesCustomQuote);

@@ -120,6 +120,20 @@ mixin DcnotesService {
     }
   }
 
+  /// Generates a Delivery Challan (DC) PDF and saves it to the device's temporary cache directory.
+  ///
+  /// This method performs the following:
+  /// - Generates the PDF data using `generate_Dc()` with the current DC form values (e.g., address, DC number, invoice reference).
+  /// - Replaces slashes or hyphens in the DC number using `Returns.replace_Slash_hypen()` to make a valid filename.
+  /// - Writes the PDF to a temporary file path under the device's cache directory.
+  /// - Stores the generated `File` object in `dcController.dcModel.selectedPdf`.
+  ///
+  /// Debug logs the file path where the PDF is stored.
+  ///
+  /// **Note:** This function does not return the file directly but updates the model with the cached file reference.
+  ///
+  /// Example file path:
+  /// `cache/1234_DC_5678.pdf`
   Future<void> savePdfToCache() async {
     Uint8List pdfData = await generate_Dc(
       PdfPageFormat.a4,

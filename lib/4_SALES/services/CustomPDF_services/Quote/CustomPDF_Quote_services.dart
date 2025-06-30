@@ -22,6 +22,21 @@ class Custom_Quote_Services {
   final QuoteController quoteController = Get.find<QuoteController>();
   final CustomPDF_QuoteController pdfpopup_controller = Get.find<CustomPDF_QuoteController>();
 
+  /// Calculates and assigns GST totals for manual quote products.
+  ///
+  /// This method filters out products with non-empty GST and total fields, groups them
+  /// by GST percentage, and computes the total value per GST group. The resulting list
+  /// of `QuoteGSTtotals` is assigned to `manualQuote_gstTotals` in the `pdfpopup_controller`.
+  ///
+  /// Logic:
+  /// - Groups `manualQuoteproducts` by their GST percentage.
+  /// - Sums up the `total` values for each GST group.
+  /// - Updates `manualQuote_gstTotals` with the new grouped totals.
+  ///
+  /// Note:
+  /// - Assumes `gst` and `total` fields are valid numeric strings.
+  /// - Skips products with empty GST or total values.
+
   void assign_GSTtotals() {
     pdfpopup_controller.pdfModel.value.manualQuote_gstTotals.assignAll(
       pdfpopup_controller.pdfModel.value.manualQuoteproducts
@@ -41,6 +56,23 @@ class Custom_Quote_Services {
     );
   }
 
+  /// Generates a custom quote PDF and saves it to the temporary cache directory.
+  ///
+  /// This method:
+  /// - Uses data from `pdfpopup_controller` to generate a custom PDF quote.
+  /// - Sanitizes the quote number to form a valid filename.
+  /// - Saves the generated PDF bytes to the device's temporary cache folder.
+  /// - Updates `genearatedPDF` in `pdfModel` with the saved file reference.
+  /// - Optionally logs the file path in debug mode.
+  /// - Displays the generated PDF using `show_generatedPDF()`.
+  ///
+  /// Parameters:
+  /// - [context]: BuildContext used to display the generated PDF dialog.
+  ///
+  /// Note:
+  /// - Uses `generate_CustomPDFQuote()` to create the PDF content.
+  /// - File is named after the sanitized quote number (slashes and hyphens replaced).
+  /// - File is stored under: `<temporary_cache_path>/<quoteNo>.pdf`.
   Future<void> savePdfToCache(context) async {
     Uint8List pdfData = await generate_CustomPDFQuote(
         PdfPageFormat.a4,
@@ -71,6 +103,26 @@ class Custom_Quote_Services {
     // return file;
   }
 
+  /// Displays a dialog showing the generated PDF preview.
+  ///
+  /// This method:
+  /// - Shows a modal dialog containing the `PostQuote` widget, used to render the PDF preview UI.
+  /// - Prevents the dialog from being dismissed by tapping outside (`barrierDismissible: false`).
+  /// - Includes a close button at the top-right corner.
+  /// - On close:
+  ///   - Clears post-generation fields using `pdfpopup_controller.clear_postFields()`.
+  ///   - Closes the dialog.
+  ///
+  /// Parameters:
+  /// - [context]: The build context from which the dialog is shown.
+  ///
+  /// UI Size:
+  /// - Width: 900
+  /// - Height: 650
+  ///
+  /// Note:
+  /// - Old code for discarding unsaved form data is commented out but retained for future use.
+  /// - Uses `Primary_colors.Light` as the background color.
   dynamic show_generatedPDF(context) async {
     await showDialog(
       context: context,

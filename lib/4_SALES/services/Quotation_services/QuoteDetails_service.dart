@@ -11,12 +11,26 @@ mixin QuotedetailsService {
   final QuoteController quoteController = Get.find<QuoteController>();
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
+
+  /// Validates the details form and navigates to the next tab if validation succeeds.
+  ///
+  /// - Uses the `detailsKey` form key to trigger validation.
+  /// - If the form is valid, it calls `nextTab()` on the controller to proceed to the next tab.
+  ///
+  /// This is usually triggered by a "Next" button in a multi-step form.
   void nextTab() {
     if (quoteController.quoteModel.detailsKey.value.currentState?.validate() ?? false) {
       quoteController.nextTab();
     }
   }
 
+  /// Fetches and updates the required data for a sales-related event.
+  ///
+  /// - Sends a query with `eventid` and `eventtype` to the `sales_detailsPreLoader_API`.
+  /// - On a successful response with a valid `code`, it updates the quote data via `quoteController`.
+  /// - If the API fails or returns an error, it shows a corresponding error dialog and closes the current dialog.
+  ///
+  /// This is commonly used to preload data when editing or viewing a sales enquiry, quote, or invoice.
   void get_requiredData(context, String eventtype, int eventID) async {
     try {
       Map<String, dynamic> body = {"eventid": eventID, "eventtype": eventtype};
@@ -47,6 +61,13 @@ mixin QuotedetailsService {
     }
   }
 
+  /// Fetches the product suggestion list for the quote module.
+  ///
+  /// - Calls the `sales_getProduct_SUGG_List` API using a token-based GET request.
+  /// - If the response is successful and contains valid data, it updates the product suggestion list in `quoteController`.
+  /// - On API error or failure, displays an error dialog and closes the current context.
+  ///
+  /// This is typically used to populate dropdowns or autocomplete suggestions when adding products to a quote.
   void get_productSuggestionList(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getProduct_SUGG_List);

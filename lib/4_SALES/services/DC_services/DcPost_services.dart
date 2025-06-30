@@ -22,6 +22,19 @@ mixin PostServices {
   final DcController dcController = Get.find<DcController>();
   final Invoker apiController = Get.find<Invoker>();
   final loader = LoadingOverlay();
+
+  /// Controls a timed animation or loading state transition for PDF generation.
+  ///
+  /// This method performs the following:
+  /// 1. Immediately disables the PDF loading indicator by calling `setpdfLoading(false)`.
+  /// 2. Waits for 4 seconds using `Future.delayed()` to simulate or allow time for a background task (like PDF generation).
+  /// 3. Re-enables the PDF loading indicator by calling `setpdfLoading(true)`.
+  ///
+  /// **Use Case:**
+  /// - Used when triggering an animation or waiting period before displaying a generated PDF.
+  /// - Typically useful in UI flows where PDF rendering or preparation needs visual feedback.
+  ///
+  /// Note: `savePdfToCache()` is commented out but could be included in the wait list if needed.
   void animation_control() async {
     // await Future.delayed(const Duration(milliseconds: 200));
     dcController.setpdfLoading(false);
@@ -34,6 +47,21 @@ mixin PostServices {
     dcController.setpdfLoading(true);
   }
 
+  /// Prints the selected PDF file using the `printing` package.
+  ///
+  /// This method performs the following:
+  /// 1. Logs the file path of the selected PDF in debug mode.
+  /// 2. Uses `Printing.layoutPdf()` to open the system print dialog and send the PDF for printing.
+  /// 3. Reads the PDF file as bytes and returns it for layout.
+  /// 4. Catches and logs any errors that occur during the process.
+  ///
+  /// **Prerequisite:**
+  /// - `dcController.dcModel.selectedPdf.value` must point to a valid, non-null `File`.
+  ///
+  /// **Use Case:**
+  /// - Typically triggered from a "Print" button after a PDF is generated or selected by the user.
+  ///
+  /// Note: Always ensure the file exists before calling this method to avoid null access.
   Future<void> printPdf() async {
     if (kDebugMode) {
       print('Selected PDF Path: ${dcController.dcModel.selectedPdf.value}');
@@ -53,6 +81,28 @@ mixin PostServices {
     }
   }
 
+  /// Sends the Delivery Challan (DC) data along with the selected PDF file to the server.
+  ///
+  /// This method performs the following steps:
+  /// 1. Validates form data using `dcController.postDatavalidation()`.
+  ///    - If validation fails, shows an error dialog and exits early.
+  /// 2. Prepares the PDF file from `dcController.dcModel.selectedPdf.value`.
+  /// 3. Constructs a `Post_Dc` object using the data filled in the form/UI controllers.
+  /// 4. Converts the object to JSON and sends it to the server using `send_data()`, attaching the PDF.
+  ///
+  /// **Parameters:**
+  /// - `context`: The build context, required for dialogs and loader operations.
+  /// - `messageType`: An integer indicating how the message should be sent (e.g., 1 = Gmail, 2 = WhatsApp, 3 = both).
+  ///
+  /// **Preconditions:**
+  /// - `selectedPdf` must be a valid, non-null `File`.
+  /// - All required fields in `dcController` must be filled correctly.
+  ///
+  /// **Error Handling:**
+  /// - Displays a user-friendly error dialog if validation fails or if any exceptions occur during posting.
+  ///
+  /// **Typical Use Case:**
+  /// - Invoked when the user clicks on "Send" or "Submit" to post DC information along with a PDF.
   dynamic postData(context, int messageType) async {
     try {
       if (dcController.postDatavalidation()) {
@@ -92,6 +142,34 @@ mixin PostServices {
     }
   }
 
+  /// Sends Delivery Challan (DC) data along with a PDF file to the server using multipart upload.
+  ///
+  /// This method performs the following:
+  /// 1. Uses the session token to authenticate the request.
+  /// 2. Sends the JSON-encoded DC data (`jsonData`) and the selected PDF file (`file`)
+  ///    as multipart form data to the specified API endpoint (`API.add_Dc`) via the `Multer` method.
+  /// 3. Parses the response into `CMDmResponse`.
+  /// 4. If successful:
+  ///    - Shows a success dialog.
+  ///    - Pops the current dialog with a success result (`true`).
+  ///    - Resets the DC form/controller.
+  /// 5. If failed:
+  ///    - Displays an error dialog with the response message.
+  ///
+  /// **Parameters:**
+  /// - `context`: Build context used for showing dialogs.
+  /// - `jsonData`: A JSON string representing the DC details.
+  /// - `file`: A `File` object representing the PDF to upload.
+  ///
+  /// **Error Handling:**
+  /// - Gracefully catches and displays any errors that occur during the network request.
+  /// - Uses a loader and appropriate dialogs to inform the user of success or failure.
+  ///
+  /// **Returns:**
+  /// - `void` (asynchronous) — handles UI side-effects, including navigation and controller state reset.
+  ///
+  /// **Typical Use Case:**
+  /// - Called after user submits the DC form and selects a valid PDF file for upload.
   dynamic send_data(context, String jsonData, File file) async {
     try {
       Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, [file], API.add_Dc);

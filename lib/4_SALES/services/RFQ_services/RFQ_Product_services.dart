@@ -4,6 +4,11 @@ import 'package:ssipl_billing/4_SALES/models/entities/product_entities.dart';
 
 mixin RfqproductService {
   final RfqController rfqController = Get.find<RfqController>();
+
+  /// Clears the input fields related to product details in the RFQ form.
+  ///
+  /// Specifically clears the product name and quantity fields.
+  /// (HSN, price, and GST fields are commented out and not cleared.)
   void clearFields() {
     rfqController.rfqModel.productNameController.value.clear();
     // rfqController.rfqModel.hsnController.value.clear();
@@ -54,6 +59,13 @@ mixin RfqproductService {
   //   );
   // }
 
+  /// Updates an existing product in the RFQ product list if the form is valid.
+  ///
+  /// - Validates the product form using `productKey`.
+  /// - Updates the product at the index specified by `product_editIndex` with new values from the controllers.
+  /// - Clears the input fields and resets the edit index after the update.
+  ///
+  /// (HSN, price, and GST fields are currently commented out and not used.)
   void updateproduct(context) {
     if (rfqController.rfqModel.productKey.value.currentState?.validate() ?? false) {
       rfqController.updateProduct(
@@ -71,6 +83,13 @@ mixin RfqproductService {
     }
   }
 
+  /// Loads the selected product into the input fields for editing.
+  ///
+  /// Retrieves the product at the given [index] from the RFQ product list,
+  /// updates the relevant controllers (product name and quantity),
+  /// and sets the edit index to enable editing mode.
+  ///
+  /// (HSN, price, and GST fields are commented out and not currently updated.)
   void editproduct(int index) {
     RFQProduct product = rfqController.rfqModel.Rfq_products[index];
 
@@ -82,6 +101,8 @@ mixin RfqproductService {
     rfqController.addProductEditindex(index);
   }
 
+  /// Resets the product editing state by clearing input fields
+  /// and setting the product edit index to null.
   void resetEditingState() {
     clearFields();
     rfqController.addProductEditindex(null);

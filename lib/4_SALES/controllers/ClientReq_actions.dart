@@ -356,7 +356,33 @@ class ClientreqController extends GetxController {
     ).name;
   }
 
-  /// Updates customer ID and KYC based on selected company or branch.
+  /// Updates the customer ID and associated KYC (Know Your Customer) details based on provided company or branch name.
+  ///
+  /// This function intelligently updates the `customer_id` within `clientReqModel`
+  /// and populates various KYC fields by calling `update_KYC`.
+  ///
+  /// **Logic Flow:**
+  /// - **If `compName` is null:** It means a branch is being selected directly.
+  ///   - The `customer_id` is reset to `0`.
+  ///   - It finds the matching branch details from `clientReqModel.BranchFullList`
+  ///     using the `branchName`.
+  ///   - It then calls `update_KYC` with the `client_address`, `billing_addressname`,
+  ///     `billing_address`, `emailid`, `contact_number`, and `gst_number` from the
+  ///     found branch model.
+  ///
+  /// - **If `compName` is not null:** It means a company is being selected.
+  ///   - It finds the matching company details from `clientReqModel.CompanyList`
+  ///     using the `compName`.
+  ///   - It calls `update_KYC` with the `client_address`, `billing_addressname`,
+  ///     `billing_address`, `emailid`, `contact_number`, and `gst_number` from the
+  ///     found company model.
+  ///   - The `customer_id` is then updated with the `companyId` from the found
+  ///     company model.
+  ///   - Finally, `updateClientName` is called with the `compName` to update the
+  ///     client's name.
+  ///
+  /// @param compName The name of the company selected. Can be null if a branch is selected directly.
+  /// @param branchName The name of the branch selected. Used when `compName` is null.
   void update_customerID(String? compName, String? branchName) {
     if (compName == null) {
       clientReqModel.customer_id.value = 0;
@@ -374,7 +400,30 @@ class ClientreqController extends GetxController {
     }
   }
 
-  /// Updates the company list and resets related data.
+  /// Updates the list of companies available in the client request model.
+  ///
+  /// This function is responsible for refreshing the `CompanyList` within
+  /// `clientReqModel` based on the provided `CMDlResponse`.
+  ///
+  /// **Process:**
+  /// 1.  **Clears Existing Data:** It first clears any pre-existing company data
+  ///     by calling `clear_CompanyData()`. This ensures that the list is
+  ///     freshly populated.
+  /// 2.  **Clears Branch Data:** It also clears any pre-existing branch data by
+  ///     calling `clear_BranchData()`. This is crucial because a change in the
+  ///     company list might invalidate previously loaded branch information.
+  /// 3.  **Clears KYC Details:** It clears existing KYC (Know Your Customer)
+  ///     details by calling `clear_KYC()`, ensuring that no outdated customer
+  ///     information persists.
+  /// 4.  **Populates New Company Data:** It then iterates through the `data`
+  ///     array of the `CMDlResponse` object. For each item in the `data` array,
+  ///     it constructs a `Company` object using `Company.fromJson(value, i)`
+  ///     and adds it to `clientReqModel.CompanyList`.
+  ///
+  /// This ensures that `clientReqModel.CompanyList` accurately reflects the
+  /// companies provided in the `CMDlResponse`.
+  ///
+  /// @param value The `CMDlResponse` object containing the new list of company data.
   void update_CompanyList(CMDlResponse value) {
     clear_CompanyData();
     clear_BranchData();
@@ -384,7 +433,31 @@ class ClientreqController extends GetxController {
     }
   }
 
-  /// Updates the branch list and its dropdown value model after a delay.
+  /// Updates the list of branches and their corresponding dropdown values in the client request model.
+  ///
+  /// This asynchronous function first clears any existing branch data. It then
+  /// introduces a **1-second delay** using `Future.delayed` before populating
+  /// the `BranchFullList` and `BranchList_valueModel` from the provided `CMDlResponse`.
+  ///
+  /// **Process:**
+  /// 1.  **Clears Existing Branch Data:** `clear_BranchData()` is called to ensure
+  ///     the branch lists are empty before new data is added, preventing duplicates
+  ///     or outdated information.
+  /// 2.  **Introduces Delay:** An intentional `Future.delayed` of 1 second (1000 milliseconds)
+  ///     is included. This delay might be used to
+  ///     allow the UI to update, to throttle requests, or to simply
+  ///     simulate network latency if this function is part of a larger data
+  ///     fetching process.
+  /// 3.  **Populates Branch Lists:** It iterates through the `data` in the `CMDlResponse`.
+  ///     - For each item, a `Branch` object is created using `Branch.fromJson(value, i)`
+  ///       and added to `clientReqModel.BranchFullList`.
+  ///     - Concurrently, a `DropDownValueModel` is created for each branch. Its `name`
+  ///       is set to the `Branch_name` (defaulting to "Unknown" if null), and its `value`
+  ///       is set to the `Branch_id` converted to a string (defaulting to an empty string if null).
+  ///       These dropdown models are added to `clientReqModel.BranchList_valueModel`
+  ///       for use in UI dropdown widgets.
+  ///
+  /// @param value The `CMDlResponse` object containing the new list of branch data.
   void update_BranchList(CMDlResponse value) async {
     clear_BranchData();
     await Future.delayed(const Duration(milliseconds: 1000));
@@ -397,7 +470,31 @@ class ClientreqController extends GetxController {
     }
   }
 
-  /// Updates selected branch list and processes related customer data.
+  /// Updates the list of currently selected branches in the client request model.
+  ///
+  /// This function takes a list of dynamically typed selections, typically from
+  /// a multi-select dropdown or similar UI component. It processes this list
+  /// to update `clientReqModel.selected_branchList`, ensuring it accurately
+  /// reflects the user's choices.
+  ///
+  /// **Logic Flow:**
+  /// - **If `selectedList` is empty:** The `clientReqModel.selected_branchList`
+  ///   is completely cleared, indicating no branches are currently selected.
+  /// - **If `selectedList` is not empty:**
+  ///   - The `clientReqModel.selected_branchList` is first cleared to remove
+  ///     any previous selections.
+  ///   - It then iterates through each item in the `selectedList`. Each item
+  ///     is expected to have a `value` property (likely a `String` representation
+  ///     of an ID). This `value` is parsed into an `int` and then added to
+  ///     `clientReqModel.selected_branchList`.
+  ///
+  /// After updating the selected branches, `handle_customerID()` is called. This
+  /// suggests that a change in selected branches might necessitate a recalculation
+  /// or update of the customer ID associated with these selections.
+  ///
+  /// @param selectedList A list of dynamic objects, each expected to have a `value` property
+  ///                     that can be parsed as an integer, representing the IDs of the
+  ///                     selected branches.
   void update_selectedBranches(List<dynamic> selectedList) {
     if (selectedList.isEmpty) {
       clientReqModel.selected_branchList.clear();

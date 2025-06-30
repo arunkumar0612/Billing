@@ -12,6 +12,11 @@ mixin SUBSCRIPTION_QuotedetailsService {
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
 
+  /// Moves to the next tab in the quote process if the current form is valid.
+  ///
+  /// Functionality:
+  /// - Validates the current form associated with `detailsKey`.
+  /// - If validation passes, it calls `nextTab()` from the `quoteController` to proceed to the next step or tab in the UI.
   void nextTab() {
     if (quoteController.quoteModel.detailsKey.value.currentState?.validate() ?? false) {
       quoteController.nextTab();

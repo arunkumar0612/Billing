@@ -188,7 +188,42 @@ class RfqController extends GetxController {
     rfqModel.filePathController.value.text = filePath;
   }
 
-  /// Opens file picker and handles file selection and validation.
+  /// Allows the user to pick an image file from their device, with a 2MB size limit.
+  ///
+  /// This asynchronous function utilizes the `file_picker` package to present
+  /// a file selection dialog to the user. It is specifically configured to allow
+  /// the selection of common image formats (PNG, JPG, JPEG).
+  ///
+  /// **File Selection and Validation Process:**
+  /// 1.  **Initiates File Picker:**
+  ///     - `FilePicker.platform.pickFiles` is called.
+  ///     - `type: FileType.custom` and `allowedExtensions: ['png', 'jpg', 'jpeg']`
+  ///       restrict the selectable files to these image types.
+  ///     - `lockParentWindow: true` ensures that the user's interaction is
+  ///       focused solely on the file picker dialog until a selection is made
+  ///       or the dialog is dismissed.
+  /// 2.  **Handles User Selection:**
+  ///     - If `result` is `null`, it means the user cancelled the file selection,
+  ///       and the function returns without further action.
+  ///     - If `result` is not `null`, indicating a file was selected:
+  ///         - A `File` object is created from the `path` of the selected file.
+  ///         - The `fileLength` (size in bytes) of the selected file is asynchronously retrieved.
+  /// 3.  **Applies Size Limit:**
+  ///     - The `fileLength` is compared against a **2 MB (2 * 1024 * 1024 bytes)** limit.
+  ///     - **If the file size exceeds 2 MB:**
+  ///         - A debug message (`print`) is issued, indicating the file is too large (only in `kDebugMode`).
+  ///         - An `Error_dialog` is displayed to the user via the provided `context`,
+  ///           informing them of the size restriction.
+  ///         - `rfqModel.pickedFile.value` and `rfqModel.selectedPdf.value`
+  ///           are explicitly set to `null` to clear any invalid selection from the model.
+  ///     - **If the file size is within the 2 MB limit:**
+  ///         - The `FilePickerResult` is stored in `rfqModel.pickedFile.value`.
+  ///         - The `File` object itself is stored in `rfqModel.selectedPdf.value`.
+  ///           (Note: The variable name `selectedPdf` might be a remnant from a previous
+  ///           version that allowed PDFs, but current `allowedExtensions` only permit images).
+  ///         - The name of the selected file is printed to the console (only in `kDebugMode`).
+  ///
+  /// @param context The `BuildContext` required for displaying the `Error_dialog`.
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,

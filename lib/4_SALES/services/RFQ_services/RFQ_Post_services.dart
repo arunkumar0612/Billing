@@ -22,6 +22,12 @@ mixin PostServices {
   final RfqController rfqController = Get.find<RfqController>();
   final Invoker apiController = Get.find<Invoker>();
   final loader = LoadingOverlay();
+
+  /// Controls the loading animation timing for PDF generation.
+  ///
+  /// - Initially sets the PDF loading flag to false.
+  /// - Waits for a fixed delay (4 seconds) to simulate processing time.
+  /// - After the delay, sets the PDF loading flag back to true.
   void animation_control() async {
     // await Future.delayed(const Duration(milliseconds: 200));
     rfqController.setpdfLoading(false);
@@ -34,6 +40,11 @@ mixin PostServices {
     rfqController.setpdfLoading(true);
   }
 
+  /// Sends the selected RFQ PDF to the printer using the `printing` package.
+  ///
+  /// - Reads the PDF file from the `selectedPdf` in the RFQ model.
+  /// - Uses `Printing.layoutPdf` to trigger the print layout dialog with the PDF data.
+  /// - Logs the selected PDF path and any errors during printing in debug mode.
   Future<void> printPdf() async {
     if (kDebugMode) {
       print('Selected PDF Path: ${rfqController.rfqModel.selectedPdf.value}');
@@ -53,6 +64,15 @@ mixin PostServices {
     }
   }
 
+  /// Prepares and posts the RFQ data along with the selected PDF to the server.
+  ///
+  /// - Validates required fields using `postDatavalidation()`.
+  ///   - If validation fails, shows an error dialog and exits.
+  /// - Starts a loading indicator.
+  /// - Retrieves the cached PDF file from the RFQ model.
+  /// - Constructs a `Post_Rfq` object with all necessary RFQ details.
+  /// - Serializes the object to JSON and sends it along with the PDF using `send_data`.
+  /// - Catches and displays any exceptions in an error dialog.
   dynamic postData(context, int messageType) async {
     try {
       if (rfqController.postDatavalidation()) {
@@ -86,6 +106,13 @@ mixin PostServices {
     }
   }
 
+  /// Sends the RFQ JSON data and PDF file to the server using a multipart request.
+  ///
+  /// - Uses the session token for authentication and calls the `Multer` API endpoint.
+  /// - On a successful response (`statusCode == 200` and `code == true`):
+  ///   - Stops the loader, shows a success dialog, navigates back with success, and resets the RFQ data.
+  /// - If the response fails, stops the loader and shows an appropriate error dialog.
+  /// - Handles exceptions by stopping the loader and displaying an error dialog with the exception details.
   dynamic send_data(context, String jsonData, File file) async {
     try {
       Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, [file], API.add_rfq);

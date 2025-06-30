@@ -220,7 +220,42 @@ class QuoteController extends GetxController {
     quoteModel.filePathController.value.text = filePath;
   }
 
-  /// Opens a file picker to select an image file and validates its size (max 2MB).
+  /// Allows the user to pick an image file from their device, with a 2MB size limit.
+  ///
+  /// This asynchronous function utilizes the `file_picker` package to present
+  /// a file selection dialog to the user. It is specifically configured to allow
+  /// the selection of common image formats (PNG, JPG, JPEG).
+  ///
+  /// **File Selection and Validation Process:**
+  /// 1.  **Initiates File Picker:**
+  ///     - `FilePicker.platform.pickFiles` is called.
+  ///     - `type: FileType.custom` and `allowedExtensions: ['png', 'jpg', 'jpeg']`
+  ///       restrict the selectable files to these image types.
+  ///     - `lockParentWindow: true` ensures that the user's interaction is
+  ///       focused solely on the file picker dialog until a selection is made
+  ///       or the dialog is dismissed.
+  /// 2.  **Handles User Selection:**
+  ///     - If `result` is `null`, it means the user cancelled the file selection,
+  ///       and the function returns without further action.
+  ///     - If `result` is not `null`, indicating a file was selected:
+  ///         - A `File` object is created from the `path` of the selected file.
+  ///         - The `fileLength` (size in bytes) of the selected file is asynchronously retrieved.
+  /// 3.  **Applies Size Limit:**
+  ///     - The `fileLength` is compared against a **2 MB (2 * 1024 * 1024 bytes)** limit.
+  ///     - **If the file size exceeds 2 MB:**
+  ///         - A debug message (`print`) is issued, indicating the file is too large (only in `kDebugMode`).
+  ///         - An `Error_dialog` is displayed to the user via the provided `context`,
+  ///           informing them of the size restriction.
+  ///         - `quoteModel.pickedFile.value` and `quoteModel.selectedPdf.value`
+  ///           are explicitly set to `null` to clear any invalid selection from the model.
+  ///     - **If the file size is within the 2 MB limit:**
+  ///         - The `FilePickerResult` is stored in `quoteModel.pickedFile.value`.
+  ///         - The `File` object itself is stored in `quoteModel.selectedPdf.value`.
+  ///           (Note: The variable name `selectedPdf` might be a remnant from a previous
+  ///           version that allowed PDFs, but current `allowedExtensions` only permit images).
+  ///         - The name of the selected file is printed to the console (only in `kDebugMode`).
+  ///
+  /// @param context The `BuildContext` required for displaying the `Error_dialog`.
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -277,7 +312,32 @@ class QuoteController extends GetxController {
     setLoading(false);
   }
 
-  /// Adds a recommendation entry to the list if both key and value are not empty.
+  /// Simulates a loading progress bar from 0% to 100% for quote-related operations.
+  ///
+  /// This asynchronous function provides a visual indication of progress by
+  /// incrementally updating a progress value within the `quoteModel`. It's
+  /// typically used to represent background tasks or loading sequences in the UI.
+  ///
+  /// **Process:**
+  /// 1.  **Initiates Loading State:**
+  ///     - `setLoading(true)` is invoked to activate a global loading indicator
+  ///       or state, which might involve showing a spinner, disabling user input, etc.
+  ///     - `quoteModel.progress.value` is reset to `0.0`, ensuring the progress
+  ///       bar starts from its initial state.
+  /// 2.  **Simulates Progress Increment:**
+  ///     - A `for` loop runs from `0` to `100`, representing percentages.
+  ///     - Inside each iteration:
+  ///         - `await Future.delayed(const Duration(milliseconds: 20))`
+  ///           introduces a brief pause, making the progress visually discernible
+  ///           rather than instantaneous.
+  ///         - `quoteModel.progress.value = i / 100;` updates the observable
+  ///           progress value in the `quoteModel`. The loop counter `i` is divided
+  ///           by 100 to convert it into a floating-point percentage (e.g., 0.0, 0.01, ..., 1.0).
+  ///           This value is typically bound to a progress bar widget in the UI.
+  /// 3.  **Concludes Loading State:**
+  ///     - Once the loop completes (i.e., progress reaches 100%), `setLoading(false)`
+  ///       is called to deactivate the loading indicator and revert the UI to its
+  ///       normal interactive state.
   void addRecommendation({required String key, required String value}) {
     if (key.isNotEmpty && value.isNotEmpty) {
       quoteModel.Quote_recommendationList.add(Recommendation(key: key, value: value));
@@ -288,7 +348,33 @@ class QuoteController extends GetxController {
     }
   }
 
-  /// Updates a recommendation entry at a given index if inputs are valid.
+  /// Updates an existing recommendation entry in the `Quote_recommendationList`.
+  ///
+  /// This function allows for modifying a specific recommendation within the
+  /// `quoteModel.Quote_recommendationList` by its index. It requires a valid index,
+  /// and non-empty `key` and `value` to perform the update.
+  ///
+  /// **Parameters:**
+  /// - `index`: The zero-based index of the recommendation to be updated within the list.
+  ///            This parameter is `required`.
+  /// - `key`: The new key for the recommendation. This parameter is `required` and
+  ///          must not be empty.
+  /// - `value`: The new value for the recommendation. This parameter is `required` and
+  ///            must not be empty.
+  ///
+  /// **Functionality:**
+  /// 1.  **Index Validation:** It first checks if the provided `index` is within
+  ///     the valid bounds of `quoteModel.Quote_recommendationList`.
+  ///     - If the `index` is out of bounds, a debug message "Invalid index provided"
+  ///       is printed (in debug mode), and no update occurs.
+  /// 2.  **Key and Value Validation:** If the `index` is valid, it then checks
+  ///     if both `key` and `value` are non-empty strings.
+  ///     - If either `key` or `value` is empty, a debug message "Key and value must not be empty"
+  ///       is printed (in debug mode), and no update occurs.
+  /// 3.  **Recommendation Update:** If all validations pass (valid index, non-empty key and value),
+  ///     a new `Recommendation` object is created with the provided `key` and `value`,
+  ///     and it replaces the existing `Recommendation` at the specified `index`
+  ///     in `quoteModel.Quote_recommendationList`.
   void updateRecommendation({
     required int index,
     required String key,
@@ -349,7 +435,47 @@ class QuoteController extends GetxController {
     }
   }
 
-  /// Updates a product in the list at the given index after validating inputs.
+  /// Updates an existing product's details in the quote.
+  ///
+  /// This function modifies the details of a product already present in the
+  /// `quoteModel.Quote_products` list at a specified index. It includes
+  /// robust validation for both the input data and the provided index.
+  ///
+  /// **Parameters:**
+  /// - `context`: The `BuildContext` used for displaying error messages via `Error_SnackBar`.
+  /// - `editIndex`: The zero-based index of the product to be updated in the list. This parameter is `required`.
+  /// - `productName`: The new name of the product (required, must not be empty after trimming).
+  /// - `hsn`: The new HSN (Harmonized System of Nomenclature) code for the product (required, must not be empty after trimming, will be parsed as an integer).
+  /// - `price`: The new price per unit of the product (required, must be greater than 0).
+  /// - `quantity`: The new quantity of the product (required, must be greater than 0).
+  /// - `gst`: The new GST (Goods and Services Tax) percentage applicable to the product (required, must be 0 or greater).
+  ///
+  /// **Functionality:**
+  /// 1.  **Input Data Validation:**
+  ///     - It checks if `productName` or `hsn` are empty after trimming whitespace.
+  ///     - It checks if `price` is less than or equal to 0.
+  ///     - It checks if `quantity` is less than or equal to 0.
+  ///     - It checks if `gst` is less than 0.
+  ///     - If any of these conditions are true, an `Error_SnackBar` is displayed
+  ///       with the message 'Please provide valid product details.', and the function returns.
+  /// 2.  **Index Validation:**
+  ///     - It verifies if `editIndex` is a valid index within the bounds of
+  ///       `quoteModel.Quote_products`.
+  ///     - If `editIndex` is less than 0 or greater than or equal to the list's length,
+  ///       an `Error_SnackBar` is displayed with 'Invalid product index.', and the
+  ///       function returns.
+  /// 3.  **Product Update:**
+  ///     - If all validations pass, a new `QuoteProduct` object is created with the
+  ///       provided updated details. The `sno` is regenerated based on the `editIndex`
+  ///       (adding 1 to make it 1-based).
+  ///     - This new `QuoteProduct` object then **replaces** the existing product
+  ///       at the specified `editIndex` in `quoteModel.Quote_products`.
+  /// 4.  **Error Handling:**
+  ///     - A `try-catch` block wraps the entire operation to gracefully handle
+  ///       any unexpected errors, such as a `FormatException` if `hsn` cannot be
+  ///       parsed to an integer.
+  ///     - If an exception occurs, an `Error_SnackBar` is shown to the user with
+  ///       the message 'An error occurred while updating the product.'.
   void updateProduct({
     required BuildContext context,
     required int editIndex,

@@ -16,6 +16,11 @@ mixin RfqnotesService {
   final Invoker apiController = Get.find<Invoker>();
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
 
+  /// Adds a new recommendation row to the RFQ table if the key is unique.
+  ///
+  /// Checks if a recommendation with the same key already exists in `Rfq_recommendationList`.
+  /// - If it exists, shows an error snackbar and exits.
+  /// - If not, adds the new key-value pair to the recommendation list and clears the input fields.
   void addtable_row(context) {
     // rfqController.updateRec_HeadingControllerText(rfqController.rfqModel.recommendationHeadingController.value.text);
     bool exists = rfqController.rfqModel.Rfq_recommendationList.any((note) => note.key == rfqController.rfqModel.recommendationKeyController.value.text);
@@ -28,6 +33,11 @@ mixin RfqnotesService {
     cleartable_Fields();
   }
 
+  /// Updates an existing note in the note list if the form is valid.
+  ///
+  /// Validates the note form using `noteformKey`.
+  /// - If valid, updates the note content at the specified edit index.
+  /// - Clears the note input fields and resets the edit index to null.
   void updatenote() {
     if (rfqController.rfqModel.noteformKey.value.currentState?.validate() ?? false) {
       rfqController.updateNoteList(rfqController.rfqModel.notecontentController.value.text, rfqController.rfqModel.note_editIndex.value!);
@@ -36,6 +46,11 @@ mixin RfqnotesService {
     }
   }
 
+  /// Updates an existing recommendation entry in the table using the current input values.
+  ///
+  /// Uses the `recommendation_editIndex` to locate the entry, then updates it
+  /// with the key and value from their respective controllers.
+  /// Clears the input fields and resets the edit index to null after updating.
   void updatetable() {
     rfqController.updateRecommendation(
         index: rfqController.rfqModel.recommendation_editIndex.value!,
@@ -45,11 +60,19 @@ mixin RfqnotesService {
     rfqController.updateRecommendationEditindex(null);
   }
 
+  /// Loads the selected note into the input field for editing.
+  ///
+  /// Sets the note content from the note list at the given [index] into the controller,
+  /// and updates the edit index to enable editing mode.
   void editnote(int index) {
     rfqController.updateNoteContentControllerText(rfqController.rfqModel.Rfq_noteList[index]);
     rfqController.updateNoteEditindex(index);
   }
 
+  /// Loads the selected recommendation into the input fields for editing.
+  ///
+  /// Retrieves the key and value from the recommendation list at the given [index],
+  /// sets them into their respective controllers, and updates the edit index to enable editing mode.
   void editnotetable(int index) {
     final note = rfqController.rfqModel.Rfq_recommendationList[index];
     rfqController.updateRec_KeyControllerText(note.key.toString());
@@ -57,6 +80,10 @@ mixin RfqnotesService {
     rfqController.updateRecommendationEditindex(index);
   }
 
+  /// Resets the editing state for both notes and recommendations.
+  ///
+  /// Clears all related input fields and resets both the note and recommendation
+  /// edit indices to null, exiting editing mode.
   void resetEditingStateNote() {
     () {
       clearnoteFields();
@@ -66,15 +93,23 @@ mixin RfqnotesService {
     };
   }
 
+  /// Clears the note input field by resetting the `notecontentController` text.
   void clearnoteFields() {
     rfqController.rfqModel.notecontentController.value.clear();
   }
 
+  /// Clears the recommendation input fields by resetting both
+  /// the key and value text controllers.
   void cleartable_Fields() {
     rfqController.rfqModel.recommendationKeyController.value.clear();
     rfqController.rfqModel.recommendationValueController.value.clear();
   }
 
+  /// Adds a new note to the note list if it passes validation and is unique.
+  ///
+  /// Validates the note form using `noteformKey`.
+  /// - If the note already exists, shows a snackbar message and exits.
+  /// - If valid and unique, adds the note to the list and clears the input field.
   void addNotes(context) {
     if (rfqController.rfqModel.noteformKey.value.currentState?.validate() ?? false) {
       bool exists = rfqController.rfqModel.Rfq_noteList.any((note) => note == rfqController.rfqModel.notecontentController.value.text);
@@ -136,6 +171,13 @@ mixin RfqnotesService {
   //   viewsendController.setLoading(true);
   // }
 
+  /// Generates the RFQ PDF and saves it to the device's temporary cache directory.
+  ///
+  /// - Uses `generate_RFQ` to create the PDF with current RFQ data.
+  /// - Constructs a sanitized file name from the RFQ number to avoid invalid characters.
+  /// - Saves the PDF as a `.pdf` file in the system's temporary directory.
+  /// - Updates the `selectedPdf` in the RFQ model with the cached file reference.
+  /// - Prints the file path in debug mode for verification.
   Future<void> savePdfToCache() async {
     Uint8List pdfData = await generate_RFQ(PdfPageFormat.a4, rfqController.rfqModel.Rfq_products, "", "", "", "", rfqController.rfqModel.Rfq_no.value);
 

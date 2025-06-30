@@ -38,6 +38,13 @@ mixin SalesServices {
   final SalesController salesController = Get.find<SalesController>();
   final ClientreqController clientreqController = Get.find<ClientreqController>();
   final loader = LoadingOverlay();
+
+  /// Fetches the list of custom sales PDFs and updates the sales controller.
+  ///
+  /// - Sends a token-authenticated request to the `get_salesCustompdf` API.
+  /// - On success (`statusCode == 200` and `code == true`), adds the result to the custom PDF list
+  ///   and applies the current search query.
+  /// - Logs error messages in debug mode if the API response indicates failure or an exception occurs.
   Future<void> Get_salesCustomPDFLsit() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_salesCustompdf);
@@ -66,6 +73,13 @@ mixin SalesServices {
     }
   }
 
+  /// Fetches the customer list from the sales API and updates the sales controller.
+  ///
+  /// - Sends a token-authenticated request to the `sales_getcustomerlist_API`.
+  /// - On success (`statusCode == 200` and `code == true`), shows a success dialog
+  ///   and updates the customer list in the sales controller.
+  /// - On failure, displays an appropriate error dialog based on the response or exception.
+  /// - Logs the response in debug mode for troubleshooting.
   void GetCustomerList(context) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getcustomerlist_API);
@@ -91,6 +105,13 @@ mixin SalesServices {
     }
   }
 
+  /// Retrieves a custom PDF binary file from the server using the provided [customPDFid].
+  ///
+  /// - Sends a query to the `sales_getcustombinaryfile_API` with the given ID.
+  /// - If the response is successful (`statusCode == 200` and `code == true`),
+  ///   processes the file data via the sales controller and returns `true`.
+  /// - If the request fails or an exception occurs, displays an appropriate error dialog
+  ///   and returns `false`.
   Future<bool> Get_customPDFfile(context, int customPDFid) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"custompdfid": customPDFid}, API.sales_getcustombinaryfile_API);
@@ -126,6 +147,12 @@ mixin SalesServices {
     }
   }
 
+  /// Fetches the list of process customers from the sales API and updates the sales controller.
+  ///
+  /// - Sends a token-authenticated request to the `sales_getprocesscustomer_API`.
+  /// - On success (`statusCode == 200` and `code == true`), clears the existing list,
+  ///   adds the fetched process customers, and applies the current search query.
+  /// - Logs error messages in debug mode if the API response indicates failure or an exception occurs.
   Future<void> Get_salesProcesscustomerList() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getprocesscustomer_API);
@@ -157,6 +184,12 @@ mixin SalesServices {
     }
   }
 
+  /// Fetches the process list for a given customer ID and updates the sales controller.
+  ///
+  /// - Sends a query request with `customerid` and current `listtype` to the `sales_getprocesslist_API`.
+  /// - On success (`statusCode == 200` and `code == true`), clears the existing process list,
+  ///   adds the fetched processes, and applies the current search query.
+  /// - Logs error messages in debug mode if the API response indicates failure or if an exception occurs.
   Future<void> Get_salesProcessList(int customerid) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"customerid": customerid, "listtype": salesController.salesModel.type.value}, API.sales_getprocesslist_API);
@@ -187,6 +220,13 @@ mixin SalesServices {
     }
   }
 
+  /// Updates feedback for a specific event and refreshes the process list.
+  ///
+  /// - Sends a query with `eventid` and `feedback` to the feedback API endpoint.
+  /// - On success (`statusCode == 200` and `code == true`), refreshes the process list
+  ///   for the given customer ID and shows a success snackbar.
+  /// - On failure, displays an error dialog with the returned message.
+  /// - Handles server errors and exceptions by showing appropriate error dialogs.
   void UpdateFeedback(context, int customerid, int eventid, feedback) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid, "feedback": feedback}, API.sales_addfeedback_API);
@@ -207,6 +247,11 @@ mixin SalesServices {
     }
   }
 
+  /// Retrieves a sales PDF binary file for a given event ID and optional event type.
+  ///
+  /// - Sends a query request to the `sales_getbinaryfile_API` with `eventid` and optionally `eventtype`.
+  /// - On success (`statusCode == 200` and `code == true`), processes the PDF data via the sales controller and returns `true`.
+  /// - Displays error dialogs and returns `false` if the request fails or an exception occurs.
   Future<bool> GetSalesPDFfile({required BuildContext context, required int eventid, String? eventtype}) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid, if (eventtype != null) "eventtype": eventtype}, API.sales_getbinaryfile_API);
@@ -229,6 +274,17 @@ mixin SalesServices {
     }
   }
 
+  /// Deletes one or more processes identified by [processid] from the server.
+  ///
+  /// - Sends a query request to the `sales_deleteprocess_API` with the list of process IDs.
+  /// - On successful deletion (`statusCode == 200` and `code == true`):
+  ///   - Clears the selected process indices in the sales model.
+  ///   - Refreshes the process list for the current customer.
+  ///   - Shows a success snackbar confirming deletion.
+  /// - On failure, displays an error dialog with the server message.
+  /// - If the server is unreachable, shows a server down error dialog.
+  ///
+  /// Additionally logs the process IDs in debug mode for troubleshooting.
   void DeleteProcess(context, List processid) async {
     if (kDebugMode) {
       print(processid.toString());
@@ -251,6 +307,19 @@ mixin SalesServices {
     }
   }
 
+  /// Archives or unarchives processes based on the given [type].
+  ///
+  /// - Sends a query with the list of [processid] and an integer [type] to the archive API.
+  ///   - `type == 0` indicates unarchiving.
+  ///   - Any other value indicates archiving.
+  /// - On success (`statusCode == 200` and `code == true`):
+  ///   - Clears selected indices in the sales model.
+  ///   - Refreshes the process list for the current customer.
+  ///   - Shows a success snackbar with a message based on the action performed.
+  /// - On failure, shows an error dialog with a message corresponding to the action.
+  /// - If the server is unreachable, shows a server down error dialog.
+  ///
+  /// Also logs the process IDs in debug mode for troubleshooting.
   void ArchiveProcesscontrol(context, List processid, int type) async {
     if (kDebugMode) {
       print(processid.toString());
@@ -271,6 +340,13 @@ mixin SalesServices {
     }
   }
 
+  /// Fetches sales data for a specified [salesperiod] and updates the sales controller.
+  ///
+  /// - Sends a query request to the `sales_getsalesdata_API` with the given sales period.
+  /// - On success (`statusCode == 200` and `code == true`), updates the sales data
+  ///   and applies the current search query.
+  /// - Logs error messages in debug mode if the API response indicates failure.
+  /// - Returns `false` if the request fails, the server is down, or an exception occurs.
   Future<bool> GetSalesData(String salesperiod) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"salesperiod": salesperiod}, API.sales_getsalesdata_API);
@@ -301,6 +377,14 @@ mixin SalesServices {
     }
   }
 
+  /// Fetches the client profile data for a given [customerid] and updates the sales controller.
+  ///
+  /// - Sends a query request to the `sales_clientprofile_API` with the customer ID.
+  /// - On success (`statusCode == 200` and `code == true`), updates the client profile data
+  ///   in the controller and marks the profile page as active.
+  /// - Shows an error dialog if the API returns a failure response or if the server is down.
+  /// - Catches and displays exceptions in an error dialog.
+  /// - Returns `false` if the request fails or an exception occurs.
   Future<bool> Getclientprofile(context, int customerid) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"customerid": customerid}, API.sales_clientprofile_API);
@@ -326,6 +410,13 @@ mixin SalesServices {
     }
   }
 
+  /// Sends an approval request for a specific event and refreshes the process list.
+  ///
+  /// - Sends a query with the [eventid] to the approval API endpoint.
+  /// - On success (`statusCode == 200` and `code == true`), refreshes the process list
+  ///   for the given [customerid] and shows a success snackbar.
+  /// - On failure, displays an error dialog with the returned message.
+  /// - Handles server errors and exceptions by showing appropriate error dialogs.
   void GetApproval(context, int customerid, int eventid) async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyQueryString({"eventid": eventid}, API.sales_approvedquotation_API);
@@ -346,6 +437,17 @@ mixin SalesServices {
     }
   }
 
+  /// Displays a modal dialog containing the client requirement widget.
+  ///
+  /// - Prevents dismissal by tapping outside the dialog (`barrierDismissible: false`).
+  /// - Shows a styled AlertDialog with fixed height and width containing the `Generate_clientreq` widget,
+  ///   initialized with the provided [value].
+  /// - Includes a close button positioned at the top-right corner.
+  /// - When the close button is pressed:
+  ///   - Checks if there is unsaved data via `clientreqController.anyHavedata()`.
+  ///   - If unsaved data exists, shows a warning dialog to confirm proceeding and potential data loss.
+  ///   - If the user confirms, closes the dialog and resets the client request data.
+  ///   - If no unsaved data, closes the dialog immediately.
   dynamic Generate_client_reqirement_dialougebox(String value, context) async {
     await showDialog(
       context: context,
@@ -404,20 +506,31 @@ mixin SalesServices {
     );
   }
 
-  dynamic generate_client_requirement(context) async {
-    // showDialog(
-    //   context: context,
-    //   builder: (context) {
-    //     return AlertDialog(
-    //         backgroundColor: Primary_colors.Light,
-    //         content: Generate_popup(
-    //           type: 'E://Client_requirement.pdf',
-    //         ));
-    //   },
-    // );
-    // }
-  }
+  // dynamic generate_client_requirement(context) async {
+  //   // showDialog(
+  //   //   context: context,
+  //   //   builder: (context) {
+  //   //     return AlertDialog(
+  //   //         backgroundColor: Primary_colors.Light,
+  //   //         content: Generate_popup(
+  //   //           type: 'E://Client_requirement.pdf',
+  //   //         ));
+  //   //   },
+  //   // );
+  //   // }
+  // }
 
+  /// Displays a modal dialog containing the invoice generation widget.
+  ///
+  /// - Prevents dismissal by tapping outside the dialog (`barrierDismissible: false`).
+  /// - Shows a styled AlertDialog with fixed height and width containing the `GenerateInvoice` widget,
+  ///   initialized with the provided [eventID].
+  /// - Includes a close button positioned at the top-right corner.
+  /// - When the close button is pressed:
+  ///   - Checks if any invoice-related data fields or lists contain values indicating unsaved data.
+  ///   - If unsaved data exists, shows a warning dialog to confirm proceeding and potential data loss.
+  ///   - If the user confirms, closes the dialog and resets the invoice data via `invoiceController.resetData()`.
+  ///   - If no unsaved data, closes the dialog immediately.
   dynamic GenerateInvoice_dialougebox(context, eventID) async {
     await showDialog(
       context: context,
@@ -486,28 +599,39 @@ mixin SalesServices {
     );
   }
 
-  dynamic generate_invoice(context) async {
-    // bool confirmed = await GenerateInvoice_dialougebox();
+  // dynamic generate_invoice(context) async {
+  //   // bool confirmed = await GenerateInvoice_dialougebox();
 
-    // if (confirmed) {
-    // Proceed only if the dialog was confirmed
-    // Future.delayed(const Duration(seconds: 4), () {
-    //   Generate_popup.callback();
-    // });
+  //   // if (confirmed) {
+  //   // Proceed only if the dialog was confirmed
+  //   // Future.delayed(const Duration(seconds: 4), () {
+  //   //   Generate_popup.callback();
+  //   // });
 
-    // showDialog(
-    //   context: context,
-    //   builder: (context) {
-    //     return AlertDialog(
-    //         backgroundColor: Primary_colors.Light,
-    //         content: Generate_popup(
-    //           type: 'E://Invoice.pdf',
-    //         ));
-    //   },
-    // );
-    // }
-  }
+  //   // showDialog(
+  //   //   context: context,
+  //   //   builder: (context) {
+  //   //     return AlertDialog(
+  //   //         backgroundColor: Primary_colors.Light,
+  //   //         content: Generate_popup(
+  //   //           type: 'E://Invoice.pdf',
+  //   //         ));
+  //   //   },
+  //   // );
+  //   // }
+  // }
 
+  /// Displays a modal dialog containing the quote generation widget.
+  ///
+  /// - Prevents dismissal by tapping outside the dialog (`barrierDismissible: false`).
+  /// - Shows a styled AlertDialog with fixed height and width containing the `GenerateQuote` widget,
+  ///   initialized with the provided [quoteType] and [eventID].
+  /// - Includes a close button positioned at the top-right corner.
+  /// - When the close button is pressed:
+  ///   - Checks if any quote-related data fields or lists contain values indicating unsaved data.
+  ///   - If unsaved data exists, shows a warning dialog to confirm proceeding and potential data loss.
+  ///   - If the user confirms, closes the dialog and resets the quote data via `_quoteController.resetData()`.
+  ///   - If no unsaved data, closes the dialog immediately.
   dynamic GenerateQuote_dialougebox(context, String quoteType, int eventID) async {
     await showDialog(
       context: context,
@@ -575,28 +699,39 @@ mixin SalesServices {
     );
   }
 
-  dynamic generate_quote(context) async {
-    // bool confirmed = await GenerateQuote_dialougebox();
+  // dynamic generate_quote(context) async {
+  //   // bool confirmed = await GenerateQuote_dialougebox();
 
-    // if (confirmed) {
-    // Proceed only if the dialog was confirmed
-    // Future.delayed(const Duration(seconds: 4), () {
-    //   Generate_popup.callback();
-    // });
+  //   // if (confirmed) {
+  //   // Proceed only if the dialog was confirmed
+  //   // Future.delayed(const Duration(seconds: 4), () {
+  //   //   Generate_popup.callback();
+  //   // });
 
-    // showDialog(
-    //   context: context,
-    //   builder: (context) {
-    //     return AlertDialog(
-    //         backgroundColor: Primary_colors.Light,
-    //         content: Generate_popup(
-    //           type: 'E://Quote.pdf',
-    //         ));
-    //   },
-    // );
-    // }
-  }
+  //   // showDialog(
+  //   //   context: context,
+  //   //   builder: (context) {
+  //   //     return AlertDialog(
+  //   //         backgroundColor: Primary_colors.Light,
+  //   //         content: Generate_popup(
+  //   //           type: 'E://Quote.pdf',
+  //   //         ));
+  //   //   },
+  //   // );
+  //   // }
+  // }
 
+  /// Displays a modal dialog containing the RFQ (Request for Quotation) generation widget.
+  ///
+  /// - Prevents dismissal by tapping outside the dialog (`barrierDismissible: false`).
+  /// - Shows a styled AlertDialog with fixed height and width containing the `GenerateRfq` widget,
+  ///   initialized with the provided [eventID].
+  /// - Includes a close button positioned at the top-right corner.
+  /// - When the close button is pressed:
+  ///   - Checks if any RFQ-related data fields or lists contain values indicating unsaved data.
+  ///   - If unsaved data exists, shows a warning dialog to confirm proceeding and potential data loss.
+  ///   - If the user confirms, closes the dialog and resets the RFQ data via `rfqController.resetData()`.
+  ///   - If no unsaved data, closes the dialog immediately.
   dynamic GenerateRfq_dialougebox(context, eventID) async {
     await showDialog(
       context: context,
@@ -660,30 +795,41 @@ mixin SalesServices {
     );
   }
 
-  dynamic generate_rfq(context) async {
-    // bool confirmed = await GenerateRFQ_dialougebox();
+  // dynamic generate_rfq(context) async {
+  //   // bool confirmed = await GenerateRFQ_dialougebox();
 
-    // if (confirmed) {
-    // Proceed only if the dialog was confirmed
-    // Future.delayed(const Duration(seconds: 4), () {
-    //   Generate_popup.callback();
-    // });
+  //   // if (confirmed) {
+  //   // Proceed only if the dialog was confirmed
+  //   // Future.delayed(const Duration(seconds: 4), () {
+  //   //   Generate_popup.callback();
+  //   // });
 
-    // showDialog(
-    //   context: context,
-    //   builder: (context) {
-    //     return AlertDialog(
-    //         backgroundColor: Primary_colors.Light,
-    //         content: Generate_popup(
-    //           type: 'E://RFQ.pdf',
-    //         ));
-    //   },
-    // );
-    // }
-  }
+  //   // showDialog(
+  //   //   context: context,
+  //   //   builder: (context) {
+  //   //     return AlertDialog(
+  //   //         backgroundColor: Primary_colors.Light,
+  //   //         content: Generate_popup(
+  //   //           type: 'E://RFQ.pdf',
+  //   //         ));
+  //   //   },
+  //   // );
+  //   // }
+  // }
 
 // // ##################################################################################################################################################################################################################################################################################################################################################################
 
+  /// Displays a modal dialog for generating a Delivery Challan.
+  ///
+  /// - The dialog cannot be dismissed by tapping outside (`barrierDismissible: false`).
+  /// - Shows a styled AlertDialog with fixed size containing the `GenerateDc` widget,
+  ///   initialized with the provided [eventID] and [eventName].
+  /// - Includes a close button positioned at the top-right corner.
+  /// - When the close button is tapped:
+  ///   - It checks if any Delivery Challan related data fields or lists contain unsaved data.
+  ///   - If unsaved data is found, it shows a warning dialog to confirm if the user wants to proceed and lose the data.
+  ///   - If the user confirms, the dialog closes and Delivery Challan data is reset via `dcController.resetData()`.
+  ///   - If no unsaved data is present, the dialog closes immediately.
   dynamic GenerateDelivery_challan_dialougebox(context, eventID, eventName) async {
     await showDialog(
       context: context,
@@ -746,6 +892,23 @@ mixin SalesServices {
     );
   }
 
+  /// Formats a given integer [number] into a compact Indian currency string.
+  ///
+  /// The formatting rules are:
+  /// - If number is 1 crore (1,00,00,000) or more, show as crores with "Cr" suffix.
+  /// - Else if number is 1 lakh (1,00,000) or more, show as lakhs with "L" suffix.
+  /// - Else if number is 1 thousand (1,000) or more, show as thousands with "K" suffix.
+  /// - Otherwise, show the full number as is.
+  ///
+  /// All formatted numbers include the rupee symbol "₹" and are rounded to one decimal place.
+  ///
+  /// Example:
+  /// ```
+  /// formatNumber(25000000); // returns "₹ 2.5Cr"
+  /// formatNumber(540000);   // returns "₹ 5.4L"
+  /// formatNumber(4500);     // returns "₹ 4.5K"
+  /// formatNumber(950);      // returns "₹ 950"
+  /// ```
   String formatNumber(int number) {
     if (number >= 10000000) {
       return "₹ ${(number / 10000000).toStringAsFixed(1)}Cr";
@@ -758,6 +921,17 @@ mixin SalesServices {
     }
   }
 
+  /// Refreshes sales-related data by performing multiple asynchronous operations.
+  ///
+  /// - Resets the currently shown customer process to null.
+  /// - Updates the current customer ID to 0 (reset).
+  /// - Fetches the list of sales process customers.
+  /// - Retrieves sales data for the current sales period.
+  /// - Retrieves the list of custom sales PDFs twice (possibly redundant).
+  /// - Fetches the sales process list for customer ID 0 (default).
+  /// - Finally, triggers a UI update to reflect the refreshed data.
+  ///
+  /// Note: Calling `Get_salesCustomPDFLsit()` twice might be unintentional.
   Future<void> sales_refresh() async {
     // salesController.resetData();
     salesController.updateshowcustomerprocess(null);
@@ -771,6 +945,13 @@ mixin SalesServices {
     salesController.update();
   }
 
+  /// Determines the message type based on selection statuses.
+  ///
+  /// Returns:
+  /// - 3 if both WhatsApp and Gmail are selected.
+  /// - 2 if only WhatsApp is selected.
+  /// - 1 if only Gmail is selected.
+  /// - 0 if neither is selected.
   int fetch_messageType() {
     if (salesController.salesModel.whatsapp_selectionStatus.value && salesController.salesModel.gmail_selectionStatus.value) return 3;
     if (salesController.salesModel.whatsapp_selectionStatus.value) return 2;
@@ -779,6 +960,14 @@ mixin SalesServices {
     return 0;
   }
 
+  /// Sends PDF data along with additional details like email, phone, feedback, and message type.
+  ///
+  /// Parameters:
+  /// - [context]: Build context for showing dialogs or snackbars.
+  /// - [messageType]: Integer representing the message type (e.g., email, WhatsApp).
+  /// - [pdf]: The PDF file to be sent.
+  ///
+  /// Handles exceptions by showing an error dialog with the exception message.
   dynamic postData_sendPDF(context, int messageType, File pdf) async {
     try {
       Map<String, dynamic> queryString = {
@@ -794,8 +983,19 @@ mixin SalesServices {
     }
   }
 
-// hariprasath.s@sporadsecure.com
-// arunkumar.m@sporadasecure.com
+  /// Sends PDF data along with JSON metadata to the backend API.
+  ///
+  /// Parameters:
+  /// - [context]: Build context for showing dialogs or navigation.
+  /// - [jsonData]: JSON string containing metadata such as email, phone, feedback, etc.
+  /// - [file]: PDF file to upload.
+  ///
+  /// Functionality:
+  /// - Uses `apiController.Multer` to send the file and data to the server with authentication token.
+  /// - Handles server responses:
+  ///   - On success (statusCode 200 and code true), shows a success dialog, pops the dialog, and resets share data.
+  ///   - On failure, shows an error dialog with appropriate messages.
+  /// - Handles network or other exceptions by showing an error dialog with the exception details.
   dynamic sendPDFdata(context, String jsonData, File file) async {
     try {
       Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, [file], API.send_anyPDF);

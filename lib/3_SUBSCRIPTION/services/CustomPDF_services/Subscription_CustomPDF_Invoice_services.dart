@@ -17,6 +17,11 @@ class SUBSCRIPTION_CustomPDF_Services {
   final Invoker apiController = Get.find<Invoker>();
   final SUBSCRIPTION_CustomPDF_InvoiceController pdfpopup_controller = Get.find<SUBSCRIPTION_CustomPDF_InvoiceController>();
 
+  /// Generates a custom PDF invoice using the provided model data,
+  /// stores the generated PDF temporarily in the device's cache directory,
+  /// and updates the controller with the cached PDF file.
+  /// It also triggers a preview of the generated PDF.
+  /// The invoice file is named using a sanitized invoice number.
   Future<void> savePdfToCache(context) async {
     Uint8List pdfData = await SUBSCRIPTION_generate_CustomPDFInvoice(
       PdfPageFormat.a4,
@@ -77,6 +82,9 @@ class SUBSCRIPTION_CustomPDF_Services {
     // return file;
   }
 
+  /// Displays a modal dialog showing a custom invoice preview widget (`SUBSCRIPTION_PostInvoice()`).
+  /// The dialog is non-dismissible by tapping outside, and has a styled close button at the top-right corner.
+  /// Intended to show the generated invoice PDF in a visually embedded UI component.
   dynamic show_generatedPDF(context) async {
     await showDialog(
       context: context,

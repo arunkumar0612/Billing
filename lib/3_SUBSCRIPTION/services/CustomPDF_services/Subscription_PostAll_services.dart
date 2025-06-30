@@ -22,6 +22,11 @@ mixin SUBSCRIPTION_PostServices {
   final loader = LoadingOverlay();
   final Invoker apiController = Get.find<Invoker>();
   final SubscriptionController subscriptionController = Get.find<SubscriptionController>();
+
+  /// Controls the loading animation state for the PDF preview process.
+  /// Initially sets loading to false to hide the loader.
+  /// Waits for a fixed delay (4 seconds), simulating processing time or UI delay.
+  /// After delay, re-enables the loading state to true, triggering visual feedback.
   void animation_control() async {
     // await Future.delayed(const Duration(milliseconds: 200));
     pdfpopup_controller.setpdfLoading(false);
@@ -34,6 +39,10 @@ mixin SUBSCRIPTION_PostServices {
     pdfpopup_controller.setpdfLoading(true);
   }
 
+  /// Triggers printing of the generated PDF.
+  /// Logs the file path if in debug mode for tracking.
+  /// Uses the `Printing` package to open the native print dialog and render the PDF bytes.
+  /// Catches and logs any errors during the print operation for debugging.
   Future<void> printPdf() async {
     if (kDebugMode) {
       print('Selected PDF Path: ${pdfpopup_controller.pdfModel.value.genearatedPDF.value}');
@@ -53,6 +62,16 @@ mixin SUBSCRIPTION_PostServices {
     }
   }
 
+  /// Sends the finalized invoice data along with the cached PDF to the server.
+  ///
+  /// 1. Validates that all required fields are filled using `postDatavalidation()`.
+  /// 2. If validation fails, shows an error dialog to prompt user to fill missing fields.
+  /// 3. If valid, starts a loader animation and constructs a `PostInvoice` object with:
+  ///     - Address details (billing and installation)
+  ///     - GST info, email, phone, and plan name
+  ///     - Amounts, invoice ID, date, feedback, etc.
+  /// 4. Then encodes the invoice to JSON and uploads it with the PDF via `send_data()`.
+  /// 5. Catches and shows any exceptions via an error dialog.
   dynamic postData(context, int messageType) async {
     try {
       if (pdfpopup_controller.postDatavalidation()) {
@@ -87,6 +106,15 @@ mixin SUBSCRIPTION_PostServices {
     }
   }
 
+  /// Fetches the list of custom subscription PDFs from the server.
+  ///
+  /// 1. Calls the API endpoint defined in `API.get_subscriptionCustompdf` using `GetbyToken`.
+  /// 2. If the response has status code 200:
+  ///     - Converts the response into `CMDlResponse`.
+  ///     - If response is successful (`value.code == true`), it updates the controller with the data using `addToCustompdfList`.
+  ///     - If unsuccessful, logs the error message in debug mode.
+  /// 3. If the status code is not 200, logs a "contact administration" error in debug mode.
+  /// 4. Catches and logs any exceptions that occur during the API call in debug mode.
   Future<void> Get_subscriptionCustomPDFLsit() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_subscriptionCustompdf);
@@ -114,6 +142,22 @@ mixin SUBSCRIPTION_PostServices {
     }
   }
 
+  /// Sends the custom invoice data and PDF file to the backend via a multipart API call.
+  ///
+  /// Parameters:
+  /// - `context`: The build context for showing dialogs.
+  /// - `jsonData`: The JSON string representing the custom invoice data.
+  /// - `file`: The generated PDF file to be uploaded.
+  ///
+  /// Function Flow:
+  /// 1. Sends the request using the `apiController.Multer` method with the session token, JSON payload, and file.
+  /// 2. If the response has a status code of 200:
+  ///    - Parses the response into a `CMDmResponse`.
+  ///    - If the `code` is true, displays a success dialog and refreshes the PDF list using `Get_subscriptionCustomPDFLsit()`.
+  ///    - Otherwise, shows an error dialog with the message.
+  /// 3. If the status code is not 200, shows a "SERVER DOWN" error dialog.
+  /// 4. Catches and displays any exceptions during the process.
+  /// 5. Stops the loader in all cases to ensure proper UI state.
   dynamic send_data(context, String jsonData, File file) async {
     try {
       Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, [file], API.subscription_addCustomInvoice_API);

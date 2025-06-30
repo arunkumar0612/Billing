@@ -12,7 +12,13 @@ import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 class CustomPDF_QuoteController extends GetxController {
   var pdfModel = CustomPDF_QuoteModel().obs;
 
-  /// Initializes controllers, checkboxes, note fields, and performs final calculations.
+  /// Performs all initial setup tasks for the invoice module.
+  ///
+  /// This includes:
+  /// - Initializing text controllers for invoice product fields.
+  /// - Setting up checkbox states.
+  /// - Adding default notes.
+  /// - Calculating final totals and GST amounts.
   void intAll() {
     initializeTextControllers();
     initializeCheckboxes();
@@ -52,7 +58,17 @@ class CustomPDF_QuoteController extends GetxController {
     pdfModel.value.ispdfLoading.value = value;
   }
 
-  /// Picks an image file and validates size before assigning it to the PDF model.
+  /// Opens a file picker allowing the user to select an image file (png, jpg, jpeg).
+  ///
+  /// Parameters:
+  /// - [context]: The BuildContext used for displaying error dialogs.
+  ///
+  /// Behavior:
+  /// - Restricts file selection to the specified image types.
+  /// - Locks the parent window during file selection.
+  /// - Validates the selected file size; if it exceeds 2 MB, shows an error dialog and clears the generated PDF reference.
+  /// - If the file size is acceptable, updates the generated PDF reference with the selected file.
+  /// - Prints debug information about the selected file when in debug mode.
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -148,7 +164,24 @@ class CustomPDF_QuoteController extends GetxController {
     pdfModel.refresh();
   }
 
-  /// Updates product field value by column and row index, validating input for numeric fields.
+  /// Updates the value of a specific cell in the manual quote products list.
+  ///
+  /// Parameters:
+  /// - [rowIndex]: The index of the product row to update.
+  /// - [colIndex]: The index of the column to update.
+  /// - [value]: The new string value to assign.
+  ///
+  /// Behavior:
+  /// - For columns 0, 2, 3, 4, and 5, input is validated to allow only numeric values.
+  /// - Updates the product field based on the column index:
+  ///   - 0: Serial number (`sNo`)
+  ///   - 1: Description
+  ///   - 2: HSN code
+  ///   - 3: GST percentage (`gst`)
+  ///   - 4: Price
+  ///   - 5: Quantity
+  /// - Recalculates the total if price or quantity is updated.
+  /// - Refreshes the `pdfModel` to update the UI.
   void updateCell(int rowIndex, int colIndex, String value) {
     final product = pdfModel.value.manualQuoteproducts[rowIndex];
 
@@ -199,7 +232,25 @@ class CustomPDF_QuoteController extends GetxController {
     pdfModel.refresh();
   }
 
-  /// Calculates final invoice totals including GST, subtotal, and roundoff.
+  /// Calculates and updates the total price for a product in the manual quote.
+  ///
+  /// This function retrieves a specific [product] from the
+  /// `pdfModel.value.manualQuoteproducts` list using the provided [rowIndex].
+  /// It then parses the product's `price` and `quantity` from strings to
+  /// `double` values. If parsing fails for either, it defaults to `0`.
+  ///
+  /// The **new total** is computed by multiplying the parsed `price` and `quantity`.
+  /// This `newTotal` (as a `String`) is then assigned back to the `product.total`
+  /// property.
+  ///
+  /// The calculated total is also updated in the corresponding `TextEditingController`
+  /// at `pdfModel.value.textControllers[rowIndex][6]`, ensuring the UI reflects
+  /// the change.
+  ///
+  /// Finally, `finalCalc()` is called to trigger any subsequent global calculations
+  /// or updates, and `pdfModel.refresh()` is called to force a UI refresh.
+  ///
+  /// @param rowIndex The index of the product row for which the total needs to be calculated.
   void finalCalc() {
     double addedSubTotal = 0.0;
     double addedIGST = 0.0;
@@ -250,7 +301,26 @@ class CustomPDF_QuoteController extends GetxController {
     pdfModel.refresh(); // Ensure UI updates
   }
 
-  /// Adds a new empty product row with text controllers and checkbox.
+  /// Adds a new, empty row to the manual quote product list.
+  ///
+  /// This function performs three key actions to prepare a new row for user input:
+  ///
+  /// 1.  **Initializes Text Controllers:** It adds a new list of seven `TextEditingController`
+  ///     instances to `pdfModel.value.textControllers`. These controllers are essential
+  ///     for managing user input in each cell of the new row in the UI.
+  ///
+  /// 2.  **Adds New Product Model:** A new `CustomPDF_QuoteProduct` object is instantiated
+  ///     with all its properties (`sNo`, `description`, `hsn`, `gst`, `price`, `quantity`, `total`)
+  ///     initialized as empty strings, except `total` which defaults to "0.0". This new
+  ///     product object is then added to `pdfModel.value.manualQuoteproducts`, serving
+  ///     as the data model for the new row.
+  ///
+  /// 3.  **Adds Checkbox Value:** A new `false` boolean value is added to
+  ///     `pdfModel.value.checkboxValues`. This likely corresponds to a checkbox
+  ///     associated with the newly added row, setting its initial state to unchecked.
+  ///
+  /// Finally, `pdfModel.refresh()` is called to trigger a UI update, making the
+  /// newly added row visible and interactive to the user.
   void addRow() {
     pdfModel.value.textControllers.add(
       List.generate(7, (index) => TextEditingController()),

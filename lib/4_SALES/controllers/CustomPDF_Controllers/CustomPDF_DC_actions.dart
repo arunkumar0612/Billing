@@ -11,7 +11,14 @@ import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 class CustomPDF_DcController extends GetxController {
   var pdfModel = CustomPDF_DcModel().obs;
 
-  /// Initializes text controllers, checkboxes, and adds an initial note.
+  /// Initializes the necessary components and states for the module.
+  ///
+  /// This includes:
+  /// - Setting up all required text controllers.
+  /// - Initializing checkbox states.
+  /// - Adding default or initial notes.
+  ///
+  /// Note: The `finalCalc()` method call is currently commented out and not invoked.
   void intAll() {
     initializeTextControllers();
     initializeCheckboxes();
@@ -19,7 +26,13 @@ class CustomPDF_DcController extends GetxController {
     // finalCalc();
   }
 
-  /// Returns an integer representing the selected message type.
+  /// Determines the message type code based on the selection status of WhatsApp and Gmail.
+  ///
+  /// Returns:
+  /// - 3 if both WhatsApp and Gmail are selected.
+  /// - 2 if only WhatsApp is selected.
+  /// - 1 if only Gmail is selected.
+  /// - 0 if neither is selected.
   int fetch_messageType() {
     if (pdfModel.value.whatsapp_selectionStatus.value && pdfModel.value.gmail_selectionStatus.value) return 3;
     if (pdfModel.value.whatsapp_selectionStatus.value) return 2;
@@ -55,7 +68,17 @@ class CustomPDF_DcController extends GetxController {
     pdfModel.value.ispdfLoading.value = value;
   }
 
-  /// Picks an image file, validates size, and assigns it to the model.f
+  /// Opens a file picker to select an image file with extensions png, jpg, or jpeg.
+  ///
+  /// Parameters:
+  /// - [context]: Used to display error dialogs.
+  ///
+  /// Process:
+  /// - Allows selection of image files only.
+  /// - Locks the parent window while file picker is active.
+  /// - Checks the selected file size; if it exceeds 2MB, shows an error dialog and clears the generated PDF reference.
+  /// - If file size is within limit, updates the generated PDF reference with the selected file.
+  /// - Prints debug information about the selected file when in debug mode.
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -95,7 +118,14 @@ class CustomPDF_DcController extends GetxController {
     pdfModel.value.isLoading.value = value;
   }
 
-  /// Simulates a progress bar animation by updating progress value over time.
+  /// Simulates a progress update from 0% to 100% over a fixed duration.
+  ///
+  /// This function:
+  /// - Sets a loading state to true at the start.
+  /// - Initializes progress to 0.0.
+  /// - Increments the progress value from 0 to 1 in steps of 1%,
+  ///   waiting 20 milliseconds between each increment to simulate progress.
+  /// - Sets the loading state to false after completion.
   Future<void> startProgress() async {
     setLoading(true);
     pdfModel.value.progress.value = 0.0;
@@ -108,7 +138,17 @@ class CustomPDF_DcController extends GetxController {
     setLoading(false);
   }
 
-  /// Initializes a 2D list of text controllers for each product field.
+  /// Initializes text controllers for each product in the manual DC products list.
+  ///
+  /// For each product, creates a list of TextEditingControllers initialized with:
+  /// - Serial number (`sNo`)
+  /// - Description
+  /// - HSN code
+  /// - Quantity
+  ///
+  /// Note:
+  /// - Some fields like GST, price, and total are commented out and not initialized here.
+  /// - The total field is considered read-only and therefore not assigned a controller.
   void initializeTextControllers() {
     pdfModel.value.textControllers.assignAll(
       pdfModel.value.manualDcproducts.map((product) {
@@ -137,7 +177,23 @@ class CustomPDF_DcController extends GetxController {
     pdfModel.refresh();
   }
 
-  /// Updates a specific cell in the product list, validating numeric fields.
+  /// Updates the value of a specific cell in the manual DC products table.
+  ///
+  /// Parameters:
+  /// - [rowIndex]: The index of the product row to update.
+  /// - [colIndex]: The index of the column to update.
+  /// - [value]: The new string value to set.
+  ///
+  /// Behavior:
+  /// - For columns 0, 2, 3, 4, and 5, only allows numeric input; rejects non-numeric values.
+  /// - Updates the corresponding field in the product based on the column index:
+  ///   - 0: Serial number (`sNo`)
+  ///   - 1: Description
+  ///   - 2: HSN code
+  ///   - 3: Quantity (note: GST update commented out)
+  /// - Columns 4 and 5 are commented out (price and quantity), indicating they are not currently handled.
+  /// - Refreshes the `pdfModel` after updating to trigger UI updates.
+  /// - Calculation of total on certain columns is commented out.
   void updateCell(int rowIndex, int colIndex, String value) {
     final product = pdfModel.value.manualDcproducts[rowIndex];
 

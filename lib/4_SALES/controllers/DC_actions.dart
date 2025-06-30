@@ -222,7 +222,40 @@ class DcController extends GetxController {
     dcModel.dc_amount.value = amount;
   }
 
-  /// Opens file picker and handles file selection and size validation.
+  /// Allows the user to pick a file from their device, with size validation.
+  ///
+  /// This asynchronous function utilizes the `file_picker` package to open a
+  /// file selection dialog. It specifically allows the selection of image files
+  /// (PNG, JPG, JPEG) and PDF documents.
+  ///
+  /// **File Picking Process:**
+  /// 1.  **Opens File Picker:** `FilePicker.platform.pickFiles` is called with
+  ///     `FileType.custom` and `allowedExtensions` set to `['png', 'jpg', 'jpeg', 'pdf']`.
+  ///     The `lockParentWindow: true` parameter ensures that the parent window
+  ///     is locked while the file picker is active, preventing interaction until
+  ///     a file is chosen or the dialog is dismissed.
+  /// 2.  **Result Handling:**
+  ///     - If `result` is `null` (meaning the user cancelled the picker), the
+  ///       function simply returns without doing anything.
+  ///     - If a file is selected (`result` is not null):
+  ///         - The selected file is accessed as a `File` object.
+  ///         - The `fileLength` (in bytes) is obtained.
+  /// 3.  **Size Validation:**
+  ///     - The `fileLength` is checked against a **2 MB (2 * 1024 * 1024 bytes)**
+  ///       size limit.
+  ///     - **If the file exceeds 2 MB:**
+  ///         - A debug print statement (visible only in debug mode) indicates the issue.
+  ///         - An `Error_dialog` is displayed to the user, informing them that
+  ///           the "Selected file exceeds 2MB in size."
+  ///         - `dcModel.pickedFile.value` and `dcModel.selectedPdf.value` are
+  ///           reset to `null`, effectively clearing any invalid selection.
+  ///     - **If the file is within the 2 MB limit:**
+  ///         - `dcModel.pickedFile.value` is updated with the `FilePickerResult`.
+  ///         - `dcModel.selectedPdf.value` is updated with the `File` object itself.
+  ///         - A debug print statement logs the name of the selected file.
+  ///
+  /// @param context The `BuildContext` of the widget calling this function,
+  ///                used for showing dialogs.
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf'], lockParentWindow: true);
 
@@ -283,7 +316,33 @@ class DcController extends GetxController {
     }
   }
 
-  /// Updates an existing recommendation at a given index.
+  /// Updates an existing recommendation entry in the `Dc_recommendationList`.
+  ///
+  /// This function allows for modifying a specific recommendation within the
+  /// `dcModel.Dc_recommendationList` by its index. It requires a valid index,
+  /// and non-empty `key` and `value` to perform the update.
+  ///
+  /// **Parameters:**
+  /// - `index`: The zero-based index of the recommendation to be updated within the list.
+  ///            This parameter is `required`.
+  /// - `key`: The new key for the recommendation. This parameter is `required` and
+  ///          must not be empty.
+  /// - `value`: The new value for the recommendation. This parameter is `required` and
+  ///            must not be empty.
+  ///
+  /// **Functionality:**
+  /// 1.  **Index Validation:** It first checks if the provided `index` is within
+  ///     the valid bounds of `dcModel.Dc_recommendationList`.
+  ///     - If the `index` is out of bounds, a debug message "Invalid index provided"
+  ///       is printed (in debug mode), and no update occurs.
+  /// 2.  **Key and Value Validation:** If the `index` is valid, it then checks
+  ///     if both `key` and `value` are non-empty strings.
+  ///     - If either `key` or `value` is empty, a debug message "Key and value must not be empty"
+  ///       is printed (in debug mode), and no update occurs.
+  /// 3.  **Recommendation Update:** If all validations pass (valid index, non-empty key and value),
+  ///     a new `Recommendation` object is created with the provided `key` and `value`,
+  ///     and it replaces the existing `Recommendation` at the specified `index`
+  ///     in `dcModel.Dc_recommendationList`.
   void updateRecommendation({
     required int index,
     required String key,
@@ -453,7 +512,45 @@ class DcController extends GetxController {
     }
   }
 
-  /// Validates and sets the quantity value for a product at the given index.
+  /// Sets and validates the quantity value for a specific item, ensuring it stays within defined bounds.
+  ///
+  /// This function takes a raw string [value] (representing the desired quantity),
+  /// a string [maxQty] (representing the maximum allowed quantity), and the
+  /// [index] of the item to update. It parses and validates these values to
+  /// ensure the quantity remains between a minimum of 1 and the specified maximum.
+  ///
+  /// **Validation Logic:**
+  /// 1.  **Parsing Inputs:**
+  ///     - `value` is parsed to an `int` (`convertedValue`). If parsing fails
+  ///       or the value is empty, it defaults to `1`.
+  ///     - `maxQty` is parsed to an `int` (`convertedMaxQty`). If parsing fails
+  ///       or the value is empty, it defaults to `1`.
+  ///     - A `minQty` is set to `1`.
+  /// 2.  **Boundary Checks:**
+  ///     - If `convertedValue` is greater than or equal to `convertedMaxQty`,
+  ///       `convertedValue` is clamped to `convertedMaxQty`.
+  ///     - If `convertedValue` is less than or equal to `minQty`,
+  ///       `convertedValue` is clamped to `minQty`.
+  ///
+  /// **UI and Model Update:**
+  /// 1.  **Text Controller Update:**
+  ///     - The `TextEditingController` for the given `index` is retrieved from
+  ///       `dcModel.textControllers`.
+  ///     - The `text` property of this controller is updated with the
+  ///       `convertedValue` (converted back to a string), reflecting the
+  ///       validated quantity in the UI.
+  /// 2.  **Cursor Position Restoration:**
+  ///     - The cursor position within the `TextEditingController` is explicitly
+  ///       set to the end of the text. This provides a better user experience,
+  ///       especially after the text might have been programmatically changed due
+  ///       to validation.
+  /// 3.  **Model Update:**
+  ///     - The validated `convertedValue` is assigned to `dcModel.quantities[index].value`,
+  ///       updating the underlying data model.
+  ///
+  /// @param value The string representation of the desired quantity.
+  /// @param maxQty The string representation of the maximum allowed quantity.
+  /// @param index The index of the item whose quantity is being updated.
   void setQtyvalue(String value, String maxQty, int index) {
     // if (value.isEmpty) value=0; // Prevent processing empty values
 

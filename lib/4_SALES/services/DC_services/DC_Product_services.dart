@@ -87,6 +87,24 @@ mixin DcproductService {
   //   dcController.addProductEditindex(null);
   // }
 
+  /// Processes the delivery challan product selection and updates the model accordingly.
+  ///
+  /// This method performs the following:
+  /// 1. Clears any previously selected or pending products and feedback.
+  /// 2. Iterates over all products (`Dc_products`) and:
+  ///   - Adds selected products (based on checkbox and quantity) to `selected_dcProducts`.
+  ///   - Adds remaining (unselected) quantities as `pending_dcProducts`.
+  /// 3. If there are pending products:
+  ///   - Clears previous recommendations and adds new ones under "PENDING PRODUCTS FOR DELIVERY".
+  ///   - Updates the `product_feedback` message with how many products are pending.
+  /// 4. If all products are fully delivered, sets the `product_feedback` to "Delivery completed!".
+  ///
+  /// **Used For:**
+  /// - Managing split deliveries.
+  /// - Building a Delivery Challan from user-selected product quantities.
+  ///
+  /// This ensures only the chosen quantities are marked as delivered while
+  /// unfulfilled items are clearly tracked and marked for future delivery.
   void addto_Selectedproducts() {
     dcController.dcModel.selected_dcProducts.clear();
     dcController.dcModel.pending_dcProducts.clear();

@@ -36,8 +36,12 @@ mixin SUBSCRIPTION_QuotePostServices {
     quoteController.setpdfLoading(true);
   }
 
-// Function to print the selected PDF
-  /// This function prints the selected PDF file.
+  /// Sends the selected PDF file to the printer for layout and printing.
+  ///
+  /// - Logs the selected PDF file path in debug mode.
+  /// - Uses the `Printing.layoutPdf` API to send the file bytes to the printing layout.
+  /// - Catches and logs any errors that occur during the printing process.
+
   Future<void> printPdf() async {
     if (kDebugMode) {
       print('Selected PDF Path: ${quoteController.quoteModel.selectedPdf.value}');
@@ -57,8 +61,15 @@ mixin SUBSCRIPTION_QuotePostServices {
     }
   }
 
-// Function to post the quote data
-  /// This function posts the quote data to the server.
+  /// Posts the quotation data to the server along with the generated PDF.
+  ///
+  /// - Validates form fields using `quoteController.postDatavalidation()`.
+  /// - If validation fails, displays an error dialog and exits.
+  /// - If valid, constructs a `PostSubQuote` object from current quote model values.
+  /// - Includes fields such as company ID, process ID, addresses, package list, notes,
+  ///   contact details, GST, and feedback.
+  /// - Converts the data to JSON and sends it with the cached PDF file using `send_data()`.
+  /// - Handles exceptions and displays an error dialog if any issue occurs during posting.
   dynamic postData(context, int messageType, String eventtype) async {
     try {
       if (quoteController.postDatavalidation()) {
@@ -101,8 +112,18 @@ mixin SUBSCRIPTION_QuotePostServices {
     }
   }
 
-// Function to send the data to the server
-  /// This function sends the data to the server using the API controller.
+  /// Sends the quotation or revised quotation data to the backend server.
+  ///
+  /// - Accepts `jsonData` (serialized quotation data), `file` (PDF file), and `eventtype`.
+  /// - Based on `eventtype`, it selects the appropriate API endpoint (quotation or revised quotation).
+  /// - Uploads data using `apiController.Multer` with session token and attached PDF file.
+  /// - If the server returns success (`statusCode == 200` and `value.code == true`):
+  ///   - Shows a success dialog.
+  ///   - Pops the current screen with success status.
+  ///   - Resets the quote controller data.
+  /// - If the response indicates failure:
+  ///   - Displays an error dialog with the error message.
+  /// - Catches and displays any exceptions encountered during the process.
   dynamic send_data(context, String jsonData, File file, String eventtype) async {
     try {
       Map<String, dynamic>? response = await apiController.Multer(

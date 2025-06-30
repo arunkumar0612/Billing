@@ -12,7 +12,13 @@ import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 class CustomPDF_InvoiceController extends GetxController {
   var pdfModel = CustomPDF_InvoiceModel().obs;
 
-  /// Initializes text controllers, checkboxes, notes, and performs final calculation.
+  /// Initializes all required components for the module.
+  ///
+  /// This includes:
+  /// - Setting up text controllers.
+  /// - Initializing checkboxes.
+  /// - Adding initial notes.
+  /// - Performing final calculations.
   void intAll() {
     initializeTextControllers();
     initializeCheckboxes();
@@ -52,7 +58,18 @@ class CustomPDF_InvoiceController extends GetxController {
     pdfModel.value.ispdfLoading.value = value;
   }
 
-  /// Opens file picker and validates selected image file (max 2MB).
+  /// Opens a file picker for selecting an image file (png, jpg, jpeg).
+  ///
+  /// Parameters:
+  /// - [context]: The BuildContext for showing error dialogs.
+  ///
+  /// Functionality:
+  /// - Allows user to pick only files with specified image extensions.
+  /// - Locks the parent window while picker is active.
+  /// - Checks if the selected file size exceeds 2 MB:
+  ///    - If yes, shows an error dialog and clears the generated PDF reference.
+  ///    - If no, updates the generated PDF reference with the selected file.
+  /// - Prints debug messages if running in debug mode.
   Future<void> pickFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -110,7 +127,18 @@ class CustomPDF_InvoiceController extends GetxController {
     setLoading(false);
   }
 
-  /// Initializes text editing controllers for each product field.
+  /// Initializes text controllers for each product in the manual invoice products list.
+  ///
+  /// For each product, creates a list of TextEditingControllers initialized with:
+  /// - Serial number (`sNo`)
+  /// - Description
+  /// - HSN code
+  /// - GST percentage (`gst`)
+  /// - Price
+  /// - Quantity
+  /// - Total amount (read-only)
+  ///
+  /// These controllers are assigned to `pdfModel.value.textControllers` for form management.
   void initializeTextControllers() {
     pdfModel.value.textControllers.assignAll(
       pdfModel.value.manualInvoiceproducts.map((product) {
@@ -148,7 +176,24 @@ class CustomPDF_InvoiceController extends GetxController {
     pdfModel.refresh();
   }
 
-  /// Updates a product cell if the value is numeric and index is valid.
+  /// Updates a specific cell value in the manual invoice products list.
+  ///
+  /// Parameters:
+  /// - [rowIndex]: The index of the product row to update.
+  /// - [colIndex]: The index of the column to update.
+  /// - [value]: The new string value to assign.
+  ///
+  /// Behavior:
+  /// - Validates numeric input for columns 0, 2, 3, 4, and 5; rejects non-numeric input.
+  /// - Updates the corresponding product field based on the column index:
+  ///   - 0: Serial number (`sNo`)
+  ///   - 1: Description
+  ///   - 2: HSN code
+  ///   - 3: GST percentage (`gst`)
+  ///   - 4: Price
+  ///   - 5: Quantity
+  /// - Calls `calculateTotal` when price or quantity is updated to refresh the total for the row.
+  /// - Refreshes the `pdfModel` to update the UI.
   void updateCell(int rowIndex, int colIndex, String value) {
     final product = pdfModel.value.manualInvoiceproducts[rowIndex];
 
@@ -185,7 +230,17 @@ class CustomPDF_InvoiceController extends GetxController {
     pdfModel.refresh();
   }
 
-  /// Calculates total amount for a row (price × quantity) and updates UI.
+  /// Calculates and updates the total amount for a given product row.
+  ///
+  /// Parameters:
+  /// - [rowIndex]: The index of the product row to calculate the total for.
+  ///
+  /// Process:
+  /// - Parses the price and quantity values as doubles, defaulting to 0 if parsing fails.
+  /// - Calculates total as `price * quantity`.
+  /// - Updates the product's `total` field and the corresponding text controller's text.
+  /// - Calls `finalCalc()` to update any final calculations dependent on totals.
+  /// - Refreshes the `pdfModel` to update the UI.
   void calculateTotal(int rowIndex) {
     final product = pdfModel.value.manualInvoiceproducts[rowIndex];
 
@@ -199,7 +254,18 @@ class CustomPDF_InvoiceController extends GetxController {
     pdfModel.refresh();
   }
 
-  /// Performs overall invoice calculations including subtotal, GST, and total.
+  /// Calculates and updates the final invoice summary including subtotal, GST components, round-off, and total.
+  ///
+  /// Process:
+  /// - Iterates over all manual invoice products to sum:
+  ///   - Subtotal amounts (total price per product).
+  ///   - GST components: IGST, CGST, SGST based on product price and GST percentage.
+  /// - Determines whether the GST number is local or not:
+  ///   - If local, total round-off includes subtotal + CGST + SGST.
+  ///   - Otherwise, includes subtotal + IGST only.
+  /// - Updates the respective text controllers for subtotal, IGST, CGST, SGST, round-off, and total with formatted values.
+  /// - Computes and stores the round-off difference for display or further processing.
+  /// - Refreshes the `pdfModel` to update UI components accordingly.
   void finalCalc() {
     double addedSubTotal = 0.0;
     double addedIGST = 0.0;
@@ -237,7 +303,13 @@ class CustomPDF_InvoiceController extends GetxController {
     pdfModel.refresh();
   }
 
-  /// Deletes selected product rows from the invoice.
+  /// Deletes all rows from manual invoice products where the corresponding checkbox is selected.
+  ///
+  /// Process:
+  /// - Iterates backwards through `checkboxValues` to safely remove items without affecting indices.
+  /// - Removes the product, text controllers, and checkbox value at each selected index.
+  /// - Calls `finalCalc()` to update totals after deletion.
+  /// - Refreshes the `pdfModel` to update the UI accordingly.
   void deleteRow() {
     for (int i = pdfModel.value.checkboxValues.length - 1; i >= 0; i--) {
       if (pdfModel.value.checkboxValues[i]) {
@@ -250,7 +322,13 @@ class CustomPDF_InvoiceController extends GetxController {
     pdfModel.refresh(); // Ensure UI updates
   }
 
-  /// Adds a new empty product row to the invoice.
+  /// Adds a new empty row to the manual invoice products table.
+  ///
+  /// Process:
+  /// - Creates and adds a new list of 7 empty `TextEditingController` instances.
+  /// - Adds a new `CustomPDF_InvoiceProduct` with empty/default fields.
+  /// - Adds a corresponding unchecked checkbox value (`false`).
+  /// - Refreshes the `pdfModel` to update the UI.
   void addRow() {
     pdfModel.value.textControllers.add(
       List.generate(7, (index) => TextEditingController()),
@@ -271,7 +349,19 @@ class CustomPDF_InvoiceController extends GetxController {
     pdfModel.refresh();
   }
 
-  /// Validates if all required fields are filled before posting data.
+  /// Validates the required fields before posting data.
+  ///
+  /// Returns `true` if any of the following conditions are met (indicating invalid or incomplete data):
+  /// - Client name or client address is empty.
+  /// - Billing name or billing address is empty.
+  /// - Gmail is selected but email field is empty.
+  /// - WhatsApp is selected but phone number field is empty.
+  /// - GST number is empty.
+  /// - Manual invoice products list is empty.
+  /// - Note content is empty.
+  /// - Manual invoice number is empty.
+  ///
+  /// Returns `false` if all required fields are properly filled.
   bool postDatavalidation() {
     return (pdfModel.value.clientName.value.text.isEmpty ||
         pdfModel.value.clientAddress.value.text.isEmpty ||

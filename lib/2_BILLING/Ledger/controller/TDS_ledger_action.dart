@@ -6,6 +6,9 @@ import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 class TDS_LedgerController extends GetxController {
   var tds_LedgerModel = TDS_LedgerModel();
 
+  /// Populates the TDS ledger model with data from the response,
+  /// resets the model initially, and sets the parent ledger as well.
+  /// Also initializes the date filters based on the received TDS data.
   void add_TDS_Ledger(CMDmResponse value) {
     tds_LedgerModel.tds_Ledger_list.value = TDSSummaryModel(
       tdsList: [],
@@ -25,6 +28,7 @@ class TDS_LedgerController extends GetxController {
     initialize_StartEnd_date(tds_LedgerModel.tds_Ledger_list.value.startdate!, tds_LedgerModel.tds_Ledger_list.value.enddate!);
   }
 
+  /// Sets the start and end date values in the selected TDS ledger filter model.
   void initialize_StartEnd_date(String startDate, String endDate) {
     tds_LedgerModel.tds_LedgerSelectedFilter.value.fromdate.value = startDate;
     tds_LedgerModel.tds_LedgerSelectedFilter.value.todate.value = endDate;
@@ -45,6 +49,7 @@ class TDS_LedgerController extends GetxController {
   //   tds_LedgerModel.closedDateController.text = tds_LedgerModel.closedDate.value;
   // }
 
+  /// Clears all TDS share-related input fields and resets WhatsApp and Gmail sharing selections.
   void clear_sharedata() {
     tds_LedgerModel.emailController.value.clear();
     tds_LedgerModel.phoneController.value.clear();
@@ -54,6 +59,7 @@ class TDS_LedgerController extends GetxController {
     tds_LedgerModel.gmail_selectionStatus.value = false;
   }
 
+  /// Sets the visibility of the CC email field in the TDS ledger model based on the given value.
   void toggleCCemailvisibility(bool value) {
     tds_LedgerModel.CCemailToggle.value = value;
   }

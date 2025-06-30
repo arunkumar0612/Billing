@@ -26,6 +26,10 @@ mixin VoucherService {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
   final loader = LoadingOverlay();
 
+  /// Sends a request to extend the due date of a specific voucher by providing the new date and feedback.
+  /// Constructs a query from the user inputs, encodes it to JSON, and sends it via the API.
+  /// Shows a success dialog if the operation succeeds, or an error dialog if it fails or encounters an exception.
+  /// Handles both server-side and client-side errors gracefully.
   dynamic add_Overdue(context, int voucherID, int index) async {
     try {
       Map<String, dynamic> query = {
@@ -50,6 +54,12 @@ mixin VoucherService {
     }
   }
 
+  /// Updates the payment details of a specific transaction within a voucher.
+  /// Extracts and formats the entire list of payment transactions for the voucher,
+  /// constructs a query payload including the current transaction ID and voucher ID,
+  /// and sends the data to the update transaction API endpoint.
+  /// Shows a success dialog if the update is successful,
+  /// or displays appropriate error dialogs in case of failure or exceptions.
   dynamic update_paymentDetails(context, int voucherIndex, int transactionIndex) async {
     try {
       final voucher = voucherController.voucherModel.voucher_list[voucherIndex];
@@ -89,6 +99,10 @@ mixin VoucherService {
     }
   }
 
+  /// Fetches the list of subscription customers from the API and updates the voucher model with the parsed customer data.
+  /// If the API response is successful and valid, maps the received data into a list of `CustomerInfo` objects.
+  /// Logs errors in debug mode if the response fails or an exception occurs.
+  /// Silent on UI feedback — this method is backend-only unless extended with dialogs.
   Future<void> Get_SUBcustomerList() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_ledgerSubscriptionCustomers);
@@ -119,6 +133,10 @@ mixin VoucherService {
     }
   }
 
+  /// Retrieves the list of sales customers from the API and updates the voucher model with the parsed customer data.
+  /// If the response is successful and valid, maps each item into a `CustomerInfo` object.
+  /// Errors are logged in debug mode for development visibility.
+  /// UI dialogs for errors are commented out, making this function backend-focused unless re-enabled.
   Future<void> Get_SALEScustomerList() async {
     try {
       Map<String, dynamic>? response = await apiController.GetbyToken(API.get_ledgerSalesCustomers);
@@ -148,6 +166,12 @@ mixin VoucherService {
     }
   }
 
+  /// Fetches the list of vouchers from the API based on the selected filter criteria such as voucher type, payment status,
+  /// invoice type, customer ID, and date range.
+  /// Filters out default values like 'Show All' and 'None' to avoid sending unnecessary parameters.
+  /// On successful response, parses the data and updates the voucher list in the model,
+  /// triggers the search functionality, and refreshes the UI.
+  /// Error handling and loader logic are present but commented out, indicating backend focus or future enhancement.
   Future<void> get_VoucherList() async {
     Map<String, dynamic>? response = await apiController.GetbyQueryString(
       {
@@ -188,6 +212,12 @@ mixin VoucherService {
     // loader.stop();
   }
 
+  /// Calculates a grouped summary of all vouchers selected via checkboxes.
+  /// Iterates through the checkbox list to find selected indices and maps them to actual vouchers.
+  /// Aggregates various financial totals including:
+  /// - Total pending amounts (with and without TDS),
+  /// - Subtotal, CGST, SGST, IGST, and TDS values.
+  /// Returns a `SelectedInvoiceVoucherGroup` object containing both the selected vouchers and computed totals.
   Future<SelectedInvoiceVoucherGroup> calculate_SelectedVouchers() async {
     List<int> selectedIndices = [];
     for (int i = 0; i < voucherController.voucherModel.checkboxValues.length; i++) {
@@ -214,6 +244,12 @@ mixin VoucherService {
     return group;
   }
 
+  /// Refreshes the voucher list and updates the UI by:
+  /// 1. Fetching the latest voucher data.
+  /// 2. Triggering a UI update using the controller.
+  /// 3. After the current frame, resets voucher filters, re-fetches the voucher list,
+  ///    and loads both subscription and sales customer lists.
+  /// Ensures fresh data and state after any significant action like adding or updating vouchers.
   Future<void> voucher_refresh() async {
     await get_VoucherList();
     voucherController.update();
@@ -270,6 +306,10 @@ mixin VoucherService {
   //     Error_dialog(context: context, title: "ERROR", content: "$e");
   //   }
   // }
+
+  /// Updates the checkbox selection state for a specific voucher at the given index.
+  /// Checks if any checkbox is selected to determine the visibility of the delete button.
+  /// Triggers a UI update through the controller after modifying the selection state.
   void update_checkboxValues(int index, bool value) {
     voucherController.voucherModel.checkboxValues[index] = value;
     if (voucherController.voucherModel.checkboxValues.contains(true)) {
@@ -281,6 +321,14 @@ mixin VoucherService {
     voucherController.update();
   }
 
+  /// Clears a group of selected vouchers by preparing and sending their consolidated payment data to the server.
+  /// Gathers all relevant details like voucher IDs, amounts, invoice numbers, customer info, and tax breakdowns.
+  /// Builds a structured map (`main_map`) that includes transaction details, payment mode, TDS status,
+  /// and total amount to be paid. Also supports uploading attachments such as files or receipts.
+  /// Sends the data using a multipart request via the API and handles the server response:
+  /// - On success: displays a success dialog and closes the popup.
+  /// - On failure: shows an error dialog or server down message.
+  /// Ensures proper cleanup with loader control and triggers a data refresh after completion.
   dynamic clear_ClubVoucher(context, SelectedInvoiceVoucherGroup selectedVouchers, File? file, File receipt) async {
     try {
       List<Map<String, dynamic>> consolidateJSON = [];
@@ -372,6 +420,16 @@ mixin VoucherService {
     }
   }
 
+  /// Processes and clears a single voucher by sending its payment and invoice details to the server.
+  /// Constructs a data map containing voucher metadata such as tax amounts, paid amount, invoice and client info,
+  /// and payment-related details like mode, feedback, and transaction notes.
+  /// Wraps the data into a `ClearVoucher` model and sends it using a multipart request,
+  /// along with optional file attachments (e.g., receipts).
+  /// Handles the response:
+  /// - On success: shows a success dialog and closes the popup.
+  /// - On failure: displays an error message or server issue alert.
+  /// Ensures loader visibility is correctly managed during the request lifecycle and
+  /// triggers a full data refresh after completion.
   dynamic clearVoucher(context, int index, File? file, String VoucherType, File receipt) async {
     try {
       loader.start(context);
@@ -430,6 +488,12 @@ mixin VoucherService {
     }
   }
 
+  /// Filters the voucher list based on a search query that matches client name, voucher number, invoice number,
+  /// invoice type, or GST number (case-insensitive).
+  /// If the query is empty, restores the original unfiltered list from the parent list.
+  /// After filtering, it resets all checkbox selections, visibility flags, and input controllers
+  /// for due date and feedback fields to match the new list length.
+  /// Also disables the "select all" and "delete" button states to avoid unintended actions post-filtering.
   Future<void> search(String query) async {
     try {
       if (query.isEmpty) {
@@ -462,12 +526,18 @@ mixin VoucherService {
     }
   }
 
+  /// Determines the visibility of the "Extend" button for a specific voucher row based on input fields.
+  /// The button is shown only if both the due date and feedback text fields are filled.
+  /// Triggers a refresh to update the UI immediately after evaluating the condition.
   void isExtendButton_visibile(int index) {
     voucherController.voucherModel.isExtendButton_visible[index] =
         voucherController.voucherModel.extendDueDateControllers[index].value.text != '' && voucherController.voucherModel.extendDueFeedbackControllers[index].value.text != '';
     voucherController.voucherModel.isExtendButton_visible.refresh();
   }
 
+  /// Opens a themed date picker dialog to allow the user to select a date within the next 1 year from today.
+  /// Once a date is picked, it is formatted as `YYYY-MM-DD` and assigned to the provided [controller].
+  /// Applies a custom color scheme and rounded dialog style for visual consistency with the app's theme.
   Future<void> selectfilterDate(BuildContext context, TextEditingController controller) async {
     final DateTime now = DateTime.now();
     final DateTime nextYear = now.add(const Duration(days: 365)); // Limit to next year
@@ -510,6 +580,9 @@ mixin VoucherService {
     }
   }
 
+  /// Opens a file picker dialog allowing the user to select a PDF file only.
+  /// If a file is selected, it stores the file reference and its name into the voucher model.
+  /// This selected file can then be used for upload, preview, or further processing as required.
   Future<void> pickFile() async {
     // Open file picker and select a file
     FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['pdf'], lockParentWindow: true);

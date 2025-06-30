@@ -6,6 +6,7 @@ import 'package:ssipl_billing/4_SALES/models/constants/Sales_constants.dart';
 import 'package:ssipl_billing/4_SALES/models/entities/Sales_entities.dart';
 import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/API/invoker.dart';
+
 import '../../COMPONENTS-/Response_entities.dart';
 
 /// A GetX controller for managing sales-related data and actions.
@@ -146,7 +147,28 @@ class SalesController extends GetxController {
     }
   }
 
-  /// Filters the custom PDF list based on the search query.
+  /// Filters the `customPdfList` based on a search query.
+  ///
+  /// This function takes a `query` string and filters the list of custom PDF
+  /// documents displayed to the user. The search is case-insensitive and
+  /// applies to the date, customer address name, customer address, and generated ID.
+  ///
+  /// **Logic Flow:**
+  /// - **If `query` is empty:**
+  ///   - The `salesModel.customPdfList` is reset to contain all items from
+  ///     `salesfilteredModel.customPdfList`. This effectively clears any
+  ///     active filter and shows the complete list.
+  /// - **If `query` is not empty:**
+  ///   - It filters `salesfilteredModel.customPdfList` (which is presumed
+  ///     to hold the complete, unfiltered data).
+  ///   - A `process` item is included in the `filteredList` if its `date`,
+  ///     `customerAddressName`, `customerAddress`, or `genId` contains the
+  ///     `query` string (case-insensitive).
+  ///   - The `salesModel.customPdfList` is then updated to display only these
+  ///     `filteredList` items, reflecting the search results in the UI.
+  ///
+  /// @param query The search string used to filter the custom PDF list. An empty
+  ///              string will reset the list to its full, unfiltered state.
   void search_CustomPDF(String query) {
     // salesModel.searchQuery.value = query;
 

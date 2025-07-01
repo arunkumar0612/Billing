@@ -15,7 +15,8 @@ class SubscriptionController extends GetxController {
   }
 
   void add_GlobalPackage(CMDlResponse value) {
-    subscriptionModel.GlobalPackage.value = Global_package.fromCMDlResponse(value);
+    subscriptionModel.GlobalPackage.value =
+        Global_package.fromCMDlResponse(value);
   }
 
   Future<void> custom_PDFfileApiData(CMDmResponse value) async {
@@ -32,25 +33,31 @@ class SubscriptionController extends GetxController {
 
   void addToProcesscustomerList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
-      subscriptionModel.processcustomerList.add(Processcustomer.fromJson(value, i));
+      subscriptionModel.processcustomerList
+          .add(Processcustomer.fromJson(value, i));
     }
-    subscriptionfilteredModel.processcustomerList.assignAll(subscriptionModel.processcustomerList);
+    subscriptionfilteredModel.processcustomerList
+        .assignAll(subscriptionModel.processcustomerList);
     // print('object');
   }
 
   void addToRecurredcustomerList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
-      subscriptionModel.recurredcustomerList.add(Recurredcustomer.fromJson(value, i));
+      subscriptionModel.recurredcustomerList
+          .add(Recurredcustomer.fromJson(value, i));
     }
-    subscriptionfilteredModel.recurredcustomerList.assignAll(subscriptionModel.recurredcustomerList);
+    subscriptionfilteredModel.recurredcustomerList
+        .assignAll(subscriptionModel.recurredcustomerList);
     // print('object');
   }
 
   void addTo_ApprovalQueue_customerList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
-      subscriptionModel.ApprovalQueue_customerList.add(ApprovalQueue_customer.fromJson(value, i));
+      subscriptionModel.ApprovalQueue_customerList.add(
+          ApprovalQueue_customer.fromJson(value, i));
     }
-    subscriptionfilteredModel.ApprovalQueue_customerList.assignAll(subscriptionModel.ApprovalQueue_customerList);
+    subscriptionfilteredModel.ApprovalQueue_customerList.assignAll(
+        subscriptionModel.ApprovalQueue_customerList);
     // print('object');
   }
 
@@ -58,7 +65,8 @@ class SubscriptionController extends GetxController {
     for (int i = 0; i < value.data.length; i++) {
       subscriptionModel.processList.add(Process.fromJson(value, i));
     }
-    subscriptionfilteredModel.processList.assignAll(subscriptionModel.processList);
+    subscriptionfilteredModel.processList
+        .assignAll(subscriptionModel.processList);
   }
 
   void updatecustomerId(int value) {
@@ -87,12 +95,19 @@ class SubscriptionController extends GetxController {
   //   subscriptionModel.pdfFile.value = value;
   // }
 
-  void updateisAllSelected(bool value) {
-    subscriptionModel.isAllSelected.value = value;
+  void updateApprovalQueue_isAllSelected(bool value) {
+    subscriptionModel.ApprovalQueue_isAllSelected.value = value;
+  }
+  void updateProcess_isAllSelected(bool value) {
+    subscriptionModel.Process_isAllSelected.value = value;
   }
 
-  void updateselectedIndices(List<int> value) {
-    subscriptionModel.selectedIndices.value = value;
+  void updateProcess_selecteIndices(List<int> value) {
+    subscriptionModel.Process_selecteIndices.value = value;
+  }
+
+  void updateApprovalQueue_selectedIndices(List<int> value) {
+    subscriptionModel.ApprovalQueue_selectedIndices.value = value;
   }
 
   void updatetype(int value) {
@@ -107,50 +122,90 @@ class SubscriptionController extends GetxController {
     subscriptionModel.searchQuery.value = query;
 
     if (query.isEmpty) {
-      subscriptionModel.processList.assignAll(subscriptionfilteredModel.processList);
-      subscriptionModel.reccuringInvoice_list.assignAll(subscriptionfilteredModel.reccuringInvoice_list);
-      subscriptionModel.ApprovalQueue_list.assignAll(subscriptionfilteredModel.ApprovalQueue_list);
+      subscriptionModel.processList
+          .assignAll(subscriptionfilteredModel.processList);
+      subscriptionModel.reccuringInvoice_list
+          .assignAll(subscriptionfilteredModel.reccuringInvoice_list);
+      subscriptionModel.ApprovalQueue_list.assignAll(
+          subscriptionfilteredModel.ApprovalQueue_list);
 
-      subscriptionModel.processcustomerList.assignAll(subscriptionfilteredModel.processcustomerList);
-      subscriptionModel.recurredcustomerList.assignAll(subscriptionfilteredModel.recurredcustomerList);
-      subscriptionModel.ApprovalQueue_customerList.assignAll(subscriptionfilteredModel.ApprovalQueue_customerList);
+      subscriptionModel.processcustomerList
+          .assignAll(subscriptionfilteredModel.processcustomerList);
+      subscriptionModel.recurredcustomerList
+          .assignAll(subscriptionfilteredModel.recurredcustomerList);
+      subscriptionModel.ApprovalQueue_customerList.assignAll(
+          subscriptionfilteredModel.ApprovalQueue_customerList);
     } else {
-      var filteredProcesses = subscriptionfilteredModel.processList.where((process) =>
-          process.title.toLowerCase().contains(query.toLowerCase()) ||
-          process.customer_name.toLowerCase().contains(query.toLowerCase()) ||
-          process.Process_date.toLowerCase().contains(query.toLowerCase()));
+      var filteredProcesses = subscriptionfilteredModel.processList.where(
+          (process) =>
+              process.title.toLowerCase().contains(query.toLowerCase()) ||
+              process.customer_name
+                  .toLowerCase()
+                  .contains(query.toLowerCase()) ||
+              process.Process_date.toLowerCase().contains(query.toLowerCase()));
 
-      var filteredCustomers = subscriptionfilteredModel.processcustomerList.where((customer) =>
-          customer.customerName.toLowerCase().contains(query.toLowerCase()) ||
-          customer.customer_phoneno.toLowerCase().contains(query.toLowerCase()) ||
-          customer.customer_gstno.toLowerCase().contains(query.toLowerCase()));
+      var filteredCustomers = subscriptionfilteredModel.processcustomerList
+          .where((customer) =>
+              customer.customerName
+                  .toLowerCase()
+                  .contains(query.toLowerCase()) ||
+              customer.customer_phoneno
+                  .toLowerCase()
+                  .contains(query.toLowerCase()) ||
+              customer.customer_gstno
+                  .toLowerCase()
+                  .contains(query.toLowerCase()));
 
-      var filteredRecurred_invoices = subscriptionfilteredModel.reccuringInvoice_list.where((recurred) =>
-          recurred.date.toLowerCase().contains(query.toLowerCase()) ||
-          recurred.clientAddressName.toLowerCase().contains(query.toLowerCase()) ||
-          recurred.date.toLowerCase().contains(query.toLowerCase()) ||
-          recurred.invoiceNo.toLowerCase().contains(query.toLowerCase()));
+      var filteredRecurred_invoices =
+          subscriptionfilteredModel.reccuringInvoice_list.where((recurred) =>
+              recurred.date.toLowerCase().contains(query.toLowerCase()) ||
+              recurred.clientAddressName
+                  .toLowerCase()
+                  .contains(query.toLowerCase()) ||
+              recurred.date.toLowerCase().contains(query.toLowerCase()) ||
+              recurred.invoiceNo.toLowerCase().contains(query.toLowerCase()));
 
-      var filteredQueue_invoices = subscriptionfilteredModel.ApprovalQueue_list.where((queue) =>
-          queue.billDate.toLowerCase().contains(query.toLowerCase()) ||
-          queue.clientAddressName.toLowerCase().contains(query.toLowerCase()) ||
-          queue.invoiceNumber.toLowerCase().contains(query.toLowerCase()));
+      var filteredQueue_invoices =
+          subscriptionfilteredModel.ApprovalQueue_list.where((queue) =>
+              queue.billDate.toLowerCase().contains(query.toLowerCase()) ||
+              queue.clientAddressName
+                  .toLowerCase()
+                  .contains(query.toLowerCase()) ||
+              queue.invoiceNumber.toLowerCase().contains(query.toLowerCase()));
 
-      var filteredRecurred_clients = subscriptionfilteredModel.recurredcustomerList.where((customer) =>
-          customer.customerName.toLowerCase().contains(query.toLowerCase()) ||
-          customer.customer_phoneno.toLowerCase().contains(query.toLowerCase()) ||
-          customer.customer_gstno.toLowerCase().contains(query.toLowerCase()));
+      var filteredRecurred_clients =
+          subscriptionfilteredModel.recurredcustomerList.where((customer) =>
+              customer.customerName
+                  .toLowerCase()
+                  .contains(query.toLowerCase()) ||
+              customer.customer_phoneno
+                  .toLowerCase()
+                  .contains(query.toLowerCase()) ||
+              customer.customer_gstno
+                  .toLowerCase()
+                  .contains(query.toLowerCase()));
 
-      var filteredQueue_clients = subscriptionfilteredModel.ApprovalQueue_customerList.where((customer) =>
-          customer.customerName.toLowerCase().contains(query.toLowerCase()) ||
-          customer.customer_phoneno.toLowerCase().contains(query.toLowerCase()) ||
-          customer.customer_gstno.toLowerCase().contains(query.toLowerCase()));
+      var filteredQueue_clients =
+          subscriptionfilteredModel.ApprovalQueue_customerList.where(
+              (customer) =>
+                  customer.customerName
+                      .toLowerCase()
+                      .contains(query.toLowerCase()) ||
+                  customer.customer_phoneno
+                      .toLowerCase()
+                      .contains(query.toLowerCase()) ||
+                  customer.customer_gstno
+                      .toLowerCase()
+                      .contains(query.toLowerCase()));
 
-      subscriptionModel.reccuringInvoice_list.assignAll(filteredRecurred_invoices);
-      subscriptionModel.recurredcustomerList.assignAll(filteredRecurred_clients);
+      subscriptionModel.reccuringInvoice_list
+          .assignAll(filteredRecurred_invoices);
+      subscriptionModel.recurredcustomerList
+          .assignAll(filteredRecurred_clients);
 
       subscriptionModel.ApprovalQueue_list.assignAll(filteredQueue_invoices);
-      subscriptionModel.ApprovalQueue_customerList.assignAll(filteredQueue_clients);
+      subscriptionModel.ApprovalQueue_customerList.assignAll(
+          filteredQueue_clients);
 
       subscriptionModel.processList.assignAll(filteredProcesses);
       subscriptionModel.processcustomerList.assignAll(filteredCustomers);
@@ -173,8 +228,10 @@ class SubscriptionController extends GetxController {
     subscriptionModel.customPdfList.clear();
     subscriptionfilteredModel.customPdfList.clear();
     for (int i = 0; i < value.data.length; i++) {
-      subscriptionModel.customPdfList.add(CustomerPDF_List.fromJson(value.data[i]));
-      subscriptionfilteredModel.customPdfList.add(CustomerPDF_List.fromJson(value.data[i]));
+      subscriptionModel.customPdfList
+          .add(CustomerPDF_List.fromJson(value.data[i]));
+      subscriptionfilteredModel.customPdfList
+          .add(CustomerPDF_List.fromJson(value.data[i]));
     }
   }
 
@@ -182,8 +239,10 @@ class SubscriptionController extends GetxController {
     subscriptionModel.reccuringInvoice_list.clear();
     subscriptionfilteredModel.reccuringInvoice_list.clear();
     for (int i = 0; i < value.data.length; i++) {
-      subscriptionModel.reccuringInvoice_list.add(RecurringInvoice_List.fromJson(value.data[i]));
-      subscriptionfilteredModel.reccuringInvoice_list.add(RecurringInvoice_List.fromJson(value.data[i]));
+      subscriptionModel.reccuringInvoice_list
+          .add(RecurringInvoice_List.fromJson(value.data[i]));
+      subscriptionfilteredModel.reccuringInvoice_list
+          .add(RecurringInvoice_List.fromJson(value.data[i]));
     }
   }
 
@@ -191,8 +250,10 @@ class SubscriptionController extends GetxController {
     subscriptionModel.ApprovalQueue_list.clear();
     subscriptionfilteredModel.ApprovalQueue_list.clear();
     for (int i = 0; i < value.data.length; i++) {
-      subscriptionModel.ApprovalQueue_list.add(ApprovalQueueInvoice_List.fromJson(value.data[i]));
-      subscriptionfilteredModel.ApprovalQueue_list.add(ApprovalQueueInvoice_List.fromJson(value.data[i]));
+      subscriptionModel.ApprovalQueue_list.add(
+          ApprovalQueueInvoice_List.fromJson(value.data[i]));
+      subscriptionfilteredModel.ApprovalQueue_list.add(
+          ApprovalQueueInvoice_List.fromJson(value.data[i]));
     }
   }
 
@@ -209,12 +270,18 @@ class SubscriptionController extends GetxController {
     // salesModel.searchQuery.value = query;
 
     if (query.isEmpty) {
-      subscriptionModel.customPdfList.assignAll(subscriptionfilteredModel.customPdfList);
+      subscriptionModel.customPdfList
+          .assignAll(subscriptionfilteredModel.customPdfList);
     } else {
-      var filteredList = subscriptionfilteredModel.customPdfList.where((process) =>
-          process.customerAddressName.toLowerCase().contains(query.toLowerCase()) ||
-          process.customerAddress.toLowerCase().contains(query.toLowerCase()) ||
-          process.genId.toLowerCase().contains(query.toLowerCase()));
+      var filteredList = subscriptionfilteredModel.customPdfList.where(
+          (process) =>
+              process.customerAddressName
+                  .toLowerCase()
+                  .contains(query.toLowerCase()) ||
+              process.customerAddress
+                  .toLowerCase()
+                  .contains(query.toLowerCase()) ||
+              process.genId.toLowerCase().contains(query.toLowerCase()));
 
       subscriptionModel.customPdfList.assignAll(filteredList);
     }
@@ -232,8 +299,14 @@ class SubscriptionController extends GetxController {
     }
 
     subscriptionModel.isSearchingPackages.value = true;
-    subscriptionModel.filteredPackages.value =
-        subscriptionModel.GlobalPackage.value.globalPackageList.where((package) => package.subscriptionName?.toLowerCase().contains(query.toLowerCase()) ?? false).toList();
+    subscriptionModel.filteredPackages.value = subscriptionModel
+        .GlobalPackage.value.globalPackageList
+        .where((package) =>
+            package.subscriptionName
+                ?.toLowerCase()
+                .contains(query.toLowerCase()) ??
+            false)
+        .toList();
   }
 
   void reset_packageData() {
@@ -267,13 +340,16 @@ class SubscriptionController extends GetxController {
     subscriptionModel.recurredcustomerList.clear();
     subscriptionModel.processcustomerList.clear();
     subscriptionModel.companyList.value = CompanyResponse(companyList: []);
-    subscriptionModel.GlobalPackage.value = Global_package(globalPackageList: []);
+    subscriptionModel.GlobalPackage.value =
+        Global_package(globalPackageList: []);
     subscriptionModel.processList.clear();
     subscriptionModel.showcustomerprocess.value = null;
     subscriptionModel.customerId.value = null;
     subscriptionModel.pdfFile.value = null;
-    subscriptionModel.selectedIndices.clear();
-    subscriptionModel.isAllSelected.value = false;
+    subscriptionModel.Process_selecteIndices.clear();
+    subscriptionModel.ApprovalQueue_selectedIndices.clear();
+    subscriptionModel.ApprovalQueue_isAllSelected.value = false;
+    subscriptionModel.Process_isAllSelected.value = false;
     subscriptionModel.type.value = 0;
     subscriptionModel.isprofilepage.value = false;
     subscriptionModel.searchQuery.value = '';

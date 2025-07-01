@@ -17,8 +17,10 @@ class SubscriptionModel extends GetxController with GetSingleTickerProviderState
   final pdfFile = Rxn<File>();
   final custom_pdfFile = Rxn<File>();
   // final pdfFile = Rxn<File>();
-  final selectedIndices = <int>[].obs;
-  final RxBool isAllSelected = false.obs;
+  final ApprovalQueue_selectedIndices = <int>[].obs;
+    final Process_selecteIndices = <int>[].obs;
+  final RxBool ApprovalQueue_isAllSelected = false.obs;
+    final RxBool Process_isAllSelected = false.obs;
   final type = 0.obs;
   final RxBool isprofilepage = false.obs;
   // var searchQuery = ''.obs;

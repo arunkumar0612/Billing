@@ -82,7 +82,7 @@ class _ViewLedgerState extends State<ViewLedger> {
                         Obx(() => Text(
                               view_LedgerController.view_LedgerModel.selectedLedgerType.value,
                               style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text10),
-                            )),
+                            ),),
                         Expanded(
                           child: Container(
                             height: 50,

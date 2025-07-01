@@ -96,7 +96,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
         useMaterial3: false,
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Primary_colors.Color3,
-          selectionColor: Color.fromARGB(255, 130, 223, 230),
+          selectionColor: Color.fromARGB(255, 103, 105, 105),
         ),
         scrollbarTheme: ScrollbarThemeData(
           trackColor: WidgetStateProperty.all(

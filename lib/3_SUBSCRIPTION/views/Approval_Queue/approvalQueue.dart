@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, unrelated_type_equality_checks
 
 import 'dart:io';
 
@@ -13,6 +13,7 @@ import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/downloadPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/sharePDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/showPDF.dart';
+import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
@@ -28,6 +29,7 @@ class _ApprovalQueueState extends State<ApprovalQueue> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Obx(
       () {
         return Row(
@@ -39,6 +41,41 @@ class _ApprovalQueueState extends State<ApprovalQueue> {
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
+                    SizedBox(
+                      height: 30,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            subscriptionController.subscriptionModel.searchQuery.value.isNotEmpty
+                                ? 'Found: ${subscriptionController.subscriptionModel.ApprovalQueue_list.length} Invoices | Selected: ${subscriptionController.subscriptionModel.ApprovalQueue_selectedIndices.length}'
+                                : 'Total: ${subscriptionController.subscriptionModel.ApprovalQueue_list.length} Invoices | Selected: ${subscriptionController.subscriptionModel.ApprovalQueue_selectedIndices.length}',
+                            style: theme.textTheme.bodyLarge
+                                ?.copyWith(color: Colors.white, fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text8, letterSpacing: 1.0, overflow: TextOverflow.ellipsis),
+                          ),
+                          if (subscriptionController.subscriptionModel.ApprovalQueue_selectedIndices.isNotEmpty)
+                            BasicButton(
+                              text: 'Send',
+                              colors: Colors.blue,
+                              onPressed: () {
+                                Warning_dialog(
+                                  context: context,
+                                  title: 'Confirmation',
+                                  content: 'Are you sure want to send the invoice',
+                                  onOk: () {
+                                    widget.mailByGroup();
+                                  },
+                                );
+
+                                // widget.mailByGroup();
+                              },
+                            ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Container(
                       height: 40,
                       decoration: BoxDecoration(
@@ -55,13 +92,13 @@ class _ApprovalQueueState extends State<ApprovalQueue> {
                           children: [
                             Obx(
                               () => Checkbox(
-                                value: subscriptionController.subscriptionModel.isAllSelected.value,
+                                value: subscriptionController.subscriptionModel.ApprovalQueue_isAllSelected.value,
                                 onChanged: (bool? value) {
-                                  subscriptionController.subscriptionModel.isAllSelected.value = value ?? false;
-                                  if (subscriptionController.subscriptionModel.isAllSelected.value) {
-                                    subscriptionController.updateselectedIndices(List.generate(subscriptionController.subscriptionModel.ApprovalQueue_list.length, (index) => index));
+                                  subscriptionController.subscriptionModel.ApprovalQueue_isAllSelected.value = value ?? false;
+                                  if (subscriptionController.subscriptionModel.ApprovalQueue_isAllSelected.value) {
+                                    subscriptionController.updateApprovalQueue_selectedIndices(List.generate(subscriptionController.subscriptionModel.ApprovalQueue_list.length, (index) => index));
                                   } else {
-                                    subscriptionController.subscriptionModel.selectedIndices.clear();
+                                    subscriptionController.subscriptionModel.ApprovalQueue_selectedIndices.clear();
                                   }
                                 },
                                 activeColor: Colors.white, // More vibrant color
@@ -113,7 +150,7 @@ class _ApprovalQueueState extends State<ApprovalQueue> {
                             ),
                             SizedBox(width: 5),
                             Expanded(
-                              flex: 1,
+                              flex: 2,
                               child: Text(
                                 textAlign: TextAlign.right,
                                 'Amount',
@@ -128,26 +165,35 @@ class _ApprovalQueueState extends State<ApprovalQueue> {
                             //     style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
                             //   ),
                             // ),
+                            // Expanded(
+                            //   flex: 2,
+                            //   child: Text(
+                            //     textAlign: TextAlign.center,
+                            //     'View',
+                            //     style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+                            //   ),
+                            // ),
+                            // Expanded(
+                            //   flex: 1,
+                            //   child: Text(
+                            //     'Share',
+                            //     style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+                            //   ),
+                            // ),
+                            // Expanded(
+                            //   flex: 1,
+                            //   child: Text(
+                            //     'Download',
+                            //     style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+                            //   ),
+                            // ),
                             Expanded(
                               flex: 2,
-                              child: Text(
-                                textAlign: TextAlign.center,
-                                'View',
-                                style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                'Share',
-                                style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                'Download',
-                                style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+                              child: Center(
+                                child: Text(
+                                  'Action',
+                                  style: TextStyle(color: Primary_colors.Color1, fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text7),
+                                ),
                               ),
                             )
                           ],
@@ -179,14 +225,14 @@ class _ApprovalQueueState extends State<ApprovalQueue> {
                                           children: [
                                             Obx(
                                               () => Checkbox(
-                                                value: subscriptionController.subscriptionModel.selectedIndices.contains(index),
+                                                value: subscriptionController.subscriptionModel.ApprovalQueue_selectedIndices.contains(index),
                                                 onChanged: (bool? value) {
                                                   if (value == true) {
-                                                    subscriptionController.subscriptionModel.selectedIndices.add(index);
+                                                    subscriptionController.subscriptionModel.ApprovalQueue_selectedIndices.add(index);
                                                   } else {
-                                                    subscriptionController.subscriptionModel.selectedIndices.remove(index);
-                                                    subscriptionController.updateisAllSelected(
-                                                        subscriptionController.subscriptionModel.selectedIndices.length == subscriptionController.subscriptionModel.ApprovalQueue_list.length);
+                                                    subscriptionController.subscriptionModel.ApprovalQueue_selectedIndices.remove(index);
+                                                    subscriptionController.updateApprovalQueue_isAllSelected(subscriptionController.subscriptionModel.ApprovalQueue_selectedIndices.length ==
+                                                        subscriptionController.subscriptionModel.ApprovalQueue_list.length);
                                                   }
                                                 },
                                                 activeColor: Primary_colors.Color3, // More vibrant color
@@ -240,7 +286,7 @@ class _ApprovalQueueState extends State<ApprovalQueue> {
                                             ),
                                             const SizedBox(width: 5),
                                             Expanded(
-                                              flex: 1,
+                                              flex: 2,
                                               child: Text(
                                                 formatCurrency(double.parse(subscriptionController.subscriptionModel.ApprovalQueue_list[index].totalAmount.toString())),
                                                 style: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
@@ -249,83 +295,201 @@ class _ApprovalQueueState extends State<ApprovalQueue> {
                                             ),
                                             const SizedBox(width: 5),
 
-                                            Expanded(
-                                              flex: 2,
-                                              child: MouseRegion(
-                                                cursor: SystemMouseCursors.click,
-                                                child: GestureDetector(
-                                                    onTap: () async {
-                                                      bool success = await widget.Get_approvalPDFfile(
-                                                        context,
-                                                        subscriptionController.subscriptionModel.ApprovalQueue_list[index].recurredBillId,
-                                                      );
-                                                      if (success) {
-                                                        File? file = subscriptionController.subscriptionModel.pdfFile.value;
-                                                        showPDF(context, subscriptionController.subscriptionModel.ApprovalQueue_list[index].invoiceNumber, file);
-                                                      }
-                                                    },
-                                                    child: Image.asset(height: 30, 'assets/images/pdfdownload.png')),
-                                              ),
-                                            ),
-                                            // ,
-                                            Expanded(
-                                              flex: 1,
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: MouseRegion(
-                                                  cursor: SystemMouseCursors.click,
-                                                  child: GestureDetector(
-                                                    onTap: () async {
-                                                      bool success = await widget.Get_approvalPDFfile(
-                                                        context,
-                                                        subscriptionController.subscriptionModel.ApprovalQueue_list[index].recurredBillId,
-                                                      );
+                                            // Expanded(
+                                            //   flex: 2,
+                                            //   child: MouseRegion(
+                                            //     cursor: SystemMouseCursors.click,
+                                            //     child: GestureDetector(
+                                            //         onTap: () async {
+                                            //           bool success = await widget.Get_approvalPDFfile(
+                                            //             context,
+                                            //             subscriptionController.subscriptionModel.ApprovalQueue_list[index].recurredBillId,
+                                            //           );
+                                            //           if (success) {
+                                            //             File? file = subscriptionController.subscriptionModel.pdfFile.value;
+                                            //             showPDF(context, subscriptionController.subscriptionModel.ApprovalQueue_list[index].invoiceNumber, file);
+                                            //           }
+                                            //         },
+                                            //         child: Image.asset(height: 30, 'assets/images/pdfdownload.png')),
+                                            //   ),
+                                            // ),
+                                            // // ,
+                                            // Expanded(
+                                            //   flex: 1,
+                                            //   child: Align(
+                                            //     alignment: Alignment.centerLeft,
+                                            //     child: MouseRegion(
+                                            //       cursor: SystemMouseCursors.click,
+                                            //       child: GestureDetector(
+                                            //         onTap: () async {
+                                            //           bool success = await widget.Get_approvalPDFfile(
+                                            //             context,
+                                            //             subscriptionController.subscriptionModel.ApprovalQueue_list[index].recurredBillId,
+                                            //           );
 
-                                                      if (success) {
-                                                        File? file = subscriptionController.subscriptionModel.pdfFile.value;
-                                                        shareAnyPDF(
-                                                            context,
-                                                            path
-                                                                .basename(subscriptionController.subscriptionModel.ApprovalQueue_list[index].invoiceNumber)
-                                                                .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
-                                                                .replaceAll(" ", ""),
-                                                            file!);
-                                                      }
-                                                    },
-                                                    child: Image.asset(height: 22, 'assets/images/share.png'),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              flex: 1,
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: MouseRegion(
-                                                  cursor: SystemMouseCursors.click,
-                                                  child: GestureDetector(
-                                                    onTap: () async {
-                                                      bool success = await widget.Get_approvalPDFfile(context, subscriptionController.subscriptionModel.ApprovalQueue_list[index].recurredBillId);
+                                            //           if (success) {
+                                            //             File? file = subscriptionController.subscriptionModel.pdfFile.value;
+                                            //             shareAnyPDF(
+                                            //                 context,
+                                            //                 path
+                                            //                     .basename(subscriptionController.subscriptionModel.ApprovalQueue_list[index].invoiceNumber)
+                                            //                     .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
+                                            //                     .replaceAll(" ", ""),
+                                            //                 file!);
+                                            //           }
+                                            //         },
+                                            //         child: Image.asset(height: 22, 'assets/images/share.png'),
+                                            //       ),
+                                            //     ),
+                                            //   ),
+                                            // ),
+                                            // Expanded(
+                                            //   flex: 1,
+                                            //   child: Align(
+                                            //     alignment: Alignment.centerLeft,
+                                            //     child: MouseRegion(
+                                            //       cursor: SystemMouseCursors.click,
+                                            //       child: GestureDetector(
+                                            //         onTap: () async {
+                                            //           bool success = await widget.Get_approvalPDFfile(context, subscriptionController.subscriptionModel.ApprovalQueue_list[index].recurredBillId);
 
-                                                      if (success) {
-                                                        downloadPdf(
-                                                            context,
-                                                            subscriptionController.subscriptionModel.ApprovalQueue_list[index].invoiceNumber
-                                                                .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
-                                                                .replaceAll(" ", ""),
-                                                            subscriptionController.subscriptionModel.pdfFile.value);
-                                                      } else {
-                                                        Error_SnackBar(context, "ERROR downloading file, Please conatct administration!");
-                                                      }
-                                                    },
-                                                    child: Image.asset(height: 20, 'assets/images/download.png'),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
+                                            //           if (success) {
+                                            //             downloadPdf(
+                                            //                 context,
+                                            //                 subscriptionController.subscriptionModel.ApprovalQueue_list[index].invoiceNumber
+                                            //                     .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
+                                            //                     .replaceAll(" ", ""),
+                                            //                 subscriptionController.subscriptionModel.pdfFile.value);
+                                            //           } else {
+                                            //             Error_SnackBar(context, "ERROR downloading file, Please conatct administration!");
+                                            //           }
+                                            //         },
+                                            //         child: Image.asset(height: 20, 'assets/images/download.png'),
+                                            //       ),
+                                            //     ),
+                                            //   ),
+                                            // ),
                                             // const Expanded(flex: 2, child: Icon(Icons.keyboard_control)),
                                             // const Expanded(flex: 2, child: Icon(Icons.keyboard_control)),
                                             // const Expanded(flex: 2, child: Icon(Icons.keyboard_control))
+
+                                            Expanded(
+                                              flex: 2,
+                                              child: PopupMenuButton<String>(
+                                                icon: Icon(Icons.more_vert), // Optional: 3-dot icon
+                                                onSelected: (value) async {
+                                                  if (value == 'View') {
+                                                    bool success = await widget.Get_approvalPDFfile(
+                                                      context,
+                                                      subscriptionController.subscriptionModel.ApprovalQueue_list[index].recurredBillId,
+                                                    );
+                                                    if (success) {
+                                                      File? file = subscriptionController.subscriptionModel.pdfFile.value;
+                                                      showPDF(context, subscriptionController.subscriptionModel.ApprovalQueue_list[index].invoiceNumber, file);
+                                                    }
+                                                  } else if (value == 'Share') {
+                                                    bool success = await widget.Get_approvalPDFfile(
+                                                      context,
+                                                      subscriptionController.subscriptionModel.ApprovalQueue_list[index].recurredBillId,
+                                                    );
+
+                                                    if (success) {
+                                                      File? file = subscriptionController.subscriptionModel.pdfFile.value;
+                                                      shareAnyPDF(
+                                                          context,
+                                                          path
+                                                              .basename(subscriptionController.subscriptionModel.ApprovalQueue_list[index].invoiceNumber)
+                                                              .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
+                                                              .replaceAll(" ", ""),
+                                                          file!);
+                                                    }
+                                                  } else if (value == 'Download') {
+                                                    bool success = await widget.Get_approvalPDFfile(context, subscriptionController.subscriptionModel.ApprovalQueue_list[index].recurredBillId);
+
+                                                    if (success) {
+                                                      downloadPdf(
+                                                          context,
+                                                          subscriptionController.subscriptionModel.ApprovalQueue_list[index].invoiceNumber
+                                                              .replaceAll(RegExp(r'[\/\\:*?"<>|.]'), '') // Removes invalid symbols
+                                                              .replaceAll(" ", ""),
+                                                          subscriptionController.subscriptionModel.pdfFile.value);
+                                                    } else {
+                                                      Error_SnackBar(context, "ERROR downloading file, Please conatct administration!");
+                                                    }
+                                                  } else if (value == 'Send') {
+                                                    subscriptionController.subscriptionModel.ApprovalQueue_isAllSelected.value = false;
+                                                    subscriptionController.subscriptionModel.ApprovalQueue_selectedIndices.clear();
+                                                    subscriptionController.subscriptionModel.ApprovalQueue_selectedIndices.add(index);
+                                                    await widget.mailByGroup();
+                                                    subscriptionController.subscriptionModel.ApprovalQueue_selectedIndices.clear();
+
+                                                  
+                                                  } else {
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(content: Text('Selected: $value')),
+                                                    );
+                                                  }
+                                                },
+                                                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                                                  PopupMenuItem<String>(
+                                                    value: 'View',
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.visibility,
+                                                          color: Colors.blue,
+                                                          size: 20,
+                                                        ),
+                                                        SizedBox(width: 10),
+                                                        Text(
+                                                          'View',
+                                                          style: TextStyle(fontSize: 14),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  PopupMenuItem<String>(
+                                                    value: 'Share',
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(Icons.share, color: Colors.green, size: 20),
+                                                        SizedBox(width: 10),
+                                                        Text(
+                                                          'Share',
+                                                          style: TextStyle(fontSize: 14),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  PopupMenuItem<String>(
+                                                    value: 'Download',
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(Icons.download, color: Colors.orange, size: 20),
+                                                        SizedBox(width: 10),
+                                                        Text(
+                                                          'Download',
+                                                          style: TextStyle(fontSize: 14),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  PopupMenuItem<String>(
+                                                    value: 'Send',
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(Icons.send, color: Colors.purple, size: 20),
+                                                        SizedBox(width: 10),
+                                                        Text(
+                                                          'Send',
+                                                          style: TextStyle(fontSize: 14),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
                                           ],
                                         ),
                                       ),

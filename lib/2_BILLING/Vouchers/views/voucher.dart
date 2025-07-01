@@ -391,7 +391,7 @@ class _VoucherState extends State<Voucher> {
                                         label: 'Payment received Date',
                                         hint: 'Select Payment received date',
                                         icon: Icons.calendar_today,
-                                        onTap: () => select_nextDates(context, voucherController.voucherModel.closedDateController),
+                                        onTap: () => select_previousDates(context, voucherController.voucherModel.closedDateController),
                                       ),
                                       const SizedBox(height: 16),
                                       _buildEditableField(

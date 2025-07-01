@@ -559,8 +559,7 @@ mixin SubscriptionServices {
         CMResponse value = CMResponse.fromJson(response ?? {});
         if (value.code) {
           GetProcessList(customerid);
-          Success_SnackBar(context, "Feedback added successfully");
-          // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
+          Success_SnackBar(context, "Feedback added successfully"); // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
         } else {
           await Error_dialog(context: context, title: 'Feedback add Error', content: value.message ?? "", onOk: () {});
         }
@@ -611,7 +610,7 @@ mixin SubscriptionServices {
     if (response?['statusCode'] == 200) {
       CMResponse value = CMResponse.fromJson(response ?? {});
       if (value.code) {
-        subscriptionController.subscriptionModel.selectedIndices.clear();
+        subscriptionController.subscriptionModel.Process_selecteIndices.clear();
         GetProcessList(subscriptionController.subscriptionModel.customerId.value!);
         Success_SnackBar(context, "Process Deleted successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
@@ -631,7 +630,7 @@ mixin SubscriptionServices {
     if (response?['statusCode'] == 200) {
       CMResponse value = CMResponse.fromJson(response ?? {});
       if (value.code) {
-        subscriptionController.subscriptionModel.selectedIndices.clear();
+        subscriptionController.subscriptionModel.Process_selecteIndices.clear();
         GetProcessList(subscriptionController.subscriptionModel.customerId.value!);
         Success_SnackBar(context, type == 0 ? "Process Unarchived successfully" : "Process Archived successfully");
         // await Basic_dialog(context: context,showCancel: false, title: 'Feedback', content: "Feedback added successfully", onOk: () {});
@@ -1076,14 +1075,14 @@ mixin SubscriptionServices {
     }
   }
 
-  void mailByGroup() async {
+  Future<void> mailByGroup() async {
     Map<String, Map<String, List<Map<String, dynamic>>>> groupedByEmail = {};
     // ignore: unused_local_variable
     int count = 0;
     List<String> concatinatedMails = [];
     List<String> customerIds = [];
-    for (int i = 0; i < subscriptionController.subscriptionModel.selectedIndices.length; i++) {
-      final invoiceData = subscriptionController.subscriptionModel.ApprovalQueue_list[subscriptionController.subscriptionModel.selectedIndices[i]];
+    for (int i = 0; i < subscriptionController.subscriptionModel.ApprovalQueue_selectedIndices.length; i++) {
+      final invoiceData = subscriptionController.subscriptionModel.ApprovalQueue_list[subscriptionController.subscriptionModel.ApprovalQueue_selectedIndices[i]];
       // final contactDetails = site['contactdetails'] as Map<String, dynamic>?;
       // // print(site);
       // final customerDetails = site['customeraccountdetails'] as Map<String, dynamic>?;

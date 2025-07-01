@@ -24,7 +24,7 @@ import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/downloadPDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/sharePDF.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/showPDF.dart';
-import 'package:ssipl_billing/COMPONENTS-/button.dart';
+// import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/importXL.dart';
 import 'package:ssipl_billing/NOTIFICATION-/NotificationServices.dart';
 import 'package:ssipl_billing/NOTIFICATION-/Notification_actions.dart';
@@ -671,7 +671,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                     label: subscriptionController.subscriptionModel.type.value == 0 ? 'Archive List' : 'Main List',
                                                     color: Primary_colors.Color8,
                                                     onPressed: () {
-                                                      subscriptionController.subscriptionModel.selectedIndices.clear();
+                                                      subscriptionController.subscriptionModel.Process_selecteIndices.clear();
                                                       subscriptionController.updatetype(subscriptionController.subscriptionModel.type.value == 0 ? 1 : 0);
                                                       widget.GetProcessList(subscriptionController.subscriptionModel.customerId.value!);
                                                     },
@@ -886,12 +886,12 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                               ),
                             ),
                           ),
-                          BasicButton(
-                              text: 'Send',
-                              colors: Colors.blue,
-                              onPressed: () {
-                                widget.mailByGroup();
-                              }),
+                          // BasicButton(
+                          //     text: 'Send',
+                          //     colors: Colors.blue,
+                          //     onPressed: () {
+                          //       widget.mailByGroup();
+                          //     }),
                         ],
                       ),
                     ),
@@ -952,13 +952,13 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                             children: [
                               Text(
                                 subscriptionController.subscriptionModel.searchQuery.value.isNotEmpty
-                                    ? 'Found: ${subscriptionController.subscriptionModel.processList.length} Process | Selected: ${subscriptionController.subscriptionModel.selectedIndices.length}'
-                                    : 'Total: ${subscriptionController.subscriptionModel.processList.length} Process | Selected: ${subscriptionController.subscriptionModel.selectedIndices.length}',
+                                    ? 'Found: ${subscriptionController.subscriptionModel.processList.length} Process | Selected: ${subscriptionController.subscriptionModel.Process_selecteIndices.length}'
+                                    : 'Total: ${subscriptionController.subscriptionModel.processList.length} Process | Selected: ${subscriptionController.subscriptionModel.Process_selecteIndices.length}',
                                 style: theme.textTheme.bodyLarge
                                     ?.copyWith(color: Colors.white, fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text8, letterSpacing: 1.0, overflow: TextOverflow.ellipsis),
                               ),
                               const SizedBox(width: 10),
-                              if (subscriptionController.subscriptionModel.selectedIndices.isNotEmpty)
+                              if (subscriptionController.subscriptionModel.Process_selecteIndices.isNotEmpty)
                                 PopupMenuButton<String>(
                                   splashRadius: 20,
                                   padding: const EdgeInsets.all(0),
@@ -983,7 +983,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                           onOk: () {
                                             widget.ArchiveProcesscontrol(
                                               context,
-                                              subscriptionController.subscriptionModel.selectedIndices.map((index) => subscriptionController.subscriptionModel.processList[index].processid).toList(),
+                                              subscriptionController.subscriptionModel.Process_selecteIndices.map((index) => subscriptionController.subscriptionModel.processList[index].processid).toList(),
                                               1, // 1 for Archive, 0 for Unarchive
                                             );
                                           },
@@ -998,7 +998,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                           onOk: () {
                                             widget.ArchiveProcesscontrol(
                                               context,
-                                              subscriptionController.subscriptionModel.selectedIndices.map((index) => subscriptionController.subscriptionModel.processList[index].processid).toList(),
+                                              subscriptionController.subscriptionModel.Process_selecteIndices.map((index) => subscriptionController.subscriptionModel.processList[index].processid).toList(),
                                               0, // 1 for Archive, 0 for Unarchive
                                             );
                                           },
@@ -1021,7 +1021,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                           onOk: () {
                                             widget.DeleteProcess(
                                               context,
-                                              subscriptionController.subscriptionModel.selectedIndices.map((index) => subscriptionController.subscriptionModel.processList[index].processid).toList(),
+                                              subscriptionController.subscriptionModel.Process_selecteIndices.map((index) => subscriptionController.subscriptionModel.processList[index].processid).toList(),
                                             );
                                           },
                                         );
@@ -1084,13 +1084,13 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                       children: [
                         Obx(
                           () => Checkbox(
-                            value: subscriptionController.subscriptionModel.isAllSelected.value,
+                            value: subscriptionController.subscriptionModel.Process_isAllSelected.value,
                             onChanged: (bool? value) {
-                              subscriptionController.subscriptionModel.isAllSelected.value = value ?? false;
-                              if (subscriptionController.subscriptionModel.isAllSelected.value) {
-                                subscriptionController.updateselectedIndices(List.generate(subscriptionController.subscriptionModel.processList.length, (index) => index));
+                              subscriptionController.subscriptionModel.Process_isAllSelected.value = value ?? false;
+                              if (subscriptionController.subscriptionModel.Process_isAllSelected.value) {
+                                subscriptionController.updateProcess_selecteIndices(List.generate(subscriptionController.subscriptionModel.processList.length, (index) => index));
                               } else {
-                                subscriptionController.subscriptionModel.selectedIndices.clear();
+                                subscriptionController.subscriptionModel.Process_selecteIndices.clear();
                               }
                             },
                             activeColor: Colors.white, // More vibrant color
@@ -1160,14 +1160,14 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                         () => Row(
                                           children: [
                                             Checkbox(
-                                              value: subscriptionController.subscriptionModel.selectedIndices.contains(index),
+                                              value: subscriptionController.subscriptionModel.Process_selecteIndices.contains(index),
                                               onChanged: (bool? value) {
                                                 if (value == true) {
-                                                  subscriptionController.subscriptionModel.selectedIndices.add(index);
+                                                  subscriptionController.subscriptionModel.Process_selecteIndices.add(index);
                                                 } else {
-                                                  subscriptionController.subscriptionModel.selectedIndices.remove(index);
-                                                  subscriptionController.updateisAllSelected(
-                                                      subscriptionController.subscriptionModel.selectedIndices.length == subscriptionController.subscriptionModel.processList.length);
+                                                  subscriptionController.subscriptionModel.Process_selecteIndices.remove(index);
+                                                  subscriptionController.updateProcess_isAllSelected(
+                                                      subscriptionController.subscriptionModel.Process_selecteIndices.length == subscriptionController.subscriptionModel.processList.length);
                                                 }
                                               },
                                               activeColor: Primary_colors.Color3, // More vibrant color
@@ -1616,7 +1616,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                           padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
                                         ),
                                         onPressed: () {
-                                          subscriptionController.subscriptionModel.selectedIndices.clear();
+                                          subscriptionController.subscriptionModel.Process_selecteIndices.clear();
                                           subscriptionController.updatetype(subscriptionController.subscriptionModel.type.value == 0 ? 1 : 0);
                                           widget.GetProcessList(subscriptionController.subscriptionModel.customerId.value!);
                                         },

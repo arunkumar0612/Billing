@@ -1,7 +1,5 @@
 // ignore_for_file: deprecated_member_use
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -12,7 +10,6 @@ import 'package:lottie/lottie.dart';
 import 'package:ssipl_billing/7_HIERARCHY/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/7_HIERARCHY/views/ORG/Org_card.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
-import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/NOTIFICATION-/NotificationServices.dart';
 import 'package:ssipl_billing/NOTIFICATION-/Notification_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
@@ -550,8 +547,8 @@ class _VendorListPageState extends State<VendorListPage> with SingleTickerProvid
                                           const SizedBox(
                                             width: 430,
                                             child: Text(
-                                              textAlign: TextAlign.start,
-                                              "This section lists the links that have been sent to vendors for onboarding.\nEach entry displays the recipient’s name along with the delivery method, such as Email or WhatsApp.",
+                                              textAlign: TextAlign.center,
+                                              "This section lists the links that have been sent to vendors for onboarding.",
                                               style: TextStyle(
                                                 color: Primary_colors.Color9,
                                                 fontSize: Primary_font_size.Text6,

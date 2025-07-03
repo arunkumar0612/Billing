@@ -178,15 +178,15 @@ class CompanyResponse {
 
   /// Convert from CMDmResponse
   factory CompanyResponse.fromCMDmResponse(CMDmResponse response) {
-    var data = response.data['Live'][0];
+    // var data = response.data['Live'][0];
 
-    data.forEach((key, value) {
-      if (key != 'Customer_Logo') {
-        if (kDebugMode) {
-          print('$key: $value');
-        }
-      }
-    });
+    // data.forEach((key, value) {
+    //   if (key != 'Customer_Logo') {
+    //     if (kDebugMode) {
+    //       print('$key: $value');
+    //     }
+    //   }
+    // });
 
     return CompanyResponse.fromJson(response.data);
   }
@@ -309,15 +309,15 @@ class BranchResponse {
 
   factory BranchResponse.fromCMDmResponse(CMDmResponse response) {
     Map<String, dynamic> data = response.data;
-    var data1 = response.data['Live'][0];
+    // var data1 = response.data['Live'][0];
 
-    data1.forEach((key, value) {
-      if (key != 'Branch_Logo') {
-        if (kDebugMode) {
-          print('$key: $value');
-        }
-      }
-    });
+    // data1.forEach((key, value) {
+    //   if (key != 'Branch_Logo') {
+    //     if (kDebugMode) {
+    //       print('$key: $value');
+    //     }
+    //   }
+    // });
 
     return BranchResponse(
       Live: (data['Live'] as List?)?.map((e) => BranchsData.fromJson(e)).toList() ?? [],

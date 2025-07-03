@@ -21,7 +21,8 @@ class _OrganizationGridState extends State<OrganizationGrid> with SingleTickerPr
   @override
   void initState() {
     super.initState();
-    hierarchyController.hierarchyModel.Org_controller = AnimationController(
+    hierarchyController.reset_OrgComp();
+    hierarchyController.hierarchyModel.Org_Animecontroller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 600),
     );
@@ -30,18 +31,19 @@ class _OrganizationGridState extends State<OrganizationGrid> with SingleTickerPr
       begin: const Offset(0, 1.5),
       end: Offset.zero,
     ).animate(CurvedAnimation(
-      parent: hierarchyController.hierarchyModel.Org_controller,
+      parent: hierarchyController.hierarchyModel.Org_Animecontroller,
       curve: Curves.easeInCubic,
     ));
 
     Future.delayed(const Duration(milliseconds: 300), () {
-      if (mounted) hierarchyController.hierarchyModel.Org_controller.forward();
+      if (mounted) hierarchyController.hierarchyModel.Org_Animecontroller.forward();
     });
   }
 
   @override
   void dispose() {
-    hierarchyController.hierarchyModel.Org_controller.dispose(); // Dispose the animation controller
+    hierarchyController.reset_OrgComp();
+    hierarchyController.hierarchyModel.Org_Animecontroller.dispose(); // Dispose the animation controller
     super.dispose();
   }
 
@@ -79,7 +81,7 @@ class _OrganizationGridState extends State<OrganizationGrid> with SingleTickerPr
                         "LIVE",
                         style: TextStyle(fontSize: 15, color: Primary_colors.Color1),
                       ),
-                      initiallyExpanded: true,
+                      initiallyExpanded: false,
                       expansionAnimationStyle: AnimationStyle(duration: const Duration(milliseconds: 500)),
                       children: [
                         hierarchyController.hierarchyModel.OrganizationList.value.Live.isNotEmpty

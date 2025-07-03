@@ -33,12 +33,14 @@ mixin HierarchyService {
           hierarchyController.search(hierarchyController.hierarchyModel.searchQuery.value);
           // print(hierarchyController.hierarchyModel.OrganizationList.value.Live [0].)
         } else {
+          loader.stop();
           await Error_dialog(context: context, title: 'Fetch Organization List', content: value.message ?? "", onOk: () {});
         }
         loader.stop();
         return;
       } else {
-        Error_dialog(
+        loader.stop();
+        await Error_dialog(
           context: context,
           title: "SERVER DOWN",
           content: "Please contact administration!",
@@ -47,8 +49,8 @@ mixin HierarchyService {
         return;
       }
     } catch (e) {
-      Error_dialog(context: context, title: "ERROR", content: "$e");
       loader.stop();
+      Error_dialog(context: context, title: "ERROR", content: "$e");
       return;
     }
   }
@@ -57,7 +59,15 @@ mixin HierarchyService {
     try {
       loader.start(context);
       await Future.delayed(const Duration(milliseconds: 1000));
-      Map<String, dynamic>? response = await apiController.GetbyToken(API.hierarchy_CompanyData);
+      Map<String, dynamic>? response;
+      if (hierarchyController.hierarchyModel.OrgID.value == null) {
+        response = await apiController.GetbyToken(API.hierarchy_CompanyData);
+      } else {
+        final Map<String, dynamic> requestBody = {"organizationid": hierarchyController.hierarchyModel.OrgID.value};
+        response = await apiController.GetbyQueryString(requestBody, API.hierarchy_CompanyData);
+      }
+
+      // Map<String, dynamic>? response = await apiController.GetbyToken(API.hierarchy_CompanyData);
 
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
@@ -65,6 +75,7 @@ mixin HierarchyService {
           hierarchyController.add_Comp(value);
           hierarchyController.search(hierarchyController.hierarchyModel.searchQuery.value);
         } else {
+          loader.stop();
           await Error_dialog(
             context: context,
             title: 'Fetch Company List',
@@ -73,13 +84,15 @@ mixin HierarchyService {
           );
         }
       } else {
-        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        loader.stop();
+        await Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
       loader.stop();
       return;
     } catch (e) {
-      Error_dialog(context: context, title: "ERROR", content: "$e");
       loader.stop();
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+
       return;
     }
   }
@@ -88,7 +101,16 @@ mixin HierarchyService {
     try {
       loader.start(context);
       await Future.delayed(const Duration(milliseconds: 1000));
-      Map<String, dynamic>? response = await apiController.GetbyToken(API.hierarchy_BranchData);
+
+      Map<String, dynamic>? response;
+      if (hierarchyController.hierarchyModel.CompID.value == null) {
+        response = await apiController.GetbyToken(API.hierarchy_BranchData);
+      } else {
+        final Map<String, dynamic> requestBody = {"customerid": hierarchyController.hierarchyModel.CompID.value};
+        response = await apiController.GetbyQueryString(requestBody, API.hierarchy_BranchData);
+      }
+
+      // Map<String, dynamic>? response = await apiController.GetbyToken(API.hierarchy_BranchData);
 
       if (response?['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response ?? {});
@@ -99,13 +121,14 @@ mixin HierarchyService {
           await Error_dialog(context: context, title: 'Fetch Branch List', content: value.message ?? "", onOk: () {});
         }
       } else {
-        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        loader.stop();
+        await Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
       loader.stop();
       return;
     } catch (e) {
-      Error_dialog(context: context, title: "ERROR", content: "$e");
       loader.stop();
+      Error_dialog(context: context, title: "ERROR", content: "$e");
       return;
     }
   }

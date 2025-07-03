@@ -7,7 +7,11 @@ class HierarchyModel extends GetxController with GetSingleTickerProviderStateMix
   late TabController tabController;
   var selectedtab = 0.obs;
 ///////////////////////////////-----------------------------COMMON--------------------------------///////////////////////////////
-  late AnimationController Org_controller;
+  var Org_Controller = Rxn<String>();
+  var Comp_Controller = Rxn<String>();
+  var OrgID = Rxn<int>();
+  var CompID = Rxn<int>();
+  late AnimationController Org_Animecontroller;
   var Org_DataPageView = false.obs;
   var Org_cardCount = 5.obs;
   var OrganizationList = OrganizationResponse(Live: [], Demo: []).obs;
@@ -25,7 +29,7 @@ class HierarchyModel extends GetxController with GetSingleTickerProviderStateMix
   var org_contactpersonController = TextEditingController().obs;
 
 ///////////////////////////////-----------------------------ORGANIZATION--------------------------------///////////////////////////////
-  late AnimationController Comp_controller;
+  late AnimationController Comp_Animecontroller;
   var Comp_DataPageView = false.obs;
   var Comp_cardCount = 5.obs;
   var selectedCompDetails = CompanysData().obs;
@@ -46,7 +50,7 @@ class HierarchyModel extends GetxController with GetSingleTickerProviderStateMix
   var comp_ccodeController = TextEditingController().obs;
   ///////////////////////////////-----------------------------COMPANY--------------------------------///////////////////////////////
 
-  late AnimationController Branch_controller;
+  late AnimationController Branch_Animecontroller;
   var Branch_DataPageView = false.obs;
   var Branch_cardCount = 5.obs;
   var selectedBranchDetails = BranchsData().obs;

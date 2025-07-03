@@ -63,6 +63,31 @@ class HierarchyController extends GetxController {
     hierarchyModel.BranchList.refresh();
   }
 
+  void updateOrgName(String org) {
+    hierarchyModel.Org_Controller.value = org;
+  }
+
+  void updateOrdID(int? id) {
+    hierarchyModel.OrgID.value = id;
+  }
+
+  void updateCompID(int? id) {
+    hierarchyModel.CompID.value = id;
+  }
+
+  void on_Orgselected() {
+    hierarchyModel.Comp_Controller.value = null;
+  }
+
+  void updateCompName(String comp) {
+    hierarchyModel.Comp_Controller.value = comp;
+  }
+
+  void reset_OrgComp() {
+    hierarchyModel.Org_Controller.value = null;
+    hierarchyModel.Comp_Controller.value = null;
+  }
+
   dynamic onCompSelected(CompanyResponse data, int selectedIndex, String type) {
     List<CompanysData> selectedList = (type == "LIVE") ? data.Live : data.Demo;
 

@@ -22,13 +22,13 @@ import 'package:ssipl_billing/NOTIFICATION-/Notification_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
 
-class Vendor extends StatefulWidget with VendorServices, BellIconFunction {
-  Vendor({super.key});
+class VendorDashboard extends StatefulWidget with VendorServices, BellIconFunction {
+  VendorDashboard({super.key});
   @override
-  _VendorState createState() => _VendorState();
+  _VendorDashboardState createState() => _VendorDashboardState();
 }
 
-class _VendorState extends State<Vendor> with TickerProviderStateMixin {
+class _VendorDashboardState extends State<VendorDashboard> with TickerProviderStateMixin {
   final VendorController vendorController = Get.find<VendorController>();
 
  

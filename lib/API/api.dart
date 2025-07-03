@@ -10,7 +10,6 @@ class API {
   static String sales_fetchBranch_list = "http://192.168.0.200:8081/admin/branchlist";
   static String sales_add_client_requirement_API = "http://192.168.0.200:8081/admin/sendmailwhatsapp";
   static String send_anyPDF = "http://192.168.0.200:8081/admin/sendpdf";
-
   ////////////////////////-----------SALES-------------//////////////////////////////////
 
   static String Upload_MOR_API = "http://192.168.0.200:8081/sales/uploadmor";
@@ -100,9 +99,7 @@ class API {
   static String clearVoucher = "http://192.168.0.200:8081/billing/clearvoucher";
   static String get_transactionBinaryfile = "http://192.168.0.200:8081/billing/gettransactionfile";
   static String get_receiptBinaryfile = "http://192.168.0.200:8081/billing/getreceiptfile";
-
   static String clearClubVoucher = "http://192.168.0.200:8081/billing/clearconsolidatevoucher";
-
   static String getaccount_Ledgerlist = "http://192.168.0.200:8081/billing/accountledger";
   static String getgst_Ledgerlist = "http://192.168.0.200:8081/billing/gstledger";
   static String gettds_Ledgerlist = "http://192.168.0.200:8081/billing/tdsledger";

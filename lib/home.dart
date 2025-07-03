@@ -6,7 +6,7 @@ import 'package:ssipl_billing/1_DASHBOARD/views/dashboard.dart';
 import 'package:ssipl_billing/2_BILLING/_main_BILLING/views/Billing.dart' show Billing;
 import 'package:ssipl_billing/3_SUBSCRIPTION/views/Subscription.dart';
 import 'package:ssipl_billing/4_SALES/views/Sales.dart';
-import 'package:ssipl_billing/vendor_info.dart';
+import 'package:ssipl_billing/5_VENDOR/models/entities/Vendor_entities.dart';
 import 'package:ssipl_billing/6_INVENTORY/views/inventory.dart';
 import 'package:ssipl_billing/7_HIERARCHY/views/Hierarchy.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
@@ -251,7 +251,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Billing(),
                   Subscription_Client(),
                   Sales_Client(),
-                  const Vendor(),
+                  Vendor(),
                   const Inventory(),
                   Enterprise_Hierarchy(),
                   Container(),

@@ -24,6 +24,7 @@ class _BranchGridState extends State<BranchGrid> with SingleTickerProviderStateM
   void initState() {
     super.initState();
     hierarchyController.reset_OrgComp();
+    widget.get_BranchList(context);
     hierarchyController.hierarchyModel.Branch_Animecontroller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 600),
@@ -62,168 +63,184 @@ class _BranchGridState extends State<BranchGrid> with SingleTickerProviderStateM
               children: [
                 Row(
                   children: [
-                    // Obx(() {
-                    //   return
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 200, maxHeight: 75),
-                      child: DropdownButtonFormField<String>(
-                        menuMaxHeight: 350,
-                        isExpanded: true,
-                        dropdownColor: Primary_colors.Color1,
-                        decoration: const InputDecoration(
-                            label: Text(
-                              'Select Organization',
-                              style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 0, 0, 0)),
-                            ),
-                            // hintText: 'Customer Type',hintStyle: TextStyle(),
-                            contentPadding: EdgeInsets.all(13),
-                            labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
-                            filled: true,
-                            fillColor: Color.fromARGB(255, 164, 110, 250),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.business_sharp,
-                              color: Colors.black,
-                            )),
-                        value: hierarchyController.hierarchyModel.Org_Controller.value == "" ? null : hierarchyController.hierarchyModel.Org_Controller.value,
-                        items: [
-                          OrganizationsData(organizationName: 'All', organizationId: null),
-                          ...hierarchyController.hierarchyModel.OrganizationList.value.Live,
-                          ...hierarchyController.hierarchyModel.OrganizationList.value.Demo,
-                        ].map((organization) {
-                          return DropdownMenuItem<String>(
-                            value: organization.organizationName,
-                            child: Text(
-                              organization.organizationName ?? "Unknown",
-                              style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 0, 0, 0), overflow: TextOverflow.ellipsis),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Select Organization   :   ',
+                          style: TextStyle(color: const Color.fromARGB(255, 76, 127, 175), fontSize: 12, fontWeight: FontWeight.bold),
+                        ),
+                        Obx(() {
+                          return ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 200, maxHeight: 75),
+                            child: DropdownButtonFormField<String>(
+                              menuMaxHeight: 350,
+                              isExpanded: true,
+                              dropdownColor: Primary_colors.Color1,
+                              decoration: const InputDecoration(
+                                  // label: Text(
+                                  //   'Select Organization',
+                                  //   style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 0, 0, 0)),
+                                  // ),
+                                  // hintText: 'Customer Type',hintStyle: TextStyle(),
+                                  contentPadding: EdgeInsets.all(13),
+                                  labelStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
+                                  filled: true,
+                                  fillColor: Primary_colors.Color7,
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(),
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.business_sharp,
+                                    color: Colors.black,
+                                  )),
+                              value: hierarchyController.hierarchyModel.Org_Controller.value == "" ? null : hierarchyController.hierarchyModel.Org_Controller.value,
+                              items: [
+                                OrganizationsData(organizationName: 'All', organizationId: null),
+                                ...hierarchyController.hierarchyModel.OrganizationList.value.Live,
+                                ...hierarchyController.hierarchyModel.OrganizationList.value.Demo,
+                              ].map((organization) {
+                                return DropdownMenuItem<String>(
+                                  value: organization.organizationName,
+                                  child: Text(
+                                    organization.organizationName ?? "Unknown",
+                                    style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 0, 0, 0), overflow: TextOverflow.ellipsis),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                if (newValue != null) {
+                                  // Merge Live and Demo lists
+                                  final allOrganizations = [
+                                    OrganizationsData(organizationName: 'All', organizationId: null),
+                                    ...hierarchyController.hierarchyModel.OrganizationList.value.Live,
+                                    ...hierarchyController.hierarchyModel.OrganizationList.value.Demo,
+                                  ];
+
+                                  // Find the selected organization by its name
+                                  final selectedOrg = allOrganizations.firstWhere(
+                                    (org) => org.organizationName == newValue,
+                                  );
+
+                                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                                    hierarchyController.updateOrgName(newValue);
+                                    hierarchyController.updateOrdID(selectedOrg.organizationId); // ✅ Pass the ID
+                                    hierarchyController.on_Orgselected();
+                                    widget.get_CompanyList(context);
+                                  });
+                                }
+                              },
+                              validator: (value) {
+                                return null;
+
+                                // if ( hierarchyController.hierarchyModel.Company_Controller.value == "" ||  hierarchyController.hierarchyModel.Company_Controller.value == null) {
+                                //   if (value == null || value.isEmpty) {
+                                //     return 'Please Select customer type';
+                                //   }
+                                //   return null;
+                                // }
+                                // return null;
+                              },
                             ),
                           );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          if (newValue != null) {
-                            // Merge Live and Demo lists
-                            final allOrganizations = [
-                              OrganizationsData(organizationName: 'All', organizationId: null),
-                              ...hierarchyController.hierarchyModel.OrganizationList.value.Live,
-                              ...hierarchyController.hierarchyModel.OrganizationList.value.Demo,
-                            ];
-
-                            // Find the selected organization by its name
-                            final selectedOrg = allOrganizations.firstWhere(
-                              (org) => org.organizationName == newValue,
-                            );
-
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              hierarchyController.updateOrgName(newValue);
-                              hierarchyController.updateOrdID(selectedOrg.organizationId); // ✅ Pass the ID
-                              hierarchyController.on_Orgselected();
-                              widget.get_CompanyList(context);
-                            });
-                          }
-                        },
-                        validator: (value) {
-                          return null;
-
-                          // if ( hierarchyController.hierarchyModel.Company_Controller.value == "" ||  hierarchyController.hierarchyModel.Company_Controller.value == null) {
-                          //   if (value == null || value.isEmpty) {
-                          //     return 'Please Select customer type';
-                          //   }
-                          //   return null;
-                          // }
-                          // return null;
-                        },
-                      ),
+                        }),
+                      ],
                     ),
-
-                    // }),
                     const SizedBox(width: 50),
-                    Obx(() {
-                      return ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 200, maxHeight: 75),
-                        child: DropdownButtonFormField<String>(
-                          menuMaxHeight: 350,
-                          isExpanded: true,
-                          dropdownColor: Primary_colors.Color1,
-                          decoration: InputDecoration(
-                              label: const Text(
-                                'Select Company',
-                                style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 0, 0, 0)),
-                              ),
-                              // hintText: 'Customer Type',hintStyle: TextStyle(),
-                              contentPadding: const EdgeInsets.all(13),
-                              labelStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
-                              filled: true,
-                              fillColor: const Color.fromARGB(255, 250, 110, 180),
-                              border: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                              ),
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(),
-                              ),
-                              prefixIcon: const Icon(
-                                Icons.home_work_outlined,
-                                color: Colors.black,
-                              )),
-                          value: hierarchyController.hierarchyModel.Comp_Controller.value == "" ? null : hierarchyController.hierarchyModel.Comp_Controller.value,
-                          items: [
-                            CompanysData(customerName: 'All', customerId: null),
-                            ...hierarchyController.hierarchyModel.CompanyList.value.Live,
-                            ...hierarchyController.hierarchyModel.CompanyList.value.Demo,
-                          ].map((organization) {
-                            return DropdownMenuItem<String>(
-                              value: organization.customerName,
-                              child: Text(
-                                organization.customerName ?? "Unknown",
-                                style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 0, 0, 0), overflow: TextOverflow.ellipsis),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            if (newValue != null) {
-                              // Merge Live and Demo lists
-                              final allCompanys = [
-                                CompanysData(customerName: 'All', customerId: null),
-                                ...hierarchyController.hierarchyModel.CompanyList.value.Live,
-                                ...hierarchyController.hierarchyModel.CompanyList.value.Demo,
-                              ];
-
-                              // Find the selected organization by its name
-                              final selectedComp = allCompanys.firstWhere(
-                                (org) => org.customerName == newValue,
-                              );
-
-                              WidgetsBinding.instance.addPostFrameCallback((_) {
-                                hierarchyController.updateCompName(newValue);
-                                hierarchyController.updateCompID(selectedComp.customerId); // ✅ Pass the ID
-                                widget.get_BranchList(context);
-                              });
-                            }
-                          },
-                          validator: (value) {
-                            return null;
-
-                            // if ( hierarchyController.hierarchyModel.Company_Controller.value == "" ||  hierarchyController.hierarchyModel.Company_Controller.value == null) {
-                            //   if (value == null || value.isEmpty) {
-                            //     return 'Please Select customer type';
-                            //   }
-                            //   return null;
-                            // }
-                            // return null;
-                          },
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Select Company   :   ',
+                          style: TextStyle(color: const Color.fromARGB(255, 76, 127, 175), fontSize: 12, fontWeight: FontWeight.bold),
                         ),
-                      );
-                    }),
+                        Obx(() {
+                          return ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 200, maxHeight: 75),
+                            child: DropdownButtonFormField<String>(
+                              menuMaxHeight: 350,
+                              isExpanded: true,
+                              dropdownColor: Primary_colors.Color1,
+                              decoration: InputDecoration(
+                                  // label: const Text(
+                                  //   'Select Company',
+                                  //   style: TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 0, 0, 0)),
+                                  // ),
+                                  // hintText: 'Customer Type',hintStyle: TextStyle(),
+                                  contentPadding: const EdgeInsets.all(13),
+                                  labelStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Primary_colors.Color1),
+                                  filled: true,
+                                  fillColor: Primary_colors.Color7,
+                                  border: OutlineInputBorder(
+                                    borderSide: const BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                                  ),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(),
+                                  ),
+                                  prefixIcon: const Icon(
+                                    Icons.home_work_outlined,
+                                    color: Colors.black,
+                                  )),
+                              value: hierarchyController.hierarchyModel.Comp_Controller.value == "" ? null : hierarchyController.hierarchyModel.Comp_Controller.value,
+                              items: [
+                                CompanysData(customerName: 'All', customerId: null),
+                                ...hierarchyController.hierarchyModel.backup_CompanyList.value.Live,
+                                ...hierarchyController.hierarchyModel.backup_CompanyList.value.Demo,
+                              ].map((organization) {
+                                return DropdownMenuItem<String>(
+                                  value: organization.customerName,
+                                  child: Text(
+                                    organization.customerName ?? "Unknown",
+                                    style: const TextStyle(fontSize: Primary_font_size.Text7, color: Color.fromARGB(255, 0, 0, 0), overflow: TextOverflow.ellipsis),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                if (newValue != null) {
+                                  // Merge Live and Demo lists
+                                  final allCompanys = [
+                                    CompanysData(customerName: 'All', customerId: null),
+                                    ...hierarchyController.hierarchyModel.backup_CompanyList.value.Live,
+                                    ...hierarchyController.hierarchyModel.backup_CompanyList.value.Demo,
+                                  ];
+
+                                  // Find the selected organization by its name
+                                  final selectedComp = allCompanys.firstWhere(
+                                    (org) => org.customerName == newValue,
+                                  );
+
+                                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                                    hierarchyController.updateCompName(newValue);
+                                    hierarchyController.updateCompID(selectedComp.customerId); // ✅ Pass the ID
+                                    widget.get_BranchList(context);
+                                  });
+                                }
+                              },
+                              validator: (value) {
+                                return null;
+
+                                // if ( hierarchyController.hierarchyModel.Company_Controller.value == "" ||  hierarchyController.hierarchyModel.Company_Controller.value == null) {
+                                //   if (value == null || value.isEmpty) {
+                                //     return 'Please Select customer type';
+                                //   }
+                                //   return null;
+                                // }
+                                // return null;
+                              },
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
                   ],
                 ),
                 SizedBox(height: 20),

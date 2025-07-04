@@ -1,10 +1,8 @@
 import 'dart:io';
 
-
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/models/constants/Vendor_constants.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/Vendor_entities.dart';
-
 import 'package:ssipl_billing/API/invoker.dart';
 
 import '../../COMPONENTS-/Response_entities.dart';
@@ -20,6 +18,16 @@ class VendorController extends GetxController {
     }
   }
 
+  Future<void> PDFfileApiData(CMDmResponse value) async {
+    var pdfFileData = await PDFfileData.fromJson(value); // Await async function
+    var binaryData = pdfFileData.data; // Extract File object
+    await updatePDFfile(binaryData);
+  }
+
+  Future<void> updatePDFfile(File value) async {
+    vendorModel.pdfFile.value = value;
+  }
+
   void addToProcessvendorList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
       vendorModel.processvendorList.add(Processvendor.fromJson(value, i));
@@ -27,8 +35,6 @@ class VendorController extends GetxController {
     vendorfilteredModel.processvendorList.assignAll(vendorModel.processvendorList);
     // print('object');
   }
-
- 
 
   void addToProcessList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
@@ -45,18 +51,16 @@ class VendorController extends GetxController {
     vendorModel.showvendorprocess.value = value;
   }
 
-  Future<void> PDFfileApiData(CMDmResponse value) async {
-    var pdfFileData = await PDFfileData.fromJson(value); // Await async function
-    var binaryData = pdfFileData.data; // Extract File object
-    await updatePDFfile(binaryData);
-  }
+  // Future<void> PDFfileApiData(CMDmResponse value) async {
+  //   var pdfFileData = await PDFfileData.fromJson(value); // Await async function
+  //   var binaryData = pdfFileData.data; // Extract File object
+  //   await updatePDFfile(binaryData);
+  // }
 
-  Future<void> updatePDFfile(File value) async {
-    vendorModel.pdfFile.value = value;
-  }
+  // Future<void> updatePDFfile(File value) async {
+  //   vendorModel.pdfFile.value = value;
+  // }
 
-
- 
   void updateisAllSelected(bool value) {
     vendorModel.isAllSelected.value = value;
   }
@@ -109,7 +113,6 @@ class VendorController extends GetxController {
     }
   }
 
- 
   void updateVendorData(CMDmResponse value) {
     vendorModel.vendordata.value = Vendordata.fromJson(value);
   }
@@ -129,7 +132,6 @@ class VendorController extends GetxController {
     vendorModel.CCemailController.value.clear();
   }
 
- 
   // void resetData() {
   //   // vendorModel.vendorList.clear();
   //   // vendorModel.processList.clear();
@@ -156,7 +158,7 @@ class VendorController extends GetxController {
     vendorModel.showvendorprocess.value = null;
     vendorModel.vendorId.value = null;
     vendorModel.pdfFile.value = null;
-   
+
     vendorModel.selectedIndices.clear();
     vendorModel.isAllSelected.value = false;
     vendorModel.type.value = 0;

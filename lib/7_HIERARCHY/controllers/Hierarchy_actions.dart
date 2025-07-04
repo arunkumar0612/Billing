@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/7_HIERARCHY/models/constants/Hierarchy_constants.dart';
 import 'package:ssipl_billing/7_HIERARCHY/models/entities/Hierarchy_entities.dart';
@@ -76,16 +77,26 @@ class HierarchyController extends GetxController {
   }
 
   void on_Orgselected() {
-    hierarchyModel.Comp_Controller.value = null;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      hierarchyModel.Comp_Controller.value = null;
+    });
+    hierarchyModel.refresh();
   }
 
   void updateCompName(String comp) {
-    hierarchyModel.Comp_Controller.value = comp;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      hierarchyModel.Comp_Controller.value = comp;
+    });
   }
 
   void reset_OrgComp() {
-    hierarchyModel.Org_Controller.value = null;
-    hierarchyModel.Comp_Controller.value = null;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      hierarchyModel.Org_Controller.value = 'All';
+      hierarchyModel.Comp_Controller.value = 'All';
+      hierarchyModel.CompID.value = null;
+      hierarchyModel.OrgID.value = null;
+    });
+    hierarchyModel.refresh();
   }
 
   dynamic onCompSelected(CompanyResponse data, int selectedIndex, String type) {
@@ -220,11 +231,15 @@ class HierarchyController extends GetxController {
   }
 
   void injectBranchDetails(int index, List<BranchsData> data) {
-    hierarchyModel.selectedBranchDetails.value = data[index];
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      hierarchyModel.selectedBranchDetails.value = data[index];
+    });
   }
 
   void resetBranchDetails() {
-    hierarchyModel.selectedBranchDetails.value = BranchsData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      hierarchyModel.selectedBranchDetails.value = BranchsData();
+    });
   }
 
 ///////////////////////////////////////-------------------------------////////////////////////////////////////////

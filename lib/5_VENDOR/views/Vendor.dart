@@ -1,26 +1,20 @@
-
 import 'dart:math';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:animations/animations.dart';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-
 import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';
-
 import 'package:ssipl_billing/5_VENDOR/services/vendor_service.dart';
-
 import 'package:ssipl_billing/5_VENDOR/views/vendor_chart.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/NOTIFICATION-/NotificationServices.dart';
 import 'package:ssipl_billing/NOTIFICATION-/Notification_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
-
 
 class Vendor extends StatefulWidget with VendorServices, BellIconFunction {
   Vendor({super.key});
@@ -31,16 +25,11 @@ class Vendor extends StatefulWidget with VendorServices, BellIconFunction {
 class _VendorState extends State<Vendor> with TickerProviderStateMixin {
   final VendorController vendorController = Get.find<VendorController>();
 
- 
   final NotificationController notificationController = Get.find<NotificationController>();
   final loader = LoadingOverlay();
 
- 
-
-
   @override
   void dispose() {
-
     vendorController.vendorModel.animationController.dispose();
     resetAll();
     super.dispose();
@@ -48,10 +37,6 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
 
   void resetAll() {
     vendorController.resetData();
-
-
-  
-   
   }
 
   // AnimationStyle? _animationStyle;
@@ -338,11 +323,11 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                                     vendorController.updatevendorperiod(newValue == "Monthly view" ? 'monthly' : 'yearly');
 
                                                     if (newValue == "Monthly view") {
-                                                   if (kDebugMode) {
-                                                     print('Monthly');
-                                                   }
+                                                      if (kDebugMode) {
+                                                        print('Monthly');
+                                                      }
                                                     } else if (newValue == "Yearly view") {
-                                                   print('Yearly');
+                                                      print('Yearly');
                                                     }
                                                   }
                                                 },
@@ -568,7 +553,7 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                               label: 'Vendor Process',
                                               color: Primary_colors.Color4,
                                               onPressed: () {
-                                        
+                                                widget.GenerateRfq_dialougebox(context);
                                               },
                                             ),
                                           ),
@@ -576,13 +561,7 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                         Expanded(
                                           child: MouseRegion(
                                             cursor: SystemMouseCursors.click,
-                                            child: _buildIconWithLabel(
-                                                image: 'assets/images/vendor.png',
-                                                label: 'View Vendor',
-                                                color: Primary_colors.Color5,
-                                                onPressed: () {
-                                                
-                                                }),
+                                            child: _buildIconWithLabel(image: 'assets/images/vendor.png', label: 'View Vendor', color: Primary_colors.Color5, onPressed: () {}),
                                           ),
                                         )
                                       ],
@@ -616,9 +595,7 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                                   image: vendorController.vendorModel.type.value == 0 ? 'assets/images/viewarchivelist.png' : 'assets/images/mainlist.png',
                                                   label: vendorController.vendorModel.type.value == 0 ? 'Archive List' : 'Main List',
                                                   color: Primary_colors.Color8,
-                                                  onPressed: () {
-                                                  
-                                                  },
+                                                  onPressed: () {},
                                                 ),
                                               ),
                                             ),
@@ -626,12 +603,10 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                         ),
                                         Expanded(
                                           child: _buildIconWithLabel(
-                                            image:  'assets/images/options.png',
+                                            image: 'assets/images/options.png',
                                             label: 'Options',
                                             color: Primary_colors.Dark,
-                                            onPressed: () {
-                                     
-                                            },
+                                            onPressed: () {},
                                           ),
                                         ),
                                         // Expanded(
@@ -657,7 +632,6 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                         //             itemBuilder: (BuildContext context) {
                                         //               // Determine the label for the archive/unarchive action
 
-                                                      
                                         //             },
                                         //           )),
                                         //       const SizedBox(height: 8),
@@ -773,9 +747,7 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                                       title: 'Confirmation',
                                                       content: 'Are you sure you want to Archive this process?',
                                                       // showCancel: true,
-                                                      onOk: () {
-                                                        
-                                                      },
+                                                      onOk: () {},
                                                     );
                                                     break;
                                                   case 'Unarchive':
@@ -784,9 +756,7 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                                       title: 'Confirmation',
                                                       content: 'Are you sure you want to Unarchive this process?',
                                                       // showCancel: true,
-                                                      onOk: () {
-                                                       
-                                                      },
+                                                      onOk: () {},
                                                     );
                                                     break;
                                                   case 'Modify':
@@ -803,9 +773,7 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                                       title: 'Confirmation',
                                                       content: 'Are you sure you want to delete this process?',
                                                       // showCancel: true,
-                                                      onOk: () {
-                                                       
-                                                      },
+                                                      onOk: () {},
                                                     );
                                                     break;
                                                 }
@@ -948,7 +916,8 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                                               vendorController.vendorModel.selectedIndices.add(index);
                                                             } else {
                                                               vendorController.vendorModel.selectedIndices.remove(index);
-                                                              vendorController.updateisAllSelected(vendorController.vendorModel.selectedIndices.length == vendorController.vendorModel.processList.length);
+                                                              vendorController
+                                                                  .updateisAllSelected(vendorController.vendorModel.selectedIndices.length == vendorController.vendorModel.processList.length);
                                                             }
                                                           },
                                                           activeColor: Primary_colors.Color3, // More vibrant color
@@ -1027,33 +996,32 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                                                             gradient: LinearGradient(
                                                                               begin: Alignment.topLeft,
                                                                               end: Alignment.bottomRight,
-                                                                              colors:      childIndex ==0
+                                                                              colors: childIndex == 0
                                                                                   ? [
                                                                                       const Color.fromARGB(78, 0, 0, 0),
                                                                                       const Color.fromARGB(36, 231, 139, 33),
                                                                                     ]
-                                                                                  :      childIndex ==1
+                                                                                  : childIndex == 1
                                                                                       ? [
                                                                                           const Color.fromARGB(66, 0, 0, 0),
                                                                                           const Color.fromARGB(24, 118, 253, 129),
                                                                                         ]
-                                                                                      :     childIndex ==2
+                                                                                      : childIndex == 2
                                                                                           ? [
                                                                                               const Color.fromARGB(78, 0, 0, 0),
                                                                                               const Color.fromARGB(38, 223, 55, 55),
                                                                                             ]
-                                                                                          :      childIndex ==3
+                                                                                          : childIndex == 3
                                                                                               ? [
                                                                                                   const Color.fromARGB(78, 0, 0, 0),
                                                                                                   const Color.fromARGB(24, 118, 253, 129),
                                                                                                 ]
-                                                                                              :     childIndex ==4
-                                                                                                  
+                                                                                              : childIndex == 4
                                                                                                   ? [
                                                                                                       const Color.fromARGB(78, 0, 0, 0),
                                                                                                       const Color.fromARGB(43, 0, 76, 240),
                                                                                                     ]
-                                                                                                  :     childIndex ==5
+                                                                                                  : childIndex == 5
                                                                                                       ? [
                                                                                                           const Color.fromARGB(78, 0, 0, 0),
                                                                                                           const Color.fromARGB(43, 253, 205, 116),
@@ -1061,17 +1029,17 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                                                                                       : [Colors.white],
                                                                             ),
                                                                             border: Border.all(
-                                                                              color:      childIndex ==0
+                                                                              color: childIndex == 0
                                                                                   ? const Color.fromARGB(255, 243, 131, 56)
-                                                                                  :     childIndex ==1
+                                                                                  : childIndex == 1
                                                                                       ? Colors.green
-                                                                                      :      childIndex ==2
+                                                                                      : childIndex == 2
                                                                                           ? Colors.green
-                                                                                          :      childIndex ==3
+                                                                                          : childIndex == 3
                                                                                               ? Colors.red
-                                                                                              :      childIndex ==4
+                                                                                              : childIndex == 4
                                                                                                   ? Colors.blue
-                                                                                                  :     childIndex ==5
+                                                                                                  : childIndex == 5
                                                                                                       ? const Color.fromARGB(255, 255, 191, 119)
                                                                                                       : Colors.white,
                                                                               width: 2,
@@ -1095,18 +1063,17 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                                                           // ),
                                                                           child: Center(
                                                                             child: Image.asset(
-                                                                              childIndex ==0
+                                                                              childIndex == 0
                                                                                   ? 'assets/images/request.png'
-                                                                                  :     childIndex ==1
+                                                                                  : childIndex == 1
                                                                                       ? 'assets/images/invoice.png'
-                                                                                      :      childIndex ==2
+                                                                                      : childIndex == 2
                                                                                           ? 'assets/images/dc.png'
-                                                                                          :     childIndex ==3
+                                                                                          : childIndex == 3
                                                                                               ? 'assets/images/Estimate.png'
-                                                                                              :      childIndex ==4
-                                                                                              
+                                                                                              : childIndex == 4
                                                                                                   ? 'assets/images/revision.png'
-                                                                                                  :      childIndex ==5
+                                                                                                  : childIndex == 5
                                                                                                       ? 'assets/images/rfq.png'
                                                                                                       : 'assets/images/Estimate.png',
                                                                               fit: BoxFit.fill,
@@ -1121,26 +1088,24 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                                                             // ),
                                                                           ),
                                                                         ),
-                                                                        onTap: () async {
-                                                                        
-                                                                        },
+                                                                        onTap: () async {},
                                                                       ),
                                                                     ),
                                                                     if (childIndex != vendorController.vendorModel.processList[index].TimelineEvents.length - 1)
                                                                       Container(
                                                                         width: 2,
                                                                         height: 40,
-                                                                        color:      childIndex ==0
+                                                                        color: childIndex == 0
                                                                             ? const Color.fromARGB(255, 243, 131, 56)
-                                                                            :      childIndex ==1
+                                                                            : childIndex == 1
                                                                                 ? Colors.green
-                                                                                :     childIndex ==2
+                                                                                : childIndex == 2
                                                                                     ? Colors.green
-                                                                                    :      childIndex ==3
+                                                                                    : childIndex == 3
                                                                                         ? Colors.red
-                                                                                        :      childIndex ==4
+                                                                                        : childIndex == 4
                                                                                             ? Colors.blue
-                                                                                            :     childIndex ==5
+                                                                                            : childIndex == 5
                                                                                                 ? const Color.fromARGB(255, 255, 191, 119)
                                                                                                 : Colors.white,
                                                                       ),
@@ -1161,71 +1126,52 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                                                                 children: [
                                                                                   Text(
                                                                                     vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Eventname,
-                                                                                 
                                                                                     style: const TextStyle(fontSize: Primary_font_size.Text7, color: Primary_colors.Color1),
                                                                                   ),
-                                                                              
-                                                                                 
                                                                                 ],
                                                                               ),
                                                                             ),
-                                                                            
                                                                             Row(
                                                                               mainAxisAlignment: MainAxisAlignment.start,
                                                                               children: [
-                                                                               
-                                                                                  TextButton(
-                                                                                    onPressed: () async {
-                                                                                    
-                                                                                    },
-                                                                                    child: const Text(
-                                                                                      "Revised RFQ",
-                                                                                      style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                                    ),
+                                                                                TextButton(
+                                                                                  onPressed: () async {},
+                                                                                  child: const Text(
+                                                                                    "Revised RFQ",
+                                                                                    style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                                   ),
-                                                                               
-                                                                                  TextButton(
-                                                                                    onPressed: () async {
-                                                                                  
-                                                                                    },
-                                                                                    child: const Text(
-                                                                                      "Upload Quote",
-                                                                                      style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                                    ),
+                                                                                ),
+                                                                                TextButton(
+                                                                                  onPressed: () async {},
+                                                                                  child: const Text(
+                                                                                    "Upload Quote",
+                                                                                    style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                                   ),
-                                                                            
-                                                                                  TextButton(
-                                                                                    onPressed: () async {
-                                                                                    
-                                                                                    },
-                                                                                    child: const Text(
-                                                                                      "Generate PO",
-                                                                                      style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                                    ),
+                                                                                ),
+                                                                                TextButton(
+                                                                                  onPressed: () async {},
+                                                                                  child: const Text(
+                                                                                    "Generate PO",
+                                                                                    style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                                   ),
-                                                                        
-                                                                                  TextButton(
-                                                                                    onPressed: () async {
-                                                                                      
-                                                                                    },
-                                                                                    child: const Text(
-                                                                                      "Upload Invoice",
-                                                                                      style: TextStyle(color: Colors.blue, fontSize: 12),
-                                                                                    ),
+                                                                                ),
+                                                                                TextButton(
+                                                                                  onPressed: () async {},
+                                                                                  child: const Text(
+                                                                                    "Upload Invoice",
+                                                                                    style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                                   ),
+                                                                                ),
                                                                                 if ((vendorController.vendorModel.processList[index].TimelineEvents[childIndex].Allowed_process.delivery_challan ==
                                                                                         true) &&
                                                                                     (vendorController.vendorModel.processList[index].TimelineEvents.length == childIndex + 1))
                                                                                   TextButton(
-                                                                                    onPressed: () async {
-                                                                                    
-                                                                                    },
+                                                                                    onPressed: () async {},
                                                                                     child: const Text(
                                                                                       "Upload DC",
                                                                                       style: TextStyle(color: Colors.blue, fontSize: 12),
                                                                                     ),
                                                                                   ),
-                                                                                
                                                                               ],
                                                                             )
                                                                           ],
@@ -1261,7 +1207,6 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                                                               },
                                                                               onFieldSubmitted: (newValue) {
                                                                                 // textColor = Colors.green;
-                                                                               
                                                                               },
                                                                             ),
                                                                           ),
@@ -1367,9 +1312,7 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                                                       ),
                                                       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
                                                     ),
-                                                    onPressed: () {
-                                                    
-                                                    },
+                                                    onPressed: () {},
                                                     child: Text(
                                                       'View Active Processes',
                                                       style: TextStyle(
@@ -2168,17 +2111,9 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
                     color: vendorController.vendorModel.showvendorprocess.value == index ? Primary_colors.Dark : Primary_colors.Color3,
                   ),
                 ),
-                onTap: () {
-                 
-                },
+                onTap: () {},
               ),
-              onTap: vendorController.vendorModel.showvendorprocess.value != index
-                  ? () {
-                     
-                    }
-                  : () {
-                    
-                    },
+              onTap: vendorController.vendorModel.showvendorprocess.value != index ? () {} : () {},
             ),
           ),
         );
@@ -2241,6 +2176,4 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
       ),
     );
   }
-
- 
 }

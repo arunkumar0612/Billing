@@ -105,4 +105,8 @@ class API {
   static String gettds_Ledgerlist = "http://192.168.0.200:8081/billing/tdsledger";
   static String get_dashboardData = "http://192.168.0.200:8081/billing/getdashboard";
   static String update_transactionDetails = "http://192.168.0.200:8081/billing/updatepaymentdetails";
+
+  /////////////////////-----------VENDOR-------------//////////////////////////////////
+
+  static String RFQ_preloader = "http://192.168.0.111:8081/vendor/detailspreloader";
 }

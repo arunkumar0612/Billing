@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 // import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
@@ -95,8 +94,8 @@ mixin PostServices {
         if (value.code) {
           loader.stop();
           await Success_dialog(context: context, title: "SUCCESS", content: value.message!, onOk: () {});
-          Navigator.of(context).pop(true);
-          quoteController.resetData();
+          // Navigator.of(context).pop(true);
+          // quoteController.resetData();
         } else {
           loader.stop();
           await Error_dialog(context: context, title: 'Processing Quotation', content: value.message ?? "", onOk: () {});

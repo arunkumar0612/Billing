@@ -6,7 +6,6 @@ import 'package:ssipl_billing/1_DASHBOARD/views/dashboard.dart';
 import 'package:ssipl_billing/2_BILLING/_main_BILLING/views/Billing.dart' show Billing;
 import 'package:ssipl_billing/3_SUBSCRIPTION/views/Subscription.dart';
 import 'package:ssipl_billing/4_SALES/views/Sales.dart';
-import 'package:ssipl_billing/5_VENDOR/models/entities/Vendor_entities.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Vendor.dart';
 import 'package:ssipl_billing/6_INVENTORY/views/inventory.dart';
 import 'package:ssipl_billing/7_HIERARCHY/views/Hierarchy.dart';
@@ -233,7 +232,9 @@ class _MyHomePageState extends State<MyHomePage> {
             MouseRegion(
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
-                child: showfull ? const Text('>', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 22)) : const Text('||', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 15)),
+                child: showfull
+                    ? const Text('>', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 22))
+                    : const Text('||', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 15)),
                 onTap: () {
                   setState(() {
                     showfull = showfull ? false : true;

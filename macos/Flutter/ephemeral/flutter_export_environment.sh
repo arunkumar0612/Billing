@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=C:\Users\Sporada\Downloads\flutter_windows_3.27.3-stable\flutter"
-export "FLUTTER_APPLICATION_PATH=D:\FLUTTER APPLICATIONS\Billing"
+export "FLUTTER_ROOT=C:\flutter"
+export "FLUTTER_APPLICATION_PATH=E:\SSIPL Billing project\Update_ssipl_billing\Billing"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0"

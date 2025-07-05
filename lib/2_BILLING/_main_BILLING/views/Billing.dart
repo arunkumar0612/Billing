@@ -86,8 +86,7 @@ class _BillingState extends State<Billing> with TickerProviderStateMixin {
 
     return MaterialApp(
       title: 'ERP',
-      // home: const IAM(),
-      initialRoute: '/IAM', // Set the initial route
+
       // getPages: AppRoutes.routes,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

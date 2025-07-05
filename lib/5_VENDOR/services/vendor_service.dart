@@ -1,21 +1,13 @@
 // ignore_for_file: depend_on_referenced_packages
 
-
 import 'package:get/get.dart';
-
-
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 
-
 // import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-
 import '../../API/invoker.dart';
-
 import '../controllers/Vendor_actions.dart';
-
-
 
 mixin VendorServices {
   final Invoker apiController = Get.find<Invoker>();
@@ -24,43 +16,8 @@ mixin VendorServices {
   final VendorController vendorController = Get.find<VendorController>();
 
   final loader = LoadingOverlay();
-  
-
- 
-
- 
-
-  
-
-  
-
- 
-
- 
-  
-
-  
-
-  
-
-  
-
-  
- 
-
- 
-
-
-  
-
-
-  
-
-
 
 // // ##################################################################################################################################################################################################################################################################################################################################################################
-
-  
 
   String formatNumber(int number) {
     if (number >= 10000000) {
@@ -78,10 +35,7 @@ mixin VendorServices {
     // vendorController.resetData();
     vendorController.updateshowvendorprocess(null);
     vendorController.updatevendorId(0);
-  
-
 
     vendorController.update();
   }
-
 }

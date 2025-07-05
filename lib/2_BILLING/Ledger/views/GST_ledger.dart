@@ -357,11 +357,15 @@ class _GSTLedgerState extends State<GSTLedger> {
                                                       child: GestureDetector(
                                                         onTap: () async {
                                                           if (gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoiceType == 'subscription') {
-                                                            bool success = await widget.GetSubscriptionPDFfile(
-                                                                context: context, invoiceNo: gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number);
+                                                            bool success = await widget.GetSubscriptionPDFfile(context: context, invoiceNo: gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number);
                                                             if (success) {
-                                                              showPDF(context, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number,
-                                                                  mainBilling_Controller.billingModel.pdfFile.value);
+                                                              showPDF(context, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number, mainBilling_Controller.billingModel.pdfFile.value);
+                                                            }
+                                                          }
+                                                          if (gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoiceType == 'sales') {
+                                                            bool success = await widget.Get_SalesPDFfile(context: context, invoiceNo: gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number);
+                                                            if (success) {
+                                                              showPDF(context, gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.gstList[index].invoice_number, mainBilling_Controller.billingModel.pdfFile.value);
                                                             }
                                                           }
                                                         },
@@ -555,18 +559,15 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputSgst ?? 0.0),
-                                                    textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputSgst ?? 0.0), textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputIgst ?? 0.0),
-                                                    textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputIgst ?? 0.0), textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputGst),
-                                                    textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.outputGst), textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                             ],
                                           ),
@@ -579,23 +580,19 @@ class _GSTLedgerState extends State<GSTLedger> {
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputCgst ?? 0.0),
-                                                    textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputCgst ?? 0.0), textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputSgst ?? 0.0),
-                                                    textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputSgst ?? 0.0), textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputIgst ?? 0.0),
-                                                    textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputIgst ?? 0.0), textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(left: 30, right: 120, bottom: 8, top: 8),
-                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputGst),
-                                                    textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
+                                                child: Text(formatCurrency(gst_ledgerController.gst_LedgerModel.gst_Ledger_list.value.inputGst), textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
                                               ),
                                             ],
                                           ),

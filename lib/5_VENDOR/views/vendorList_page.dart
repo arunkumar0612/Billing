@@ -7,6 +7,8 @@ import 'package:glassmorphism/glassmorphism.dart';
 // import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/services/manual_onboard_service.dart';
 import 'package:ssipl_billing/7_HIERARCHY/controllers/Hierarchy_actions.dart';
 import 'package:ssipl_billing/7_HIERARCHY/views/ORG/Org_card.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
@@ -14,7 +16,7 @@ import 'package:ssipl_billing/NOTIFICATION-/NotificationServices.dart';
 import 'package:ssipl_billing/NOTIFICATION-/Notification_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
-class VendorListPage extends StatefulWidget with BellIconFunction {
+class VendorListPage extends StatefulWidget with BellIconFunction, ManualOnboardService {
   VendorListPage({super.key});
 
   @override
@@ -30,6 +32,7 @@ class _VendorListPageState extends State<VendorListPage> with SingleTickerProvid
   final HierarchyController hierarchyController = Get.find<HierarchyController>();
 
   final NotificationController notificationController = Get.find<NotificationController>();
+  final VendorController vendorController = Get.find<VendorController>();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -103,8 +106,8 @@ class _VendorListPageState extends State<VendorListPage> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    double screenheight = MediaQuery.of(context).size.height;
-
+    // double screenheight = MediaQuery.of(context).size.height;
+    final theme = Theme.of(context);
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Primary_colors.Dark,
@@ -126,8 +129,8 @@ class _VendorListPageState extends State<VendorListPage> with SingleTickerProvid
                           ),
                           const SizedBox(width: 8),
                           const Text(
-                            'Vendor List',
-                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text13),
+                            'VENDOR LIST',
+                            style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text13, letterSpacing: 1.2),
                           ),
                         ],
                       ),
@@ -135,69 +138,6 @@ class _VendorListPageState extends State<VendorListPage> with SingleTickerProvid
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          child: Theme(
-                            data: Theme.of(context).copyWith(
-                              popupMenuTheme: PopupMenuThemeData(
-                                color: Primary_colors.Light,
-                                textStyle: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                            child: PopupMenuButton<String>(
-                              tooltip: '',
-                              onSelected: (value) async {
-                                if (value == 'link') {
-                                  print('Send link selected');
-                                  // Add your logic here
-                                } else if (value == 'manual_onboard') {
-                                  print('Manual onboard selected');
-                                  // Add your logic here
-                                }
-                              },
-                              itemBuilder: (context) => [
-                                PopupMenuItem(
-                                  value: 'link',
-                                  child: Row(
-                                    children: [
-                                      Image.asset('assets/images/link.png', width: 20, height: 20),
-                                      const SizedBox(width: 10),
-                                      const Text('Send Link'),
-                                    ],
-                                  ),
-                                ),
-                                PopupMenuItem(
-                                  value: 'manual_onboard',
-                                  child: Row(
-                                    children: [
-                                      Image.asset('assets/images/addpeople.png', width: 20, height: 20),
-                                      const SizedBox(width: 10),
-                                      const Text('Manual Onboard'),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: Primary_colors.Color3, // Customize the button background color
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: const Text(
-                                  "Add Vendor",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-
                         Obx(() {
                           return Stack(
                             children: [
@@ -330,7 +270,7 @@ class _VendorListPageState extends State<VendorListPage> with SingleTickerProvid
                     flex: 3,
                     child: Obx(() {
                       return Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: Primary_colors.Light,
                           borderRadius: BorderRadius.circular(12),
@@ -342,79 +282,252 @@ class _VendorListPageState extends State<VendorListPage> with SingleTickerProvid
                             ),
                           ],
                         ),
-                        child: hierarchyController.hierarchyModel.OrganizationList.value.Live.isNotEmpty
-                            ? SizedBox(
-                                // child: Padding(
-                                //     padding: const EdgeInsets.all(2),
-                                child: SingleChildScrollView(
-                                child: SlideTransition(
-                                  position: hierarchyController.hierarchyModel.slideAnimation,
-                                  child: GridView.builder(
-                                    shrinkWrap: true,
-                                    physics: const NeverScrollableScrollPhysics(),
-                                    padding: const EdgeInsets.all(8.0),
-                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: hierarchyController.hierarchyModel.Org_cardCount.value,
-                                      crossAxisSpacing: 30,
-                                      mainAxisSpacing: 30,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Obx(() => Row(
+                                      children: [
+                                        Text(
+                                          hierarchyController.hierarchyModel.OrganizationList.value.Live.isNotEmpty ? 'Total: ${hierarchyController.hierarchyModel.OrganizationList.value.Live.length} vendors ' : 'No vendor Found',
+                                          style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white, fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text8, letterSpacing: 1.0, overflow: TextOverflow.ellipsis),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        // if (vendorController.vendorModel.selectedIndices.isNotEmpty)
+                                        //   PopupMenuButton<String>(
+                                        //     splashRadius: 20,
+                                        //     padding: const EdgeInsets.all(0),
+                                        //     icon: const Icon(Icons.menu),
+                                        //     shape: const RoundedRectangleBorder(
+                                        //       borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                        //       // side: const BorderSide(color: Primary_colors.Color3, width: 2),
+                                        //     ),
+                                        //     color: Colors.white,
+                                        //     elevation: 6,
+                                        //     offset: const Offset(-10, 30),
+                                        //     onSelected: (String item) {
+                                        //       // Handle menu item selection
+
+                                        //       switch (item) {
+                                        //         case 'Archive':
+                                        //           Warning_dialog(
+                                        //             context: context,
+                                        //             title: 'Confirmation',
+                                        //             content: 'Are you sure you want to Archive this process?',
+                                        //             // showCancel: true,
+                                        //             onOk: () {},
+                                        //           );
+                                        //           break;
+                                        //         case 'Unarchive':
+                                        //           Warning_dialog(
+                                        //             context: context,
+                                        //             title: 'Confirmation',
+                                        //             content: 'Are you sure you want to Unarchive this process?',
+                                        //             // showCancel: true,
+                                        //             onOk: () {},
+                                        //           );
+                                        //           break;
+                                        //         case 'Modify':
+                                        //           Error_dialog(
+                                        //             context: context,
+                                        //             title: 'Error',
+                                        //             content: 'Unable to modify the process',
+                                        //             // showCancel: true,
+                                        //           );
+                                        //           break;
+                                        //         case 'Delete':
+                                        //           Warning_dialog(
+                                        //             context: context,
+                                        //             title: 'Confirmation',
+                                        //             content: 'Are you sure you want to delete this process?',
+                                        //             // showCancel: true,
+                                        //             onOk: () {},
+                                        //           );
+                                        //           break;
+                                        //       }
+                                        //     },
+                                        //     itemBuilder: (BuildContext context) {
+                                        //       // Determine the label for the archive/unarchive action
+
+                                        //       return [
+                                        //         PopupMenuItem<String>(
+                                        //           value: vendorController.vendorModel.type.value != 0 ? 'Unarchive' : 'Archive',
+                                        //           child: ListTile(
+                                        //             leading: Icon(
+                                        //               vendorController.vendorModel.type.value != 0 ? Icons.unarchive_outlined : Icons.archive_outlined,
+                                        //               color: Colors.blueAccent,
+                                        //             ),
+                                        //             title: Text(
+                                        //               vendorController.vendorModel.type.value != 0 ? 'Unarchive' : 'Archive',
+                                        //               style: const TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10),
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                        //         const PopupMenuItem<String>(
+                                        //           value: 'Modify',
+                                        //           child: ListTile(
+                                        //             leading: Icon(Icons.edit_outlined, color: Colors.green),
+                                        //             title: Text('Modify', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                        //           ),
+                                        //         ),
+                                        //         const PopupMenuItem<String>(
+                                        //           value: 'Delete',
+                                        //           child: ListTile(
+                                        //             leading: Icon(Icons.delete_outline, color: Colors.redAccent),
+                                        //             title: Text('Delete', style: TextStyle(fontWeight: FontWeight.w500, fontSize: Primary_font_size.Text10)),
+                                        //           ),
+                                        //         ),
+                                        //       ];
+                                        //     },
+                                        //   ),
+                                      ],
+                                    )),
+                                MouseRegion(
+                                  cursor: SystemMouseCursors.click,
+                                  child: Theme(
+                                    data: Theme.of(context).copyWith(
+                                      popupMenuTheme: PopupMenuThemeData(
+                                        color: Primary_colors.Dark,
+                                        textStyle: const TextStyle(
+                                          color: Primary_colors.Color9,
+                                          fontSize: 14,
+                                        ),
+                                      ),
                                     ),
-                                    itemCount: hierarchyController.hierarchyModel.OrganizationList.value.Live.length,
-                                    itemBuilder: (context, index) {
-                                      var org = hierarchyController.hierarchyModel.OrganizationList.value.Live[index];
-                                      return OrganizationCard(
-                                        name: org.organizationName ?? "",
-                                        id: org.organizationId ?? 0,
-                                        email: org.email ?? "",
-                                        imageBytes: org.organizationLogo!,
-                                        index: index,
-                                        data: hierarchyController.hierarchyModel.OrganizationList.value,
-                                        controller: hierarchyController,
-                                        isSelected: org.isSelected,
-                                        type: "LIVE",
-                                      );
-                                    },
+                                    child: PopupMenuButton<String>(
+                                      tooltip: '',
+                                      onSelected: (value) async {
+                                        if (value == 'link') {
+                                          print('Send link selected');
+                                          // Add your logic here
+                                        } else if (value == 'manual_onboard') {
+                                          widget.show_ManualOnboard_DialogBox(context);
+                                        }
+                                      },
+                                      itemBuilder: (context) => [
+                                        PopupMenuItem(
+                                          value: 'link',
+                                          child: Row(
+                                            children: [
+                                              Image.asset('assets/images/link.png', width: 20, height: 20),
+                                              const SizedBox(width: 10),
+                                              const Text('Send Link'),
+                                            ],
+                                          ),
+                                        ),
+                                        PopupMenuItem(
+                                          value: 'manual_onboard',
+                                          child: Row(
+                                            children: [
+                                              Image.asset('assets/images/addpeople.png', width: 20, height: 20),
+                                              const SizedBox(width: 10),
+                                              const Text('Manual Onboard'),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                        decoration: BoxDecoration(
+                                          color: Colors.orange, // Customize the button background color
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        child: const Text(
+                                          "Add Vendor",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ))
-                            // )
-                            : Center(
-                                child: Stack(
-                                  alignment: Alignment.topCenter,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 40),
-                                      child: Lottie.asset(
-                                        'assets/animations/JSON/emptycustomerlist.json',
-                                        // width: 264,
-                                        height: 150,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 204),
-                                      child: Text(
-                                        'No Live Organization Found',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.blueGrey[800],
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Expanded(
+                              child: hierarchyController.hierarchyModel.OrganizationList.value.Live.isNotEmpty
+                                  ? SizedBox(
+                                      // child: Padding(
+                                      //     padding: const EdgeInsets.all(2),
+                                      child: SingleChildScrollView(
+                                      child: SlideTransition(
+                                        position: hierarchyController.hierarchyModel.slideAnimation,
+                                        child: GridView.builder(
+                                          shrinkWrap: true,
+                                          physics: const NeverScrollableScrollPhysics(),
+                                          padding: const EdgeInsets.all(8.0),
+                                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: hierarchyController.hierarchyModel.Org_cardCount.value,
+                                            crossAxisSpacing: 30,
+                                            mainAxisSpacing: 30,
+                                          ),
+                                          itemCount: hierarchyController.hierarchyModel.OrganizationList.value.Live.length,
+                                          itemBuilder: (context, index) {
+                                            var org = hierarchyController.hierarchyModel.OrganizationList.value.Live[index];
+                                            return OrganizationCard(
+                                              name: org.organizationName ?? "",
+                                              id: org.organizationId ?? 0,
+                                              email: org.email ?? "",
+                                              imageBytes: org.organizationLogo!,
+                                              index: index,
+                                              data: hierarchyController.hierarchyModel.OrganizationList.value,
+                                              controller: hierarchyController,
+                                              isSelected: org.isSelected,
+                                              type: "LIVE",
+                                            );
+                                          },
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 244, bottom: 40),
-                                      child: Text(
-                                        'When you add live organization, they will appear here',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.blueGrey[400],
-                                          height: 1.4,
-                                        ),
+                                    ))
+                                  // )
+                                  : Center(
+                                      child: Stack(
+                                        alignment: Alignment.topCenter,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 40),
+                                            child: Lottie.asset(
+                                              'assets/animations/JSON/emptycustomerlist.json',
+                                              // width: 264,
+                                              height: 150,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 204),
+                                            child: Text(
+                                              'No Live Organization Found',
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.blueGrey[800],
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 244, bottom: 40),
+                                            child: Text(
+                                              'When you add live organization, they will appear here',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.blueGrey[400],
+                                                height: 1.4,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
+                            )
+                          ],
+                        ),
                       );
                     }),
                   ),
@@ -482,7 +595,7 @@ class _VendorListPageState extends State<VendorListPage> with SingleTickerProvid
                                               itemBuilder: (context, index) {
                                                 final item = items[index];
                                                 return Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
                                                   child: Container(
                                                     padding: const EdgeInsets.all(8),
                                                     decoration: BoxDecoration(
@@ -588,53 +701,53 @@ class _VendorListPageState extends State<VendorListPage> with SingleTickerProvid
       ),
     );
   }
-}
 
-String formatDateVoucher(DateTime date) {
-  return DateFormat('dd-MM-yyyy').format(date);
-}
+  String formatDateVoucher(DateTime date) {
+    return DateFormat('dd-MM-yyyy').format(date);
+  }
 
-Widget buildTextField(String label, TextEditingController controller, bool readOnly) {
-  return Padding(
-    padding: const EdgeInsets.only(top: 10, bottom: 10),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          flex: 2,
-          child: Text(
-            label,
-            style: const TextStyle(color: Primary_colors.Color9, fontSize: Primary_font_size.Text8),
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15),
-          child: Text(
-            "  : ",
-            style: TextStyle(color: Primary_colors.Color9, fontSize: Primary_font_size.Text8),
-          ),
-        ),
-        Expanded(
-          flex: 4,
-          child: TextFormField(
-            maxLines: null,
-            readOnly: readOnly,
-            controller: controller,
-            onChanged: (value) {}, // ✅ Avoids unnecessary Obx()
-            style: TextStyle(color: readOnly ? const Color.fromARGB(255, 167, 167, 167) : Primary_colors.Color1, fontSize: Primary_font_size.Text8),
-            decoration: InputDecoration(
-              fillColor: Colors.black,
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: readOnly ? Colors.white : Primary_colors.Color3, width: 2),
-              ),
-              enabledBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Color.fromARGB(255, 94, 94, 94), width: 1),
-              ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+  Widget buildTextField(String label, TextEditingController controller, bool readOnly) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              label,
+              style: const TextStyle(color: Primary_colors.Color9, fontSize: Primary_font_size.Text8),
             ),
           ),
-        ),
-      ],
-    ),
-  );
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            child: Text(
+              "  : ",
+              style: TextStyle(color: Primary_colors.Color9, fontSize: Primary_font_size.Text8),
+            ),
+          ),
+          Expanded(
+            flex: 4,
+            child: TextFormField(
+              maxLines: null,
+              readOnly: readOnly,
+              controller: controller,
+              onChanged: (value) {}, // ✅ Avoids unnecessary Obx()
+              style: TextStyle(color: readOnly ? const Color.fromARGB(255, 167, 167, 167) : Primary_colors.Color1, fontSize: Primary_font_size.Text8),
+              decoration: InputDecoration(
+                fillColor: Colors.black,
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: readOnly ? Colors.white : Primary_colors.Color3, width: 2),
+                ),
+                enabledBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromARGB(255, 94, 94, 94), width: 1),
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

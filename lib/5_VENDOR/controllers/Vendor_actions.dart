@@ -1,10 +1,8 @@
 import 'dart:io';
 
-
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/models/constants/Vendor_constants.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/Vendor_entities.dart';
-
 import 'package:ssipl_billing/API/invoker.dart';
 
 import '../../COMPONENTS-/Response_entities.dart';
@@ -14,6 +12,7 @@ class VendorController extends GetxController {
   final Invoker apiController = Get.find<Invoker>();
   // final VendorController vendorController = Get.find<VendorController>();
   var vendorfilteredModel = VendorModel();
+
   void addToVendorList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
       vendorModel.vendorList.add(Vendor.fromJson(value, i));
@@ -27,8 +26,6 @@ class VendorController extends GetxController {
     vendorfilteredModel.processvendorList.assignAll(vendorModel.processvendorList);
     // print('object');
   }
-
- 
 
   void addToProcessList(CMDlResponse value) {
     for (int i = 0; i < value.data.length; i++) {
@@ -55,8 +52,6 @@ class VendorController extends GetxController {
     vendorModel.pdfFile.value = value;
   }
 
-
- 
   void updateisAllSelected(bool value) {
     vendorModel.isAllSelected.value = value;
   }
@@ -94,22 +89,15 @@ class VendorController extends GetxController {
       vendorModel.processList.assignAll(vendorfilteredModel.processList);
       vendorModel.processvendorList.assignAll(vendorfilteredModel.processvendorList);
     } else {
-      var filteredProcesses = vendorfilteredModel.processList.where((process) =>
-          process.title.toLowerCase().contains(query.toLowerCase()) ||
-          process.vendor_name.toLowerCase().contains(query.toLowerCase()) ||
-          process.Process_date.toLowerCase().contains(query.toLowerCase()));
+      var filteredProcesses = vendorfilteredModel.processList.where((process) => process.title.toLowerCase().contains(query.toLowerCase()) || process.vendor_name.toLowerCase().contains(query.toLowerCase()) || process.Process_date.toLowerCase().contains(query.toLowerCase()));
 
-      var filteredVendors = vendorfilteredModel.processvendorList.where((vendor) =>
-          vendor.vendorName.toLowerCase().contains(query.toLowerCase()) ||
-          vendor.vendor_phoneno.toLowerCase().contains(query.toLowerCase()) ||
-          vendor.vendor_gstno.toLowerCase().contains(query.toLowerCase()));
+      var filteredVendors = vendorfilteredModel.processvendorList.where((vendor) => vendor.vendorName.toLowerCase().contains(query.toLowerCase()) || vendor.vendor_phoneno.toLowerCase().contains(query.toLowerCase()) || vendor.vendor_gstno.toLowerCase().contains(query.toLowerCase()));
 
       vendorModel.processList.assignAll(filteredProcesses);
       vendorModel.processvendorList.assignAll(filteredVendors);
     }
   }
 
- 
   void updateVendorData(CMDmResponse value) {
     vendorModel.vendordata.value = Vendordata.fromJson(value);
   }
@@ -129,7 +117,6 @@ class VendorController extends GetxController {
     vendorModel.CCemailController.value.clear();
   }
 
- 
   // void resetData() {
   //   // vendorModel.vendorList.clear();
   //   // vendorModel.processList.clear();
@@ -156,7 +143,7 @@ class VendorController extends GetxController {
     vendorModel.showvendorprocess.value = null;
     vendorModel.vendorId.value = null;
     vendorModel.pdfFile.value = null;
-   
+
     vendorModel.selectedIndices.clear();
     vendorModel.isAllSelected.value = false;
     vendorModel.type.value = 0;

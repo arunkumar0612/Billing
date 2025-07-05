@@ -10,16 +10,8 @@ class BasicTextfield extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextEditingController controller;
   final IconData? icon;
-  const BasicTextfield({
-    super.key,
-    required this.digitsOnly,
-    required this.width,
-    required this.readonly,
-    this.text,
-    required this.controller,
-    this.validator,
-    this.icon,
-  });
+  final ValueChanged<String>? onChanged;
+  const BasicTextfield({super.key, required this.digitsOnly, required this.width, required this.readonly, this.text, required this.controller, this.validator, this.icon, this.onChanged});
   // FilteringTextInputFormatter digitsOnly = FilteringTextInputFormatter.digitsOnly;
   @override
   Widget build(BuildContext context) {

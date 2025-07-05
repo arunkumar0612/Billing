@@ -230,6 +230,27 @@ class PDFfileData {
   }
 }
 
+class uploadedFileInfo {
+  final String type;
+  final String path;
+
+  uploadedFileInfo({required this.type, required this.path});
+
+  factory uploadedFileInfo.fromJson(CMDmResponse json) {
+    return uploadedFileInfo(
+      type: json.data['type'] as String,
+      path: json.data['path'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'path': path,
+      'type': type,
+    };
+  }
+}
+
 class Vendordata {
   final String? totalamount;
   final String? paidamount;

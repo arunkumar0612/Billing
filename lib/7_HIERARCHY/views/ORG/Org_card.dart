@@ -18,17 +18,7 @@ class OrganizationCard extends StatefulWidget with HierarchyService {
   final HierarchyController controller;
   final bool isSelected;
   final String type;
-  OrganizationCard(
-      {super.key,
-      required this.name,
-      required this.email,
-      required this.id,
-      required this.imageBytes,
-      required this.index,
-      required this.data,
-      required this.controller,
-      required this.isSelected,
-      required this.type});
+  OrganizationCard({super.key, required this.name, required this.email, required this.id, required this.imageBytes, required this.index, required this.data, required this.controller, required this.isSelected, required this.type});
 
   @override
   State<OrganizationCard> createState() => _OrganizationCardState();
@@ -173,9 +163,7 @@ class _OrganizationCardState extends State<OrganizationCard> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            widget.type == "LIVE"
-                                ? widget.controller.hierarchyModel.OrganizationList.value.Live[widget.index].address!
-                                : widget.controller.hierarchyModel.OrganizationList.value.Demo[widget.index].address!,
+                            widget.type == "LIVE" ? widget.controller.hierarchyModel.OrganizationList.value.Live[widget.index].address! : widget.controller.hierarchyModel.OrganizationList.value.Demo[widget.index].address!,
                             style: const TextStyle(fontSize: 8),
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis, // Truncate when resizing

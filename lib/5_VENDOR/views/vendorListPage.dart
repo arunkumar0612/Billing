@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:glassmorphism/glassmorphism.dart';
-import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/VendorList_actions.dart';
 // import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';

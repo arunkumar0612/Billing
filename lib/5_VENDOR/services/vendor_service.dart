@@ -1,11 +1,14 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/RFQ_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Generate_RFQ/generateRFQ.dart';
+import 'package:ssipl_billing/API/api.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
 import 'package:ssipl_billing/COMPONENTS-/Loading.dart';
+import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
@@ -21,6 +24,35 @@ mixin VendorServices {
   final VendorController vendorController = Get.find<VendorController>();
   final vendor_RfqController rfqController = Get.find<vendor_RfqController>();
   final loader = LoadingOverlay();
+  Future<void> Get_vendorProcessList(int vendorid) async {
+    try {
+      Map<String, dynamic>? response = await apiController.GetbyQueryString({"vendorid": vendorid, "listtype": 1}, API.vendor_getprocesslist_API);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          // await Basic_dialog(context: context,showCancel: false, title: 'Process List', content: "Process List fetched successfully", onOk: () {});
+          vendorController.vendorModel.processList.clear();
+          vendorController.addToProcessList(value);
+          // rfqController.search(rfqController.rfqModel.searchQuery.value);
+        } else {
+          if (kDebugMode) {
+            print("error : ${value.message}");
+          }
+          // await Basic_dialog(context: context, showCancel: false, title: 'Process List Error', content: value.message ?? "", onOk: () {});
+        }
+      } else {
+        if (kDebugMode) {
+          print("error : ${"please contact administration"}");
+        }
+        // Basic_dialog(context: context, showCancel: false, title: "SERVER DOWN", content: "Please contact administration!");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("error : $e");
+      }
+      // Basic_dialog(context: context, showCancel: false, title: "ERROR", content: "$e");
+    }
+  }
 
   dynamic GenerateRfq_dialougebox(context) async {
     await showDialog(
@@ -101,7 +133,7 @@ mixin VendorServices {
     // vendorController.resetData();
     vendorController.updateshowvendorprocess(null);
     vendorController.updatevendorId(0);
-
+    await Get_vendorProcessList(0);
     vendorController.update();
   }
 }

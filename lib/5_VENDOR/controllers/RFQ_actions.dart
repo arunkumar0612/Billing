@@ -125,10 +125,6 @@ class vendor_RfqController extends GetxController {
     rfqModel.product_editIndex.value = index;
   }
 
-  void setProcessID(int processid) {
-    rfqModel.processID.value = processid;
-  }
-
   void updateSelectedPdf(File file) {
     rfqModel.selectedPdf.value = file;
   }
@@ -352,18 +348,15 @@ class vendor_RfqController extends GetxController {
     }
   }
 
-  void add_productSuggestion(List<dynamic> suggestionList) {
-    for (var item in suggestionList) {
-      rfqModel.Rfq_productSuggestion.add(ProductSuggestion.fromJson(item));
-    }
-  }
+  // void add_productSuggestion(List<dynamic> suggestionList) {
+  //   for (var item in suggestionList) {
+  //     rfqModel.Rfq_productSuggestion.add(ProductSuggestion.fromJson(item));
+  //   }
+  // }
 
   void add_noteSuggestion(Map<String, dynamic> suggestionList) {
     for (var item in suggestionList['notes']) {
       rfqModel.noteSuggestion.add(item);
-      if (kDebugMode) {
-        print(rfqModel.noteSuggestion[0]);
-      }
     }
   }
 
@@ -408,31 +401,27 @@ class vendor_RfqController extends GetxController {
     // // }
   }
 
-  void on_vendorSelected() {}
+  // void on_vendorSelected() {}
   void update_vendorList(CMDlResponse value) {
     rfqModel.vendorList.clear();
     for (int i = 0; i < value.data.length; i++) {
-      rfqModel.vendorList.add(VendorList.fromJson(value, i));
-      if (kDebugMode) {
-        print(rfqModel.vendorList);
-      }
-    }
-    if (kDebugMode) {
-      print(rfqModel.vendorList);
+      rfqModel.vendorList.add(VendorList.fromJson(value.data[i]));
     }
   }
 
   void update_vendorCredentials_onSelect(VendorList selectedVendor) {
+    rfqModel.GSTIN_Controller.value.text = selectedVendor.gstNumber;
+    rfqModel.PAN_Controller.value.text = selectedVendor.panNumber;
+    rfqModel.contactPerson_Controller.value.text = selectedVendor.contactPersonName;
     rfqModel.vendorName.value = selectedVendor.vendorName;
-    rfqModel.vendorID.value = selectedVendor.vendorID;
-    rfqModel.AddressController.value.text = selectedVendor.vendorAddress;
-    rfqModel.emailController.value.text = selectedVendor.vendorMail;
-    rfqModel.phoneController.value.text = selectedVendor.vendorPhoneNo;
+    rfqModel.vendorID.value = selectedVendor.vendorId;
+    rfqModel.AddressController.value.text = selectedVendor.address;
+    rfqModel.emailController.value.text = selectedVendor.email;
+    rfqModel.phoneController.value.text = selectedVendor.contactPersonPhone;
   }
 
   bool generate_Datavalidation() {
     return (rfqModel.TitleController.value.text.isEmpty ||
-        rfqModel.processID.value == null ||
         rfqModel.vendorID.value == null ||
         rfqModel.vendorName.value == null ||
         rfqModel.AddressController.value.text.isEmpty ||
@@ -442,7 +431,6 @@ class vendor_RfqController extends GetxController {
 
   bool postDatavalidation() {
     return (rfqModel.TitleController.value.text.isEmpty ||
-        rfqModel.processID.value == null ||
         rfqModel.vendorID.value == null ||
         rfqModel.vendorName.value == null ||
         rfqModel.AddressController.value.text.isEmpty ||
@@ -451,6 +439,14 @@ class vendor_RfqController extends GetxController {
         rfqModel.Rfq_products.isEmpty ||
         rfqModel.Rfq_noteList.isEmpty);
   }
+
+  void add_vendorProduct_suggestions(CMDlResponse value) {
+    rfqModel.VendorProduct_sugestions.clear();
+    for (int i = 0; i < value.data.length; i++) {
+      rfqModel.VendorProduct_sugestions.add(VendorProduct_suggestions.fromJson(value.data[i]));
+    }
+  }
+
   // If any one is empty or null, then it returns true
 
   // void resetData() {
@@ -499,7 +495,6 @@ class vendor_RfqController extends GetxController {
   void resetData() {
     // TAB, PROCESS & GENERAL
     rfqModel.tabController.value = null;
-    rfqModel.processID.value = null;
     rfqModel.vendorID.value = null;
     rfqModel.vendorName.value = null;
     rfqModel.Rfq_no.value = null;
@@ -508,6 +503,10 @@ class vendor_RfqController extends GetxController {
 
     // DETAILS
     rfqModel.TitleController.value.clear();
+    rfqModel.vendorID.value = null;
+    rfqModel.GSTIN_Controller.value.clear();
+    rfqModel.PAN_Controller.value.clear();
+    rfqModel.contactPerson_Controller.value.clear();
     rfqModel.AddressController.value.clear();
     rfqModel.detailsKey.value = GlobalKey<FormState>();
 
@@ -517,7 +516,7 @@ class vendor_RfqController extends GetxController {
     rfqModel.productNameController.value.clear();
     rfqModel.quantityController.value.clear();
     rfqModel.Rfq_products.clear();
-    rfqModel.Rfq_productSuggestion.clear();
+    rfqModel.VendorProduct_sugestions.clear();
 
     // NOTES
     rfqModel.noteformKey.value = GlobalKey<FormState>();

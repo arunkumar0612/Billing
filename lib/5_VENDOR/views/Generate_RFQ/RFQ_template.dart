@@ -3,8 +3,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ssipl_billing/4_SALES/controllers/RFQ_actions.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/product_entities.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/RFQ_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/models/entities/product_entities.dart';
 import 'package:ssipl_billing/UTILS/helpers/support_functions.dart';
 
 Future<Uint8List> generate_RFQ(
@@ -50,7 +50,7 @@ class Request_for_quote {
       required this.products
       // required this.items,
       });
-  final RfqController rfqController = Get.find<RfqController>();
+  final vendor_RfqController rfqController = Get.find<vendor_RfqController>();
 
   String company_addr_name = "";
   String company_email = "";

@@ -12,7 +12,6 @@ import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 // ignore: must_be_immutable
 class PostInvoice extends StatefulWidget with PostServices {
@@ -72,7 +71,7 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                         child: Stack(
                           children: [
                             invoiceController.invoiceModel.selectedPdf.value != null
-                                ? SfPdfViewer.file(invoiceController.invoiceModel.selectedPdf.value!)
+                                ? PDFviewonly.dialogWidget(invoiceController.invoiceModel.selectedPdf.value!)
                                 : Container(
                                     color: Colors.white,
                                     child: const Column(
@@ -116,7 +115,7 @@ class PostInvoiceState extends State<PostInvoice> with SingleTickerProviderState
                         ),
                         onDoubleTap: () {
                           if (invoiceController.invoiceModel.selectedPdf.value != null) {
-                            PDFviewonly(context, invoiceController.invoiceModel.selectedPdf.value!);
+                            PDFviewonly.show(context, invoiceController.invoiceModel.selectedPdf.value!);
                             // widget.showReadablePdf(context);
                           } else {
                             Get.snackbar("No data", "Maximizing is restricted!");

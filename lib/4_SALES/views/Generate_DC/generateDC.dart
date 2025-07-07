@@ -11,7 +11,6 @@ import 'package:ssipl_billing/4_SALES/views/Generate_DC/DC_products.dart';
 import 'package:ssipl_billing/4_SALES/views/Generate_DC/post_DC.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class GenerateDc extends StatefulWidget with DcdetailsService {
   GenerateDc({super.key, required this.eventID, required this.eventName});
@@ -64,7 +63,7 @@ class _GenerateDcState extends State<GenerateDc> with SingleTickerProviderStateM
                     child: GestureDetector(
                       child: Stack(
                         children: [
-                          if (salesController.salesModel.pdfFile.value != null) SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
+                          if (salesController.salesModel.pdfFile.value != null) PDFviewonly.dialogWidget(salesController.salesModel.pdfFile.value!),
                           Align(
                             alignment: AlignmentDirectional.bottomEnd,
                             child: Padding(
@@ -79,7 +78,7 @@ class _GenerateDcState extends State<GenerateDc> with SingleTickerProviderStateM
                         ],
                       ),
                       onDoubleTap: () {
-                        PDFviewonly(context, salesController.salesModel.pdfFile.value!);
+                        PDFviewonly.show(context, salesController.salesModel.pdfFile.value!);
                         // _showReadablePdf();
                       },
                     ),

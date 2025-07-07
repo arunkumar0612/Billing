@@ -90,7 +90,7 @@ class RequiredData {
 
   factory RequiredData.fromJson(CMDmResponse json) {
     return RequiredData(
-      eventnumber: json.data['eventnumber'] as String,
+      eventnumber: json.data['rfq_id'] as String,
       // title: json.data['title'] as String,
       // name: json.data['client_addressname'] as String,
       // emailId: json.data['emailid'] as String,
@@ -113,10 +113,13 @@ class RequiredData {
 
 class Post_Rfq {
   String? title;
-  int? processid;
+
   int? vendorID;
   String? vendorName;
   String? vendorAddress;
+  String? GSTIN;
+  String? PAN;
+  String? Contact_person;
   String? emailId;
   String? phoneNo;
   String? gst;
@@ -132,10 +135,12 @@ class Post_Rfq {
 
   Post_Rfq({
     required this.title,
-    required this.processid,
     required this.vendorID,
     required this.vendorName,
     required this.vendorAddress,
+    required this.GSTIN,
+    required this.PAN,
+    required this.Contact_person,
     required this.emailId,
     required this.phoneNo,
     // required this.gst,
@@ -150,10 +155,12 @@ class Post_Rfq {
 
   factory Post_Rfq.fromJson({
     required String title,
-    required int processid,
     required int vendorID,
     required String vendorName,
     required String vendorAddress,
+    required String GSTIN,
+    required String PAN,
+    required String Contact_person,
     required String emailId,
     required String phoneNo,
     // required String gst,
@@ -167,7 +174,9 @@ class Post_Rfq {
   }) {
     return Post_Rfq(
       title: title,
-      processid: processid,
+      GSTIN: GSTIN,
+      PAN: PAN,
+      Contact_person: Contact_person,
       vendorID: vendorID,
       vendorName: vendorName,
       vendorAddress: vendorAddress,
@@ -189,7 +198,9 @@ class Post_Rfq {
     return {
       "vendorname": vendorName,
       "vendorid": vendorID,
-      "processid": processid,
+      "GSTIN": GSTIN,
+      "PAN": PAN,
+      "Contact_person": Contact_person,
       "vendoraddress": vendorAddress,
       "product": product?.map((item) => item.toJson()).toList(),
       "notes": notes,
@@ -241,54 +252,180 @@ class ProductSuggestion {
   }
 }
 
+/// Represents a Vendor entity with details like contact, bank, and certification information.
 class VendorList {
-  int vendorID;
+  int vendorId;
   String vendorName;
-  String vendorMail;
-  String vendorPhoneNo;
-  String vendorGstNo;
-  String vendorAddress;
-  String? logoPath;
+  String address;
+  String state;
+  String pincode;
+  String contactPersonName;
+  String contactPersonDesignation;
+  String contactPersonPhone;
+  String email;
+  String businessType;
+  int yearOfEstablishment;
+  String gstNumber;
+  String panNumber;
+  String annualTurnover;
+  String productsServices;
+  String hsnSacCode;
+  String description;
+  String bankName;
+  String branchName;
+  String accountNumber;
+  String ifscCode;
+  String? isoCertification;
+  String? otherCertifications;
+  String registrationCertificatePath;
+  String panUploadPath;
+  String cancelledChequePath;
+  String createdAt;
+  String updatedAt;
+  String logoPath;
 
   VendorList({
-    required this.vendorID,
+    required this.vendorId,
     required this.vendorName,
-    required this.vendorMail,
-    required this.vendorPhoneNo,
-    required this.vendorGstNo,
-    required this.vendorAddress,
-    this.logoPath,
+    required this.address,
+    required this.state,
+    required this.pincode,
+    required this.contactPersonName,
+    required this.contactPersonDesignation,
+    required this.contactPersonPhone,
+    required this.email,
+    required this.businessType,
+    required this.yearOfEstablishment,
+    required this.gstNumber,
+    required this.panNumber,
+    required this.annualTurnover,
+    required this.productsServices,
+    required this.hsnSacCode,
+    required this.description,
+    required this.bankName,
+    required this.branchName,
+    required this.accountNumber,
+    required this.ifscCode,
+    this.isoCertification,
+    this.otherCertifications,
+    required this.registrationCertificatePath,
+    required this.panUploadPath,
+    required this.cancelledChequePath,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.logoPath,
   });
 
-  factory VendorList.fromJson(CMDlResponse json, i) {
+  /// Creates a Vendor object from a JSON map.
+  factory VendorList.fromJson(Map<String, dynamic> json) {
     return VendorList(
-      vendorID: json.data[i]['vendor_id'],
-      vendorName: json.data[i]['vendor_name'],
-      vendorMail: json.data[i]['vendor_mail'],
-      vendorPhoneNo: json.data[i]['vendor_phoneno'],
-      vendorGstNo: json.data[i]['vendor_gstno'],
-      vendorAddress: json.data[i]['vendor_address'],
-      logoPath: json.data[i]['Logo_path'],
+      vendorId: json['vendorid'],
+      vendorName: json['vendor_name'],
+      address: json['address'],
+      state: json['state'],
+      pincode: json['pincode'],
+      contactPersonName: json['contact_person_name'],
+      contactPersonDesignation: json['contact_person_designation'],
+      contactPersonPhone: json['contact_person_phone'],
+      email: json['email'],
+      businessType: json['business_type'],
+      yearOfEstablishment: json['year_of_establishment'],
+      gstNumber: json['gst_number'],
+      panNumber: json['pan_number'],
+      annualTurnover: json['annual_turnover'],
+      productsServices: json['products_services'],
+      hsnSacCode: json['hsn_sac_code'],
+      description: json['description'],
+      bankName: json['bank_name'],
+      branchName: json['branch_name'],
+      accountNumber: json['account_number'],
+      ifscCode: json['ifsc_code'],
+      isoCertification: json['iso_certification'],
+      otherCertifications: json['other_certifications'],
+      registrationCertificatePath: json['registration_certificate_path'],
+      panUploadPath: json['pan_upload_path'],
+      cancelledChequePath: json['cancelled_cheque_path'],
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+      logoPath: json['logo_path'],
     );
   }
 
+  /// Converts the Vendor object to a JSON map.
   Map<String, dynamic> toJson() {
     return {
-      'vendor_id': vendorID,
+      'vendorid': vendorId,
       'vendor_name': vendorName,
-      'vendor_mail': vendorMail,
-      'vendor_phoneno': vendorPhoneNo,
-      'vendor_gstno': vendorGstNo,
-      'vendor_address': vendorAddress,
-      'Logo_path': logoPath,
+      'address': address,
+      'state': state,
+      'pincode': pincode,
+      'contact_person_name': contactPersonName,
+      'contact_person_designation': contactPersonDesignation,
+      'contact_person_phone': contactPersonPhone,
+      'email': email,
+      'business_type': businessType,
+      'year_of_establishment': yearOfEstablishment,
+      'gst_number': gstNumber,
+      'pan_number': panNumber,
+      'annual_turnover': annualTurnover,
+      'products_services': productsServices,
+      'hsn_sac_code': hsnSacCode,
+      'description': description,
+      'bank_name': bankName,
+      'branch_name': branchName,
+      'account_number': accountNumber,
+      'ifsc_code': ifscCode,
+      'iso_certification': isoCertification,
+      'other_certifications': otherCertifications,
+      'registration_certificate_path': registrationCertificatePath,
+      'pan_upload_path': panUploadPath,
+      'cancelled_cheque_path': cancelledChequePath,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+      'logo_path': logoPath,
     };
   }
+}
 
-  static List<VendorList> fromJsonList(List<dynamic> jsonList, i) {
-    return jsonList.map((json) => VendorList.fromJson(json, i)).toList();
+/// Represents a product or service offered by a vendor.
+class VendorProduct_suggestions {
+  int id;
+  int vendorId;
+  String productName;
+  String gstPercent;
+  String hsn;
+  String lastKnownPrice;
+
+  VendorProduct_suggestions({
+    required this.id,
+    required this.vendorId,
+    required this.productName,
+    required this.gstPercent,
+    required this.hsn,
+    required this.lastKnownPrice,
+  });
+
+  /// Creates a VendorProduct object from a JSON map.
+  factory VendorProduct_suggestions.fromJson(Map<String, dynamic> json) {
+    return VendorProduct_suggestions(
+      id: json['id'],
+      vendorId: json['vendorid'],
+      productName: json['productname'],
+      gstPercent: json['gstpercent'],
+      hsn: json['hsn'],
+      lastKnownPrice: json['lastknown_price'],
+    );
   }
 
-  static List<Map<String, dynamic>> toJsonList(List<VendorList> vendors) {
-    return vendors.map((vendor) => vendor.toJson()).toList();
+  /// Converts the VendorProduct object to a JSON map.
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'vendorid': vendorId,
+      'productname': productName,
+      'gstpercent': gstPercent,
+      'hsn': hsn,
+      'lastknown_price': lastKnownPrice,
+    };
   }
 }

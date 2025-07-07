@@ -9,7 +9,6 @@ import 'package:ssipl_billing/4_SALES/views/Generate_Invoice/invoice_products.da
 import 'package:ssipl_billing/4_SALES/views/Generate_Invoice/post_Invoice.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../controllers/Invoice_actions.dart';
 
@@ -64,7 +63,7 @@ class _GenerateInvoiceState extends State<GenerateInvoice> with SingleTickerProv
                     child: GestureDetector(
                       child: Stack(
                         children: [
-                          if (salesController.salesModel.pdfFile.value != null) SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
+                          if (salesController.salesModel.pdfFile.value != null) PDFviewonly.dialogWidget(salesController.salesModel.pdfFile.value!),
                           Align(
                             alignment: AlignmentDirectional.bottomEnd,
                             child: Padding(
@@ -79,7 +78,7 @@ class _GenerateInvoiceState extends State<GenerateInvoice> with SingleTickerProv
                         ],
                       ),
                       onDoubleTap: () {
-                        PDFviewonly(context, salesController.salesModel.pdfFile.value!);
+                        PDFviewonly.show(context, salesController.salesModel.pdfFile.value!);
                         // _showReadablePdf();
                       },
                     ),

@@ -28,10 +28,9 @@ class _GenerateRfqState extends State<GenerateRfq> with SingleTickerProviderStat
     super.initState();
     // GenerateRfq._tabController = ;
     rfqController.initializeTabController(TabController(length: 4, vsync: this));
-    // widget.get_VendorList(context, 0);
+    widget.get_VendorList(context);
     widget.get_requiredData(context);
-    // widget.get_productSuggestionList(context);
-    // widget.get_noteSuggestionList(context);
+    widget.get_noteSuggestionList(context);
   }
 
   @override
@@ -65,7 +64,7 @@ class _GenerateRfqState extends State<GenerateRfq> with SingleTickerProviderStat
                 //     child: GestureDetector(
                 //       child: Stack(
                 //         children: [
-                //           if (vendorController.vendorModel.pdfFile.value != null) SfPdfViewer.file(vendorController.vendorModel.pdfFile.value!),
+                //           if (vendorController.vendorModel.pdfFile.value != null)PDFviewonly.dialogWidget(vendorController.vendorModel.pdfFile.value!),
                 //           Align(
                 //             alignment: AlignmentDirectional.bottomEnd,
                 //             child: Padding(

@@ -19,8 +19,8 @@ class Validators {
     return null;
   }
 
-  static dynamic GST_validator(value) {
-    if (value == null || value.isEmpty) {
+  static dynamic GST_validator(String? value) {
+    if (value == null || value.trim().isEmpty) {
       return 'Please enter GST number';
     }
     if (!RegExp(r'^[0-3][0-9][A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[A-Z0-9]$').hasMatch(value)) {

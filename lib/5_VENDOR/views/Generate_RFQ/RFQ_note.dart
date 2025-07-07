@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:ssipl_billing/4_SALES/controllers/RFQ_actions.dart';
-import 'package:ssipl_billing/4_SALES/services/RFQ_services/RFQ_Notes_service.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/RFQ_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/services/RFQ_services/RFQ_Notes_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
@@ -15,7 +15,7 @@ class RfqNote extends StatefulWidget with RfqnotesService {
 }
 
 class _RfqNoteState extends State<RfqNote> {
-  final RfqController rfqController = Get.find<RfqController>();
+  final vendor_RfqController rfqController = Get.find<vendor_RfqController>();
 
   Widget Rfq_noteLists() {
     return ListView.builder(

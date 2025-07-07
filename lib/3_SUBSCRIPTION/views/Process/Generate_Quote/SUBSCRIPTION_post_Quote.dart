@@ -14,7 +14,6 @@ import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 // ignore: must_be_immutable
 class SUBSCRIPTION_PostQuote extends StatefulWidget with SUBSCRIPTION_QuotePostServices {
@@ -80,7 +79,7 @@ class SUBSCRIPTION_PostQuoteState extends State<SUBSCRIPTION_PostQuote> with Sin
                         child: Stack(
                           children: [
                             quoteController.quoteModel.selectedPdf.value != null
-                                ? SfPdfViewer.file(quoteController.quoteModel.selectedPdf.value!)
+                                ? PDFviewonly.dialogWidget(quoteController.quoteModel.selectedPdf.value!)
                                 : Container(
                                     color: Colors.white,
                                     child: const Column(
@@ -124,7 +123,7 @@ class SUBSCRIPTION_PostQuoteState extends State<SUBSCRIPTION_PostQuote> with Sin
                         ),
                         onDoubleTap: () {
                           if (quoteController.quoteModel.selectedPdf.value != null) {
-                            PDFviewonly(context, quoteController.quoteModel.selectedPdf.value!);
+                            PDFviewonly.show(context, quoteController.quoteModel.selectedPdf.value!);
                             // widget.showReadablePdf(context);
                           } else {
                             Get.snackbar("No data", "Maximizing is restricted!");

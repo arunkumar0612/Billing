@@ -2844,7 +2844,7 @@ class _Sales_ClientState extends State<Sales_Client> with TickerProviderStateMix
 
                                                 File? file = salesController.salesModel.custom_pdfFile.value;
 
-                                                PDFviewonly(context, file);
+                                                PDFviewonly.show(context, file);
                                               },
                                               child: Image.asset(height: 40, 'assets/images/pdfdownload.png'),
                                             ),

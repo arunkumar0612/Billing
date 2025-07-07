@@ -7,7 +7,6 @@ import 'package:ssipl_billing/4_SALES/services/Quotation_services/QuoteDetails_s
 import 'package:ssipl_billing/4_SALES/views/Generate_Quote/post_Quote.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../controllers/Quote_actions.dart';
 import 'quote_details.dart';
@@ -65,7 +64,7 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
                     child: GestureDetector(
                       child: Stack(
                         children: [
-                          SfPdfViewer.file(salesController.salesModel.pdfFile.value!),
+                          PDFviewonly.dialogWidget(salesController.salesModel.pdfFile.value!),
                           Align(
                             alignment: AlignmentDirectional.bottomEnd,
                             child: Padding(
@@ -80,7 +79,7 @@ class _GenerateQuoteState extends State<GenerateQuote> with SingleTickerProvider
                         ],
                       ),
                       onDoubleTap: () {
-                        PDFviewonly(context, salesController.salesModel.pdfFile.value!);
+                        PDFviewonly.show(context, salesController.salesModel.pdfFile.value!);
                         // _showReadablePdf();
                       },
                     ),

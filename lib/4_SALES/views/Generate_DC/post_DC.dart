@@ -13,7 +13,6 @@ import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 // ignore: must_be_immutable
 class PostDc extends StatefulWidget with PostServices {
@@ -153,7 +152,7 @@ class PostDcState extends State<PostDc> with SingleTickerProviderStateMixin {
                         child: Stack(
                           children: [
                             dcController.dcModel.selectedPdf.value != null
-                                ? SfPdfViewer.file(dcController.dcModel.selectedPdf.value!)
+                                ? PDFviewonly.dialogWidget(dcController.dcModel.selectedPdf.value!)
                                 : Container(
                                     color: Colors.white,
                                     child: const Column(
@@ -197,7 +196,7 @@ class PostDcState extends State<PostDc> with SingleTickerProviderStateMixin {
                         ),
                         onDoubleTap: () {
                           if (dcController.dcModel.selectedPdf.value != null) {
-                            PDFviewonly(context, dcController.dcModel.selectedPdf.value!);
+                            PDFviewonly.show(context, dcController.dcModel.selectedPdf.value!);
                             // widget.showReadablePdf(context);
                           } else {
                             Get.snackbar("No data", "Maximizing is restricted!");

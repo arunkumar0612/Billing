@@ -46,7 +46,7 @@ mixin RfqdetailsService {
 
   void get_noteSuggestionList(context) async {
     try {
-      Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getNote_SUGG_List);
+      Map<String, dynamic>? response = await apiController.GetbyToken(API.vendor_getNote_SUGG_List);
 
       if (kDebugMode) {
         print(response);
@@ -78,7 +78,9 @@ mixin RfqdetailsService {
     }
   }
 
-  void get_VendorList(context, int org_id) async {
+  void get_VendorList(
+    context,
+  ) async {
     try {
       Map<String, dynamic> body = {"vendorid": 0};
       Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.fetch_vendorList);
@@ -102,38 +104,38 @@ mixin RfqdetailsService {
     }
   }
 
-  void get_productSuggestionList(context) async {
-    try {
-      Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getProduct_SUGG_List);
+  // void get_productSuggestionList(context) async {
+  //   try {
+  //     Map<String, dynamic>? response = await apiController.GetbyToken(API.sales_getProduct_SUGG_List);
 
-      if (response?['statusCode'] == 200) {
-        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
-        if (value.code) {
-          rfqController.add_productSuggestion(value.data);
-        } else {
-          await Error_dialog(
-            context: context,
-            title: 'PRE - LOADER',
-            content: value.message ?? "",
-            onOk: () {},
-          );
-          Navigator.of(context).pop();
-        }
-      } else {
-        Error_dialog(
-          context: context,
-          title: "SERVER DOWN",
-          content: "Please contact administration!",
-        );
-        Navigator.of(context).pop();
-      }
-    } catch (e) {
-      Error_dialog(
-        context: context,
-        title: "ERROR",
-        content: "$e",
-      );
-      Navigator.of(context).pop();
-    }
-  }
+  //     if (response?['statusCode'] == 200) {
+  //       CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+  //       if (value.code) {
+  //         rfqController.add_productSuggestion(value.data);
+  //       } else {
+  //         await Error_dialog(
+  //           context: context,
+  //           title: 'PRE - LOADER',
+  //           content: value.message ?? "",
+  //           onOk: () {},
+  //         );
+  //         Navigator.of(context).pop();
+  //       }
+  //     } else {
+  //       Error_dialog(
+  //         context: context,
+  //         title: "SERVER DOWN",
+  //         content: "Please contact administration!",
+  //       );
+  //       Navigator.of(context).pop();
+  //     }
+  //   } catch (e) {
+  //     Error_dialog(
+  //       context: context,
+  //       title: "ERROR",
+  //       content: "$e",
+  //     );
+  //     Navigator.of(context).pop();
+  //   }
+  // }
 }

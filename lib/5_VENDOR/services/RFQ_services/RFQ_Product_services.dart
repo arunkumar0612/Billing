@@ -1,6 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/RFQ_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/product_entities.dart';
+import 'package:ssipl_billing/API/api.dart';
+import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
+import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
+import 'package:ssipl_billing/UTILS/helpers/basicAPI_functions.dart';
 
 mixin RfqproductService {
   final vendor_RfqController rfqController = Get.find<vendor_RfqController>();
@@ -9,17 +14,42 @@ mixin RfqproductService {
     // rfqController.rfqModel.hsnController.value.clear();
     // rfqController.rfqModel.priceController.value.clear();
     rfqController.rfqModel.quantityController.value.clear();
+    rfqController.rfqModel.hsnController.value.clear();
     // rfqController.rfqModel.gstController.value.clear();
+  }
+
+  void get_ProductsSuggestion(context) async {
+    try {
+      Map<String, dynamic> body = {"vendorid": rfqController.rfqModel.vendorID.value};
+      Map<String, dynamic>? response = await apiController.GetbyQueryString(body, API.vendor_productsSuggestion);
+      if (response?['statusCode'] == 200) {
+        CMDlResponse value = CMDlResponse.fromJson(response ?? {});
+        if (value.code) {
+          rfqController.add_vendorProduct_suggestions(value);
+          // rfqController.update_vendorList(value);
+          // await Basic_dialog(context: context,showCancel: false, title: 'Organization List', content: value.message!, onOk: () {});
+          // clientreqController.update_CompanyList(value);
+        } else {
+          await Error_dialog(context: context, title: 'Fetching Vendor Products Error', content: value.message ?? "", onOk: () {});
+          Navigator.of(context).pop();
+        }
+      } else {
+        Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
+        Navigator.of(context).pop();
+      }
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+      Navigator.of(context).pop();
+    }
   }
 
   void addproduct(context) {
     if (rfqController.rfqModel.productKey.value.currentState?.validate() ?? false) {
       // ignore: unrelated_type_equality_checks
-      bool exists = rfqController.rfqModel.Rfq_products.any((product) =>
-          product.productName == rfqController.rfqModel.productNameController.value.text &&
+      bool exists = rfqController.rfqModel.Rfq_products.any((product) => product.productName == rfqController.rfqModel.productNameController.value.text
           // ignore: unrelated_type_equality_checks
-          // product.hsn == rfqController.rfqModel.hsnController.value.text &&
-          product.quantity == int.parse(rfqController.rfqModel.quantityController.value.text));
+
+          );
 
       if (exists) {
         Get.snackbar("Product", "This product already exists.");

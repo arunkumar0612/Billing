@@ -8,7 +8,6 @@ import 'package:ssipl_billing/3_SUBSCRIPTION/views/Process/Generate_Quote/SUBSCR
 import 'package:ssipl_billing/3_SUBSCRIPTION/views/Process/Generate_Quote/SUBSCRIPTION_quote_package.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../../controllers/SUBSCRIPTION_Quote_actions.dart';
 import 'SUBSCRIPTION_quote_details.dart';
@@ -65,7 +64,7 @@ class _SUBSCRIPTION_GenerateQuoteState extends State<SUBSCRIPTION_GenerateQuote>
                   child: GestureDetector(
                     child: Stack(
                       children: [
-                        if (subscriptionController.subscriptionModel.pdfFile.value != null) SfPdfViewer.file(subscriptionController.subscriptionModel.pdfFile.value!),
+                        if (subscriptionController.subscriptionModel.pdfFile.value != null) PDFviewonly.dialogWidget(subscriptionController.subscriptionModel.pdfFile.value!),
                         Align(
                           alignment: AlignmentDirectional.bottomEnd,
                           child: Padding(
@@ -80,7 +79,7 @@ class _SUBSCRIPTION_GenerateQuoteState extends State<SUBSCRIPTION_GenerateQuote>
                       ],
                     ),
                     onDoubleTap: () {
-                      PDFviewonly(context, subscriptionController.subscriptionModel.pdfFile.value!);
+                      PDFviewonly.show(context, subscriptionController.subscriptionModel.pdfFile.value!);
                       // _showReadablePdf();
                     },
                   ),

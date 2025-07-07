@@ -841,7 +841,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                         ),
                       ),
                       const SizedBox(width: 15),
-                       Expanded(
+                      Expanded(
                         flex: 1,
                         child: Padding(
                           padding: const EdgeInsets.all(0),
@@ -983,7 +983,9 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                           onOk: () {
                                             widget.ArchiveProcesscontrol(
                                               context,
-                                              subscriptionController.subscriptionModel.Process_selecteIndices.map((index) => subscriptionController.subscriptionModel.processList[index].processid).toList(),
+                                              subscriptionController.subscriptionModel.Process_selecteIndices
+                                                  .map((index) => subscriptionController.subscriptionModel.processList[index].processid)
+                                                  .toList(),
                                               1, // 1 for Archive, 0 for Unarchive
                                             );
                                           },
@@ -998,7 +1000,9 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                           onOk: () {
                                             widget.ArchiveProcesscontrol(
                                               context,
-                                              subscriptionController.subscriptionModel.Process_selecteIndices.map((index) => subscriptionController.subscriptionModel.processList[index].processid).toList(),
+                                              subscriptionController.subscriptionModel.Process_selecteIndices
+                                                  .map((index) => subscriptionController.subscriptionModel.processList[index].processid)
+                                                  .toList(),
                                               0, // 1 for Archive, 0 for Unarchive
                                             );
                                           },
@@ -1021,7 +1025,9 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                           onOk: () {
                                             widget.DeleteProcess(
                                               context,
-                                              subscriptionController.subscriptionModel.Process_selecteIndices.map((index) => subscriptionController.subscriptionModel.processList[index].processid).toList(),
+                                              subscriptionController.subscriptionModel.Process_selecteIndices
+                                                  .map((index) => subscriptionController.subscriptionModel.processList[index].processid)
+                                                  .toList(),
                                             );
                                           },
                                         );
@@ -2759,7 +2765,7 @@ class _Subscription_ClientState extends State<Subscription_Client> with TickerPr
                                                 );
                                                 if (success) {
                                                   File? file = subscriptionController.subscriptionModel.custom_pdfFile.value;
-                                                  PDFviewonly(context, file);
+                                                  PDFviewonly.show(context, file);
                                                 } else {
                                                   Error_SnackBar(context, "ERROR, Please contact administration!");
                                                 }

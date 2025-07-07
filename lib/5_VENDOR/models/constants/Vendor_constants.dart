@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/Vendor_entities.dart';
 
 class VendorModel extends GetxController with GetSingleTickerProviderStateMixin {
+  var processList = <Process>[].obs;
   var vendorList = <Vendor>[
     Vendor(vendorId: 1, vendorName: 'John Doe', ccode: 'C001', subRequirementId: 'SUB1001'),
     Vendor(vendorId: 2, vendorName: 'Jane Smith', ccode: 'C002', subRequirementId: 'SUB1002'),
@@ -80,107 +81,107 @@ class VendorModel extends GetxController with GetSingleTickerProviderStateMixin 
     ),
   ].obs;
 
-  var processList = <Process>[
-    Process(
-      processid: 1,
-      title: 'Process A',
-      vendor_name: 'John Doe',
-      Process_date: '01 Jul 2025',
-      age_in_days: 3,
-      TimelineEvents: [
-        TimelineEvent(
-          pdfpath: 'assets/docs/doc1.pdf',
-          feedback: TextEditingController(text: 'Initial feedback A1'),
-          Eventname: 'Event Start',
-          Eventid: 101,
-          apporvedstatus: 1,
-          internalStatus: 0,
-          Allowed_process: Allowedprocess(
-            rfq: true,
-            invoice: false,
-            quotation: true,
-            debit_note: false,
-            credit_note: false,
-            delivery_challan: true,
-            revised_quatation: false,
-            get_approval: true,
-          ),
-        ),
-      ],
-    ),
-    Process(
-      processid: 2,
-      title: 'Process B',
-      vendor_name: 'Jane Smith',
-      Process_date: '28 Jun 2025',
-      age_in_days: 6,
-      TimelineEvents: [
-        TimelineEvent(
-          pdfpath: 'assets/docs/doc2.pdf',
-          feedback: TextEditingController(text: 'Follow-up feedback B1'),
-          Eventname: 'Quotation Submitted',
-          Eventid: 102,
-          apporvedstatus: 0,
-          internalStatus: 1,
-          Allowed_process: Allowedprocess(
-            rfq: true,
-            invoice: true,
-            quotation: false,
-            debit_note: true,
-            credit_note: false,
-            delivery_challan: false,
-            revised_quatation: false,
-            get_approval: false,
-          ),
-        ),
-        TimelineEvent(
-          pdfpath: 'assets/docs/doc3.pdf',
-          feedback: TextEditingController(text: 'Revised terms B2'),
-          Eventname: 'Approval Pending',
-          Eventid: 103,
-          apporvedstatus: 0,
-          internalStatus: 2,
-          Allowed_process: Allowedprocess(
-            rfq: false,
-            invoice: false,
-            quotation: true,
-            debit_note: false,
-            credit_note: true,
-            delivery_challan: true,
-            revised_quatation: true,
-            get_approval: true,
-          ),
-        ),
-      ],
-    ),
-    Process(
-      processid: 3,
-      title: 'Process C',
-      vendor_name: 'David Johnson',
-      Process_date: '25 Jun 2025',
-      age_in_days: 9,
-      TimelineEvents: [
-        TimelineEvent(
-          pdfpath: 'assets/docs/doc4.pdf',
-          feedback: TextEditingController(text: 'Final confirmation C1'),
-          Eventname: 'Invoice Generated',
-          Eventid: 104,
-          apporvedstatus: 1,
-          internalStatus: 1,
-          Allowed_process: Allowedprocess(
-            rfq: false,
-            invoice: true,
-            quotation: false,
-            debit_note: false,
-            credit_note: false,
-            delivery_challan: true,
-            revised_quatation: false,
-            get_approval: true,
-          ),
-        ),
-      ],
-    ),
-  ].obs;
+  // var processList = <Process>[
+  //   Process(
+  //     processid: 1,
+  //     title: 'Process A',
+  //     vendor_name: 'John Doe',
+  //     Process_date: '01 Jul 2025',
+  //     age_in_days: 3,
+  //     TimelineEvents: [
+  //       TimelineEvent(
+  //         pdfpath: 'assets/docs/doc1.pdf',
+  //         feedback: TextEditingController(text: 'Initial feedback A1'),
+  //         Eventname: 'Event Start',
+  //         Eventid: 101,
+  //         apporvedstatus: 1,
+  //         internalStatus: 0,
+  //         Allowed_process: Allowedprocess(
+  //           rfq: true,
+  //           invoice: false,
+  //           quotation: true,
+  //           debit_note: false,
+  //           credit_note: false,
+  //           delivery_challan: true,
+  //           revised_quatation: false,
+  //           get_approval: true,
+  //         ),
+  //       ),
+  //     ],
+  //   ),
+  //   Process(
+  //     processid: 2,
+  //     title: 'Process B',
+  //     vendor_name: 'Jane Smith',
+  //     Process_date: '28 Jun 2025',
+  //     age_in_days: 6,
+  //     TimelineEvents: [
+  //       TimelineEvent(
+  //         pdfpath: 'assets/docs/doc2.pdf',
+  //         feedback: TextEditingController(text: 'Follow-up feedback B1'),
+  //         Eventname: 'Quotation Submitted',
+  //         Eventid: 102,
+  //         apporvedstatus: 0,
+  //         internalStatus: 1,
+  //         Allowed_process: Allowedprocess(
+  //           rfq: true,
+  //           invoice: true,
+  //           quotation: false,
+  //           debit_note: true,
+  //           credit_note: false,
+  //           delivery_challan: false,
+  //           revised_quatation: false,
+  //           get_approval: false,
+  //         ),
+  //       ),
+  //       TimelineEvent(
+  //         pdfpath: 'assets/docs/doc3.pdf',
+  //         feedback: TextEditingController(text: 'Revised terms B2'),
+  //         Eventname: 'Approval Pending',
+  //         Eventid: 103,
+  //         apporvedstatus: 0,
+  //         internalStatus: 2,
+  //         Allowed_process: Allowedprocess(
+  //           rfq: false,
+  //           invoice: false,
+  //           quotation: true,
+  //           debit_note: false,
+  //           credit_note: true,
+  //           delivery_challan: true,
+  //           revised_quatation: true,
+  //           get_approval: true,
+  //         ),
+  //       ),
+  //     ],
+  //   ),
+  //   Process(
+  //     processid: 3,
+  //     title: 'Process C',
+  //     vendor_name: 'David Johnson',
+  //     Process_date: '25 Jun 2025',
+  //     age_in_days: 9,
+  //     TimelineEvents: [
+  //       TimelineEvent(
+  //         pdfpath: 'assets/docs/doc4.pdf',
+  //         feedback: TextEditingController(text: 'Final confirmation C1'),
+  //         Eventname: 'Invoice Generated',
+  //         Eventid: 104,
+  //         apporvedstatus: 1,
+  //         internalStatus: 1,
+  //         Allowed_process: Allowedprocess(
+  //           rfq: false,
+  //           invoice: true,
+  //           quotation: false,
+  //           debit_note: false,
+  //           credit_note: false,
+  //           delivery_challan: true,
+  //           revised_quatation: false,
+  //           get_approval: true,
+  //         ),
+  //       ),
+  //     ],
+  //   ),
+  // ].obs;
 
   final showvendorprocess = Rxn<int>();
   final vendorId = Rxn<int>();

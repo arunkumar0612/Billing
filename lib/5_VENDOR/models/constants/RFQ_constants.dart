@@ -8,18 +8,23 @@ import 'package:ssipl_billing/5_VENDOR/models/entities/product_entities.dart';
 
 class RfqModel extends GetxController with GetSingleTickerProviderStateMixin {
   final Rxn<TabController> tabController = Rxn<TabController>();
-  var processID = Rxn<int>();
   var vendorID = Rxn<int>();
   var vendorName = Rxn<String>();
   var Rfq_no = Rxn<String>();
+  final type = 0.obs;
   // var gst_no = Rxn<String>();
   // var Rfq_table_heading = "".obs;
   // var rfq_amount = Rxn<double>();
 
   // DETAILS
   final TitleController = TextEditingController().obs;
-  // final clientAddressNameController = TextEditingController().obs;
   final AddressController = TextEditingController().obs;
+  final GSTIN_Controller = TextEditingController().obs;
+  final PAN_Controller = TextEditingController().obs;
+  final contactPerson_Controller = TextEditingController().obs;
+  // final contactNo_Controller = TextEditingController().obs;
+  // final email_Controller = TextEditingController().obs;
+
   // final gstNumController = TextEditingController().obs;
 
   // final billingAddressNameController = TextEditingController().obs;
@@ -34,9 +39,12 @@ class RfqModel extends GetxController with GetSingleTickerProviderStateMixin {
   // final hsnController = TextEditingController().obs;
   // final priceController = TextEditingController().obs;
   final quantityController = TextEditingController().obs;
+  final hsnController = TextEditingController().obs;
+
   // final gstController = TextEditingController().obs;
   var Rfq_products = <RFQProduct>[].obs;
-  var Rfq_productSuggestion = <ProductSuggestion>[].obs;
+  var VendorProduct_sugestions = <VendorProduct_suggestions>[].obs;
+  // var Rfq_productSuggestion = <ProductSuggestion>[].obs;
   // var Rfq_gstTotals = <RfqGSTtotals>[].obs;
 
   // NOTES

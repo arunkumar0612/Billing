@@ -16,7 +16,6 @@ import 'package:ssipl_billing/COMPONENTS-/textfield.dart' show BasicTextfield;
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart' show SessiontokenController;
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart' show Validators;
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class SUBSCRIPTION_PostInvoice extends StatefulWidget with SUBSCRIPTION_PostServices {
   SUBSCRIPTION_PostInvoice({super.key});
@@ -74,7 +73,8 @@ class Subscription_PostInvoiceState extends State<SUBSCRIPTION_PostInvoice> with
                         child: Stack(
                           children: [
                             pdfpopup_controller.pdfModel.value.genearatedPDF.value != null
-                                ? SfPdfViewer.file(pdfpopup_controller.pdfModel.value.genearatedPDF.value!)
+                                ? PDFviewonly.dialogWidget(pdfpopup_controller.pdfModel.value.genearatedPDF.value!)
+                                // SfPdfViewer.file(pdfpopup_controller.pdfModel.value.genearatedPDF.value!)
                                 : Container(
                                     color: Colors.white,
                                     child: const Column(
@@ -91,7 +91,7 @@ class Subscription_PostInvoiceState extends State<SUBSCRIPTION_PostInvoice> with
                         ),
                         onDoubleTap: () {
                           if (pdfpopup_controller.pdfModel.value.genearatedPDF.value != null) {
-                            PDFviewonly(context, pdfpopup_controller.pdfModel.value.genearatedPDF.value!);
+                            PDFviewonly.show(context, pdfpopup_controller.pdfModel.value.genearatedPDF.value!);
                             // widget.showReadablePdf(context);
                           } else {
                             Get.snackbar("No data", "Maximizing is restricted!");

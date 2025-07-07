@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:ssipl_billing/4_SALES/controllers/RFQ_actions.dart';
-import 'package:ssipl_billing/4_SALES/models/entities/RFQ_entities.dart';
-import 'package:ssipl_billing/4_SALES/services/RFQ_services/RFQ_Product_services.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/RFQ_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/models/entities/RFQ_entities.dart';
+import 'package:ssipl_billing/5_VENDOR/services/RFQ_services/RFQ_Product_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
@@ -15,7 +15,7 @@ class RfqProducts extends StatefulWidget with RfqproductService {
 }
 
 class _RfqProductsState extends State<RfqProducts> {
-  final RfqController rfqController = Get.find<RfqController>();
+  final vendor_RfqController rfqController = Get.find<vendor_RfqController>();
 
   Widget Rfq_productDetailss() {
     return Column(
@@ -79,6 +79,13 @@ class _RfqProductsState extends State<RfqProducts> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget.get_ProductsSuggestion(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
@@ -96,7 +103,7 @@ class _RfqProductsState extends State<RfqProducts> {
                       const SizedBox(height: 25),
                       Obx(
                         () {
-                          return DropdownMenu<ProductSuggestion>(
+                          return DropdownMenu<VendorProduct_suggestions>(
                             menuHeight: 350,
                             leadingIcon: const Icon(
                               Icons.production_quantity_limits,
@@ -108,22 +115,32 @@ class _RfqProductsState extends State<RfqProducts> {
                             ),
                             label: const Text(
                               "Product",
-                              style: TextStyle(color: Color.fromARGB(255, 167, 165, 165), fontSize: Primary_font_size.Text7),
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 167, 165, 165),
+                                fontSize: Primary_font_size.Text7,
+                              ),
                             ),
-                            textStyle: const TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text7),
+                            textStyle: const TextStyle(
+                              color: Primary_colors.Color1,
+                              fontSize: Primary_font_size.Text7,
+                            ),
                             width: 400,
                             inputDecorationTheme: const InputDecorationTheme(
                               contentPadding: EdgeInsets.only(left: 10, right: 5),
                               filled: true,
                               fillColor: Primary_colors.Dark,
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
-                                borderSide: BorderSide(
-                                  color: Colors.black,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(5),
+                                  bottomLeft: Radius.circular(5),
                                 ),
+                                borderSide: BorderSide(color: Colors.black),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(5),
+                                  bottomLeft: Radius.circular(5),
+                                ),
                                 borderSide: BorderSide(color: Colors.black),
                               ),
                               border: OutlineInputBorder(),
@@ -133,16 +150,16 @@ class _RfqProductsState extends State<RfqProducts> {
                               ),
                             ),
                             controller: rfqController.rfqModel.productNameController.value,
-                            dropdownMenuEntries: rfqController.rfqModel.Rfq_productSuggestion.map<DropdownMenuEntry<ProductSuggestion>>((ProductSuggestion suggestion) {
-                              return DropdownMenuEntry<ProductSuggestion>(
-                                value: suggestion, // Passing the entire object
-                                label: suggestion.productName, // Display product name in dropdown
+                            dropdownMenuEntries: rfqController.rfqModel.VendorProduct_sugestions.map<DropdownMenuEntry<VendorProduct_suggestions>>((suggestion) {
+                              return DropdownMenuEntry<VendorProduct_suggestions>(
+                                value: suggestion,
+                                label: suggestion.productName,
                               );
                             }).toList(),
-                            onSelected: (ProductSuggestion? selectedSuggestion) {
-                              if (selectedSuggestion != null) {
-                                // widget.set_ProductValues(selectedSuggestion);
-                              }
+                            onSelected: (VendorProduct_suggestions? selectedSuggestion) {
+                              // if (selectedSuggestion != null) {
+                              //   rfqController.set_ProductValues(selectedSuggestion);
+                              // }
                             },
                           );
                         },

@@ -43,7 +43,7 @@ class _VendorState extends State<Vendor> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
+    widget.Get_vendorProcessList(0);
     vendorController.updateshowvendorprocess(null);
     vendorController.updatevendorId(0);
 

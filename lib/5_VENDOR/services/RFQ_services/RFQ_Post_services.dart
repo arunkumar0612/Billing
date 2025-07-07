@@ -62,9 +62,11 @@ mixin PostServices {
       loader.start(context);
       File cachedPdf = rfqController.rfqModel.selectedPdf.value!;
       // savePdfToCache();
-      Post_Rfq salesData = Post_Rfq.fromJson(
+      Post_Rfq rfqData = Post_Rfq.fromJson(
         title: rfqController.rfqModel.TitleController.value.text,
-        processid: rfqController.rfqModel.processID.value!,
+        GSTIN: rfqController.rfqModel.GSTIN_Controller.value.text,
+        PAN: rfqController.rfqModel.PAN_Controller.value.text,
+        Contact_person: rfqController.rfqModel.contactPerson_Controller.value.text,
         vendorID: rfqController.rfqModel.vendorID.value!,
         vendorName: rfqController.rfqModel.vendorName.value!,
         vendorAddress: rfqController.rfqModel.AddressController.value.text,
@@ -80,7 +82,7 @@ mixin PostServices {
         ccEmail: rfqController.rfqModel.CCemailController.value.text,
       );
 
-      await send_data(context, jsonEncode(salesData.toJson()), cachedPdf);
+      await send_data(context, jsonEncode(rfqData.toJson()), cachedPdf);
     } catch (e) {
       await Error_dialog(context: context, title: "POST", content: "$e", onOk: () {});
     }
@@ -88,7 +90,7 @@ mixin PostServices {
 
   dynamic send_data(context, String jsonData, File file) async {
     try {
-      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, [file], API.add_rfq);
+      Map<String, dynamic>? response = await apiController.Multer(sessiontokenController.sessiontokenModel.sessiontoken.value, jsonData, [file], API.vendor_createrfq);
       if (response['statusCode'] == 200) {
         CMDmResponse value = CMDmResponse.fromJson(response);
         if (value.code) {
@@ -109,7 +111,7 @@ mixin PostServices {
         loader.stop();
         Error_dialog(context: context, title: "SERVER DOWN", content: "Please contact administration!");
       }
-      //await Refresher().refreshAll(context);
+      // await Refresher().refreshAll();
     } catch (e) {
       loader.stop();
       Error_dialog(context: context, title: "ERROR", content: "$e");

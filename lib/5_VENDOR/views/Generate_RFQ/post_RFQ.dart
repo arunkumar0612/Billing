@@ -5,15 +5,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
-import 'package:ssipl_billing/4_SALES/controllers/RFQ_actions.dart';
-import 'package:ssipl_billing/4_SALES/services/RFQ_services/RFQ_Post_services.dart';
+import 'package:ssipl_billing/5_VENDOR/controllers/RFQ_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/services/RFQ_services/RFQ_Post_services.dart';
 import 'package:ssipl_billing/COMPONENTS-/PDF_methods/PDFviewonly.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/IAM/controllers/IAM_actions.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 // ignore: must_be_immutable
 class PostRfq extends StatefulWidget with PostServices {
@@ -26,7 +25,7 @@ class PostRfq extends StatefulWidget with PostServices {
 
 class PostRfqState extends State<PostRfq> with SingleTickerProviderStateMixin {
   final SessiontokenController sessiontokenController = Get.find<SessiontokenController>();
-  final RfqController rfqController = Get.find<RfqController>();
+  final vendor_RfqController rfqController = Get.find<vendor_RfqController>();
 
   @override
   void initState() {
@@ -154,7 +153,7 @@ class PostRfqState extends State<PostRfq> with SingleTickerProviderStateMixin {
                         child: Stack(
                           children: [
                             rfqController.rfqModel.selectedPdf.value != null
-                                ? SfPdfViewer.file(rfqController.rfqModel.selectedPdf.value!)
+                                ? PDFviewonly.dialogWidget(rfqController.rfqModel.selectedPdf.value!)
                                 : Container(
                                     color: Colors.white,
                                     child: const Column(
@@ -198,7 +197,8 @@ class PostRfqState extends State<PostRfq> with SingleTickerProviderStateMixin {
                         ),
                         onDoubleTap: () {
                           if (rfqController.rfqModel.selectedPdf.value != null) {
-                            PDFviewonly(context, rfqController.rfqModel.selectedPdf.value!);
+                            PDFviewonly.show(context, rfqController.rfqModel.selectedPdf.value!);
+                            // PDFviewonly. (context, rfqController.rfqModel.selectedPdf.value!);
                             // widget.showReadablePdf(context);
                           } else {
                             Get.snackbar("No data", "Maximizing is restricted!");

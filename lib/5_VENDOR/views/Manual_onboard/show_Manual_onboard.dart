@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/manual_onboard_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Manual_onboard/vendorBankDetails_tab.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Manual_onboard/vendorBusinessInfo_tab.dart';
 import 'package:ssipl_billing/5_VENDOR/views/Manual_onboard/vendorKYC_tab.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
@@ -66,7 +67,7 @@ class _ShowManualOnboardState extends State<ShowManualOnboard> with SingleTicker
                           tabs: const [
                             Tab(text: "KYC"),
                             Tab(text: "BUSINESS INFO"),
-                            // Tab(text: "NOTE"),
+                            Tab(text: "BANK DETAILS"),
                             // Tab(text: "POST"),
                           ],
                         ),
@@ -79,6 +80,7 @@ class _ShowManualOnboardState extends State<ShowManualOnboard> with SingleTicker
                       children: [
                         VendorKYC(),
                         VendorBusinessInfo(),
+                        Vendorbankdetails(),
                       ],
                     ),
                   ),

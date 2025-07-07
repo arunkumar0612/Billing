@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/manual_onboard_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/services/manual_onboard_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
-class VendorKYC extends StatefulWidget {
-  const VendorKYC({super.key});
+class VendorKYC extends StatefulWidget with ManualOnboardService {
+  VendorKYC({super.key});
 
   @override
   State<VendorKYC> createState() => VendorKYCState();
@@ -161,7 +162,7 @@ class VendorKYCState extends State<VendorKYC> {
                                 text: 'Add Details',
                                 onPressed: () async {
                                   // if (clientreqController.clientReqModel.detailsformKey.value.currentState?.validate() ?? false) {
-                                  //   widget.nextTab(context);
+                                  widget.nextTab(context);
                                   // }
                                 },
                               ),

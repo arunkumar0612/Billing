@@ -4,9 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/models/constants/manual_onboard_constants.dart';
-import 'package:ssipl_billing/5_VENDOR/models/entities/Vendor_entities.dart';
 import 'package:ssipl_billing/COMPONENTS-/Basic_DialogBox.dart';
-import 'package:ssipl_billing/COMPONENTS-/Response_entities.dart';
 
 class ManualOnboardController extends GetxController {
   var manualOnboardModel = ManualOnboardModel();
@@ -130,8 +128,12 @@ class ManualOnboardController extends GetxController {
     manualOnboardModel.vendorBankIfsc.value.text = value;
   }
 
+  void updateVendorCompanyLogo(String filepath) {
+    manualOnboardModel.selectedLogoPath.value = File(filepath);
+  }
+
   void updateSelectedRegCerti(String filePath) {
-    manualOnboardModel.selectedRegCertiFile.value = File(filePath);
+    manualOnboardModel.selectedGSTregCertiFile.value = File(filePath);
   }
 
   void updateSelectedPAN(String filePath) {
@@ -142,16 +144,27 @@ class ManualOnboardController extends GetxController {
     manualOnboardModel.selectedCancelledChequeFile.value = File(filePath);
   }
 
-  void updateRegCerti_uploadedPath({required CMDmResponse value, required String type}) {
-    final path = uploadedFileInfo.fromJson(value).path;
+  Future<bool> vendorLogoPickFile(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg'], lockParentWindow: true);
 
-    if (type == 'regCerti') {
-      manualOnboardModel.regCerti_uploadedPath.value = path;
-    } else if (type == 'PAN') {
-      manualOnboardModel.PAN_uploadedPath.value = path;
-    } else if (type == 'cheque') {
-      manualOnboardModel.cheque_uploadedPath.value = path;
+    if (result != null) {
+      final file = File(result.files.single.path!);
+      final fileLength = await file.length();
+
+      if (fileLength > 2 * 1024 * 1024) {
+        Error_dialog(context: context, title: 'Error', content: 'Selected file exceeds 2MB in size.');
+
+        manualOnboardModel.logoPickedFile.value = null;
+        manualOnboardModel.uploadedLogo.value = null;
+      } else {
+        manualOnboardModel.logoPickedFile.value = result;
+        manualOnboardModel.uploadedLogo.value = file;
+        return true;
+      }
+    } else {
+      return false;
     }
+    return false;
   }
 
   Future<bool> regCertiPickFile(BuildContext context) async {
@@ -164,11 +177,11 @@ class ManualOnboardController extends GetxController {
       if (fileLength > 2 * 1024 * 1024) {
         Error_dialog(context: context, title: 'Error', content: 'Selected file exceeds 2MB in size.');
 
-        manualOnboardModel.regCertiPickedFile.value = null;
-        manualOnboardModel.regCertiFile.value = null;
+        manualOnboardModel.GSTregCertiFile.value = null;
+        manualOnboardModel.GSTregCertiFile.value = null;
       } else {
-        manualOnboardModel.regCertiPickedFile.value = result;
-        manualOnboardModel.regCertiFile.value = file;
+        manualOnboardModel.GSTregCertiPickedFile.value = result;
+        manualOnboardModel.GSTregCertiFile.value = file;
         return true;
       }
     } else {
@@ -245,10 +258,12 @@ class ManualOnboardController extends GetxController {
         manualOnboardModel.vendorBankBranch.value.text.isNotEmpty ||
         manualOnboardModel.vendorBankAccountNumber.value.text.isNotEmpty ||
         manualOnboardModel.vendorBankIfsc.value.text.isNotEmpty ||
-        manualOnboardModel.regCertiPickedFile.value != null ||
+        manualOnboardModel.logoPickedFile.value != null ||
+        manualOnboardModel.uploadedLogo.value != null ||
+        manualOnboardModel.GSTregCertiPickedFile.value != null ||
         manualOnboardModel.vendorPANPickedFile.value != null ||
         manualOnboardModel.cancelledChequePickedFile.value != null ||
-        manualOnboardModel.regCertiFile.value != null ||
+        manualOnboardModel.GSTregCertiFile.value != null ||
         manualOnboardModel.vendorPANfile.value != null ||
         manualOnboardModel.cancelledChequeFile.value != null;
   }
@@ -258,8 +273,10 @@ class ManualOnboardController extends GetxController {
   }
 
   void clearPickedFiles() {
-    manualOnboardModel.regCertiPickedFile.value = null;
-    manualOnboardModel.regCertiFile.value = null;
+    manualOnboardModel.logoPickedFile.value = null;
+    manualOnboardModel.uploadedLogo.value = null;
+    manualOnboardModel.GSTregCertiPickedFile.value = null;
+    manualOnboardModel.GSTregCertiFile.value = null;
     manualOnboardModel.vendorPANPickedFile.value = null;
     manualOnboardModel.vendorPANfile.value = null;
     manualOnboardModel.cancelledChequePickedFile.value = null;
@@ -268,7 +285,8 @@ class ManualOnboardController extends GetxController {
 
   void resetData() {
     manualOnboardModel.tabController.value = null;
-    manualOnboardModel.selectedRegCertiFile.value = File('E://reg_certi.pdf');
+    manualOnboardModel.selectedLogoPath.value = File('E://vendor_logo.png');
+    manualOnboardModel.selectedGSTregCertiFile.value = File('E://reg_certi.pdf');
     manualOnboardModel.selectedPANfile.value = File('E://vendor_pan.pdf');
     manualOnboardModel.selectedCancelledChequeFile.value = File('E://cancelled_cheque.pdf');
     manualOnboardModel.vendorNameController.value.clear();
@@ -294,15 +312,18 @@ class ManualOnboardController extends GetxController {
     manualOnboardModel.vendorBankIfsc.value.clear();
 
     // Reset file pickers
-    manualOnboardModel.regCertiPickedFile.value = null;
-    manualOnboardModel.regCertiFile.value = null;
+    manualOnboardModel.logoPickedFile.value = null;
+    manualOnboardModel.uploadedLogo.value = null;
+    manualOnboardModel.GSTregCertiPickedFile.value = null;
+    manualOnboardModel.GSTregCertiFile.value = null;
     manualOnboardModel.vendorPANPickedFile.value = null;
     manualOnboardModel.vendorPANfile.value = null;
     manualOnboardModel.cancelledChequePickedFile.value = null;
     manualOnboardModel.cancelledChequeFile.value = null;
 
     // Reset uploaded paths
-    manualOnboardModel.regCerti_uploadedPath.value = null;
+    manualOnboardModel.uploadedLogo_path.value = null;
+    manualOnboardModel.GSTregCerti_uploadedPath.value = null;
     manualOnboardModel.PAN_uploadedPath.value = null;
     manualOnboardModel.cheque_uploadedPath.value = null;
   }

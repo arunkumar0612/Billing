@@ -1,5 +1,8 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/manual_onboard_actions.dart';
@@ -21,6 +24,46 @@ mixin ManualOnboardService {
   final loader = LoadingOverlay();
 
 // // ##################################################################################################################################################################################################################################################################################################################################################################
+  void nextTab(context) async {
+    manualOnboardController.nextTab();
+  }
+
+  void backTab(context) async {
+    manualOnboardController.backTab();
+  }
+
+  Future<void> allFilesAction({
+    required BuildContext context,
+    required Future<bool> Function(BuildContext) pickFunction,
+  }) async {
+    bool picked = await pickFunction(context);
+    if (!picked) return;
+
+    final model = manualOnboardController.manualOnboardModel;
+
+    final regPath = model.GSTregCertiPickedFile.value?.files.single.path;
+    final panPath = model.vendorPANPickedFile.value?.files.single.path;
+    final chequePath = model.cancelledChequePickedFile.value?.files.single.path;
+
+    if (regPath != null && panPath != null && chequePath != null) {
+      // All three files are selected, so upload them
+      uploadAllData(
+        context,
+        File(regPath),
+        File(panPath),
+        File(chequePath),
+      );
+    }
+  }
+
+  void uploadAllData(context, File regFile, File panFile, File chequeFile) async {
+    try {
+      print('Hi');
+    } catch (e) {
+      Error_dialog(context: context, title: "ERROR", content: "$e");
+      loader.stop();
+    }
+  }
 
   dynamic show_ManualOnboard_DialogBox(context) async {
     await showDialog(

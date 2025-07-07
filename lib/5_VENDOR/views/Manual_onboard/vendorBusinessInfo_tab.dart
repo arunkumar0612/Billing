@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ssipl_billing/5_VENDOR/controllers/manual_onboard_actions.dart';
+import 'package:ssipl_billing/5_VENDOR/services/manual_onboard_service.dart';
 import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/COMPONENTS-/textfield.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 import 'package:ssipl_billing/UTILS/validators/minimal_validators.dart';
 
-class VendorBusinessInfo extends StatefulWidget {
-  const VendorBusinessInfo({super.key});
+class VendorBusinessInfo extends StatefulWidget with ManualOnboardService {
+  VendorBusinessInfo({super.key});
 
   @override
   State<VendorBusinessInfo> createState() => VendorBusinessInfoState();
@@ -36,7 +37,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Form(
-                    key: manualOnboardController.manualOnboardModel.vendorKYCformKey.value,
+                    key: manualOnboardController.manualOnboardModel.vendorBusinessInfoFormKey.value,
                     child: Wrap(
                       runSpacing: 25,
                       spacing: 35,
@@ -46,6 +47,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                       // mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             BasicTextfield(
                               digitsOnly: false,
@@ -53,7 +55,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                               readonly: false,
                               text: 'Type of Business/ Service',
                               controller: manualOnboardController.manualOnboardModel.vendorNameController.value,
-                              icon: Icons.title,
+                              icon: Icons.business,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter business type';
@@ -77,7 +79,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           readonly: false,
                           text: 'Year of Establishment',
                           controller: manualOnboardController.manualOnboardModel.vendorAddressController.value,
-                          icon: Icons.location_on,
+                          icon: Icons.date_range_sharp,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter year of establishment';
@@ -91,7 +93,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           readonly: false,
                           text: 'GST Number',
                           controller: manualOnboardController.manualOnboardModel.vendorAddressStateController.value,
-                          icon: Icons.location_city,
+                          icon: Icons.receipt,
                           validator: (value) {
                             return Validators.GST_validator(value);
                           },
@@ -102,7 +104,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           readonly: false,
                           text: 'PAN Number',
                           controller: manualOnboardController.manualOnboardModel.vendorAddressPincodeController.value,
-                          icon: Icons.location_pin,
+                          icon: Icons.recent_actors_sharp,
                           validator: (value) {
                             return Validators.PAN_validator(value);
                           },
@@ -113,7 +115,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           readonly: false,
                           text: 'Annual Turnover',
                           controller: manualOnboardController.manualOnboardModel.vendorAnnualTurnover.value,
-                          icon: Icons.money,
+                          icon: Icons.currency_rupee,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter annual turnover';
@@ -127,7 +129,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           readonly: false,
                           text: 'List of Products/Services',
                           controller: manualOnboardController.manualOnboardModel.productInputController,
-                          icon: Icons.work,
+                          icon: Icons.list_alt_sharp,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter product details';
@@ -145,7 +147,7 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                           readonly: false,
                           text: 'HSN/SAC Code',
                           controller: manualOnboardController.manualOnboardModel.HSNcodeController,
-                          icon: Icons.work,
+                          icon: Icons.list_alt_sharp,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter HSN/SAC Code';
@@ -178,11 +180,21 @@ class VendorBusinessInfoState extends State<VendorBusinessInfo> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               BasicButton(
+                                colors: Colors.red,
+                                text: 'Back',
+                                onPressed: () async {
+                                  // if (clientreqController.clientReqModel.detailsformKey.value.currentState?.validate() ?? false) {
+                                  widget.backTab(context);
+                                  // }
+                                },
+                              ),
+                              const SizedBox(width: 10),
+                              BasicButton(
                                 colors: Colors.green,
                                 text: 'Add Details',
                                 onPressed: () async {
                                   // if (clientreqController.clientReqModel.detailsformKey.value.currentState?.validate() ?? false) {
-                                  //   widget.nextTab(context);
+                                  widget.nextTab(context);
                                   // }
                                 },
                               ),

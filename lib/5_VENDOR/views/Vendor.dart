@@ -148,25 +148,25 @@ class _VendorDashboardState extends State<VendorDashboard> with TickerProviderSt
                                     onExit: (_) => notificationController.notificationModel.isHovered.value = false,
                                     cursor: SystemMouseCursors.click,
                                     child: GestureDetector(
-                                        onTap: () => widget.showNotification(context),
-                                        child: ShaderMask(
-                                          shaderCallback: (Rect bounds) {
-                                            return const LinearGradient(
-                                              colors:
-                                                  // notificationController.notificationModel.notifications.isNotEmpty ?
-
-                                                  [Colors.black, Color.fromARGB(164, 255, 191, 0), Colors.amber],
-                                              // :  [Colors.amber],
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                            ).createShader(bounds);
-                                          },
-                                          blendMode: BlendMode.srcIn,
-                                          child: const Icon(
-                                            Icons.notifications,
-                                            size: 30,
-                                          ),
-                                        )),
+                                      onTap: () => widget.showNotification(context),
+                                      child: ShaderMask(
+                                        shaderCallback: (Rect bounds) {
+                                          return const LinearGradient(
+                                            colors:
+                                                // notificationController.notificationModel.notifications.isNotEmpty ?
+                                                [Colors.black, Color.fromARGB(164, 255, 191, 0), Colors.amber],
+                                            // :  [Colors.amber],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          ).createShader(bounds);
+                                        },
+                                        blendMode: BlendMode.srcIn,
+                                        child: const Icon(
+                                          Icons.notifications,
+                                          size: 30,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 if (notificationController.notificationModel.notifications.isNotEmpty)

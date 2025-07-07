@@ -1,99 +1,135 @@
 import 'package:flutter/foundation.dart';
 
+import 'dart:typed_data';
+
 class VendorsData {
+  // Vendor/Company Info
   final int? vendorId;
   final String? vendorName;
-  final String? vendorCode;
-  final String? clientAddressName;
-  final String? clientAddress;
-  final String? gstNumber;
-  final String? emailId;
-  final String? contactNumber;
-  final String? contact_person;
-  final String? billingAddress;
-  final String? billingAddressName;
-  final String? siteType;
-  final Uint8List? vendorLogo;
-  final int? subscriptionId;
-  final String? billingPlan;
-  final String? billMode;
-  final String? fromDate;
-  final String? toDate;
-  final int? amount;
-  final int? billingPeriod;
-  bool isSelected;
+  final String? address;
+  final String? state;
+  final String? pincode;
+  final String? contactPersonName;
+  final String? contactPersonDesignation;
+  final String? contactPersonPhone;
+  final String? email;
 
+  // Business Info
+  final String? businessType; // Manufacturer/Distributor/Service Provider/Others
+  final String? yearOfEstablishment;
+  final String? gstNumber;
+  final String? panNumber;
+  final String? annualTurnover;
+  final String? productOrServiceList;
+  final String? hsnOrSacCode;
+  final String? productOrServiceDescription;
+
+  // Bank Details & Uploads
+  final String? isoCertification;
+  final String? otherCertifications;
+  final String? bankName;
+  final String? branch;
+  final String? accountNumber;
+  final String? ifscCode;
+
+  final Uint8List? registrationCertificate;
+  final Uint8List? panUpload;
+  final Uint8List? cancelledCheque;
+  final Uint8List? vendorLogo;
+  bool isSelected;
   VendorsData({
     this.vendorId,
     this.vendorName,
-    this.vendorCode,
-    this.clientAddressName,
-    this.clientAddress,
+    this.address,
+    this.state,
+    this.pincode,
+    this.contactPersonName,
+    this.contactPersonDesignation,
+    this.contactPersonPhone,
+    this.email,
+    this.businessType,
+    this.yearOfEstablishment,
     this.gstNumber,
-    this.emailId,
-    this.contactNumber,
-    this.contact_person,
-    this.billingAddress,
-    this.billingAddressName,
-    this.siteType,
+    this.panNumber,
+    this.annualTurnover,
+    this.productOrServiceList,
+    this.hsnOrSacCode,
+    this.productOrServiceDescription,
+    this.isoCertification,
+    this.otherCertifications,
+    this.bankName,
+    this.branch,
+    this.accountNumber,
+    this.ifscCode,
+    this.registrationCertificate,
+    this.panUpload,
+    this.cancelledCheque,
     this.vendorLogo,
-    this.subscriptionId,
-    this.billingPlan,
-    this.billMode,
-    this.fromDate,
-    this.toDate,
-    this.amount,
-    this.billingPeriod,
     this.isSelected = false,
   });
 
   factory VendorsData.fromJson(Map<String, dynamic> json) {
     return VendorsData(
       vendorId: json['Vendor_id'] ?? 0,
-      vendorName: json['Vendor_name'] ?? '',
-      vendorCode: json['Vendor_code'] ?? '',
-      clientAddressName: json['client_addressname'] ?? '',
-      clientAddress: json['clientaddress'] ?? '',
+      vendorName: json['vendor_name'] ?? '',
+      address: json['address'] ?? '',
+      state: json['state'] ?? '',
+      pincode: json['pincode'] ?? '',
+      contactPersonName: json['contact_person_name'] ?? '',
+      contactPersonDesignation: json['contact_person_designation'] ?? '',
+      contactPersonPhone: json['contact_person_phone'] ?? '',
+      email: json['email'] ?? '',
+      businessType: json['business_type'] ?? '',
+      yearOfEstablishment: json['year_of_establishment'] ?? '',
       gstNumber: json['gst_number'] ?? '',
-      emailId: json['emailid'] ?? '',
-      contactNumber: json['contact_number'] ?? '',
-      contact_person: json['contact_person'] ?? '',
-      billingAddress: json['billing_address'] ?? '',
-      billingAddressName: json['billing_addressname'] ?? '',
-      siteType: json['site_type'] ?? '',
+      panNumber: json['pan_number'] ?? '',
+      annualTurnover: json['annual_turnover'] ?? '',
+      productOrServiceList: json['product_or_service_list'] ?? '',
+      hsnOrSacCode: json['hsn_or_sac_code'] ?? '',
+      productOrServiceDescription: json['product_or_service_description'] ?? '',
+      isoCertification: json['iso_certification'] ?? '',
+      otherCertifications: json['other_certifications'] ?? '',
+      bankName: json['bank_name'] ?? '',
+      branch: json['branch'] ?? '',
+      accountNumber: json['account_number'] ?? '',
+      ifscCode: json['ifsc_code'] ?? '',
+      registrationCertificate:
+          json['registration_certificate'] != null && json['registration_certificate']['data'] != null ? Uint8List.fromList(List<int>.from(json['registration_certificate']['data'])) : null,
+      panUpload: json['pan_upload'] != null && json['pan_upload']['data'] != null ? Uint8List.fromList(List<int>.from(json['pan_upload']['data'])) : null,
+      cancelledCheque: json['cancelled_cheque'] != null && json['cancelled_cheque']['data'] != null ? Uint8List.fromList(List<int>.from(json['cancelled_cheque']['data'])) : null,
       vendorLogo: json['Vendor_Logo'] != null && json['Vendor_Logo']['data'] != null ? Uint8List.fromList(List<int>.from(json['Vendor_Logo']['data'])) : Uint8List(0),
-      subscriptionId: json['Subscription_ID'] ?? 0,
-      billingPlan: json['billing_plan'] ?? '',
-      billMode: json['Bill_mode'] ?? '',
-      fromDate: json['from_date'] ?? '',
-      toDate: json['to_date'] ?? '',
-      amount: json['Amount'] ?? 0,
-      billingPeriod: json['billingperiod'] ?? 0,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'Vendor_id': vendorId,
-      'Vendor_name': vendorName,
-      'Vendor_code': vendorCode,
-      'client_addressname': clientAddressName,
-      'clientaddress': clientAddress,
+      'vendor_name': vendorName,
+      'address': address,
+      'state': state,
+      'pincode': pincode,
+      'contact_person_name': contactPersonName,
+      'contact_person_designation': contactPersonDesignation,
+      'contact_person_phone': contactPersonPhone,
+      'email': email,
+      'business_type': businessType,
+      'year_of_establishment': yearOfEstablishment,
       'gst_number': gstNumber,
-      'emailid': emailId,
-      'contact_number': contactNumber,
-      'contact_person': contact_person,
-      'billing_address': billingAddress,
-      'billing_addressname': billingAddressName,
-      'site_type': siteType,
+      'pan_number': panNumber,
+      'annual_turnover': annualTurnover,
+      'product_or_service_list': productOrServiceList,
+      'hsn_or_sac_code': hsnOrSacCode,
+      'product_or_service_description': productOrServiceDescription,
+      'iso_certification': isoCertification,
+      'other_certifications': otherCertifications,
+      'bank_name': bankName,
+      'branch': branch,
+      'account_number': accountNumber,
+      'ifsc_code': ifscCode,
+      'registration_certificate': registrationCertificate,
+      'pan_upload': panUpload,
+      'cancelled_cheque': cancelledCheque,
       'Vendor_Logo': vendorLogo ?? Uint8List(0),
-      'Subscription_ID': subscriptionId,
-      'billing_plan': billingPlan,
-      'Bill_mode': billMode,
-      'from_date': fromDate,
-      'to_date': toDate,
-      'Amount': amount,
-      'billingperiod': billingPeriod,
     };
   }
 }

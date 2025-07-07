@@ -231,6 +231,7 @@ class PaymentDetail {
 
 class GSTLedgerSelectedFilter {
   RxString GSTtype;
+  RxString Plantype;
   RxString invoicetype;
   RxString selectedsalescustomername;
   RxString selectedcustomerid;
@@ -242,6 +243,7 @@ class GSTLedgerSelectedFilter {
 
   GSTLedgerSelectedFilter(
       {String GSTtype = 'Consolidate',
+      String Plantype = 'Show All',
       String invoicetype = 'Show All',
       String selectedsalescustomername = 'None',
       String selectedcustomerid = '',
@@ -250,6 +252,7 @@ class GSTLedgerSelectedFilter {
       String todate = '',
       String selectedmonth = ''})
       : GSTtype = RxString(GSTtype),
+        Plantype = RxString(Plantype),
         invoicetype = RxString(invoicetype),
         selectedsalescustomername = RxString(selectedsalescustomername),
         selectedcustomerid = RxString(selectedcustomerid),

@@ -232,7 +232,9 @@ class _MyHomePageState extends State<MyHomePage> {
             MouseRegion(
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
-                child: showfull ? const Text('>', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 22)) : const Text('||', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 15)),
+                child: showfull
+                    ? const Text('>', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 22))
+                    : const Text('||', style: TextStyle(color: Color.fromARGB(255, 141, 140, 140), fontSize: 15)),
                 onTap: () {
                   setState(() {
                     showfull = showfull ? false : true;

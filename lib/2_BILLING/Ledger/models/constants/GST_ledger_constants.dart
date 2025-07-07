@@ -30,6 +30,7 @@ class GST_LedgerModel extends GetxController with GetSingleTickerProviderStateMi
   var CCemailToggle = false.obs;
 
   var selectedGSTtype = 'Consolidate'.obs;
+  var selectedPlantype = 'Show All'.obs;
   var selectedInvoiceType = 'Show All'.obs;
   RxString selectedMonth = 'None'.obs;
   final startDateController = TextEditingController().obs;

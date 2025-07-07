@@ -1154,6 +1154,7 @@ class _GST_ledger_filterState extends State<GST_ledger_filter> {
                   GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value = 'Sales';
                   GST_ledgerController.gst_LedgerModel.selectedsalescustomer.value = 'None';
                   GST_ledgerController.gst_LedgerModel.selectedsubcustomer.value = 'None';
+                  GST_ledgerController.gst_LedgerModel.selectedPlantype.value = 'Show All';
                   // widget.get_GST_ledgerList();
                 },
                 backgroundColor: Primary_colors.Dark,
@@ -1192,6 +1193,7 @@ class _GST_ledger_filterState extends State<GST_ledger_filter> {
             ],
           ),
         ),
+
         Obx(
           () => SizedBox(
             child: GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value == 'Sales'
@@ -1294,6 +1296,25 @@ class _GST_ledger_filterState extends State<GST_ledger_filter> {
                 : const SizedBox(),
           ),
         ),
+        Obx(() => SizedBox(
+            child: GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value == 'Subscription'
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 35),
+                      const Text(
+                        'Plan type',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: Primary_font_size.Text8, color: Color.fromARGB(255, 194, 192, 192)),
+                      ),
+                      const SizedBox(height: 12),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [Obx(() => _buildPlantypeFilterChip('Show All')), Obx(() => _buildPlantypeFilterChip('Prepaid')), Obx(() => _buildPlantypeFilterChip('Postpaid'))],
+                      ),
+                    ],
+                  )
+                : SizedBox())),
         Obx(
           () => SizedBox(
             child: GST_ledgerController.gst_LedgerModel.selectedInvoiceType.value == 'Subscription'
@@ -1610,6 +1631,29 @@ class _GST_ledger_filterState extends State<GST_ledger_filter> {
       selected: isSelected,
       onSelected: (_) {
         GST_ledgerController.gst_LedgerModel.selectedGSTtype.value = label;
+        // widget.get_GST_ledgerList();
+      },
+      backgroundColor: Primary_colors.Dark,
+      selectedColor: Primary_colors.Dark,
+      labelStyle: TextStyle(color: isSelected ? Primary_colors.Color3 : Colors.black),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: BorderSide(color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 85, 84, 84)),
+      ),
+    );
+  }
+
+  Widget _buildPlantypeFilterChip(String label) {
+    final isSelected = GST_ledgerController.gst_LedgerModel.selectedPlantype.value == label;
+
+    return ChoiceChip(
+      label: Text(
+        label,
+        style: TextStyle(color: isSelected ? Primary_colors.Color3 : const Color.fromARGB(255, 154, 152, 152), fontSize: Primary_font_size.Text7),
+      ),
+      selected: isSelected,
+      onSelected: (_) {
+        GST_ledgerController.gst_LedgerModel.selectedPlantype.value = label;
         // widget.get_GST_ledgerList();
       },
       backgroundColor: Primary_colors.Dark,

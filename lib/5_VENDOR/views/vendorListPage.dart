@@ -12,11 +12,13 @@ import 'package:ssipl_billing/5_VENDOR/controllers/VendorList_actions.dart';
 // import 'package:ssipl_billing/5_VENDOR/controllers/Vendor_actions.dart';
 import 'package:ssipl_billing/5_VENDOR/models/entities/VendorList_entities.dart';
 import 'package:ssipl_billing/5_VENDOR/services/VendorList_service.dart';
+import 'package:ssipl_billing/5_VENDOR/services/manual_onboard_service.dart';
+import 'package:ssipl_billing/5_VENDOR/views/Manual_onboard/show_Manual_onboard.dart';
 // import 'package:ssipl_billing/COMPONENTS-/button.dart';
 import 'package:ssipl_billing/THEMES/style.dart';
 
-class VendorlistPage extends StatefulWidget {
-  const VendorlistPage({super.key});
+class VendorlistPage extends StatefulWidget with ManualOnboardService {
+  VendorlistPage({super.key});
 
   @override
   State<VendorlistPage> createState() => _VendorlistPageState();
@@ -74,15 +76,86 @@ class _VendorlistPageState extends State<VendorlistPage> with TickerProviderStat
       body: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () => Navigator.pop(context),
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    'Vendor List',
+                    style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text13),
+                  ),
+                ],
               ),
-              const SizedBox(width: 8),
-              const Text(
-                'Vendor List',
-                style: TextStyle(color: Primary_colors.Color1, fontSize: Primary_font_size.Text13),
+              Row(
+                children: [
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: Theme(
+                      data: Theme.of(context).copyWith(
+                        popupMenuTheme: PopupMenuThemeData(
+                          color: Primary_colors.Light,
+                          textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      child: PopupMenuButton<String>(
+                        tooltip: '',
+                        onSelected: (value) async {
+                          if (value == 'link') {
+                            print('Send link selected');
+                            // Add your logic here
+                          } else if (value == 'manual_onboard') {
+                            widget.show_ManualOnboard_DialogBox(context);
+                            // Add your logic here
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 'link',
+                            child: Row(
+                              children: [
+                                Image.asset('assets/images/link.png', width: 20, height: 20),
+                                const SizedBox(width: 10),
+                                const Text('Send Link'),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 'manual_onboard',
+                            child: Row(
+                              children: [
+                                Image.asset('assets/images/addpeople.png', width: 20, height: 20),
+                                const SizedBox(width: 10),
+                                const Text('Manual Onboard'),
+                              ],
+                            ),
+                          ),
+                        ],
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: Primary_colors.Color3, // Customize the button background color
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Text(
+                            "Add Vendor",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

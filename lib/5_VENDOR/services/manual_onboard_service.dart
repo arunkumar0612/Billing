@@ -40,10 +40,10 @@ mixin ManualOnboardService {
     bool picked = await pickFunction(context);
     if (!picked) return;
 
-    final regPath = manualOnboardController.manualOnboardModel.GSTregCertiPickedFile.value?.files.single.path;
-    final panPath = manualOnboardController.manualOnboardModel.vendorPANPickedFile.value?.files.single.path;
-    final chequePath = manualOnboardController.manualOnboardModel.cancelledChequePickedFile.value?.files.single.path;
-    final logoPath = manualOnboardController.manualOnboardModel.logoPickedFile.value?.files.single.path;
+    // final regPath = manualOnboardController.manualOnboardModel.GSTregCertiPickedFile.value?.files.single.path;
+    // final panPath = manualOnboardController.manualOnboardModel.vendorPANPickedFile.value?.files.single.path;
+    // final chequePath = manualOnboardController.manualOnboardModel.cancelledChequePickedFile.value?.files.single.path;
+    // final logoPath = manualOnboardController.manualOnboardModel.logoPickedFile.value?.files.single.path;
 
     // if (regPath != null && panPath != null && chequePath != null) {
     //   // All three files are selected, so upload them

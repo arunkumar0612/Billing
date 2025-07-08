@@ -103,16 +103,6 @@ mixin ManualOnboardService {
         await Error_dialog(context: context, title: "Missing Files", content: "Please upload all required documents.", onOk: () {});
         return;
       }
-      // File logoFile = File(logoPath);
-      // File regFile = File(regPath);
-      // File panFile = File(panPath);
-      // File chequeFile = File(chequePath);
-      // Map<String, dynamic> files = {
-      //   "logo_upload": logoFile,
-      //   "registration_certificate": regFile,
-      //   "pan_upload": panFile,
-      //   "cancelled_cheque": chequeFile,
-      // };
 
       final logoFile = await renameFile(File(logoPath), 'logo_upload');
       final gstRegFile = await renameFile(File(regPath), 'registration_certificate');

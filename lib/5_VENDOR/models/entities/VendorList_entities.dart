@@ -19,7 +19,7 @@ class VendorsData {
   final String? yearOfEstablishment;
   final String? gstNumber;
   final String? panNumber;
-  final String? annualTurnover;
+  final double? annualTurnover;
   final String? productOrServiceList;
   final String? hsnOrSacCode;
   final String? productOrServiceDescription;
@@ -83,7 +83,7 @@ class VendorsData {
       yearOfEstablishment: json['year_of_establishment'] ?? '',
       gstNumber: json['gst_number'] ?? '',
       panNumber: json['pan_number'] ?? '',
-      annualTurnover: json['annual_turnover'] ?? '',
+      annualTurnover: json['annual_turnover'] ?? 0.0,
       productOrServiceList: json['product_or_service_list'] ?? '',
       hsnOrSacCode: json['hsn_or_sac_code'] ?? '',
       productOrServiceDescription: json['product_or_service_description'] ?? '',
@@ -93,8 +93,7 @@ class VendorsData {
       branch: json['branch'] ?? '',
       accountNumber: json['account_number'] ?? '',
       ifscCode: json['ifsc_code'] ?? '',
-      registrationCertificate:
-          json['registration_certificate'] != null && json['registration_certificate']['data'] != null ? Uint8List.fromList(List<int>.from(json['registration_certificate']['data'])) : null,
+      registrationCertificate: json['registration_certificate'] != null && json['registration_certificate']['data'] != null ? Uint8List.fromList(List<int>.from(json['registration_certificate']['data'])) : null,
       panUpload: json['pan_upload'] != null && json['pan_upload']['data'] != null ? Uint8List.fromList(List<int>.from(json['pan_upload']['data'])) : null,
       cancelledCheque: json['cancelled_cheque'] != null && json['cancelled_cheque']['data'] != null ? Uint8List.fromList(List<int>.from(json['cancelled_cheque']['data'])) : null,
       vendorLogo: json['Vendor_Logo'] != null && json['Vendor_Logo']['data'] != null ? Uint8List.fromList(List<int>.from(json['Vendor_Logo']['data'])) : Uint8List(0),
